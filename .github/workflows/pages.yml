@@ -57,12 +57,10 @@ jobs:
         env:
           BASE_PREFIX: /${{ env.REPO_NAME }}
 
+      # site:assemble regenerates the landing page itself before collecting the
+      # built apps, so it cannot assemble around a stale index.
       - name: Assemble site
-        run: |
-          # Regenerate the landing page so it reflects the evidence.json files
-          # present on this commit rather than whatever was last committed.
-          pnpm docs:index
-          pnpm site:assemble
+        run: pnpm site:assemble
 
       - uses: actions/upload-pages-artifact@v5
         with:
