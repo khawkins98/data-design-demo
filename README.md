@@ -54,6 +54,23 @@ scripts/                 generators for fixtures, tokens CSS and the landing pag
   would kill two of the eight pairings outright. Both Delta and Mangrove develop
   against React 19, and all four candidates support it.
 
+## The output
+
+**All eight pairings are complete.** The comparison is the artefact to read:
+
+| | |
+| --- | --- |
+| [Live site](https://khawkins98.github.io/data-design-demo/) | All eight demos, click through from the landing page |
+| [Comparison matrix](https://khawkins98.github.io/data-design-demo/comparison.html) | 8 pairings x 30 requirements, plus metrics, generated from the evidence files |
+| [Issue #8](https://github.com/khawkins98/data-design-demo/issues/8) | Decisions UNDRR needs to make, which do not show up in a feature comparison |
+| [Issue #4](https://github.com/khawkins98/data-design-demo/issues/4) | Mangrove findings that fell out of building this |
+
+Headline: **zero requirements came back `unsupported` and no run was blocked.**
+Every requirement was reachable in every free tier, so the differences are all in
+cost — 54 to 411 custom lines, 14 to 715 lines of CSS, 207 to 397 kB gzipped, and
+19 to 158 dependencies. The evidence for each is in
+`apps/<host>-<candidate>/EVIDENCE.md`.
+
 ## Reading order
 
 | Document | What it settles |
