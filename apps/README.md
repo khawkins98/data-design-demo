@@ -19,7 +19,33 @@ apps/{host}-{candidate}
 | Mantine | `delta-mantine` | `mangrove-mantine` |
 
 The directory name is the GitHub Pages subpath, so a demo deploys to
-`/<repo>/delta-mui/` and must be built with a matching Vite `base`.
+`/<repo>/delta-mui/`.
+
+**Do not hard-code `base` in your `vite.config.ts`.** Leave it at the default;
+`scripts/build-apps.mjs` passes the right value for both local and Pages builds,
+and then verifies it landed in `dist/index.html`. Hard-coding it breaks local
+`pnpm site`.
+
+Claim the next free port pair with `strictPort: true`, so a collision fails
+loudly rather than silently moving and desynchronising your Playwright config:
+
+```ts
+server: { port: 5194, strictPort: true },
+preview: { port: 5195, strictPort: true },
+```
+
+Taken so far: 5180/5181 (`host-preview`), 5190/5191 (`mangrove-react-aria`),
+5192/5193 (`delta-mui`).
+
+## Seeing your demo alongside the others
+
+```sh
+pnpm site        # http://localhost:4180
+```
+
+Builds everything and serves the assembled comparison site, which is the only
+place you can click between demos. `pnpm dev` gives each app its own port with
+nothing linking them.
 
 `pnpm-workspace.yaml` globs `apps/*`, so a new app joins the workspace with no
 shared-file edit. All eight pairings are already pre-registered in
