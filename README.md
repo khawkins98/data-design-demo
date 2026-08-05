@@ -70,11 +70,42 @@ pnpm install
 
 ## Run
 
+### Browsing every demo from one URL
+
+This is almost certainly what you want. It builds everything, assembles the
+comparison site exactly as GitHub Pages will serve it, and serves it locally:
+
 ```sh
-pnpm preview                              # the scaffold preview (see below)
-pnpm dev                                  # every app in parallel
-pnpm --filter ./apps/delta-mui dev        # one app
+pnpm site        # http://localhost:4180
 ```
+
+The landing page lists all eight pairings; built ones are clickable, the rest
+show as pending. This is the only way to click *between* demos — `pnpm dev`
+starts each app on its own isolated port with nothing linking them.
+
+`pnpm site` and the Pages workflow call the same two scripts
+(`scripts/build-apps.mjs`, `scripts/build-site.mjs`), so what you browse locally
+and what gets published cannot drift.
+
+### Working on a single demo
+
+```sh
+pnpm --filter ./apps/mangrove-react-aria dev    # hot reload, one app
+pnpm preview                                    # the scaffold preview, no candidate library
+pnpm dev                                        # every app at once, one port each
+```
+
+Ports are fixed per app so Playwright configs stay in step:
+
+| Target | Dev | Preview |
+| --- | --- | --- |
+| Assembled site (`pnpm site`) | — | 4180 |
+| `packages/host-preview` | 5180 | 5181 |
+| `apps/mangrove-react-aria` | 5190 | 5191 |
+| `apps/delta-mui` | 5192 | 5193 |
+
+Each further pairing takes the next free pair. Claim them in `vite.config.ts`
+with `strictPort: true` so a collision fails loudly instead of silently moving.
 
 ## Looking at the scaffold before any demo exists
 
@@ -108,14 +139,25 @@ This is what proves the harness works before eight agents depend on it.
 ## Build
 
 ```sh
-pnpm build:packages    # shared packages; host-delta compiles its Tailwind CSS
-pnpm build             # every app under apps/
+pnpm build             # shared packages, then every app under apps/
+pnpm build:packages    # shared packages only; host-delta compiles its Tailwind CSS
+pnpm build:apps        # apps only, each with the correct base path
 pnpm docs:index        # regenerate the comparison landing page
+pnpm site:assemble     # collect docs/ + apps/*/dist into _site/
 ```
 
-`build:packages` must run before `build`, because apps import
-`@undrr-eval/host-delta/host.css`, which is a build output. `pnpm -r` resolves
-this order automatically from the workspace dependency graph.
+`build:packages` runs before `build:apps` because apps import
+`@undrr-eval/host-delta/host.css`, which is a build output.
+
+Each demo is served from a subpath, so it must be built with a matching Vite
+`base` or every asset URL resolves to the site root. `build:apps` handles this
+and then **verifies the base actually landed in `dist/index.html`** — a wrong
+base produces a site that serves but cannot load, which a build exit code will
+not catch. Set `BASE_PREFIX` for a Pages build:
+
+```sh
+BASE_PREFIX=/data-design-demo pnpm build:apps
+```
 
 ## Test
 

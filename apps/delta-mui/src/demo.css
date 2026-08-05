@@ -1,0 +1,30 @@
+/**
+ * Candidate CSS for the MUI demo.
+ *
+ * Deliberately tiny. MUI is styled through its theme object and `sx` props, not
+ * through stylesheets, so nearly all styling lives in `theme.ts` — which is why
+ * this file is 20-odd lines where the React Aria demo needed 624. The cost moved
+ * rather than disappeared; it is counted in `wrappers` and `theming` instead.
+ *
+ * Scoped under `.demo` so nothing can reach the host canaries.
+ */
+
+.demo {
+  /* ScopedCssBaseline sets a background; the host owns the page background. */
+  background: transparent;
+  min-width: 0;
+}
+
+/* The DataGrid's intrinsic width would otherwise propagate up through the grid
+   and scroll the whole document at narrow viewports. Same class of bug the
+   React Aria run hit with its resizable table container. */
+.demo .MuiDataGrid-root {
+  max-width: 100%;
+}
+
+/* Long fixture labels in German must wrap inside grid headers rather than
+   forcing the column wider. */
+.demo .MuiDataGrid-columnHeaderTitle {
+  white-space: normal;
+  line-height: 1.2;
+}
