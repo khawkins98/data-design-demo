@@ -179,10 +179,22 @@ import { TOKEN_SCOPE_CLASS } from "@undrr-eval/undrr-tokens";
 <Popover className={`${TOKEN_SCOPE_CLASS} my-popover`}>
 ```
 
-**If your candidate themes via a JavaScript object** — MUI, Mantine — you are
-probably immune, because the theme resolves token values at build time and the
-generated CSS carries literal values with no `var()` to fail. Verify rather than
-assume: open an overlay and check its computed `background-color`.
+**If your candidate themes via a JavaScript object** — MUI, Mantine — you may be
+partly insulated, but **do not assume it, and do not assume the reason.** Both
+have now been measured and they survive for different reasons, with different
+consequences:
+
+- **MUI** is immune because its theme resolves token values at build time and
+  emotion emits literal colours. There is no `var()` to fail. The trade is that
+  tokens cannot then change at runtime without a rebuild.
+- **Mantine** survives because its own `--mantine-*` variables sit at `:root`,
+  which also means its theme *can* change at runtime. But `var(--undrr-*)` still
+  dies inside its portals — in the `delta-mantine` run that silently removed the
+  focus ring from every control inside every overlay.
+
+So "themed via JS" does not mean safe. What matters is whether any declaration
+inside the portal references a `var()` that is scoped outside it. Check each
+overlay type, not one.
 
 **Assert it in your e2e run.** Behavioural tests cannot see this: the component
 works, the suite passes, and the overlay is invisible. Open each overlay type and
