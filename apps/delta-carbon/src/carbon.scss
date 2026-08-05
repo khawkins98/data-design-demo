@@ -1,0 +1,134 @@
+//
+// Carbon component styles, hand-composed to EXCLUDE the global reset.
+//
+// THE CENTRAL FINDING OF THIS RUN, so it is worth stating precisely.
+//
+// The documented, simple way to load Carbon's CSS is:
+//
+//     import "@carbon/styles/css/styles.css";       // 958 KB, 34,000 lines
+//
+// That file opens with a full Eric-Meyer-style reset:
+//
+//     html, body, div, span, ..., h1, h2, h3, p, a, table, th, td, ul, li,
+//     nav, section, header, article, ... {
+//       padding: 0; border: 0; margin: 0; font: inherit;
+//       font-size: 100%; vertical-align: baseline;
+//     }
+//     button, select, input, textarea { border-radius: 0; font-family: inherit; }
+//
+// Every one of those element selectors is global. On the Delta host that
+// restyles the leakage canaries — headings lose their size, the paragraph
+// loses its font, the table loses its cell padding — and the leakage
+// assertion fails on eleven of the fourteen canaries. The e2e run measures
+// exactly that under `?globalcss=on`; the differences are listed in
+// EVIDENCE.md.
+//
+// So this file loads only `scss/components/*`, which are entirely
+// `.cds--`-prefixed, and deliberately omits:
+//
+//   @use "@carbon/styles/scss/reset"  — the global reset described above
+//   @use "@carbon/styles/scss/fonts"  — @font-face for IBM Plex from a CDN;
+//                                        the tokens name Roboto, and a network
+//                                        font would race the screenshots
+//   @use "@carbon/styles/scss/grid"   — Delta uses Tailwind for layout
+//
+// What this costs: Carbon components are authored expecting the reset. In
+// practice Tailwind Preflight — which the Delta host already loads, and which
+// sets `box-sizing: border-box` on `*`, `font: inherit` and `border: 0 solid`
+// on form controls, and zeroes heading and list margins — covers nearly the
+// same ground. The two resets are substitutes, which is a lucky accident of
+// this host pairing and would NOT hold on a host without Preflight. Recorded
+// in EVIDENCE.md rather than glossed.
+//
+// The one remaining global escape is Carbon's date picker, which bundles
+// flatpickr's own UNPREFIXED class selectors (`.flatpickr-calendar`,
+// `.flatpickr-day`, `.numInputWrapper`, `.dayContainer`, `.prevMonthDay`).
+// They match nothing on the host, so they do not leak, but they are a
+// namespace collision waiting for a host that happens to use those names.
+//
+// The `:root` block Carbon's layer module emits is rewritten to the token
+// scope class by the small PostCSS plugin in vite.config.ts. See EVIDENCE.md.
+
+// `scss/layout` is REQUIRED, and finding that out was a trap worth recording.
+// It declares nothing but a `:root` block of twelve control-height and
+// inline-padding custom properties:
+//
+//     --cds-layout-size-height-md: 2.5rem;
+//     --cds-layout-density-padding-inline-normal: 1rem;
+//     ... ten more ...
+//
+// Every Carbon form control sizes itself from those, via a `clamp()` chain:
+//
+//     .cds--text-input {
+//       padding: 0 var(--cds-layout-density-padding-inline-local);
+//       block-size: var(--cds-layout-size-height-local);
+//     }
+//
+// Omit this partial and those `var()`s resolve to nothing. A failed `var()` is
+// silent, so the whole declaration is dropped: every input, button, select and
+// combobox loses its inline padding AND its height, collapsing to content size.
+// Nothing errors, nothing warns, and it looks like a subtle styling bug rather
+// than a missing import. This demo shipped in exactly that state until the e2e
+// run measured `padding-left: 0px` on a text input.
+//
+// The lesson for anyone cherry-picking Carbon partials: the component partials
+// are not self-contained. There is no manifest of what they need.
+@use "@carbon/styles/scss/layout";
+
+@use "@carbon/styles/scss/components/accordion";
+@use "@carbon/styles/scss/components/button";
+@use "@carbon/styles/scss/components/checkbox";
+@use "@carbon/styles/scss/components/combo-box";
+@use "@carbon/styles/scss/components/content-switcher";
+// THE SAME TRAP AGAIN, ONE LEVEL DOWN. `components/data-table/_index.scss`
+// includes only the CORE table mixin. Sorting, batch actions, the toolbar and
+// the skeleton live in SEPARATE sibling partials that its index does not
+// forward:
+//
+//     @use 'data-table';
+//     @use 'data-table/action';       <- batch action bar + toolbar
+//     @use 'data-table/expandable';
+//     @use 'data-table/skeleton';     <- DataTableSkeleton
+//     @use 'data-table/sort';         <- sortable headers
+//
+// Without `data-table/sort`, the rule `.cds--table-sort__description
+// { display: none }` never lands, so Carbon's screen-reader-only sort
+// instruction ("Click to sort rows by Country header in ascending order")
+// renders as VISIBLE TEXT inside every header cell. The table still sorted
+// correctly, and no test caught it: it took reading the screenshot.
+//
+// Two lessons for UNDRR. First, a visually-hidden pattern implemented in CSS
+// rather than in markup fails open — omit the stylesheet and private text
+// becomes public. Second, `@use "…/components/X"` is not a reliable way to get
+// component X.
+@use "@carbon/styles/scss/components/data-table";
+@use "@carbon/styles/scss/components/data-table/action";
+@use "@carbon/styles/scss/components/data-table/expandable";
+@use "@carbon/styles/scss/components/data-table/skeleton";
+@use "@carbon/styles/scss/components/data-table/sort";
+@use "@carbon/styles/scss/components/date-picker";
+@use "@carbon/styles/scss/components/dropdown";
+@use "@carbon/styles/scss/components/form";
+@use "@carbon/styles/scss/components/inline-loading";
+@use "@carbon/styles/scss/components/link";
+@use "@carbon/styles/scss/components/list";
+@use "@carbon/styles/scss/components/list-box";
+@use "@carbon/styles/scss/components/loading";
+@use "@carbon/styles/scss/components/modal";
+@use "@carbon/styles/scss/components/multiselect";
+@use "@carbon/styles/scss/components/notification";
+@use "@carbon/styles/scss/components/pagination";
+@use "@carbon/styles/scss/components/popover";
+@use "@carbon/styles/scss/components/progress-bar";
+@use "@carbon/styles/scss/components/search";
+@use "@carbon/styles/scss/components/select";
+@use "@carbon/styles/scss/components/skeleton-styles";
+@use "@carbon/styles/scss/components/stack";
+@use "@carbon/styles/scss/components/tag";
+@use "@carbon/styles/scss/components/text-area";
+@use "@carbon/styles/scss/components/text-input";
+@use "@carbon/styles/scss/components/tile";
+@use "@carbon/styles/scss/components/time-picker";
+@use "@carbon/styles/scss/components/toggletip";
+@use "@carbon/styles/scss/components/tooltip";
+@use "@carbon/styles/scss/components/ui-shell";

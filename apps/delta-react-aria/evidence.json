@@ -1,0 +1,245 @@
+{
+  "candidate": "Adobe React Aria",
+  "host": "delta",
+  "versions": {
+    "library": "react-aria-components@1.20.0",
+    "react": "19.2.8",
+    "node": "22 (CI), 24.18.0 (local run)"
+  },
+  "requirements": [
+    {
+      "id": "buttons",
+      "status": "native",
+      "notes": "Button with data-hovered/pressed/disabled/focus-visible state attributes. Variants are CSS only. On this host the CSS is not optional: Tailwind Preflight resets button to border:0, padding:0, margin:0, background-color:#0000, border-radius:0, font:inherit, so an unstyled Button is literal unstyled text rather than a browser-default control.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "links",
+      "status": "native",
+      "notes": "Link component. Preflight resets a { color: inherit; text-decoration: inherit }, so colour and underline must be restated. Delta's own canary link carries text-sky-800 underline underline-offset-2 for the same reason, so this is host-consistent rather than a candidate cost. Unlike the Mangrove host, whose bare-a rule underlines only on hover and fails WCAG 1.4.1, Delta's convention is already accessible.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "text-input",
+      "status": "native",
+      "notes": "TextField + Label + Input + Text slot=description. aria-describedby wired automatically.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "validation-states",
+      "status": "native",
+      "notes": "isInvalid + FieldError for the three client-side cases. server-rejected uses Form validationErrors, the documented channel for errors only the server knows; no custom wiring.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "disabled-states",
+      "status": "native",
+      "notes": "isDisabled on Button, TextField and Input, plus the native page-size select in section 6.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "select-small",
+      "status": "native",
+      "notes": "Select + ListBox, 8 options. Its popover is portalled, so it also needs the token scope class.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "select-medium",
+      "status": "native",
+      "notes": "Same component, 40 options. Its popover is portalled, so it also needs the token scope class.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "select-large",
+      "status": "native",
+      "notes": "Same component, 400 options. Renders all 400 DOM nodes: virtualisation requires wrapping in Virtualizer, which was not used so the comparison stays like-for-like with the other candidates. Its popover is portalled, so it also needs the token scope class.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "multiselect",
+      "status": "composed",
+      "notes": "No single multiselect component exists. Documented pattern is ListBox selectionMode=multiple plus TagGroup/TagList for removable chips, joined by a small onRemove handler.",
+      "customLinesOfCode": 6
+    },
+    {
+      "id": "combobox-searchable",
+      "status": "native",
+      "notes": "ComboBox filters as you type at all three sizes with no filter function supplied. Its popover is portalled, so it also needs the token scope class.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "date-picker",
+      "status": "native",
+      "notes": "DatePicker with per-segment keyboard entry and a Calendar popover. Its popover is portalled, so it also needs the token scope class. The hidden form-integration input stays hidden on this host because Preflight declares [hidden]{display:none!important} -- the opposite of the Mangrove result.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "datetime-range-picker",
+      "status": "native",
+      "notes": "DateRangePicker with granularity=\"minute\" in the free tier. One popover, one focus trap, a single RangeCalendar highlighting the intervening days and exposing data-selection-start / data-selection-end for styling. This is the requirement that separates candidates: the delta-mui run has to compose two pickers because MUI's range components are commercially licensed. Its popover is portalled, so it also needs the token scope class. At 390px the two endpoints cannot fit side by side, so the Group wraps and they stack -- a real layout constraint of a genuinely native range control, not a defect.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "modal",
+      "status": "native",
+      "notes": "ModalOverlay + Modal + Dialog. Focus trap, Escape dismiss and focus restoration to the trigger all verified by e2e test. Requires the token scope class on the portalled element; see theming.escapeHatchesUsed.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "tooltip",
+      "status": "native",
+      "notes": "TooltipTrigger is hover AND keyboard-focus triggered by default, and it correctly declines to open on programmatic focus because the interaction modality is not keyboard -- verified both routes separately in e2e. Requires the token scope class on the portalled element.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "popover",
+      "status": "native",
+      "notes": "DialogTrigger + Popover, dismiss on outside click, with OverlayArrow. Requires the token scope class on the portalled element.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "accordion",
+      "status": "native",
+      "notes": "DisclosureGroup + Disclosure + DisclosurePanel, allowsMultipleExpanded={false} for single-expand without custom state. aria-expanded transitions asserted in e2e.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "cards",
+      "status": "custom",
+      "notes": "React Aria has no card component, correctly: a card is styling, not behaviour. Rendered as plain markup carrying Delta's own Tailwind utility strings verbatim (rounded border border-slate-300 bg-white p-4 shadow-sm), so section 5's cards are pixel-identical to the host's canary cards for zero lines of CSS. Recorded as `custom` for consistency with the Mangrove run's classification of the same situation, but note the cost here is genuinely nil. It only works because host-delta.src.css scopes Tailwind to @source \"./HostShell.tsx\": a utility the host does not itself use emits no CSS at all, silently. See blockers.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "left-nav",
+      "status": "native",
+      "notes": "ListBox selectionMode=single, which supplies roving tabindex and type-ahead that a plain list of links does not. Shaped with tokens to echo Delta's 3px inline-start active border, because the states it needs (data-selected, data-focus-visible) are attributes on library-rendered elements and cannot borrow the host's utility classes.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "table-render",
+      "status": "native",
+      "notes": "Table/TableHeader/TableBody/Column/Row/Cell over all 250 rows. Column type formatting uses Intl, driven by the active locale: integer, 2-dp decimal, medium date and short date-time, all pinned to UTC so output does not depend on the runner.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "table-sort",
+      "status": "composed",
+      "notes": "Column allowsSorting plus sortDescriptor/onSortChange give the UI, ARIA and keyboard behaviour; the comparator is ours. Handles number, ISO string and locale-aware string, the last via Intl.Collator so accented French and German values do not sort by code point.",
+      "customLinesOfCode": 17
+    },
+    {
+      "id": "table-multiselect",
+      "status": "composed",
+      "notes": "CORRECTS THE MANGROVE RUN, which recorded this as native. selectionMode=multiple supplies the selection behaviour -- click, shift-click, modifier-click, keyboard -- but React Aria renders NO checkbox and therefore no select-all control. A select-all only exists once you add a selection column plus a <Checkbox slot=\"selection\"> in the header and in every row. The slot supplies the tri-state isIndeterminate and the localised accessible name (\"Select All\" / \"Select\"); the markup and all of its appearance are ours, because the library's Checkbox renders only a visually hidden native input. Found by writing an assertion for select-all, which the Mangrove run did not.",
+      "customLinesOfCode": 16
+    },
+    {
+      "id": "table-filter",
+      "status": "composed",
+      "notes": "SearchField supplies the input and its clear affordance; the predicate is ours.",
+      "customLinesOfCode": 13
+    },
+    {
+      "id": "table-paginate",
+      "status": "custom",
+      "notes": "React Aria ships no pagination component and no pagination hook. Page state, slicing, the page-size control and the Previous/Next navigation are entirely ours. For a disaster-loss table this is a core interaction, and it is the clearest gap in the library for this use case.",
+      "customLinesOfCode": 46
+    },
+    {
+      "id": "table-column-resize-or-reorder",
+      "status": "native",
+      "notes": "ResizableTableContainer + ColumnResizer give drag and keyboard resizing. Reorder is not available, but the brief requires either one. Two costs came with it, both recorded in EVIDENCE.md: the container sets table-layout:fixed, so nowrap headers paint over the next column unless truncated; and ColumnResizer's visually hidden <input type=range> is position:absolute with no positioned ancestor, so it escaped the scroll container and silently scrolled the document by 335px at 390px width.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "table-states",
+      "status": "composed",
+      "notes": "TableBody renderEmptyState is native and ProgressBar covers loading. Error and success banners have no component: they are role=alert and role=status markup we wrote.",
+      "customLinesOfCode": 18
+    },
+    {
+      "id": "form-states",
+      "status": "composed",
+      "notes": "Same split: ProgressBar native, banners ours.",
+      "customLinesOfCode": 12
+    },
+    {
+      "id": "locale-switcher",
+      "status": "native",
+      "notes": "RadioGroup + Radio cycling en, fr, de, ar. I18nProvider propagates the locale to every component. Radio renders a <label> wrapping a visually hidden input and nothing else -- no dot, no ring -- so the visible control is a ::before we drew, which on a Preflight host has no border to start from either.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "rtl",
+      "status": "native",
+      "notes": "I18nProvider with ar-EG flips direction for the library's own internals: date segment order, calendar layout, listbox and tag alignment, and the nav's inline-start border moves to the right through logical properties. No custom direction plumbing anywhere. Arabic-Indic digits appear in the date segments, which is Intl doing the right thing rather than anything we configured.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "long-labels",
+      "status": "composed",
+      "notes": "Clean at all three viewports: 0px horizontal document overflow at 390, 1024 and 1440 in German. Measurements in test-results/long-labels-*.json. This is better than the Mangrove twin, which still scrolls 261px at 390px, and the difference is not the host -- it is that this run found the actual cause. Getting there took four CSS fixes, all recorded in theme.css: min-width:0 on the grid children, a width cap on the library's hidden native <select>, position:relative on the table's scroll container to contain ColumnResizer's absolutely positioned hidden input, and moving the responsive media query to the end of the file so it stops losing the cascade tie to an equally specific later rule.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "side-by-side",
+      "status": "composed",
+      "notes": "Host and candidate button, table, card and nav list rendered adjacent in section 9. The host column reuses the host shell's own Tailwind utility strings, so it is a true reproduction of Delta rather than an approximation. The two columns are deliberately NOT identical: the host is slate-and-sky Tailwind, the candidate is the UNDRR token palette. What the comparison demonstrates is that every visual property was reachable, not that the palettes match.",
+      "customLinesOfCode": 0
+    }
+  ],
+  "customCss": {
+    "lines": 715,
+    "selectors": 156,
+    "overridesLibraryInternals": true
+  },
+  "wrappers": {
+    "count": 5,
+    "totalLines": 104
+  },
+  "theming": {
+    "tokensApplied": 48,
+    "tokensUnreachable": 0,
+    "method": "CSS custom properties from packages/undrr-tokens consumed directly in a stylesheet scoped under .demo. React Aria ships no CSS of its own, so there is nothing to override and no specificity contest: components render the class names given to them plus data-* state attributes, which is the documented styling API. Tokens are referenced with var() rather than copied, so a token change applies at runtime with no rebuild -- the opposite trade from MUI, whose theme object inlines literal values at build time.",
+    "escapeHatchesUsed": [
+      "`.undrr-tokens` is applied to every portalled overlay (Popover, ModalOverlay, Tooltip) via src/overlay-class.ts. React Aria portals overlays to document.body, outside the token-scoped element, so every var(--undrr-*) inside them resolves to nothing. On this host that is worse than on Mangrove: Preflight's `* { border: 0 solid; padding: 0; margin: 0 }` applies inside the portal too, so an overlay that cannot see the tokens loses its padding as well as its background and border and collapses onto its text. Not a React Aria defect so much as an interaction between portalling and class-scoped tokens, but it is silent -- a failed var() produces no warning. Asserted in e2e for popover, calendar, combobox, modal and tooltip.",
+      "One rule targets library-rendered markup: [data-testid=\"hidden-select-container\"] { overflow: hidden } plus a width cap on library-rendered <select> elements. React Aria's Select renders a hidden native <select> for form integration, hidden with clip/clip-path but still in layout, so a long option label expands the document scroll area. Targeting a data-testid is fragile and would break silently on upgrade. Reproduces identically on both hosts, so it is the candidate's, not the host's.",
+      "`position: relative` on our own ResizableTableContainer wrapper, to contain ColumnResizer's visually hidden <input type=range>. Those inputs are position:absolute with no positioned ancestor, so they resolved against the initial containing block and no ancestor overflow could clip them -- the rightmost sat at x=725 in a 390px viewport and scrolled the document by 335px while the table itself scrolled correctly inside its box. One declaration on our own element, so no fragility, but the symptom points at the table rather than at the resizer. Same class of bug as the hidden <select> above.",
+      "`overflow: hidden` plus text-overflow on the table's column headers. ResizableTableContainer sets table-layout:fixed, so a nowrap header no longer widens its column and painted straight over the next one. Truncation with the resizer available is the honest resolution.",
+      "NO `[hidden]` workaround was needed, and that is worth recording as an escape hatch NOT used. Preflight declares [hidden]:where(:not([hidden=until-found])){display:none!important}, so React Aria's hidden form-integration inputs stay hidden. The Mangrove pairing needed an explicit override for exactly this and paid a critical axe violation until it was found."
+    ]
+  },
+  "leakage": {
+    "assertionPassed": true,
+    "differences": []
+  },
+  "axe": {
+    "violations": 0,
+    "serious": 0,
+    "critical": 0,
+    "incomplete": 1
+  },
+  "rtl": {
+    "status": "clean",
+    "issues": []
+  },
+  "longLabels": {
+    "status": "clean",
+    "issues": []
+  },
+  "bundle": {
+    "gzippedKb": 238.8,
+    "dependencyCount": 19
+  },
+  "buildTimeSeconds": 2.0,
+  "blockers": [],
+  "humanReviewRequired": [
+    "axe `color-contrast` (1 incomplete, sections 2 and 6): axe could not determine contrast automatically. Needs manual checking, particularly disabled button text, hint text and the status badges against the neutral token palette.",
+    "Keyboard and screen-reader testing by a human. axe is static analysis and cannot confirm that the range calendar, the column resizer, listbox type-ahead or the tri-state select-all checkbox are usable with a screen reader.",
+    "The 400-option Select renders all 400 DOM nodes. Whether that is acceptable, or whether Virtualizer should be mandatory, is a performance decision not taken here.",
+    "Column-header truncation: with ResizableTableContainer's table-layout:fixed, long localised headers such as \"Wirtschaftlicher Schaden (Mio. USD)\" ellipsise at the default column width. A design decision is needed on whether that is acceptable given the resizer, or whether headers should wrap to two lines instead.",
+    "REACT ARIA ISSUE WORTH FILING, two instances: a visually hidden control should not be able to change document layout. ColumnResizer's hidden <input type=range> is position:absolute with no positioned ancestor and escapes any ancestor overflow; Select's hidden native <select> is clipped visually but stays in layout. Both silently scroll the page sideways at narrow viewports, and both had to be worked around in consumer CSS.",
+    "The four Delta pairings cannot use Tailwind utilities of their own. host-delta.src.css declares @source \"./HostShell.tsx\", so only the 75 utilities the host shell itself uses exist in the compiled stylesheet; any other utility class emits no CSS and fails silently with no build error. This run stayed inside that set deliberately and reused the host's own strings verbatim, which is why section 5's cards are pixel-identical to the host's. Worth a decision before any Delta demo is read as representative of how a real Delta app would be styled.",
+    "The Delta host contributed 0 axe violations, matching the documented baseline, so the scoped and whole-page counts agree at 0. Nothing was subtracted."
+  ]
+}

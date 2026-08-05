@@ -1,0 +1,301 @@
+{
+  "candidate": "IBM Carbon",
+  "host": "delta",
+  "versions": {
+    "library": "@carbon/react@1.113.0, @carbon/styles@1.112.0 (with @carbon/themes@11.78.0, @carbon/type@11.64.0, @carbon/layout@11.56.0, flatpickr@4.6.13, downshift@9.4.0)",
+    "react": "19.2.8",
+    "node": "22 (CI), 24.18.0 (local run)"
+  },
+  "requirements": [
+    {
+      "id": "buttons",
+      "status": "native",
+      "notes": "Button with kind=primary/secondary/tertiary/danger/ghost plus disabled. No textTransform to undo, unlike MUI. All five kinds are themed purely through --cds-button-* custom properties.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "links",
+      "status": "native",
+      "notes": "Link with the `inline` prop, which underlines and keeps the link distinguishable inside body text without extra CSS.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "text-input",
+      "status": "native",
+      "notes": "TextInput bundles label, helper text, invalid state, invalid message, warning state and warning message in one component. The warn/warnText tier is a genuine affordance neither MUI nor React Aria offers.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "validation-states",
+      "status": "composed",
+      "notes": "required-empty and format-invalid use invalid/invalidText; out-of-range uses Carbon's separate warn/warnText tier, which is exactly the distinction it exists for. server-rejected has no library channel: InlineNotification gives the banner semantics but the wiring between 'the server said no' and 'this field is invalid' is component state we manage. TRAP FOUND: Carbon's useNormalizedInputProps computes `invalid: !readOnly && !disabled && invalid`, so readOnly SILENTLY SUPPRESSES both invalid and warn. The first version of this section pinned the fixture values with value+readOnly (as the MUI run does) and all four validation states rendered blank with no warning. Guarded by an e2e assertion on the rendered messages.",
+      "customLinesOfCode": 11
+    },
+    {
+      "id": "disabled-states",
+      "status": "native",
+      "notes": "disabled on Button, TextInput and Select. Note that disabled also suppresses invalid/warn, by the same normalisation rule.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "select-small",
+      "status": "native",
+      "notes": "Select + SelectItem, 8 options. Carbon's Select is a real <select> element, not a div-and-popover.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "select-medium",
+      "status": "native",
+      "notes": "Same, 40 options. No maxHeight override needed: a native select scrolls itself.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "select-large",
+      "status": "native",
+      "notes": "Same, 400 options. This is where being a real <select> pays: 400 <option> nodes are the browser's problem, not React's, so no virtualisation question arises. MUI's Select mounts 400 MenuItem components for the same fixture.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "multiselect",
+      "status": "composed",
+      "notes": "MultiSelect handles the selection natively but renders a SELECTED-COUNT BADGE, not chips — '2 x' plus a clear-all, no removable pills. The brief accepts 'or equivalent' and the badge arguably is one, but the removable chips below it are DismissibleTag components wired to the same state. Carbon parts, our wiring, so composed rather than native.",
+      "customLinesOfCode": 12
+    },
+    {
+      "id": "combobox-searchable",
+      "status": "composed",
+      "notes": "ComboBox is native and works at all three sizes. But Carbon's default filter is a case-sensitive startsWith, which is wrong for a 400-item list of place names, so `shouldFilterItem` carries our own case-insensitive substring predicate. Documented hook, our predicate. No virtualisation and no result cap: all 400 items mount when the menu opens with an empty query. `onChange` is required by the types even for an uncontrolled combobox.",
+      "customLinesOfCode": 7
+    },
+    {
+      "id": "date-picker",
+      "status": "native",
+      "notes": "DatePicker with datePickerType='single' plus DatePickerInput. Calendar and keyboard entry both work. `appendTo` is passed a container inside the candidate subtree — see the portal note in theming.escapeHatchesUsed.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "datetime-range-picker",
+      "status": "composed",
+      "notes": "Carbon HAS a free, native date RANGE picker: datePickerType='range' gives one calendar, two associated inputs, intervening days highlighted, click-to-select across the span, one popover, one focus context. That is materially more than MUI's community tier, whose range pickers are commercially licensed. What Carbon does NOT have is a date-TIME range: DatePicker is date-only at every granularity and time lives in a separate TimePicker with no prop joining them. So the composition is range DatePicker + two TimePickers. WHAT THE JOIN COSTS: (1) time is disconnected from the calendar — picking a day does not move focus to the time field and changing a time does not re-validate against the calendar; (2) same-day ranges are unguarded, because flatpickr's minDate/maxDate only order the DATES, so an end time before a start time on the same day is caught only by our check; (3) no single accessible name for the range — a screen reader user meets four fields, of which only the two dates are associated with each other; (4) the duration summary is ours, Carbon renders no summary; (5) TimePicker is a free-text input with a `pattern` attribute, not a spinner, so it accepts '99:99' and the validity check is ours. SEPARATE FINDING: flatpickr formats with a printf-style pattern string, not Intl, so the picker's own input cannot be locale-aware. The `locale` prop translates month and weekday NAMES inside the calendar but not the input format; one pattern serves all four locales. Every other formatted value on the page uses Intl with timeZone: UTC; these two inputs are the exception and cannot be fixed without replacing flatpickr.",
+      "customLinesOfCode": 46
+    },
+    {
+      "id": "modal",
+      "status": "native",
+      "notes": "Modal with focus trap, Escape and — unusually explicit — a `launcherButtonRef` prop for focus restore, verified by e2e (the trigger is focused after Escape). Also has preventCloseOnClickOutside and selectorPrimaryFocus, which the other candidates make you reach into a portal API for. Renders in place rather than portalling, so the token scope reaches it; asserted background-color === the surface token.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "tooltip",
+      "status": "native",
+      "notes": "Tooltip, hover and keyboard focus by default, with enterDelayMs/leaveDelayMs. CAVEAT worth a human ruling: the `label` prop sets aria-labelledby on the trigger, which REPLACES the trigger's own accessible name with the tooltip text — a button reading 'Hover or focus for tooltip' announces the 200-character methodology notice instead. Carbon's `description` prop uses aria-describedby and preserves the name. Both are documented; which is correct depends on whether the tooltip is the label or supplementary.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "popover",
+      "status": "native",
+      "notes": "Toggletip (ToggletipButton + ToggletipContent): click-triggered, dismisses on outside click and on Escape, ARIA wired. The raw Popover primitive was deliberately NOT used — it is unopinionated and would have made this composed for no benefit, since Toggletip is the documented component for this behaviour. Toggletip is high-contrast by default, so its themed background is the token INVERSE surface; asserted in e2e as neither transparent nor Carbon's stock grey.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "accordion",
+      "status": "native",
+      "notes": "Accordion + AccordionItem with correct aria-expanded/aria-controls and an `open` prop. Multi-expand by default; no controlled state needed, unlike MUI where single-expand costs a state hook.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "cards",
+      "status": "native",
+      "notes": "Tile. The easiest host match in the pairing: Carbon's tile is FLAT — a background plus a hairline border, no elevation — which is what Delta's cards are. MUI needed variant='outlined' elevation={0} to get there; Carbon starts there. Only the corner radius needed an override, because Carbon has no radius token.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "left-nav",
+      "status": "composed",
+      "notes": "SideNav + SideNavItems + SideNavLink with isActive. But SideNav is not a navigation LIST component: it is application shell chrome designed to sit position:fixed against the viewport edge beneath a Carbon Header, at a fixed 16rem inline size, with expand/collapse driven by a header hamburger it expects to exist. Rendering it as an in-page column needs position, block-size, max-inline-size and the border neutralised (five declarations in demo.css) plus isChildOfHeader/addFocusListeners/addMouseListeners turned off. The component is Carbon's; making it behave as an in-page element is not. Carbon's alternatives — contained-list, or a plain ul with cds--list__item — give no selected-state or hover treatment.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "table-render",
+      "status": "composed",
+      "notes": "DataTable renders all 250 rows through a render prop. Every column type is formatted correctly — string, long string, integer, float, ISO date, ISO datetime, enum as a Tag, nullable as an em dash — but Carbon has NO valueFormatter and no cell-level formatting hook, so every Intl call is at the call site. That is the consequence of DataTable being a render-prop shell over your own markup rather than a grid that owns its cells; the flip side is that the enum column can be a Tag with no escape hatch, where MUI needs renderCell. Carbon also offers no cell truncation affordance, so the 140-200 character narrative column needed a line clamp or every row was ~265px tall.",
+      "customLinesOfCode": 30
+    },
+    {
+      "id": "table-sort",
+      "status": "native",
+      "notes": "isSortable on the table plus per-header. Verified by reading DataTable/tools/sorting.ts rather than assuming: the default comparator returns a-b for numbers, localeCompare with numeric-aware collation for strings, and coerces null to '', so the integer, float, ISO-date, ISO-datetime, enum, string and nullable columns all sort correctly with no comparator written.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "table-multiselect",
+      "status": "native",
+      "notes": "getSelectionProps() with TableSelectAll and TableSelectRow, including the indeterminate header state, plus TableBatchActions for the selection-count action bar. Note that TableBatchActions is the source of the aria-hidden-focus axe violation below.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "table-filter",
+      "status": "native",
+      "notes": "TableToolbarSearch wired to the render prop's onInputChange. Filters across every cell value. No predicate written.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "table-paginate",
+      "status": "composed",
+      "notes": "The Pagination component is native and includes the page-size select, the range text and the control buttons. But it is presentation only: it reports { page, pageSize } and YOU slice the rows. The slice has to happen INSIDE the render prop, where `rows` is already filtered and sorted, so paging composes with both — nothing in the API says so, and slicing the input to DataTable instead would silently have made search page-local. SECOND FINDING, asserted in e2e: Carbon HIDES the items-per-page control on a narrow container. `@container pagination (max-width: 42rem)` sets display:none on .cds--pagination__left > *, so at the 390px viewport the page size cannot be changed at all.",
+      "customLinesOfCode": 8
+    },
+    {
+      "id": "table-column-resize-or-reorder",
+      "status": "custom",
+      "notes": "Carbon has NEITHER column resize NOR column reorder, at any tier. No prop on DataTable or Table, no resizer element in the compiled stylesheet, nothing behind a feature flag. The brief accepts one of the two, so reorder is implemented from scratch here: an ordered key array driving the headers array, plus a keyboard-operable move-earlier/move-later control per column. Buttons rather than drag, because a drag-only reorder excludes keyboard users; and a separate control row rather than buttons inside the header cells, because TableHeader with isSortable renders the label inside a <button> and nesting a button is invalid HTML. This is the one requirement where Carbon is behind BOTH MUI (resize is free on GridColDef) and React Aria (a resizing hook).",
+      "customLinesOfCode": 35
+    },
+    {
+      "id": "table-states",
+      "status": "composed",
+      "notes": "loading, error and success are native. DataTableSkeleton is better than a spinner or an overlay because the placeholder has the right column count, so the layout does not jump when rows arrive. InlineNotification carries role=alert / role=status already. EMPTY IS NOT COVERED: Carbon has no empty-state component and DataTable has no empty slot — it renders a header row and no body, which reads as a rendering bug rather than as 'no results'. MUI has localeText.noRowsLabel and a noRowsOverlay slot; React Aria has renderEmptyState on TableBody. Carbon has neither, so the empty state is our own markup with role=status.",
+      "customLinesOfCode": 14
+    },
+    {
+      "id": "form-states",
+      "status": "native",
+      "notes": "InlineLoading is a single component whose `status` prop covers active -> finished -> error, i.e. the whole form lifecycle in one place with the right ARIA at each step. No other candidate in this evaluation has that; MUI needs LinearProgress plus two Alerts. Only the LoadState -> status mapping is ours.",
+      "customLinesOfCode": 8
+    },
+    {
+      "id": "locale-switcher",
+      "status": "native",
+      "notes": "ContentSwitcher + Switch, with arrow-key selection and a `name` passed through to onChange. Switch forwards arbitrary attributes, so data-locale gives the e2e run a stable handle.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "rtl",
+      "status": "native",
+      "notes": "THE CLEANEST RESULT OF THE THREE RUNS SO FAR. Carbon's stylesheets are authored entirely in logical properties — padding-inline-start, inset-inline-end, border-inline-end, margin-inline — so a `dir` attribute on any ancestor flips every component internal. No provider, no theme rebuild, no stylis/RTL plugin, no adapter locale, zero lines of code. MUI needs createTheme(base, { direction }) rebuilt per locale AND still leaves emotion's already-emitted physical offsets unflipped. Asserted on a component internal, not just the dir attribute: the accordion heading's chevron padding is 0/16px in LTR and 16px/0 in RTL. The one caveat is flatpickr, whose calendar is a third-party non-React widget; its month navigation is not mirrored.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "long-labels",
+      "status": "composed",
+      "notes": "0px horizontal document overflow in German at 390, 1024 and 1440 — but only after five CSS escape hatches, because Carbon's default is `white-space: nowrap` and truncation almost everywhere. Needed: table header wrap, list-box option wrap, an overflow-x container around each table, an overflow-x container on the batch-action bar (whose non-wrapping flex row pushed 44px past the 390px viewport with German labels), and a two-line clamp on the 200-character narrative cell. Recorded as composed rather than native because a clean result required author intervention at five separate places.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "side-by-side",
+      "status": "composed",
+      "notes": "Host and candidate button, table, card and nav list rendered adjacent in section 9. The residual gap after theming is almost entirely GEOMETRY, not colour: colour matches closely because every colour Carbon draws with is a custom property this demo redirects, while control height (2.5rem vs Delta's ~2.25rem), inline padding, table row density and corner radius cannot be reached through Carbon's theme at all. With Carbon, matching a host's palette is nearly free and matching its density is nearly impossible without overriding component CSS.",
+      "customLinesOfCode": 0
+    }
+  ],
+  "customCss": {
+    "lines": 300,
+    "selectors": 34,
+    "overridesLibraryInternals": true
+  },
+  "wrappers": {
+    "count": 4,
+    "totalLines": 71
+  },
+  "theming": {
+    "tokensApplied": 50,
+    "tokensUnreachable": 21,
+    "method": "A CSS custom-property mapping. Carbon's theme IS custom properties: every colour a component draws with is `var(--cds-<token>, <white-theme-literal>)`, so theming against packages/undrr-tokens is pure CSS aliasing — 164 --cds-* declarations on the `.demo` element, no theme object, no provider, no rebuild. Change a --undrr-* value at runtime and every Carbon component follows it in the same frame. That is the opposite trade from MUI, whose createTheme() resolves token values at BUILD time and emits literals: Carbon is live-themeable, but the mapping is a stylesheet maintained by hand and anything rendered outside the scope class silently falls back to Carbon's white theme rather than failing visibly.",
+    "escapeHatchesUsed": [
+      "@carbon/styles/css/styles.css IS NOT IMPORTED. The documented prebuilt stylesheet opens with a global Eric-Meyer reset over 46 bare element selectors including *, html, body, h1-h6, p, a, table, ul, nav, section, header, button, input and select. Measured under ?globalcss=on: 79 computed-style differences across ALL 14 host canaries. src/carbon.scss loads only the .cds--prefixed component partials instead. See leakage.globalStylesheetProbe.",
+      "TRAP 1, silent and consequential: `@carbon/styles/scss/layout` is REQUIRED but is not a component partial. It declares nothing but a :root block of twelve control-height and inline-padding custom properties, from which every Carbon form control sizes itself via a clamp() chain (`padding: 0 var(--cds-layout-density-padding-inline-local)`, `block-size: var(--cds-layout-size-height-local)`). Omit it and those var()s resolve to nothing; a failed var() voids the whole declaration, so every input, button, select and combobox loses its inline padding AND its height. Nothing errors and nothing warns. This demo shipped in that state until the e2e run measured padding-left: 0px on a text input.",
+      "TRAP 2, the same shape one level down: components/data-table/_index.scss includes only the CORE table mixin. Sorting, batch actions, the toolbar and the skeleton live in sibling partials (data-table/sort, data-table/action, data-table/skeleton, data-table/expandable) that its index does not forward. Without data-table/sort the rule `.cds--table-sort__description { display: none }` never lands, so Carbon's screen-reader-only sort instruction — 'Click to sort rows by Country header in ascending order' — renders as VISIBLE TEXT in every header cell. The table still sorted, no test failed; it took reading a screenshot. A visually-hidden pattern implemented in CSS rather than markup fails OPEN.",
+      "A 20-line Vite plugin in vite.config.ts rewrites the one `:root` rule Carbon's layer module emits onto the token scope class, so the shipped stylesheet contains zero selectors that can match host markup. Measured first: the :root block is 16 custom-property aliases and changes nothing about the canaries either way, and the leakage assertion passes with or without the rewrite. Carbon offers no supported way to relocate it — no $emit-layer-at option, no feature flag. The plugin is deliberately narrowed to src/carbon.scss, because rewriting :root globally would break the host, whose Tailwind 4 stylesheet declares its whole theme layer on `:root, :host`.",
+      "Nineteen CSS rules reach into .cds-- class names, each for a token Carbon's theme cannot express: corner radius (Carbon has no radius token and is square by design), list-box menu max-height, table-header and list-box option wrapping for the German fixture, table overflow containment, batch-action-bar overflow, SideNav position neutralisation, date-picker min-width, and a narrative cell line clamp. Recorded as overridesLibraryInternals: true.",
+      "Carbon's published TypeScript types do not compile under exactOptionalPropertyTypes: true. DataTable's render-prop getters return optional properties (getSelectionProps(): { checked?: boolean }, getHeaderProps(): { isSortable?: boolean }, getToolbarProps(): { size?: ... }) while the components those objects are spread into declare the same properties as REQUIRED. Six errors in the exact code Carbon's own documentation tells you to write. src/carbon-props.ts holds a one-line cast that asserts what the types should have said, rather than relaxing the tsconfig.",
+      "@carbon/styles/scss/fonts is NOT loaded. It emits @font-face for IBM Plex, and the token palette names Roboto. Nine OFL-1.1 IBM Plex packages are therefore installed as transitive dependencies but ship zero bytes to the browser.",
+      "PORTALS ARE MOSTLY A NON-ISSUE HERE, and that is a finding rather than luck avoided. `createPortal` appears in exactly ONE component in the whole of @carbon/react (Menu/Menu.js); Modal, ComposedModal, Tooltip, Toggletip, Popover, Dropdown, ComboBox and MultiSelect all render in place, so the token scope reaches them by inheritance. The single exception is Carbon's DatePicker, which wraps flatpickr — not React — and flatpickr appends .flatpickr-calendar to document.body by default. Because Carbon's theming is a var() FALLBACK CHAIN rather than a bare var(), the failure mode is not React Aria's transparent overlay: the calendar renders in Carbon's stock white theme, IBM grey and IBM blue, fully usable and silently off-brand, which is arguably harder to catch in review. Fixed by passing `appendTo` a container inside the subtree; asserted in e2e both that the calendar is inside [data-candidate-root] and that its selected day is neither transparent nor Carbon's default field grey.",
+      "SPACING IS UNREACHABLE AT ANY LAYER. Carbon's spacing scale compiles to literal rem values from @carbon/layout/scss/_spacing.scss, which declares NO !default — so it is not configurable at build time either, let alone at runtime. Carbon component padding and control heights cannot be retargeted to the UNDRR 4px scale without overriding component CSS. All 12 space tokens are unreachable for Carbon internals.",
+      "Z-INDEX IS UNREACHABLE, AND CARBON WINS EVERY COLLISION. $z-indexes in scss/utilities/_z-index.scss is a Sass map with no !default: dropdown 9100, modal 9000, header 8000, overlay 6000. The compiled CSS contains literal `z-index: 8000`, `9000`, `9100`, `99999`. The UNDRR scale tops out at 800, so all 10 z tokens are unreachable and a Carbon modal or SideNav will sit above any host chrome regardless of what the host intended. docs/requirements.md anticipated exactly this failure mode.",
+      "FONT FAMILY IS UNREACHABLE THROUGH THE SUPPORTED API. Carbon's font stacks are Sass values in @carbon/type, and @carbon/styles/scss/type re-forwards that module with a `show` list that omits $font-families, so `@use ... with ()` cannot reach them. It happens not to matter: 56 of Carbon's 67 font-family declarations are `font-family: inherit`, and 11 of the remaining 12 sit inside impossible descendant selectors (`.cds--label html { font-family: 'IBM Plex Sans' }`, which can never match — a defect in Carbon's own use of its type reset mixin). So one declaration on the scope element carries the token stack everywhere that matters.",
+      "TYPE SCALE IS FULLY REACHABLE, unusually. Carbon's type tokens are custom properties on all four axes (--cds-body-compact-01-font-size, -line-height, -font-weight, -letter-spacing and equivalents for label, helper-text, body and heading styles), so the UNDRR type scale is applied at runtime rather than copied at build time."
+    ]
+  },
+  "leakage": {
+    "assertionPassed": true,
+    "differences": [],
+    "shippedConfiguration": {
+      "canariesChecked": 14,
+      "differenceCount": 0,
+      "residualRiskSelectors": [
+        "input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:focus",
+        "textarea:-webkit-autofill, textarea:-webkit-autofill:hover, textarea:-webkit-autofill:focus",
+        "input:not(output, [data-invalid]):-moz-ui-invalid",
+        "input[type=number], input[type=text].cds--number",
+        ".flatpickr-calendar, .flatpickr-day, .flatpickr-month, .numInputWrapper, .dayContainer, .prevMonthDay and ~50 further UNPREFIXED flatpickr class selectors bundled by components/date-picker"
+      ],
+      "residualRiskNote": "These are the only selectors in the shipped stylesheet that are not .cds--, .demo or .undrr-tokens scoped. None match anything the Delta host renders, so the leakage assertion passes on the merits rather than by luck of measurement — but `input[type=number]` would restyle any number input a host happened to have, and the flatpickr class names are a namespace collision waiting for a host that uses them."
+    },
+    "globalStylesheetProbe": {
+      "stylesheet": "@carbon/styles/css/styles.css",
+      "loadedBy": "the ?globalcss=on query parameter, so the cost of the documented import is measured rather than described",
+      "assertionPassed": false,
+      "canariesChecked": 14,
+      "canariesAffected": 14,
+      "differenceCount": 79,
+      "propertiesAffected": [
+        "border-bottom-width",
+        "border-left-width",
+        "border-radius",
+        "border-right-width",
+        "border-top-color",
+        "border-top-style",
+        "border-top-width",
+        "color",
+        "font-family",
+        "font-size",
+        "font-weight",
+        "line-height",
+        "margin-top",
+        "padding-bottom",
+        "padding-left",
+        "padding-right",
+        "padding-top"
+      ],
+      "worstAffected": "card-first and card-second lose all four borders, all four paddings and their border style (12 differences each); nav-link loses its 3px active border and all four paddings and turns IBM blue (10); heading-1 goes from 20px/700 to 42px/300 (5)",
+      "detail": "test-results/leakage-carbon-global-css.json"
+    }
+  },
+  "axe": {
+    "violations": 3,
+    "serious": 2,
+    "critical": 1,
+    "incomplete": 2
+  },
+  "rtl": {
+    "status": "clean",
+    "issues": [
+      "flatpickr's calendar is a third-party non-React widget and is not mirrored: its previous/next month arrows keep their LTR positions in Arabic. Carbon's own components all flip correctly because they are authored in logical properties."
+    ]
+  },
+  "longLabels": {
+    "status": "clean",
+    "issues": [
+      "0px document overflow at 390, 1024 and 1440 in German, but only after five CSS escape hatches. Carbon's default is white-space: nowrap and truncation, so a clean result is not the out-of-the-box behaviour.",
+      "Carbon's batch-action bar lays its actions out in a non-wrapping flex row with no max-width and is absolutely positioned, so nothing clips it: German labels pushed it 44px past the 390px viewport and scrolled the document. No overflow or maxActions prop exists."
+    ]
+  },
+  "bundle": {
+    "gzippedKb": 261.5,
+    "dependencyCount": 145
+  },
+  "buildTimeSeconds": 2.8,
+  "blockers": [],
+  "humanReviewRequired": [
+    "axe `aria-valid-attr-value` (1 CRITICAL), on #form-required and #form-format. Carbon's invalid TextInput sets aria-errormessage pointing at its `.cds--form-requirement` div, which carries no role=alert, no aria-live and is not referenced by aria-describedby. axe verbatim: \"aria-errormessage value `form-required-error-msg` must use a technique to announce the message (e.g., aria-live, aria-describedby, role=alert, etc.)\". The div is Carbon's internal render and is not reachable through props, so this cannot be fixed from the consuming side. Needs confirmation against a real screen reader and, if upheld, an upstream issue — it would affect every invalid Carbon input in every Carbon application.",
+    "axe `aria-hidden-focus` (1 serious), on `.cds--batch-actions`. Carbon's own batch-action bar sets aria-hidden while inactive but leaves its buttons in the tab order. axe verbatim: \"Focusable content should be disabled or be removed from the DOM\". Again Carbon's internal markup, again not reachable from props. Appeared only once TableBatchActions was rendered.",
+    "axe `color-contrast` (1 serious), on #form-disabled-helper-text: 2.76:1 for #8b9aa5 on #f8fafc at 12px. Carbon applies its disabled text colour to the helper text of a disabled field, and --undrr-color-text-disabled is #8b9aa5. Disabled CONTROLS are exempt from WCAG 1.4.3 but helper text is not itself a disabled control, so this needs a ruling. Identical in cause to the delta-mui finding, and tokens are import-only so it could not be fixed here.",
+    "axe reported 2 incomplete rules. `aria-valid-attr-value` on the three ComboBoxes and a downshift toggle button: \"Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup\" — downshift sets aria-controls to a menu id that only exists while the menu is open, which is a known pattern but worth a screen-reader check. `color-contrast` on 24 elements where \"Element's background color could not be determined due to a pseudo element\" — Carbon draws button and switch backgrounds with ::before layers, which defeats automated contrast checking on the ContentSwitcher, the tooltip trigger and every column-reorder button. Those 24 elements therefore have NO automated contrast coverage at all and need manual measurement.",
+    "Carbon's Tooltip `label` prop replaces the trigger's accessible name via aria-labelledby, so a button announces its tooltip text instead of its own visible label. `description` would preserve the name. Which is correct is a content decision, but the default is surprising and this demo uses `label` because it is what Carbon's examples use.",
+    "Carbon hides the items-per-page control below a 42rem container width via a CSS container query. On a 390px screen a reviewer cannot change the page size of a 250-row table. Whether that is acceptable for UNDRR's mobile use is a product decision.",
+    "The 400-option ComboBox mounts all 400 items when opened with an empty query. Carbon has no virtualisation and no result cap, and unlike MUI's Autocomplete there is no documented filterOptions-style limit — capping would mean filtering in shouldFilterItem, which changes what the user can reach by scrolling. Whether that is acceptable at 400 options is a performance decision not taken here.",
+    "The composed date-time range was only partly verified end to end. The e2e run asserts the two date inputs, the two time inputs, the derived duration, and that an invalid time string surfaces the error notification. It does NOT verify that flatpickr's range calendar disables out-of-order days, because the calendar opens on a month where no such day exists. Verified by reading the props only.",
+    "Excluding Carbon's global reset is a real deviation from the library's intended setup, and it works here largely because the Delta host already loads Tailwind Preflight, which covers much of the same ground (box-sizing on *, font: inherit and border: 0 solid on form controls, zeroed heading and list margins). That substitution would NOT hold on a host without Preflight, and the mangrove-carbon pairing should be expected to differ. Someone needs to decide whether shipping Carbon without its reset is supportable long term.",
+    "Keyboard and screen-reader testing by a human throughout, in particular: the custom column-reorder control (arrow-labelled buttons, no announcement of the new position after a move), the composed date-time range as a single concept, and Carbon's DataTable batch-action bar."
+  ]
+}

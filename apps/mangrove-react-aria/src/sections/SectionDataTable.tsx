@@ -17,6 +17,7 @@ import type { ReactElement } from "react";
 import {
   Button,
   Cell,
+  Checkbox,
   Column,
   ColumnResizer,
   Input,
@@ -144,6 +145,13 @@ export function SectionDataTable(): ReactElement {
           onSelectionChange={setSelected}
         >
           <TableHeader>
+            {/* Selection column. `selectionMode="multiple"` alone renders NO
+                checkboxes and gives no select-all: React Aria supplies the
+                behaviour and the accessible name via slot="selection", but the
+                markup and appearance are ours. Hence `composed`, not `native`. */}
+            <Column className="demo-table__column demo-table__column--select">
+              <SelectionCheckbox />
+            </Column>
             <Column id="country" isRowHeader allowsSorting className="demo-table__column">
               <div className="demo-table__columnInner">
                 <span>{labels.colCountry}</span>
@@ -194,6 +202,9 @@ export function SectionDataTable(): ReactElement {
           <TableBody items={rows} renderEmptyState={() => <span>{labels.stateEmpty}</span>}>
             {(record: LossRecord) => (
               <Row id={record.id} className="demo-table__row">
+                <Cell className="demo-table__cell demo-table__cell--select">
+                  <SelectionCheckbox />
+                </Cell>
                 <Cell className="demo-table__cell">{record.country}</Cell>
                 <Cell className="demo-table__cell">{record.hazardType}</Cell>
                 <Cell className="demo-table__cell">
@@ -246,7 +257,33 @@ export function SectionDataTable(): ReactElement {
   );
 }
 
-/** Extracted only to keep the eight column definitions readable. */
+/** Extracted only to keep the column definitions readable. */
 function ColumnResizerControl(): ReactElement {
   return <ColumnResizer className="demo-table__resizer" />;
+}
+
+/**
+ * Row and select-all checkbox.
+ *
+ * `slot="selection"` is what wires it up: in the header it becomes select-all
+ * with a tri-state `isIndeterminate`, in a row it toggles that row, and React
+ * Aria supplies the localised accessible name. What it does NOT supply is any
+ * visible box — the library renders a visually hidden native input and leaves
+ * the appearance entirely to us.
+ */
+function SelectionCheckbox(): ReactElement {
+  return (
+    <Checkbox slot="selection" className="demo-checkbox">
+      {({ isSelected, isIndeterminate }) => (
+        <span
+          className="demo-checkbox__box"
+          aria-hidden="true"
+          data-selected={isSelected || undefined}
+          data-indeterminate={isIndeterminate || undefined}
+        >
+          {isIndeterminate ? "\u2013" : isSelected ? "\u2713" : ""}
+        </span>
+      )}
+    </Checkbox>
+  );
 }

@@ -74,6 +74,22 @@ free win. MUI components are built expecting the global baseline. Anyone adoptin
 MUI inside Delta needs to decide whether the host absorbs `CssBaseline` centrally
 or every consumer scopes it.
 
+**One qualification on the leakage result, found later by the mangrove-mantine
+run.** The assertion diffs two loads of the same page, so a statically imported
+stylesheet sits in both snapshots and cancels out. This demo imports its own
+`src/demo.css` statically, so the assertion never actually tested it.
+
+The result still stands, but by construction rather than by measurement: a check
+of all 3 selectors in `src/demo.css` finds **zero** that are not scoped under
+`.demo`, so none can match a canary. React Aria itself ships no CSS, which is
+why nothing else was at risk here. The harness limitation is now documented in
+`packages/test-harness/src/leakage.ts` and the rule for future runs is in
+`docs/requirements.md`.
+
+MUI's own styles are a different matter: emotion injects at render time, so they
+genuinely are absent when no component has mounted. That half of the result was
+measured.
+
 Also relevant, though it did not trip the assertion: **MUI portals its overlays
 to `document.body`**, outside the candidate subtree. Overlay content therefore
 escapes any containment scoped to the subtree, which is why the theme pins MUI's
@@ -132,7 +148,27 @@ drawback is exactly what makes MUI immune here.
 as the host. That would have made theming feel more native at the cost of the
 containment this evaluation is measuring.
 
-**RTL costs more than React Aria.** MUI needs `direction` on the theme itself —
+**RTL is incomplete, and this was a reporting error on my part.** I originally
+recorded `rtl: clean`. It is not. `direction: "rtl"` on the theme flips layout
+direction but does NOT change the physical offsets emotion has already emitted:
+`.MuiInputLabel-outlined` uses `left: 0`, so wherever a FormControl is wider than
+its input, the outlined floating label detaches from its field.
+
+Measured at 1440x900 in Arabic: **4 fields displaced by more than 100px**, the
+worst a visible 218px-wide input whose label sits **854px** away. It is plainly
+visible in `screenshots/desktop/rtl/01-forms.png` — the bottom form's label sits
+at the far left while its input sits at the far right. The proof was in the
+committed evidence and the first check I ran sampled only the first three fields,
+which happened to be the well-behaved ones.
+
+**It is not fixable within the rules.** MUI's documented remedy is
+`stylis-plugin-rtl`, a third-party package that constraint 2 forbids. Confirmed
+by the `mangrove-mui` run to reproduce identically on the other host, so it is
+the candidate and not the host. For a service that must serve Arabic this is a
+material limitation, and it is now in `humanReviewRequired` as a decision for
+UNDRR rather than a detail.
+
+**RTL also costs more setup than React Aria.** MUI needs `direction` on the theme itself —
 its components read it to flip margins and icon positions — so the theme is
 rebuilt per locale. `adapterLocale` also has to be threaded into
 `LocalizationProvider` separately for the pickers. React Aria needed only

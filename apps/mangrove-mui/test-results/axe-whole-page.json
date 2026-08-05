@@ -1,0 +1,43 @@
+{
+  "section": "whole-page",
+  "url": "http://localhost:5197/?candidate=on",
+  "tags": [
+    "wcag2a",
+    "wcag2aa",
+    "wcag21a",
+    "wcag21aa",
+    "wcag22aa"
+  ],
+  "violations": [
+    {
+      "id": "color-contrast",
+      "impact": "serious",
+      "help": "Elements must meet minimum color contrast ratio thresholds",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright",
+      "nodes": [
+        "#_r_9_-helper-text"
+      ]
+    },
+    {
+      "id": "link-in-text-block",
+      "impact": "serious",
+      "help": "Links must be distinguishable without relying on color",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/link-in-text-block?application=playwright",
+      "nodes": [
+        "a[data-canary=\"link\"]"
+      ]
+    }
+  ],
+  "counts": {
+    "violations": 2,
+    "serious": 2,
+    "critical": 0,
+    "incomplete": 4
+  },
+  "incompleteRuleIds": [
+    "aria-prohibited-attr",
+    "aria-valid-attr-value",
+    "color-contrast",
+    "duplicate-id-aria"
+  ]
+}

@@ -1,0 +1,157 @@
+/* GENERATED — regenerate with scripts/gen-mantine-styles.mjs (below).
+ *
+ * WHY THIS FILE EXISTS: baseline.css leaks onto the host.
+ *
+ * Mantine's documented setup is a single `import "@mantine/core/styles.css"`.
+ * That file begins with `baseline.css`, which contains:
+ *
+ *   body, :host { margin: 0; font-family: var(--mantine-font-family);
+ *                 font-size: var(--mantine-font-size-md);
+ *                 line-height: var(--mantine-line-height);
+ *                 background-color: var(--mantine-color-body);
+ *                 color: var(--mantine-color-text); }
+ *
+ * Those declarations are inherited by every element on the page, including the
+ * host's leakage canaries, so importing styles.css whole fails the leakage
+ * assertion — 23 differences across all 14 canaries, on font-family, font-size,
+ * line-height and colour. Measured, not assumed: load the page with
+ * `?baseline=on` and see test-results/leakage-with-baseline.json.
+ *
+ * So this file imports Mantine's per-component stylesheets individually, which
+ * is a documented granularity (`@mantine/core/styles/*` is a package export),
+ * and omits baseline.css. `default-css-variables.css` and `global.css` ARE
+ * included: the first is required for MantineProvider's variable deduplication,
+ * the second carries the hiddenFrom/visibleFrom and rotate-rtl helpers. Neither
+ * writes to `body`.
+ *
+ * THE SECOND TRAP, WHICH COST AN HOUR: ORDER MATTERS AND IS NOT ALPHABETICAL.
+ *
+ * Mantine's component styles are all single-class selectors of equal specificity,
+ * so which one wins is decided purely by source order. `Button` composes
+ * `UnstyledButton`, and UnstyledButton's `background-color: transparent; padding: 0`
+ * must come BEFORE Button's background and padding. Alphabetical order puts
+ * UnstyledButton last, and every Button on the page renders as bare text with the
+ * right height and no background — while `--button-bg` reads back as the correct
+ * token, so the theme looks like it worked.
+ *
+ * The order below is therefore lifted from Mantine's own styles.css, by locating
+ * each per-component file's first hashed class inside it and sorting by offset:
+ *
+ *   node -e 'const fs=require("fs"),d="node_modules/@mantine/core/styles",
+ *     all=fs.readFileSync("node_modules/@mantine/core/styles.css","utf8");
+ *     console.log(fs.readdirSync(d).filter(f=>f.endsWith(".css")&&!f.endsWith(".layer.css"))
+ *     .map(f=>[f,all.indexOf(fs.readFileSync(d+"/"+f,"utf8").match(/\.m_[0-9a-f]{6,}/)[0])])
+ *     .sort((a,b)=>a[1]-b[1]).map(r=>r[0]).join("\n"))'
+ *
+ * COST OF OMITTING baseline.css, recorded honestly: Mantine components are
+ * authored expecting it, so `*  { box-sizing: border-box }` and
+ * `input, button, textarea, select { font: inherit }` now come from the host's
+ * Tailwind Preflight rather than from Mantine. On the Delta host those two are
+ * equivalent; on a host without Preflight they would not be, and this file would
+ * need them re-added under a scoped selector.
+ */
+
+@import "@mantine/core/styles/default-css-variables.css";
+@import "@mantine/core/styles/global.css";
+
+@import "@mantine/core/styles/ScrollArea.css";
+@import "@mantine/core/styles/UnstyledButton.css";
+@import "@mantine/core/styles/VisuallyHidden.css";
+@import "@mantine/core/styles/Paper.css";
+@import "@mantine/core/styles/Overlay.css";
+@import "@mantine/core/styles/Popover.css";
+@import "@mantine/core/styles/Loader.css";
+@import "@mantine/core/styles/ActionIcon.css";
+@import "@mantine/core/styles/CloseButton.css";
+@import "@mantine/core/styles/Group.css";
+@import "@mantine/core/styles/ModalBase.css";
+@import "@mantine/core/styles/Input.css";
+@import "@mantine/core/styles/Flex.css";
+@import "@mantine/core/styles/FloatingIndicator.css";
+@import "@mantine/core/styles/Accordion.css";
+@import "@mantine/core/styles/Affix.css";
+@import "@mantine/core/styles/Alert.css";
+@import "@mantine/core/styles/Text.css";
+@import "@mantine/core/styles/Anchor.css";
+@import "@mantine/core/styles/AngleSlider.css";
+@import "@mantine/core/styles/AppShell.css";
+@import "@mantine/core/styles/AspectRatio.css";
+@import "@mantine/core/styles/Combobox.css";
+@import "@mantine/core/styles/InlineInput.css";
+@import "@mantine/core/styles/CheckboxCard.css";
+@import "@mantine/core/styles/CheckboxIndicator.css";
+@import "@mantine/core/styles/Checkbox.css";
+@import "@mantine/core/styles/Avatar.css";
+@import "@mantine/core/styles/BackgroundImage.css";
+@import "@mantine/core/styles/Badge.css";
+@import "@mantine/core/styles/Blockquote.css";
+@import "@mantine/core/styles/Breadcrumbs.css";
+@import "@mantine/core/styles/Burger.css";
+@import "@mantine/core/styles/Button.css";
+@import "@mantine/core/styles/Card.css";
+@import "@mantine/core/styles/Cascader.css";
+@import "@mantine/core/styles/Center.css";
+@import "@mantine/core/styles/Chip.css";
+@import "@mantine/core/styles/Code.css";
+@import "@mantine/core/styles/ColorSwatch.css";
+@import "@mantine/core/styles/ColorPicker.css";
+@import "@mantine/core/styles/ColorInput.css";
+@import "@mantine/core/styles/Container.css";
+@import "@mantine/core/styles/DataList.css";
+@import "@mantine/core/styles/Dialog.css";
+@import "@mantine/core/styles/Divider.css";
+@import "@mantine/core/styles/Drawer.css";
+@import "@mantine/core/styles/EmptyState.css";
+@import "@mantine/core/styles/Fieldset.css";
+@import "@mantine/core/styles/FloatingWindow.css";
+@import "@mantine/core/styles/Grid.css";
+@import "@mantine/core/styles/Mark.css";
+@import "@mantine/core/styles/Image.css";
+@import "@mantine/core/styles/Indicator.css";
+@import "@mantine/core/styles/Kbd.css";
+@import "@mantine/core/styles/List.css";
+@import "@mantine/core/styles/LoadingOverlay.css";
+@import "@mantine/core/styles/Marquee.css";
+@import "@mantine/core/styles/Menu.css";
+@import "@mantine/core/styles/Menubar.css";
+@import "@mantine/core/styles/Modal.css";
+@import "@mantine/core/styles/Pill.css";
+@import "@mantine/core/styles/PillsInput.css";
+@import "@mantine/core/styles/NavLink.css";
+@import "@mantine/core/styles/Notification.css";
+@import "@mantine/core/styles/NumberInput.css";
+@import "@mantine/core/styles/OverflowList.css";
+@import "@mantine/core/styles/Pagination.css";
+@import "@mantine/core/styles/PasswordInput.css";
+@import "@mantine/core/styles/PinInput.css";
+@import "@mantine/core/styles/Progress.css";
+@import "@mantine/core/styles/RadioCard.css";
+@import "@mantine/core/styles/RadioIndicator.css";
+@import "@mantine/core/styles/Radio.css";
+@import "@mantine/core/styles/Rating.css";
+@import "@mantine/core/styles/RollingNumber.css";
+@import "@mantine/core/styles/Tooltip.css";
+@import "@mantine/core/styles/RingProgress.css";
+@import "@mantine/core/styles/Scroller.css";
+@import "@mantine/core/styles/SegmentedControl.css";
+@import "@mantine/core/styles/SemiCircleProgress.css";
+@import "@mantine/core/styles/SimpleGrid.css";
+@import "@mantine/core/styles/Skeleton.css";
+@import "@mantine/core/styles/Slider.css";
+@import "@mantine/core/styles/Splitter.css";
+@import "@mantine/core/styles/Spoiler.css";
+@import "@mantine/core/styles/Stack.css";
+@import "@mantine/core/styles/Stepper.css";
+@import "@mantine/core/styles/Switch.css";
+@import "@mantine/core/styles/Table.css";
+@import "@mantine/core/styles/TableOfContents.css";
+@import "@mantine/core/styles/Tabs.css";
+@import "@mantine/core/styles/ThemeIcon.css";
+@import "@mantine/core/styles/Timeline.css";
+@import "@mantine/core/styles/Title.css";
+@import "@mantine/core/styles/Tree.css";
+@import "@mantine/core/styles/TreeSelect.css";
+@import "@mantine/core/styles/Typography.css";
+
+/* Date components: class-scoped only, no global reset, so the whole file is safe. */
+@import "@mantine/dates/styles.css";

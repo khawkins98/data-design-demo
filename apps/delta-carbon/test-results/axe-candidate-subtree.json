@@ -1,0 +1,51 @@
+{
+  "section": "candidate-subtree",
+  "url": "http://localhost:5199/?candidate=on",
+  "tags": [
+    "wcag2a",
+    "wcag2aa",
+    "wcag21a",
+    "wcag21aa",
+    "wcag22aa"
+  ],
+  "violations": [
+    {
+      "id": "aria-hidden-focus",
+      "impact": "serious",
+      "help": "ARIA hidden element must not be focusable or contain focusable elements",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/aria-hidden-focus?application=playwright",
+      "nodes": [
+        ".cds--batch-actions"
+      ]
+    },
+    {
+      "id": "aria-valid-attr-value",
+      "impact": "critical",
+      "help": "ARIA attributes must conform to valid values",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/aria-valid-attr-value?application=playwright",
+      "nodes": [
+        "#form-format",
+        "#form-required"
+      ]
+    },
+    {
+      "id": "color-contrast",
+      "impact": "serious",
+      "help": "Elements must meet minimum color contrast ratio thresholds",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright",
+      "nodes": [
+        "#form-disabled-helper-text"
+      ]
+    }
+  ],
+  "counts": {
+    "violations": 3,
+    "serious": 2,
+    "critical": 1,
+    "incomplete": 2
+  },
+  "incompleteRuleIds": [
+    "aria-valid-attr-value",
+    "color-contrast"
+  ]
+}

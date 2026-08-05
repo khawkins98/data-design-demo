@@ -1,0 +1,1961 @@
+{
+  "config": {
+    "argv": [
+      "/Users/khawkins/.nvm/versions/node/v24.18.0/bin/node",
+      "/Users/khawkins/Documents/git/data-design-demo/node_modules/.pnpm/@playwright+test@1.62.1/node_modules/@playwright/test/cli.js",
+      "test"
+    ],
+    "configFile": "/Users/khawkins/Documents/git/data-design-demo/apps/mangrove-mantine/playwright.config.ts",
+    "rootDir": "/Users/khawkins/Documents/git/data-design-demo/apps/mangrove-mantine/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/khawkins/Documents/git/data-design-demo/apps/mangrove-mantine/test-results/playwright",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "mobile",
+        "name": "mobile",
+        "testDir": "/Users/khawkins/Documents/git/data-design-demo/apps/mangrove-mantine/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/khawkins/Documents/git/data-design-demo/apps/mangrove-mantine/test-results/playwright",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "tablet",
+        "name": "tablet",
+        "testDir": "/Users/khawkins/Documents/git/data-design-demo/apps/mangrove-mantine/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/khawkins/Documents/git/data-design-demo/apps/mangrove-mantine/test-results/playwright",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "desktop",
+        "name": "desktop",
+        "testDir": "/Users/khawkins/Documents/git/data-design-demo/apps/mangrove-mantine/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "./test-results/playwright-results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.1",
+    "workers": 1,
+    "webServer": {
+      "command": "pnpm preview",
+      "port": 5205,
+      "reuseExistingServer": true,
+      "timeout": 120000
+    }
+  },
+  "suites": [
+    {
+      "title": "demo.spec.ts",
+      "file": "demo.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "kitchen sink",
+          "file": "demo.spec.ts",
+          "line": 56,
+          "column": 6,
+          "specs": [
+            {
+              "title": "renders every section",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 996,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-05T20:45:08.386Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05384557491ebd602dd7-41f719288ccc2b5a390f",
+              "file": "demo.spec.ts",
+              "line": 57,
+              "column": 3
+            },
+            {
+              "title": "filters, sorts, selects and pages the 250-row table",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 886,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-05T20:45:09.716Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05384557491ebd602dd7-a802f42dbdac6411d0e1",
+              "file": "demo.spec.ts",
+              "line": 64,
+              "column": 3
+            },
+            {
+              "title": "resizes a table column by keyboard",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 568,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-05T20:45:10.610Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05384557491ebd602dd7-5e4475dca81042827baf",
+              "file": "demo.spec.ts",
+              "line": 93,
+              "column": 3
+            },
+            {
+              "title": "has a NATIVE date-time range picker",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 8799,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-05T20:45:11.184Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05384557491ebd602dd7-d2ec5b2bb6f270db93e3",
+              "file": "demo.spec.ts",
+              "line": 108,
+              "column": 3
+            },
+            {
+              "title": "traps and restores focus in the modal",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 559,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-05T20:45:19.988Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05384557491ebd602dd7-4d6421ab66a7ae01087d",
+              "file": "demo.spec.ts",
+              "line": 136,
+              "column": 3
+            },
+            {
+              "title": "portalled overlays keep their background",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 654,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-05T20:45:20.551Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "overlay-backgrounds.json",
+                          "contentType": "application/json",
+                          "body": "ewogICJtb2RhbCI6ICJyZ2IoMjU1LCAyNTUsIDI1NSkiLAogICJwb3BvdmVyIjogInJnYigyNTUsIDI1NSwgMjU1KSIsCiAgInRvb2x0aXAiOiAicmdiKDIwLCAzNSwgNDYpIiwKICAic2VsZWN0RHJvcGRvd24iOiAicmdiKDI1NSwgMjU1LCAyNTUpIiwKICAidW5kcnJUb2tlbkluc2lkZVBvcnRhbCI6ICIiCn0="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05384557491ebd602dd7-d412d863af8262e0f296",
+              "file": "demo.spec.ts",
+              "line": 150,
+              "column": 3
+            },
+            {
+              "title": "mantine CSS is absent with the candidate off",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 78,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-05T20:45:21.208Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05384557491ebd602dd7-25cf021d88917514540c",
+              "file": "demo.spec.ts",
+              "line": 198,
+              "column": 3
+            },
+            {
+              "title": "passes the leakage assertion",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 6573,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-05T20:45:21.289Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "leakage.json",
+                          "contentType": "application/json",
+                          "body": "ewogICJhc3NlcnRpb25QYXNzZWQiOiB0cnVlLAogICJkaWZmZXJlbmNlcyI6IFtdLAogICJjYW5hcmllc0NoZWNrZWQiOiAxNAp9"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05384557491ebd602dd7-be8d2ad32475841b58db",
+              "file": "demo.spec.ts",
+              "line": 208,
+              "column": 3
+            },
+            {
+              "title": "measures what baseline.css would have leaked",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 99,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "baseline.css counterfactual: 36 canary differences\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-05T20:45:27.865Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "leakage-with-baseline.json",
+                          "contentType": "application/json",
+                          "body": "WwogIHsKICAgICJjYW5hcnkiOiAiaGVhZGluZy0xIiwKICAgICJwcm9wZXJ0eSI6ICJjb2xvciIsCiAgICAiYmVmb3JlIjogInJnYigyNiwgMjYsIDI2KSIsCiAgICAiYWZ0ZXIiOiAicmdiKDAsIDAsIDApIgogIH0sCiAgewogICAgImNhbmFyeSI6ICJoZWFkaW5nLTEiLAogICAgInByb3BlcnR5IjogImZvbnQtZmFtaWx5IiwKICAgICJiZWZvcmUiOiAiUm9ib3RvLCBzYW5zLXNlcmlmIiwKICAgICJhZnRlciI6ICItYXBwbGUtc3lzdGVtLCBcInN5c3RlbS11aVwiLCBcIlNlZ29lIFVJXCIsIFJvYm90bywgSGVsdmV0aWNhLCBBcmlhbCwgc2Fucy1zZXJpZiwgXCJBcHBsZSBDb2xvciBFbW9qaVwiLCBcIlNlZ29lIFVJIEVtb2ppXCIiCiAgfSwKICB7CiAgICAiY2FuYXJ5IjogImhlYWRpbmctMSIsCiAgICAicHJvcGVydHkiOiAiYm9yZGVyLXRvcC1jb2xvciIsCiAgICAiYmVmb3JlIjogInJnYigyNiwgMjYsIDI2KSIsCiAgICAiYWZ0ZXIiOiAicmdiKDAsIDAsIDApIgogIH0sCiAgewogICAgImNhbmFyeSI6ICJuYXYiLAogICAgInByb3BlcnR5IjogImNvbG9yIiwKICAgICJiZWZvcmUiOiAicmdiKDI2LCAyNiwgMjYpIiwKICAgICJhZnRlciI6ICJyZ2IoMCwgMCwgMCkiCiAgfSwKICB7CiAgICAiY2FuYXJ5IjogIm5hdiIsCiAgICAicHJvcGVydHkiOiAiZm9udC1mYW1pbHkiLAogICAgImJlZm9yZSI6ICJSb2JvdG8sIHNhbnMtc2VyaWYiLAogICAgImFmdGVyIjogIi1hcHBsZS1zeXN0ZW0sIFwic3lzdGVtLXVpXCIsIFwiU2Vnb2UgVUlcIiwgUm9ib3RvLCBIZWx2ZXRpY2EsIEFyaWFsLCBzYW5zLXNlcmlmLCBcIkFwcGxlIENvbG9yIEVtb2ppXCIsIFwiU2Vnb2UgVUkgRW1vamlcIiIKICB9LAogIHsKICAgICJjYW5hcnkiOiAibmF2IiwKICAgICJwcm9wZXJ0eSI6ICJsaW5lLWhlaWdodCIsCiAgICAiYmVmb3JlIjogIjI0cHgiLAogICAgImFmdGVyIjogIjI0LjhweCIKICB9LAogIHsKICAgICJjYW5hcnkiOiAibmF2IiwKICAgICJwcm9wZXJ0eSI6ICJib3JkZXItdG9wLWNvbG9yIiwKICAgICJiZWZvcmUiOiAicmdiKDI2LCAyNiwgMjYpIiwKICAgICJhZnRlciI6ICJyZ2IoMCwgMCwgMCkiCiAgfSwKICB7CiAgICAiY2FuYXJ5IjogIm5hdi1saW5rIiwKICAgICJwcm9wZXJ0eSI6ICJmb250LWZhbWlseSIsCiAgICAiYmVmb3JlIjogIlJvYm90bywgc2Fucy1zZXJpZiIsCiAgICAiYWZ0ZXIiOiAiLWFwcGxlLXN5c3RlbSwgXCJzeXN0ZW0tdWlcIiwgXCJTZWdvZSBVSVwiLCBSb2JvdG8sIEhlbHZldGljYSwgQXJpYWwsIHNhbnMtc2VyaWYsIFwiQXBwbGUgQ29sb3IgRW1vamlcIiwgXCJTZWdvZSBVSSBFbW9qaVwiIgogIH0sCiAgewogICAgImNhbmFyeSI6ICJuYXYtbGluayIsCiAgICAicHJvcGVydHkiOiAibGluZS1oZWlnaHQiLAogICAgImJlZm9yZSI6ICIyNHB4IiwKICAgICJhZnRlciI6ICIyNC44cHgiCiAgfSwKICB7CiAgICAiY2FuYXJ5IjogImhlYWRpbmctMiIsCiAgICAicHJvcGVydHkiOiAiY29sb3IiLAogICAgImJlZm9yZSI6ICJyZ2IoMjYsIDI2LCAyNikiLAogICAgImFmdGVyIjogInJnYigwLCAwLCAwKSIKICB9LAogIHsKICAgICJjYW5hcnkiOiAiaGVhZGluZy0yIiwKICAgICJwcm9wZXJ0eSI6ICJmb250LWZhbWlseSIsCiAgICAiYmVmb3JlIjogIlJvYm90bywgc2Fucy1zZXJpZiIsCiAgICAiYWZ0ZXIiOiAiLWFwcGxlLXN5c3RlbSwgXCJzeXN0ZW0tdWlcIiwgXCJTZWdvZSBVSVwiLCBSb2JvdG8sIEhlbHZldGljYSwgQXJpYWwsIHNhbnMtc2VyaWYsIFwiQXBwbGUgQ29sb3IgRW1vamlcIiwgXCJTZWdvZSBVSSBFbW9qaVwiIgogIH0sCiAgewogICAgImNhbmFyeSI6ICJoZWFkaW5nLTIiLAogICAgInByb3BlcnR5IjogImJvcmRlci10b3AtY29sb3IiLAogICAgImJlZm9yZSI6ICJyZ2IoMjYsIDI2LCAyNikiLAogICAgImFmdGVyIjogInJnYigwLCAwLCAwKSIKICB9LAogIHsKICAgICJjYW5hcnkiOiAiaGVhZGluZy0zIiwKICAgICJwcm9wZXJ0eSI6ICJjb2xvciIsCiAgICAiYmVmb3JlIjogInJnYigyNiwgMjYsIDI2KSIsCiAgICAiYWZ0ZXIiOiAicmdiKDAsIDAsIDApIgogIH0sCiAgewogICAgImNhbmFyeSI6ICJoZWFkaW5nLTMiLAogICAgInByb3BlcnR5IjogImZvbnQtZmFtaWx5IiwKICAgICJiZWZvcmUiOiAiUm9ib3RvLCBzYW5zLXNlcmlmIiwKICAgICJhZnRlciI6ICItYXBwbGUtc3lzdGVtLCBcInN5c3RlbS11aVwiLCBcIlNlZ29lIFVJXCIsIFJvYm90bywgSGVsdmV0aWNhLCBBcmlhbCwgc2Fucy1zZXJpZiwgXCJBcHBsZSBDb2xvciBFbW9qaVwiLCBcIlNlZ29lIFVJIEVtb2ppXCIiCiAgfSwKICB7CiAgICAiY2FuYXJ5IjogImhlYWRpbmctMyIsCiAgICAicHJvcGVydHkiOiAiYm9yZGVyLXRvcC1jb2xvciIsCiAgICAiYmVmb3JlIjogInJnYigyNiwgMjYsIDI2KSIsCiAgICAiYWZ0ZXIiOiAicmdiKDAsIDAsIDApIgogIH0sCiAgewogICAgImNhbmFyeSI6ICJwYXJhZ3JhcGgiLAogICAgInByb3BlcnR5IjogImNvbG9yIiwKICAgICJiZWZvcmUiOiAicmdiKDI2LCAyNiwgMjYpIiwKICAgICJhZnRlciI6ICJyZ2IoMCwgMCwgMCkiCiAgfSwKICB7CiAgICAiY2FuYXJ5IjogInBhcmFncmFwaCIsCiAgICAicHJvcGVydHkiOiAiZm9udC1mYW1pbHkiLAogICAgImJlZm9yZSI6ICJSb2JvdG8sIHNhbnMtc2VyaWYiLAogICAgImFmdGVyIjogIi1hcHBsZS1zeXN0ZW0sIFwic3lzdGVtLXVpXCIsIFwiU2Vnb2UgVUlcIiwgUm9ib3RvLCBIZWx2ZXRpY2EsIEFyaWFsLCBzYW5zLXNlcmlmLCBcIkFwcGxlIENvbG9yIEVtb2ppXCIsIFwiU2Vnb2UgVUkgRW1vamlcIiIKICB9LAogIHsKICAgICJjYW5hcnkiOiAicGFyYWdyYXBoIiwKICAgICJwcm9wZXJ0eSI6ICJsaW5lLWhlaWdodCIsCiAgICAiYmVmb3JlIjogIjI0cHgiLAogICAgImFmdGVyIjogIjI0LjhweCIKICB9LAogIHsKICAgICJjYW5hcnkiOiAicGFyYWdyYXBoIiwKICAgICJwcm9wZXJ0eSI6ICJib3JkZXItdG9wLWNvbG9yIiwKICAgICJiZWZvcmUiOiAicmdiKDI2LCAyNiwgMjYpIiwKICAgICJhZnRlciI6ICJyZ2IoMCwgMCwgMCkiCiAgfSwKICB7CiAgICAiY2FuYXJ5IjogImxpbmsiLAogICAgInByb3BlcnR5IjogImZvbnQtZmFtaWx5IiwKICAgICJiZWZvcmUiOiAiUm9ib3RvLCBzYW5zLXNlcmlmIiwKICAgICJhZnRlciI6ICItYXBwbGUtc3lzdGVtLCBcInN5c3RlbS11aVwiLCBcIlNlZ29lIFVJXCIsIFJvYm90bywgSGVsdmV0aWNhLCBBcmlhbCwgc2Fucy1zZXJpZiwgXCJBcHBsZSBDb2xvciBFbW9qaVwiLCBcIlNlZ29lIFVJIEVtb2ppXCIiCiAgfSwKICB7CiAgICAiY2FuYXJ5IjogImxpbmsiLAogICAgInByb3BlcnR5IjogImxpbmUtaGVpZ2h0IiwKICAgICJiZWZvcmUiOiAiMjRweCIsCiAgICAiYWZ0ZXIiOiAiMjQuOHB4IgogIH0sCiAgewogICAgImNhbmFyeSI6ICJ0YWJsZSIsCiAgICAicHJvcGVydHkiOiAiY29sb3IiLAogICAgImJlZm9yZSI6ICJyZ2IoMjYsIDI2LCAyNikiLAogICAgImFmdGVyIjogInJnYigwLCAwLCAwKSIKICB9LAogIHsKICAgICJjYW5hcnkiOiAidGFibGUiLAogICAgInByb3BlcnR5IjogImZvbnQtZmFtaWx5IiwKICAgICJiZWZvcmUiOiAiUm9ib3RvLCBzYW5zLXNlcmlmIiwKICAgICJhZnRlciI6ICItYXBwbGUtc3lzdGVtLCBcInN5c3RlbS11aVwiLCBcIlNlZ29lIFVJXCIsIFJvYm90bywgSGVsdmV0aWNhLCBBcmlhbCwgc2Fucy1zZXJpZiwgXCJBcHBsZSBDb2xvciBFbW9qaVwiLCBcIlNlZ29lIFVJIEVtb2ppXCIiCiAgfSwKICB7CiAgICAiY2FuYXJ5IjogInRhYmxlIiwKICAgICJwcm9wZXJ0eSI6ICJsaW5lLWhlaWdodCIsCiAgICAiYmVmb3JlIjogIjI0cHgiLAogICAgImFmdGVyIjogIjI0LjhweCIKICB9LAogIHsKICAgICJjYW5hcnkiOiAidGFibGUiLAogICAgInByb3BlcnR5IjogImJvcmRlci10b3AtY29sb3IiLAogICAgImJlZm9yZSI6ICJyZ2IoMjYsIDI2LCAyNikiLAogICAgImFmdGVyIjogInJnYigwLCAwLCAwKSIKICB9LAogIHsKICAgICJjYW5hcnkiOiAidGFibGUtY2VsbCIsCiAgICAicHJvcGVydHkiOiAiY29sb3IiLAogICAgImJlZm9yZSI6ICJyZ2IoMjYsIDI2LCAyNikiLAogICAgImFmdGVyIjogInJnYigwLCAwLCAwKSIKICB9LAogIHsKICAgICJjYW5hcnkiOiAidGFibGUtY2VsbCIsCiAgICAicHJvcGVydHkiOiAiZm9udC1mYW1pbHkiLAogICAgImJlZm9yZSI6ICJSb2JvdG8sIHNhbnMtc2VyaWYiLAogICAgImFmdGVyIjogIi1hcHBsZS1zeXN0ZW0sIFwic3lzdGVtLXVpXCIsIFwiU2Vnb2UgVUlcIiwgUm9ib3RvLCBIZWx2ZXRpY2EsIEFyaWFsLCBzYW5zLXNlcmlmLCBcIkFwcGxlIENvbG9yIEVtb2ppXCIsIFwiU2Vnb2UgVUkgRW1vamlcIiIKICB9LAogIHsKICAgICJjYW5hcnkiOiAidGFibGUtY2VsbCIsCiAgICAicHJvcGVydHkiOiAiYm9yZGVyLXRvcC1jb2xvciIsCiAgICAiYmVmb3JlIjogInJnYigyNiwgMjYsIDI2KSIsCiAgICAiYWZ0ZXIiOiAicmdiKDAsIDAsIDApIgogIH0sCiAgewogICAgImNhbmFyeSI6ICJjYXJkLWZpcnN0IiwKICAgICJwcm9wZXJ0eSI6ICJjb2xvciIsCiAgICAiYmVmb3JlIjogInJnYigyNiwgMjYsIDI2KSIsCiAgICAiYWZ0ZXIiOiAicmdiKDAsIDAsIDApIgogIH0sCiAgewogICAgImNhbmFyeSI6ICJjYXJkLWZpcnN0IiwKICAgICJwcm9wZXJ0eSI6ICJmb250LWZhbWlseSIsCiAgICAiYmVmb3JlIjogIlJvYm90bywgc2Fucy1zZXJpZiIsCiAgICAiYWZ0ZXIiOiAiLWFwcGxlLXN5c3RlbSwgXCJzeXN0ZW0tdWlcIiwgXCJTZWdvZSBVSVwiLCBSb2JvdG8sIEhlbHZldGljYSwgQXJpYWwsIHNhbnMtc2VyaWYsIFwiQXBwbGUgQ29sb3IgRW1vamlcIiwgXCJTZWdvZSBVSSBFbW9qaVwiIgogIH0sCiAgewogICAgImNhbmFyeSI6ICJjYXJkLWZpcnN0IiwKICAgICJwcm9wZXJ0eSI6ICJsaW5lLWhlaWdodCIsCiAgICAiYmVmb3JlIjogIjI0cHgiLAogICAgImFmdGVyIjogIjI0LjhweCIKICB9LAogIHsKICAgICJjYW5hcnkiOiAiY2FyZC1maXJzdCIsCiAgICAicHJvcGVydHkiOiAiYm9yZGVyLXRvcC1jb2xvciIsCiAgICAiYmVmb3JlIjogInJnYigyNiwgMjYsIDI2KSIsCiAgICAiYWZ0ZXIiOiAicmdiKDAsIDAsIDApIgogIH0sCiAgewogICAgImNhbmFyeSI6ICJjYXJkLXNlY29uZCIsCiAgICAicHJvcGVydHkiOiAiY29sb3IiLAogICAgImJlZm9yZSI6ICJyZ2IoMjYsIDI2LCAyNikiLAogICAgImFmdGVyIjogInJnYigwLCAwLCAwKSIKICB9LAogIHsKICAgICJjYW5hcnkiOiAiY2FyZC1zZWNvbmQiLAogICAgInByb3BlcnR5IjogImZvbnQtZmFtaWx5IiwKICAgICJiZWZvcmUiOiAiUm9ib3RvLCBzYW5zLXNlcmlmIiwKICAgICJhZnRlciI6ICItYXBwbGUtc3lzdGVtLCBcInN5c3RlbS11aVwiLCBcIlNlZ29lIFVJXCIsIFJvYm90bywgSGVsdmV0aWNhLCBBcmlhbCwgc2Fucy1zZXJpZiwgXCJBcHBsZSBDb2xvciBFbW9qaVwiLCBcIlNlZ29lIFVJIEVtb2ppXCIiCiAgfSwKICB7CiAgICAiY2FuYXJ5IjogImNhcmQtc2Vjb25kIiwKICAgICJwcm9wZXJ0eSI6ICJsaW5lLWhlaWdodCIsCiAgICAiYmVmb3JlIjogIjI0cHgiLAogICAgImFmdGVyIjogIjI0LjhweCIKICB9LAogIHsKICAgICJjYW5hcnkiOiAiY2FyZC1zZWNvbmQiLAogICAgInByb3BlcnR5IjogImJvcmRlci10b3AtY29sb3IiLAogICAgImJlZm9yZSI6ICJyZ2IoMjYsIDI2LCAyNikiLAogICAgImFmdGVyIjogInJnYigwLCAwLCAwKSIKICB9Cl0="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05384557491ebd602dd7-7f4f305b76ece1d534de",
+              "file": "demo.spec.ts",
+              "line": 229,
+              "column": 3
+            },
+            {
+              "title": "measures what the host's element rules steal from Mantine",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 740,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "host-into-candidate blast radius: 5 of 50 candidate inputs\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-05T20:45:27.967Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "host-collision.json",
+                          "contentType": "application/json",
+                          "body": "ewogICJpbnZlbnRvcnkiOiB7CiAgICAic2NvcGVzQ2hlY2tlZCI6IDEyLAogICAgImNhbmRpZGF0ZUlucHV0cyI6IDUwLAogICAgImlucHV0c1dpdGhBVHlwZUF0dHJpYnV0ZSI6IDMzLAogICAgImlucHV0VHlwZXNQcmVzZW50IjogWwogICAgICAiKGFic2VudCkiLAogICAgICAiY2hlY2tib3giLAogICAgICAiaGlkZGVuIiwKICAgICAgInJhZGlvIiwKICAgICAgInRleHQiCiAgICBdLAogICAgIm1hdGNoZXNNYW5ncm92ZUZvcm1TZWxlY3RvciI6IDUsCiAgICAibWF0Y2hpbmdDb21wb25lbnRzIjogWwogICAgICAibWFudGluZS1NdWx0aVNlbGVjdC1pbnB1dEZpZWxkIiwKICAgICAgIm1hbnRpbmUtVGltZVBpY2tlci1maWVsZCIKICAgIF0KICB9LAogICJ1bnJlcGFpcmVkIjogewogICAgInBpbGxzSW5wdXRGaWVsZCI6IHsKICAgICAgImJvcmRlci10b3Atd2lkdGgiOiAiMnB4IiwKICAgICAgImJvcmRlci10b3AtY29sb3IiOiAicmdiKDI2LCAyNiwgMjYpIiwKICAgICAgImJvcmRlci1yYWRpdXMiOiAiMHB4IiwKICAgICAgImhlaWdodCI6ICI0NnB4IiwKICAgICAgIndpZHRoIjogIjI0NHB4IiwKICAgICAgInBhZGRpbmctbGVmdCI6ICI2LjI1cHgiLAogICAgICAiZm9udC1mYW1pbHkiOiAiUm9ib3RvLCBzYW5zLXNlcmlmIiwKICAgICAgImZvbnQtc2l6ZSI6ICIxNnB4IiwKICAgICAgImJhY2tncm91bmQtY29sb3IiOiAicmdiKDI1NSwgMjU1LCAyNTUpIgogICAgfSwKICAgICJ0ZXh0YXJlYSI6IHsKICAgICAgImJvcmRlci10b3Atd2lkdGgiOiAiMXB4IiwKICAgICAgImJvcmRlci10b3AtY29sb3IiOiAicmdiKDIwMCwgMjEwLCAyMTgpIiwKICAgICAgImJvcmRlci1yYWRpdXMiOiAiNHB4IiwKICAgICAgImhlaWdodCI6ICI3NnB4IiwKICAgICAgIndpZHRoIjogIjM0MnB4IiwKICAgICAgInBhZGRpbmctbGVmdCI6ICIxMnB4IiwKICAgICAgImZvbnQtZmFtaWx5IjogIlJvYm90bywgXCJOb3RvIFNhbnMgQXJhYmljXCIsIFwiU2Vnb2UgVUlcIiwgc3lzdGVtLXVpLCAtYXBwbGUtc3lzdGVtLCBzYW5zLXNlcmlmIiwKICAgICAgImZvbnQtc2l6ZSI6ICIxNHB4IiwKICAgICAgImJhY2tncm91bmQtY29sb3IiOiAicmdiKDI1NSwgMjU1LCAyNTUpIgogICAgfSwKICAgICJ0aW1lUGlja2VyRmllbGQiOiB7CiAgICAgICJib3JkZXItdG9wLXdpZHRoIjogIjJweCIsCiAgICAgICJib3JkZXItdG9wLWNvbG9yIjogInJnYigyNiwgMjYsIDI2KSIsCiAgICAgICJib3JkZXItcmFkaXVzIjogIjBweCIsCiAgICAgICJoZWlnaHQiOiAiNDZweCIsCiAgICAgICJ3aWR0aCI6ICIxODIuNXB4IiwKICAgICAgInBhZGRpbmctbGVmdCI6ICI2LjI1cHgiLAogICAgICAiZm9udC1mYW1pbHkiOiAiUm9ib3RvLCBzYW5zLXNlcmlmIiwKICAgICAgImZvbnQtc2l6ZSI6ICIxNnB4IiwKICAgICAgImJhY2tncm91bmQtY29sb3IiOiAicmdiKDI1NSwgMjU1LCAyNTUpIgogICAgfSwKICAgICJwbGFpblRleHRJbnB1dCI6IHsKICAgICAgImJvcmRlci10b3Atd2lkdGgiOiAiMXB4IiwKICAgICAgImJvcmRlci10b3AtY29sb3IiOiAicmdiKDIwMCwgMjEwLCAyMTgpIiwKICAgICAgImJvcmRlci1yYWRpdXMiOiAiNHB4IiwKICAgICAgImhlaWdodCI6ICIzNnB4IiwKICAgICAgIndpZHRoIjogIjM0MnB4IiwKICAgICAgInBhZGRpbmctbGVmdCI6ICIxMnB4IiwKICAgICAgImZvbnQtZmFtaWx5IjogIlJvYm90bywgXCJOb3RvIFNhbnMgQXJhYmljXCIsIFwiU2Vnb2UgVUlcIiwgc3lzdGVtLXVpLCAtYXBwbGUtc3lzdGVtLCBzYW5zLXNlcmlmIiwKICAgICAgImZvbnQtc2l6ZSI6ICIxNHB4IiwKICAgICAgImJhY2tncm91bmQtY29sb3IiOiAicmdiKDI1NSwgMjU1LCAyNTUpIgogICAgfQogIH0sCiAgInJlcGFpcmVkIjogewogICAgInBpbGxzSW5wdXRGaWVsZCI6IHsKICAgICAgImJvcmRlci10b3Atd2lkdGgiOiAiMHB4IiwKICAgICAgImJvcmRlci10b3AtY29sb3IiOiAicmdiKDIwLCAzNSwgNDYpIiwKICAgICAgImJvcmRlci1yYWRpdXMiOiAiMHB4IiwKICAgICAgImhlaWdodCI6ICIyMi4zOTA2cHgiLAogICAgICAid2lkdGgiOiAiMjQ0cHgiLAogICAgICAicGFkZGluZy1sZWZ0IjogIjBweCIsCiAgICAgICJmb250LWZhbWlseSI6ICJSb2JvdG8sIFwiTm90byBTYW5zIEFyYWJpY1wiLCBcIlNlZ29lIFVJXCIsIHN5c3RlbS11aSwgLWFwcGxlLXN5c3RlbSwgc2Fucy1zZXJpZiIsCiAgICAgICJmb250LXNpemUiOiAiMTRweCIsCiAgICAgICJiYWNrZ3JvdW5kLWNvbG9yIjogInJnYmEoMCwgMCwgMCwgMCkiCiAgICB9LAogICAgInRleHRhcmVhIjogewogICAgICAiYm9yZGVyLXRvcC13aWR0aCI6ICIxcHgiLAogICAgICAiYm9yZGVyLXRvcC1jb2xvciI6ICJyZ2IoMjAwLCAyMTAsIDIxOCkiLAogICAgICAiYm9yZGVyLXJhZGl1cyI6ICI0cHgiLAogICAgICAiaGVpZ2h0IjogIjc2cHgiLAogICAgICAid2lkdGgiOiAiMzQycHgiLAogICAgICAicGFkZGluZy1sZWZ0IjogIjEycHgiLAogICAgICAiZm9udC1mYW1pbHkiOiAiUm9ib3RvLCBcIk5vdG8gU2FucyBBcmFiaWNcIiwgXCJTZWdvZSBVSVwiLCBzeXN0ZW0tdWksIC1hcHBsZS1zeXN0ZW0sIHNhbnMtc2VyaWYiLAogICAgICAiZm9udC1zaXplIjogIjE0cHgiLAogICAgICAiYmFja2dyb3VuZC1jb2xvciI6ICJyZ2IoMjU1LCAyNTUsIDI1NSkiCiAgICB9LAogICAgInRpbWVQaWNrZXJGaWVsZCI6IHsKICAgICAgImJvcmRlci10b3Atd2lkdGgiOiAiMHB4IiwKICAgICAgImJvcmRlci10b3AtY29sb3IiOiAicmdiKDIwLCAzNSwgNDYpIiwKICAgICAgImJvcmRlci1yYWRpdXMiOiAiMnB4IiwKICAgICAgImhlaWdodCI6ICIyMXB4IiwKICAgICAgIndpZHRoIjogIjIxLjgyODFweCIsCiAgICAgICJwYWRkaW5nLWxlZnQiOiAiMi4xcHgiLAogICAgICAiZm9udC1mYW1pbHkiOiAiUm9ib3RvLCBcIk5vdG8gU2FucyBBcmFiaWNcIiwgXCJTZWdvZSBVSVwiLCBzeXN0ZW0tdWksIC1hcHBsZS1zeXN0ZW0sIHNhbnMtc2VyaWYiLAogICAgICAiZm9udC1zaXplIjogIjE0cHgiLAogICAgICAiYmFja2dyb3VuZC1jb2xvciI6ICJyZ2JhKDAsIDAsIDAsIDApIgogICAgfSwKICAgICJwbGFpblRleHRJbnB1dCI6IHsKICAgICAgImJvcmRlci10b3Atd2lkdGgiOiAiMXB4IiwKICAgICAgImJvcmRlci10b3AtY29sb3IiOiAicmdiKDIwMCwgMjEwLCAyMTgpIiwKICAgICAgImJvcmRlci1yYWRpdXMiOiAiNHB4IiwKICAgICAgImhlaWdodCI6ICIzNnB4IiwKICAgICAgIndpZHRoIjogIjM0MnB4IiwKICAgICAgInBhZGRpbmctbGVmdCI6ICIxMnB4IiwKICAgICAgImZvbnQtZmFtaWx5IjogIlJvYm90bywgXCJOb3RvIFNhbnMgQXJhYmljXCIsIFwiU2Vnb2UgVUlcIiwgc3lzdGVtLXVpLCAtYXBwbGUtc3lzdGVtLCBzYW5zLXNlcmlmIiwKICAgICAgImZvbnQtc2l6ZSI6ICIxNHB4IiwKICAgICAgImJhY2tncm91bmQtY29sb3IiOiAicmdiKDI1NSwgMjU1LCAyNTUpIgogICAgfQogIH0KfQ=="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05384557491ebd602dd7-32ab17beecf2164ef210",
+              "file": "demo.spec.ts",
+              "line": 302,
+              "column": 3
+            },
+            {
+              "title": "does not render any element the host's [hidden] bug would expose",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 181,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-05T20:45:28.711Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05384557491ebd602dd7-fead6feb14f40249ea68",
+              "file": "demo.spec.ts",
+              "line": 471,
+              "column": 3
+            },
+            {
+              "title": "applies RTL for Arabic",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 300,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-05T20:45:28.894Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05384557491ebd602dd7-d8f865adac21312611ed",
+              "file": "demo.spec.ts",
+              "line": 493,
+              "column": 3
+            },
+            {
+              "title": "axe per section",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4108,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "axe 01-forms: 0 violations (0 critical, 0 serious), 0 incomplete\n"
+                        },
+                        {
+                          "text": "axe 02-selection: 0 violations (0 critical, 0 serious), 0 incomplete\n"
+                        },
+                        {
+                          "text": "axe 03-dates: 0 violations (0 critical, 0 serious), 0 incomplete\n"
+                        },
+                        {
+                          "text": "axe 04-overlays: 0 violations (0 critical, 0 serious), 0 incomplete\n"
+                        },
+                        {
+                          "text": "axe 05-chrome: 0 violations (0 critical, 0 serious), 0 incomplete\n"
+                        },
+                        {
+                          "text": "axe 06-data-table: 0 violations (0 critical, 0 serious), 0 incomplete\n"
+                        },
+                        {
+                          "text": "axe 07-states: 0 violations (0 critical, 0 serious), 0 incomplete\n"
+                        },
+                        {
+                          "text": "axe 09-side-by-side: 0 violations (0 critical, 0 serious), 0 incomplete\n"
+                        },
+                        {
+                          "text": "axe scoped: 0 violations | whole page: 1 violations\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-05T20:45:29.197Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "axe-summary.json",
+                          "contentType": "application/json",
+                          "body": "ewogICJzY29wZWQiOiB7CiAgICAic2VjdGlvbiI6ICJjYW5kaWRhdGUtc3VidHJlZSIsCiAgICAidXJsIjogImh0dHA6Ly9sb2NhbGhvc3Q6NTIwNS8/Y2FuZGlkYXRlPW9uIiwKICAgICJ0YWdzIjogWwogICAgICAid2NhZzJhIiwKICAgICAgIndjYWcyYWEiLAogICAgICAid2NhZzIxYSIsCiAgICAgICJ3Y2FnMjFhYSIsCiAgICAgICJ3Y2FnMjJhYSIKICAgIF0sCiAgICAidmlvbGF0aW9ucyI6IFtdLAogICAgImNvdW50cyI6IHsKICAgICAgInZpb2xhdGlvbnMiOiAwLAogICAgICAic2VyaW91cyI6IDAsCiAgICAgICJjcml0aWNhbCI6IDAsCiAgICAgICJpbmNvbXBsZXRlIjogMAogICAgfSwKICAgICJpbmNvbXBsZXRlUnVsZUlkcyI6IFtdCiAgfSwKICAid2hvbGVQYWdlIjogewogICAgInNlY3Rpb24iOiAid2hvbGUtcGFnZSIsCiAgICAidXJsIjogImh0dHA6Ly9sb2NhbGhvc3Q6NTIwNS8/Y2FuZGlkYXRlPW9uIiwKICAgICJ0YWdzIjogWwogICAgICAid2NhZzJhIiwKICAgICAgIndjYWcyYWEiLAogICAgICAid2NhZzIxYSIsCiAgICAgICJ3Y2FnMjFhYSIsCiAgICAgICJ3Y2FnMjJhYSIKICAgIF0sCiAgICAidmlvbGF0aW9ucyI6IFsKICAgICAgewogICAgICAgICJpZCI6ICJsaW5rLWluLXRleHQtYmxvY2siLAogICAgICAgICJpbXBhY3QiOiAic2VyaW91cyIsCiAgICAgICAgImhlbHAiOiAiTGlua3MgbXVzdCBiZSBkaXN0aW5ndWlzaGFibGUgd2l0aG91dCByZWx5aW5nIG9uIGNvbG9yIiwKICAgICAgICAiaGVscFVybCI6ICJodHRwczovL2RlcXVldW5pdmVyc2l0eS5jb20vcnVsZXMvYXhlLzQuMTIvbGluay1pbi10ZXh0LWJsb2NrP2FwcGxpY2F0aW9uPXBsYXl3cmlnaHQiLAogICAgICAgICJub2RlcyI6IFsKICAgICAgICAgICJhW2RhdGEtY2FuYXJ5PVwibGlua1wiXSIKICAgICAgICBdCiAgICAgIH0KICAgIF0sCiAgICAiY291bnRzIjogewogICAgICAidmlvbGF0aW9ucyI6IDEsCiAgICAgICJzZXJpb3VzIjogMSwKICAgICAgImNyaXRpY2FsIjogMCwKICAgICAgImluY29tcGxldGUiOiAwCiAgICB9LAogICAgImluY29tcGxldGVSdWxlSWRzIjogW10KICB9Cn0="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05384557491ebd602dd7-1980d02eaccf7eea8be9",
+              "file": "demo.spec.ts",
+              "line": 502,
+              "column": 3
+            },
+            {
+              "title": "screenshots per section",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 10076,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-05T20:45:33.310Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05384557491ebd602dd7-ae9c4d140cf8c6afa141",
+              "file": "demo.spec.ts",
+              "line": 537,
+              "column": 3
+            },
+            {
+              "title": "screenshots in RTL",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 7564,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-05T20:45:43.391Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05384557491ebd602dd7-0bc6793cd50ac9327048",
+              "file": "demo.spec.ts",
+              "line": 546,
+              "column": 3
+            },
+            {
+              "title": "long labels do not overflow the viewport",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 272,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-05T20:45:50.957Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05384557491ebd602dd7-75eda521932150a862a4",
+              "file": "demo.spec.ts",
+              "line": 558,
+              "column": 3
+            },
+            {
+              "title": "renders every section",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 238,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-05T20:45:51.449Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05384557491ebd602dd7-29e999d6ea187026acaa",
+              "file": "demo.spec.ts",
+              "line": 57,
+              "column": 3
+            },
+            {
+              "title": "filters, sorts, selects and pages the 250-row table",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 517,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-05T20:45:51.766Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05384557491ebd602dd7-29a92e54c8ba25a9f35b",
+              "file": "demo.spec.ts",
+              "line": 64,
+              "column": 3
+            },
+            {
+              "title": "resizes a table column by keyboard",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 337,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-05T20:45:52.289Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05384557491ebd602dd7-e6a7779c34d22fe810c4",
+              "file": "demo.spec.ts",
+              "line": 93,
+              "column": 3
+            },
+            {
+              "title": "has a NATIVE date-time range picker",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 6907,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-05T20:45:52.630Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05384557491ebd602dd7-397113ab0e8fc50417ee",
+              "file": "demo.spec.ts",
+              "line": 108,
+              "column": 3
+            },
+            {
+              "title": "traps and restores focus in the modal",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 557,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-05T20:45:59.541Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05384557491ebd602dd7-f361a2cf5b7e4e93772f",
+              "file": "demo.spec.ts",
+              "line": 136,
+              "column": 3
+            },
+            {
+              "title": "portalled overlays keep their background",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 653,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-05T20:46:00.101Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "overlay-backgrounds.json",
+                          "contentType": "application/json",
+                          "body": "ewogICJtb2RhbCI6ICJyZ2IoMjU1LCAyNTUsIDI1NSkiLAogICJwb3BvdmVyIjogInJnYigyNTUsIDI1NSwgMjU1KSIsCiAgInRvb2x0aXAiOiAicmdiKDIwLCAzNSwgNDYpIiwKICAic2VsZWN0RHJvcGRvd24iOiAicmdiKDI1NSwgMjU1LCAyNTUpIiwKICAidW5kcnJUb2tlbkluc2lkZVBvcnRhbCI6ICIiCn0="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05384557491ebd602dd7-54d12e9b27a4599b59ca",
+              "file": "demo.spec.ts",
+              "line": 150,
+              "column": 3
+            },
+            {
+              "title": "mantine CSS is absent with the candidate off",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 78,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-05T20:46:00.757Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05384557491ebd602dd7-6ddd242900a8e752209b",
+              "file": "demo.spec.ts",
+              "line": 198,
+              "column": 3
+            },
+            {
+              "title": "passes the leakage assertion",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2493,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-05T20:46:00.837Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "leakage.json",
+                          "contentType": "application/json",
+                          "body": "ewogICJhc3NlcnRpb25QYXNzZWQiOiB0cnVlLAogICJkaWZmZXJlbmNlcyI6IFtdLAogICJjYW5hcmllc0NoZWNrZWQiOiAxNAp9"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05384557491ebd602dd7-848800ee9d00e628b492",
+              "file": "demo.spec.ts",
+              "line": 208,
+              "column": 3
+            },
+            {
+              "title": "measures what baseline.css would have leaked",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 106,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "baseline.css counterfactual: 36 canary differences\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-05T20:46:03.334Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "leakage-with-baseline.json",
+                          "contentType": "application/json",
+                          "body": "WwogIHsKICAgICJjYW5hcnkiOiAiaGVhZGluZy0xIiwKICAgICJwcm9wZXJ0eSI6ICJjb2xvciIsCiAgICAiYmVmb3JlIjogInJnYigyNiwgMjYsIDI2KSIsCiAgICAiYWZ0ZXIiOiAicmdiKDAsIDAsIDApIgogIH0sCiAgewogICAgImNhbmFyeSI6ICJoZWFkaW5nLTEiLAogICAgInByb3BlcnR5IjogImZvbnQtZmFtaWx5IiwKICAgICJiZWZvcmUiOiAiUm9ib3RvLCBzYW5zLXNlcmlmIiwKICAgICJhZnRlciI6ICItYXBwbGUtc3lzdGVtLCBcInN5c3RlbS11aVwiLCBcIlNlZ29lIFVJXCIsIFJvYm90bywgSGVsdmV0aWNhLCBBcmlhbCwgc2Fucy1zZXJpZiwgXCJBcHBsZSBDb2xvciBFbW9qaVwiLCBcIlNlZ29lIFVJIEVtb2ppXCIiCiAgfSwKICB7CiAgICAiY2FuYXJ5IjogImhlYWRpbmctMSIsCiAgICAicHJvcGVydHkiOiAiYm9yZGVyLXRvcC1jb2xvciIsCiAgICAiYmVmb3JlIjogInJnYigyNiwgMjYsIDI2KSIsCiAgICAiYWZ0ZXIiOiAicmdiKDAsIDAsIDApIgogIH0sCiAgewogICAgImNhbmFyeSI6ICJuYXYiLAogICAgInByb3BlcnR5IjogImNvbG9yIiwKICAgICJiZWZvcmUiOiAicmdiKDI2LCAyNiwgMjYpIiwKICAgICJhZnRlciI6ICJyZ2IoMCwgMCwgMCkiCiAgfSwKICB7CiAgICAiY2FuYXJ5IjogIm5hdiIsCiAgICAicHJvcGVydHkiOiAiZm9udC1mYW1pbHkiLAogICAgImJlZm9yZSI6ICJSb2JvdG8sIHNhbnMtc2VyaWYiLAogICAgImFmdGVyIjogIi1hcHBsZS1zeXN0ZW0sIFwic3lzdGVtLXVpXCIsIFwiU2Vnb2UgVUlcIiwgUm9ib3RvLCBIZWx2ZXRpY2EsIEFyaWFsLCBzYW5zLXNlcmlmLCBcIkFwcGxlIENvbG9yIEVtb2ppXCIsIFwiU2Vnb2UgVUkgRW1vamlcIiIKICB9LAogIHsKICAgICJjYW5hcnkiOiAibmF2IiwKICAgICJwcm9wZXJ0eSI6ICJsaW5lLWhlaWdodCIsCiAgICAiYmVmb3JlIjogIjI0cHgiLAogICAgImFmdGVyIjogIjI0LjhweCIKICB9LAogIHsKICAgICJjYW5hcnkiOiAibmF2IiwKICAgICJwcm9wZXJ0eSI6ICJib3JkZXItdG9wLWNvbG9yIiwKICAgICJiZWZvcmUiOiAicmdiKDI2LCAyNiwgMjYpIiwKICAgICJhZnRlciI6ICJyZ2IoMCwgMCwgMCkiCiAgfSwKICB7CiAgICAiY2FuYXJ5IjogIm5hdi1saW5rIiwKICAgICJwcm9wZXJ0eSI6ICJmb250LWZhbWlseSIsCiAgICAiYmVmb3JlIjogIlJvYm90bywgc2Fucy1zZXJpZiIsCiAgICAiYWZ0ZXIiOiAiLWFwcGxlLXN5c3RlbSwgXCJzeXN0ZW0tdWlcIiwgXCJTZWdvZSBVSVwiLCBSb2JvdG8sIEhlbHZldGljYSwgQXJpYWwsIHNhbnMtc2VyaWYsIFwiQXBwbGUgQ29sb3IgRW1vamlcIiwgXCJTZWdvZSBVSSBFbW9qaVwiIgogIH0sCiAgewogICAgImNhbmFyeSI6ICJuYXYtbGluayIsCiAgICAicHJvcGVydHkiOiAibGluZS1oZWlnaHQiLAogICAgImJlZm9yZSI6ICIyNHB4IiwKICAgICJhZnRlciI6ICIyNC44cHgiCiAgfSwKICB7CiAgICAiY2FuYXJ5IjogImhlYWRpbmctMiIsCiAgICAicHJvcGVydHkiOiAiY29sb3IiLAogICAgImJlZm9yZSI6ICJyZ2IoMjYsIDI2LCAyNikiLAogICAgImFmdGVyIjogInJnYigwLCAwLCAwKSIKICB9LAogIHsKICAgICJjYW5hcnkiOiAiaGVhZGluZy0yIiwKICAgICJwcm9wZXJ0eSI6ICJmb250LWZhbWlseSIsCiAgICAiYmVmb3JlIjogIlJvYm90bywgc2Fucy1zZXJpZiIsCiAgICAiYWZ0ZXIiOiAiLWFwcGxlLXN5c3RlbSwgXCJzeXN0ZW0tdWlcIiwgXCJTZWdvZSBVSVwiLCBSb2JvdG8sIEhlbHZldGljYSwgQXJpYWwsIHNhbnMtc2VyaWYsIFwiQXBwbGUgQ29sb3IgRW1vamlcIiwgXCJTZWdvZSBVSSBFbW9qaVwiIgogIH0sCiAgewogICAgImNhbmFyeSI6ICJoZWFkaW5nLTIiLAogICAgInByb3BlcnR5IjogImJvcmRlci10b3AtY29sb3IiLAogICAgImJlZm9yZSI6ICJyZ2IoMjYsIDI2LCAyNikiLAogICAgImFmdGVyIjogInJnYigwLCAwLCAwKSIKICB9LAogIHsKICAgICJjYW5hcnkiOiAiaGVhZGluZy0zIiwKICAgICJwcm9wZXJ0eSI6ICJjb2xvciIsCiAgICAiYmVmb3JlIjogInJnYigyNiwgMjYsIDI2KSIsCiAgICAiYWZ0ZXIiOiAicmdiKDAsIDAsIDApIgogIH0sCiAgewogICAgImNhbmFyeSI6ICJoZWFkaW5nLTMiLAogICAgInByb3BlcnR5IjogImZvbnQtZmFtaWx5IiwKICAgICJiZWZvcmUiOiAiUm9ib3RvLCBzYW5zLXNlcmlmIiwKICAgICJhZnRlciI6ICItYXBwbGUtc3lzdGVtLCBcInN5c3RlbS11aVwiLCBcIlNlZ29lIFVJXCIsIFJvYm90bywgSGVsdmV0aWNhLCBBcmlhbCwgc2Fucy1zZXJpZiwgXCJBcHBsZSBDb2xvciBFbW9qaVwiLCBcIlNlZ29lIFVJIEVtb2ppXCIiCiAgfSwKICB7CiAgICAiY2FuYXJ5IjogImhlYWRpbmctMyIsCiAgICAicHJvcGVydHkiOiAiYm9yZGVyLXRvcC1jb2xvciIsCiAgICAiYmVmb3JlIjogInJnYigyNiwgMjYsIDI2KSIsCiAgICAiYWZ0ZXIiOiAicmdiKDAsIDAsIDApIgogIH0sCiAgewogICAgImNhbmFyeSI6ICJwYXJhZ3JhcGgiLAogICAgInByb3BlcnR5IjogImNvbG9yIiwKICAgICJiZWZvcmUiOiAicmdiKDI2LCAyNiwgMjYpIiwKICAgICJhZnRlciI6ICJyZ2IoMCwgMCwgMCkiCiAgfSwKICB7CiAgICAiY2FuYXJ5IjogInBhcmFncmFwaCIsCiAgICAicHJvcGVydHkiOiAiZm9udC1mYW1pbHkiLAogICAgImJlZm9yZSI6ICJSb2JvdG8sIHNhbnMtc2VyaWYiLAogICAgImFmdGVyIjogIi1hcHBsZS1zeXN0ZW0sIFwic3lzdGVtLXVpXCIsIFwiU2Vnb2UgVUlcIiwgUm9ib3RvLCBIZWx2ZXRpY2EsIEFyaWFsLCBzYW5zLXNlcmlmLCBcIkFwcGxlIENvbG9yIEVtb2ppXCIsIFwiU2Vnb2UgVUkgRW1vamlcIiIKICB9LAogIHsKICAgICJjYW5hcnkiOiAicGFyYWdyYXBoIiwKICAgICJwcm9wZXJ0eSI6ICJsaW5lLWhlaWdodCIsCiAgICAiYmVmb3JlIjogIjI0cHgiLAogICAgImFmdGVyIjogIjI0LjhweCIKICB9LAogIHsKICAgICJjYW5hcnkiOiAicGFyYWdyYXBoIiwKICAgICJwcm9wZXJ0eSI6ICJib3JkZXItdG9wLWNvbG9yIiwKICAgICJiZWZvcmUiOiAicmdiKDI2LCAyNiwgMjYpIiwKICAgICJhZnRlciI6ICJyZ2IoMCwgMCwgMCkiCiAgfSwKICB7CiAgICAiY2FuYXJ5IjogImxpbmsiLAogICAgInByb3BlcnR5IjogImZvbnQtZmFtaWx5IiwKICAgICJiZWZvcmUiOiAiUm9ib3RvLCBzYW5zLXNlcmlmIiwKICAgICJhZnRlciI6ICItYXBwbGUtc3lzdGVtLCBcInN5c3RlbS11aVwiLCBcIlNlZ29lIFVJXCIsIFJvYm90bywgSGVsdmV0aWNhLCBBcmlhbCwgc2Fucy1zZXJpZiwgXCJBcHBsZSBDb2xvciBFbW9qaVwiLCBcIlNlZ29lIFVJIEVtb2ppXCIiCiAgfSwKICB7CiAgICAiY2FuYXJ5IjogImxpbmsiLAogICAgInByb3BlcnR5IjogImxpbmUtaGVpZ2h0IiwKICAgICJiZWZvcmUiOiAiMjRweCIsCiAgICAiYWZ0ZXIiOiAiMjQuOHB4IgogIH0sCiAgewogICAgImNhbmFyeSI6ICJ0YWJsZSIsCiAgICAicHJvcGVydHkiOiAiY29sb3IiLAogICAgImJlZm9yZSI6ICJyZ2IoMjYsIDI2LCAyNikiLAogICAgImFmdGVyIjogInJnYigwLCAwLCAwKSIKICB9LAogIHsKICAgICJjYW5hcnkiOiAidGFibGUiLAogICAgInByb3BlcnR5IjogImZvbnQtZmFtaWx5IiwKICAgICJiZWZvcmUiOiAiUm9ib3RvLCBzYW5zLXNlcmlmIiwKICAgICJhZnRlciI6ICItYXBwbGUtc3lzdGVtLCBcInN5c3RlbS11aVwiLCBcIlNlZ29lIFVJXCIsIFJvYm90bywgSGVsdmV0aWNhLCBBcmlhbCwgc2Fucy1zZXJpZiwgXCJBcHBsZSBDb2xvciBFbW9qaVwiLCBcIlNlZ29lIFVJIEVtb2ppXCIiCiAgfSwKICB7CiAgICAiY2FuYXJ5IjogInRhYmxlIiwKICAgICJwcm9wZXJ0eSI6ICJsaW5lLWhlaWdodCIsCiAgICAiYmVmb3JlIjogIjI0cHgiLAogICAgImFmdGVyIjogIjI0LjhweCIKICB9LAogIHsKICAgICJjYW5hcnkiOiAidGFibGUiLAogICAgInByb3BlcnR5IjogImJvcmRlci10b3AtY29sb3IiLAogICAgImJlZm9yZSI6ICJyZ2IoMjYsIDI2LCAyNikiLAogICAgImFmdGVyIjogInJnYigwLCAwLCAwKSIKICB9LAogIHsKICAgICJjYW5hcnkiOiAidGFibGUtY2VsbCIsCiAgICAicHJvcGVydHkiOiAiY29sb3IiLAogICAgImJlZm9yZSI6ICJyZ2IoMjYsIDI2LCAyNikiLAogICAgImFmdGVyIjogInJnYigwLCAwLCAwKSIKICB9LAogIHsKICAgICJjYW5hcnkiOiAidGFibGUtY2VsbCIsCiAgICAicHJvcGVydHkiOiAiZm9udC1mYW1pbHkiLAogICAgImJlZm9yZSI6ICJSb2JvdG8sIHNhbnMtc2VyaWYiLAogICAgImFmdGVyIjogIi1hcHBsZS1zeXN0ZW0sIFwic3lzdGVtLXVpXCIsIFwiU2Vnb2UgVUlcIiwgUm9ib3RvLCBIZWx2ZXRpY2EsIEFyaWFsLCBzYW5zLXNlcmlmLCBcIkFwcGxlIENvbG9yIEVtb2ppXCIsIFwiU2Vnb2UgVUkgRW1vamlcIiIKICB9LAogIHsKICAgICJjYW5hcnkiOiAidGFibGUtY2VsbCIsCiAgICAicHJvcGVydHkiOiAiYm9yZGVyLXRvcC1jb2xvciIsCiAgICAiYmVmb3JlIjogInJnYigyNiwgMjYsIDI2KSIsCiAgICAiYWZ0ZXIiOiAicmdiKDAsIDAsIDApIgogIH0sCiAgewogICAgImNhbmFyeSI6ICJjYXJkLWZpcnN0IiwKICAgICJwcm9wZXJ0eSI6ICJjb2xvciIsCiAgICAiYmVmb3JlIjogInJnYigyNiwgMjYsIDI2KSIsCiAgICAiYWZ0ZXIiOiAicmdiKDAsIDAsIDApIgogIH0sCiAgewogICAgImNhbmFyeSI6ICJjYXJkLWZpcnN0IiwKICAgICJwcm9wZXJ0eSI6ICJmb250LWZhbWlseSIsCiAgICAiYmVmb3JlIjogIlJvYm90bywgc2Fucy1zZXJpZiIsCiAgICAiYWZ0ZXIiOiAiLWFwcGxlLXN5c3RlbSwgXCJzeXN0ZW0tdWlcIiwgXCJTZWdvZSBVSVwiLCBSb2JvdG8sIEhlbHZldGljYSwgQXJpYWwsIHNhbnMtc2VyaWYsIFwiQXBwbGUgQ29sb3IgRW1vamlcIiwgXCJTZWdvZSBVSSBFbW9qaVwiIgogIH0sCiAgewogICAgImNhbmFyeSI6ICJjYXJkLWZpcnN0IiwKICAgICJwcm9wZXJ0eSI6ICJsaW5lLWhlaWdodCIsCiAgICAiYmVmb3JlIjogIjI0cHgiLAogICAgImFmdGVyIjogIjI0LjhweCIKICB9LAogIHsKICAgICJjYW5hcnkiOiAiY2FyZC1maXJzdCIsCiAgICAicHJvcGVydHkiOiAiYm9yZGVyLXRvcC1jb2xvciIsCiAgICAiYmVmb3JlIjogInJnYigyNiwgMjYsIDI2KSIsCiAgICAiYWZ0ZXIiOiAicmdiKDAsIDAsIDApIgogIH0sCiAgewogICAgImNhbmFyeSI6ICJjYXJkLXNlY29uZCIsCiAgICAicHJvcGVydHkiOiAiY29sb3IiLAogICAgImJlZm9yZSI6ICJyZ2IoMjYsIDI2LCAyNikiLAogICAgImFmdGVyIjogInJnYigwLCAwLCAwKSIKICB9LAogIHsKICAgICJjYW5hcnkiOiAiY2FyZC1zZWNvbmQiLAogICAgInByb3BlcnR5IjogImZvbnQtZmFtaWx5IiwKICAgICJiZWZvcmUiOiAiUm9ib3RvLCBzYW5zLXNlcmlmIiwKICAgICJhZnRlciI6ICItYXBwbGUtc3lzdGVtLCBcInN5c3RlbS11aVwiLCBcIlNlZ29lIFVJXCIsIFJvYm90bywgSGVsdmV0aWNhLCBBcmlhbCwgc2Fucy1zZXJpZiwgXCJBcHBsZSBDb2xvciBFbW9qaVwiLCBcIlNlZ29lIFVJIEVtb2ppXCIiCiAgfSwKICB7CiAgICAiY2FuYXJ5IjogImNhcmQtc2Vjb25kIiwKICAgICJwcm9wZXJ0eSI6ICJsaW5lLWhlaWdodCIsCiAgICAiYmVmb3JlIjogIjI0cHgiLAogICAgImFmdGVyIjogIjI0LjhweCIKICB9LAogIHsKICAgICJjYW5hcnkiOiAiY2FyZC1zZWNvbmQiLAogICAgInByb3BlcnR5IjogImJvcmRlci10b3AtY29sb3IiLAogICAgImJlZm9yZSI6ICJyZ2IoMjYsIDI2LCAyNikiLAogICAgImFmdGVyIjogInJnYigwLCAwLCAwKSIKICB9Cl0="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05384557491ebd602dd7-7e4c86923b45213e564e",
+              "file": "demo.spec.ts",
+              "line": 229,
+              "column": 3
+            },
+            {
+              "title": "measures what the host's element rules steal from Mantine",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 706,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "host-into-candidate blast radius: 5 of 50 candidate inputs\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-05T20:46:03.443Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "host-collision.json",
+                          "contentType": "application/json",
+                          "body": "ewogICJpbnZlbnRvcnkiOiB7CiAgICAic2NvcGVzQ2hlY2tlZCI6IDEyLAogICAgImNhbmRpZGF0ZUlucHV0cyI6IDUwLAogICAgImlucHV0c1dpdGhBVHlwZUF0dHJpYnV0ZSI6IDMzLAogICAgImlucHV0VHlwZXNQcmVzZW50IjogWwogICAgICAiKGFic2VudCkiLAogICAgICAiY2hlY2tib3giLAogICAgICAiaGlkZGVuIiwKICAgICAgInJhZGlvIiwKICAgICAgInRleHQiCiAgICBdLAogICAgIm1hdGNoZXNNYW5ncm92ZUZvcm1TZWxlY3RvciI6IDUsCiAgICAibWF0Y2hpbmdDb21wb25lbnRzIjogWwogICAgICAibWFudGluZS1NdWx0aVNlbGVjdC1pbnB1dEZpZWxkIiwKICAgICAgIm1hbnRpbmUtVGltZVBpY2tlci1maWVsZCIKICAgIF0KICB9LAogICJ1bnJlcGFpcmVkIjogewogICAgInBpbGxzSW5wdXRGaWVsZCI6IHsKICAgICAgImJvcmRlci10b3Atd2lkdGgiOiAiMnB4IiwKICAgICAgImJvcmRlci10b3AtY29sb3IiOiAicmdiKDI2LCAyNiwgMjYpIiwKICAgICAgImJvcmRlci1yYWRpdXMiOiAiMHB4IiwKICAgICAgImhlaWdodCI6ICI0NnB4IiwKICAgICAgIndpZHRoIjogIjQ0Mi4yNjZweCIsCiAgICAgICJwYWRkaW5nLWxlZnQiOiAiNi4yNXB4IiwKICAgICAgImZvbnQtZmFtaWx5IjogIlJvYm90bywgc2Fucy1zZXJpZiIsCiAgICAgICJmb250LXNpemUiOiAiMTZweCIsCiAgICAgICJiYWNrZ3JvdW5kLWNvbG9yIjogInJnYigyNTUsIDI1NSwgMjU1KSIKICAgIH0sCiAgICAidGV4dGFyZWEiOiB7CiAgICAgICJib3JkZXItdG9wLXdpZHRoIjogIjFweCIsCiAgICAgICJib3JkZXItdG9wLWNvbG9yIjogInJnYigyMDAsIDIxMCwgMjE4KSIsCiAgICAgICJib3JkZXItcmFkaXVzIjogIjRweCIsCiAgICAgICJoZWlnaHQiOiAiNTVweCIsCiAgICAgICJ3aWR0aCI6ICI2OTZweCIsCiAgICAgICJwYWRkaW5nLWxlZnQiOiAiMTJweCIsCiAgICAgICJmb250LWZhbWlseSI6ICJSb2JvdG8sIFwiTm90byBTYW5zIEFyYWJpY1wiLCBcIlNlZ29lIFVJXCIsIHN5c3RlbS11aSwgLWFwcGxlLXN5c3RlbSwgc2Fucy1zZXJpZiIsCiAgICAgICJmb250LXNpemUiOiAiMTRweCIsCiAgICAgICJiYWNrZ3JvdW5kLWNvbG9yIjogInJnYigyNTUsIDI1NSwgMjU1KSIKICAgIH0sCiAgICAidGltZVBpY2tlckZpZWxkIjogewogICAgICAiYm9yZGVyLXRvcC13aWR0aCI6ICIycHgiLAogICAgICAiYm9yZGVyLXRvcC1jb2xvciI6ICJyZ2IoMjYsIDI2LCAyNikiLAogICAgICAiYm9yZGVyLXJhZGl1cyI6ICIwcHgiLAogICAgICAiaGVpZ2h0IjogIjQ2cHgiLAogICAgICAid2lkdGgiOiAiMTgzLjVweCIsCiAgICAgICJwYWRkaW5nLWxlZnQiOiAiNi4yNXB4IiwKICAgICAgImZvbnQtZmFtaWx5IjogIlJvYm90bywgc2Fucy1zZXJpZiIsCiAgICAgICJmb250LXNpemUiOiAiMTZweCIsCiAgICAgICJiYWNrZ3JvdW5kLWNvbG9yIjogInJnYigyNTUsIDI1NSwgMjU1KSIKICAgIH0sCiAgICAicGxhaW5UZXh0SW5wdXQiOiB7CiAgICAgICJib3JkZXItdG9wLXdpZHRoIjogIjFweCIsCiAgICAgICJib3JkZXItdG9wLWNvbG9yIjogInJnYigyMDAsIDIxMCwgMjE4KSIsCiAgICAgICJib3JkZXItcmFkaXVzIjogIjRweCIsCiAgICAgICJoZWlnaHQiOiAiMzZweCIsCiAgICAgICJ3aWR0aCI6ICI2OTZweCIsCiAgICAgICJwYWRkaW5nLWxlZnQiOiAiMTJweCIsCiAgICAgICJmb250LWZhbWlseSI6ICJSb2JvdG8sIFwiTm90byBTYW5zIEFyYWJpY1wiLCBcIlNlZ29lIFVJXCIsIHN5c3RlbS11aSwgLWFwcGxlLXN5c3RlbSwgc2Fucy1zZXJpZiIsCiAgICAgICJmb250LXNpemUiOiAiMTRweCIsCiAgICAgICJiYWNrZ3JvdW5kLWNvbG9yIjogInJnYigyNTUsIDI1NSwgMjU1KSIKICAgIH0KICB9LAogICJyZXBhaXJlZCI6IHsKICAgICJwaWxsc0lucHV0RmllbGQiOiB7CiAgICAgICJib3JkZXItdG9wLXdpZHRoIjogIjBweCIsCiAgICAgICJib3JkZXItdG9wLWNvbG9yIjogInJnYigyMCwgMzUsIDQ2KSIsCiAgICAgICJib3JkZXItcmFkaXVzIjogIjBweCIsCiAgICAgICJoZWlnaHQiOiAiMjIuMzkwNnB4IiwKICAgICAgIndpZHRoIjogIjQ0Mi4yNjZweCIsCiAgICAgICJwYWRkaW5nLWxlZnQiOiAiMHB4IiwKICAgICAgImZvbnQtZmFtaWx5IjogIlJvYm90bywgXCJOb3RvIFNhbnMgQXJhYmljXCIsIFwiU2Vnb2UgVUlcIiwgc3lzdGVtLXVpLCAtYXBwbGUtc3lzdGVtLCBzYW5zLXNlcmlmIiwKICAgICAgImZvbnQtc2l6ZSI6ICIxNHB4IiwKICAgICAgImJhY2tncm91bmQtY29sb3IiOiAicmdiYSgwLCAwLCAwLCAwKSIKICAgIH0sCiAgICAidGV4dGFyZWEiOiB7CiAgICAgICJib3JkZXItdG9wLXdpZHRoIjogIjFweCIsCiAgICAgICJib3JkZXItdG9wLWNvbG9yIjogInJnYigyMDAsIDIxMCwgMjE4KSIsCiAgICAgICJib3JkZXItcmFkaXVzIjogIjRweCIsCiAgICAgICJoZWlnaHQiOiAiNzZweCIsCiAgICAgICJ3aWR0aCI6ICIzNDBweCIsCiAgICAgICJwYWRkaW5nLWxlZnQiOiAiMTJweCIsCiAgICAgICJmb250LWZhbWlseSI6ICJSb2JvdG8sIFwiTm90byBTYW5zIEFyYWJpY1wiLCBcIlNlZ29lIFVJXCIsIHN5c3RlbS11aSwgLWFwcGxlLXN5c3RlbSwgc2Fucy1zZXJpZiIsCiAgICAgICJmb250LXNpemUiOiAiMTRweCIsCiAgICAgICJiYWNrZ3JvdW5kLWNvbG9yIjogInJnYigyNTUsIDI1NSwgMjU1KSIKICAgIH0sCiAgICAidGltZVBpY2tlckZpZWxkIjogewogICAgICAiYm9yZGVyLXRvcC13aWR0aCI6ICIwcHgiLAogICAgICAiYm9yZGVyLXRvcC1jb2xvciI6ICJyZ2IoMjAsIDM1LCA0NikiLAogICAgICAiYm9yZGVyLXJhZGl1cyI6ICIycHgiLAogICAgICAiaGVpZ2h0IjogIjIxcHgiLAogICAgICAid2lkdGgiOiAiMTkuOTIxOXB4IiwKICAgICAgInBhZGRpbmctbGVmdCI6ICIyLjFweCIsCiAgICAgICJmb250LWZhbWlseSI6ICJSb2JvdG8sIFwiTm90byBTYW5zIEFyYWJpY1wiLCBcIlNlZ29lIFVJXCIsIHN5c3RlbS11aSwgLWFwcGxlLXN5c3RlbSwgc2Fucy1zZXJpZiIsCiAgICAgICJmb250LXNpemUiOiAiMTRweCIsCiAgICAgICJiYWNrZ3JvdW5kLWNvbG9yIjogInJnYmEoMCwgMCwgMCwgMCkiCiAgICB9LAogICAgInBsYWluVGV4dElucHV0IjogewogICAgICAiYm9yZGVyLXRvcC13aWR0aCI6ICIxcHgiLAogICAgICAiYm9yZGVyLXRvcC1jb2xvciI6ICJyZ2IoMjAwLCAyMTAsIDIxOCkiLAogICAgICAiYm9yZGVyLXJhZGl1cyI6ICI0cHgiLAogICAgICAiaGVpZ2h0IjogIjM2cHgiLAogICAgICAid2lkdGgiOiAiMzQwcHgiLAogICAgICAicGFkZGluZy1sZWZ0IjogIjEycHgiLAogICAgICAiZm9udC1mYW1pbHkiOiAiUm9ib3RvLCBcIk5vdG8gU2FucyBBcmFiaWNcIiwgXCJTZWdvZSBVSVwiLCBzeXN0ZW0tdWksIC1hcHBsZS1zeXN0ZW0sIHNhbnMtc2VyaWYiLAogICAgICAiZm9udC1zaXplIjogIjE0cHgiLAogICAgICAiYmFja2dyb3VuZC1jb2xvciI6ICJyZ2IoMjU1LCAyNTUsIDI1NSkiCiAgICB9CiAgfQp9"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05384557491ebd602dd7-ee10c323bcc47c6802f9",
+              "file": "demo.spec.ts",
+              "line": 302,
+              "column": 3
+            },
+            {
+              "title": "does not render any element the host's [hidden] bug would expose",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 176,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-05T20:46:04.151Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05384557491ebd602dd7-8d6a0b0666f3b162d8f1",
+              "file": "demo.spec.ts",
+              "line": 471,
+              "column": 3
+            },
+            {
+              "title": "applies RTL for Arabic",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 300,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-05T20:46:04.330Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05384557491ebd602dd7-8e50155fecc1d7092df5",
+              "file": "demo.spec.ts",
+              "line": 493,
+              "column": 3
+            },
+            {
+              "title": "axe per section",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4132,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "axe 01-forms: 0 violations (0 critical, 0 serious), 0 incomplete\n"
+                        },
+                        {
+                          "text": "axe 02-selection: 0 violations (0 critical, 0 serious), 0 incomplete\n"
+                        },
+                        {
+                          "text": "axe 03-dates: 0 violations (0 critical, 0 serious), 0 incomplete\n"
+                        },
+                        {
+                          "text": "axe 04-overlays: 0 violations (0 critical, 0 serious), 0 incomplete\n"
+                        },
+                        {
+                          "text": "axe 05-chrome: 0 violations (0 critical, 0 serious), 0 incomplete\n"
+                        },
+                        {
+                          "text": "axe 06-data-table: 0 violations (0 critical, 0 serious), 0 incomplete\n"
+                        },
+                        {
+                          "text": "axe 07-states: 0 violations (0 critical, 0 serious), 0 incomplete\n"
+                        },
+                        {
+                          "text": "axe 09-side-by-side: 0 violations (0 critical, 0 serious), 0 incomplete\n"
+                        },
+                        {
+                          "text": "axe scoped: 0 violations | whole page: 1 violations\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-05T20:46:04.635Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "axe-summary.json",
+                          "contentType": "application/json",
+                          "body": "ewogICJzY29wZWQiOiB7CiAgICAic2VjdGlvbiI6ICJjYW5kaWRhdGUtc3VidHJlZSIsCiAgICAidXJsIjogImh0dHA6Ly9sb2NhbGhvc3Q6NTIwNS8/Y2FuZGlkYXRlPW9uIiwKICAgICJ0YWdzIjogWwogICAgICAid2NhZzJhIiwKICAgICAgIndjYWcyYWEiLAogICAgICAid2NhZzIxYSIsCiAgICAgICJ3Y2FnMjFhYSIsCiAgICAgICJ3Y2FnMjJhYSIKICAgIF0sCiAgICAidmlvbGF0aW9ucyI6IFtdLAogICAgImNvdW50cyI6IHsKICAgICAgInZpb2xhdGlvbnMiOiAwLAogICAgICAic2VyaW91cyI6IDAsCiAgICAgICJjcml0aWNhbCI6IDAsCiAgICAgICJpbmNvbXBsZXRlIjogMAogICAgfSwKICAgICJpbmNvbXBsZXRlUnVsZUlkcyI6IFtdCiAgfSwKICAid2hvbGVQYWdlIjogewogICAgInNlY3Rpb24iOiAid2hvbGUtcGFnZSIsCiAgICAidXJsIjogImh0dHA6Ly9sb2NhbGhvc3Q6NTIwNS8/Y2FuZGlkYXRlPW9uIiwKICAgICJ0YWdzIjogWwogICAgICAid2NhZzJhIiwKICAgICAgIndjYWcyYWEiLAogICAgICAid2NhZzIxYSIsCiAgICAgICJ3Y2FnMjFhYSIsCiAgICAgICJ3Y2FnMjJhYSIKICAgIF0sCiAgICAidmlvbGF0aW9ucyI6IFsKICAgICAgewogICAgICAgICJpZCI6ICJsaW5rLWluLXRleHQtYmxvY2siLAogICAgICAgICJpbXBhY3QiOiAic2VyaW91cyIsCiAgICAgICAgImhlbHAiOiAiTGlua3MgbXVzdCBiZSBkaXN0aW5ndWlzaGFibGUgd2l0aG91dCByZWx5aW5nIG9uIGNvbG9yIiwKICAgICAgICAiaGVscFVybCI6ICJodHRwczovL2RlcXVldW5pdmVyc2l0eS5jb20vcnVsZXMvYXhlLzQuMTIvbGluay1pbi10ZXh0LWJsb2NrP2FwcGxpY2F0aW9uPXBsYXl3cmlnaHQiLAogICAgICAgICJub2RlcyI6IFsKICAgICAgICAgICJhW2RhdGEtY2FuYXJ5PVwibGlua1wiXSIKICAgICAgICBdCiAgICAgIH0KICAgIF0sCiAgICAiY291bnRzIjogewogICAgICAidmlvbGF0aW9ucyI6IDEsCiAgICAgICJzZXJpb3VzIjogMSwKICAgICAgImNyaXRpY2FsIjogMCwKICAgICAgImluY29tcGxldGUiOiAwCiAgICB9LAogICAgImluY29tcGxldGVSdWxlSWRzIjogW10KICB9Cn0="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05384557491ebd602dd7-bd11210157393f04834c",
+              "file": "demo.spec.ts",
+              "line": 502,
+              "column": 3
+            },
+            {
+              "title": "screenshots per section",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1154,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-05T20:46:08.771Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05384557491ebd602dd7-68493275ddb31b41c792",
+              "file": "demo.spec.ts",
+              "line": 537,
+              "column": 3
+            },
+            {
+              "title": "screenshots in RTL",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1013,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-05T20:46:09.929Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05384557491ebd602dd7-302ba73148e09367fba1",
+              "file": "demo.spec.ts",
+              "line": 546,
+              "column": 3
+            },
+            {
+              "title": "long labels do not overflow the viewport",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 318,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-05T20:46:10.945Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05384557491ebd602dd7-e27229652d26b3ac106b",
+              "file": "demo.spec.ts",
+              "line": 558,
+              "column": 3
+            },
+            {
+              "title": "renders every section",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 302,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-05T20:46:11.523Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05384557491ebd602dd7-6ae398efb1512baba995",
+              "file": "demo.spec.ts",
+              "line": 57,
+              "column": 3
+            },
+            {
+              "title": "filters, sorts, selects and pages the 250-row table",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 609,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-05T20:46:11.920Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05384557491ebd602dd7-613f0047e10e11b62370",
+              "file": "demo.spec.ts",
+              "line": 64,
+              "column": 3
+            },
+            {
+              "title": "resizes a table column by keyboard",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 377,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-05T20:46:12.537Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05384557491ebd602dd7-540e11cf31b055e4739f",
+              "file": "demo.spec.ts",
+              "line": 93,
+              "column": 3
+            },
+            {
+              "title": "has a NATIVE date-time range picker",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1906,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-05T20:46:12.918Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05384557491ebd602dd7-417811aafb16c2db4d6b",
+              "file": "demo.spec.ts",
+              "line": 108,
+              "column": 3
+            },
+            {
+              "title": "traps and restores focus in the modal",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 571,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-05T20:46:14.828Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05384557491ebd602dd7-3fdbb3628825cdfc681f",
+              "file": "demo.spec.ts",
+              "line": 136,
+              "column": 3
+            },
+            {
+              "title": "portalled overlays keep their background",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 670,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-05T20:46:15.403Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "overlay-backgrounds.json",
+                          "contentType": "application/json",
+                          "body": "ewogICJtb2RhbCI6ICJyZ2IoMjU1LCAyNTUsIDI1NSkiLAogICJwb3BvdmVyIjogInJnYigyNTUsIDI1NSwgMjU1KSIsCiAgInRvb2x0aXAiOiAicmdiKDIwLCAzNSwgNDYpIiwKICAic2VsZWN0RHJvcGRvd24iOiAicmdiKDI1NSwgMjU1LCAyNTUpIiwKICAidW5kcnJUb2tlbkluc2lkZVBvcnRhbCI6ICIiCn0="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05384557491ebd602dd7-d4dc5e890870a2d113af",
+              "file": "demo.spec.ts",
+              "line": 150,
+              "column": 3
+            },
+            {
+              "title": "mantine CSS is absent with the candidate off",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 79,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-05T20:46:16.076Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05384557491ebd602dd7-4b12171d28cd5f18048f",
+              "file": "demo.spec.ts",
+              "line": 198,
+              "column": 3
+            },
+            {
+              "title": "passes the leakage assertion",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4468,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-05T20:46:16.158Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "leakage.json",
+                          "contentType": "application/json",
+                          "body": "ewogICJhc3NlcnRpb25QYXNzZWQiOiB0cnVlLAogICJkaWZmZXJlbmNlcyI6IFtdLAogICJjYW5hcmllc0NoZWNrZWQiOiAxNAp9"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05384557491ebd602dd7-e872c54e17efdeb48a73",
+              "file": "demo.spec.ts",
+              "line": 208,
+              "column": 3
+            },
+            {
+              "title": "measures what baseline.css would have leaked",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 96,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "baseline.css counterfactual: 36 canary differences\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-05T20:46:20.630Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "leakage-with-baseline.json",
+                          "contentType": "application/json",
+                          "body": "WwogIHsKICAgICJjYW5hcnkiOiAiaGVhZGluZy0xIiwKICAgICJwcm9wZXJ0eSI6ICJjb2xvciIsCiAgICAiYmVmb3JlIjogInJnYigyNiwgMjYsIDI2KSIsCiAgICAiYWZ0ZXIiOiAicmdiKDAsIDAsIDApIgogIH0sCiAgewogICAgImNhbmFyeSI6ICJoZWFkaW5nLTEiLAogICAgInByb3BlcnR5IjogImZvbnQtZmFtaWx5IiwKICAgICJiZWZvcmUiOiAiUm9ib3RvLCBzYW5zLXNlcmlmIiwKICAgICJhZnRlciI6ICItYXBwbGUtc3lzdGVtLCBcInN5c3RlbS11aVwiLCBcIlNlZ29lIFVJXCIsIFJvYm90bywgSGVsdmV0aWNhLCBBcmlhbCwgc2Fucy1zZXJpZiwgXCJBcHBsZSBDb2xvciBFbW9qaVwiLCBcIlNlZ29lIFVJIEVtb2ppXCIiCiAgfSwKICB7CiAgICAiY2FuYXJ5IjogImhlYWRpbmctMSIsCiAgICAicHJvcGVydHkiOiAiYm9yZGVyLXRvcC1jb2xvciIsCiAgICAiYmVmb3JlIjogInJnYigyNiwgMjYsIDI2KSIsCiAgICAiYWZ0ZXIiOiAicmdiKDAsIDAsIDApIgogIH0sCiAgewogICAgImNhbmFyeSI6ICJuYXYiLAogICAgInByb3BlcnR5IjogImNvbG9yIiwKICAgICJiZWZvcmUiOiAicmdiKDI2LCAyNiwgMjYpIiwKICAgICJhZnRlciI6ICJyZ2IoMCwgMCwgMCkiCiAgfSwKICB7CiAgICAiY2FuYXJ5IjogIm5hdiIsCiAgICAicHJvcGVydHkiOiAiZm9udC1mYW1pbHkiLAogICAgImJlZm9yZSI6ICJSb2JvdG8sIHNhbnMtc2VyaWYiLAogICAgImFmdGVyIjogIi1hcHBsZS1zeXN0ZW0sIFwic3lzdGVtLXVpXCIsIFwiU2Vnb2UgVUlcIiwgUm9ib3RvLCBIZWx2ZXRpY2EsIEFyaWFsLCBzYW5zLXNlcmlmLCBcIkFwcGxlIENvbG9yIEVtb2ppXCIsIFwiU2Vnb2UgVUkgRW1vamlcIiIKICB9LAogIHsKICAgICJjYW5hcnkiOiAibmF2IiwKICAgICJwcm9wZXJ0eSI6ICJsaW5lLWhlaWdodCIsCiAgICAiYmVmb3JlIjogIjI0cHgiLAogICAgImFmdGVyIjogIjI0LjhweCIKICB9LAogIHsKICAgICJjYW5hcnkiOiAibmF2IiwKICAgICJwcm9wZXJ0eSI6ICJib3JkZXItdG9wLWNvbG9yIiwKICAgICJiZWZvcmUiOiAicmdiKDI2LCAyNiwgMjYpIiwKICAgICJhZnRlciI6ICJyZ2IoMCwgMCwgMCkiCiAgfSwKICB7CiAgICAiY2FuYXJ5IjogIm5hdi1saW5rIiwKICAgICJwcm9wZXJ0eSI6ICJmb250LWZhbWlseSIsCiAgICAiYmVmb3JlIjogIlJvYm90bywgc2Fucy1zZXJpZiIsCiAgICAiYWZ0ZXIiOiAiLWFwcGxlLXN5c3RlbSwgXCJzeXN0ZW0tdWlcIiwgXCJTZWdvZSBVSVwiLCBSb2JvdG8sIEhlbHZldGljYSwgQXJpYWwsIHNhbnMtc2VyaWYsIFwiQXBwbGUgQ29sb3IgRW1vamlcIiwgXCJTZWdvZSBVSSBFbW9qaVwiIgogIH0sCiAgewogICAgImNhbmFyeSI6ICJuYXYtbGluayIsCiAgICAicHJvcGVydHkiOiAibGluZS1oZWlnaHQiLAogICAgImJlZm9yZSI6ICIyNHB4IiwKICAgICJhZnRlciI6ICIyNC44cHgiCiAgfSwKICB7CiAgICAiY2FuYXJ5IjogImhlYWRpbmctMiIsCiAgICAicHJvcGVydHkiOiAiY29sb3IiLAogICAgImJlZm9yZSI6ICJyZ2IoMjYsIDI2LCAyNikiLAogICAgImFmdGVyIjogInJnYigwLCAwLCAwKSIKICB9LAogIHsKICAgICJjYW5hcnkiOiAiaGVhZGluZy0yIiwKICAgICJwcm9wZXJ0eSI6ICJmb250LWZhbWlseSIsCiAgICAiYmVmb3JlIjogIlJvYm90bywgc2Fucy1zZXJpZiIsCiAgICAiYWZ0ZXIiOiAiLWFwcGxlLXN5c3RlbSwgXCJzeXN0ZW0tdWlcIiwgXCJTZWdvZSBVSVwiLCBSb2JvdG8sIEhlbHZldGljYSwgQXJpYWwsIHNhbnMtc2VyaWYsIFwiQXBwbGUgQ29sb3IgRW1vamlcIiwgXCJTZWdvZSBVSSBFbW9qaVwiIgogIH0sCiAgewogICAgImNhbmFyeSI6ICJoZWFkaW5nLTIiLAogICAgInByb3BlcnR5IjogImJvcmRlci10b3AtY29sb3IiLAogICAgImJlZm9yZSI6ICJyZ2IoMjYsIDI2LCAyNikiLAogICAgImFmdGVyIjogInJnYigwLCAwLCAwKSIKICB9LAogIHsKICAgICJjYW5hcnkiOiAiaGVhZGluZy0zIiwKICAgICJwcm9wZXJ0eSI6ICJjb2xvciIsCiAgICAiYmVmb3JlIjogInJnYigyNiwgMjYsIDI2KSIsCiAgICAiYWZ0ZXIiOiAicmdiKDAsIDAsIDApIgogIH0sCiAgewogICAgImNhbmFyeSI6ICJoZWFkaW5nLTMiLAogICAgInByb3BlcnR5IjogImZvbnQtZmFtaWx5IiwKICAgICJiZWZvcmUiOiAiUm9ib3RvLCBzYW5zLXNlcmlmIiwKICAgICJhZnRlciI6ICItYXBwbGUtc3lzdGVtLCBcInN5c3RlbS11aVwiLCBcIlNlZ29lIFVJXCIsIFJvYm90bywgSGVsdmV0aWNhLCBBcmlhbCwgc2Fucy1zZXJpZiwgXCJBcHBsZSBDb2xvciBFbW9qaVwiLCBcIlNlZ29lIFVJIEVtb2ppXCIiCiAgfSwKICB7CiAgICAiY2FuYXJ5IjogImhlYWRpbmctMyIsCiAgICAicHJvcGVydHkiOiAiYm9yZGVyLXRvcC1jb2xvciIsCiAgICAiYmVmb3JlIjogInJnYigyNiwgMjYsIDI2KSIsCiAgICAiYWZ0ZXIiOiAicmdiKDAsIDAsIDApIgogIH0sCiAgewogICAgImNhbmFyeSI6ICJwYXJhZ3JhcGgiLAogICAgInByb3BlcnR5IjogImNvbG9yIiwKICAgICJiZWZvcmUiOiAicmdiKDI2LCAyNiwgMjYpIiwKICAgICJhZnRlciI6ICJyZ2IoMCwgMCwgMCkiCiAgfSwKICB7CiAgICAiY2FuYXJ5IjogInBhcmFncmFwaCIsCiAgICAicHJvcGVydHkiOiAiZm9udC1mYW1pbHkiLAogICAgImJlZm9yZSI6ICJSb2JvdG8sIHNhbnMtc2VyaWYiLAogICAgImFmdGVyIjogIi1hcHBsZS1zeXN0ZW0sIFwic3lzdGVtLXVpXCIsIFwiU2Vnb2UgVUlcIiwgUm9ib3RvLCBIZWx2ZXRpY2EsIEFyaWFsLCBzYW5zLXNlcmlmLCBcIkFwcGxlIENvbG9yIEVtb2ppXCIsIFwiU2Vnb2UgVUkgRW1vamlcIiIKICB9LAogIHsKICAgICJjYW5hcnkiOiAicGFyYWdyYXBoIiwKICAgICJwcm9wZXJ0eSI6ICJsaW5lLWhlaWdodCIsCiAgICAiYmVmb3JlIjogIjI0cHgiLAogICAgImFmdGVyIjogIjI0LjhweCIKICB9LAogIHsKICAgICJjYW5hcnkiOiAicGFyYWdyYXBoIiwKICAgICJwcm9wZXJ0eSI6ICJib3JkZXItdG9wLWNvbG9yIiwKICAgICJiZWZvcmUiOiAicmdiKDI2LCAyNiwgMjYpIiwKICAgICJhZnRlciI6ICJyZ2IoMCwgMCwgMCkiCiAgfSwKICB7CiAgICAiY2FuYXJ5IjogImxpbmsiLAogICAgInByb3BlcnR5IjogImZvbnQtZmFtaWx5IiwKICAgICJiZWZvcmUiOiAiUm9ib3RvLCBzYW5zLXNlcmlmIiwKICAgICJhZnRlciI6ICItYXBwbGUtc3lzdGVtLCBcInN5c3RlbS11aVwiLCBcIlNlZ29lIFVJXCIsIFJvYm90bywgSGVsdmV0aWNhLCBBcmlhbCwgc2Fucy1zZXJpZiwgXCJBcHBsZSBDb2xvciBFbW9qaVwiLCBcIlNlZ29lIFVJIEVtb2ppXCIiCiAgfSwKICB7CiAgICAiY2FuYXJ5IjogImxpbmsiLAogICAgInByb3BlcnR5IjogImxpbmUtaGVpZ2h0IiwKICAgICJiZWZvcmUiOiAiMjRweCIsCiAgICAiYWZ0ZXIiOiAiMjQuOHB4IgogIH0sCiAgewogICAgImNhbmFyeSI6ICJ0YWJsZSIsCiAgICAicHJvcGVydHkiOiAiY29sb3IiLAogICAgImJlZm9yZSI6ICJyZ2IoMjYsIDI2LCAyNikiLAogICAgImFmdGVyIjogInJnYigwLCAwLCAwKSIKICB9LAogIHsKICAgICJjYW5hcnkiOiAidGFibGUiLAogICAgInByb3BlcnR5IjogImZvbnQtZmFtaWx5IiwKICAgICJiZWZvcmUiOiAiUm9ib3RvLCBzYW5zLXNlcmlmIiwKICAgICJhZnRlciI6ICItYXBwbGUtc3lzdGVtLCBcInN5c3RlbS11aVwiLCBcIlNlZ29lIFVJXCIsIFJvYm90bywgSGVsdmV0aWNhLCBBcmlhbCwgc2Fucy1zZXJpZiwgXCJBcHBsZSBDb2xvciBFbW9qaVwiLCBcIlNlZ29lIFVJIEVtb2ppXCIiCiAgfSwKICB7CiAgICAiY2FuYXJ5IjogInRhYmxlIiwKICAgICJwcm9wZXJ0eSI6ICJsaW5lLWhlaWdodCIsCiAgICAiYmVmb3JlIjogIjI0cHgiLAogICAgImFmdGVyIjogIjI0LjhweCIKICB9LAogIHsKICAgICJjYW5hcnkiOiAidGFibGUiLAogICAgInByb3BlcnR5IjogImJvcmRlci10b3AtY29sb3IiLAogICAgImJlZm9yZSI6ICJyZ2IoMjYsIDI2LCAyNikiLAogICAgImFmdGVyIjogInJnYigwLCAwLCAwKSIKICB9LAogIHsKICAgICJjYW5hcnkiOiAidGFibGUtY2VsbCIsCiAgICAicHJvcGVydHkiOiAiY29sb3IiLAogICAgImJlZm9yZSI6ICJyZ2IoMjYsIDI2LCAyNikiLAogICAgImFmdGVyIjogInJnYigwLCAwLCAwKSIKICB9LAogIHsKICAgICJjYW5hcnkiOiAidGFibGUtY2VsbCIsCiAgICAicHJvcGVydHkiOiAiZm9udC1mYW1pbHkiLAogICAgImJlZm9yZSI6ICJSb2JvdG8sIHNhbnMtc2VyaWYiLAogICAgImFmdGVyIjogIi1hcHBsZS1zeXN0ZW0sIFwic3lzdGVtLXVpXCIsIFwiU2Vnb2UgVUlcIiwgUm9ib3RvLCBIZWx2ZXRpY2EsIEFyaWFsLCBzYW5zLXNlcmlmLCBcIkFwcGxlIENvbG9yIEVtb2ppXCIsIFwiU2Vnb2UgVUkgRW1vamlcIiIKICB9LAogIHsKICAgICJjYW5hcnkiOiAidGFibGUtY2VsbCIsCiAgICAicHJvcGVydHkiOiAiYm9yZGVyLXRvcC1jb2xvciIsCiAgICAiYmVmb3JlIjogInJnYigyNiwgMjYsIDI2KSIsCiAgICAiYWZ0ZXIiOiAicmdiKDAsIDAsIDApIgogIH0sCiAgewogICAgImNhbmFyeSI6ICJjYXJkLWZpcnN0IiwKICAgICJwcm9wZXJ0eSI6ICJjb2xvciIsCiAgICAiYmVmb3JlIjogInJnYigyNiwgMjYsIDI2KSIsCiAgICAiYWZ0ZXIiOiAicmdiKDAsIDAsIDApIgogIH0sCiAgewogICAgImNhbmFyeSI6ICJjYXJkLWZpcnN0IiwKICAgICJwcm9wZXJ0eSI6ICJmb250LWZhbWlseSIsCiAgICAiYmVmb3JlIjogIlJvYm90bywgc2Fucy1zZXJpZiIsCiAgICAiYWZ0ZXIiOiAiLWFwcGxlLXN5c3RlbSwgXCJzeXN0ZW0tdWlcIiwgXCJTZWdvZSBVSVwiLCBSb2JvdG8sIEhlbHZldGljYSwgQXJpYWwsIHNhbnMtc2VyaWYsIFwiQXBwbGUgQ29sb3IgRW1vamlcIiwgXCJTZWdvZSBVSSBFbW9qaVwiIgogIH0sCiAgewogICAgImNhbmFyeSI6ICJjYXJkLWZpcnN0IiwKICAgICJwcm9wZXJ0eSI6ICJsaW5lLWhlaWdodCIsCiAgICAiYmVmb3JlIjogIjI0cHgiLAogICAgImFmdGVyIjogIjI0LjhweCIKICB9LAogIHsKICAgICJjYW5hcnkiOiAiY2FyZC1maXJzdCIsCiAgICAicHJvcGVydHkiOiAiYm9yZGVyLXRvcC1jb2xvciIsCiAgICAiYmVmb3JlIjogInJnYigyNiwgMjYsIDI2KSIsCiAgICAiYWZ0ZXIiOiAicmdiKDAsIDAsIDApIgogIH0sCiAgewogICAgImNhbmFyeSI6ICJjYXJkLXNlY29uZCIsCiAgICAicHJvcGVydHkiOiAiY29sb3IiLAogICAgImJlZm9yZSI6ICJyZ2IoMjYsIDI2LCAyNikiLAogICAgImFmdGVyIjogInJnYigwLCAwLCAwKSIKICB9LAogIHsKICAgICJjYW5hcnkiOiAiY2FyZC1zZWNvbmQiLAogICAgInByb3BlcnR5IjogImZvbnQtZmFtaWx5IiwKICAgICJiZWZvcmUiOiAiUm9ib3RvLCBzYW5zLXNlcmlmIiwKICAgICJhZnRlciI6ICItYXBwbGUtc3lzdGVtLCBcInN5c3RlbS11aVwiLCBcIlNlZ29lIFVJXCIsIFJvYm90bywgSGVsdmV0aWNhLCBBcmlhbCwgc2Fucy1zZXJpZiwgXCJBcHBsZSBDb2xvciBFbW9qaVwiLCBcIlNlZ29lIFVJIEVtb2ppXCIiCiAgfSwKICB7CiAgICAiY2FuYXJ5IjogImNhcmQtc2Vjb25kIiwKICAgICJwcm9wZXJ0eSI6ICJsaW5lLWhlaWdodCIsCiAgICAiYmVmb3JlIjogIjI0cHgiLAogICAgImFmdGVyIjogIjI0LjhweCIKICB9LAogIHsKICAgICJjYW5hcnkiOiAiY2FyZC1zZWNvbmQiLAogICAgInByb3BlcnR5IjogImJvcmRlci10b3AtY29sb3IiLAogICAgImJlZm9yZSI6ICJyZ2IoMjYsIDI2LCAyNikiLAogICAgImFmdGVyIjogInJnYigwLCAwLCAwKSIKICB9Cl0="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05384557491ebd602dd7-eb669c732ce801c7b9ae",
+              "file": "demo.spec.ts",
+              "line": 229,
+              "column": 3
+            },
+            {
+              "title": "measures what the host's element rules steal from Mantine",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 713,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "host-into-candidate blast radius: 5 of 50 candidate inputs\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-05T20:46:20.729Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "host-collision.json",
+                          "contentType": "application/json",
+                          "body": "ewogICJpbnZlbnRvcnkiOiB7CiAgICAic2NvcGVzQ2hlY2tlZCI6IDEyLAogICAgImNhbmRpZGF0ZUlucHV0cyI6IDUwLAogICAgImlucHV0c1dpdGhBVHlwZUF0dHJpYnV0ZSI6IDMzLAogICAgImlucHV0VHlwZXNQcmVzZW50IjogWwogICAgICAiKGFic2VudCkiLAogICAgICAiY2hlY2tib3giLAogICAgICAiaGlkZGVuIiwKICAgICAgInJhZGlvIiwKICAgICAgInRleHQiCiAgICBdLAogICAgIm1hdGNoZXNNYW5ncm92ZUZvcm1TZWxlY3RvciI6IDUsCiAgICAibWF0Y2hpbmdDb21wb25lbnRzIjogWwogICAgICAibWFudGluZS1NdWx0aVNlbGVjdC1pbnB1dEZpZWxkIiwKICAgICAgIm1hbnRpbmUtVGltZVBpY2tlci1maWVsZCIKICAgIF0KICB9LAogICJ1bnJlcGFpcmVkIjogewogICAgInBpbGxzSW5wdXRGaWVsZCI6IHsKICAgICAgImJvcmRlci10b3Atd2lkdGgiOiAiMnB4IiwKICAgICAgImJvcmRlci10b3AtY29sb3IiOiAicmdiKDI2LCAyNiwgMjYpIiwKICAgICAgImJvcmRlci1yYWRpdXMiOiAiMHB4IiwKICAgICAgImhlaWdodCI6ICI0NnB4IiwKICAgICAgIndpZHRoIjogIjg1OC4yNjZweCIsCiAgICAgICJwYWRkaW5nLWxlZnQiOiAiNi4yNXB4IiwKICAgICAgImZvbnQtZmFtaWx5IjogIlJvYm90bywgc2Fucy1zZXJpZiIsCiAgICAgICJmb250LXNpemUiOiAiMTZweCIsCiAgICAgICJiYWNrZ3JvdW5kLWNvbG9yIjogInJnYigyNTUsIDI1NSwgMjU1KSIKICAgIH0sCiAgICAidGV4dGFyZWEiOiB7CiAgICAgICJib3JkZXItdG9wLXdpZHRoIjogIjFweCIsCiAgICAgICJib3JkZXItdG9wLWNvbG9yIjogInJnYigyMDAsIDIxMCwgMjE4KSIsCiAgICAgICJib3JkZXItcmFkaXVzIjogIjRweCIsCiAgICAgICJoZWlnaHQiOiAiNTVweCIsCiAgICAgICJ3aWR0aCI6ICIxMTEycHgiLAogICAgICAicGFkZGluZy1sZWZ0IjogIjEycHgiLAogICAgICAiZm9udC1mYW1pbHkiOiAiUm9ib3RvLCBcIk5vdG8gU2FucyBBcmFiaWNcIiwgXCJTZWdvZSBVSVwiLCBzeXN0ZW0tdWksIC1hcHBsZS1zeXN0ZW0sIHNhbnMtc2VyaWYiLAogICAgICAiZm9udC1zaXplIjogIjE0cHgiLAogICAgICAiYmFja2dyb3VuZC1jb2xvciI6ICJyZ2IoMjU1LCAyNTUsIDI1NSkiCiAgICB9LAogICAgInRpbWVQaWNrZXJGaWVsZCI6IHsKICAgICAgImJvcmRlci10b3Atd2lkdGgiOiAiMnB4IiwKICAgICAgImJvcmRlci10b3AtY29sb3IiOiAicmdiKDI2LCAyNiwgMjYpIiwKICAgICAgImJvcmRlci1yYWRpdXMiOiAiMHB4IiwKICAgICAgImhlaWdodCI6ICI0NnB4IiwKICAgICAgIndpZHRoIjogIjEwMCUiLAogICAgICAicGFkZGluZy1sZWZ0IjogIjYuMjVweCIsCiAgICAgICJmb250LWZhbWlseSI6ICJSb2JvdG8sIHNhbnMtc2VyaWYiLAogICAgICAiZm9udC1zaXplIjogIjE2cHgiLAogICAgICAiYmFja2dyb3VuZC1jb2xvciI6ICJyZ2IoMjU1LCAyNTUsIDI1NSkiCiAgICB9LAogICAgInBsYWluVGV4dElucHV0IjogewogICAgICAiYm9yZGVyLXRvcC13aWR0aCI6ICIxcHgiLAogICAgICAiYm9yZGVyLXRvcC1jb2xvciI6ICJyZ2IoMjAwLCAyMTAsIDIxOCkiLAogICAgICAiYm9yZGVyLXJhZGl1cyI6ICI0cHgiLAogICAgICAiaGVpZ2h0IjogIjM2cHgiLAogICAgICAid2lkdGgiOiAiMTExMnB4IiwKICAgICAgInBhZGRpbmctbGVmdCI6ICIxMnB4IiwKICAgICAgImZvbnQtZmFtaWx5IjogIlJvYm90bywgXCJOb3RvIFNhbnMgQXJhYmljXCIsIFwiU2Vnb2UgVUlcIiwgc3lzdGVtLXVpLCAtYXBwbGUtc3lzdGVtLCBzYW5zLXNlcmlmIiwKICAgICAgImZvbnQtc2l6ZSI6ICIxNHB4IiwKICAgICAgImJhY2tncm91bmQtY29sb3IiOiAicmdiKDI1NSwgMjU1LCAyNTUpIgogICAgfQogIH0sCiAgInJlcGFpcmVkIjogewogICAgInBpbGxzSW5wdXRGaWVsZCI6IHsKICAgICAgImJvcmRlci10b3Atd2lkdGgiOiAiMHB4IiwKICAgICAgImJvcmRlci10b3AtY29sb3IiOiAicmdiKDIwLCAzNSwgNDYpIiwKICAgICAgImJvcmRlci1yYWRpdXMiOiAiMHB4IiwKICAgICAgImhlaWdodCI6ICIyMi4zOTA2cHgiLAogICAgICAid2lkdGgiOiAiODU4LjI2NnB4IiwKICAgICAgInBhZGRpbmctbGVmdCI6ICIwcHgiLAogICAgICAiZm9udC1mYW1pbHkiOiAiUm9ib3RvLCBcIk5vdG8gU2FucyBBcmFiaWNcIiwgXCJTZWdvZSBVSVwiLCBzeXN0ZW0tdWksIC1hcHBsZS1zeXN0ZW0sIHNhbnMtc2VyaWYiLAogICAgICAiZm9udC1zaXplIjogIjE0cHgiLAogICAgICAiYmFja2dyb3VuZC1jb2xvciI6ICJyZ2JhKDAsIDAsIDAsIDApIgogICAgfSwKICAgICJ0ZXh0YXJlYSI6IHsKICAgICAgImJvcmRlci10b3Atd2lkdGgiOiAiMXB4IiwKICAgICAgImJvcmRlci10b3AtY29sb3IiOiAicmdiKDIwMCwgMjEwLCAyMTgpIiwKICAgICAgImJvcmRlci1yYWRpdXMiOiAiNHB4IiwKICAgICAgImhlaWdodCI6ICI5N3B4IiwKICAgICAgIndpZHRoIjogIjI2NnB4IiwKICAgICAgInBhZGRpbmctbGVmdCI6ICIxMnB4IiwKICAgICAgImZvbnQtZmFtaWx5IjogIlJvYm90bywgXCJOb3RvIFNhbnMgQXJhYmljXCIsIFwiU2Vnb2UgVUlcIiwgc3lzdGVtLXVpLCAtYXBwbGUtc3lzdGVtLCBzYW5zLXNlcmlmIiwKICAgICAgImZvbnQtc2l6ZSI6ICIxNHB4IiwKICAgICAgImJhY2tncm91bmQtY29sb3IiOiAicmdiKDI1NSwgMjU1LCAyNTUpIgogICAgfSwKICAgICJ0aW1lUGlja2VyRmllbGQiOiB7CiAgICAgICJib3JkZXItdG9wLXdpZHRoIjogIjBweCIsCiAgICAgICJib3JkZXItdG9wLWNvbG9yIjogInJnYigyMCwgMzUsIDQ2KSIsCiAgICAgICJib3JkZXItcmFkaXVzIjogIjJweCIsCiAgICAgICJoZWlnaHQiOiAiMjFweCIsCiAgICAgICJ3aWR0aCI6ICIxOS45MjE5cHgiLAogICAgICAicGFkZGluZy1sZWZ0IjogIjIuMXB4IiwKICAgICAgImZvbnQtZmFtaWx5IjogIlJvYm90bywgXCJOb3RvIFNhbnMgQXJhYmljXCIsIFwiU2Vnb2UgVUlcIiwgc3lzdGVtLXVpLCAtYXBwbGUtc3lzdGVtLCBzYW5zLXNlcmlmIiwKICAgICAgImZvbnQtc2l6ZSI6ICIxNHB4IiwKICAgICAgImJhY2tncm91bmQtY29sb3IiOiAicmdiYSgwLCAwLCAwLCAwKSIKICAgIH0sCiAgICAicGxhaW5UZXh0SW5wdXQiOiB7CiAgICAgICJib3JkZXItdG9wLXdpZHRoIjogIjFweCIsCiAgICAgICJib3JkZXItdG9wLWNvbG9yIjogInJnYigyMDAsIDIxMCwgMjE4KSIsCiAgICAgICJib3JkZXItcmFkaXVzIjogIjRweCIsCiAgICAgICJoZWlnaHQiOiAiMzZweCIsCiAgICAgICJ3aWR0aCI6ICIyNjZweCIsCiAgICAgICJwYWRkaW5nLWxlZnQiOiAiMTJweCIsCiAgICAgICJmb250LWZhbWlseSI6ICJSb2JvdG8sIFwiTm90byBTYW5zIEFyYWJpY1wiLCBcIlNlZ29lIFVJXCIsIHN5c3RlbS11aSwgLWFwcGxlLXN5c3RlbSwgc2Fucy1zZXJpZiIsCiAgICAgICJmb250LXNpemUiOiAiMTRweCIsCiAgICAgICJiYWNrZ3JvdW5kLWNvbG9yIjogInJnYigyNTUsIDI1NSwgMjU1KSIKICAgIH0KICB9Cn0="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05384557491ebd602dd7-7eac039ae7d938e7d3a7",
+              "file": "demo.spec.ts",
+              "line": 302,
+              "column": 3
+            },
+            {
+              "title": "does not render any element the host's [hidden] bug would expose",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 176,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-05T20:46:21.445Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05384557491ebd602dd7-d795ebf802cca69ef8b2",
+              "file": "demo.spec.ts",
+              "line": 471,
+              "column": 3
+            },
+            {
+              "title": "applies RTL for Arabic",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 303,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-05T20:46:21.624Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05384557491ebd602dd7-f4f430657d8a792d360e",
+              "file": "demo.spec.ts",
+              "line": 493,
+              "column": 3
+            },
+            {
+              "title": "axe per section",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4229,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "axe 01-forms: 0 violations (0 critical, 0 serious), 0 incomplete\n"
+                        },
+                        {
+                          "text": "axe 02-selection: 0 violations (0 critical, 0 serious), 0 incomplete\n"
+                        },
+                        {
+                          "text": "axe 03-dates: 0 violations (0 critical, 0 serious), 0 incomplete\n"
+                        },
+                        {
+                          "text": "axe 04-overlays: 0 violations (0 critical, 0 serious), 0 incomplete\n"
+                        },
+                        {
+                          "text": "axe 05-chrome: 0 violations (0 critical, 0 serious), 0 incomplete\n"
+                        },
+                        {
+                          "text": "axe 06-data-table: 0 violations (0 critical, 0 serious), 0 incomplete\n"
+                        },
+                        {
+                          "text": "axe 07-states: 0 violations (0 critical, 0 serious), 0 incomplete\n"
+                        },
+                        {
+                          "text": "axe 09-side-by-side: 0 violations (0 critical, 0 serious), 0 incomplete\n"
+                        },
+                        {
+                          "text": "axe scoped: 0 violations | whole page: 1 violations\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-05T20:46:21.930Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "axe-summary.json",
+                          "contentType": "application/json",
+                          "body": "ewogICJzY29wZWQiOiB7CiAgICAic2VjdGlvbiI6ICJjYW5kaWRhdGUtc3VidHJlZSIsCiAgICAidXJsIjogImh0dHA6Ly9sb2NhbGhvc3Q6NTIwNS8/Y2FuZGlkYXRlPW9uIiwKICAgICJ0YWdzIjogWwogICAgICAid2NhZzJhIiwKICAgICAgIndjYWcyYWEiLAogICAgICAid2NhZzIxYSIsCiAgICAgICJ3Y2FnMjFhYSIsCiAgICAgICJ3Y2FnMjJhYSIKICAgIF0sCiAgICAidmlvbGF0aW9ucyI6IFtdLAogICAgImNvdW50cyI6IHsKICAgICAgInZpb2xhdGlvbnMiOiAwLAogICAgICAic2VyaW91cyI6IDAsCiAgICAgICJjcml0aWNhbCI6IDAsCiAgICAgICJpbmNvbXBsZXRlIjogMAogICAgfSwKICAgICJpbmNvbXBsZXRlUnVsZUlkcyI6IFtdCiAgfSwKICAid2hvbGVQYWdlIjogewogICAgInNlY3Rpb24iOiAid2hvbGUtcGFnZSIsCiAgICAidXJsIjogImh0dHA6Ly9sb2NhbGhvc3Q6NTIwNS8/Y2FuZGlkYXRlPW9uIiwKICAgICJ0YWdzIjogWwogICAgICAid2NhZzJhIiwKICAgICAgIndjYWcyYWEiLAogICAgICAid2NhZzIxYSIsCiAgICAgICJ3Y2FnMjFhYSIsCiAgICAgICJ3Y2FnMjJhYSIKICAgIF0sCiAgICAidmlvbGF0aW9ucyI6IFsKICAgICAgewogICAgICAgICJpZCI6ICJsaW5rLWluLXRleHQtYmxvY2siLAogICAgICAgICJpbXBhY3QiOiAic2VyaW91cyIsCiAgICAgICAgImhlbHAiOiAiTGlua3MgbXVzdCBiZSBkaXN0aW5ndWlzaGFibGUgd2l0aG91dCByZWx5aW5nIG9uIGNvbG9yIiwKICAgICAgICAiaGVscFVybCI6ICJodHRwczovL2RlcXVldW5pdmVyc2l0eS5jb20vcnVsZXMvYXhlLzQuMTIvbGluay1pbi10ZXh0LWJsb2NrP2FwcGxpY2F0aW9uPXBsYXl3cmlnaHQiLAogICAgICAgICJub2RlcyI6IFsKICAgICAgICAgICJhW2RhdGEtY2FuYXJ5PVwibGlua1wiXSIKICAgICAgICBdCiAgICAgIH0KICAgIF0sCiAgICAiY291bnRzIjogewogICAgICAidmlvbGF0aW9ucyI6IDEsCiAgICAgICJzZXJpb3VzIjogMSwKICAgICAgImNyaXRpY2FsIjogMCwKICAgICAgImluY29tcGxldGUiOiAwCiAgICB9LAogICAgImluY29tcGxldGVSdWxlSWRzIjogW10KICB9Cn0="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05384557491ebd602dd7-f9c2bb908f17fccfa522",
+              "file": "demo.spec.ts",
+              "line": 502,
+              "column": 3
+            },
+            {
+              "title": "screenshots per section",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1833,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-05T20:46:26.163Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05384557491ebd602dd7-26bdd8667776d40a9477",
+              "file": "demo.spec.ts",
+              "line": 537,
+              "column": 3
+            },
+            {
+              "title": "screenshots in RTL",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3462,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-05T20:46:28.000Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05384557491ebd602dd7-f37631c4a4b951b215ab",
+              "file": "demo.spec.ts",
+              "line": 546,
+              "column": 3
+            },
+            {
+              "title": "long labels do not overflow the viewport",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 266,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-05T20:46:31.466Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05384557491ebd602dd7-4a3027c7ff2507b74cd6",
+              "file": "demo.spec.ts",
+              "line": 558,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-08-05T20:45:07.025Z",
+    "duration": 84749.154,
+    "expected": 48,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

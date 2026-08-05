@@ -15,6 +15,27 @@
  * host with an empty candidate subtree. Comparing across a reload rather than
  * a React unmount matters, because stylesheets a library injects at import time
  * are not removed on unmount and would otherwise be present in both snapshots.
+ *
+ * ## KNOWN LIMITATION: statically imported stylesheets are invisible
+ *
+ * This check diffs two loads of the same document. A stylesheet that arrives
+ * through a static `import "…/styles.css"` is therefore present in BOTH loads,
+ * so whatever it does to the host canaries appears identically in both
+ * snapshots and cancels out. The assertion passes vacuously.
+ *
+ * That is fine for a library that injects styles at render time — MUI's emotion
+ * styles, for instance, genuinely are absent when no component has mounted. It
+ * is NOT fine for a library shipping a plain stylesheet: Mantine, Carbon.
+ *
+ * A demo must therefore load its candidate's CSS conditionally, inside the
+ * `candidate=on` branch, so the baseline really is the host alone. See
+ * `apps/mangrove-mantine/src/main.tsx` for the pattern, and
+ * `docs/requirements.md` for the rule.
+ *
+ * Found by the mangrove-mantine run. Where a demo's own CSS is entirely scoped
+ * under its subtree class it cannot reach a canary anyway, and a `clean` result
+ * is still correct — but it is correct by construction rather than by
+ * measurement, and the difference matters when reading these numbers.
  */
 
 import type { Page } from "@playwright/test";

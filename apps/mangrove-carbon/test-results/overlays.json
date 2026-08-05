@@ -1,0 +1,58 @@
+[
+  {
+    "overlay": "popover",
+    "insideCandidateRoot": true,
+    "insideTokenScope": true,
+    "backgroundColor": "rgb(255, 255, 255)",
+    "undrrTokenResolves": true,
+    "cdsLayerResolves": true
+  },
+  {
+    "overlay": "modal",
+    "insideCandidateRoot": true,
+    "insideTokenScope": true,
+    "backgroundColor": "rgb(255, 255, 255)",
+    "undrrTokenResolves": true,
+    "cdsLayerResolves": true
+  },
+  {
+    "overlay": "tooltip",
+    "insideCandidateRoot": true,
+    "insideTokenScope": true,
+    "backgroundColor": "rgb(20, 35, 46)",
+    "undrrTokenResolves": true,
+    "cdsLayerResolves": true
+  },
+  {
+    "overlay": "dropdown menu",
+    "insideCandidateRoot": true,
+    "insideTokenScope": true,
+    "backgroundColor": "rgb(255, 255, 255)",
+    "undrrTokenResolves": true,
+    "cdsLayerResolves": true
+  },
+  {
+    "overlay": "combobox menu",
+    "insideCandidateRoot": true,
+    "insideTokenScope": true,
+    "backgroundColor": "rgb(255, 255, 255)",
+    "undrrTokenResolves": true,
+    "cdsLayerResolves": true
+  },
+  {
+    "overlay": "range calendar (appendTo)",
+    "insideCandidateRoot": true,
+    "insideTokenScope": true,
+    "backgroundColor": "rgb(255, 255, 255)",
+    "undrrTokenResolves": true,
+    "cdsLayerResolves": true
+  },
+  {
+    "overlay": "range calendar (forced onto document.body)",
+    "insideCandidateRoot": false,
+    "insideTokenScope": false,
+    "backgroundColor": "rgb(244, 244, 244)",
+    "undrrTokenResolves": false,
+    "cdsLayerResolves": true
+  }
+]

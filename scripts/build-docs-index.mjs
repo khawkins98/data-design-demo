@@ -244,6 +244,12 @@ ${cardHtml}
 
       <footer>
         <p>
+          <strong><a href="./comparison.html">Side-by-side comparison</a></strong>
+          — every pairing's requirement statuses and metrics in one matrix,
+          generated from the same <code>evidence.json</code> files as the cards
+          above.
+        </p>
+        <p>
           Every demo renders identical fixture data, identical labels and an
           identical fixed date, inside a host shell it may not modify. Metrics
           come from each run's <code>evidence.json</code>. Blocked runs are

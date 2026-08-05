@@ -147,6 +147,38 @@ choosing a library whose range picker is paid.
 
 ---
 
+## Load your candidate's CSS conditionally, or the leakage check is vacuous
+
+**This is a rule, not advice.** The leakage assertion diffs two loads of the same
+page, `?candidate=off` then `?candidate=on`. A stylesheet arriving through a
+static `import "…/styles.css"` is present in **both** loads, so whatever it does
+to the host canaries cancels out and the assertion passes without testing
+anything.
+
+Load your candidate's stylesheet inside the `candidate=on` branch:
+
+```tsx
+const candidateEnabled = new URLSearchParams(location.search).get("candidate") !== "off";
+
+async function loadCandidateStyles(): Promise<void> {
+  if (!candidateEnabled) return;
+  await import("@your-candidate/core/styles.css");
+}
+```
+
+Then assert the baseline really is clean — pick a custom property or class the
+library defines and check it is absent on the `candidate=off` load. See
+`apps/mangrove-mantine/src/main.tsx` and its e2e spec for a worked example.
+
+This matters most for **Carbon and Mantine**, which ship plain global
+stylesheets. It matters least for **MUI**, whose emotion styles genuinely are
+absent until a component mounts. React Aria ships no CSS at all.
+
+If your own scoped CSS is entirely under your subtree class it cannot reach a
+canary regardless, and a `clean` result is still correct — but say in
+`EVIDENCE.md` whether it was verified by measurement or established by
+construction. They are not the same claim.
+
 ## Portalled overlays and class-scoped tokens
 
 **Read this before styling any popover, modal, tooltip or dropdown.** It cost the
@@ -179,10 +211,22 @@ import { TOKEN_SCOPE_CLASS } from "@undrr-eval/undrr-tokens";
 <Popover className={`${TOKEN_SCOPE_CLASS} my-popover`}>
 ```
 
-**If your candidate themes via a JavaScript object** — MUI, Mantine — you are
-probably immune, because the theme resolves token values at build time and the
-generated CSS carries literal values with no `var()` to fail. Verify rather than
-assume: open an overlay and check its computed `background-color`.
+**If your candidate themes via a JavaScript object** — MUI, Mantine — you may be
+partly insulated, but **do not assume it, and do not assume the reason.** Both
+have now been measured and they survive for different reasons, with different
+consequences:
+
+- **MUI** is immune because its theme resolves token values at build time and
+  emotion emits literal colours. There is no `var()` to fail. The trade is that
+  tokens cannot then change at runtime without a rebuild.
+- **Mantine** survives because its own `--mantine-*` variables sit at `:root`,
+  which also means its theme *can* change at runtime. But `var(--undrr-*)` still
+  dies inside its portals — in the `delta-mantine` run that silently removed the
+  focus ring from every control inside every overlay.
+
+So "themed via JS" does not mean safe. What matters is whether any declaration
+inside the portal references a `var()` that is scoped outside it. Check each
+overlay type, not one.
 
 **Assert it in your e2e run.** Behavioural tests cannot see this: the component
 works, the suite passes, and the overlay is invisible. Open each overlay type and

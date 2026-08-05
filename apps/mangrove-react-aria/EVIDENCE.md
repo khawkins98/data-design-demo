@@ -3,10 +3,10 @@
 Structured record in `evidence.json`. This is the prose.
 
 **Summary.** Of 30 requirements: **21 native, 7 composed, 2 custom, 0
-unsupported**, for a total of 106 custom lines of behavioural code. React Aria is
+unsupported**, for a total of 122 custom lines of behavioural code. React Aria is
 the only candidate expected to satisfy `datetime-range-picker` natively. Leakage
 was clean, which is unsurprising: the library ships no CSS at all. The cost lands
-almost entirely in one place — **624 lines of custom CSS across 115 selectors** —
+almost entirely in one place — **661 lines of custom CSS across 120 selectors** —
 because unstyled primitives mean every visual decision is yours.
 
 The two `custom` entries are `table-paginate` (no pagination component exists)
@@ -27,6 +27,18 @@ differences. React Aria injects no stylesheet, no `:root` variables and no
 global resets, so there was nothing to contain. Scoping our own rules under
 `.demo` was sufficient and took no effort. Candidates that ship their own CSS
 will have to work harder here.
+
+**One qualification on the leakage result, found later by the mangrove-mantine
+run.** The assertion diffs two loads of the same page, so a statically imported
+stylesheet sits in both snapshots and cancels out. This demo imports its own
+`src/theme.css` statically, so the assertion never actually tested it.
+
+The result still stands, but by construction rather than by measurement: a check
+of all 120 selectors in `src/theme.css` finds **zero** that are not scoped under
+`.demo`, so none can match a canary. React Aria itself ships no CSS, which is
+why nothing else was at risk here. The harness limitation is now documented in
+`packages/test-harness/src/leakage.ts` and the rule for future runs is in
+`docs/requirements.md`.
 
 **RTL needed no work whatsoever.** Wrapping the tree in `I18nProvider` with an
 Arabic locale flipped the library's own internals — date segment order, calendar
@@ -49,10 +61,10 @@ libraries have no answer for this and force a custom error-display component.
 
 ## Where it cost
 
-**624 lines of CSS is the headline number.** React Aria is unstyled by design,
+**661 lines of CSS is the headline number.** React Aria is unstyled by design,
 so this is not a defect — but it is the trade. Every button variant, focus ring,
 popover shadow, calendar cell state and table zebra stripe is ours. A team
-adopting this is adopting a styling commitment, and 624 lines is what it took to
+adopting this is adopting a styling commitment, and 661 lines is what it took to
 reach *adequate* here, not polished.
 
 **Pagination does not exist.** No component, no hook. Page state, slicing, the
@@ -200,7 +212,47 @@ Not a defect — but a real testing-ergonomics cost, and the kind of thing that
 silently eats an afternoon. Any team adopting React Aria should expect to write
 click helpers for its form controls.
 
-### 5. Horizontal scroll at 390px in German — unresolved
+### 5. Horizontal scroll at 390px in German — RESOLVED, and it was my bug
+
+**Originally recorded as 261px of unavoidable overflow needing a design
+decision. That was wrong.** It is now 0px at all three viewports. The
+`delta-react-aria` run got 0px with the same library, viewport and locale, which
+is what prompted a re-measurement. Two causes, both mine:
+
+1. **A CSS cascade error.** `.demo-sbs`'s base two-column rule sat *below* an
+   equally specific `@media (max-width: 48rem)` block. Media queries add no
+   specificity, so the later rule won at every viewport and the side-by-side
+   grid stayed two columns at 390px. `.demo-chrome` was declared above the media
+   block and worked correctly, which is why only one of the two broke.
+2. **`ColumnResizer`'s hidden range input escaping its container.** It renders at
+   `position: absolute`, and with no positioned ancestor it resolved against the
+   initial containing block, where no ancestor `overflow` could clip it.
+   `position: relative` on the scroll wrapper fixed it. Notably `overflow-x:
+   hidden` did NOT, which is how the cause was identified.
+
+The lesson worth keeping: "needs a design decision" was a comfortable label for
+something I had not diagnosed. A second run of the same library was what exposed
+it.
+
+### 6. Table selection had no select-all, and the evidence claimed it did
+
+`selectionMode="multiple"` gives selection behaviour — click, shift-click,
+keyboard — but React Aria renders **no checkboxes at all** and provides no
+select-all. The control the brief asks for only exists once you add a selection
+column with `<Checkbox slot="selection">` in the header and every row; the slot
+supplies the tri-state and the localised accessible name, the markup and
+appearance are yours.
+
+`table-multiselect` was originally recorded as `native` with a note claiming
+"select-all in the header". There was no select-all, and **the suite never
+asserted one**, so nothing caught it. Corrected to `composed` (16 lines), the
+column implemented, and an e2e test added that drives select-all through all
+three states.
+
+Found by the `delta-react-aria` run. Two runs of the same library against
+different hosts turned out to be a better check on each other than either
+suite was on itself.
+
 
 Measured: **desktop 0px, tablet 0px, mobile 261px.** Recorded in
 `test-results/long-labels-*.json`.
@@ -217,7 +269,7 @@ be worse evidence than a failing one that names it. `longLabels.status` is
 `"issues"`, and it needs a design decision: stack the range picker's two
 endpoints vertically at mobile, or accept horizontal scroll in that section.
 
-### 6. 400 options render 400 DOM nodes
+### 7. 400 options render 400 DOM nodes
 
 `ListBox` virtualises only when wrapped in `Virtualizer`. Left unwrapped so the
 comparison stays like-for-like across candidates. Whether that is acceptable, or

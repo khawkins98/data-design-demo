@@ -1,0 +1,621 @@
+/**
+ * Carbon themed to the UNDRR tokens, plus this page's own layout.
+ *
+ * HOW CARBON IS THEMED, AND WHY IT IS THE CHEAPEST OF THE FOUR CANDIDATES.
+ *
+ * Every colour, type and spacing value in Carbon's stylesheet is written
+ * `var(--cds-token, #literal-fallback)`. So theming is one block of custom
+ * property assignments, declared on the candidate wrapper, and it works at
+ * runtime with no rebuild and no theme provider:
+ *
+ *   .demo { --cds-button-primary: var(--undrr-color-accent); }
+ *
+ * Contrast with MUI, where the same job is a `createTheme()` object that inlines
+ * literal values at build time, and with React Aria, where there is nothing to
+ * theme because there is nothing styled.
+ *
+ * The catch is coverage. Carbon has 446 `--cds-*` tokens in its compiled sheet
+ * against 71 `--undrr-*` tokens, so most of Carbon's palette keeps its IBM
+ * default. Mapping every one is not the point; mapping the ones that decide what
+ * the page LOOKS like is.
+ *
+ * Also note: this file is loaded AFTER Carbon, and `.demo` and Carbon's own
+ * `.cds--layer-one` have identical specificity (0,1,0), so the later rule wins.
+ * That is why no `!important` appears anywhere below.
+ *
+ * Everything is scoped under `.demo`. That scoping does NOT contain Carbon
+ * itself — Carbon's own stylesheet is global and reaches the host regardless. It
+ * only means our additions do not make the leakage worse.
+ */
+
+/* ------------------------------------------------------------------ *
+ * Carbon token overrides
+ * ------------------------------------------------------------------ */
+
+.demo {
+  /* Surfaces. Carbon's "layer" model has three depths; the tokens differ. */
+  --cds-background: var(--undrr-color-canvas);
+  --cds-layer: var(--undrr-color-surface);
+  --cds-layer-01: var(--undrr-color-surface);
+  --cds-layer-02: var(--undrr-color-surface-raised);
+  --cds-layer-03: var(--undrr-color-surface-sunken);
+  --cds-layer-hover: var(--undrr-color-accent-subtle);
+  --cds-layer-hover-01: var(--undrr-color-accent-subtle);
+  --cds-layer-hover-02: var(--undrr-color-accent-subtle);
+  --cds-layer-selected: var(--undrr-color-accent-subtle);
+  --cds-layer-selected-01: var(--undrr-color-accent-subtle);
+  --cds-layer-selected-hover: var(--undrr-color-accent-subtle);
+  --cds-layer-accent: var(--undrr-color-surface-sunken);
+  --cds-layer-accent-01: var(--undrr-color-surface-sunken);
+  --cds-background-selected: var(--undrr-color-accent-subtle);
+  --cds-background-hover: var(--undrr-color-accent-subtle);
+  --cds-background-active: var(--undrr-color-surface-sunken);
+  --cds-background-inverse: var(--undrr-color-text-primary);
+
+  /* Form fields. */
+  --cds-field: var(--undrr-color-surface);
+  --cds-field-01: var(--undrr-color-surface);
+  --cds-field-02: var(--undrr-color-surface);
+  --cds-field-hover: var(--undrr-color-accent-subtle);
+  --cds-field-hover-01: var(--undrr-color-accent-subtle);
+
+  /* Text. */
+  --cds-text-primary: var(--undrr-color-text-primary);
+  --cds-text-secondary: var(--undrr-color-text-secondary);
+  --cds-text-helper: var(--undrr-color-text-secondary);
+  --cds-text-placeholder: var(--undrr-color-text-disabled);
+  --cds-text-disabled: var(--undrr-color-text-disabled);
+  --cds-text-inverse: var(--undrr-color-text-inverse);
+  --cds-text-on-color: var(--undrr-color-on-accent);
+  --cds-text-error: var(--undrr-color-error);
+
+  /* Borders. */
+  --cds-border-subtle: var(--undrr-color-border);
+  --cds-border-subtle-00: var(--undrr-color-border);
+  --cds-border-subtle-01: var(--undrr-color-border);
+  --cds-border-strong: var(--undrr-color-border-strong);
+  --cds-border-strong-01: var(--undrr-color-border-strong);
+  --cds-border-interactive: var(--undrr-color-accent);
+  --cds-border-disabled: var(--undrr-color-border);
+  --cds-border-tile: var(--undrr-color-border);
+  --cds-border-tile-01: var(--undrr-color-border);
+
+  /* Interactive. */
+  --cds-interactive: var(--undrr-color-accent);
+  --cds-focus: var(--undrr-color-focus);
+  --cds-focus-inset: var(--undrr-color-focus-ring-offset);
+  --cds-link-primary: var(--undrr-color-accent);
+  --cds-link-primary-hover: var(--undrr-color-accent-hover);
+  --cds-link-text-color: var(--undrr-color-accent);
+  --cds-link-hover-text-color: var(--undrr-color-accent-hover);
+  --cds-link-visited: var(--undrr-color-accent-active);
+  --cds-icon-primary: var(--undrr-color-text-primary);
+  --cds-icon-secondary: var(--undrr-color-text-secondary);
+  --cds-icon-interactive: var(--undrr-color-accent);
+  --cds-icon-on-color: var(--undrr-color-on-accent);
+  --cds-icon-disabled: var(--undrr-color-text-disabled);
+
+  /* Buttons. */
+  --cds-button-primary: var(--undrr-color-accent);
+  --cds-button-primary-hover: var(--undrr-color-accent-hover);
+  --cds-button-primary-active: var(--undrr-color-accent-active);
+  --cds-button-secondary: var(--undrr-color-text-secondary);
+  --cds-button-secondary-hover: var(--undrr-color-text-primary);
+  --cds-button-secondary-active: var(--undrr-color-text-primary);
+  --cds-button-tertiary: var(--undrr-color-accent);
+  --cds-button-tertiary-hover: var(--undrr-color-accent-hover);
+  --cds-button-tertiary-active: var(--undrr-color-accent-active);
+  --cds-button-danger-primary: var(--undrr-color-error);
+  --cds-button-danger-secondary: var(--undrr-color-error);
+  --cds-button-danger-hover: var(--undrr-color-error);
+  --cds-button-danger-active: var(--undrr-color-error);
+  --cds-button-disabled: var(--undrr-color-surface-sunken);
+  --cds-button-focus-color: var(--undrr-color-focus);
+
+  /* Support / status. */
+  --cds-support-error: var(--undrr-color-error);
+  --cds-support-success: var(--undrr-color-success);
+  --cds-support-warning: var(--undrr-color-warning);
+  --cds-support-info: var(--undrr-color-info);
+
+  /* Tags, used for the verification-status column. */
+  --cds-tag-background-green: var(--undrr-color-success-subtle);
+  --cds-tag-color-green: var(--undrr-color-success);
+  --cds-tag-background-blue: var(--undrr-color-accent-subtle);
+  --cds-tag-color-blue: var(--undrr-color-accent);
+  --cds-tag-background-red: var(--undrr-color-error-subtle);
+  --cds-tag-color-red: var(--undrr-color-error);
+  --cds-tag-background-gray: var(--undrr-color-surface-sunken);
+  --cds-tag-color-gray: var(--undrr-color-text-secondary);
+
+  /*
+   * Type. Carbon's type tokens are per-style triplets (font size, weight, line
+   * height, letter spacing) rather than a scale, so the mapping is lossier than
+   * for colour: `--undrr-font-size-sm` has to be chosen for each Carbon style
+   * that happens to be that size. Font FAMILY is not a Carbon token at all — it
+   * is hard-coded to IBM Plex Sans on `body` — so it is set as a plain
+   * declaration below and inherits into every component.
+   */
+  --cds-body-01-font-size: var(--undrr-font-size-sm);
+  --cds-body-01-line-height: var(--undrr-line-height-normal);
+  --cds-body-02-font-size: var(--undrr-font-size-base);
+  --cds-body-02-line-height: var(--undrr-line-height-normal);
+  --cds-body-compact-01-font-size: var(--undrr-font-size-sm);
+  --cds-body-compact-01-line-height: var(--undrr-line-height-snug);
+  --cds-label-01-font-size: var(--undrr-font-size-xs);
+  --cds-helper-text-01-font-size: var(--undrr-font-size-xs);
+  --cds-heading-01-font-size: var(--undrr-font-size-sm);
+  --cds-heading-01-font-weight: var(--undrr-font-weight-semibold);
+  --cds-heading-02-font-size: var(--undrr-font-size-lg);
+  --cds-heading-02-font-weight: var(--undrr-font-weight-semibold);
+  --cds-heading-03-font-size: var(--undrr-font-size-xl);
+  --cds-heading-04-font-size: var(--undrr-font-size-2xl);
+
+  /*
+   * NO z-index OR SPACING MAPPINGS HERE, and that is a measurement.
+   *
+   * An earlier version of this file mapped `--cds-z-index-modal` and friends onto
+   * the token z-scale. Those four declarations were inert: a grep of Carbon's
+   * compiled stylesheet for `--cds-z-index` and `--cds-spacing` returns nothing.
+   * Carbon's z-indexes and its whole spacing scale are Sass variables compiled to
+   * literals, and they carry no `!default`, so they cannot be overridden from
+   * outside either. Carbon's modal is a flat `z-index: 9000`, which beats
+   * anything the token scale can express.
+   *
+   * That is 22 of the 71 UNDRR tokens — 10 z-index plus 12 spacing — that cannot
+   * be pushed into Carbon at all. They are counted in
+   * `theming.tokensUnreachable`. They are still used below for this page's OWN
+   * layout; what they cannot do is retheme Carbon's internals.
+   */
+}
+
+/* ------------------------------------------------------------------ *
+ * The candidate subtree
+ * ------------------------------------------------------------------ */
+
+.demo {
+  /*
+   * Carbon hard-codes IBM Plex Sans on `body` with no token, so the only way to
+   * reach the token font stack is a plain declaration that everything inherits.
+   * Counted in theming.escapeHatchesUsed.
+   */
+  font-family: var(--undrr-font-family-sans);
+  color: var(--undrr-color-text-primary);
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--undrr-space-8);
+}
+
+.demo__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--undrr-space-3);
+}
+
+.demo__title {
+  font-family: var(--undrr-font-family-display);
+  font-size: var(--undrr-font-size-2xl);
+  font-weight: var(--undrr-font-weight-bold);
+  line-height: var(--undrr-line-height-tight);
+  margin: 0;
+}
+
+.demo__lede,
+.demo__footnote {
+  font-size: var(--undrr-font-size-sm);
+  line-height: var(--undrr-line-height-normal);
+  color: var(--undrr-color-text-secondary);
+  max-width: 70ch;
+  margin: 0;
+}
+
+.demo code {
+  font-family: var(--undrr-font-family-mono);
+  font-size: var(--undrr-font-size-xs);
+  background: var(--undrr-color-surface-sunken);
+  border-radius: var(--undrr-radius-sm);
+  padding: 0 var(--undrr-space-1);
+}
+
+.demo-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--undrr-space-4);
+  min-width: 0;
+  padding: var(--undrr-space-5);
+  background: var(--undrr-color-surface);
+  border: 1px solid var(--undrr-color-border);
+  border-radius: var(--undrr-radius-md);
+}
+
+.demo-section__title {
+  font-family: var(--undrr-font-family-display);
+  font-size: var(--undrr-font-size-xl);
+  font-weight: var(--undrr-font-weight-semibold);
+  line-height: var(--undrr-line-height-snug);
+  margin: 0;
+}
+
+.demo-prose {
+  font-size: var(--undrr-font-size-sm);
+  line-height: var(--undrr-line-height-normal);
+  max-width: 70ch;
+  margin: 0;
+}
+
+/*
+ * WCAG 1.4.1: an inline link must be distinguishable from body text by more
+ * than colour. Carbon's `Link` underlines on hover and focus only, exactly the
+ * gap the Mangrove host has on its own `a` elements. Both fail axe's
+ * link-in-text-block. Fixed here for the candidate subtree; the host's own
+ * paragraph still fails and is the documented host baseline.
+ */
+.demo-prose a,
+.demo-prose .cds--link {
+  text-decoration: underline;
+}
+
+.demo-hint {
+  font-size: var(--undrr-font-size-xs);
+  color: var(--undrr-color-text-secondary);
+  margin: 0;
+}
+
+.demo-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--undrr-space-3);
+  align-items: center;
+}
+
+.demo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
+  gap: var(--undrr-space-4);
+}
+
+.demo-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--undrr-space-2);
+  min-width: 0;
+}
+
+.demo-form {
+  max-width: 34rem;
+}
+
+/*
+ * Carbon's RadioButtonGroup is a flex row with no `flex-wrap`, so four locale
+ * options are 401px wide and scroll a 390px viewport. Carbon has no prop for
+ * this; one CSS rule fixes it, but it is a Carbon layout gap rather than a
+ * fixture problem.
+ */
+.demo .cds--radio-button-group {
+  flex-wrap: wrap;
+  gap: var(--undrr-space-4);
+  max-width: 100%;
+}
+
+/* ------------------------------------------------------------------ *
+ * Section 3: dates
+ * ------------------------------------------------------------------ */
+
+/*
+ * flatpickr's calendar is appended here rather than to document.body, so it
+ * stays inside the token scope and inside the scoped-CSS selector prefix. The
+ * container itself must not take part in layout, or it reserves empty space.
+ */
+.demo-calendar-host {
+  position: relative;
+  height: 0;
+}
+
+.demo-daterange {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(11rem, 100%), 1fr));
+  gap: var(--undrr-space-4);
+  align-items: start;
+}
+
+/* ------------------------------------------------------------------ *
+ * Section 4: overlays
+ * ------------------------------------------------------------------ */
+
+.demo-popover-root {
+  position: relative;
+}
+
+.demo-popover__content {
+  padding: var(--undrr-space-4);
+  max-width: 22rem;
+}
+
+.demo-popover__title {
+  font-size: var(--undrr-font-size-sm);
+  font-weight: var(--undrr-font-weight-semibold);
+  margin: 0 0 var(--undrr-space-2);
+}
+
+/* Carbon's Modal is fixed-position, so it needs to clear the host chrome. */
+.demo .cds--modal {
+  z-index: var(--undrr-z-modal);
+}
+
+.demo-accordion {
+  border-top: 1px solid var(--undrr-color-border);
+}
+
+/* ------------------------------------------------------------------ *
+ * Section 5: chrome
+ * ------------------------------------------------------------------ */
+
+.demo-chrome {
+  display: grid;
+  grid-template-columns: minmax(0, 16rem) minmax(0, 1fr);
+  gap: var(--undrr-space-5);
+  align-items: start;
+}
+
+@media (max-width: 48rem) {
+  .demo-chrome {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/*
+ * SideNav is built for a full-height application shell pinned to the viewport
+ * edge, and `isFixedNav={false}` only stops it collapsing — it does not stop it
+ * being `position: fixed` at 100vh. Three rules to make it sit inline.
+ *
+ * This is the one place the theme reaches into Carbon-rendered class names.
+ * Recorded as overridesLibraryInternals: true.
+ */
+.demo-sidenav-wrap {
+  position: relative;
+  min-height: 16rem;
+}
+
+.demo .demo-sidenav.cds--side-nav {
+  position: static;
+  block-size: auto;
+  max-inline-size: none;
+  inline-size: 100%;
+  border: 1px solid var(--undrr-color-border);
+}
+
+.demo .demo-sidenav .cds--side-nav__navigation {
+  block-size: auto;
+}
+
+.demo-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
+  gap: var(--undrr-space-4);
+}
+
+/*
+ * Carbon's `Tile` is a padded box with a background but no border, and on a white
+ * section that reads as no card at all. Mangrove's own `.mg-card` has a border, so
+ * one is added here to satisfy "styled to match the host's own cards".
+ */
+.demo .demo-card.cds--tile {
+  border: 1px solid var(--undrr-color-border);
+  background: var(--undrr-color-surface);
+}
+
+.demo-card__title {
+  font-size: var(--undrr-font-size-lg);
+  font-weight: var(--undrr-font-weight-semibold);
+  margin: 0 0 var(--undrr-space-2);
+}
+
+.demo-card__description {
+  font-size: var(--undrr-font-size-sm);
+  line-height: var(--undrr-line-height-normal);
+  margin: 0;
+}
+
+/* ------------------------------------------------------------------ *
+ * Section 6: data table
+ * ------------------------------------------------------------------ */
+
+/*
+ * The 250-row table's intrinsic width would otherwise propagate up through the
+ * host's grid and scroll the whole document sideways. Same class of bug both
+ * previous runs hit; the fix is to make the container the scroll boundary.
+ */
+.demo-tablewrap {
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+/*
+ * Every Carbon table container, not just section 6's. A 250-row table with long
+ * German headers is wider than a 390px viewport whatever you do, so the question
+ * is only whether it scrolls inside its own container or scrolls the document.
+ * Carbon's `.cds--data-table-content` does not set `overflow-x` itself.
+ */
+.demo .cds--data-table-container,
+.demo .cds--data-table-content {
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+}
+
+/* Long German column labels must wrap rather than widen the column. */
+.demo .cds--data-table th .cds--table-sort__flex,
+.demo .cds--data-table th {
+  white-space: normal;
+}
+
+.demo .cds--data-table th[draggable="true"] {
+  cursor: grab;
+}
+
+/* ------------------------------------------------------------------ *
+ * Section 7: states
+ * ------------------------------------------------------------------ */
+
+.demo-statebox {
+  display: flex;
+  flex-direction: column;
+  gap: var(--undrr-space-4);
+  padding: var(--undrr-space-4);
+  background: var(--undrr-color-surface-sunken);
+  border-radius: var(--undrr-radius-md);
+  min-width: 0;
+}
+
+/* ------------------------------------------------------------------ *
+ * Section 2: multiselect chips
+ * ------------------------------------------------------------------ */
+
+.demo-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--undrr-space-2);
+  margin-top: var(--undrr-space-2);
+}
+
+/* ------------------------------------------------------------------ *
+ * Section 9: side by side
+ * ------------------------------------------------------------------ */
+
+.demo-sbs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr));
+  gap: var(--undrr-space-6);
+}
+
+.demo-sbs__col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--undrr-space-4);
+  min-width: 0;
+}
+
+.demo-sbs__heading {
+  font-size: var(--undrr-font-size-sm);
+  font-weight: var(--undrr-font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--undrr-color-text-secondary);
+  margin: 0;
+}
+
+.demo-sbs__table {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.demo-sbs__nav {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.demo-sbs__nav li + li {
+  margin-top: var(--undrr-space-1);
+}
+
+/*
+ * Mirrors the host shell's own `.mg-host__nav-link` padding. Without it these
+ * plain links are 17px tall and axe reports a serious `target-size` violation
+ * (WCAG 2.2 2.5.8) — our markup's fault, not Carbon's, so fixed rather than
+ * recorded.
+ */
+.demo-sbs__nav a {
+  display: block;
+  padding: var(--undrr-space-2) var(--undrr-space-3);
+  text-decoration: underline;
+}
+
+/* ------------------------------------------------------------------ *
+ * Host rules that had to be pushed back
+ * ------------------------------------------------------------------ */
+
+/*
+ * THE HOST-INTO-CANDIDATE COLLISION, and the only place it needed fixing.
+ *
+ * Mangrove's `_form-legacy.scss` styles inputs at element level:
+ *
+ *   input[type="date"], input[type="email"], input[type="number"],
+ *   input[type="password"], input[type="search"], input[type="tel"],
+ *   input[type="text"], textarea {
+ *     appearance: none; border: 2px solid #1a1a1a; border-radius: 0;
+ *     display: block; font-family: Roboto, sans-serif; font-size: 1rem;
+ *     height: 46px; padding: 0.390625rem; width: 100%;
+ *   }
+ *
+ * That selector is (0,1,1). Carbon styles the same elements through
+ * `.cds--text-input`, which is (0,1,0). So the HOST WINS, and every Carbon text
+ * field, search field, date input and time picker rendered as a 46px box with a
+ * 2px black border instead of Carbon's underlined field. Carbon's stylesheet
+ * being loaded second makes no difference: specificity beats order.
+ *
+ * This is the direction the leakage assertion cannot see, and it is the reason
+ * this pairing needs a section like this at all. Re-asserting Carbon's own
+ * values at (0,2,0) is the fix; the values are Carbon's tokens, not literals, so
+ * theming still flows through. Ten declarations to undo one host rule.
+ */
+.demo .cds--text-input,
+.demo .cds--text-area,
+.demo .cds--search-input,
+.demo .cds--date-picker__input,
+.demo .cds--time-picker__input-field {
+  appearance: none;
+  border: 0;
+  border-block-end: 1px solid var(--cds-border-strong);
+  border-radius: 0;
+  block-size: var(--cds-layout-size-height-local, 2.5rem);
+  font-family: inherit;
+  font-size: var(--cds-body-compact-01-font-size, 0.875rem);
+  inline-size: 100%;
+  padding-block: 0;
+  padding-inline: 1rem;
+}
+
+/* The search field carries a leading magnifier icon, so its inline-start
+   padding is Carbon's 2.5rem rather than the 1rem above; without this the
+   placeholder sits on top of the icon. Logical properties, so RTL mirrors. */
+.demo .cds--search-input {
+  padding-inline-start: 2.5rem;
+}
+
+/* Carbon's own invalid treatment is an `outline`, which Mangrove leaves alone,
+   so it survives untouched — but the field it outlines has to be the right
+   shape first, which is what the rule above restores. */
+
+/* ------------------------------------------------------------------ *
+ * The Mangrove [hidden] defect: CHECKED, AND INERT AGAINST CARBON
+ * ------------------------------------------------------------------ */
+
+/*
+ * NO RULE HERE ON PURPOSE. This block records a measurement, not a workaround.
+ *
+ * Mangrove's `_form-legacy.scss` declares
+ *   input[type="date"], ..., input[type="text"], textarea { display: block }  (0,1,1)
+ * which outranks its own
+ *   [hidden], template { display: none }                                      (0,1,0)
+ *
+ * so on this host any element matching the first selector renders visibly even
+ * with the `hidden` attribute. The mangrove-react-aria run hit this hard: React
+ * Aria's DatePicker hides its form-integration inputs that way, and they appeared
+ * as stray visible text boxes showing raw ISO strings.
+ *
+ * MEASURED FOR CARBON, with a scoped `.demo [hidden] { display: none }` present
+ * and then deleted from the live stylesheet to compare: the only element in
+ * Carbon's subtree carrying `hidden` is the closed listbox menu,
+ * `<ul class="cds--list-box__menu" hidden>`, and its computed display stays
+ * `none` either way. Mangrove's clobbering selector reaches only `input[type=*]`
+ * and `textarea`, and a `<ul>` is neither.
+ *
+ * So the defect is real, is a host defect, and does not bite Carbon. The
+ * workaround rule this file used to carry has been deleted rather than left in as
+ * dead code. The e2e suite keeps the assertion — 0 elements with `hidden`
+ * computing to anything other than `display: none` — as a regression guard on the
+ * claim, since a future Carbon version that hides a helper *input* would trip it.
+ */

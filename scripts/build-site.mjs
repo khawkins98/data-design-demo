@@ -44,6 +44,10 @@ function appDirs() {
 // the site can never be assembled around a stale index.
 execFileSync("node", [join(HERE, "build-docs-index.mjs")], { cwd: ROOT, stdio: "inherit" });
 
+// And the side-by-side comparison, for the same reason: it is derived entirely
+// from apps/*/evidence.json, so it must be rebuilt from whatever is present now.
+execFileSync("node", [join(HERE, "build-comparison.mjs")], { cwd: ROOT, stdio: "inherit" });
+
 rmSync(SITE, { recursive: true, force: true });
 mkdirSync(SITE, { recursive: true });
 

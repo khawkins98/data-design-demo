@@ -1,0 +1,137 @@
+/**
+ * Candidate CSS for the Mantine demo.
+ *
+ * Every selector is scoped under `.demo`, so nothing can reach the host canaries.
+ * The exception is `.demo-focus`, which is Mantine's `theme.focusClassName` and is
+ * applied by the library to its own elements — including inside portals, which is
+ * why `src/overlay-class.ts` puts the token scope class on each portal container.
+ *
+ * Mantine's own styling is almost entirely reachable from the theme object and its
+ * `--mantine-*` variables, so this file only covers what the theme has no slot for:
+ * a focus colour, and the sort/resize affordances that `Table` does not provide.
+ */
+
+.demo {
+  min-width: 0;
+}
+
+/* ------------------------------------------------------------------ portals */
+
+/**
+ * Mantine's `Portal` copies `className` onto the container it appends to
+ * `document.body`, and nothing else — no `dir`. The container is therefore
+ * outside the host's `dir="rtl"` wrapper, and the browser falls back to
+ * `<html dir="ltr">`, which the host owns and the candidate must not rewrite.
+ *
+ * So the direction travels as a class. See src/overlay-class.ts.
+ */
+.demo-portal--rtl {
+  direction: rtl;
+}
+
+/* ---------------------------------------------------------------- focus ring */
+
+/**
+ * Replaces Mantine's `.mantine-focus-auto`, whose outline is
+ * `var(--mantine-primary-color-filled)` — the accent. The token set keeps focus
+ * deliberately distinct from accent, and `createTheme()` has no focus slot.
+ *
+ * `--undrr-color-focus-ring-offset` is used as an inner ring so the outline stays
+ * visible against both the surface and the accent-filled button.
+ */
+.demo-focus:focus-visible {
+  outline: 2px solid var(--undrr-color-focus);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px var(--undrr-color-focus-ring-offset);
+}
+
+.demo-focus:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ------------------------------------------------------- table sort headers */
+
+/* `Table.Th` renders a plain <th>; the sort trigger inside it is ours. */
+.demo .demo-sort {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--mantine-spacing-xs);
+  width: 100%;
+  text-align: start;
+  font: inherit;
+  font-weight: var(--mantine-font-weight-semibold);
+  color: inherit;
+  cursor: pointer;
+}
+
+.demo .demo-sort:hover {
+  color: var(--mantine-color-anchor);
+}
+
+.demo .demo-sort__indicator {
+  flex: none;
+  font-size: var(--mantine-font-size-xs);
+  opacity: 0.65;
+}
+
+/* ------------------------------------------------------ column resize handle */
+
+/**
+ * Pointer and keyboard resize affordance. `inset-inline-end` rather than `right`
+ * so it lands on the correct edge in the Arabic RTL pass without a second rule.
+ */
+.demo .demo-resize {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: 0;
+  width: 0.5rem;
+  cursor: col-resize;
+  touch-action: none;
+  background: transparent;
+}
+
+.demo .demo-resize::before {
+  content: "";
+  position: absolute;
+  inset-block: 25%;
+  inset-inline-end: 0.1875rem;
+  width: 2px;
+  background: var(--undrr-color-border-strong);
+  opacity: 0.5;
+}
+
+.demo .demo-resize:hover::before,
+.demo .demo-resize[data-active="true"]::before {
+  opacity: 1;
+  background: var(--undrr-color-accent);
+}
+
+.demo .demo-resize:focus-visible {
+  outline: 2px solid var(--undrr-color-focus);
+  outline-offset: -2px;
+}
+
+/* --------------------------------------------------------------- long labels */
+
+/**
+ * The German fixture labels are 60+ characters and land in table headers, select
+ * labels and button text. `layout="fixed"` plus a `<colgroup>` keeps the columns
+ * at their set widths, so header text has to be allowed to wrap rather than force
+ * the column open.
+ */
+.demo th,
+.demo .mantine-InputWrapper-label,
+.demo .mantine-Select-label {
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+/* SegmentedControl would otherwise force the page wider in German. */
+.demo .mantine-SegmentedControl-label {
+  white-space: normal;
+}
+
+/* Row selection needs a visible treatment; `data-selected` is ours. */
+.demo tbody tr[data-selected="true"] > td {
+  background: var(--undrr-color-accent-subtle);
+}

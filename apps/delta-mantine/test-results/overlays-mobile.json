@@ -1,0 +1,34 @@
+{
+  "select dropdown": {
+    "background": "rgb(255, 255, 255)",
+    "inPortal": true,
+    "portalHasTokenClass": true,
+    "mantineSurface": "#ffffff",
+    "undrrFocus": "#b8531f",
+    "direction": "ltr"
+  },
+  "popover": {
+    "background": "rgb(255, 255, 255)",
+    "inPortal": true,
+    "portalHasTokenClass": true,
+    "mantineSurface": "#ffffff",
+    "undrrFocus": "#b8531f",
+    "direction": "ltr"
+  },
+  "modal": {
+    "background": "rgb(255, 255, 255)",
+    "inPortal": true,
+    "portalHasTokenClass": true,
+    "mantineSurface": "#ffffff",
+    "undrrFocus": "#b8531f",
+    "direction": "ltr"
+  },
+  "date-time range dropdown": {
+    "background": "rgb(255, 255, 255)",
+    "inPortal": true,
+    "portalHasTokenClass": true,
+    "mantineSurface": "#ffffff",
+    "undrrFocus": "#b8531f",
+    "direction": "ltr"
+  }
+}
