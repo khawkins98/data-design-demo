@@ -1,0 +1,83 @@
+/* GENERATED FILE - DO NOT EDIT BY HAND.
+ *
+ * Produced from tokens.ts by scripts/generate-tokens-css.mjs.
+ * Regenerate with: pnpm tokens:css
+ *
+ * Scoped to a class rather than :root on purpose. The host shells own the
+ * document, and tokens that leaked to :root would theme the host's canary
+ * elements too, which would defeat the leakage assertion.
+ */
+
+.undrr-tokens {
+  --undrr-color-canvas: #f4f6f8;
+  --undrr-color-surface: #ffffff;
+  --undrr-color-surface-raised: #ffffff;
+  --undrr-color-surface-sunken: #e9edf1;
+  --undrr-color-text-primary: #14232e;
+  --undrr-color-text-secondary: #4a5c69;
+  --undrr-color-text-inverse: #ffffff;
+  --undrr-color-text-disabled: #8b9aa5;
+  --undrr-color-border: #c8d2da;
+  --undrr-color-border-strong: #8b9aa5;
+  --undrr-color-accent: #2f6f8f;
+  --undrr-color-accent-hover: #255a74;
+  --undrr-color-accent-active: #1c4459;
+  --undrr-color-accent-subtle: #e3eef3;
+  --undrr-color-on-accent: #ffffff;
+  --undrr-color-focus: #b8531f;
+  --undrr-color-focus-ring-offset: #ffffff;
+  --undrr-color-error: #a11f2c;
+  --undrr-color-error-subtle: #fbe9eb;
+  --undrr-color-warning: #8a6100;
+  --undrr-color-warning-subtle: #fdf3dc;
+  --undrr-color-success: #1f6b45;
+  --undrr-color-success-subtle: #e4f2ea;
+  --undrr-color-info: #2f6f8f;
+  --undrr-color-info-subtle: #e3eef3;
+  --undrr-space-0: 0;
+  --undrr-space-1: 0.25rem;
+  --undrr-space-2: 0.5rem;
+  --undrr-space-3: 0.75rem;
+  --undrr-space-4: 1rem;
+  --undrr-space-5: 1.25rem;
+  --undrr-space-6: 1.5rem;
+  --undrr-space-8: 2rem;
+  --undrr-space-10: 2.5rem;
+  --undrr-space-12: 3rem;
+  --undrr-space-16: 4rem;
+  --undrr-space-20: 5rem;
+  --undrr-radius-none: 0;
+  --undrr-radius-sm: 2px;
+  --undrr-radius-md: 4px;
+  --undrr-radius-lg: 8px;
+  --undrr-radius-pill: 999px;
+  --undrr-font-size-xs: 0.75rem;
+  --undrr-font-size-sm: 0.875rem;
+  --undrr-font-size-base: 1rem;
+  --undrr-font-size-lg: 1.125rem;
+  --undrr-font-size-xl: 1.375rem;
+  --undrr-font-size-2xl: 1.75rem;
+  --undrr-font-size-3xl: 2.25rem;
+  --undrr-font-size-4xl: 3rem;
+  --undrr-line-height-tight: 1.2;
+  --undrr-line-height-snug: 1.35;
+  --undrr-line-height-normal: 1.5;
+  --undrr-line-height-relaxed: 1.7;
+  --undrr-font-weight-regular: 400;
+  --undrr-font-weight-medium: 500;
+  --undrr-font-weight-semibold: 600;
+  --undrr-font-weight-bold: 700;
+  --undrr-font-family-sans: "Roboto", "Noto Sans Arabic", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --undrr-font-family-display: "Roboto Condensed", "Noto Sans Arabic", "Segoe UI", system-ui, sans-serif;
+  --undrr-font-family-mono: "Roboto Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --undrr-z-base: 0;
+  --undrr-z-raised: 10;
+  --undrr-z-sticky: 100;
+  --undrr-z-header: 200;
+  --undrr-z-drawer: 300;
+  --undrr-z-overlay: 400;
+  --undrr-z-modal: 500;
+  --undrr-z-popover: 600;
+  --undrr-z-tooltip: 700;
+  --undrr-z-toast: 800;
+}

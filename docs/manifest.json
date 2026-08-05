@@ -1,0 +1,45 @@
+{
+  "$comment": "All eight pairings are pre-registered so Brief 1 runs never need to edit a shared file to appear on the landing page. A run flips its own entry's status to 'complete' or 'blocked' from within its own app directory via scripts/build-docs-index.mjs reading apps/*/evidence.json.",
+  "title": "UNDRR data design system evaluation",
+  "subtitle": "Eight controlled proofs of concept: four candidate UI libraries against two UNDRR host shells.",
+  "candidates": [
+    {
+      "id": "react-aria",
+      "name": "Adobe React Aria",
+      "package": "react-aria-components",
+      "licence": "Apache-2.0"
+    },
+    {
+      "id": "mui",
+      "name": "MUI (Community only)",
+      "package": "@mui/material",
+      "licence": "MIT"
+    },
+    {
+      "id": "carbon",
+      "name": "IBM Carbon",
+      "package": "@carbon/react",
+      "licence": "Apache-2.0"
+    },
+    {
+      "id": "mantine",
+      "name": "Mantine",
+      "package": "@mantine/core",
+      "licence": "MIT"
+    }
+  ],
+  "hosts": [
+    {
+      "id": "delta",
+      "name": "Delta",
+      "derivedFrom": "https://github.com/PreventionWeb/delta",
+      "styling": "Tailwind CSS 4 including Preflight"
+    },
+    {
+      "id": "mangrove",
+      "name": "Mangrove",
+      "derivedFrom": "https://github.com/unisdr/undrr-mangrove",
+      "styling": "UNDRR Mangrove design system 1.8.1, compiled CSS"
+    }
+  ]
+}

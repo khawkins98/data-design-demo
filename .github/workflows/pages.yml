@@ -1,0 +1,82 @@
+name: Build and publish to Pages
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+# Allow one concurrent deployment, and let a newer push supersede an in-flight
+# one rather than queueing behind it.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  # Every app builds with base=/<repo>/<app>/ so it works from a Pages subpath.
+  REPO_NAME: ${{ github.event.repository.name }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      # Shared packages first: host-delta compiles its Tailwind stylesheet, and
+      # apps import the built file. pnpm -r resolves the topological order.
+      - name: Build shared packages
+        run: pnpm build:packages
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Unit tests
+        run: pnpm test
+
+      # Both steps below call the same scripts `pnpm site` uses locally, so what
+      # you browse on localhost:4180 and what gets published are assembled by
+      # one piece of code. The previous inline bash used `build -- --base`,
+      # which pnpm 10 does not forward: every demo built with base "/" and every
+      # published asset would have 404'd. build-apps.mjs now verifies the base
+      # landed in dist/index.html rather than trusting the flag.
+      - name: Build demo apps
+        run: pnpm build:apps
+        env:
+          BASE_PREFIX: /${{ env.REPO_NAME }}
+
+      # site:assemble regenerates the landing page itself before collecting the
+      # built apps, so it cannot assemble around a stale index.
+      - name: Assemble site
+        run: pnpm site:assemble
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: _site
+
+  deploy:
+    # Pull requests build and typecheck but must not publish.
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5

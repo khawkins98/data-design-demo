@@ -1,0 +1,5 @@
+packages:
+  - "packages/*"
+  # Glob covers apps that do not exist yet, so Brief 1 runs never need to edit
+  # this file to register themselves.
+  - "apps/*"

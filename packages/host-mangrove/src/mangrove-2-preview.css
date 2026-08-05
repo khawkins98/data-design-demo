@@ -1,0 +1,179 @@
+/* GENERATED FILE - DO NOT EDIT BY HAND.
+ *
+ * Mangrove 2.0 token preview, transcribed from unisdr/undrr-mangrove
+ * branch css-custom-properties-pilot, stories/assets/scss/_variables.scss.
+ *
+ * Regenerate with: pnpm mangrove2:tokens
+ *
+ * WHY THIS EXISTS
+ * Mangrove 2.0 replaces SCSS variable theming with CSS custom properties.
+ * It is not yet landed or published, so host-mangrove still loads the 1.8.1
+ * compiled stylesheet. This file exposes the forthcoming token API so a
+ * candidate demo can be themed against the real 2.0 contract today.
+ *
+ * IMPORTANT: colours are space-separated RGB channels, not colour values.
+ * Consume them as rgb(var(--mg-color-x)) or rgb(var(--mg-color-x) / 0.5).
+ * Assigning one directly to a library's colour property produces an invalid
+ * value and will silently fail.
+ *
+ * DELETE THIS FILE when 2.0 publishes to npm: bump the host-mangrove pin and
+ * re-run the theming measurements against the real thing.
+ */
+
+:root {
+  --mg-color-blue-50: 230 237 244;
+  --mg-color-blue-100: 204 220 233;
+  --mg-color-blue-200: 179 202 222;
+  --mg-color-blue-300: 153 185 211;
+  --mg-color-blue-400: 128 167 200;
+  --mg-color-blue-500: 102 149 189;
+  --mg-color-blue-600: 77 132 178;
+  --mg-color-blue-700: 51 114 167;
+  --mg-color-blue-800: 26 97 156;
+  --mg-color-blue-900: 0 79 145;
+  --mg-color-orange-50: 253 241 234;
+  --mg-color-orange-100: 251 227 212;
+  --mg-color-orange-200: 249 214 191;
+  --mg-color-orange-300: 247 200 170;
+  --mg-color-orange-400: 245 186 149;
+  --mg-color-orange-500: 243 172 127;
+  --mg-color-orange-600: 241 158 106;
+  --mg-color-orange-700: 239 145 85;
+  --mg-color-orange-800: 237 131 63;
+  --mg-color-orange-900: 235 117 42;
+  --mg-color-red-50: 249 230 233;
+  --mg-color-red-100: 243 206 210;
+  --mg-color-red-200: 236 181 188;
+  --mg-color-red-300: 230 157 166;
+  --mg-color-red-400: 224 132 144;
+  --mg-color-red-500: 218 107 121;
+  --mg-color-red-600: 212 83 99;
+  --mg-color-red-700: 205 58 77;
+  --mg-color-red-800: 199 34 54;
+  --mg-color-red-900: 193 9 32;
+  --mg-color-neutral-0: 255 255 255;
+  --mg-color-neutral-25: 242 242 242;
+  --mg-color-neutral-50: 230 230 230;
+  --mg-color-neutral-100: 204 204 204;
+  --mg-color-neutral-200: 179 179 179;
+  --mg-color-neutral-300: 153 153 153;
+  --mg-color-neutral-400: 128 128 128;
+  --mg-color-neutral-500: 102 102 102;
+  --mg-color-neutral-600: 77 77 77;
+  --mg-color-neutral-700: 51 51 51;
+  --mg-color-neutral-800: 26 26 26;
+  --mg-color-neutral-900: 0 0 0;
+  --mg-color-accent-100: 244 228 150;
+  --mg-color-accent-200: 211 206 169;
+  --mg-color-accent-300: 253 246 217;
+  --mg-color-accent-400: 10 105 105;
+  --mg-spacing-0: 0;
+  --mg-spacing-25: 0.15625rem;
+  --mg-spacing-50: 0.3125rem;
+  --mg-spacing-75: 0.46875rem;
+  --mg-spacing-100: 0.625rem;
+  --mg-spacing-150: 0.9375rem;
+  --mg-spacing-175: 1.125rem;
+  --mg-spacing-200: 1.25rem;
+  --mg-spacing-250: 1.5rem;
+  --mg-spacing-300: 1.875rem;
+  --mg-spacing-350: 2.1875rem;
+  --mg-spacing-400: 3.125rem;
+  --mg-spacing-500: 3.75rem;
+  --mg-spacing-600: 5rem;
+  --mg-spacing-800: 6.25rem;
+  --mg-spacing-1000: 25rem;
+  --mg-color-tabbar-background: rgb(var(--mg-color-blue-50));
+  --mg-color-tab-background: rgb(var(--mg-color-blue-200));
+  --mg-color-tab-background--inactive: rgb(var(--mg-color-blue-50));
+  --mg-color-tab-border: rgb(var(--mg-color-neutral-700));
+  --mg-color-tab-border--hover: rgb(var(--mg-color-neutral-900));
+  --mg-color-tab-border--active: rgb(var(--mg-color-blue-800));
+  --mg-color-tab-background--hover: rgb(var(--mg-color-blue-800));
+  --mg-radius-tab: 0;
+  --mg-padding-tab: var(--mg-spacing-75) var(--mg-spacing-150);
+  --mg-color-text-tab: rgb(var(--mg-color-neutral-700));
+  --mg-color-text-tab--hover: rgb(var(--mg-color-neutral-0));
+  --mg-color-text-tab-active: rgb(var(--mg-color-neutral-700));
+  --mg-color-text-tab-no-results: rgb(var(--mg-color-neutral-500));
+  --mg-color-tab-section-background: rgb(var(--mg-color-neutral-0));
+  --mg-padding-tab-section: var(--mg-spacing-100) var(--mg-spacing-0);
+  --mg-radius-tab-section: 0;
+  --mg-box-shadow-tab-section: none;
+  --mg-color-interactive: var(--mg-color-blue-900);
+  --mg-color-interactive-active: var(--mg-color-blue-700);
+  --mg-color-text: var(--mg-color-neutral-800);
+  --mg-color-black: var(--mg-color-neutral-800);
+  --mg-color-white: var(--mg-color-neutral-0);
+  --mg-color-tag: var(--mg-color-interactive);
+  --mg-color-tag--hover: var(--mg-color-interactive-active);
+  --mg-color-tag-secondary: var(--mg-color-neutral-500);
+  --mg-color-tag-secondary--hover: var(--mg-color-neutral-600);
+  --mg-color-tag-accent: var(--mg-color-orange-900);
+  --mg-color-tag-accent--hover: var(--mg-color-orange-800);
+  --mg-color-button: var(--mg-color-neutral-0);
+  --mg-color-button--hover: var(--mg-color-neutral-0);
+  --mg-color-button-background: var(--mg-color-interactive);
+  --mg-color-button-background--hover: var(--mg-color-interactive-active);
+  --mg-color-button-secondary-background: var(--mg-color-blue-800);
+  --mg-color-button-secondary-background--hover: var(--mg-color-blue-700);
+  --mg-color-text-button: var(--mg-color-neutral-0);
+  --mg-border-color-button: var(--mg-color-text-button);
+  --mg-color-form-check: var(--mg-color-interactive);
+  --mg-color-form-check--hover: var(--mg-color-interactive-active);
+  --mg-color-form-check--checked: var(--mg-color-interactive);
+  --mg-color-form-focus: var(--mg-color-interactive);
+  --mg-color-secondary: var(--mg-color-orange-800);
+  --mg-color-tertiary: var(--mg-color-neutral-900);
+  --mg-color-quaternary: var(--mg-color-red-800);
+  --mg-color-hero: var(--mg-color-interactive);
+  --mg-color-hero--secondary: var(--mg-color-secondary);
+  --mg-color-hero--tertiary: var(--mg-color-tertiary);
+  --mg-color-hero--quaternary: var(--mg-color-quaternary);
+  --mg-color-hero-title: var(--mg-color-neutral-0);
+  --mg-color-hero-button-secondary-background: rgb(var(--mg-color-neutral-0) / 0.9);
+  --mg-color-hero-button-secondary-color: var(--mg-color-hero);
+  --mg-border-color-hero-button-secondary: var(--mg-color-neutral-0);
+  --mg-color-mega-content-bg: var(--mg-color-button);
+  --mg-color-modal-scrim: rgb(var(--mg-color-neutral-900) / 0.85);
+  --mg-color-green: #008484;
+  --mg-color-green-light: #90ee90;
+  --mg-color-green-dark: #006400;
+  --mg-color-yellow: #ff0;
+  --mg-color-yellow-light: lightyellow;
+  --mg-color-yellow-dark: #d6d624;
+  --mg-color-azure: #f0ffff;
+  --mg-color-azure-dark: #d4e3e3;
+  --mg-color-azure-light: #f0f8f8;
+  --mg-color-ebony-clay: #3d4242;
+  --mg-container-spacer: var(--mg-spacing-150);
+  --mg-radius-tag: var(--mg-spacing-0);
+  --mg-radius-button: var(--mg-spacing-0);
+  --mg-border-width-button: 1px;
+  --mg-padding-button: var(--mg-spacing-100) var(--mg-spacing-150);
+  /* --mg-font-size-button: #{$mg-font-size-250}; -- SCSS-only, no custom property */
+  --mg-radius-form-input: var(--mg-spacing-0);
+  --mg-card-background: none;
+  --mg-card-padding: 0rem;
+  --mg-card-border-radius: 0;
+  --mg-card-icon-badge-radius: 20%;
+  --mg-cta-padding: var(--mg-spacing-400) 0;
+  --mg-author-image-radius: 50%;
+  --mg-opacity-hero: 0.85;
+  --mg-spacing-hero-overlay: 0;
+  --mg-hero-overlay-max-width: 25rem;
+  --mg-hero-overlay-padding: var(--mg-spacing-200);
+  --mg-width-150: 9.375rem;
+  --mg-width-300: 18.75rem;
+  --mg-width-400: 25rem;
+  --mg-width-600: 37.5rem;
+  --mg-z-index-behind: -1;
+  --mg-z-index-nav: 10;
+  --mg-z-index-sticky: 11;
+  --mg-z-index-nav-toggle: 14;
+  --mg-z-index-header: 22;
+  --mg-z-index-drawer: 2000;
+  --mg-z-index-dropdown: 2500;
+  --mg-z-index-modal: 5000;
+  --mg-z-index-toast: 5500;
+}

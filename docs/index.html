@@ -1,0 +1,208 @@
+<!doctype html>
+<!--
+  GENERATED FILE - DO NOT EDIT BY HAND.
+  Produced by scripts/build-docs-index.mjs from docs/manifest.json and
+  apps/*/evidence.json. Regenerate with: pnpm docs:index
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>UNDRR data design system evaluation</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #f4f6f8;
+        --surface: #ffffff;
+        --text: #14232e;
+        --muted: #4a5c69;
+        --border: #c8d2da;
+        --accent: #2f6f8f;
+        --ok: #1f6b45;
+        --bad: #a11f2c;
+        --pending: #8a6100;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #10191f;
+          --surface: #17232b;
+          --text: #e8eef2;
+          --muted: #a3b3bf;
+          --border: #2c3d48;
+          --accent: #7fb3cc;
+          --ok: #6fc79b;
+          --bad: #ef8b96;
+          --pending: #e0b458;
+        }
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        padding: 2rem 1.5rem 4rem;
+        background: var(--bg);
+        color: var(--text);
+        font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+        line-height: 1.5;
+      }
+      .page { max-width: 76rem; margin: 0 auto; }
+      h1 { font-size: 1.75rem; margin: 0 0 0.5rem; }
+      .subtitle { color: var(--muted); margin: 0 0 0.5rem; max-width: 60ch; }
+      .progress { color: var(--muted); font-size: 0.875rem; margin: 0 0 2rem; }
+      .grid {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+      }
+      .card {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 1rem;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+      }
+      .card--not-started { opacity: 0.72; }
+      .card__header { margin-bottom: 0.25rem; }
+      .card__title { font-size: 1.0625rem; margin: 0; }
+      .card__host { margin: 0.125rem 0 0; color: var(--muted); font-size: 0.875rem; }
+      .card__status { margin: 0; font-size: 0.8125rem; font-weight: 600; }
+      .card__status[data-status="complete"] { color: var(--ok); }
+      .card__status[data-status="blocked"] { color: var(--bad); }
+      .card__status[data-status="not-started"] { color: var(--pending); }
+      .card__licence { margin: 0; font-size: 0.75rem; color: var(--muted); }
+      .flags { list-style: none; margin: 0.25rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.375rem; }
+      .flag { font-size: 0.6875rem; padding: 0.125rem 0.5rem; border-radius: 999px; border: 1px solid var(--border); }
+      .flag--ok { color: var(--ok); }
+      .flag--bad { color: var(--bad); }
+      .metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.375rem 0.75rem; margin: 0.5rem 0 0; }
+      .metric dt { font-size: 0.6875rem; color: var(--muted); margin: 0; }
+      .metric dd { margin: 0; font-size: 0.9375rem; font-variant-numeric: tabular-nums; }
+      .unit { font-size: 0.6875rem; color: var(--muted); font-weight: 400; }
+      .card__link { margin-top: auto; padding-top: 0.75rem; font-size: 0.875rem; color: var(--accent); }
+      .card__link--disabled { color: var(--muted); }
+      footer { margin-top: 3rem; color: var(--muted); font-size: 0.8125rem; max-width: 70ch; }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <h1>UNDRR data design system evaluation</h1>
+      <p class="subtitle">Eight controlled proofs of concept: four candidate UI libraries against two UNDRR host shells.</p>
+      <p class="progress">2 of 8 pairings built.</p>
+
+      <div class="grid">
+
+      <article class="card card--not-started">
+        <header class="card__header">
+          <h2 class="card__title">Adobe React Aria</h2>
+          <p class="card__host">on <strong>Delta</strong></p>
+        </header>
+        <p class="card__status" data-status="not-started">Not started</p>
+        <p class="card__licence">react-aria-components &middot; Apache-2.0</p>
+        
+        
+        <span class="card__link card__link--disabled">Not yet built</span>
+      </article>
+
+      <article class="card card--complete">
+        <header class="card__header">
+          <h2 class="card__title">MUI (Community only)</h2>
+          <p class="card__host">on <strong>Delta</strong></p>
+        </header>
+        <p class="card__status" data-status="complete">Complete</p>
+        <p class="card__licence">@mui/material &middot; MIT</p>
+        <ul class="flags"><li class="flag flag--ok">Leakage: clean</li><li class="flag flag--ok">RTL: clean</li><li class="flag flag--ok">Long labels: clean</li></ul>
+        <dl class="metrics"><div class="metric"><dt>Custom CSS</dt><dd>14 <span class="unit">lines</span></dd></div><div class="metric"><dt>Wrappers</dt><dd>3</dd></div><div class="metric"><dt>Tokens applied</dt><dd>29</dd></div><div class="metric"><dt>axe violations</dt><dd>1</dd></div><div class="metric"><dt>Bundle</dt><dd>387.4 <span class="unit">kB gz</span></dd></div></dl>
+        <a class="card__link" href="./delta-mui/">Open demo</a>
+      </article>
+
+      <article class="card card--not-started">
+        <header class="card__header">
+          <h2 class="card__title">IBM Carbon</h2>
+          <p class="card__host">on <strong>Delta</strong></p>
+        </header>
+        <p class="card__status" data-status="not-started">Not started</p>
+        <p class="card__licence">@carbon/react &middot; Apache-2.0</p>
+        
+        
+        <span class="card__link card__link--disabled">Not yet built</span>
+      </article>
+
+      <article class="card card--not-started">
+        <header class="card__header">
+          <h2 class="card__title">Mantine</h2>
+          <p class="card__host">on <strong>Delta</strong></p>
+        </header>
+        <p class="card__status" data-status="not-started">Not started</p>
+        <p class="card__licence">@mantine/core &middot; MIT</p>
+        
+        
+        <span class="card__link card__link--disabled">Not yet built</span>
+      </article>
+
+      <article class="card card--complete">
+        <header class="card__header">
+          <h2 class="card__title">Adobe React Aria</h2>
+          <p class="card__host">on <strong>Mangrove</strong></p>
+        </header>
+        <p class="card__status" data-status="complete">Complete</p>
+        <p class="card__licence">react-aria-components &middot; Apache-2.0</p>
+        <ul class="flags"><li class="flag flag--ok">Leakage: clean</li><li class="flag flag--ok">RTL: clean</li><li class="flag flag--bad">Long labels: issues</li></ul>
+        <dl class="metrics"><div class="metric"><dt>Custom CSS</dt><dd>624 <span class="unit">lines</span></dd></div><div class="metric"><dt>Wrappers</dt><dd>3</dd></div><div class="metric"><dt>Tokens applied</dt><dd>47</dd></div><div class="metric"><dt>axe violations</dt><dd>0</dd></div><div class="metric"><dt>Bundle</dt><dd>237.6 <span class="unit">kB gz</span></dd></div></dl>
+        <a class="card__link" href="./mangrove-react-aria/">Open demo</a>
+      </article>
+
+      <article class="card card--not-started">
+        <header class="card__header">
+          <h2 class="card__title">MUI (Community only)</h2>
+          <p class="card__host">on <strong>Mangrove</strong></p>
+        </header>
+        <p class="card__status" data-status="not-started">Not started</p>
+        <p class="card__licence">@mui/material &middot; MIT</p>
+        
+        
+        <span class="card__link card__link--disabled">Not yet built</span>
+      </article>
+
+      <article class="card card--not-started">
+        <header class="card__header">
+          <h2 class="card__title">IBM Carbon</h2>
+          <p class="card__host">on <strong>Mangrove</strong></p>
+        </header>
+        <p class="card__status" data-status="not-started">Not started</p>
+        <p class="card__licence">@carbon/react &middot; Apache-2.0</p>
+        
+        
+        <span class="card__link card__link--disabled">Not yet built</span>
+      </article>
+
+      <article class="card card--not-started">
+        <header class="card__header">
+          <h2 class="card__title">Mantine</h2>
+          <p class="card__host">on <strong>Mangrove</strong></p>
+        </header>
+        <p class="card__status" data-status="not-started">Not started</p>
+        <p class="card__licence">@mantine/core &middot; MIT</p>
+        
+        
+        <span class="card__link card__link--disabled">Not yet built</span>
+      </article>
+      </div>
+
+      <footer>
+        <p>
+          Every demo renders identical fixture data, identical labels and an
+          identical fixed date, inside a host shell it may not modify. Metrics
+          come from each run's <code>evidence.json</code>. Blocked runs are
+          reported as blocked: an honest stop is a result, not a gap.
+        </p>
+        <p>
+          Host shells are derived from
+          <a href="https://github.com/PreventionWeb/delta">Delta</a> and
+          <a href="https://github.com/unisdr/undrr-mangrove">Mangrove</a>, both
+          Apache-2.0. See <code>docs/host-derivation.md</code>.
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>

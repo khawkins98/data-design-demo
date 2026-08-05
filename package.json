@@ -1,0 +1,46 @@
+{
+  "name": "@undrr-eval/root",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "UNDRR evaluation of data design systems: controlled UI-library comparison scaffold.",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "packageManager": "pnpm@10.34.5",
+  "scripts": {
+    "site": "pnpm build:packages && pnpm build:apps && pnpm site:assemble && pnpm site:serve",
+    "verify": "pnpm typecheck && pnpm test",
+    "test": "vitest run",
+    "typecheck": "tsc --build && tsc -p tests/tsconfig.json && tsc -p packages/host-preview/tsconfig.json",
+    "scaffold": "pnpm --filter @undrr-eval/host-preview dev",
+    "scaffold:test": "pnpm --filter @undrr-eval/host-preview build && pnpm --filter @undrr-eval/host-preview test:e2e",
+    "test:watch": "vitest",
+    "test:e2e": "pnpm -r --filter \"./apps/*\" test:e2e",
+    "build:packages": "pnpm -r --filter \"./packages/*\" build",
+    "build:apps": "node scripts/build-apps.mjs",
+    "site:assemble": "node scripts/build-site.mjs",
+    "site:serve": "vite preview --outDir _site --port 4180",
+    "fixtures:generate": "node scripts/generate-fixtures.mjs",
+    "tokens:css": "node --experimental-strip-types scripts/generate-tokens-css.mjs",
+    "mangrove2:tokens": "node scripts/fetch-mangrove-2-tokens.mjs"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.10.2",
+    "@playwright/test": "^1.58.2",
+    "@types/node": "^22.10.2",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "@undrr-eval/host-delta": "workspace:*",
+    "@undrr-eval/host-mangrove": "workspace:*",
+    "@undrr-eval/test-harness": "workspace:*",
+    "@vitejs/plugin-react": "^4.3.4",
+    "jsdom": "^26.0.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.7",
+    "vitest": "^2.1.8"
+  }
+}

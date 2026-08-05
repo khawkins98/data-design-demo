@@ -1,0 +1,119 @@
+/**
+ * Kitchen-sink page: MUI Community inside the Delta host shell.
+ *
+ * Section order is fixed by the brief so screenshots line up. Do not reorder.
+ */
+
+import { useMemo, useState } from "react";
+import type { ReactElement } from "react";
+import {
+  ScopedCssBaseline,
+  ThemeProvider,
+  ToggleButton,
+  ToggleButtonGroup,
+  Typography,
+} from "@mui/material";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { ar, de, enGB, fr } from "date-fns/locale";
+import { createTheme } from "@mui/material/styles";
+
+import { LOCALES } from "@undrr-eval/fixtures";
+import type { LocaleCode } from "@undrr-eval/fixtures";
+import { HostShell } from "@undrr-eval/host-delta";
+import { TOKEN_SCOPE_CLASS } from "@undrr-eval/undrr-tokens";
+
+import { DemoContext, labelsFor } from "./demo-state.js";
+import type { DemoContextValue } from "./demo-state.js";
+import { undrrMuiTheme } from "./theme.js";
+import { SectionChrome } from "./sections/SectionChrome.js";
+import { SectionDataTable } from "./sections/SectionDataTable.js";
+import { SectionDates } from "./sections/SectionDates.js";
+import { SectionForms } from "./sections/SectionForms.js";
+import { SectionOverlays } from "./sections/SectionOverlays.js";
+import { SectionSelection } from "./sections/SectionSelection.js";
+import { SectionSideBySide } from "./sections/SectionSideBySide.js";
+import { SectionStates } from "./sections/SectionStates.js";
+
+const params = new URLSearchParams(window.location.search);
+const candidateEnabled = params.get("candidate") !== "off";
+
+/** date-fns locales for the picker adapter, keyed to the fixture locales. */
+const DATE_FNS_LOCALES = { en: enGB, fr, de, ar } as const;
+
+export function App(): ReactElement {
+  const [locale, setLocale] = useState<LocaleCode>("en");
+
+  const demo: DemoContextValue = useMemo(() => {
+    const meta = LOCALES.find((entry) => entry.code === locale);
+    return {
+      locale,
+      labels: labelsFor(locale),
+      bcp47: meta?.bcp47 ?? "en-GB",
+      dir: meta?.dir ?? "ltr",
+    };
+  }, [locale]);
+
+  /**
+   * MUI needs `direction` on the theme itself for RTL, not just a `dir`
+   * attribute — its own components read it to flip margins and icon positions.
+   * Unlike React Aria's I18nProvider, this is a theme rebuild per locale.
+   */
+  const theme = useMemo(
+    () => createTheme(undrrMuiTheme, { direction: demo.dir }),
+    [demo.dir],
+  );
+
+  return (
+    <HostShell title={demo.labels.appTitle} dir={demo.dir}>
+      {candidateEnabled ? (
+        <ThemeProvider theme={theme}>
+          {/* Scoped, not global: see the note in main.tsx. */}
+          <ScopedCssBaseline className={`${TOKEN_SCOPE_CLASS} demo`}>
+            <LocalizationProvider
+              dateAdapter={AdapterDateFns}
+              adapterLocale={DATE_FNS_LOCALES[locale]}
+            >
+              <DemoContext.Provider value={demo}>
+                <Typography variant="h2" component="h2" sx={{ mb: 1 }}>
+                  MUI Community
+                </Typography>
+                <Typography sx={{ mb: 2, maxWidth: "68ch" }} color="text.secondary">
+                  Every control below is MUI, rendering the shared fixtures inside
+                  the Delta host. The host elements above are the leakage canaries
+                  and must be unaffected.
+                </Typography>
+
+                <ToggleButtonGroup
+                  size="small"
+                  exclusive
+                  value={locale}
+                  onChange={(_event, next: LocaleCode | null) => {
+                    if (next) setLocale(next);
+                  }}
+                  aria-label="Locale"
+                  sx={{ mb: 4 }}
+                >
+                  {LOCALES.map((entry) => (
+                    <ToggleButton key={entry.code} value={entry.code}>
+                      {entry.label}
+                    </ToggleButton>
+                  ))}
+                </ToggleButtonGroup>
+
+                <SectionForms />
+                <SectionSelection />
+                <SectionDates />
+                <SectionOverlays />
+                <SectionChrome />
+                <SectionDataTable />
+                <SectionStates />
+                <SectionSideBySide />
+              </DemoContext.Provider>
+            </LocalizationProvider>
+          </ScopedCssBaseline>
+        </ThemeProvider>
+      ) : null}
+    </HostShell>
+  );
+}

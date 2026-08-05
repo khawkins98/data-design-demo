@@ -1,0 +1,102 @@
+/**
+ * Layout-only supplement to the real Mangrove stylesheet.
+ *
+ * Mangrove ships page-level components (hero, mega menu, footer) but no
+ * application shell with a left-hand navigation column, so the grid below is
+ * ours. Everything a canary depends on for its *appearance* comes from
+ * Mangrove's own style.css, not from here: these rules only place things.
+ *
+ * The `mg-host` prefix marks what we added, keeping it distinguishable from
+ * genuine Mangrove classes during review. See docs/host-derivation.md.
+ */
+
+.mg-host {
+  /* Mangrove sets its own font stack and colours on body-level elements. */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.mg-host__header {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #d5d5d5;
+  background: #ffffff;
+}
+
+.mg-host__brand {
+  font-family: "Roboto Condensed", "Noto Sans Arabic", system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #004f91; /* $mg-color-blue-900 */
+}
+
+.mg-host__body {
+  display: grid;
+  grid-template-columns: 16rem minmax(0, 1fr);
+  gap: 1.5rem;
+  align-items: start;
+  padding: 1.5rem;
+  flex: 1;
+}
+
+@media (max-width: 48rem) {
+  .mg-host__body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.mg-host__nav-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.mg-host__nav-item + .mg-host__nav-item {
+  margin-top: 0.25rem;
+}
+
+.mg-host__nav-link {
+  display: block;
+  padding: 0.5rem 0.75rem;
+  border-inline-start: 3px solid transparent;
+  text-decoration: none;
+  color: #004f91;
+}
+
+.mg-host__nav-link:hover {
+  background: #e6edf4; /* $mg-color-blue-50 */
+  border-inline-start-color: #004f91;
+}
+
+.mg-host__main {
+  min-width: 0; /* Lets wide candidate tables scroll rather than blow out the grid. */
+}
+
+.mg-host-canaries {
+  padding-bottom: 2rem;
+  margin-bottom: 2rem;
+  border-bottom: 2px dashed #d5d5d5;
+}
+
+.mg-host-canaries__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.mg-host-canaries__cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.mg-host__candidate {
+  min-width: 0;
+}
