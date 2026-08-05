@@ -20,3 +20,7 @@ test-results-tmp/
 # commit theirs.
 packages/host-preview/screenshots/
 packages/host-preview/test-results/
+
+# Playwright's per-test working dir (traces, error contexts). The JSON files
+# written alongside it in test-results/ ARE evidence and stay committed.
+apps/*/test-results/playwright/

@@ -1,0 +1,243 @@
+{
+  "candidate": "Adobe React Aria",
+  "host": "mangrove",
+  "versions": {
+    "library": "react-aria-components@1.20.0",
+    "react": "19.2.8",
+    "node": "22 (CI), 24.18.0 (local run)"
+  },
+  "requirements": [
+    {
+      "id": "buttons",
+      "status": "native",
+      "notes": "Button with data-hovered/pressed/disabled/focus-visible state attributes. Variants are CSS only.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "links",
+      "status": "native",
+      "notes": "Link component. Underlined by us; the Mangrove host's own links are not, which is a host accessibility finding.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "text-input",
+      "status": "native",
+      "notes": "TextField + Label + Input + Text slot=description. aria-describedby wired automatically.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "validation-states",
+      "status": "native",
+      "notes": "isInvalid + FieldError for the three client-side cases. server-rejected uses Form validationErrors, the documented channel for errors only the server knows; no custom wiring.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "disabled-states",
+      "status": "native",
+      "notes": "isDisabled on Button, TextField and Input.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "select-small",
+      "status": "native",
+      "notes": "Select + ListBox, 8 options.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "select-medium",
+      "status": "native",
+      "notes": "Same component, 40 options.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "select-large",
+      "status": "native",
+      "notes": "Same component, 400 options. Renders all 400 DOM nodes: virtualisation requires wrapping in Virtualizer, which was not used so the comparison stays like-for-like.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "multiselect",
+      "status": "composed",
+      "notes": "No single multiselect component exists. Documented pattern is ListBox selectionMode=multiple plus TagGroup/TagList for removable chips, joined by a small onRemove handler.",
+      "customLinesOfCode": 6
+    },
+    {
+      "id": "combobox-searchable",
+      "status": "native",
+      "notes": "ComboBox filters as you type at all three sizes with no filter function supplied.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "date-picker",
+      "status": "native",
+      "notes": "DatePicker with per-segment keyboard entry and a Calendar popover.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "datetime-range-picker",
+      "status": "native",
+      "notes": "DateRangePicker with granularity=\"minute\" in the free tier. One popover, one focus trap, a single RangeCalendar highlighting the intervening days. This is the requirement that separates candidates: MUI needs two composed pickers because its range components are commercially licensed. Note the hidden form-integration inputs render visibly on this host until the `hidden` attribute is restored -- a Mangrove defect, see EVIDENCE.md.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "modal",
+      "status": "native",
+      "notes": "ModalOverlay + Modal + Dialog. Focus trap, Escape dismiss and focus restoration to the trigger all verified by e2e test.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "tooltip",
+      "status": "native",
+      "notes": "TooltipTrigger is hover AND keyboard-focus triggered by default.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "popover",
+      "status": "native",
+      "notes": "DialogTrigger + Popover, dismiss on outside click, with OverlayArrow.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "accordion",
+      "status": "native",
+      "notes": "DisclosureGroup + Disclosure + DisclosurePanel, allowsMultipleExpanded={false} for single-expand without custom state.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "cards",
+      "status": "custom",
+      "notes": "React Aria has no card component, correctly: a card is styling, not behaviour. Rendered as plain markup reusing Mangrove's own mg-card classes, so the cost is CSS rather than components.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "left-nav",
+      "status": "native",
+      "notes": "ListBox selectionMode=single, which supplies roving tabindex and type-ahead that a plain list of links does not.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "table-render",
+      "status": "native",
+      "notes": "Table/TableHeader/TableBody/Column/Row/Cell over all 250 rows. Column type formatting uses Intl, driven by the active locale.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "table-sort",
+      "status": "composed",
+      "notes": "Column allowsSorting plus sortDescriptor/onSortChange give the UI, ARIA and keyboard behaviour; the comparator is ours. Handles number, ISO string and locale-aware string.",
+      "customLinesOfCode": 22
+    },
+    {
+      "id": "table-multiselect",
+      "status": "native",
+      "notes": "selectionMode=multiple with select-all in the header, via selectedKeys/onSelectionChange.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "table-filter",
+      "status": "composed",
+      "notes": "SearchField supplies the input and its clear affordance; the predicate is ours.",
+      "customLinesOfCode": 14
+    },
+    {
+      "id": "table-paginate",
+      "status": "custom",
+      "notes": "React Aria ships no pagination component at all. Page state, slicing, page-size control and the Previous/Next nav are entirely ours. The clearest gap in the library for this use case.",
+      "customLinesOfCode": 34
+    },
+    {
+      "id": "table-column-resize-or-reorder",
+      "status": "native",
+      "notes": "ResizableTableContainer + ColumnResizer give drag and keyboard resizing. Reorder is not available, but the brief requires either one.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "table-states",
+      "status": "composed",
+      "notes": "TableBody renderEmptyState is native and ProgressBar covers loading. Error and success banners have no component: they are role=alert and role=status markup we wrote.",
+      "customLinesOfCode": 18
+    },
+    {
+      "id": "form-states",
+      "status": "composed",
+      "notes": "Same split: ProgressBar native, banners ours.",
+      "customLinesOfCode": 12
+    },
+    {
+      "id": "locale-switcher",
+      "status": "native",
+      "notes": "RadioGroup + Radio. I18nProvider propagates locale to every component.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "rtl",
+      "status": "native",
+      "notes": "I18nProvider with an Arabic locale flips direction for the library's own internals, including date segment order and calendar layout. No custom direction plumbing anywhere.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "long-labels",
+      "status": "composed",
+      "notes": "Renders correctly at tablet and desktop after CSS fixes. At 390px the document still scrolls 261px horizontally in German. See longLabels below and EVIDENCE.md.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "side-by-side",
+      "status": "composed",
+      "notes": "Host and candidate button, table, card and nav list rendered adjacent in section 9.",
+      "customLinesOfCode": 0
+    }
+  ],
+  "customCss": {
+    "lines": 624,
+    "selectors": 115,
+    "overridesLibraryInternals": true
+  },
+  "wrappers": {
+    "count": 3,
+    "totalLines": 78
+  },
+  "theming": {
+    "tokensApplied": 47,
+    "tokensUnreachable": 0,
+    "method": "CSS custom properties from packages/undrr-tokens consumed directly in a scoped stylesheet. React Aria ships no CSS of its own, so there is nothing to override and no specificity contest: components render the class names given to them plus data-* state attributes, which is the documented styling API.",
+    "escapeHatchesUsed": [
+      "One rule targets library-rendered markup: [data-testid=\"hidden-select-container\"] { overflow: hidden } plus a width cap on library-rendered <select> elements. Needed because React Aria's hidden native selects are hidden with clip/clip-path but remain in layout, so a long option label scrolls the whole page sideways. Targeting a data-testid is fragile and would break silently on upgrade.",
+      "`.demo [hidden] { display: none }` restores the hidden attribute, which the Mangrove host defeats: its `input[type=\"text\"] { display: block }` rule (0,1,1) outranks its own `[hidden] { display: none }` (0,1,0). Not a candidate problem -- it will affect all four Mangrove pairings."
+    ]
+  },
+  "leakage": {
+    "assertionPassed": true,
+    "differences": []
+  },
+  "axe": {
+    "violations": 0,
+    "serious": 0,
+    "critical": 0,
+    "incomplete": 1
+  },
+  "rtl": {
+    "status": "clean",
+    "issues": []
+  },
+  "longLabels": {
+    "status": "issues",
+    "issues": [
+      "At the 390x844 viewport in German, the document scrolls 261px horizontally. Desktop (1440) and tablet (1024) are clean at 0px. Measurements in test-results/long-labels-*.json."
+    ]
+  },
+  "bundle": {
+    "gzippedKb": 237.6,
+    "dependencyCount": 20
+  },
+  "buildTimeSeconds": 1.2,
+  "blockers": [],
+  "humanReviewRequired": [
+    "axe `color-contrast` (1 incomplete, sections 2 and 6): axe could not determine contrast automatically. Needs manual checking, particularly disabled button and hint text against the neutral token palette.",
+    "Horizontal scroll of 261px at 390px width in German is unresolved. Needs a design decision: stack the date-time range picker's two endpoints vertically at mobile, or accept horizontal scroll in that section.",
+    "The 400-option Select renders all 400 DOM nodes. Whether that is acceptable, or whether Virtualizer should be mandatory, is a performance decision not taken here.",
+    "Keyboard and screen-reader testing by a human. axe is static analysis and cannot confirm that the range calendar, column resizer or listbox type-ahead are usable with a screen reader.",
+    "MANGROVE DEFECT, affects all four Mangrove pairings: `input[type=...] { display: block }` outranks `[hidden] { display: none }`, so any library's hidden helper inputs render visibly. Worked around per-app here; should be fixed in Mangrove.",
+    "The Mangrove host also contributes a `link-in-text-block` serious violation (whole-page count 1, scoped count 0). Host finding, not a candidate one."
+  ]
+}

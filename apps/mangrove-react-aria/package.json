@@ -1,0 +1,30 @@
+{
+  "name": "@undrr-eval/mangrove-react-aria",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "Apache-2.0",
+  "description": "Brief 1 demo: Adobe React Aria Components on the UNDRR Mangrove host shell.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "@internationalized/date": "^3.12.3",
+    "@undrr-eval/fixtures": "workspace:*",
+    "@undrr-eval/host-mangrove": "workspace:*",
+    "@undrr-eval/test-harness": "workspace:*",
+    "@undrr-eval/undrr-tokens": "workspace:*",
+    "@undrr/undrr-mangrove": "1.8.1",
+    "react": "^19.2.0",
+    "react-aria-components": "^1.20.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.58.2",
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^6.0.7"
+  }
+}
