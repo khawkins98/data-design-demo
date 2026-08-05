@@ -181,15 +181,20 @@ Apache-2.0, TypeScript, read at commit state of 2026-08-05.
 
 ### Simplified
 
-- **PrimeReact is excluded.** This is the significant judgement call. PrimeReact
-  is Delta's incumbent component library, and this evaluation exists to compare
-  what might replace it. Loading PrimeReact's theme into the host would mean
-  every candidate was measured against a page already containing a competing
-  component library's global styles — which would both prejudge the comparison
-  and make leakage results unattributable. Recorded here so a reviewer can
-  disagree: if UNDRR wants candidates measured *alongside* PrimeReact rather
-  than *instead of* it, this decision should be revisited before any Brief 1 run
-  starts, because it changes every leakage result.
+- **PrimeReact is excluded. Confirmed by UNDRR, 2026-08-05.** PrimeReact is
+  Delta's incumbent component library, and removing it is the goal this
+  evaluation serves — the candidates are being compared as replacements for it,
+  not as additions alongside it.
+
+  Loading PrimeReact's theme into the host would mean every candidate was
+  measured against a page already carrying a competing component library's
+  global styles, which would both prejudge the comparison and make leakage
+  results unattributable to the candidate.
+
+  The consequence to keep in view: `host-delta` therefore reproduces Delta's
+  *styling* approach faithfully (Tailwind 4 with Preflight) but not its current
+  *component* approach. That is intentional — it models the Delta that UNDRR
+  wants to arrive at, not the one that exists today.
 - **No `style-dts.css`.** `app/root.tsx` loads
   `/assets/css/style-dts.css?asof=20250630` from Delta's own `public/assets`.
   This is not published on the UNDRR assets CDN (it returns 404 there), so it
