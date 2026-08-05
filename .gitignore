@@ -1,0 +1,16 @@
+node_modules/
+dist/
+dist-ssr/
+*.tsbuildinfo
+.DS_Store
+
+# Playwright working files. Note that apps/*/screenshots and apps/*/test-results
+# ARE committed on purpose: they are the evaluation evidence.
+playwright-report/
+.playwright/
+blob-report/
+test-results-tmp/
+
+# Local env
+.env
+.env.local
