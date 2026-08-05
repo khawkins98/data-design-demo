@@ -1,0 +1,14 @@
+/**
+ * Tailwind entry point for the Delta host shell.
+ *
+ * Mirrors Delta's own app/styles/all.css, which is a single
+ * `@import "tailwindcss"` with no custom layer or preset. Compiled by
+ * `pnpm --filter @undrr-eval/host-delta build` into dist/host-delta.css, which
+ * is what demos import. Scanning is restricted to this package's own sources
+ * (see @source below) because only the host shell should generate utilities:
+ * candidate demos style themselves with their candidate library, not Tailwind.
+ */
+
+@import "tailwindcss";
+
+@source "./HostShell.tsx";
