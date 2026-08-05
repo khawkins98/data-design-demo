@@ -149,6 +149,40 @@ function PreviewContent({ locale }: { readonly locale: LocaleCode }): ReactEleme
   );
 }
 
+/**
+ * Tooltip copy for the toolbar.
+ *
+ * The controls are meaningless without knowing what the scaffold is testing —
+ * "candidate: off" in particular looks like a way to break the page rather than
+ * the baseline half of the leakage assertion. Each string says what the option
+ * does *and* why the evaluation cares.
+ */
+const TOOLTIPS = {
+  group: {
+    host: "Which UNDRR host shell frames the page. Each demo is built against one host and must not modify it.",
+    candidate:
+      "Whether the candidate subtree is mounted. The leakage assertion loads the page both ways and diffs the host canaries.",
+    locale:
+      "Switches the fixture label set. Every locale renders the same data, so differences are the library's doing.",
+  },
+  host: {
+    mangrove:
+      "UNDRR Mangrove 1.8.1, the real published design system stylesheet with its genuine mg- classes.",
+    delta:
+      "PreventionWeb Delta conventions: Tailwind CSS 4 including Preflight, whose global button and list resets are what candidate libraries collide with.",
+  },
+  candidate: {
+    on: "Host shell with the candidate subtree mounted. This is the normal view.",
+    off: "Host shell with an empty candidate subtree. This is the leakage baseline the mounted page is compared against.",
+  },
+  locale: {
+    en: "English. The baseline every other locale is compared against.",
+    fr: "French. A second left-to-right locale with moderately longer strings.",
+    de: "German. Long compound nouns, to expose truncation and overflow bugs.",
+    ar: "Arabic. Right-to-left, to expose direction and mirroring bugs.",
+  },
+} as const;
+
 function App(): ReactElement {
   const [locale, setLocale] = useState<LocaleCode>("en");
   const meta = LOCALES.find((l) => l.code === locale);
@@ -158,28 +192,43 @@ function App(): ReactElement {
   return (
     <>
       <div className="preview__toolbar" dir="ltr">
-        <span className="preview__toolbar-label">Scaffold preview</span>
+        <span
+          className="preview__toolbar-label"
+          title="Renders the shared scaffold with no component library, as a control. Not one of the eight demos."
+        >
+          Scaffold preview
+        </span>
 
         <span className="preview__toolbar-group">
-          host:
-          <a href="?host=mangrove" aria-current={host === "mangrove" ? "true" : undefined}>
+          <abbr title={TOOLTIPS.group.host}>host:</abbr>
+          <a
+            href="?host=mangrove"
+            title={TOOLTIPS.host.mangrove}
+            aria-current={host === "mangrove" ? "true" : undefined}
+          >
             mangrove
           </a>
-          <a href="?host=delta" aria-current={host === "delta" ? "true" : undefined}>
+          <a
+            href="?host=delta"
+            title={TOOLTIPS.host.delta}
+            aria-current={host === "delta" ? "true" : undefined}
+          >
             delta
           </a>
         </span>
 
         <span className="preview__toolbar-group">
-          candidate:
+          <abbr title={TOOLTIPS.group.candidate}>candidate:</abbr>
           <a
             href={`?host=${host}&candidate=on`}
+            title={TOOLTIPS.candidate.on}
             aria-current={candidateEnabled ? "true" : undefined}
           >
             on
           </a>
           <a
             href={`?host=${host}&candidate=off`}
+            title={TOOLTIPS.candidate.off}
             aria-current={!candidateEnabled ? "true" : undefined}
           >
             off
@@ -187,11 +236,12 @@ function App(): ReactElement {
         </span>
 
         <span className="preview__toolbar-group">
-          locale:
+          <abbr title={TOOLTIPS.group.locale}>locale:</abbr>
           {LOCALES.map((l) => (
             <button
               key={l.code}
               type="button"
+              title={TOOLTIPS.locale[l.code]}
               onClick={() => setLocale(l.code)}
               aria-current={l.code === locale ? "true" : undefined}
             >

@@ -155,12 +155,13 @@ the scaffold preview, which contains no component library at all:
 | Host | Violations | Detail |
 | --- | --- | --- |
 | Delta | 0 | — |
-| Mangrove | 1 serious | `link-in-text-block` on `.mg-link` |
+| Mangrove | 1 serious | `link-in-text-block` on the canary paragraph's link |
 
 `link-in-text-block` is WCAG 1.4.1: links in a block of text must be
-distinguishable by something other than colour. Mangrove 1.8.1 renders inline
-links in blue with no underline, so the rule fails on the host's own canary
-paragraph. **This is a real finding about Mangrove, not about any candidate.**
+distinguishable by something other than colour. Mangrove 1.8.1 styles bare `a`
+elements with a colour and `text-decoration: none`, adding an underline only on
+`:hover`, so the rule fails on the host's own canary paragraph. **This is a real
+finding about Mangrove, not about any candidate.**
 
 When reporting `axe` counts in `evidence.json`:
 

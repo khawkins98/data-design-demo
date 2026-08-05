@@ -74,11 +74,27 @@ Apache-2.0. Pinned to the published npm package `@undrr/undrr-mangrove@1.8.1`.
 
 4. **Mangrove inline links fail WCAG 1.4.1.** Measured with axe against the
    scaffold preview, which loads no component library: the Delta host reports
-   zero violations, the Mangrove host reports one serious
-   `link-in-text-block`. `.mg-link` renders blue with no underline, so an inline
-   link in a paragraph is distinguishable from surrounding text by colour alone.
-   Worth fixing in Mangrove; recorded in `docs/requirements.md` as a host
-   baseline so demos subtract it rather than being blamed for it.
+   zero violations, the Mangrove host reports one serious `link-in-text-block`.
+
+   The cause is Mangrove's base element styling, not a component class —
+   `_foundational.scss` line 137:
+
+   ```scss
+   a {
+     color: $mg-color-interactive;
+     text-decoration: none;
+
+     &:hover {
+       text-decoration: underline;
+     }
+   }
+   ```
+
+   Underline appears only on hover, so an inline link in a paragraph is
+   distinguishable from surrounding text by colour alone until pointed at — and
+   never, for keyboard or touch users. Worth fixing in Mangrove; recorded in
+   `docs/requirements.md` as a host baseline so demos subtract it rather than
+   being blamed for it.
 
 ### Mangrove 2.0
 
