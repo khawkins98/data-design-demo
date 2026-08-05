@@ -1,0 +1,101 @@
+name: Build and publish to Pages
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+# Allow one concurrent deployment, and let a newer push supersede an in-flight
+# one rather than queueing behind it.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  # Every app builds with base=/<repo>/<app>/ so it works from a Pages subpath.
+  REPO_NAME: ${{ github.event.repository.name }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      # Shared packages first: host-delta compiles its Tailwind stylesheet, and
+      # apps import the built file. pnpm -r resolves the topological order.
+      - name: Build shared packages
+        run: pnpm build:packages
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Unit tests
+        run: pnpm test
+
+      - name: Build demo apps
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          apps=(apps/*/)
+          if [ ${#apps[@]} -eq 0 ]; then
+            echo "No apps yet. Publishing the landing page only."
+            exit 0
+          fi
+          for dir in "${apps[@]}"; do
+            name=$(basename "$dir")
+            echo "::group::build $name"
+            pnpm --filter "./apps/$name" build -- --base "/$REPO_NAME/$name/"
+            echo "::endgroup::"
+          done
+
+      - name: Assemble site
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          # Regenerate the landing page so it reflects the evidence.json files
+          # present on this commit rather than whatever was last committed.
+          pnpm docs:index
+          mkdir -p _site
+          cp -r docs/. _site/
+          for dir in apps/*/; do
+            name=$(basename "$dir")
+            if [ -d "$dir/dist" ]; then
+              mkdir -p "_site/$name"
+              cp -r "$dir/dist/." "_site/$name/"
+            else
+              echo "warning: $name has no dist/, so it will 404 from the landing page"
+            fi
+          done
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    # Pull requests build and typecheck but must not publish.
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

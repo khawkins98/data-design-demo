@@ -23,12 +23,27 @@ importers:
       '@types/react-dom':
         specifier: ^18.3.5
         version: 18.3.7(@types/react@18.3.31)
+      '@undrr-eval/host-delta':
+        specifier: workspace:*
+        version: link:packages/host-delta
+      '@undrr-eval/host-mangrove':
+        specifier: workspace:*
+        version: link:packages/host-mangrove
+      '@undrr-eval/test-harness':
+        specifier: workspace:*
+        version: link:packages/test-harness
       '@vitejs/plugin-react':
         specifier: ^4.3.4
         version: 4.7.0(vite@6.4.3(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0))
       jsdom:
         specifier: ^26.0.0
         version: 26.1.0
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
       typescript:
         specifier: ^5.7.2
         version: 5.9.3

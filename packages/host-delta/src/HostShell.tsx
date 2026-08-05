@@ -136,23 +136,30 @@ function Canaries(): JSX.Element {
       </table>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
+        {/* The inner wrapper mirrors Mangrove's mg-card__content element. Both
+            hosts must render identical structure, so the wrapper exists here
+            even though Delta's styling does not need it. */}
         <article
           data-canary="card-first"
           className="rounded border border-slate-300 bg-white p-4 shadow-sm"
         >
-          <h3 className="font-semibold text-slate-900">Sendai Framework Monitor</h3>
-          <p className="mt-1 text-sm text-slate-600">
-            National reporting against the seven global targets.
-          </p>
+          <div>
+            <h3 className="font-semibold text-slate-900">Sendai Framework Monitor</h3>
+            <p className="mt-1 text-sm text-slate-600">
+              National reporting against the seven global targets.
+            </p>
+          </div>
         </article>
         <article
           data-canary="card-second"
           className="rounded border border-slate-300 bg-white p-4 shadow-sm"
         >
-          <h3 className="font-semibold text-slate-900">DesInventar Sendai</h3>
-          <p className="mt-1 text-sm text-slate-600">
-            Historical loss databases maintained at national level.
-          </p>
+          <div>
+            <h3 className="font-semibold text-slate-900">DesInventar Sendai</h3>
+            <p className="mt-1 text-sm text-slate-600">
+              Historical loss databases maintained at national level.
+            </p>
+          </div>
         </article>
       </div>
     </section>
