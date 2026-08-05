@@ -1,0 +1,69 @@
+// Containment experiment: Carbon compiled inside a scope selector.
+//
+// Loaded only for `?carbonCss=scoped`. See src/css-mode.ts for why this exists
+// and why it is NOT the default. The measured result is in EVIDENCE.md: the
+// leakage assertion passes with 0 differences here and fails with 54 in the
+// default build, so containment does work — but read the costs below first.
+//
+// The mechanism is Sass's legacy nested `@import`, which is the only way to run
+// Carbon's whole entry point through a parent selector: `@use` and `@forward`
+// are root-only, and Carbon emits its component CSS as a side effect of `@use`
+// (`components/button/_index.scss` ends with `@include button.button;`), so
+// there is no supported "give me the mixins without the output" entry point.
+//
+// FOUR COSTS, all measured rather than guessed:
+//
+//  1. `@import` is deprecated in Dart Sass and slated for removal. This route
+//     has a known expiry date and the build prints deprecation warnings.
+//
+//  2. Carbon's four `:root { }` blocks become `.demo :root`, which matches
+//     nothing. Two of them matter and BOTH have to be re-declared by hand:
+//
+//       - the layer block (`--cds-layer`, `--cds-field`, `--cds-border-subtle`,
+//         ...). Carbon's own `.cds--layer-one` class declares an identical set,
+//         so App.tsx puts that class on the scope element.
+//       - the layout block below. Without it `--cds-layout-size-height-lg` and
+//         `--cds-layout-density-padding-inline-normal` are undefined, and they
+//         appear inside `clamp()` and `min()` expressions with NO fallback, so
+//         the whole declaration is invalid at computed-value time. Every Carbon
+//         control loses its min-height and padding: measured, a primary Button
+//         went from 111x48 to 33x21 px, and axe reported a new serious
+//         `target-size` violation on the accordion headers and the table search.
+//         Silent, and catastrophic. This is the single strongest argument
+//         against scoping Carbon by hand.
+//
+//     The remaining two blocks are `color-scheme` and the CSS grid tokens, which
+//     this page does not use.
+//
+//  3. Carbon's reset gets scoped too, so `.demo h1`, `.demo p` and friends are
+//     Carbon-styled while the host's own headings are untouched. That is the
+//     point, but it means the candidate subtree no longer inherits the host's
+//     typography, which a real integration would have to reconcile.
+//
+//  4. The Sass entry emits webpack-style `~@ibm/plex/...` font URLs, which Vite
+//     cannot resolve — the build logs one warning per face, about 200 of them,
+//     and the IBM Plex webfonts do not load. The prebuilt `css/styles.css` has
+//     absolute CDN URLs instead and does not have this problem. Irrelevant here
+//     because the theme sets the token font stack anyway, but it would matter to
+//     anyone taking the Sass route in a non-webpack bundler.
+
+.demo {
+  @import "@carbon/styles/index.scss";
+
+  // Cost 2, second half. Transcribed verbatim from the `:root` block that
+  // `@carbon/styles/css/styles.css` emits, because the nested import turned the
+  // original into a selector that never matches. A hand-copied token block is
+  // exactly the kind of thing that silently rots on upgrade.
+  --cds-layout-size-height-xs: 1.5rem;
+  --cds-layout-size-height-sm: 2rem;
+  --cds-layout-size-height-md: 2.5rem;
+  --cds-layout-size-height-lg: 3rem;
+  --cds-layout-size-height-xl: 4rem;
+  --cds-layout-size-height-2xl: 5rem;
+  --cds-layout-size-height-min: 0px;
+  --cds-layout-size-height-max: 999999999px;
+  --cds-layout-density-padding-inline-condensed: 0.5rem;
+  --cds-layout-density-padding-inline-normal: 1rem;
+  --cds-layout-density-padding-inline-min: 0px;
+  --cds-layout-density-padding-inline-max: 999999999px;
+}

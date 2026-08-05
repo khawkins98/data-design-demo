@@ -1,0 +1,1067 @@
+/**
+ * Candidate theme: React Aria styled to the UNDRR tokens, on the Delta host.
+ *
+ * React Aria ships no CSS whatsoever — every rule below is ours, which makes
+ * this file the honest measure of what "unstyled primitives" costs. Nothing
+ * here overrides library internals except where explicitly flagged, because
+ * there are almost no library internals to override: the components render the
+ * class names we give them plus `data-*` state attributes, which is the
+ * documented styling API.
+ *
+ * THE DELTA-SPECIFIC COST, which is the point of running this pairing.
+ *
+ * `@undrr-eval/host-delta/host.css` is Tailwind 4 with Preflight, and Preflight
+ * is a global reset that reaches our subtree as surely as it reaches the host's:
+ *
+ *   *, ::before, ::after   border: 0 solid; margin: 0; padding: 0
+ *   h1..h6                 font-size: inherit; font-weight: inherit
+ *   a                      color: inherit; text-decoration: inherit
+ *   button/input/select    font: inherit; background-color: #0000;
+ *                          border-radius: 0
+ *   ol, ul, menu           list-style: none
+ *   table                  border-collapse: collapse
+ *   img, svg, video        display: block
+ *
+ * "Unstyled primitives on a reset host" means there is no browser default left
+ * to fall back on. Every paragraph margin, every heading size, every list
+ * marker has to be declared. The blocks marked PREFLIGHT RECOVERY below are the
+ * rules that exist for no reason other than that, and they are the measurable
+ * difference between this file and its Mangrove twin.
+ *
+ * Every declaration is scoped under `.demo` so nothing can reach the host
+ * canaries. That scoping is the reason the leakage assertion passes, and it was
+ * cheap precisely because the library contributes no global styles.
+ *
+ * All values come from packages/undrr-tokens.
+ */
+
+.demo {
+  color: var(--undrr-color-text-primary);
+  font-family: var(--undrr-font-family-sans);
+  font-size: var(--undrr-font-size-base);
+  line-height: var(--undrr-line-height-normal);
+  /* Without this the 250-row table's intrinsic width propagates up through the
+     grid and scrolls the whole document at 390px, instead of scrolling inside
+     its own container. Found by the long-labels test at mobile and tablet. */
+  min-width: 0;
+}
+
+.demo-section,
+.demo-field {
+  min-width: 0;
+}
+
+.demo__header {
+  margin-bottom: var(--undrr-space-6);
+}
+
+/* PREFLIGHT RECOVERY: h1..h6 are font-size: inherit; font-weight: inherit, so
+   every heading in this file has to declare both. On a host without Preflight
+   the size alone would have been enough. */
+.demo__title {
+  margin: 0 0 var(--undrr-space-2);
+  font-family: var(--undrr-font-family-display);
+  font-size: var(--undrr-font-size-2xl);
+  font-weight: var(--undrr-font-weight-bold);
+  line-height: var(--undrr-line-height-tight);
+}
+
+.demo__lede,
+.demo-prose {
+  max-width: 68ch;
+  color: var(--undrr-color-text-secondary);
+}
+
+/* PREFLIGHT RECOVERY: `* { margin: 0 }` removes paragraph margins, so prose
+   collapses into a solid block without this. */
+.demo-prose + .demo-prose,
+.demo__lede {
+  margin-block: var(--undrr-space-2);
+}
+
+.demo__footnote {
+  margin-top: var(--undrr-space-8);
+  color: var(--undrr-color-text-secondary);
+  font-size: var(--undrr-font-size-sm);
+}
+
+.demo-section {
+  padding-top: var(--undrr-space-8);
+  margin-top: var(--undrr-space-8);
+  border-top: 1px solid var(--undrr-color-border);
+}
+
+.demo-section__title {
+  margin: 0 0 var(--undrr-space-4);
+  font-family: var(--undrr-font-family-display);
+  font-size: var(--undrr-font-size-xl);
+  font-weight: var(--undrr-font-weight-semibold);
+  line-height: var(--undrr-line-height-snug);
+}
+
+.demo-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--undrr-space-3);
+  align-items: center;
+  margin-bottom: var(--undrr-space-4);
+}
+
+.demo-row--tight {
+  margin-bottom: 0;
+}
+
+.demo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: var(--undrr-space-4);
+  margin-bottom: var(--undrr-space-4);
+}
+
+/* ---------------------------------------------------------------- buttons */
+
+/**
+ * PREFLIGHT RECOVERY, the worst of it.
+ *
+ * Tailwind resets `button` to `border: 0 solid; margin: 0; padding: 0;
+ * background-color: #0000; border-radius: 0; font: inherit; appearance: button`.
+ * A React Aria `Button` on this host with no CSS is therefore literal unstyled
+ * text — not a browser-default grey button, which is what the Mangrove host
+ * would have given. Six of the declarations below exist solely to undo that.
+ */
+.demo-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--undrr-space-2);
+  padding: var(--undrr-space-2) var(--undrr-space-4);
+  border: 1px solid var(--undrr-color-border-strong);
+  border-radius: var(--undrr-radius-md);
+  background: var(--undrr-color-surface);
+  color: var(--undrr-color-text-primary);
+  font: inherit;
+  font-weight: var(--undrr-font-weight-semibold);
+  cursor: pointer;
+}
+
+.demo-button[data-hovered] {
+  background: var(--undrr-color-surface-sunken);
+}
+
+/* React Aria sets data-focus-visible only for keyboard focus, so the ring
+   never appears on a mouse click. That behaviour is the library's, not ours. */
+.demo-button[data-focus-visible],
+.demo-input[data-focus-visible],
+.demo-listbox__item[data-focus-visible],
+.demo-nav__item[data-focus-visible],
+.demo-table__column[data-focus-visible],
+.demo-table__row[data-focus-visible],
+.demo-datesegment[data-focus-visible],
+.demo-accordion__trigger[data-focus-visible],
+.demo-locale__option[data-focus-visible],
+.demo-tag[data-focus-visible] {
+  outline: 2px solid var(--undrr-color-focus);
+  outline-offset: 2px;
+}
+
+.demo-button[data-pressed] {
+  background: var(--undrr-color-surface-sunken);
+}
+
+.demo-button[data-disabled] {
+  color: var(--undrr-color-text-disabled);
+  border-color: var(--undrr-color-border);
+  cursor: not-allowed;
+}
+
+.demo-button[data-active="true"] {
+  background: var(--undrr-color-accent-subtle);
+  border-color: var(--undrr-color-accent);
+}
+
+.demo-button--primary {
+  background: var(--undrr-color-accent);
+  border-color: var(--undrr-color-accent);
+  color: var(--undrr-color-on-accent);
+}
+
+.demo-button--primary[data-hovered] {
+  background: var(--undrr-color-accent-hover);
+}
+
+.demo-button--primary[data-pressed] {
+  background: var(--undrr-color-accent-active);
+}
+
+.demo-button--danger {
+  background: var(--undrr-color-error);
+  border-color: var(--undrr-color-error);
+  color: var(--undrr-color-text-inverse);
+}
+
+.demo-button--ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--undrr-color-accent);
+}
+
+/* PREFLIGHT RECOVERY: `a { color: inherit; text-decoration: inherit }`, so a
+   React Aria Link renders as body text until both are restated. Delta's own
+   canary link carries `text-sky-800 underline underline-offset-2` for exactly
+   the same reason, so this is host-consistent, not a candidate deficiency. */
+.demo-link {
+  color: var(--undrr-color-accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.demo-link[data-hovered] {
+  color: var(--undrr-color-accent-hover);
+}
+
+/* ----------------------------------------------------------------- fields */
+
+.demo-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--undrr-space-1);
+  margin-bottom: var(--undrr-space-3);
+}
+
+.demo-field--inline {
+  margin-bottom: 0;
+}
+
+.demo-label {
+  font-size: var(--undrr-font-size-sm);
+  font-weight: var(--undrr-font-weight-medium);
+}
+
+.demo-input {
+  padding: var(--undrr-space-2) var(--undrr-space-3);
+  border: 1px solid var(--undrr-color-border-strong);
+  border-radius: var(--undrr-radius-md);
+  background: var(--undrr-color-surface);
+  color: var(--undrr-color-text-primary);
+  font: inherit;
+  /* A native <select> sizes to its content box by default and blew past the
+     viewport at 390px. */
+  max-width: 100%;
+  min-width: 0;
+}
+
+.demo-input[data-invalid],
+.demo-field [data-invalid] .demo-input {
+  border-color: var(--undrr-color-error);
+}
+
+.demo-input[data-disabled] {
+  background: var(--undrr-color-surface-sunken);
+  color: var(--undrr-color-text-disabled);
+}
+
+.demo-hint {
+  color: var(--undrr-color-text-secondary);
+  font-size: var(--undrr-font-size-xs);
+}
+
+.demo-error {
+  color: var(--undrr-color-error);
+  font-size: var(--undrr-font-size-xs);
+}
+
+.demo-form {
+  padding: var(--undrr-space-4);
+  border: 1px solid var(--undrr-color-border);
+  border-radius: var(--undrr-radius-lg);
+  background: var(--undrr-color-surface);
+}
+
+/**
+ * NO `[hidden]` WORKAROUND IS NEEDED ON THIS HOST, and that is a finding.
+ *
+ * React Aria's DatePicker and DateRangePicker render hidden `<input>` elements
+ * for form integration. Tailwind Preflight declares
+ *
+ *   [hidden]:where(:not([hidden=until-found])) { display: none !important }
+ *
+ * so they stay hidden. On the Mangrove host the identical components render
+ * those inputs VISIBLY, because Mangrove's `input[type="text"] { display: block }`
+ * (0,1,1) outranks its own `[hidden] { display: none }` (0,1,0) — which cost the
+ * Mangrove run a critical axe violation and an explicit override.
+ *
+ * Same candidate, same components, opposite outcome. Preflight is usually
+ * described as the thing candidate libraries collide with; here it is the thing
+ * that saved one.
+ */
+
+/* ------------------------------------------------------- select, combobox */
+
+/**
+ * The one place this theme reaches into library-rendered markup.
+ * Recorded as `customCss.overridesLibraryInternals: true` in evidence.json.
+ *
+ * React Aria's Select renders a hidden native <select> for form integration and
+ * mobile autofill, inside a container hidden with `clip` and `clip-path`. Those
+ * hide it visually but do not remove it from layout, so its intrinsic width —
+ * driven by the longest option label — expands the document scroll area and
+ * scrolls the whole page sideways at 390px. `overflow: hidden` contains it with
+ * no visual change.
+ *
+ * Targeting a `data-testid` is fragile and would break silently on upgrade.
+ * Reported as a React Aria issue rather than something a consumer should have
+ * to know. It reproduces identically on both hosts, so it is the candidate's,
+ * not the host's. See EVIDENCE.md.
+ */
+.demo [data-testid="hidden-select-container"] {
+  overflow: hidden;
+}
+
+/* The container above is not the only wrapper React Aria uses, so cap the
+   hidden selects themselves too. `.demo-input` is the one real <select> in this
+   app (the table's page-size control); every other select on the page is
+   library-rendered and visually hidden, so capping its width is invisible. */
+.demo select:not(.demo-input) {
+  max-width: 100%;
+}
+
+.demo-select__trigger,
+.demo-combobox__button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--undrr-space-2);
+  padding: var(--undrr-space-2) var(--undrr-space-3);
+  border: 1px solid var(--undrr-color-border-strong);
+  border-radius: var(--undrr-radius-md);
+  background: var(--undrr-color-surface);
+  color: var(--undrr-color-text-primary);
+  font: inherit;
+  cursor: pointer;
+}
+
+.demo-select__trigger[data-focus-visible],
+.demo-combobox__button[data-focus-visible] {
+  outline: 2px solid var(--undrr-color-focus);
+  outline-offset: 2px;
+}
+
+.demo-select__value {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.demo-combobox__control {
+  display: flex;
+  gap: var(--undrr-space-1);
+}
+
+.demo-combobox__control .demo-input {
+  flex: 1;
+  min-width: 0;
+}
+
+/**
+ * Portalled overlay. Carries the token scope class too — see
+ * src/overlay-class.ts for why, and note that on this host the padding is at
+ * risk as well as the colours: Preflight's `* { padding: 0 }` applies inside
+ * the portal, so an overlay that loses its token-driven padding collapses onto
+ * its text.
+ */
+.demo-popover {
+  max-height: 18rem;
+  overflow: auto;
+  border: 1px solid var(--undrr-color-border-strong);
+  border-radius: var(--undrr-radius-md);
+  background: var(--undrr-color-surface);
+  color: var(--undrr-color-text-primary);
+  font-family: var(--undrr-font-family-sans);
+  font-size: var(--undrr-font-size-base);
+  line-height: var(--undrr-line-height-normal);
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.15);
+  /* Token-driven so overlays sit above host chrome predictably. React Aria then
+     sets a much larger z-index inline on the portal container, which wins — see
+     EVIDENCE.md. */
+  z-index: var(--undrr-z-popover);
+}
+
+.demo-popover--padded {
+  padding: var(--undrr-space-4);
+  max-width: 22rem;
+}
+
+/* PREFLIGHT RECOVERY: ListBox renders a <ul>, and `ol, ul, menu` lose their
+   list-style. Harmless here because we want no markers, but the padding and
+   margin reset means the inset has to be restated. */
+.demo-listbox {
+  padding: var(--undrr-space-1);
+  margin: 0;
+  list-style: none;
+}
+
+.demo-listbox--inline {
+  max-height: 12rem;
+  overflow: auto;
+  border: 1px solid var(--undrr-color-border);
+  border-radius: var(--undrr-radius-md);
+}
+
+.demo-listbox__item,
+.demo-nav__item {
+  padding: var(--undrr-space-2) var(--undrr-space-3);
+  border-radius: var(--undrr-radius-sm);
+  cursor: pointer;
+}
+
+.demo-listbox__item[data-focused],
+.demo-nav__item[data-focused] {
+  background: var(--undrr-color-accent-subtle);
+}
+
+.demo-listbox__item[data-selected],
+.demo-nav__item[data-selected] {
+  background: var(--undrr-color-accent);
+  color: var(--undrr-color-on-accent);
+}
+
+.demo-taggroup {
+  margin-top: var(--undrr-space-2);
+}
+
+.demo-taglist {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--undrr-space-2);
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.demo-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--undrr-space-1);
+  padding: var(--undrr-space-1) var(--undrr-space-2);
+  border-radius: var(--undrr-radius-pill);
+  background: var(--undrr-color-accent-subtle);
+  font-size: var(--undrr-font-size-sm);
+}
+
+.demo-tag__remove {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+}
+
+/* ------------------------------------------------------------------ dates */
+
+.demo-dateinput {
+  display: flex;
+  align-items: center;
+  gap: var(--undrr-space-2);
+  padding: var(--undrr-space-1) var(--undrr-space-2);
+  border: 1px solid var(--undrr-color-border-strong);
+  border-radius: var(--undrr-radius-md);
+  background: var(--undrr-color-surface);
+  /* A date-time range is two full timestamps side by side, which cannot fit on
+     a 390px viewport. The segments themselves must not wrap — splitting a
+     timestamp mid-value is worse than wrapping the group — so the group wraps
+     instead and the two endpoints stack. Recorded in EVIDENCE.md as a real
+     constraint of the native range picker at mobile widths. */
+  flex-wrap: wrap;
+  max-width: 100%;
+}
+
+.demo-dateinput[data-focus-within] {
+  border-color: var(--undrr-color-accent);
+}
+
+.demo-dateinput__segments {
+  display: flex;
+  white-space: nowrap;
+}
+
+.demo-datesegment {
+  padding: 0 1px;
+  border-radius: var(--undrr-radius-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+.demo-datesegment[data-placeholder] {
+  color: var(--undrr-color-text-disabled);
+}
+
+.demo-dateinput__button {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  /* PREFLIGHT RECOVERY: without a declared line-height the emoji trigger sits
+     off-baseline once `font: inherit` has flattened the button's metrics. */
+  line-height: 1;
+}
+
+.demo-dateinput__dash {
+  color: var(--undrr-color-text-secondary);
+}
+
+.demo-calendar {
+  padding: var(--undrr-space-3);
+}
+
+.demo-calendar__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--undrr-space-2);
+  margin-bottom: var(--undrr-space-2);
+}
+
+/* PREFLIGHT RECOVERY: React Aria's Calendar Heading is an <h2>, so it needs an
+   explicit size AND weight. */
+.demo-calendar__heading {
+  margin: 0;
+  font-size: var(--undrr-font-size-base);
+  font-weight: var(--undrr-font-weight-semibold);
+}
+
+.demo-calendar__grid {
+  border-collapse: collapse;
+}
+
+/* PREFLIGHT RECOVERY: CalendarGrid renders a real <table>, and `* { padding: 0 }`
+   strips the default cell padding, so the day-of-week header row collapses to
+   bare glyphs without this. */
+.demo-calendar__grid th {
+  padding: var(--undrr-space-1);
+  font-size: var(--undrr-font-size-xs);
+  font-weight: var(--undrr-font-weight-medium);
+  color: var(--undrr-color-text-secondary);
+}
+
+.demo-calendar__cell {
+  padding: var(--undrr-space-2);
+  border-radius: var(--undrr-radius-sm);
+  text-align: center;
+  cursor: pointer;
+}
+
+.demo-calendar__cell[data-outside-month] {
+  color: var(--undrr-color-text-disabled);
+}
+
+.demo-calendar__cell[data-selected] {
+  background: var(--undrr-color-accent-subtle);
+}
+
+/* The endpoints of a range, and the intervening days between them: all
+   available natively through data attributes, no custom logic. */
+.demo-calendar__cell[data-selection-start],
+.demo-calendar__cell[data-selection-end] {
+  background: var(--undrr-color-accent);
+  color: var(--undrr-color-on-accent);
+}
+
+.demo-calendar__cell[data-focus-visible] {
+  outline: 2px solid var(--undrr-color-focus);
+  outline-offset: -2px;
+}
+
+/* --------------------------------------------------------------- overlays */
+
+.demo-modal__overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgb(0 0 0 / 0.4);
+  z-index: var(--undrr-z-modal);
+}
+
+.demo-modal {
+  max-width: 32rem;
+  width: calc(100% - 2rem);
+  border-radius: var(--undrr-radius-lg);
+  background: var(--undrr-color-surface);
+  color: var(--undrr-color-text-primary);
+  font-family: var(--undrr-font-family-sans);
+}
+
+.demo-dialog {
+  padding: var(--undrr-space-5);
+  outline: none;
+}
+
+.demo-dialog--calendar {
+  padding: 0;
+}
+
+.demo-dialog__title {
+  margin: 0 0 var(--undrr-space-3);
+  font-family: var(--undrr-font-family-display);
+  font-size: var(--undrr-font-size-lg);
+  font-weight: var(--undrr-font-weight-semibold);
+}
+
+.demo-tooltip {
+  max-width: 20rem;
+  padding: var(--undrr-space-2) var(--undrr-space-3);
+  border-radius: var(--undrr-radius-md);
+  background: var(--undrr-color-text-primary);
+  color: var(--undrr-color-text-inverse);
+  font-family: var(--undrr-font-family-sans);
+  font-size: var(--undrr-font-size-sm);
+  line-height: var(--undrr-line-height-normal);
+  z-index: var(--undrr-z-tooltip);
+}
+
+.demo-tooltip__arrow svg {
+  fill: var(--undrr-color-text-primary);
+}
+
+.demo-popover__arrow svg {
+  fill: var(--undrr-color-surface);
+}
+
+.demo-accordion {
+  border: 1px solid var(--undrr-color-border);
+  border-radius: var(--undrr-radius-md);
+  overflow: hidden;
+}
+
+.demo-accordion__item + .demo-accordion__item {
+  border-top: 1px solid var(--undrr-color-border);
+}
+
+/* PREFLIGHT RECOVERY: the Disclosure trigger is a <Button> inside an <h3>, so
+   it inherits the flattened heading metrics as well as the button reset. */
+.demo-accordion__trigger {
+  width: 100%;
+  padding: var(--undrr-space-3) var(--undrr-space-4);
+  border: 0;
+  background: var(--undrr-color-surface);
+  color: inherit;
+  font: inherit;
+  font-size: var(--undrr-font-size-base);
+  font-weight: var(--undrr-font-weight-medium);
+  text-align: start;
+  cursor: pointer;
+}
+
+.demo-accordion__trigger[data-hovered] {
+  background: var(--undrr-color-surface-sunken);
+}
+
+.demo-accordion__panel {
+  padding: 0 var(--undrr-space-4) var(--undrr-space-4);
+}
+
+/* ---------------------------------------------------------------- chrome */
+
+.demo-chrome {
+  display: grid;
+  grid-template-columns: minmax(12rem, 16rem) minmax(0, 1fr);
+  gap: var(--undrr-space-5);
+  align-items: start;
+}
+
+.demo-nav {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  border: 1px solid var(--undrr-color-border);
+  border-radius: var(--undrr-radius-md);
+}
+
+/* Shaped to echo Delta's own nav, which marks the active item with a 3px
+   inline-start border (`border-s-[3px]`). Tokens supply the colour. */
+.demo-nav__item {
+  border-inline-start: 3px solid transparent;
+  border-radius: 0;
+}
+
+.demo-nav__item[data-selected] {
+  border-inline-start-color: var(--undrr-color-accent-active);
+}
+
+.demo-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: var(--undrr-space-4);
+}
+
+/* The token-styled card, used in section 9 next to the host's Tailwind one.
+   Section 5's cards reuse Delta's own utility classes instead and need none of
+   this. */
+.demo-card {
+  padding: var(--undrr-space-4);
+  border: 1px solid var(--undrr-color-border);
+  border-radius: var(--undrr-radius-md);
+  background: var(--undrr-color-surface);
+}
+
+.demo-card__title {
+  margin: 0 0 var(--undrr-space-2);
+  font-family: var(--undrr-font-family-display);
+  font-size: var(--undrr-font-size-base);
+  font-weight: var(--undrr-font-weight-semibold);
+}
+
+.demo-card__description {
+  margin: 0;
+  color: var(--undrr-color-text-secondary);
+  font-size: var(--undrr-font-size-sm);
+}
+
+/* ----------------------------------------------------------------- table */
+
+.demo-tabletools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: var(--undrr-space-4);
+  margin-bottom: var(--undrr-space-3);
+  max-width: 100%;
+}
+
+/* A native <select> takes its intrinsic content width, which pushed past a
+   390px viewport. */
+.demo-tabletools select.demo-input {
+  width: 6rem;
+}
+
+.demo-tabletools__status,
+.demo-pagination__status {
+  margin: 0;
+  color: var(--undrr-color-text-secondary);
+  font-size: var(--undrr-font-size-sm);
+}
+
+/**
+ * The table's scroll container.
+ *
+ * `position: relative` is doing something specific and non-obvious, and it is
+ * the finding of this section.
+ *
+ * `overflow: auto` alone does NOT contain this table. React Aria's
+ * `ColumnResizer` renders a visually hidden `<input type="range">` for keyboard
+ * resizing, positioned with the standard `position: absolute; clip-path:
+ * inset(50%)` visually-hidden recipe. With no positioned ancestor those inputs
+ * resolve against the INITIAL containing block, which means an ancestor's
+ * `overflow` cannot clip them: the rightmost one sat at x=725 in a 390px
+ * viewport and scrolled the whole document by 335px, invisibly, while the table
+ * itself scrolled correctly inside this box.
+ *
+ * One declaration makes this element their containing block, at which point
+ * `overflow: auto` clips them as expected. It is on our own wrapper rather than
+ * on library markup, so it costs nothing in fragility — but you have to know,
+ * and the symptom points at the table rather than at the resizer.
+ *
+ * Worth raising upstream: a visually hidden control should not be able to
+ * change document layout. This is a second instance of the same class of bug as
+ * the hidden native `<select>` further up this file.
+ */
+.demo-tablewrap {
+  position: relative;
+  overflow: auto;
+  border: 1px solid var(--undrr-color-border);
+  border-radius: var(--undrr-radius-md);
+  /* ResizableTableContainer sizes to the summed column widths rather than to
+     its parent, so without an explicit cap the table scrolls the document
+     instead of scrolling inside this box. */
+  max-width: 100%;
+  width: 100%;
+}
+
+.demo-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--undrr-color-surface);
+  font-size: var(--undrr-font-size-sm);
+}
+
+.demo-table__column {
+  padding: var(--undrr-space-2) var(--undrr-space-3);
+  border-bottom: 1px solid var(--undrr-color-border-strong);
+  background: var(--undrr-color-surface-sunken);
+  font-weight: var(--undrr-font-weight-semibold);
+  text-align: start;
+  white-space: nowrap;
+}
+
+.demo-table__column--select,
+.demo-table__cell--select {
+  width: 2.5rem;
+  text-align: center;
+}
+
+/**
+ * The selection checkbox is entirely ours to draw. React Aria's Checkbox
+ * renders a visually hidden native input plus whatever children we give it, so
+ * with no CSS there is literally nothing on screen — and on this host Preflight
+ * has already removed the border and padding a bare span might have had.
+ */
+.demo-checkbox {
+  display: inline-flex;
+  cursor: pointer;
+}
+
+.demo-checkbox__box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1rem;
+  border: 1px solid var(--undrr-color-border-strong);
+  border-radius: var(--undrr-radius-sm);
+  background: var(--undrr-color-surface);
+  font-size: var(--undrr-font-size-xs);
+  line-height: 1;
+}
+
+.demo-checkbox__box[data-selected],
+.demo-checkbox__box[data-indeterminate] {
+  background: var(--undrr-color-accent);
+  border-color: var(--undrr-color-accent);
+  color: var(--undrr-color-on-accent);
+}
+
+.demo-checkbox[data-focus-visible] .demo-checkbox__box {
+  outline: 2px solid var(--undrr-color-focus);
+  outline-offset: 2px;
+}
+
+/**
+ * `ResizableTableContainer` sets `table-layout: fixed` on the table, so a
+ * column's assigned width no longer grows to fit its header. With
+ * `white-space: nowrap` the header text simply painted over the next column —
+ * "Economic loss (USD m)" ran straight through "Verification status" — which
+ * looks like a rendering bug and was only visible in a screenshot.
+ *
+ * Truncating with an ellipsis is the honest resolution: the resizer is right
+ * there, so a user who needs the full label can widen the column. Recorded
+ * because it is a consequence of choosing the resizable container, and any
+ * candidate offering column resize will face the same trade.
+ */
+.demo-table__columnInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--undrr-space-2);
+  min-width: 0;
+}
+
+.demo-table__column {
+  overflow: hidden;
+}
+
+.demo-table__columnInner > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.demo-table__resizer {
+  width: 8px;
+  cursor: col-resize;
+  background: var(--undrr-color-border);
+  border-radius: var(--undrr-radius-pill);
+}
+
+.demo-table__resizer[data-resizing] {
+  background: var(--undrr-color-accent);
+}
+
+.demo-table__row[data-selected] {
+  background: var(--undrr-color-accent-subtle);
+}
+
+.demo-table__row[data-hovered] {
+  background: var(--undrr-color-surface-sunken);
+}
+
+.demo-table__cell {
+  padding: var(--undrr-space-2) var(--undrr-space-3);
+  border-bottom: 1px solid var(--undrr-color-border);
+}
+
+.demo-table__cell--num {
+  font-variant-numeric: tabular-nums;
+  text-align: end;
+}
+
+.demo-badge {
+  display: inline-block;
+  padding: 0 var(--undrr-space-2);
+  border-radius: var(--undrr-radius-pill);
+  font-size: var(--undrr-font-size-xs);
+}
+
+.demo-badge--verified {
+  background: var(--undrr-color-success-subtle);
+  color: var(--undrr-color-success);
+}
+
+.demo-badge--pending {
+  background: var(--undrr-color-warning-subtle);
+  color: var(--undrr-color-warning);
+}
+
+.demo-badge--disputed {
+  background: var(--undrr-color-error-subtle);
+  color: var(--undrr-color-error);
+}
+
+.demo-badge--withdrawn {
+  background: var(--undrr-color-surface-sunken);
+  color: var(--undrr-color-text-secondary);
+}
+
+.demo-pagination {
+  display: flex;
+  align-items: center;
+  gap: var(--undrr-space-3);
+  margin-top: var(--undrr-space-3);
+}
+
+/* ---------------------------------------------------------------- states */
+
+.demo-statebox {
+  min-height: 8rem;
+  padding: var(--undrr-space-4);
+  margin-bottom: var(--undrr-space-4);
+  border: 1px solid var(--undrr-color-border);
+  border-radius: var(--undrr-radius-md);
+}
+
+.demo-status {
+  padding: var(--undrr-space-2) var(--undrr-space-3);
+  margin-bottom: var(--undrr-space-3);
+  border-radius: var(--undrr-radius-md);
+  font-size: var(--undrr-font-size-sm);
+}
+
+.demo-status--error {
+  background: var(--undrr-color-error-subtle);
+  color: var(--undrr-color-error);
+}
+
+.demo-status--success {
+  background: var(--undrr-color-success-subtle);
+  color: var(--undrr-color-success);
+}
+
+.demo-empty {
+  display: block;
+  padding: var(--undrr-space-4);
+  color: var(--undrr-color-text-secondary);
+  text-align: center;
+}
+
+.demo-progress__track {
+  display: block;
+  height: 6px;
+  margin-top: var(--undrr-space-2);
+  border-radius: var(--undrr-radius-pill);
+  background: var(--undrr-color-surface-sunken);
+  overflow: hidden;
+}
+
+.demo-progress__fill {
+  display: block;
+  width: 40%;
+  height: 100%;
+  border-radius: var(--undrr-radius-pill);
+  background: var(--undrr-color-accent);
+}
+
+/* ----------------------------------------------------------- side by side */
+
+.demo-sbs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--undrr-space-5);
+}
+
+.demo-sbs__col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--undrr-space-3);
+  min-width: 0;
+}
+
+.demo-sbs__heading {
+  margin: 0;
+  font-size: var(--undrr-font-size-sm);
+  font-weight: var(--undrr-font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--undrr-color-text-secondary);
+}
+
+.demo-sbs__table {
+  width: 100%;
+}
+
+.demo-locale {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--undrr-space-3);
+}
+
+.demo-locale__option {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--undrr-space-2);
+  cursor: pointer;
+}
+
+.demo-locale__option[data-selected] {
+  font-weight: var(--undrr-font-weight-semibold);
+}
+
+/**
+ * The radio control itself.
+ *
+ * React Aria's `Radio` renders a <label> wrapping a visually hidden native
+ * input and nothing else — there is no dot, no ring, no circle. Drawing it is
+ * ours, and with Preflight there is not even a border to start from. This is
+ * six declarations to reproduce something every browser ships for free, and it
+ * is representative of the whole file.
+ */
+.demo-locale__option::before {
+  content: "";
+  flex: none;
+  width: 1rem;
+  height: 1rem;
+  border: 1px solid var(--undrr-color-border-strong);
+  border-radius: var(--undrr-radius-pill);
+  background: var(--undrr-color-surface);
+}
+
+.demo-locale__option[data-selected]::before {
+  border-color: var(--undrr-color-accent);
+  border-width: 5px;
+}
+
+/* -------------------------------------------------------------- responsive */
+
+/**
+ * Deliberately last in the file.
+ *
+ * A media query carries no extra specificity, so `@media { .demo-sbs { ... } }`
+ * placed above the unconditional `.demo-sbs { grid-template-columns: repeat(2,
+ * ...) }` loses the cascade tie and silently does nothing. It did exactly that
+ * for the first run of this demo — the side-by-side section stayed two columns
+ * at 390px and pushed the document sideways — and nothing flagged it, because
+ * both rules are valid CSS. Caught by measuring, not by reading.
+ */
+@media (max-width: 48rem) {
+  .demo-chrome,
+  .demo-sbs {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

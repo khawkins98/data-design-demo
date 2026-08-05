@@ -1,0 +1,283 @@
+{
+  "candidate": "MUI (Community only)",
+  "host": "mangrove",
+  "versions": {
+    "library": "@mui/material@9.3.0, @mui/x-date-pickers@9.10.1, @mui/x-data-grid@9.10.1",
+    "react": "19.2.8",
+    "host": "@undrr/undrr-mangrove@1.8.1",
+    "node": "22 (CI), 24.18.0 (local run)"
+  },
+  "requirements": [
+    {
+      "id": "buttons",
+      "status": "native",
+      "notes": "Button with contained/outlined/error variants and disabled. textTransform: none set in the theme, since MUI uppercases labels by default and that mangles the German and Arabic fixtures.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "links",
+      "status": "native",
+      "notes": "Link component, underlined by default. Worth noting against this host specifically: MUI's Link underlines inline links, which is exactly what Mangrove's own bare `a` styling fails to do (host baseline link-in-text-block). The candidate is better behaved than the host here.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "text-input",
+      "status": "native",
+      "notes": "TextField bundles label, input, helper text and error state in one component. Far less markup than composing primitives. On this host it needs 10 lines of CSS to survive Mangrove's element-level input styling -- see customCss and EVIDENCE.md; that cost is attributed to the host, not counted here.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "validation-states",
+      "status": "composed",
+      "notes": "error + helperText cover the three client-side cases. server-rejected has no library channel: MUI has no form-level error API equivalent to React Aria's Form validationErrors, so it is component state we manage.",
+      "customLinesOfCode": 8
+    },
+    {
+      "id": "disabled-states",
+      "status": "native",
+      "notes": "disabled on Button, TextField and Select.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "select-small",
+      "status": "native",
+      "notes": "Select + MenuItem, 8 options.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "select-medium",
+      "status": "native",
+      "notes": "Same, 40 options, with a maxHeight on the menu paper.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "select-large",
+      "status": "native",
+      "notes": "Same, 400 options. Renders all 400 MenuItems; MUI Select has no built-in virtualisation.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "multiselect",
+      "status": "native",
+      "notes": "Autocomplete with multiple. Removable chips come free via renderValue and getItemProps. Notably stronger than React Aria, which has no multiselect component and needs ListBox + TagGroup composed.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "combobox-searchable",
+      "status": "native",
+      "notes": "Autocomplete filters as you type. filterOptions caps the rendered list at 100 for the 400-item fixture, which is a documented prop rather than a workaround.",
+      "customLinesOfCode": 5
+    },
+    {
+      "id": "date-picker",
+      "status": "native",
+      "notes": "DatePicker from the free @mui/x-date-pickers. Verified on this host that its hidden helper input does NOT trip Mangrove's [hidden] specificity bug: MUI 9.10.1 uses aria-hidden plus a 1px width and emits no `type` attribute, so neither Mangrove rule matches it. Asserted in e2e.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "datetime-range-picker",
+      "status": "composed",
+      "notes": "THE BLOCKER, resolved by composition per docs/requirements.md. MUI's range pickers exist only in @mui/x-date-pickers-pro, licence 'SEE LICENSE IN LICENSE' (commercial). Verified empirically: the community package ships ZERO Range* components. Composed from two free DateTimePickers with ampm=false and minute views, minDateTime/maxDateTime wired between them, and the span derived in application code. What a native range picker would have given and this does not: one calendar showing both endpoints with intervening days highlighted; drag-to-select; one popover and one focus trap instead of two; shared 'now editing the end' state; a single accessible name for the range as a concept (the most substantive loss, and an accessibility one); and the derived span rendered for us.",
+      "customLinesOfCode": 31
+    },
+    {
+      "id": "modal",
+      "status": "native",
+      "notes": "Dialog with DialogTitle/Content/Actions. Focus trap, Escape dismiss and focus restoration to the trigger all verified by e2e.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "tooltip",
+      "status": "native",
+      "notes": "Tooltip, hover and keyboard-focus triggered by default.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "popover",
+      "status": "native",
+      "notes": "Popover with anchorEl and outside-click dismiss. Portalled to document.body, outside the .undrr-tokens element; computed background verified as rgb(255,255,255) even though --undrr-color-surface reads empty there, because MUI resolved the token at build time.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "accordion",
+      "status": "native",
+      "notes": "Accordion + AccordionSummary + AccordionDetails, single-expand via controlled expanded state.",
+      "customLinesOfCode": 4
+    },
+    {
+      "id": "cards",
+      "status": "native",
+      "notes": "Card + CardContent exist, unlike React Aria. Matching THIS host is where it falls short: variant=outlined and elevation=0 remove MUI's shadow, but radius, type scale and border colour still come from the neutral UNDRR tokens rather than from Mangrove, and Mangrove 1.8.1 publishes no runtime tokens to point MUI at. Side-by-side in section 9 shows the residual gap; it is wider than the delta-mui equivalent.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "left-nav",
+      "status": "native",
+      "notes": "List + ListItemButton with selected state. Mangrove's bare `ul { padding-left: 1.25rem; list-style-position: outside }` was expected to leak into MuiList; measured, MUI's own List styles already win, so no repair was needed.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "table-render",
+      "status": "native",
+      "notes": "DataGrid over all 250 rows. Column type formatting via valueFormatter with Intl, driven by the active locale, timeZone UTC throughout.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "table-sort",
+      "status": "native",
+      "notes": "Built into DataGrid with an initial sortModel. No comparator written, in contrast to React Aria where sorting cost 22 lines.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "table-multiselect",
+      "status": "native",
+      "notes": "checkboxSelection, with header select-all included.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "table-filter",
+      "status": "native",
+      "notes": "showToolbar gives the built-in filter UI. No predicate written.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "table-paginate",
+      "status": "native",
+      "notes": "paginationModel plus pageSizeOptions. Entirely native, where React Aria has no pagination component at all and needed 34 custom lines on this same host. The single clearest advantage MUI has in this evaluation.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "table-column-resize-or-reorder",
+      "status": "native",
+      "notes": "resizable: true per column. GridColDef.resizable and disableColumnResize exist in the community build, while disableColumnReorder appears only in its Pro-omit type list, so reorder is Pro-only. The brief accepts either.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "table-states",
+      "status": "native",
+      "notes": "DataGrid loading prop with a linear-progress overlay, localeText.noRowsLabel for empty, and Alert for error/success with correct ARIA roles.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "form-states",
+      "status": "native",
+      "notes": "LinearProgress and Alert. No custom banner markup, unlike React Aria which needed role=alert/status by hand.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "locale-switcher",
+      "status": "native",
+      "notes": "ToggleButtonGroup, exclusive. Renders real buttons, so Playwright role targeting works -- the react-aria run had to click labels instead.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "rtl",
+      "status": "composed",
+      "notes": "INCOMPLETE, and this run does not call it clean. `direction` must be set on the MUI theme itself, not just a dir attribute, so the theme is rebuilt per locale with createTheme(base, { direction }); adapterLocale must also be threaded into LocalizationProvider for the pickers. React Aria needed only I18nProvider. Layout, component internals and the pickers do flip. What does NOT flip is emotion's already-emitted physical offsets: MuiInputLabel-outlined uses `left: 0` plus translate(14px,-9px), so a TextField whose FormControl is wider than its input renders the floating label pinned to the physical left edge -- measured 870px away from its field in Arabic. MUI's documented fix is a stylis RTL plugin (stylis-plugin-rtl) in the emotion cache, a third-party package outside the candidate's ecosystem that constraint 2 forbids. The e2e assertion for this is LEFT FAILING (3 of 42 tests). Reproduced identically in apps/delta-mui, so it is the candidate, not this host: the delta-mui run recorded rtl clean and missed it.",
+      "customLinesOfCode": 6
+    },
+    {
+      "id": "long-labels",
+      "status": "native",
+      "notes": "Clean at all three viewports: 0px horizontal overflow in German at 390, 1024 and 1440. One CSS rule wraps DataGrid header titles so the 60-character German column names are not truncated. Notably better than the react-aria run on this same host, which overflowed 261px at 390px.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "side-by-side",
+      "status": "composed",
+      "notes": "Host and candidate button, table, card and nav list rendered adjacent in section 9. The host column uses Mangrove's real classes (mg-button-primary, mg-table--striped, mg-card) so it is styled by the design system itself. The visual gap is the finding: MUI themed to neutral UNDRR tokens does not read as Mangrove, and 1.8.1 offers no runtime tokens to close it.",
+      "customLinesOfCode": 0
+    }
+  ],
+  "customCss": {
+    "lines": 27,
+    "selectors": 7,
+    "overridesLibraryInternals": true,
+    "notes": "27 declaration lines, comments stripped, across 7 selectors. 10 of those lines exist only to contain the HOST: Mangrove's `input[type=text], input[type=date], ... { border: 2px solid #1a1a1a; height: 46px; background: #fff; font-family: Roboto }` is (0,1,1) and beats MUI's own .MuiOutlinedInput-input at (0,1,0). Four further rules were written and then DELETED after measurement showed they did nothing -- the [hidden] specificity fix, a MuiList padding reset, a notch-legend reset, and unscoped portal copies of the first two. They are documented in src/demo.css rather than left in place, so this count is not inflated."
+  },
+  "wrappers": {
+    "count": 2,
+    "totalLines": 53,
+    "notes": "OptionSelect (29 lines) and OptionCombo (24 lines) in SectionSelection, both purely to avoid repeating the same control three times at three fixture sizes. Identical to delta-mui."
+  },
+  "theming": {
+    "tokensApplied": 32,
+    "tokensUnreachable": 0,
+    "method": "createTheme() mapping the TypeScript token export into MUI's theme object: palette, typography, spacing, shape, zIndex, plus two components overrides for the focus ring. 32 distinct token references. MUI theming is JavaScript, not CSS custom properties, so the theme is a build-time COPY of token values rather than a live reference: changing a token needs a rebuild, where a var()-based consumer would pick it up at runtime. src/theme.ts is IDENTICAL to apps/delta-mui/src/theme.ts -- the host changed nothing about the token mapping, which is why every host cost in this run is isolated in demo.css.",
+    "escapeHatchesUsed": [
+      "cssVariables: true deliberately NOT enabled. It makes MUI emit its own --mui-* custom properties at :root level, placing MUI's palette in the same global scope as the host and defeating containment.",
+      "CssBaseline replaced with ScopedCssBaseline. On this host that is a more expensive substitution than on Delta: CssBaseline is precisely what would have neutralised Mangrove's element-level input rules, so dropping it for containment is what created the 10 lines of input repair in demo.css.",
+      "Two CSS rules reach into library-generated class names (.MuiOutlinedInput-input / .MuiInputBase-input, .MuiDataGrid-root, .MuiDataGrid-columnHeaderTitle). Recorded as overridesLibraryInternals: true. The input one is host repair, not candidate styling.",
+      "MUI's picker prop types are not compatible with exactOptionalPropertyTypes: true. minDateTime/maxDateTime are typed as Date rather than Date | undefined, so a conditional spread is needed instead of `value ?? undefined`.",
+      "Stack no longer accepts flexWrap/alignItems as direct props in v9; they must move into sx.",
+      "stylis-plugin-rtl was NOT added, because it is outside the candidate's ecosystem and constraint 2 forbids it. That leaves RTL incomplete -- see the rtl requirement.",
+      "None needed for portalled overlays. MUI portals its popper and popover to document.body, outside the .undrr-tokens element, and a computed-style check confirms it sees an EMPTY --undrr-color-surface there -- yet it still renders rgb(255,255,255) correctly, because the theme resolved token values at build time and emotion emitted literal colours. The react-aria run on this same host had to apply the token scope class to every overlay to avoid transparent popovers. The same build-time inlining that prevents runtime theming is what makes MUI immune here."
+    ],
+    "hostTokensNotAttempted": "Mangrove 1.8.1 was not themed against, and neither was the Mangrove 2.0 preview. 1.8.1's compiled stylesheet declares zero CSS custom properties, so its palette is unreachable at runtime; the numbers above measure packages/undrr-tokens only. Even after 2.0 lands, Mangrove's font sizes, font families and breakpoints stay SCSS-only, so a candidate could not reach the type scale at runtime on this host regardless."
+  },
+  "leakage": {
+    "assertionPassed": true,
+    "differences": [],
+    "canariesChecked": 14,
+    "notes": "Same clean result as delta-mui, and for the same reason: no global reset, no :root custom properties. The host made no difference to the leakage outcome. What the host DID change is the opposite direction -- Mangrove restyling the candidate -- which the leakage assertion cannot see and which this run asserts separately."
+  },
+  "axe": {
+    "violations": 1,
+    "serious": 1,
+    "critical": 0,
+    "incomplete": 4,
+    "scope": "candidate subtree, include: [data-candidate-root]",
+    "wholePage": {
+      "violations": 2,
+      "serious": 2,
+      "critical": 0,
+      "incomplete": 4,
+      "rules": ["color-contrast", "link-in-text-block"],
+      "notes": "link-in-text-block is the known Mangrove host baseline on its own canary paragraph (docs/requirements.md). It is not caused by MUI and is excluded from the scoped counts above."
+    }
+  },
+  "rtl": {
+    "status": "issues",
+    "issues": [
+      "MuiInputLabel-outlined is positioned with a physical `left: 0` that theme direction does not flip. A TextField whose FormControl is wider than its input renders its floating label at the physical left edge: measured label x=51, input x=921, gap 870px, at all three viewports. Fix requires stylis-plugin-rtl, which constraint 2 forbids. The e2e assertion is left failing."
+    ]
+  },
+  "longLabels": {
+    "status": "clean",
+    "issues": [],
+    "measurements": [
+      { "viewport": "mobile", "scrollWidth": 390, "clientWidth": 390, "overflowPx": 0 },
+      { "viewport": "tablet", "scrollWidth": 1024, "clientWidth": 1024, "overflowPx": 0 },
+      { "viewport": "desktop", "scrollWidth": 1440, "clientWidth": 1440, "overflowPx": 0 }
+    ]
+  },
+  "bundle": {
+    "gzippedKb": 397.6,
+    "cssGzippedKb": 35.5,
+    "dependencyCount": 158,
+    "notes": "JS 1411.1 kB raw / 397.6 kB gzipped; CSS 190.7 kB raw / 35.5 kB gzipped. The CSS figure is where this pairing differs from delta-mui (3.8 kB gzipped): essentially all of it is Mangrove's own stylesheet, which ships 197.5 kB raw / 37.0 kB gzipped on its own and which the host requires. mangrove-react-aria's CSS bundle is 37.3 kB gzipped for comparison. 158 packages resolved against delta-mui's 142; the extra 16 are @undrr/undrr-mangrove and its transitive tree."
+  },
+  "buildTimeSeconds": 1.7,
+  "buildTimeSecondsCold": 6.5,
+  "testSummary": {
+    "total": 42,
+    "passed": 39,
+    "failed": 3,
+    "failing": [
+      "kitchen sink > RTL flips MUI's floating labels (mobile, tablet, desktop) -- left failing deliberately; see the rtl requirement."
+    ]
+  },
+  "blockers": [],
+  "humanReviewRequired": [
+    "The failing RTL test needs a decision. Either UNDRR accepts stylis-plugin-rtl as part of adopting MUI -- it is maintained by the stylis project, not by MUI, and is a third-party dependency this brief forbids -- or Arabic gets misplaced field labels on any full-width TextField. This is the single most consequential unresolved item in this run.",
+    "axe `color-contrast` (1 serious, scoped): the helper text on the disabled TextField fails contrast. MUI applies its disabled text colour to the associated helper text, and the neutral token palette's --undrr-color-text-disabled (#8b9aa5) is roughly 2.8:1 on white. Disabled *controls* are exempt from WCAG 1.4.3, but helper text is not itself a disabled control, so this needs a ruling. Tokens are import-only so it could not be fixed here.",
+    "axe reported 4 incomplete rules it could not decide across the page. `duplicate-id-aria` on a DataGrid page is worth a human look, since duplicate ARIA ids break screen-reader association.",
+    "The 10 lines of CSS neutralising Mangrove's `input[type=...]` rules are a per-app workaround that every Mangrove pairing will need in some form. It should be fixed in Mangrove -- either by excluding `[hidden]` and scoping the input rules to a class, or by shipping a reset consumers can opt into -- rather than written four times.",
+    "Mangrove's `[hidden]` specificity bug is still present in 1.8.1 and still worth fixing upstream, even though MUI happens not to trigger it. React Aria does. This run's clean result is luck about MUI's implementation detail, not evidence the host bug is harmless.",
+    "The 400-option Select renders all 400 MenuItems. MUI Select has no built-in virtualisation; Autocomplete was capped at 100 rendered options instead. Whether the plain Select is acceptable at that size is a performance decision not taken here.",
+    "Keyboard and screen-reader testing by a human, particularly the composed date-time range: two separate pickers give screen-reader users two unrelated fields with no single accessible name for the range as a concept.",
+    "Omitting CssBaseline is a real deviation from MUI's intended setup, and on this host it is the direct cause of the input repair CSS. Needs a decision on whether the host should absorb CssBaseline centrally instead.",
+    "The composed range's minDateTime/maxDateTime wiring is present in code but was NOT verified end to end: the calendar opens on a month with no out-of-range days, so no disabled day exists to assert against. Verified by reading the props only.",
+    "Counting note for whoever aggregates these files: this run records 32 tokensApplied for a theme.ts that is byte-identical to delta-mui's, which recorded 29. The difference is counting method, not theming depth. Pick one method before comparing."
+  ]
+}

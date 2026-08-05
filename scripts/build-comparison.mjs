@@ -145,11 +145,13 @@ const lines = [
   "",
   headerRow,
   dividerRow,
+  // Deliberately does NOT print differences.length. A run may summarise that
+  // array rather than enumerate it — mangrove-carbon records a summary plus
+  // samples, 19 entries for a real 54 — so a count here would understate the
+  // failure. The authoritative diff is each run's test-results/leakage.json.
   `| Leakage | ${pairings.map((p) => {
     if (!p.evidence?.leakage) return "—";
-    return p.evidence.leakage.assertionPassed
-      ? "clean"
-      : `**${p.evidence.leakage.differences?.length ?? "?"} diffs**`;
+    return p.evidence.leakage.assertionPassed ? "clean" : "**FAILED**";
   }).join(" | ")} |`,
   `| axe violations | ${pairings.map((p) => cell(p.evidence?.axe?.violations)).join(" | ")} |`,
   `| axe critical | ${pairings.map((p) => cell(p.evidence?.axe?.critical)).join(" | ")} |`,

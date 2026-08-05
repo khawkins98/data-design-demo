@@ -6,7 +6,7 @@
 
 # Candidate comparison
 
-7 of 8 pairings have reported. Every figure below comes
+8 of 8 pairings have reported. Every figure below comes
 from a run's own `evidence.json`; nothing here is entered by hand.
 
 Read this alongside each run's `EVIDENCE.md`, which carries the reasoning the
@@ -16,19 +16,19 @@ numbers cannot.
 
 | | Adobe React Aria<br>Delta | MUI<br>Delta | IBM Carbon<br>Delta | Mantine<br>Delta | Adobe React Aria<br>Mangrove | MUI<br>Mangrove | IBM Carbon<br>Mangrove | Mantine<br>Mangrove |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| **Native** | 20 | 26 | 19 | 20 | 21 | 26 | — | 19 |
-| **Composed** | 8 | 4 | 10 | 7 | 7 | 4 | — | 10 |
-| **Custom** | 2 | 0 | 1 | 3 | 2 | 0 | — | 1 |
-| **Unsupported** | 0 | 0 | 0 | 0 | 0 | 0 | — | 0 |
-| Custom lines of code | 128 | 54 | 171 | 411 | 122 | 54 | — | 293 |
-| Custom CSS lines | 715 | 14 | 300 | 72 | 661 | 27 | — | 103 |
-| CSS selectors | 156 | 3 | 34 | 17 | 120 | 7 | — | 44 |
-| Wrappers | 5 | 3 | 4 | 4 | 3 | 2 | — | 4 |
-| Tokens applied | 48 | 29 | 50 | 66 | 47 | 32 | — | 62 |
-| Tokens unreachable | 0 | 0 | 21 | 5 | 0 | 0 | — | 0 |
-| Bundle (kB gzipped) | 238.8 | 387.4 | 261.5 | 238.8 | 237.6 | 397.6 | — | 270.9 |
-| Dependencies | 19 | 142 | 145 | 112 | 20 | 158 | — | 113 |
-| Build time (s) | 2 | 2.4 | 2.8 | 2.6 | 1.2 | 1.7 | — | 3.58 |
+| **Native** | 20 | 26 | 19 | 20 | 21 | 26 | 19 | 19 |
+| **Composed** | 8 | 4 | 10 | 7 | 7 | 4 | 10 | 10 |
+| **Custom** | 2 | 0 | 1 | 3 | 2 | 0 | 1 | 1 |
+| **Unsupported** | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| Custom lines of code | 128 | 54 | 171 | 411 | 122 | 54 | 171 | 293 |
+| Custom CSS lines | 715 | 14 | 300 | 72 | 661 | 27 | 351 | 103 |
+| CSS selectors | 156 | 3 | 34 | 17 | 120 | 7 | 48 | 44 |
+| Wrappers | 5 | 3 | 4 | 4 | 3 | 2 | 4 | 4 |
+| Tokens applied | 48 | 29 | 50 | 66 | 47 | 32 | 50 | 62 |
+| Tokens unreachable | 0 | 0 | 21 | 5 | 0 | 0 | 22 | 0 |
+| Bundle (kB gzipped) | 238.8 | 387.4 | 261.5 | 238.8 | 237.6 | 397.6 | 207.8 | 270.9 |
+| Dependencies | 19 | 142 | 145 | 112 | 20 | 158 | 146 | 113 |
+| Build time (s) | 2 | 2.4 | 2.8 | 2.6 | 1.2 | 1.7 | 4.7 | 3.58 |
 
 ## Conformance signals
 
@@ -38,14 +38,14 @@ to the candidate subtree, so host baseline violations are excluded.
 
 | | Adobe React Aria<br>Delta | MUI<br>Delta | IBM Carbon<br>Delta | Mantine<br>Delta | Adobe React Aria<br>Mangrove | MUI<br>Mangrove | IBM Carbon<br>Mangrove | Mantine<br>Mangrove |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Leakage | clean | clean | clean | clean | clean | clean | — | clean |
-| axe violations | 0 | 1 | 3 | 0 | 0 | 1 | — | 0 |
-| axe critical | 0 | 0 | 1 | 0 | 0 | 0 | — | 0 |
-| axe serious | 0 | 1 | 2 | 0 | 0 | 1 | — | 0 |
-| axe incomplete | 1 | 4 | 2 | 1 | 1 | 4 | — | 0 |
-| RTL | clean | issues | clean | clean | clean | issues | — | clean |
-| Long labels | clean | clean | clean | clean | clean | clean | — | clean |
-| Blockers | 0 | 0 | 0 | 0 | 0 | 0 | — | 0 |
+| Leakage | clean | clean | clean | clean | clean | clean | **FAILED** | clean |
+| axe violations | 0 | 1 | 3 | 0 | 0 | 1 | 1 | 0 |
+| axe critical | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 |
+| axe serious | 0 | 1 | 2 | 0 | 0 | 1 | 1 | 0 |
+| axe incomplete | 1 | 4 | 2 | 1 | 1 | 4 | 2 | 0 |
+| RTL | clean | issues | clean | clean | clean | issues | clean | clean |
+| Long labels | clean | clean | clean | clean | clean | clean | clean | clean |
+| Blockers | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 
 ## Requirement matrix
 
@@ -53,40 +53,40 @@ to the candidate subtree, so host baseline violations are excluded.
 
 | | Adobe React Aria<br>Delta | MUI<br>Delta | IBM Carbon<br>Delta | Mantine<br>Delta | Adobe React Aria<br>Mangrove | MUI<br>Mangrove | IBM Carbon<br>Mangrove | Mantine<br>Mangrove |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `buttons` | N | N | N | N | N | N | · | N |
-| `links` | N | N | N | N | N | N | · | N |
-| `text-input` | N | N | N | N | N | N | · | N |
-| `validation-states` | N | C | C | C | N | C | · | C |
-| `disabled-states` | N | N | N | N | N | N | · | N |
-| `select-small` | N | N | N | N | N | N | · | N |
-| `select-medium` | N | N | N | N | N | N | · | N |
-| `select-large` | N | N | N | N | N | N | · | N |
-| `multiselect` | C | N | C | N | C | N | · | N |
-| `combobox-searchable` | N | N | C | N | N | N | · | N |
-| `date-picker` | N | N | N | N | N | N | · | N |
-| `datetime-range-picker` | N | C | C | N | N | C | · | N |
-| `modal` | N | N | N | N | N | N | · | N |
-| `tooltip` | N | N | N | N | N | N | · | N |
-| `popover` | N | N | N | N | N | N | · | N |
-| `accordion` | N | N | N | N | N | N | · | N |
-| `cards` | X | N | N | N | X | N | · | N |
-| `left-nav` | N | N | C | N | N | N | · | N |
-| `table-render` | N | N | C | C | N | N | · | C |
-| `table-sort` | C | N | N | X | C | N | · | C |
-| `table-multiselect` | C | N | N | X | C | N | · | C |
-| `table-filter` | C | N | N | C | C | N | · | C |
-| `table-paginate` | X | N | C | C | X | N | · | C |
-| `table-column-resize-or-reorder` | N | N | X | X | N | N | · | X |
-| `table-states` | C | N | C | C | C | N | · | C |
-| `form-states` | C | N | N | N | C | N | · | C |
-| `locale-switcher` | N | N | N | N | N | N | · | N |
-| `rtl` | N | C | N | C | N | C | · | C |
-| `long-labels` | C | N | C | N | N | N | · | N |
-| `side-by-side` | C | C | C | C | C | C | · | C |
+| `buttons` | N | N | N | N | N | N | N | N |
+| `links` | N | N | N | N | N | N | N | N |
+| `text-input` | N | N | N | N | N | N | N | N |
+| `validation-states` | N | C | C | C | N | C | C | C |
+| `disabled-states` | N | N | N | N | N | N | N | N |
+| `select-small` | N | N | N | N | N | N | N | N |
+| `select-medium` | N | N | N | N | N | N | N | N |
+| `select-large` | N | N | N | N | N | N | N | N |
+| `multiselect` | C | N | C | N | C | N | C | N |
+| `combobox-searchable` | N | N | C | N | N | N | N | N |
+| `date-picker` | N | N | N | N | N | N | N | N |
+| `datetime-range-picker` | N | C | C | N | N | C | C | N |
+| `modal` | N | N | N | N | N | N | N | N |
+| `tooltip` | N | N | N | N | N | N | N | N |
+| `popover` | N | N | N | N | N | N | C | N |
+| `accordion` | N | N | N | N | N | N | N | N |
+| `cards` | X | N | N | N | X | N | N | N |
+| `left-nav` | N | N | C | N | N | N | N | N |
+| `table-render` | N | N | C | C | N | N | N | C |
+| `table-sort` | C | N | N | X | C | N | N | C |
+| `table-multiselect` | C | N | N | X | C | N | N | C |
+| `table-filter` | C | N | N | C | C | N | N | C |
+| `table-paginate` | X | N | C | C | X | N | C | C |
+| `table-column-resize-or-reorder` | N | N | X | X | N | N | X | X |
+| `table-states` | C | N | C | C | C | N | C | C |
+| `form-states` | C | N | N | N | C | N | C | C |
+| `locale-switcher` | N | N | N | N | N | N | N | N |
+| `rtl` | N | C | N | C | N | C | C | C |
+| `long-labels` | C | N | C | N | N | N | C | N |
+| `side-by-side` | C | C | C | C | C | C | C | C |
 
 ## Unsupported requirements
 
-None so far, among the pairings that have reported.
+None. Every requirement was met natively, by composition, or with custom code.
 
 ## Blockers
 
@@ -165,6 +165,20 @@ as needing a person, and they do not appear in any count above.
 - Omitting CssBaseline is a real deviation from MUI's intended setup, and on this host it is the direct cause of the input repair CSS. Needs a decision on whether the host should absorb CssBaseline centrally instead.
 - The composed range's minDateTime/maxDateTime wiring is present in code but was NOT verified end to end: the calendar opens on a month with no out-of-range days, so no disabled day exists to assert against. Verified by reading the props only.
 - Counting note for whoever aggregates these files: this run records 32 tokensApplied for a theme.ts that is byte-identical to delta-mui's, which recorded 29. The difference is counting method, not theming depth. Pick one method before comparing.
+
+### mangrove-carbon
+
+- THE LEAKAGE FAILURE NEEDS A DECISION, NOT A FIX. Carbon as documented restyles the host: 54 computed-property changes across 11 of 14 canaries. The scoped-CSS experiment (?carbonCss=scoped) reduces that to 0, but it depends on Sass's deprecated nested @import, requires a hand-copied block of Carbon's layout tokens, and would need maintaining across Carbon upgrades. The three options are (a) accept that Carbon owns page-level typography and reset, and retire Mangrove's, (b) carry the scoped build and its maintenance cost, (c) do not adopt Carbon on Mangrove pages. This is an architecture decision for UNDRR.
+- IBM TELEMETRY. 21 packages in this tree run `postinstall: ibmtelemetry --config=telemetry.yml`, POSTing to https://www-api.ibm.com/ibm-telemetry/v1/metrics: 12 @carbon/* packages plus 9 @ibm/plex* font packages. @carbon/react's config enables jsx, npm and js collectors with an allow-list of 829 entries of component and prop names. It runs at install time, so it fires in CI and on every developer machine, and it is ON by default; the opt-out is IBM_TELEMETRY_DISABLED=true. No other candidate in this evaluation installs anything comparable. For a UN body this is a data-governance and procurement question, and if Carbon is adopted the variable should be set in CI and documented for contributors.
+- axe `aria-valid-attr-value` was a CRITICAL violation on all three invalid TextInputs before being worked around: Carbon points aria-errormessage at a .cds--form-requirement element that has no role=alert, no aria-live and is not in aria-describedby. The workaround duplicates the reference through aria-describedby and depends on Carbon's internal id convention. It should be fixed upstream, and until it is, every Carbon consumer using invalid fields has this violation unless they know the trick.
+- axe `color-contrast` (1 serious): the helper text on the disabled TextInput and disabled Select. Carbon applies its disabled text colour to the associated helper text, and the neutral token palette's --undrr-color-text-disabled (#8b9aa5) is roughly 2.8:1 on white. Disabled controls are exempt from WCAG 1.4.3 but helper text is not itself a disabled control, so this needs a ruling. Tokens are import-only so it could not be fixed here. The delta-mui run reported the identical finding.
+- axe reported 2 incomplete rules it could not decide: aria-valid-attr-value and color-contrast. Both need a human look.
+- axe `scrollable-region-focusable` (serious, 390px only) on Carbon's .cds--data-table-content. Caused by the overflow-x rule that stops a 250-row German table scrolling the document. Carbon renders that div internally with no way to add tabindex, so the choice is a keyboard-inaccessible scroll region or a horizontally scrolling document. Needs a design decision.
+- The Mangrove host's own `link-in-text-block` serious violation DISAPPEARS in the default build and returns in the scoped build. Carbon's global `a { color: #0062fe }` reaches the host's canary paragraph and changes the link/text contrast enough for axe to stop firing. Nobody should take comfort from that number: the leakage masked a host accessibility failure rather than fixing anything. Whole-page counts are 1 violation with Carbon global and 3 with Carbon contained.
+- The 400-option Dropdown renders all 400 DOM nodes. Carbon has no virtualisation for any of its list boxes and no opt-in equivalent to React Aria's Virtualizer, so this is not a configuration choice. Whether it is acceptable at that size is a performance decision not taken here.
+- Keyboard and screen-reader testing by a human. axe is static analysis and cannot confirm that the composed date-time range is usable: four separate fields, no single accessible name for the range as a concept, and the times outside the calendar popover. The custom column reorder also needs screen-reader verification — Ctrl+Shift+Arrow is asserted to work but is not announced.
+- Carbon's DatePicker is a React shell over flatpickr's imperative API and is not a controlled component. The `value` array identity problem documented under datetime-range-picker is a trap any team will hit; whether that is acceptable in a form-heavy application is worth deciding before adoption. flatpickr is also pinned to an exact version by Carbon, so a security fix in it waits on a Carbon release.
+- The scoped-CSS build depends on Mangrove for `box-sizing`. Carbon's `html { box-sizing: border-box }` becomes `.demo html` under nesting and never matches, so Carbon's `* { box-sizing: inherit }` inherits from whatever the host set. Mangrove happens to declare `*, ::after, ::before { box-sizing: border-box }`, so it works — measured, border-box everywhere in both builds. That is the mirror image of the delta-carbon run being rescued by Tailwind Preflight, and it means the scoped build is not self-sufficient: on a host with no global box-sizing rule it would break.
 
 ### mangrove-mantine
 

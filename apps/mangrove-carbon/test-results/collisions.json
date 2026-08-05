@@ -1,0 +1,215 @@
+{
+  "hostIntoCandidate": {
+    "totalRules": 44,
+    "totalMatchedElements": 1594,
+    "rules": [
+      {
+        "selector": "*, ::after, ::before",
+        "matches": 968,
+        "declarations": "box-sizing: border-box; overflow-wrap: break-word;"
+      },
+      {
+        "selector": "button, input, optgroup, select, textarea",
+        "matches": 80,
+        "declarations": "font-family: inherit; font-size: 100%; line-height: 1.15; margin: 0px;"
+      },
+      {
+        "selector": "button, input",
+        "matches": 77,
+        "declarations": "overflow: visible;"
+      },
+      {
+        "selector": "button, select",
+        "matches": 47,
+        "declarations": "text-transform: none;"
+      },
+      {
+        "selector": "body, button",
+        "matches": 44,
+        "declarations": "font-family: Roboto, sans-serif;"
+      },
+      {
+        "selector": "[type=\"button\"], [type=\"reset\"], [type=\"submit\"], button",
+        "matches": 44,
+        "declarations": "appearance: auto;"
+      },
+      {
+        "selector": ".mg-form-group__legend, details.mg-details > summary, label, label.error",
+        "matches": 38,
+        "declarations": "font-size: 1rem;"
+      },
+      {
+        "selector": ".mg-form-group__legend, details.mg-details > summary, label, label.error",
+        "matches": 38,
+        "declarations": "font-size: 1.125rem;"
+      },
+      {
+        "selector": "label",
+        "matches": 38,
+        "declarations": "display: block;"
+      },
+      {
+        "selector": "caption, h1, h2, h3, h4, h5, h6",
+        "matches": 19,
+        "declarations": "margin: 0.625rem 0px; padding: 0px;"
+      },
+      {
+        "selector": ".mg-form-input, .mg-form-select, .mg-form-textarea, .mg-search__input, input[type=\"date\"], input[type=\"email\"], input[type=\"number\"], input[type=\"password\"], input[type=\"search\"], input[type=\"tel\"], input[type=\"text\"], textarea",
+        "matches": 18,
+        "declarations": "background-color: rgb(255, 255, 255);"
+      },
+      {
+        "selector": "input[type=\"date\"], input[type=\"email\"], input[type=\"number\"], input[type=\"password\"], input[type=\"search\"], input[type=\"tel\"], input[type=\"text\"], textarea",
+        "matches": 18,
+        "declarations": "appearance: none; border: 2px solid rgb(26, 26, 26); border-radius: 0px; box-sizing: border-box; display: block; font-family: Roboto, sans-serif; font-size: 1re"
+      },
+      {
+        "selector": "h3, h4, h5",
+        "matches": 15,
+        "declarations": "font-weight: 600; line-height: 1.15;"
+      },
+      {
+        "selector": "p",
+        "matches": 15,
+        "declarations": "margin-top: 0px;"
+      },
+      {
+        "selector": "[type=\"checkbox\"], [type=\"radio\"]",
+        "matches": 15,
+        "declarations": "box-sizing: border-box; padding: 0px;"
+      },
+      {
+        "selector": "ol li, ul li",
+        "matches": 14,
+        "declarations": "margin-bottom: 0px; padding-left: 0px;"
+      },
+      {
+        "selector": "a",
+        "matches": 12,
+        "declarations": "color: rgb(0, 79, 145); text-decoration: none;"
+      },
+      {
+        "selector": "a",
+        "matches": 12,
+        "declarations": "background-color: transparent;"
+      },
+      {
+        "selector": "ol, ul",
+        "matches": 11,
+        "declarations": "list-style-position: outside; margin: 0px 0px 0.625rem; padding-left: 1.25rem;"
+      },
+      {
+        "selector": "h3",
+        "matches": 8,
+        "declarations": "font-size: 1.125rem;"
+      },
+      {
+        "selector": ".mg-table td, .mg-table th",
+        "matches": 8,
+        "declarations": "font-size: 1rem; line-height: 1.4; padding: 0.15625rem; vertical-align: top;"
+      },
+      {
+        "selector": ".mg-table td, .mg-table th",
+        "matches": 8,
+        "declarations": "padding: 0.15625rem 1.25rem 0.15625rem 0.15625rem;"
+      },
+      {
+        "selector": "h4, h5",
+        "matches": 7,
+        "declarations": "font-size: 1rem;"
+      },
+      {
+        "selector": ".mg-table.mg-table--stacked.mg-table--border tr td, .mg-table.mg-table--stacked.mg-table--border tr th, .mg-table.mg-table--striped tr",
+        "matches": 4,
+        "declarations": "border-width: medium; border-style: none; border-color: currentcolor; border-image: none;"
+      },
+      {
+        "selector": ".menu li a, .mg-table.mg-table--stacked.mg-table--border tr td, .mg-table.mg-table--stacked.mg-table--border tr th, .mg-table.mg-table--striped tr",
+        "matches": 4,
+        "declarations": "background-image: none;"
+      },
+      {
+        "selector": "h1, h2",
+        "matches": 4,
+        "declarations": "font-weight: 700;"
+      },
+      {
+        "selector": "h2",
+        "matches": 4,
+        "declarations": "font-size: 1.4375rem; line-height: 1.1;"
+      },
+      {
+        "selector": ".mg-table tbody tr",
+        "matches": 3,
+        "declarations": "border-bottom: 1px solid grey;"
+      },
+      {
+        "selector": "code, kbd, samp",
+        "matches": 3,
+        "declarations": "font-family: monospace; font-size: 1em;"
+      },
+      {
+        "selector": ".mg-code, code",
+        "matches": 3,
+        "declarations": "background: rgb(242, 242, 242); border: 1px solid rgb(204, 204, 204); border-radius: 0.15625rem; color: rgb(26, 26, 26); font-family: Monaco, Menlo, \"Ubuntu Mon"
+      }
+    ]
+  },
+  "carbonOntoCanaries": {
+    "totalRules": 10,
+    "totalMatchedElements": 38,
+    "rules": [
+      {
+        "selector": "*, ::before, ::after",
+        "matches": 14,
+        "declarations": "box-sizing: inherit;"
+      },
+      {
+        "selector": "html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video",
+        "matches": 11,
+        "declarations": "padding: 0px; border: 0px; margin: 0px; font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; line-height: inherit; font-fami"
+      },
+      {
+        "selector": "button, select, input, textarea",
+        "matches": 3,
+        "declarations": "border-radius: 0px; font-family: inherit;"
+      },
+      {
+        "selector": "article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section",
+        "matches": 3,
+        "declarations": "display: block;"
+      },
+      {
+        "selector": "a",
+        "matches": 2,
+        "declarations": "color: var(--cds-link-primary, #0062fe);"
+      },
+      {
+        "selector": "table",
+        "matches": 1,
+        "declarations": "border-collapse: collapse; border-spacing: 0px;"
+      },
+      {
+        "selector": "h1",
+        "matches": 1,
+        "declarations": "font-size: var(--cds-heading-06-font-size, 2.625rem); font-weight: var(--cds-heading-06-font-weight, 300); line-height: var(--cds-heading-06-line-height, 1.199)"
+      },
+      {
+        "selector": "h2",
+        "matches": 1,
+        "declarations": "font-size: var(--cds-heading-05-font-size, 2rem); font-weight: var(--cds-heading-05-font-weight, 400); line-height: var(--cds-heading-05-line-height, 1.25); let"
+      },
+      {
+        "selector": "h3",
+        "matches": 1,
+        "declarations": "font-size: var(--cds-heading-04-font-size, 1.75rem); font-weight: var(--cds-heading-04-font-weight, 400); line-height: var(--cds-heading-04-line-height, 1.28572"
+      },
+      {
+        "selector": "p",
+        "matches": 1,
+        "declarations": "font-size: var(--cds-body-02-font-size, 1rem); font-weight: var(--cds-body-02-font-weight, 400); line-height: var(--cds-body-02-line-height, 1.5); letter-spacin"
+      }
+    ]
+  },
+  "canariesFound": 14
+}

@@ -1,0 +1,330 @@
+{
+  "assertionPassed": false,
+  "differences": [
+    {
+      "canary": "heading-1",
+      "property": "color",
+      "before": "rgb(26, 26, 26)",
+      "after": "rgb(22, 22, 22)"
+    },
+    {
+      "canary": "heading-1",
+      "property": "font-family",
+      "before": "Roboto, sans-serif",
+      "after": "\"IBM Plex Sans\", system-ui, -apple-system, \"system-ui\", \".SFNSText-Regular\", sans-serif"
+    },
+    {
+      "canary": "heading-1",
+      "property": "font-size",
+      "before": "32px",
+      "after": "42px"
+    },
+    {
+      "canary": "heading-1",
+      "property": "font-weight",
+      "before": "700",
+      "after": "300"
+    },
+    {
+      "canary": "heading-1",
+      "property": "line-height",
+      "before": "34.56px",
+      "after": "50.358px"
+    },
+    {
+      "canary": "heading-1",
+      "property": "letter-spacing",
+      "before": "0.64px",
+      "after": "normal"
+    },
+    {
+      "canary": "heading-1",
+      "property": "border-top-color",
+      "before": "rgb(26, 26, 26)",
+      "after": "rgb(22, 22, 22)"
+    },
+    {
+      "canary": "heading-1",
+      "property": "margin-top",
+      "before": "10px",
+      "after": "0px"
+    },
+    {
+      "canary": "heading-1",
+      "property": "margin-bottom",
+      "before": "10px",
+      "after": "0px"
+    },
+    {
+      "canary": "nav",
+      "property": "color",
+      "before": "rgb(26, 26, 26)",
+      "after": "rgb(22, 22, 22)"
+    },
+    {
+      "canary": "nav",
+      "property": "font-family",
+      "before": "Roboto, sans-serif",
+      "after": "\"IBM Plex Sans\", system-ui, -apple-system, \"system-ui\", \".SFNSText-Regular\", sans-serif"
+    },
+    {
+      "canary": "nav",
+      "property": "line-height",
+      "before": "24px",
+      "after": "16px"
+    },
+    {
+      "canary": "nav",
+      "property": "border-top-color",
+      "before": "rgb(26, 26, 26)",
+      "after": "rgb(22, 22, 22)"
+    },
+    {
+      "canary": "nav-link",
+      "property": "font-family",
+      "before": "Roboto, sans-serif",
+      "after": "\"IBM Plex Sans\", system-ui, -apple-system, \"system-ui\", \".SFNSText-Regular\", sans-serif"
+    },
+    {
+      "canary": "nav-link",
+      "property": "line-height",
+      "before": "24px",
+      "after": "16px"
+    },
+    {
+      "canary": "heading-2",
+      "property": "color",
+      "before": "rgb(26, 26, 26)",
+      "after": "rgb(22, 22, 22)"
+    },
+    {
+      "canary": "heading-2",
+      "property": "font-family",
+      "before": "Roboto, sans-serif",
+      "after": "\"IBM Plex Sans\", system-ui, -apple-system, \"system-ui\", \".SFNSText-Regular\", sans-serif"
+    },
+    {
+      "canary": "heading-2",
+      "property": "font-size",
+      "before": "23px",
+      "after": "32px"
+    },
+    {
+      "canary": "heading-2",
+      "property": "font-weight",
+      "before": "700",
+      "after": "400"
+    },
+    {
+      "canary": "heading-2",
+      "property": "line-height",
+      "before": "25.3px",
+      "after": "40px"
+    },
+    {
+      "canary": "heading-2",
+      "property": "border-top-color",
+      "before": "rgb(26, 26, 26)",
+      "after": "rgb(22, 22, 22)"
+    },
+    {
+      "canary": "heading-2",
+      "property": "margin-top",
+      "before": "10px",
+      "after": "0px"
+    },
+    {
+      "canary": "heading-2",
+      "property": "margin-bottom",
+      "before": "10px",
+      "after": "0px"
+    },
+    {
+      "canary": "heading-3",
+      "property": "color",
+      "before": "rgb(26, 26, 26)",
+      "after": "rgb(22, 22, 22)"
+    },
+    {
+      "canary": "heading-3",
+      "property": "font-family",
+      "before": "Roboto, sans-serif",
+      "after": "\"IBM Plex Sans\", system-ui, -apple-system, \"system-ui\", \".SFNSText-Regular\", sans-serif"
+    },
+    {
+      "canary": "heading-3",
+      "property": "font-size",
+      "before": "18px",
+      "after": "28px"
+    },
+    {
+      "canary": "heading-3",
+      "property": "font-weight",
+      "before": "600",
+      "after": "400"
+    },
+    {
+      "canary": "heading-3",
+      "property": "line-height",
+      "before": "20.7px",
+      "after": "36.0002px"
+    },
+    {
+      "canary": "heading-3",
+      "property": "border-top-color",
+      "before": "rgb(26, 26, 26)",
+      "after": "rgb(22, 22, 22)"
+    },
+    {
+      "canary": "heading-3",
+      "property": "margin-top",
+      "before": "10px",
+      "after": "0px"
+    },
+    {
+      "canary": "heading-3",
+      "property": "margin-bottom",
+      "before": "10px",
+      "after": "0px"
+    },
+    {
+      "canary": "paragraph",
+      "property": "color",
+      "before": "rgb(26, 26, 26)",
+      "after": "rgb(22, 22, 22)"
+    },
+    {
+      "canary": "paragraph",
+      "property": "font-family",
+      "before": "Roboto, sans-serif",
+      "after": "\"IBM Plex Sans\", system-ui, -apple-system, \"system-ui\", \".SFNSText-Regular\", sans-serif"
+    },
+    {
+      "canary": "paragraph",
+      "property": "border-top-color",
+      "before": "rgb(26, 26, 26)",
+      "after": "rgb(22, 22, 22)"
+    },
+    {
+      "canary": "paragraph",
+      "property": "margin-bottom",
+      "before": "16px",
+      "after": "0px"
+    },
+    {
+      "canary": "link",
+      "property": "color",
+      "before": "rgb(0, 79, 145)",
+      "after": "rgb(0, 98, 254)"
+    },
+    {
+      "canary": "link",
+      "property": "font-family",
+      "before": "Roboto, sans-serif",
+      "after": "\"IBM Plex Sans\", system-ui, -apple-system, \"system-ui\", \".SFNSText-Regular\", sans-serif"
+    },
+    {
+      "canary": "link",
+      "property": "border-top-color",
+      "before": "rgb(0, 79, 145)",
+      "after": "rgb(0, 98, 254)"
+    },
+    {
+      "canary": "table",
+      "property": "color",
+      "before": "rgb(26, 26, 26)",
+      "after": "rgb(22, 22, 22)"
+    },
+    {
+      "canary": "table",
+      "property": "font-family",
+      "before": "Roboto, sans-serif",
+      "after": "\"IBM Plex Sans\", system-ui, -apple-system, \"system-ui\", \".SFNSText-Regular\", sans-serif"
+    },
+    {
+      "canary": "table",
+      "property": "line-height",
+      "before": "24px",
+      "after": "16px"
+    },
+    {
+      "canary": "table",
+      "property": "border-top-color",
+      "before": "rgb(26, 26, 26)",
+      "after": "rgb(22, 22, 22)"
+    },
+    {
+      "canary": "table-cell",
+      "property": "color",
+      "before": "rgb(26, 26, 26)",
+      "after": "rgb(22, 22, 22)"
+    },
+    {
+      "canary": "table-cell",
+      "property": "font-family",
+      "before": "Roboto, sans-serif",
+      "after": "\"IBM Plex Sans\", system-ui, -apple-system, \"system-ui\", \".SFNSText-Regular\", sans-serif"
+    },
+    {
+      "canary": "table-cell",
+      "property": "font-weight",
+      "before": "700",
+      "after": "400"
+    },
+    {
+      "canary": "table-cell",
+      "property": "border-top-color",
+      "before": "rgb(26, 26, 26)",
+      "after": "rgb(22, 22, 22)"
+    },
+    {
+      "canary": "card-first",
+      "property": "color",
+      "before": "rgb(26, 26, 26)",
+      "after": "rgb(22, 22, 22)"
+    },
+    {
+      "canary": "card-first",
+      "property": "font-family",
+      "before": "Roboto, sans-serif",
+      "after": "\"IBM Plex Sans\", system-ui, -apple-system, \"system-ui\", \".SFNSText-Regular\", sans-serif"
+    },
+    {
+      "canary": "card-first",
+      "property": "line-height",
+      "before": "24px",
+      "after": "16px"
+    },
+    {
+      "canary": "card-first",
+      "property": "border-top-color",
+      "before": "rgb(26, 26, 26)",
+      "after": "rgb(22, 22, 22)"
+    },
+    {
+      "canary": "card-second",
+      "property": "color",
+      "before": "rgb(26, 26, 26)",
+      "after": "rgb(22, 22, 22)"
+    },
+    {
+      "canary": "card-second",
+      "property": "font-family",
+      "before": "Roboto, sans-serif",
+      "after": "\"IBM Plex Sans\", system-ui, -apple-system, \"system-ui\", \".SFNSText-Regular\", sans-serif"
+    },
+    {
+      "canary": "card-second",
+      "property": "line-height",
+      "before": "24px",
+      "after": "16px"
+    },
+    {
+      "canary": "card-second",
+      "property": "border-top-color",
+      "before": "rgb(26, 26, 26)",
+      "after": "rgb(22, 22, 22)"
+    }
+  ],
+  "canariesChecked": 14
+}

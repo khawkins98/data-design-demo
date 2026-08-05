@@ -1,0 +1,101 @@
+/**
+ * Candidate CSS for the MUI demo on the Mangrove host.
+ *
+ * MUI is styled through its theme object and `sx` props, not through
+ * stylesheets, so almost nothing here is *candidate* styling — `theme.ts` owns
+ * that. What is left is one repair for something the HOST does to the candidate,
+ * plus the same two DataGrid rules the delta-mui run wrote.
+ *
+ * Everything is scoped under `.demo` so nothing can reach the host canaries.
+ *
+ * FOUR MORE RULES WERE WRITTEN AND THEN DELETED, because measurement said they
+ * did nothing. They are listed here rather than left in, so the CSS line count
+ * reflects real cost:
+ *
+ *   1. `.demo [hidden] { display: none }` — the fix for Mangrove's `[hidden]`
+ *      specificity bug (docs/requirements.md; mangrove-react-aria finding 2). The
+ *      bug is real and still in 1.8.1, but MUI 9.10.1 renders ZERO elements with
+ *      the `hidden` attribute: its picker and Select helper inputs are
+ *      `aria-hidden="true"` and collapsed to 1px by MUI's own CSS, and they carry
+ *      no `type` attribute, so Mangrove's `input[type=...]` selectors miss them
+ *      too. Asserted in e2e rather than assumed.
+ *   2. `.demo .MuiList-root { padding-left: 0; list-style: none }` — for
+ *      Mangrove's `ul { padding-left: 1.25rem }`. Measured: MUI's own List styles
+ *      already win, in the subtree and inside portals. Padding was already 0.
+ *   3. A `legend` reset for Mangrove's `legend { font-size: .78125rem }` — that
+ *      rule is a descendant selector that never matches MUI's notch legend.
+ *      Legend metrics were byte-identical with and without the reset.
+ *   4. Unscoped copies of 1 and 2 for MUI's portals. Not needed, because 1 and 2
+ *      are not needed.
+ */
+
+.demo {
+  /* ScopedCssBaseline sets a background; the host owns the page background. */
+  background: transparent;
+  min-width: 0;
+}
+
+/* ---------------------------------------------------------------------------
+ * HOST REPAIR — Mangrove styles bare inputs by type, and beats MUI doing it.
+ *
+ *   input[type=date], input[type=email], input[type=number], input[type=password],
+ *   input[type=search], input[type=tel], input[type=text], textarea {
+ *     appearance: none; background-color: #fff; border: 2px solid #1a1a1a;
+ *     border-radius: 0; box-sizing: border-box; display: block;
+ *     font-family: Roboto, sans-serif; font-size: 1rem; height: 46px;
+ *     padding: .390625rem; width: 100%;
+ *   }
+ *   input[...]:focus { box-shadow: 0 0 4px #1a619c; outline: 0 }
+ *
+ * Specificity (0,1,1) — element plus attribute. MUI's own slot class
+ * `.MuiOutlinedInput-input` is (0,1,0) and LOSES. Measured, unrepaired, on a
+ * section-1 TextField: `border-top-width: 2px`, `height: 46px`,
+ * `background-color: rgb(255,255,255)`, `font-family: Roboto, sans-serif`. A
+ * black 2px box, in the host's font, drawn inside MUI's own notched outline, on
+ * every TextField, Select, Autocomplete and picker field on the page.
+ *
+ * `.demo .MuiOutlinedInput-input` is (0,2,0) and wins without !important.
+ *
+ * This is the host restyling the candidate — the opposite direction from what
+ * the leakage assertion watches, and invisible to it. `CssBaseline` is exactly
+ * what would have neutralised these rules, and containment is why CssBaseline
+ * had to go: see main.tsx. Recorded as a HOST finding, not an MUI defect.
+ * ------------------------------------------------------------------------- */
+.demo .MuiOutlinedInput-input,
+.demo .MuiInputBase-input {
+  appearance: none;
+  background-color: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  height: auto;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.demo .MuiOutlinedInput-input:focus,
+.demo .MuiInputBase-input:focus {
+  box-shadow: none;
+  outline: 0;
+}
+
+/* ---------------------------------------------------------------------------
+ * CANDIDATE — the same two DataGrid rules the delta-mui run wrote.
+ * ------------------------------------------------------------------------- */
+
+/* Caps the grid's intrinsic width so it cannot propagate up and scroll the
+   document sideways. Retained to match delta-mui, but stated honestly: removing
+   it changed nothing measurable on this host — German at 390px stayed at 0px
+   overflow either way. Delta needed it; Mangrove's narrower content column
+   appears to constrain the grid before this rule has to. */
+.demo .MuiDataGrid-root {
+  max-width: 100%;
+}
+
+/* Long fixture labels in German must wrap inside grid headers rather than
+   forcing the column wider. Cosmetic, and it is doing work: without it the
+   60-character German column names truncate. */
+.demo .MuiDataGrid-columnHeaderTitle {
+  white-space: normal;
+  line-height: 1.2;
+}

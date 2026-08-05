@@ -1,0 +1,33 @@
+{
+  "section": "whole-page",
+  "url": "http://localhost:5201/?candidate=on",
+  "tags": [
+    "wcag2a",
+    "wcag2aa",
+    "wcag21a",
+    "wcag21aa",
+    "wcag22aa"
+  ],
+  "violations": [
+    {
+      "id": "color-contrast",
+      "impact": "serious",
+      "help": "Elements must meet minimum color contrast ratio thresholds",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright",
+      "nodes": [
+        "#forms-disabled-helper-text",
+        "#forms-disabled-select-helper-text"
+      ]
+    }
+  ],
+  "counts": {
+    "violations": 1,
+    "serious": 1,
+    "critical": 0,
+    "incomplete": 2
+  },
+  "incompleteRuleIds": [
+    "aria-valid-attr-value",
+    "color-contrast"
+  ]
+}
