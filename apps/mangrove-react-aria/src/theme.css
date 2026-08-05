@@ -558,6 +558,17 @@
   align-items: start;
 }
 
+/* Base rule for .demo-sbs lives here, BEFORE the media query below, not down in
+   the side-by-side section. Media queries add no specificity, so a later rule of
+   equal specificity wins regardless of viewport: with the base declaration
+   further down the file, .demo-sbs stayed two columns at 390px and contributed
+   to a horizontal overflow that looked like an unavoidable layout constraint. */
+.demo-sbs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--undrr-space-5);
+}
+
 @media (max-width: 48rem) {
   .demo-chrome,
   .demo-sbs {
@@ -621,7 +632,15 @@
   font-size: var(--undrr-font-size-sm);
 }
 
+/**
+ * `position: relative` is load-bearing and non-obvious. `overflow: auto` alone
+ * does not contain this table: React Aria's ColumnResizer renders a visually
+ * hidden `<input type="range">` at `position: absolute`, and with no positioned
+ * ancestor it resolves against the initial containing block, where no ancestor
+ * overflow can clip it. It silently widened the document at mobile.
+ */
 .demo-tablewrap {
+  position: relative;
   overflow: auto;
   border: 1px solid var(--undrr-color-border);
   border-radius: var(--undrr-radius-md);
@@ -769,12 +788,6 @@
 
 /* ----------------------------------------------------------- side by side */
 
-.demo-sbs {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--undrr-space-5);
-}
-
 .demo-sbs__col {
   display: flex;
   flex-direction: column;
@@ -814,4 +827,48 @@
 
 .demo-locale__option[data-selected] {
   font-weight: var(--undrr-font-weight-semibold);
+}
+
+/* --------------------------------------------------- selection checkboxes */
+
+/**
+ * React Aria's Checkbox renders a visually hidden native input and no visible
+ * box at all, so the square below IS the checkbox as far as a sighted user is
+ * concerned. The accessible name and the tri-state come from slot="selection".
+ */
+.demo-checkbox {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.demo-checkbox__box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1rem;
+  border: 1px solid var(--undrr-color-border-strong);
+  border-radius: var(--undrr-radius-sm);
+  background: var(--undrr-color-surface);
+  font-size: var(--undrr-font-size-xs);
+  line-height: 1;
+}
+
+.demo-checkbox__box[data-selected],
+.demo-checkbox__box[data-indeterminate] {
+  background: var(--undrr-color-accent);
+  border-color: var(--undrr-color-accent);
+  color: var(--undrr-color-on-accent);
+}
+
+.demo-checkbox[data-focus-visible] .demo-checkbox__box {
+  outline: 2px solid var(--undrr-color-focus);
+  outline-offset: 2px;
+}
+
+.demo-table__column--select,
+.demo-table__cell--select {
+  width: 2.5rem;
+  text-align: center;
 }

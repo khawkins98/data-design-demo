@@ -129,9 +129,9 @@
     },
     {
       "id": "table-multiselect",
-      "status": "native",
-      "notes": "selectionMode=multiple with select-all in the header, via selectedKeys/onSelectionChange.",
-      "customLinesOfCode": 0
+      "status": "composed",
+      "notes": "CORRECTED. selectionMode=multiple gives selection behaviour (click, shift-click, keyboard) but renders NO checkboxes and provides no select-all. The select-all the brief requires only exists once you add a selection column with <Checkbox slot=\"selection\"> in the header and every row: the slot supplies the tri-state and the localised accessible name, the markup and appearance are ours. Originally recorded as native with a select-all that did not exist and that the suite never asserted; found by the delta-react-aria run. Now asserted in e2e.",
+      "customLinesOfCode": 16
     },
     {
       "id": "table-filter",
@@ -177,8 +177,8 @@
     },
     {
       "id": "long-labels",
-      "status": "composed",
-      "notes": "Renders correctly at tablet and desktop after CSS fixes. At 390px the document still scrolls 261px horizontally in German. See longLabels below and EVIDENCE.md.",
+      "status": "native",
+      "notes": "CORRECTED to clean at all three viewports: 0px horizontal overflow in German at 390, 1024 and 1440. The earlier 261px was two bugs of mine, not a design constraint: a .demo-sbs base rule placed AFTER an equally specific @media block (media queries add no specificity, so the later rule won and the grid stayed two columns at mobile), and ColumnResizer's hidden range input escaping the scroll container for want of a positioned ancestor.",
       "customLinesOfCode": 0
     },
     {
@@ -189,8 +189,8 @@
     }
   ],
   "customCss": {
-    "lines": 624,
-    "selectors": 115,
+    "lines": 661,
+    "selectors": 120,
     "overridesLibraryInternals": true
   },
   "wrappers": {
@@ -222,10 +222,8 @@
     "issues": []
   },
   "longLabels": {
-    "status": "issues",
-    "issues": [
-      "At the 390x844 viewport in German, the document scrolls 261px horizontally. Desktop (1440) and tablet (1024) are clean at 0px. Measurements in test-results/long-labels-*.json."
-    ]
+    "status": "clean",
+    "issues": []
   },
   "bundle": {
     "gzippedKb": 237.6,
@@ -234,8 +232,8 @@
   "buildTimeSeconds": 1.2,
   "blockers": [],
   "humanReviewRequired": [
+    "React Aria renders visually hidden controls that still affect document layout, in two places: ColumnResizer's hidden range input escapes any ancestor overflow unless a positioned ancestor exists, and Select's hidden native <select> stays in layout at its longest-option width. Both silently scroll the page sideways. Worth reporting upstream: a visually hidden control should not be able to change layout.",
     "axe `color-contrast` (1 incomplete, sections 2 and 6): axe could not determine contrast automatically. Needs manual checking, particularly disabled button and hint text against the neutral token palette.",
-    "Horizontal scroll of 261px at 390px width in German is unresolved. Needs a design decision: stack the date-time range picker's two endpoints vertically at mobile, or accept horizontal scroll in that section.",
     "The 400-option Select renders all 400 DOM nodes. Whether that is acceptable, or whether Virtualizer should be mandatory, is a performance decision not taken here.",
     "Keyboard and screen-reader testing by a human. axe is static analysis and cannot confirm that the range calendar, column resizer or listbox type-ahead are usable with a screen reader.",
     "MANGROVE DEFECT, affects all four Mangrove pairings: `input[type=...] { display: block }` outranks `[hidden] { display: none }`, so any library's hidden helper inputs render visibly. Worked around per-app here; should be fixed in Mangrove.",

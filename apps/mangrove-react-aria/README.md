@@ -44,10 +44,10 @@ pnpm --filter @undrr-eval/mangrove-react-aria build
 pnpm --filter @undrr-eval/mangrove-react-aria test:e2e
 ```
 
-33 tests across three viewports. **One fails on purpose:** long labels overflow
-the viewport by 261px at 390px width in German. It was left failing rather than
-weakened, because a green suite that hid it would be worse evidence. See finding
-5 in `EVIDENCE.md`.
+39 tests across three viewports, all passing. The long-label overflow that
+originally failed here has been fixed — it was a CSS cascade error and a
+containment bug of mine, not a design constraint. See findings 5 and 6 in
+`EVIDENCE.md`.
 
 Outputs:
 
@@ -75,7 +75,7 @@ src/
   main.tsx          entry: stylesheet order, mount
   App.tsx           host shell, locale switcher (section 8), section order
   demo-state.ts     locale context, sort/filter helpers, mocked load states
-  theme.css         all 624 lines of candidate styling
+  theme.css         all 661 lines of candidate styling
   sections/         one file per kitchen-sink section
 e2e/demo.spec.ts    evidence run
 ```

@@ -131,6 +131,27 @@ test.describe("kitchen sink", () => {
     }
   });
 
+  test("provides a working select-all in the table header", async ({ page }) => {
+    // Added after the delta-react-aria run showed selectionMode="multiple" alone
+    // renders no checkboxes and gives no select-all. The original suite asserted
+    // neither, so evidence.json claimed a select-all that did not exist.
+    await page.goto("/?candidate=on");
+
+    const selectAll = page.locator("#section-6 thead .demo-checkbox").first();
+    const status = page.locator("#section-6 .demo-tabletools__status");
+
+    await expect(selectAll).toBeVisible();
+    // Anchored on the separator, not a bare substring: "250 selected" contains
+    // "0 selected", so a substring assertion here can never fail.
+    await expect(status).toHaveText(/·\s*0 selected$/);
+
+    await selectAll.click();
+    await expect(status).toHaveText(/·\s*250 selected$/);
+
+    await selectAll.click();
+    await expect(status).toHaveText(/·\s*0 selected$/);
+  });
+
   test("passes the leakage assertion", async ({ page }, testInfo) => {
     const result = await checkLeakage(page, { url: "/" });
 
