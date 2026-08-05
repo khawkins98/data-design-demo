@@ -1,0 +1,251 @@
+{
+  "candidate": "Mantine",
+  "host": "mangrove",
+  "versions": {
+    "library": "@mantine/core@9.5.1, @mantine/dates@9.5.1, @mantine/hooks@9.5.1, dayjs@1.11.21",
+    "react": "19.2.8",
+    "node": "22 (CI), 24.18.0 (local run)"
+  },
+  "requirements": [
+    {
+      "id": "buttons",
+      "status": "native",
+      "notes": "Button with filled (default), variant=default and color=red, plus disabled. No textTransform fight, unlike MUI. NOTE: buttons rendered as bare unstyled text until the per-component CSS import order was corrected -- see EVIDENCE.md, UnstyledButton.css must precede Button.css.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "links",
+      "status": "native",
+      "notes": "Anchor. underline=\"always\" is set deliberately: Mantine's default is underline=\"hover\", which would have reproduced the host's own link-in-text-block WCAG 1.4.1 failure inside the candidate subtree.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "text-input",
+      "status": "native",
+      "notes": "TextInput bundles label, description, input and error, and wires aria-describedby/aria-invalid itself.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "validation-states",
+      "status": "composed",
+      "notes": "error + required cover the three client-side cases, with the message rendered role=alert by the library. server-rejected has no library channel: Mantine's form-level validation lives in the separate @mantine/form package, which is not installed, so it is component state we manage plus an Alert.",
+      "customLinesOfCode": 6
+    },
+    {
+      "id": "disabled-states",
+      "status": "native",
+      "notes": "disabled on TextInput, Select and Button.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "select-small",
+      "status": "native",
+      "notes": "Select, data accepts {value,label} directly so no mapping wrapper is needed.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "select-medium",
+      "status": "native",
+      "notes": "Same, 40 options. Dropdown scrolls in a built-in ScrollArea.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "select-large",
+      "status": "native",
+      "notes": "Same, 400 options. Renders all 400 option nodes; virtualisation requires dropping to the Combobox primitive and supplying your own virtualiser. Left unwrapped for like-for-like comparison.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "multiselect",
+      "status": "native",
+      "notes": "MultiSelect. Removable Pills, searchable and clearable are props, with no composition at all. React Aria has no multiselect component and needed ListBox + TagGroup. NOTE: MultiSelect is one of only two components in the library that collides with the Mangrove host -- its PillsInputField is <input type=\"text\">, which Mangrove styles by attribute at (0,1,1).",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "combobox-searchable",
+      "status": "native",
+      "notes": "`searchable` on Select at 8 and 40 options, Autocomplete with limit={100} at 400. Both documented props.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "date-picker",
+      "status": "native",
+      "notes": "DatePickerInput: calendar plus keyboard entry. clearButtonProps carries an aria-label because Mantine's InputClearButton has no accessible name by default (axe critical).",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "datetime-range-picker",
+      "status": "native",
+      "notes": "THE HEADLINE RESULT, AND IT CORRECTS THE BRIEFING. This run was told @mantine/dates has no date-time range component. It does: <DateTimePicker type=\"range\"> gives one popover, one focus trap, one calendar with the intervening days highlighted, and separate start and end TimePickers inside it. Verified in the browser (screenshots/desktop/03-dates-range-open.png, and e2e asserts [data-in-range] is visible), not only from the types. Zero lines of range plumbing. This is the one requirement MUI charges for -- its range pickers are @mui/x-date-pickers-pro, licence 'SEE LICENSE IN LICENSE' -- and Mantine gives it under MIT, matching React Aria. Mantine has no paid tier at all. The 12 lines counted are an optional Intl-formatted range summary rendered for parity with the sibling demos; the picker needs none of it.",
+      "customLinesOfCode": 12
+    },
+    {
+      "id": "modal",
+      "status": "native",
+      "notes": "Modal. trapFocus, returnFocus and closeOnEscape all default to true; focus trap, Escape and focus restore to the trigger verified in e2e.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "tooltip",
+      "status": "native",
+      "notes": "Tooltip, hover and keyboard-focus triggered without a prop.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "popover",
+      "status": "native",
+      "notes": "Popover with Popover.Target/Dropdown, outside-click dismiss included.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "accordion",
+      "status": "native",
+      "notes": "Accordion with region/aria-controls/aria-expanded wiring and arrow-key navigation. order={4} wraps each control in a heading, which WAI-ARIA asks for and most implementations omit.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "cards",
+      "status": "native",
+      "notes": "Card exists, unlike React Aria. Matching Mangrove's flat square panels needs withBorder radius=\"xs\" shadow=\"none\", i.e. overriding Mantine's elevation and radius opinions rather than starting from nothing.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "left-nav",
+      "status": "native",
+      "notes": "NavLink with an active prop. NOT a full match to the host: Mangrove's nav uses a 3px inline-start accent bar, and NavLink exposes only --nl-color/--nl-bg/--nl-hover, so the bar is unreachable. Deliberately not faked with a ::before; the mismatch is left visible in the section 9 screenshots.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "table-render",
+      "status": "composed",
+      "notes": "Mantine's Table is PRESENTATIONAL ONLY -- it renders the table elements with striped/highlightOnHover/withTableBorder/stickyHeader/tabularNums and a ScrollContainer, and provides no behaviour and no column model. All 250 rows render, with every column type formatted through Intl driven by the active locale, but the row and cell loop and all formatting are ours.",
+      "customLinesOfCode": 30
+    },
+    {
+      "id": "table-sort",
+      "status": "composed",
+      "notes": "Nothing from the library. Comparator (locale-aware via Intl.Collator, so accented French and German labels do not sort by code point), direction state, the header sort buttons AND the aria-sort contract are all ours -- Table.Th has no sorting affordance, so a team that writes the comparator and forgets aria-sort ships a table unusable with a screen reader. Compare delta-mui: 0 lines, a DataGrid prop.",
+      "customLinesOfCode": 40
+    },
+    {
+      "id": "table-multiselect",
+      "status": "composed",
+      "notes": "Checkbox supplies a real indeterminate prop, which is the header select-all's tri-state. The selection Set, the page-scoped select-all/deselect-all logic and the per-row wiring are ours. Compare delta-mui: checkboxSelection, 0 lines.",
+      "customLinesOfCode": 33
+    },
+    {
+      "id": "table-filter",
+      "status": "composed",
+      "notes": "TextInput and Select supply the controls; the predicate (free text across country/dataSource/narrative, plus an enum filter) and the page reset on filter change are ours.",
+      "customLinesOfCode": 26
+    },
+    {
+      "id": "table-paginate",
+      "status": "composed",
+      "notes": "Pagination is a genuinely complete accessible pager with ellipsis and edge controls -- more than React Aria, which has no pagination component at all. Page state, slicing, clamping and the page-size Select are ours. Its first/previous/next/last controls have NO accessible name by default (axe critical); fixed with getControlProps.",
+      "customLinesOfCode": 28
+    },
+    {
+      "id": "table-column-resize-or-reorder",
+      "status": "custom",
+      "notes": "THE LARGEST SINGLE GAP. There is no column sizing behaviour anywhere in @mantine/core or @mantine/hooks: no resize, no reorder, no handles, nothing on Table.Th. Splitter resizes layout panes and cannot live inside a <tr>. Hand-written in src/use-column-resize.ts: pointer-drag with pointer capture and a minimum width, PLUS keyboard resizing via a focusable role=separator with aria-valuenow, arrow keys, PageUp/PageDown and Home to reset -- the keyboard half included deliberately because React Aria's ResizableTableContainer is keyboard-accessible and a mouse-only resizer would have flattered Mantine. Asserted in e2e. Recorded as `custom` not `unsupported`: the Mantine ecosystem's usual answer is mantine-datatable, a THIRD-PARTY package outside @mantine/*, which Brief 1 forbids installing -- but the requirement is still reachable, at a cost of 72 lines. Still missing versus a native implementation: no width announcement to assistive technology, no content-derived maximum, no persistence across a column-set change.",
+      "customLinesOfCode": 72
+    },
+    {
+      "id": "table-states",
+      "status": "composed",
+      "notes": "Alert (correct ARIA role), Loader, Skeleton, and EmptyState -- a documented empty-state component that neither sibling demo had. Composed rather than native because the state machine is ours: the presentational Table has no `loading` prop or noRows slot to hand it to, unlike MUI's DataGrid.",
+      "customLinesOfCode": 24
+    },
+    {
+      "id": "form-states",
+      "status": "composed",
+      "notes": "Loader, Alert and EmptyState. Only the state switch is ours.",
+      "customLinesOfCode": 12
+    },
+    {
+      "id": "locale-switcher",
+      "status": "native",
+      "notes": "SegmentedControl. Renders a visually hidden radio behind a <label>, so the label intercepts pointer events and Playwright's getByRole('radio').click() times out -- the same testing-ergonomics cost the react-aria run recorded for its Radio.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "rtl",
+      "status": "composed",
+      "notes": "DirectionProvider flips Mantine's own internals -- calendar layout, dropdown alignment, icon rotation -- but the ONLY way to change direction is setDirection(), which writes dir to document.documentElement, OUTSIDE the candidate subtree. There is no 'be RTL within this element' prop. So a 7-line DirectionSync component pushes the fixture locale's direction to the document. Mantine's CSS is written as :where([dir=rtl]) .m_xxx and would have matched from the host's wrapper alone; it is the JS context that insists on the document element. Also needs four dayjs locale imports, since dayjs is a peer dependency and DatesProvider silently formats in English without them. React Aria needed only I18nProvider.",
+      "customLinesOfCode": 10
+    },
+    {
+      "id": "long-labels",
+      "status": "native",
+      "notes": "0px horizontal overflow in German at 390, 1024 and 1440. Notably better than the react-aria run, which overflowed 261px at mobile. Two small CSS rules let table header labels wrap. The one overflow found (14px at 390px) was a fixed w={380} on the range picker, ours not Mantine's, fixed with w=\"100%\" maw={380}.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "side-by-side",
+      "status": "composed",
+      "notes": "Host and candidate button, table, card and nav list rendered adjacent in section 9. The nav bar and card elevation mismatches are left visible rather than faked.",
+      "customLinesOfCode": 0
+    }
+  ],
+  "customCss": {
+    "lines": 103,
+    "selectors": 44,
+    "overridesLibraryInternals": true
+  },
+  "wrappers": {
+    "count": 4,
+    "totalLines": 176
+  },
+  "theming": {
+    "tokensApplied": 62,
+    "tokensUnreachable": 0,
+    "method": "createTheme() mapping the TypeScript token export into Mantine's theme object: colors, primaryColor, white, black, fontFamily, headings, fontSizes, lineHeights, fontWeights, radius, spacing, focusRing, cursorType, plus six components.*.defaultProps for z-index and three scoped CSS rules for the focus ring. Mantine serialises the theme into its own --mantine-* custom properties at runtime, so the theme is a build-time COPY of the token values: changing a token needs a rebuild, where a var()-based consumer picks it up immediately. That same build-time inlining is why portalled overlays keep their colours. The nine unapplied tokens are ones this page has no use for (surface-raised, text-inverse, on-accent, text-disabled, focus-ring-offset, and four z layers with no Mantine surface), not ones Mantine blocked. Mangrove 2.0 preview tokens were NOT used.",
+    "escapeHatchesUsed": [
+      "@mantine/core/styles.css was NOT imported. src/mantine-styles.css imports global.css, default-css-variables.css and all 98 per-component files, and deliberately omits baseline.css, which is a GLOBAL reset writing box-sizing to *, font to every form control, and font-family/font-size/line-height/background-color/color to body. Measured counterfactual: importing it changes 36 computed properties across all 14 host canaries (test-results/leakage-with-baseline.json). The equivalent reset is re-applied scoped to .demo in demo.css BLOCK 1, written with :where() so the specificity stays (0,0,0) exactly as the real baseline's. Same trade delta-mui made with ScopedCssBaseline instead of CssBaseline, and the same caveat: Mantine components are built expecting that baseline, so this is a real deviation from the documented setup. Mangrove has no global box-sizing reset of its own, so unlike the delta-mantine run the scoped replacement has to supply what Tailwind Preflight supplied there.",
+      "THE PER-COMPONENT IMPORT ORDER IS LOAD-BEARING AND UNDOCUMENTED. Every Mantine class is a single hashed class at (0,1,0), so the cascade between component stylesheets is decided purely by source order. UnstyledButton.css sets background:transparent;border:0;padding:0 and Button.css sets the real appearance; a Button carries BOTH classes. Imported alphabetically, EVERY BUTTON RENDERED AS BARE TEXT -- no background, border or padding -- with a clean build, clean tsc, 16 passing e2e tests and 0 axe violations, because the buttons still worked. useMantineTheme() returned correct token values throughout, so it presented as a theming bug. Caught only by looking at a screenshot. The order in src/mantine-styles.css is derived from the byte offsets of each file inside @mantine/core/styles.css; verified 461 of 461 hashed classes present. Worth raising upstream.",
+      "MANTINE REQUIRES TEN SHADES PER COLOUR and theme.primaryColor must be a KEY of theme.colors -- a hex string is rejected by validateMantineTheme. The token set gives four accent stops, six neutrals and one stop per status colour. Token values are REPEATED rather than interpolated so no colour is invented, at the cost of flattening hover/press differentiation for components reaching for undefined shades; the only derived values are shades 7 and 8 of the four status colours, via Mantine's own darken(). This silently became an accessibility problem: an earlier even-interpolated neutral ramp put an invented #75838f at gray-6, which Mantine maps to --mantine-color-dimmed, giving 3.9:1 on white and FIVE serious axe color-contrast violations across four sections. Pinning gray-6 to textSecondary (7.4:1) removed all five. Nothing in the API signals that gray-6 is the dimmed-text colour.",
+      "NO FOCUS COLOUR IN THE THEME. Mantine's focus ring is --mantine-primary-color-filled, i.e. the primary colour, with no separate field. The token set keeps focus deliberately distinct from accent, so the only route is a CSS override on .mantine-focus-auto:focus-visible -- repeated under .demo-overlay, because portalled surfaces are outside .demo.",
+      "NO Z-INDEX SCALE IN THE THEME. Mantine's layers live in --mantine-z-index-*, written by the static stylesheet, which the theme object cannot reach. Per-component defaultProps is the only documented route and only covers components exposing a zIndex prop: six token layers are reachable that way, the scale as a scale is not. Contrast MUI, whose theme.zIndex is a first-class field.",
+      "HOST-INTO-CANDIDATE COLLISION REPAIR: 2 rules, 4 selectors, reaching into library-generated class names (.mantine-PillsInputField-field, .mantine-TimePicker-field) at (0,3,1). These are the only two components in the library that emit <input type=\"text\">, which is what Mangrove's form rule selects at (0,1,1) -- beating Mantine's own (0,1,0). Unrepaired, MultiSelect's search field became an 858px-wide 46px-tall black-bordered box under the pills, and the four TimePicker fields in the date-time range popover each became a 183px white box. Recorded as overridesLibraryInternals: true.",
+      "Mantine's CSS is loaded by an AWAITED DYNAMIC IMPORT inside the candidate=on branch of main.tsx, not a static import. This is required for the leakage assertion to mean anything: the harness compares candidate=off against candidate=on, and a statically imported stylesheet sits in BOTH snapshots and cancels itself out. e2e asserts --mantine-font-family is absent from :root on the baseline load.",
+      "MantineProvider mutates document.documentElement, setting data-mantine-color-scheme=\"light\" through its default getRootElement; DirectionProvider.setDirection() sets dir there too. Neither is watched by the canaries, both are outside the candidate subtree, both recorded for completeness.",
+      "forceColorScheme=\"light\" is set because the token set has no dark palette and the host is light-only; without it Mantine reads localStorage and could render a dark subtree inside a light host between runs."
+    ]
+  },
+  "leakage": {
+    "assertionPassed": true,
+    "differences": []
+  },
+  "axe": {
+    "violations": 0,
+    "serious": 0,
+    "critical": 0,
+    "incomplete": 0
+  },
+  "rtl": {
+    "status": "clean",
+    "issues": []
+  },
+  "longLabels": {
+    "status": "clean",
+    "issues": []
+  },
+  "bundle": {
+    "gzippedKb": 270.9,
+    "dependencyCount": 113
+  },
+  "buildTimeSeconds": 3.58,
+  "blockers": [],
+  "humanReviewRequired": [
+    "THE DATA TABLE IS THE DECISION. Mantine's Table is presentational only, and 229 of this run's 293 custom behavioural lines -- 78% -- are table code. delta-mui got sort, multi-select, filter, pagination with a page-size control AND column resize from props on one <DataGrid />, for zero custom lines. If Mantine is chosen for a *data* design system, UNDRR is choosing either to add mantine-datatable -- a well-maintained MIT package, but a third-party single-maintainer dependency in the critical path of the application's most important screen -- or to build and maintain the table layer in-house. That is a governance decision, not a technical one.",
+    "The hand-written column resizer (src/use-column-resize.ts, 72 lines) needs screen-reader testing. It is keyboard-operable and exposes role=separator with aria-valuenow, but it does not announce width changes as they happen, which a native implementation would. It is the highest-risk piece of custom code in this run.",
+    "Mantine ships TWO icon-only controls with no accessible name: Pagination's first/previous/next/last, and InputClearButton (rendered by `clearable`). Both were axe criticals out of the box and both are fixable through the public API, but a team that turns on `clearable` and `withEdges` without running axe ships unlabelled buttons. Worth raising upstream, and worth a lint rule locally.",
+    "Omitting baseline.css is a real deviation from Mantine's documented setup. A scoped replacement is shipped, but Mantine's components are built expecting the global one. Needs a decision on whether that trade is acceptable, or whether the host should absorb the baseline -- which on Mangrove would mean accepting 36 changed canary properties.",
+    "The undocumented per-component CSS import order should be raised with Mantine. The failure mode -- every button silently unstyled, with a clean build, clean types, passing tests and zero axe violations -- is the worst kind, and two independent runs in this evaluation hit it.",
+    "The 400-option Select renders 400 option nodes. Virtualisation means dropping to the Combobox primitive and supplying your own virtualiser. Whether that is acceptable at UNDRR's list sizes is a performance decision not taken here.",
+    "Keyboard and screen-reader testing by a human, particularly the native date-time range popover: it contains a calendar and two separate TimePickers, and axe cannot say whether moving between them is coherent.",
+    "Mantine's Anchor defaults to underline=\"hover\", which reproduces the host's own link-in-text-block WCAG 1.4.1 failure. It was overridden here, but it is a library default worth a local lint rule, since the two systems make the same wrong choice independently.",
+    "The Mangrove nav accent bar is not reachable through NavLink's props or CSS variables. Either accept Mantine's tinted-background active state as the new convention, or accept custom CSS reaching into NavLink internals on every consuming page. Not faked here so the gap stays visible in the section 9 screenshots."
+  ]
+}

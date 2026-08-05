@@ -1,0 +1,19 @@
+{
+  "section": "02-selection",
+  "url": "http://localhost:5205/?candidate=on",
+  "tags": [
+    "wcag2a",
+    "wcag2aa",
+    "wcag21a",
+    "wcag21aa",
+    "wcag22aa"
+  ],
+  "violations": [],
+  "counts": {
+    "violations": 0,
+    "serious": 0,
+    "critical": 0,
+    "incomplete": 0
+  },
+  "incompleteRuleIds": []
+}

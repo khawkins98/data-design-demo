@@ -1,0 +1,30 @@
+{
+  "name": "@undrr-eval/delta-carbon",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "Apache-2.0",
+  "description": "Brief 1 demo: IBM Carbon on the PreventionWeb Delta host shell.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "@carbon/react": "^1.113.0",
+    "@carbon/styles": "^1.112.0",
+    "@undrr-eval/fixtures": "workspace:*",
+    "@undrr-eval/host-delta": "workspace:*",
+    "@undrr-eval/test-harness": "workspace:*",
+    "@undrr-eval/undrr-tokens": "workspace:*",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "sass": "^1.102.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.58.2",
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^6.0.7"
+  }
+}

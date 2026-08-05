@@ -1,0 +1,118 @@
+{
+  "note": "Mangrove's form rule lists seven input[type=…] selectors at (0,1,1) plus a bare `textarea` at (0,0,1). Blast radius across the candidate subtree AND every open Mantine portal: five elements, from two components. Mantine sets no type attribute on its other inputs, and the bare `textarea` selector is only (0,0,1) so it loses to Mantine's (0,1,0) class. 'unrepaired' is with demo.css disabled.",
+  "inventory": {
+    "scopesChecked": 12,
+    "candidateInputs": 50,
+    "inputsWithATypeAttribute": 33,
+    "inputTypesPresent": [
+      "(absent)",
+      "checkbox",
+      "hidden",
+      "radio",
+      "text"
+    ],
+    "matchesMangroveFormSelector": 5,
+    "matchingComponents": [
+      "mantine-MultiSelect-inputField",
+      "mantine-TimePicker-field"
+    ]
+  },
+  "mangroveWouldHaveGiven": {
+    "border-top-width": "2px",
+    "border-top-color": "rgb(26, 26, 26)",
+    "height": "46px",
+    "font-family": "Roboto, sans-serif"
+  },
+  "unrepaired": {
+    "pillsInputField": {
+      "border-top-width": "2px",
+      "border-top-color": "rgb(26, 26, 26)",
+      "border-radius": "0px",
+      "height": "46px",
+      "width": "858.266px",
+      "padding-left": "6.25px",
+      "font-family": "Roboto, sans-serif",
+      "font-size": "16px",
+      "background-color": "rgb(255, 255, 255)"
+    },
+    "textarea": {
+      "border-top-width": "1px",
+      "border-top-color": "rgb(200, 210, 218)",
+      "border-radius": "4px",
+      "height": "55px",
+      "width": "1112px",
+      "padding-left": "12px",
+      "font-family": "Roboto, \"Noto Sans Arabic\", \"Segoe UI\", system-ui, -apple-system, sans-serif",
+      "font-size": "14px",
+      "background-color": "rgb(255, 255, 255)"
+    },
+    "timePickerField": {
+      "border-top-width": "2px",
+      "border-top-color": "rgb(26, 26, 26)",
+      "border-radius": "0px",
+      "height": "46px",
+      "width": "100%",
+      "padding-left": "6.25px",
+      "font-family": "Roboto, sans-serif",
+      "font-size": "16px",
+      "background-color": "rgb(255, 255, 255)"
+    },
+    "plainTextInput": {
+      "border-top-width": "1px",
+      "border-top-color": "rgb(200, 210, 218)",
+      "border-radius": "4px",
+      "height": "36px",
+      "width": "1112px",
+      "padding-left": "12px",
+      "font-family": "Roboto, \"Noto Sans Arabic\", \"Segoe UI\", system-ui, -apple-system, sans-serif",
+      "font-size": "14px",
+      "background-color": "rgb(255, 255, 255)"
+    }
+  },
+  "repaired": {
+    "pillsInputField": {
+      "border-top-width": "0px",
+      "border-top-color": "rgb(20, 35, 46)",
+      "border-radius": "0px",
+      "height": "22.3906px",
+      "width": "858.266px",
+      "padding-left": "0px",
+      "font-family": "Roboto, \"Noto Sans Arabic\", \"Segoe UI\", system-ui, -apple-system, sans-serif",
+      "font-size": "14px",
+      "background-color": "rgba(0, 0, 0, 0)"
+    },
+    "textarea": {
+      "border-top-width": "1px",
+      "border-top-color": "rgb(200, 210, 218)",
+      "border-radius": "4px",
+      "height": "97px",
+      "width": "266px",
+      "padding-left": "12px",
+      "font-family": "Roboto, \"Noto Sans Arabic\", \"Segoe UI\", system-ui, -apple-system, sans-serif",
+      "font-size": "14px",
+      "background-color": "rgb(255, 255, 255)"
+    },
+    "timePickerField": {
+      "border-top-width": "0px",
+      "border-top-color": "rgb(20, 35, 46)",
+      "border-radius": "2px",
+      "height": "21px",
+      "width": "19.9219px",
+      "padding-left": "2.1px",
+      "font-family": "Roboto, \"Noto Sans Arabic\", \"Segoe UI\", system-ui, -apple-system, sans-serif",
+      "font-size": "14px",
+      "background-color": "rgba(0, 0, 0, 0)"
+    },
+    "plainTextInput": {
+      "border-top-width": "1px",
+      "border-top-color": "rgb(200, 210, 218)",
+      "border-radius": "4px",
+      "height": "36px",
+      "width": "266px",
+      "padding-left": "12px",
+      "font-family": "Roboto, \"Noto Sans Arabic\", \"Segoe UI\", system-ui, -apple-system, sans-serif",
+      "font-size": "14px",
+      "background-color": "rgb(255, 255, 255)"
+    }
+  }
+}

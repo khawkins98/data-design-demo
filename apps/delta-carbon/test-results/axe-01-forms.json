@@ -1,0 +1,39 @@
+{
+  "section": "01-forms",
+  "url": "http://localhost:5199/?candidate=on",
+  "tags": [
+    "wcag2a",
+    "wcag2aa",
+    "wcag21a",
+    "wcag21aa",
+    "wcag22aa"
+  ],
+  "violations": [
+    {
+      "id": "aria-valid-attr-value",
+      "impact": "critical",
+      "help": "ARIA attributes must conform to valid values",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/aria-valid-attr-value?application=playwright",
+      "nodes": [
+        "#form-format",
+        "#form-required"
+      ]
+    },
+    {
+      "id": "color-contrast",
+      "impact": "serious",
+      "help": "Elements must meet minimum color contrast ratio thresholds",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright",
+      "nodes": [
+        "#form-disabled-helper-text"
+      ]
+    }
+  ],
+  "counts": {
+    "violations": 2,
+    "serious": 1,
+    "critical": 1,
+    "incomplete": 0
+  },
+  "incompleteRuleIds": []
+}

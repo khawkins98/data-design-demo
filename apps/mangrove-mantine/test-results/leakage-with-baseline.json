@@ -1,0 +1,223 @@
+{
+  "note": "Counterfactual. These are the host canary changes that importing @mantine/core/styles.css unmodified would have caused, because it includes baseline.css. src/mantine-styles.css omits that file and src/demo.css re-applies the reset scoped to .demo instead.",
+  "canariesChecked": 14,
+  "differenceCount": 36,
+  "differences": [
+    {
+      "canary": "heading-1",
+      "property": "color",
+      "before": "rgb(26, 26, 26)",
+      "after": "rgb(0, 0, 0)"
+    },
+    {
+      "canary": "heading-1",
+      "property": "font-family",
+      "before": "Roboto, sans-serif",
+      "after": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\""
+    },
+    {
+      "canary": "heading-1",
+      "property": "border-top-color",
+      "before": "rgb(26, 26, 26)",
+      "after": "rgb(0, 0, 0)"
+    },
+    {
+      "canary": "nav",
+      "property": "color",
+      "before": "rgb(26, 26, 26)",
+      "after": "rgb(0, 0, 0)"
+    },
+    {
+      "canary": "nav",
+      "property": "font-family",
+      "before": "Roboto, sans-serif",
+      "after": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\""
+    },
+    {
+      "canary": "nav",
+      "property": "line-height",
+      "before": "24px",
+      "after": "24.8px"
+    },
+    {
+      "canary": "nav",
+      "property": "border-top-color",
+      "before": "rgb(26, 26, 26)",
+      "after": "rgb(0, 0, 0)"
+    },
+    {
+      "canary": "nav-link",
+      "property": "font-family",
+      "before": "Roboto, sans-serif",
+      "after": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\""
+    },
+    {
+      "canary": "nav-link",
+      "property": "line-height",
+      "before": "24px",
+      "after": "24.8px"
+    },
+    {
+      "canary": "heading-2",
+      "property": "color",
+      "before": "rgb(26, 26, 26)",
+      "after": "rgb(0, 0, 0)"
+    },
+    {
+      "canary": "heading-2",
+      "property": "font-family",
+      "before": "Roboto, sans-serif",
+      "after": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\""
+    },
+    {
+      "canary": "heading-2",
+      "property": "border-top-color",
+      "before": "rgb(26, 26, 26)",
+      "after": "rgb(0, 0, 0)"
+    },
+    {
+      "canary": "heading-3",
+      "property": "color",
+      "before": "rgb(26, 26, 26)",
+      "after": "rgb(0, 0, 0)"
+    },
+    {
+      "canary": "heading-3",
+      "property": "font-family",
+      "before": "Roboto, sans-serif",
+      "after": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\""
+    },
+    {
+      "canary": "heading-3",
+      "property": "border-top-color",
+      "before": "rgb(26, 26, 26)",
+      "after": "rgb(0, 0, 0)"
+    },
+    {
+      "canary": "paragraph",
+      "property": "color",
+      "before": "rgb(26, 26, 26)",
+      "after": "rgb(0, 0, 0)"
+    },
+    {
+      "canary": "paragraph",
+      "property": "font-family",
+      "before": "Roboto, sans-serif",
+      "after": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\""
+    },
+    {
+      "canary": "paragraph",
+      "property": "line-height",
+      "before": "24px",
+      "after": "24.8px"
+    },
+    {
+      "canary": "paragraph",
+      "property": "border-top-color",
+      "before": "rgb(26, 26, 26)",
+      "after": "rgb(0, 0, 0)"
+    },
+    {
+      "canary": "link",
+      "property": "font-family",
+      "before": "Roboto, sans-serif",
+      "after": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\""
+    },
+    {
+      "canary": "link",
+      "property": "line-height",
+      "before": "24px",
+      "after": "24.8px"
+    },
+    {
+      "canary": "table",
+      "property": "color",
+      "before": "rgb(26, 26, 26)",
+      "after": "rgb(0, 0, 0)"
+    },
+    {
+      "canary": "table",
+      "property": "font-family",
+      "before": "Roboto, sans-serif",
+      "after": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\""
+    },
+    {
+      "canary": "table",
+      "property": "line-height",
+      "before": "24px",
+      "after": "24.8px"
+    },
+    {
+      "canary": "table",
+      "property": "border-top-color",
+      "before": "rgb(26, 26, 26)",
+      "after": "rgb(0, 0, 0)"
+    },
+    {
+      "canary": "table-cell",
+      "property": "color",
+      "before": "rgb(26, 26, 26)",
+      "after": "rgb(0, 0, 0)"
+    },
+    {
+      "canary": "table-cell",
+      "property": "font-family",
+      "before": "Roboto, sans-serif",
+      "after": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\""
+    },
+    {
+      "canary": "table-cell",
+      "property": "border-top-color",
+      "before": "rgb(26, 26, 26)",
+      "after": "rgb(0, 0, 0)"
+    },
+    {
+      "canary": "card-first",
+      "property": "color",
+      "before": "rgb(26, 26, 26)",
+      "after": "rgb(0, 0, 0)"
+    },
+    {
+      "canary": "card-first",
+      "property": "font-family",
+      "before": "Roboto, sans-serif",
+      "after": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\""
+    },
+    {
+      "canary": "card-first",
+      "property": "line-height",
+      "before": "24px",
+      "after": "24.8px"
+    },
+    {
+      "canary": "card-first",
+      "property": "border-top-color",
+      "before": "rgb(26, 26, 26)",
+      "after": "rgb(0, 0, 0)"
+    },
+    {
+      "canary": "card-second",
+      "property": "color",
+      "before": "rgb(26, 26, 26)",
+      "after": "rgb(0, 0, 0)"
+    },
+    {
+      "canary": "card-second",
+      "property": "font-family",
+      "before": "Roboto, sans-serif",
+      "after": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\""
+    },
+    {
+      "canary": "card-second",
+      "property": "line-height",
+      "before": "24px",
+      "after": "24.8px"
+    },
+    {
+      "canary": "card-second",
+      "property": "border-top-color",
+      "before": "rgb(26, 26, 26)",
+      "after": "rgb(0, 0, 0)"
+    }
+  ]
+}

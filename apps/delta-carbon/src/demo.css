@@ -1,0 +1,449 @@
+/**
+ * Carbon theming, expressed as a CSS custom-property mapping.
+ *
+ * Carbon's theme IS custom properties: every colour a component draws with is
+ * `var(--cds-<token>, <white-theme-literal>)`. So theming it against
+ * `packages/undrr-tokens` is a pure CSS aliasing exercise — no theme object, no
+ * provider, no rebuild. Change a `--undrr-*` value at runtime and every Carbon
+ * component follows it in the same frame.
+ *
+ * That is the opposite trade from MUI, whose `createTheme()` resolves token
+ * values at BUILD time and emits literals. Carbon is live-themeable; the price
+ * is that the mapping is a stylesheet you maintain by hand, and that anything
+ * rendered outside `.undrr-tokens` silently falls back to Carbon's white theme.
+ *
+ * WHAT IS NOT REACHABLE THIS WAY, measured rather than guessed:
+ *
+ *   space (12 tokens)   Carbon's spacing scale is compiled to literal `rem`
+ *                       values from `@carbon/layout/scss/_spacing.scss`, which
+ *                       declares NO `!default` — so it is not configurable at
+ *                       build time either, let alone at runtime. Carbon
+ *                       component padding cannot be retargeted to the UNDRR
+ *                       4px scale at all without overriding component CSS.
+ *   radius (5 tokens)   Carbon has no radius token. Its components are square
+ *                       by design. Applying `--undrr-radius-md` needs the
+ *                       explicit overrides at the bottom of this file.
+ *   font-family (3)     Carbon's font stacks are Sass values in
+ *                       `@carbon/type`, and `@carbon/styles/scss/type` forwards
+ *                       that module with a `show` list that omits
+ *                       `$font-families`, so `@use ... with ()` cannot reach
+ *                       them. In practice 56 of Carbon's 67 font-family
+ *                       declarations are `font-family: inherit`, so setting it
+ *                       once on the scope element carries almost everywhere —
+ *                       see `.demo` below.
+ *
+ * Nothing in this file uses a selector that could match host markup: every rule
+ * is under `.demo`, which is the candidate subtree.
+ */
+
+/* ------------------------------------------------------------------ *
+ * Colour: 25 of 25 UNDRR colour tokens mapped onto Carbon's names.
+ * ------------------------------------------------------------------ */
+
+.demo {
+  /* Surfaces */
+  --cds-background: var(--undrr-color-surface);
+  --cds-background-hover: var(--undrr-color-surface-sunken);
+  --cds-background-active: var(--undrr-color-accent-subtle);
+  --cds-background-selected: var(--undrr-color-accent-subtle);
+  --cds-background-selected-hover: var(--undrr-color-accent-subtle);
+  --cds-background-inverse: var(--undrr-color-text-primary);
+  --cds-background-inverse-hover: var(--undrr-color-text-primary);
+  --cds-background-brand: var(--undrr-color-accent);
+
+  --cds-layer-01: var(--undrr-color-surface);
+  --cds-layer-02: var(--undrr-color-surface-raised);
+  --cds-layer-03: var(--undrr-color-surface);
+  --cds-layer-background-01: var(--undrr-color-canvas);
+  --cds-layer-hover-01: var(--undrr-color-surface-sunken);
+  --cds-layer-hover-02: var(--undrr-color-surface-sunken);
+  --cds-layer-active-01: var(--undrr-color-accent-subtle);
+  --cds-layer-selected-01: var(--undrr-color-accent-subtle);
+  --cds-layer-selected-02: var(--undrr-color-accent-subtle);
+  --cds-layer-selected-hover-01: var(--undrr-color-accent-subtle);
+  --cds-layer-selected-inverse: var(--undrr-color-text-primary);
+  --cds-layer-accent-01: var(--undrr-color-surface-sunken);
+  --cds-layer-accent-hover-01: var(--undrr-color-surface-sunken);
+  --cds-layer-accent-active-01: var(--undrr-color-border);
+
+  /* Repeated because Carbon's own `:root` aliases are rewritten onto
+     `.undrr-tokens`, which is a PARENT of `.demo`; redeclaring here means the
+     mapping wins regardless of which element carries the scope class. */
+  --cds-layer: var(--undrr-color-surface);
+  --cds-layer-hover: var(--undrr-color-surface-sunken);
+  --cds-layer-active: var(--undrr-color-accent-subtle);
+  --cds-layer-selected: var(--undrr-color-accent-subtle);
+  --cds-layer-selected-hover: var(--undrr-color-accent-subtle);
+  --cds-layer-accent: var(--undrr-color-surface-sunken);
+  --cds-layer-accent-hover: var(--undrr-color-surface-sunken);
+  --cds-layer-accent-active: var(--undrr-color-border);
+  --cds-layer-background: var(--undrr-color-canvas);
+
+  /* Form fields */
+  --cds-field-01: var(--undrr-color-surface-sunken);
+  --cds-field-02: var(--undrr-color-surface);
+  --cds-field-hover-01: var(--undrr-color-accent-subtle);
+  --cds-field-hover-02: var(--undrr-color-accent-subtle);
+  --cds-field: var(--undrr-color-surface-sunken);
+  --cds-field-hover: var(--undrr-color-accent-subtle);
+
+  /* Borders */
+  --cds-border-subtle-00: var(--undrr-color-border);
+  --cds-border-subtle-01: var(--undrr-color-border);
+  --cds-border-subtle-02: var(--undrr-color-border);
+  --cds-border-subtle-selected-01: var(--undrr-color-border-strong);
+  --cds-border-strong-01: var(--undrr-color-border-strong);
+  --cds-border-strong-02: var(--undrr-color-border-strong);
+  --cds-border-subtle: var(--undrr-color-border);
+  --cds-border-subtle-selected: var(--undrr-color-border-strong);
+  --cds-border-strong: var(--undrr-color-border-strong);
+  --cds-border-tile: var(--undrr-color-border);
+  --cds-border-tile-01: var(--undrr-color-border);
+  --cds-border-inverse: var(--undrr-color-text-primary);
+  --cds-border-interactive: var(--undrr-color-accent);
+  --cds-border-disabled: var(--undrr-color-border);
+
+  /* Text */
+  --cds-text-primary: var(--undrr-color-text-primary);
+  --cds-text-secondary: var(--undrr-color-text-secondary);
+  --cds-text-placeholder: var(--undrr-color-text-secondary);
+  --cds-text-helper: var(--undrr-color-text-secondary);
+  --cds-text-error: var(--undrr-color-error);
+  --cds-text-on-color: var(--undrr-color-on-accent);
+  --cds-text-on-color-disabled: var(--undrr-color-text-disabled);
+  --cds-text-inverse: var(--undrr-color-text-inverse);
+  --cds-text-disabled: var(--undrr-color-text-disabled);
+
+  /* Links */
+  --cds-link-primary: var(--undrr-color-accent);
+  --cds-link-primary-hover: var(--undrr-color-accent-hover);
+  --cds-link-secondary: var(--undrr-color-accent-active);
+  --cds-link-visited: var(--undrr-color-accent-active);
+  --cds-link-inverse: var(--undrr-color-text-inverse);
+
+  /* Icons */
+  --cds-icon-primary: var(--undrr-color-text-primary);
+  --cds-icon-secondary: var(--undrr-color-text-secondary);
+  --cds-icon-on-color: var(--undrr-color-on-accent);
+  --cds-icon-on-color-disabled: var(--undrr-color-text-disabled);
+  --cds-icon-disabled: var(--undrr-color-text-disabled);
+  --cds-icon-interactive: var(--undrr-color-accent);
+  --cds-icon-inverse: var(--undrr-color-text-inverse);
+
+  /* Status */
+  --cds-support-error: var(--undrr-color-error);
+  --cds-support-success: var(--undrr-color-success);
+  --cds-support-warning: var(--undrr-color-warning);
+  --cds-support-info: var(--undrr-color-info);
+  --cds-support-caution-major: var(--undrr-color-warning);
+  --cds-support-caution-minor: var(--undrr-color-warning);
+  --cds-notification-background-error: var(--undrr-color-error-subtle);
+  --cds-notification-background-success: var(--undrr-color-success-subtle);
+  --cds-notification-background-warning: var(--undrr-color-warning-subtle);
+  --cds-notification-background-info: var(--undrr-color-info-subtle);
+
+  /* Focus. The token palette keeps focus distinct from accent AND from error,
+     so a focused invalid field is unambiguous. Carbon respects this everywhere
+     because `--cds-focus` is referenced 108 times in the compiled CSS. */
+  --cds-focus: var(--undrr-color-focus);
+  --cds-focus-inset: var(--undrr-color-focus-ring-offset);
+  --cds-focus-inverse: var(--undrr-color-focus-ring-offset);
+  --cds-button-focus-color: var(--undrr-color-focus);
+
+  /* Interactive + buttons */
+  --cds-interactive: var(--undrr-color-accent);
+  --cds-button-primary: var(--undrr-color-accent);
+  --cds-button-primary-hover: var(--undrr-color-accent-hover);
+  --cds-button-primary-active: var(--undrr-color-accent-active);
+  --cds-button-secondary: var(--undrr-color-text-secondary);
+  --cds-button-secondary-hover: var(--undrr-color-text-primary);
+  --cds-button-secondary-active: var(--undrr-color-text-primary);
+  --cds-button-tertiary: var(--undrr-color-accent);
+  --cds-button-tertiary-hover: var(--undrr-color-accent-hover);
+  --cds-button-tertiary-active: var(--undrr-color-accent-active);
+  --cds-button-danger-primary: var(--undrr-color-error);
+  --cds-button-danger-secondary: var(--undrr-color-error);
+  --cds-button-danger-hover: var(--undrr-color-error);
+  --cds-button-danger-active: var(--undrr-color-error);
+  --cds-button-disabled: var(--undrr-color-surface-sunken);
+  --cds-button-separator: var(--undrr-color-border);
+
+  /* Tags: Carbon's palette is colour-named, so status colours are mapped onto
+     the hue Carbon happens to call them. */
+  --cds-tag-background-green: var(--undrr-color-success-subtle);
+  --cds-tag-color-green: var(--undrr-color-success);
+  --cds-tag-border-green: var(--undrr-color-success);
+  --cds-tag-background-red: var(--undrr-color-error-subtle);
+  --cds-tag-color-red: var(--undrr-color-error);
+  --cds-tag-border-red: var(--undrr-color-error);
+  --cds-tag-background-warm-gray: var(--undrr-color-warning-subtle);
+  --cds-tag-color-warm-gray: var(--undrr-color-warning);
+  --cds-tag-border-warm-gray: var(--undrr-color-warning);
+  --cds-tag-background-gray: var(--undrr-color-surface-sunken);
+  --cds-tag-color-gray: var(--undrr-color-text-secondary);
+  --cds-tag-border-gray: var(--undrr-color-border-strong);
+  --cds-tag-background-blue: var(--undrr-color-info-subtle);
+  --cds-tag-color-blue: var(--undrr-color-info);
+  --cds-tag-border-blue: var(--undrr-color-info);
+
+  /* Misc */
+  --cds-highlight: var(--undrr-color-accent-subtle);
+  --cds-skeleton-background: var(--undrr-color-surface-sunken);
+  --cds-skeleton-element: var(--undrr-color-border);
+  --cds-toggle-off: var(--undrr-color-border-strong);
+
+  /* ---------------------------------------------------------------- *
+   * Type: Carbon's type tokens are custom properties too, so the
+   * UNDRR scale is reachable at runtime. All four axes per style.
+   * ---------------------------------------------------------------- */
+
+  --cds-label-01-font-size: var(--undrr-font-size-xs);
+  --cds-label-01-line-height: var(--undrr-line-height-normal);
+  --cds-label-01-font-weight: var(--undrr-font-weight-regular);
+  --cds-label-01-letter-spacing: 0;
+  --cds-label-02-font-size: var(--undrr-font-size-sm);
+  --cds-label-02-line-height: var(--undrr-line-height-normal);
+  --cds-label-02-font-weight: var(--undrr-font-weight-regular);
+  --cds-label-02-letter-spacing: 0;
+
+  --cds-helper-text-01-font-size: var(--undrr-font-size-xs);
+  --cds-helper-text-01-line-height: var(--undrr-line-height-snug);
+  --cds-helper-text-01-letter-spacing: 0;
+
+  --cds-body-compact-01-font-size: var(--undrr-font-size-sm);
+  --cds-body-compact-01-line-height: var(--undrr-line-height-snug);
+  --cds-body-compact-01-font-weight: var(--undrr-font-weight-regular);
+  --cds-body-compact-01-letter-spacing: 0;
+  --cds-body-compact-02-font-size: var(--undrr-font-size-base);
+  --cds-body-compact-02-line-height: var(--undrr-line-height-snug);
+  --cds-body-compact-02-font-weight: var(--undrr-font-weight-regular);
+  --cds-body-compact-02-letter-spacing: 0;
+
+  --cds-body-01-font-size: var(--undrr-font-size-sm);
+  --cds-body-01-line-height: var(--undrr-line-height-normal);
+  --cds-body-01-font-weight: var(--undrr-font-weight-regular);
+  --cds-body-01-letter-spacing: 0;
+  --cds-body-02-font-size: var(--undrr-font-size-base);
+  --cds-body-02-line-height: var(--undrr-line-height-relaxed);
+  --cds-body-02-font-weight: var(--undrr-font-weight-regular);
+  --cds-body-02-letter-spacing: 0;
+
+  --cds-heading-compact-01-font-size: var(--undrr-font-size-sm);
+  --cds-heading-compact-01-line-height: var(--undrr-line-height-snug);
+  --cds-heading-compact-01-font-weight: var(--undrr-font-weight-semibold);
+  --cds-heading-compact-01-letter-spacing: 0;
+  --cds-heading-01-font-size: var(--undrr-font-size-sm);
+  --cds-heading-01-line-height: var(--undrr-line-height-normal);
+  --cds-heading-01-font-weight: var(--undrr-font-weight-semibold);
+  --cds-heading-02-font-size: var(--undrr-font-size-lg);
+  --cds-heading-02-line-height: var(--undrr-line-height-snug);
+  --cds-heading-02-font-weight: var(--undrr-font-weight-semibold);
+  --cds-heading-03-font-size: var(--undrr-font-size-xl);
+  --cds-heading-03-line-height: var(--undrr-line-height-tight);
+  --cds-heading-03-font-weight: var(--undrr-font-weight-regular);
+  --cds-heading-04-font-size: var(--undrr-font-size-2xl);
+  --cds-heading-04-line-height: var(--undrr-line-height-tight);
+  --cds-heading-04-font-weight: var(--undrr-font-weight-regular);
+
+  /* The 56 `font-family: inherit` declarations in Carbon's component CSS mean
+     one declaration here reaches nearly all of it. `font-size` is set so the
+     rem-based Carbon spacing resolves against the token root size. */
+  font-family: var(--undrr-font-family-sans);
+  font-size: var(--undrr-font-size-base);
+  color: var(--undrr-color-text-primary);
+  min-width: 0;
+}
+
+/* ------------------------------------------------------------------ *
+ * Layout for the kitchen sink. Ours, not Carbon's — Carbon's grid is
+ * excluded from carbon.scss because Delta lays out with Tailwind.
+ * ------------------------------------------------------------------ */
+
+.demo__section {
+  margin-block-end: var(--undrr-space-16);
+  min-width: 0;
+}
+
+.demo__heading {
+  font-family: var(--undrr-font-family-display);
+  font-size: var(--undrr-font-size-2xl);
+  font-weight: var(--undrr-font-weight-bold);
+  line-height: var(--undrr-line-height-tight);
+  margin-block-end: var(--undrr-space-4);
+}
+
+.demo__subheading {
+  font-family: var(--undrr-font-family-display);
+  font-size: var(--undrr-font-size-lg);
+  font-weight: var(--undrr-font-weight-semibold);
+  margin-block-end: var(--undrr-space-2);
+}
+
+.demo__prose {
+  max-width: 68ch;
+  color: var(--undrr-color-text-secondary);
+  line-height: var(--undrr-line-height-normal);
+  margin-block-end: var(--undrr-space-4);
+}
+
+.demo__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--undrr-space-3);
+  align-items: flex-start;
+  margin-block-end: var(--undrr-space-4);
+}
+
+.demo__grid {
+  display: grid;
+  gap: var(--undrr-space-4);
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  margin-block-end: var(--undrr-space-4);
+  min-width: 0;
+}
+
+.demo__split {
+  display: grid;
+  gap: var(--undrr-space-6);
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  min-width: 0;
+}
+
+@media (min-width: 48rem) {
+  .demo__split {
+    grid-template-columns: minmax(10rem, 16rem) minmax(0, 1fr);
+  }
+
+  .demo__split--even {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.demo__stack > * + * {
+  margin-block-start: var(--undrr-space-4);
+}
+
+.demo__note {
+  font-size: var(--undrr-font-size-xs);
+  color: var(--undrr-color-text-secondary);
+  margin-block-start: var(--undrr-space-2);
+  max-width: 68ch;
+}
+
+/* ------------------------------------------------------------------ *
+ * ESCAPE HATCHES: rules that reach into `.cds--` class names.
+ * Each one is a token Carbon's theme API cannot express. Counted in
+ * evidence.json as customCss.overridesLibraryInternals.
+ * ------------------------------------------------------------------ */
+
+/* 1. Radius. Carbon has no radius token at all; its components are square by
+      design, so --undrr-radius-* is unreachable without this. */
+.demo .cds--btn,
+.demo .cds--text-input,
+.demo .cds--text-area,
+.demo .cds--select-input,
+.demo .cds--list-box,
+.demo .cds--search-input,
+.demo .cds--tile,
+.demo .cds--modal-container {
+  border-radius: var(--undrr-radius-md);
+}
+
+.demo .cds--tag {
+  border-radius: var(--undrr-radius-pill);
+}
+
+/* 2. The 400-option select and the 40-option select need a bounded menu; the
+      list-box max-height is a Sass literal with no token behind it. */
+.demo .cds--list-box__menu {
+  max-height: 20rem;
+}
+
+/* 3. Long German labels must wrap inside table headers and list boxes rather
+      than forcing a horizontal scrollbar on the document. Carbon truncates
+      with `white-space: nowrap` throughout. */
+.demo .cds--data-table th .cds--table-header-label,
+.demo .cds--data-table thead th {
+  white-space: normal;
+  min-width: 6rem;
+}
+
+.demo .cds--list-box__label,
+.demo .cds--list-box__menu-item__option {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+/* 3b. The 140-200 character narrative column would otherwise make every table
+       row ~265px tall, because Carbon cells grow to fit and offer no truncation
+       affordance on a cell. MUI's DataGrid clips at the row height by default and
+       React Aria's Table has `overflow` on the cell; Carbon has neither, so the
+       clamp is ours. The full text stays available through `title`. */
+.demo__cell-clamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  max-inline-size: 22rem;
+}
+
+/* 4. The table's own horizontal scroll must stay inside the section, or the
+      250-row/9-column grid scrolls the whole document at 390px. */
+.demo__table-scroll {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+/* 4b. Carbon's batch-action bar lays its actions out in a non-wrapping flex row
+       with no max width, so the German fixture labels push it past the viewport
+       at 390px and scroll the whole document. It is absolutely positioned inside
+       the toolbar, so nothing clips it. Carbon offers no `overflow` or
+       `maxActions` prop.
+
+       Worth noting that this only surfaced AFTER `data-table/action` was added to
+       carbon.scss: with the partial missing, the bar had no layout at all and the
+       long-label test passed for the wrong reason. */
+.demo .cds--batch-actions {
+  max-inline-size: 100%;
+  overflow-x: auto;
+}
+
+.demo .cds--action-list {
+  flex-wrap: wrap;
+}
+
+/* 5. Carbon's SideNav is fixed-position application chrome. Section 5 shows it
+      as an in-page component, which needs the positioning neutralised. */
+.demo .cds--side-nav {
+  position: static;
+  block-size: auto;
+  max-inline-size: none;
+  border: 1px solid var(--undrr-color-border);
+  border-radius: var(--undrr-radius-md);
+}
+
+/* 6. The date-time range composition puts two pickers and two time fields on
+      one row; flatpickr's input has an intrinsic width that fights that. */
+.demo__range {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--undrr-space-3);
+  align-items: flex-start;
+}
+
+.demo__range .cds--date-picker,
+.demo__range .cds--date-picker-container {
+  min-width: 0;
+}
+
+/* 7. Host-side markup in section 9 uses the host's Tailwind utilities, so the
+      candidate column needs an explicit label style to match. */
+.demo__column-label {
+  font-size: var(--undrr-font-size-xs);
+  font-weight: var(--undrr-font-weight-semibold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--undrr-color-text-secondary);
+  margin-block-end: var(--undrr-space-2);
+}

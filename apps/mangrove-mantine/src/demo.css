@@ -1,0 +1,252 @@
+/**
+ * Candidate CSS for the Mantine demo.
+ *
+ * Three jobs, in three blocks. Every rule is scoped to `.demo` (the candidate
+ * subtree) or `.demo-overlay` (Mantine's portalled surfaces, which are outside
+ * `.demo` in the DOM). Nothing here can reach a host canary.
+ *
+ * BLOCK 1 - the scoped baseline. Replaces `@mantine/core/styles/baseline.css`,
+ *   which is omitted because it is global. Written with `:where()` so the
+ *   specificity is (0,0,0), exactly as the real baseline's, and the cascade
+ *   behaves identically inside the subtree. Raising the specificity would have
+ *   been wrong: `font: inherit` at (0,1,1) would beat Mantine's own input
+ *   font-size and break every field.
+ *
+ * BLOCK 2 - host collision repairs. Mangrove styles form controls by element
+ *   and attribute, at specificity (0,1,1), which OUTRANKS Mantine's own
+ *   single-class component rules at (0,1,0). This is the second direction of
+ *   the two-stylesheet problem: not the candidate leaking out, but the host
+ *   leaking in. Each repair re-states the property using Mantine's OWN custom
+ *   property, so the value still comes from the library rather than from us.
+ *
+ * BLOCK 3 - layout and token wiring that is genuinely ours.
+ */
+
+/* ================================================================== *
+ * BLOCK 1 - scoped baseline (replaces baseline.css)
+ * ================================================================== */
+
+.demo,
+.demo-overlay {
+  box-sizing: border-box;
+  font-family: var(--mantine-font-family);
+  font-size: var(--mantine-font-size-md);
+  line-height: var(--mantine-line-height);
+  color: var(--mantine-color-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/**
+ * The host owns the page background, so the baseline's `body` background is not
+ * reproduced. Scoped to `.demo` ONLY, never `.demo-overlay`: an earlier version
+ * included both, and because `.demo-overlay` is applied to the Modal content,
+ * Popover dropdown and Tooltip themselves — not to a wrapper — a
+ * `background-color: transparent` at (0,1,0) beat Mantine's own (0,1,0) surface
+ * colour and rendered every portalled overlay invisible. Exactly the failure
+ * mode docs/requirements.md warns about, arrived at from the opposite direction:
+ * not a failed `var()`, but our own reset. Caught by the e2e overlay
+ * background assertion and by nothing else.
+ */
+.demo {
+  background-color: transparent;
+}
+
+:where(.demo, .demo-overlay) :where(*, *::before, *::after) {
+  box-sizing: border-box;
+}
+
+:where(.demo, .demo-overlay) :where(input, button, textarea, select) {
+  font: inherit;
+}
+
+:where(.demo, .demo-overlay) :where(button, select) {
+  text-transform: none;
+}
+
+/* ================================================================== *
+ * BLOCK 2 - host collision repair. ONE rule, one component. The narrowness
+ *           is the finding.
+ * ================================================================== */
+
+/**
+ * Mangrove `_form-legacy.scss` compiles to:
+ *
+ *   input[type=date], input[type=email], input[type=number],
+ *   input[type=password], input[type=search], input[type=tel],
+ *   input[type=text], textarea {
+ *     appearance: none; border: 2px solid #1a1a1a; border-radius: 0;
+ *     display: block; font-family: Roboto; font-size: 1rem; height: 46px;
+ *     padding: 0.390625rem; width: 100%;
+ *   }
+ *
+ * The prediction was that this would wreck every Mantine form control, because
+ * `input[type=text]` is (0,1,1) and Mantine's own input rule `.m_8fb7ebe7` is
+ * (0,1,0). Measured, it reaches FIVE elements from TWO components, out of the
+ * fifty inputs this page renders, for two reasons:
+ *
+ * 1. MANTINE SETS NO `type` ATTRIBUTE on its inputs. Measured across the
+ *    candidate subtree and every open portal: 50 `<input>` elements, `type`
+ *    present on 33 of them, and every one of those is `checkbox`, `radio`,
+ *    `hidden` — or, five times, `text`. An attribute selector needs the
+ *    attribute present, so `TextInput`, `Select`, `Autocomplete`, `NumberInput`
+ *    and the date-picker inputs are all untouched.
+ *
+ * 2. THE `textarea` SELECTOR MATCHES BUT LOSES. On its own it is (0,0,1), below
+ *    Mantine's (0,1,0) class. Specificity is computed per selector in a comma
+ *    list, not per rule, so the heavier siblings in that list do not help it.
+ *    Measured: the Textarea keeps Mantine's 1px token border and its autosized
+ *    97px height, not Mangrove's 2px black border and 46px.
+ *
+ * TWO COMPONENTS DO COLLIDE, and they are the only two in the whole library that
+ * emit `type="text"`:
+ *
+ *   - `PillsInputField` (@mantine/core), the search field inside `MultiSelect`,
+ *     `TagsInput` and `PillsInput`. It is designed to be an invisible flex child
+ *     of the pill group — `border: 0`, transparent, `height: 1.6em`,
+ *     `padding: 0`, `flex: 1`. Mangrove turned it into a 2px-bordered, 46px-tall,
+ *     842px-wide square box stacked under the pills.
+ *   - `TimePicker`'s hour/minute fields (@mantine/dates). Four of them render
+ *     inside the date-time range popover. Mangrove turned each into a
+ *     183px-wide, 46px-tall white box with a black border.
+ *
+ * Both are restored below with Mantine's own values, at (0,3,1). Two rules, and
+ * that is the whole cost — but note how it was found: the MultiSelect by reading
+ * a computed style, the TimePicker only by opening the popover and looking at a
+ * screenshot.
+ *
+ * THE `[hidden]` TRAP from apps/mangrove-react-aria/EVIDENCE.md finding 2 does
+ * NOT reproduce, for reason 1: Mangrove's `[hidden] { display: none }` at (0,1,0)
+ * loses to `input[type=text] { display: block }` at (0,1,1), but every helper
+ * input Mantine renders (`HiddenDatesInput`, `ComboboxHiddenInput`) is
+ * `type="hidden"`, which is not in Mangrove's selector list and which the user
+ * agent hides regardless. No `.demo [hidden]` guard is shipped, deliberately:
+ * adding one would have made the e2e assertion tautological instead of a
+ * measurement of Mantine's behaviour against the unmodified host.
+ */
+.demo input[type="text"].mantine-PillsInputField-field,
+.demo-overlay input[type="text"].mantine-PillsInputField-field {
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+  height: 1.6em;
+  min-width: 100px;
+  width: auto;
+  flex: 1;
+  padding: 0;
+  font: inherit;
+}
+
+/**
+ * THE SECOND ONE, found only by opening the range picker and looking at it.
+ *
+ * `TimePicker`'s hour and minute fields are also `<input type="text">`, and the
+ * range picker renders four of them. Mangrove turned each into a 2px-bordered,
+ * 46px-tall, 183px-wide white box, so the one popover that is this run's headline
+ * finding rendered with four giant boxes across the bottom.
+ *
+ * It was invisible to the collision measurement at first because these live in a
+ * PORTAL: `document.querySelectorAll("[data-candidate-root] …")` cannot see them,
+ * and they only exist while the dropdown is open. The e2e inventory now opens the
+ * range picker before counting, for exactly this reason.
+ *
+ * Restored from @mantine/dates `.m_6b43ba88`.
+ */
+.demo input[type="text"].mantine-TimePicker-field,
+.demo-overlay input[type="text"].mantine-TimePicker-field {
+  width: calc(2ch + 0.3em);
+  height: 100%;
+  border: 0;
+  border-radius: calc(0.125rem * var(--mantine-scale));
+  background-color: transparent;
+  padding-inline: 0.15em;
+  padding-block: 0;
+  line-height: 1;
+  font: inherit;
+  text-align: center;
+}
+
+/* ================================================================== *
+ * BLOCK 3 - ours: focus ring, layout, long-label containment
+ * ================================================================== */
+
+/**
+ * Mantine's focus ring colour is `--mantine-primary-color-filled`, i.e. the
+ * primary colour, with no separate theme field for focus. The token set keeps
+ * focus deliberately distinct from accent, so the only route is to override the
+ * outline colour on Mantine's own focus classes. Portalled surfaces need the
+ * same rule via `.demo-overlay`, since they are outside `.demo`.
+ */
+.demo :is(.mantine-focus-auto):focus-visible,
+.demo :is(.mantine-focus-always):focus,
+.demo-overlay :is(.mantine-focus-auto):focus-visible,
+.demo-overlay :is(.mantine-focus-always):focus,
+.demo :is(input, textarea, select, button, [tabindex]):focus-visible,
+.demo-overlay :is(input, textarea, select, button, [tabindex]):focus-visible {
+  outline: 2px solid var(--undrr-color-focus);
+  outline-offset: 2px;
+}
+
+.demo__header {
+  margin-bottom: var(--undrr-space-8);
+}
+
+.demo__lede {
+  max-width: 68ch;
+  color: var(--undrr-color-text-secondary);
+}
+
+/* Section 6's table is wider than the grid column; it must scroll inside its
+   own container rather than scrolling the document. Same class of bug both
+   sibling demos hit. */
+.demo section {
+  min-width: 0;
+}
+
+/* Long German fixture labels must wrap inside table headers rather than forcing
+   the column wider than the viewport. */
+.demo th .demo-th__label {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+/* The resize handle we had to build ourselves: Mantine's Table has no column
+   sizing behaviour of any kind. */
+.demo-resizer {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: 0;
+  width: 0.5rem;
+  cursor: col-resize;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  touch-action: none;
+}
+
+.demo-resizer:hover,
+.demo-resizer[data-resizing="true"] {
+  background: var(--undrr-color-accent-subtle);
+}
+
+.demo-th {
+  position: relative;
+}
+
+.demo-side-by-side {
+  display: grid;
+  gap: var(--undrr-space-6);
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 60rem) {
+  .demo-side-by-side {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.demo-grid {
+  display: grid;
+  gap: var(--undrr-space-4);
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+}
