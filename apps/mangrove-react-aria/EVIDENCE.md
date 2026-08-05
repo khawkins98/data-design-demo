@@ -28,6 +28,18 @@ global resets, so there was nothing to contain. Scoping our own rules under
 `.demo` was sufficient and took no effort. Candidates that ship their own CSS
 will have to work harder here.
 
+**One qualification on the leakage result, found later by the mangrove-mantine
+run.** The assertion diffs two loads of the same page, so a statically imported
+stylesheet sits in both snapshots and cancels out. This demo imports its own
+`src/theme.css` statically, so the assertion never actually tested it.
+
+The result still stands, but by construction rather than by measurement: a check
+of all 120 selectors in `src/theme.css` finds **zero** that are not scoped under
+`.demo`, so none can match a canary. React Aria itself ships no CSS, which is
+why nothing else was at risk here. The harness limitation is now documented in
+`packages/test-harness/src/leakage.ts` and the rule for future runs is in
+`docs/requirements.md`.
+
 **RTL needed no work whatsoever.** Wrapping the tree in `I18nProvider` with an
 Arabic locale flipped the library's own internals — date segment order, calendar
 layout, listbox alignment. We wrote no direction-aware CSS and no `dir` plumbing

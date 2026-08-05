@@ -147,6 +147,38 @@ choosing a library whose range picker is paid.
 
 ---
 
+## Load your candidate's CSS conditionally, or the leakage check is vacuous
+
+**This is a rule, not advice.** The leakage assertion diffs two loads of the same
+page, `?candidate=off` then `?candidate=on`. A stylesheet arriving through a
+static `import "…/styles.css"` is present in **both** loads, so whatever it does
+to the host canaries cancels out and the assertion passes without testing
+anything.
+
+Load your candidate's stylesheet inside the `candidate=on` branch:
+
+```tsx
+const candidateEnabled = new URLSearchParams(location.search).get("candidate") !== "off";
+
+async function loadCandidateStyles(): Promise<void> {
+  if (!candidateEnabled) return;
+  await import("@your-candidate/core/styles.css");
+}
+```
+
+Then assert the baseline really is clean — pick a custom property or class the
+library defines and check it is absent on the `candidate=off` load. See
+`apps/mangrove-mantine/src/main.tsx` and its e2e spec for a worked example.
+
+This matters most for **Carbon and Mantine**, which ship plain global
+stylesheets. It matters least for **MUI**, whose emotion styles genuinely are
+absent until a component mounts. React Aria ships no CSS at all.
+
+If your own scoped CSS is entirely under your subtree class it cannot reach a
+canary regardless, and a `clean` result is still correct — but say in
+`EVIDENCE.md` whether it was verified by measurement or established by
+construction. They are not the same claim.
+
 ## Portalled overlays and class-scoped tokens
 
 **Read this before styling any popover, modal, tooltip or dropdown.** It cost the

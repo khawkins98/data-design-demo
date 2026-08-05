@@ -74,6 +74,22 @@ free win. MUI components are built expecting the global baseline. Anyone adoptin
 MUI inside Delta needs to decide whether the host absorbs `CssBaseline` centrally
 or every consumer scopes it.
 
+**One qualification on the leakage result, found later by the mangrove-mantine
+run.** The assertion diffs two loads of the same page, so a statically imported
+stylesheet sits in both snapshots and cancels out. This demo imports its own
+`src/demo.css` statically, so the assertion never actually tested it.
+
+The result still stands, but by construction rather than by measurement: a check
+of all 3 selectors in `src/demo.css` finds **zero** that are not scoped under
+`.demo`, so none can match a canary. React Aria itself ships no CSS, which is
+why nothing else was at risk here. The harness limitation is now documented in
+`packages/test-harness/src/leakage.ts` and the rule for future runs is in
+`docs/requirements.md`.
+
+MUI's own styles are a different matter: emotion injects at render time, so they
+genuinely are absent when no component has mounted. That half of the result was
+measured.
+
 Also relevant, though it did not trip the assertion: **MUI portals its overlays
 to `document.body`**, outside the candidate subtree. Overlay content therefore
 escapes any containment scoped to the subtree, which is why the theme pins MUI's

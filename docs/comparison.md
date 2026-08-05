@@ -6,7 +6,7 @@
 
 # Candidate comparison
 
-5 of 8 pairings have reported. Every figure below comes
+7 of 8 pairings have reported. Every figure below comes
 from a run's own `evidence.json`; nothing here is entered by hand.
 
 Read this alongside each run's `EVIDENCE.md`, which carries the reasoning the
@@ -16,19 +16,19 @@ numbers cannot.
 
 | | Adobe React Aria<br>Delta | MUI<br>Delta | IBM Carbon<br>Delta | Mantine<br>Delta | Adobe React Aria<br>Mangrove | MUI<br>Mangrove | IBM Carbon<br>Mangrove | Mantine<br>Mangrove |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| **Native** | 20 | 26 | — | 20 | 21 | 26 | — | — |
-| **Composed** | 8 | 4 | — | 7 | 7 | 4 | — | — |
-| **Custom** | 2 | 0 | — | 3 | 2 | 0 | — | — |
-| **Unsupported** | 0 | 0 | — | 0 | 0 | 0 | — | — |
-| Custom lines of code | 128 | 54 | — | 411 | 122 | 54 | — | — |
-| Custom CSS lines | 715 | 14 | — | 72 | 661 | 27 | — | — |
-| CSS selectors | 156 | 3 | — | 17 | 120 | 7 | — | — |
-| Wrappers | 5 | 3 | — | 4 | 3 | 2 | — | — |
-| Tokens applied | 48 | 29 | — | 66 | 47 | 32 | — | — |
-| Tokens unreachable | 0 | 0 | — | 5 | 0 | 0 | — | — |
-| Bundle (kB gzipped) | 238.8 | 387.4 | — | 238.8 | 237.6 | 397.6 | — | — |
-| Dependencies | 19 | 142 | — | 112 | 20 | 158 | — | — |
-| Build time (s) | 2 | 2.4 | — | 2.6 | 1.2 | 1.7 | — | — |
+| **Native** | 20 | 26 | 19 | 20 | 21 | 26 | — | 19 |
+| **Composed** | 8 | 4 | 10 | 7 | 7 | 4 | — | 10 |
+| **Custom** | 2 | 0 | 1 | 3 | 2 | 0 | — | 1 |
+| **Unsupported** | 0 | 0 | 0 | 0 | 0 | 0 | — | 0 |
+| Custom lines of code | 128 | 54 | 171 | 411 | 122 | 54 | — | 293 |
+| Custom CSS lines | 715 | 14 | 300 | 72 | 661 | 27 | — | 103 |
+| CSS selectors | 156 | 3 | 34 | 17 | 120 | 7 | — | 44 |
+| Wrappers | 5 | 3 | 4 | 4 | 3 | 2 | — | 4 |
+| Tokens applied | 48 | 29 | 50 | 66 | 47 | 32 | — | 62 |
+| Tokens unreachable | 0 | 0 | 21 | 5 | 0 | 0 | — | 0 |
+| Bundle (kB gzipped) | 238.8 | 387.4 | 261.5 | 238.8 | 237.6 | 397.6 | — | 270.9 |
+| Dependencies | 19 | 142 | 145 | 112 | 20 | 158 | — | 113 |
+| Build time (s) | 2 | 2.4 | 2.8 | 2.6 | 1.2 | 1.7 | — | 3.58 |
 
 ## Conformance signals
 
@@ -38,14 +38,14 @@ to the candidate subtree, so host baseline violations are excluded.
 
 | | Adobe React Aria<br>Delta | MUI<br>Delta | IBM Carbon<br>Delta | Mantine<br>Delta | Adobe React Aria<br>Mangrove | MUI<br>Mangrove | IBM Carbon<br>Mangrove | Mantine<br>Mangrove |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Leakage | clean | clean | — | clean | clean | clean | — | — |
-| axe violations | 0 | 1 | — | 0 | 0 | 1 | — | — |
-| axe critical | 0 | 0 | — | 0 | 0 | 0 | — | — |
-| axe serious | 0 | 1 | — | 0 | 0 | 1 | — | — |
-| axe incomplete | 1 | 4 | — | 1 | 1 | 4 | — | — |
-| RTL | clean | issues | — | clean | clean | issues | — | — |
-| Long labels | clean | clean | — | clean | clean | clean | — | — |
-| Blockers | 0 | 0 | — | 0 | 0 | 0 | — | — |
+| Leakage | clean | clean | clean | clean | clean | clean | — | clean |
+| axe violations | 0 | 1 | 3 | 0 | 0 | 1 | — | 0 |
+| axe critical | 0 | 0 | 1 | 0 | 0 | 0 | — | 0 |
+| axe serious | 0 | 1 | 2 | 0 | 0 | 1 | — | 0 |
+| axe incomplete | 1 | 4 | 2 | 1 | 1 | 4 | — | 0 |
+| RTL | clean | issues | clean | clean | clean | issues | — | clean |
+| Long labels | clean | clean | clean | clean | clean | clean | — | clean |
+| Blockers | 0 | 0 | 0 | 0 | 0 | 0 | — | 0 |
 
 ## Requirement matrix
 
@@ -53,36 +53,36 @@ to the candidate subtree, so host baseline violations are excluded.
 
 | | Adobe React Aria<br>Delta | MUI<br>Delta | IBM Carbon<br>Delta | Mantine<br>Delta | Adobe React Aria<br>Mangrove | MUI<br>Mangrove | IBM Carbon<br>Mangrove | Mantine<br>Mangrove |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `buttons` | N | N | · | N | N | N | · | · |
-| `links` | N | N | · | N | N | N | · | · |
-| `text-input` | N | N | · | N | N | N | · | · |
-| `validation-states` | N | C | · | C | N | C | · | · |
-| `disabled-states` | N | N | · | N | N | N | · | · |
-| `select-small` | N | N | · | N | N | N | · | · |
-| `select-medium` | N | N | · | N | N | N | · | · |
-| `select-large` | N | N | · | N | N | N | · | · |
-| `multiselect` | C | N | · | N | C | N | · | · |
-| `combobox-searchable` | N | N | · | N | N | N | · | · |
-| `date-picker` | N | N | · | N | N | N | · | · |
-| `datetime-range-picker` | N | C | · | N | N | C | · | · |
-| `modal` | N | N | · | N | N | N | · | · |
-| `tooltip` | N | N | · | N | N | N | · | · |
-| `popover` | N | N | · | N | N | N | · | · |
-| `accordion` | N | N | · | N | N | N | · | · |
-| `cards` | X | N | · | N | X | N | · | · |
-| `left-nav` | N | N | · | N | N | N | · | · |
-| `table-render` | N | N | · | C | N | N | · | · |
-| `table-sort` | C | N | · | X | C | N | · | · |
-| `table-multiselect` | C | N | · | X | C | N | · | · |
-| `table-filter` | C | N | · | C | C | N | · | · |
-| `table-paginate` | X | N | · | C | X | N | · | · |
-| `table-column-resize-or-reorder` | N | N | · | X | N | N | · | · |
-| `table-states` | C | N | · | C | C | N | · | · |
-| `form-states` | C | N | · | N | C | N | · | · |
-| `locale-switcher` | N | N | · | N | N | N | · | · |
-| `rtl` | N | C | · | C | N | C | · | · |
-| `long-labels` | C | N | · | N | N | N | · | · |
-| `side-by-side` | C | C | · | C | C | C | · | · |
+| `buttons` | N | N | N | N | N | N | · | N |
+| `links` | N | N | N | N | N | N | · | N |
+| `text-input` | N | N | N | N | N | N | · | N |
+| `validation-states` | N | C | C | C | N | C | · | C |
+| `disabled-states` | N | N | N | N | N | N | · | N |
+| `select-small` | N | N | N | N | N | N | · | N |
+| `select-medium` | N | N | N | N | N | N | · | N |
+| `select-large` | N | N | N | N | N | N | · | N |
+| `multiselect` | C | N | C | N | C | N | · | N |
+| `combobox-searchable` | N | N | C | N | N | N | · | N |
+| `date-picker` | N | N | N | N | N | N | · | N |
+| `datetime-range-picker` | N | C | C | N | N | C | · | N |
+| `modal` | N | N | N | N | N | N | · | N |
+| `tooltip` | N | N | N | N | N | N | · | N |
+| `popover` | N | N | N | N | N | N | · | N |
+| `accordion` | N | N | N | N | N | N | · | N |
+| `cards` | X | N | N | N | X | N | · | N |
+| `left-nav` | N | N | C | N | N | N | · | N |
+| `table-render` | N | N | C | C | N | N | · | C |
+| `table-sort` | C | N | N | X | C | N | · | C |
+| `table-multiselect` | C | N | N | X | C | N | · | C |
+| `table-filter` | C | N | N | C | C | N | · | C |
+| `table-paginate` | X | N | C | C | X | N | · | C |
+| `table-column-resize-or-reorder` | N | N | X | X | N | N | · | X |
+| `table-states` | C | N | C | C | C | N | · | C |
+| `form-states` | C | N | N | N | C | N | · | C |
+| `locale-switcher` | N | N | N | N | N | N | · | N |
+| `rtl` | N | C | N | C | N | C | · | C |
+| `long-labels` | C | N | C | N | N | N | · | N |
+| `side-by-side` | C | C | C | C | C | C | · | C |
 
 ## Unsupported requirements
 
@@ -116,6 +116,19 @@ as needing a person, and they do not appear in any count above.
 - Keyboard and screen-reader testing by a human, particularly the composed date-time range: two separate pickers give screen-reader users two unrelated fields with no single accessible name for the range as a concept.
 - Omitting CssBaseline is a real deviation from MUI's intended setup. ScopedCssBaseline was used instead, which contains the reset but means MUI components run without the global normalisation they are built to expect. Needs a decision on whether that trade is acceptable, or whether the host should absorb CssBaseline.
 - The composed range's minDateTime/maxDateTime wiring is present in code but was NOT verified end to end: the calendar opens on a month with no out-of-range days, so no disabled day exists to assert against. Verified by reading the props only.
+
+### delta-carbon
+
+- axe `aria-valid-attr-value` (1 CRITICAL), on #form-required and #form-format. Carbon's invalid TextInput sets aria-errormessage pointing at its `.cds--form-requirement` div, which carries no role=alert, no aria-live and is not referenced by aria-describedby. axe verbatim: "aria-errormessage value `form-required-error-msg` must use a technique to announce the message (e.g., aria-live, aria-describedby, role=alert, etc.)". The div is Carbon's internal render and is not reachable through props, so this cannot be fixed from the consuming side. Needs confirmation against a real screen reader and, if upheld, an upstream issue — it would affect every invalid Carbon input in every Carbon application.
+- axe `aria-hidden-focus` (1 serious), on `.cds--batch-actions`. Carbon's own batch-action bar sets aria-hidden while inactive but leaves its buttons in the tab order. axe verbatim: "Focusable content should be disabled or be removed from the DOM". Again Carbon's internal markup, again not reachable from props. Appeared only once TableBatchActions was rendered.
+- axe `color-contrast` (1 serious), on #form-disabled-helper-text: 2.76:1 for #8b9aa5 on #f8fafc at 12px. Carbon applies its disabled text colour to the helper text of a disabled field, and --undrr-color-text-disabled is #8b9aa5. Disabled CONTROLS are exempt from WCAG 1.4.3 but helper text is not itself a disabled control, so this needs a ruling. Identical in cause to the delta-mui finding, and tokens are import-only so it could not be fixed here.
+- axe reported 2 incomplete rules. `aria-valid-attr-value` on the three ComboBoxes and a downshift toggle button: "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup" — downshift sets aria-controls to a menu id that only exists while the menu is open, which is a known pattern but worth a screen-reader check. `color-contrast` on 24 elements where "Element's background color could not be determined due to a pseudo element" — Carbon draws button and switch backgrounds with ::before layers, which defeats automated contrast checking on the ContentSwitcher, the tooltip trigger and every column-reorder button. Those 24 elements therefore have NO automated contrast coverage at all and need manual measurement.
+- Carbon's Tooltip `label` prop replaces the trigger's accessible name via aria-labelledby, so a button announces its tooltip text instead of its own visible label. `description` would preserve the name. Which is correct is a content decision, but the default is surprising and this demo uses `label` because it is what Carbon's examples use.
+- Carbon hides the items-per-page control below a 42rem container width via a CSS container query. On a 390px screen a reviewer cannot change the page size of a 250-row table. Whether that is acceptable for UNDRR's mobile use is a product decision.
+- The 400-option ComboBox mounts all 400 items when opened with an empty query. Carbon has no virtualisation and no result cap, and unlike MUI's Autocomplete there is no documented filterOptions-style limit — capping would mean filtering in shouldFilterItem, which changes what the user can reach by scrolling. Whether that is acceptable at 400 options is a performance decision not taken here.
+- The composed date-time range was only partly verified end to end. The e2e run asserts the two date inputs, the two time inputs, the derived duration, and that an invalid time string surfaces the error notification. It does NOT verify that flatpickr's range calendar disables out-of-order days, because the calendar opens on a month where no such day exists. Verified by reading the props only.
+- Excluding Carbon's global reset is a real deviation from the library's intended setup, and it works here largely because the Delta host already loads Tailwind Preflight, which covers much of the same ground (box-sizing on *, font: inherit and border: 0 solid on form controls, zeroed heading and list margins). That substitution would NOT hold on a host without Preflight, and the mangrove-carbon pairing should be expected to differ. Someone needs to decide whether shipping Carbon without its reset is supportable long term.
+- Keyboard and screen-reader testing by a human throughout, in particular: the custom column-reorder control (arrow-labelled buttons, no announcement of the new position after a move), the composed date-time range as a single concept, and Carbon's DataTable batch-action bar.
 
 ### delta-mantine
 
@@ -152,3 +165,15 @@ as needing a person, and they do not appear in any count above.
 - Omitting CssBaseline is a real deviation from MUI's intended setup, and on this host it is the direct cause of the input repair CSS. Needs a decision on whether the host should absorb CssBaseline centrally instead.
 - The composed range's minDateTime/maxDateTime wiring is present in code but was NOT verified end to end: the calendar opens on a month with no out-of-range days, so no disabled day exists to assert against. Verified by reading the props only.
 - Counting note for whoever aggregates these files: this run records 32 tokensApplied for a theme.ts that is byte-identical to delta-mui's, which recorded 29. The difference is counting method, not theming depth. Pick one method before comparing.
+
+### mangrove-mantine
+
+- THE DATA TABLE IS THE DECISION. Mantine's Table is presentational only, and 229 of this run's 293 custom behavioural lines -- 78% -- are table code. delta-mui got sort, multi-select, filter, pagination with a page-size control AND column resize from props on one <DataGrid />, for zero custom lines. If Mantine is chosen for a *data* design system, UNDRR is choosing either to add mantine-datatable -- a well-maintained MIT package, but a third-party single-maintainer dependency in the critical path of the application's most important screen -- or to build and maintain the table layer in-house. That is a governance decision, not a technical one.
+- The hand-written column resizer (src/use-column-resize.ts, 72 lines) needs screen-reader testing. It is keyboard-operable and exposes role=separator with aria-valuenow, but it does not announce width changes as they happen, which a native implementation would. It is the highest-risk piece of custom code in this run.
+- Mantine ships TWO icon-only controls with no accessible name: Pagination's first/previous/next/last, and InputClearButton (rendered by `clearable`). Both were axe criticals out of the box and both are fixable through the public API, but a team that turns on `clearable` and `withEdges` without running axe ships unlabelled buttons. Worth raising upstream, and worth a lint rule locally.
+- Omitting baseline.css is a real deviation from Mantine's documented setup. A scoped replacement is shipped, but Mantine's components are built expecting the global one. Needs a decision on whether that trade is acceptable, or whether the host should absorb the baseline -- which on Mangrove would mean accepting 36 changed canary properties.
+- The undocumented per-component CSS import order should be raised with Mantine. The failure mode -- every button silently unstyled, with a clean build, clean types, passing tests and zero axe violations -- is the worst kind, and two independent runs in this evaluation hit it.
+- The 400-option Select renders 400 option nodes. Virtualisation means dropping to the Combobox primitive and supplying your own virtualiser. Whether that is acceptable at UNDRR's list sizes is a performance decision not taken here.
+- Keyboard and screen-reader testing by a human, particularly the native date-time range popover: it contains a calendar and two separate TimePickers, and axe cannot say whether moving between them is coherent.
+- Mantine's Anchor defaults to underline="hover", which reproduces the host's own link-in-text-block WCAG 1.4.1 failure. It was overridden here, but it is a library default worth a local lint rule, since the two systems make the same wrong choice independently.
+- The Mangrove nav accent bar is not reachable through NavLink's props or CSS variables. Either accept Mantine's tinted-background active state as the new convention, or accept custom CSS reaching into NavLink internals on every consuming page. Not faked here so the gap stays visible in the section 9 screenshots.
