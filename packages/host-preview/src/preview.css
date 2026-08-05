@@ -1,0 +1,137 @@
+/**
+ * Preview-only styling.
+ *
+ * Scoped under .preview__* and applied inside the candidate subtree, so it does
+ * not touch the host canaries. If a rule here started affecting a canary, the
+ * leakage assertion in this very app would catch it — which is the point of
+ * having a control.
+ */
+
+.preview__toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 900;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+  background: #14232e;
+  color: #ffffff;
+  font: 500 0.8125rem/1.4 system-ui, sans-serif;
+}
+
+.preview__toolbar-label {
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: help;
+}
+
+.preview__toolbar-group {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  color: #a3b3bf;
+}
+
+/* Group labels carry a tooltip explaining what the control is for. The dotted
+   underline is the conventional signal that hovering will tell you more. */
+.preview__toolbar-group abbr {
+  cursor: help;
+  text-decoration: underline dotted currentColor;
+  text-underline-offset: 3px;
+}
+
+/* The options themselves are titled too, so signal that on hover. */
+.preview__toolbar-group a[title],
+.preview__toolbar-group button[title] {
+  cursor: help;
+}
+
+.preview__toolbar-group a[title]:hover,
+.preview__toolbar-group button[title]:hover {
+  border-color: #7fb3cc;
+}
+
+.preview__toolbar-group a,
+.preview__toolbar-group button {
+  padding: 0.125rem 0.5rem;
+  border: 1px solid #3a4c58;
+  border-radius: 3px;
+  background: transparent;
+  color: #ffffff;
+  font: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.preview__toolbar-group a[aria-current],
+.preview__toolbar-group button[aria-current] {
+  background: #2f6f8f;
+  border-color: #2f6f8f;
+}
+
+.preview__heading {
+  margin: 0 0 0.5rem;
+  font-size: 1.25rem;
+}
+
+.preview__subheading {
+  margin: 1.5rem 0 0.5rem;
+  font-size: 1rem;
+}
+
+.preview__note {
+  margin: 0 0 1rem;
+  max-width: 65ch;
+  color: var(--undrr-color-text-secondary, #4a5c69);
+}
+
+.preview__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0.75rem;
+  background: var(--undrr-color-surface-sunken, #e9edf1);
+  border-radius: var(--undrr-radius-md, 4px);
+}
+
+.preview__stats dt {
+  font-size: 0.6875rem;
+  color: var(--undrr-color-text-secondary, #4a5c69);
+}
+
+.preview__stats dd {
+  margin: 0;
+  font-size: 1.125rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.preview__labels {
+  max-width: 70ch;
+  padding-inline-start: 1.25rem;
+}
+
+.preview__labels li {
+  margin-bottom: 0.375rem;
+}
+
+.preview__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+}
+
+.preview__table th,
+.preview__table td {
+  padding: 0.375rem 0.5rem;
+  border-bottom: 1px solid var(--undrr-color-border, #c8d2da);
+  text-align: start;
+}
+
+.preview__num {
+  font-variant-numeric: tabular-nums;
+  text-align: end;
+}

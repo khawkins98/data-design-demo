@@ -17,7 +17,7 @@
  * Import only. Brief 1 forbids modifying this package.
  */
 
-import type { ReactNode } from "react";
+import type { ReactElement, ReactNode } from "react";
 
 import { CANARY_IDS } from "@undrr-eval/test-harness/canaries";
 
@@ -55,7 +55,7 @@ const BUTTON_BASE =
  * class names, so a difference between the two hosts is attributable to host
  * styling rather than to different markup.
  */
-function Canaries(): JSX.Element {
+function Canaries(): ReactElement {
   return (
     <section aria-labelledby="canary-heading" className="border-b-2 border-dashed border-slate-300 pb-8 mb-8">
       <h2 id="canary-heading" data-canary="heading-2" className="text-2xl font-bold text-slate-900">
@@ -166,7 +166,7 @@ function Canaries(): JSX.Element {
   );
 }
 
-export function HostShell({ title, children, dir = "ltr" }: HostShellProps): JSX.Element {
+export function HostShell({ title, children, dir = "ltr" }: HostShellProps): ReactElement {
   return (
     <div dir={dir} className="min-h-screen bg-slate-50 text-slate-900">
       <header className="flex flex-wrap items-baseline gap-4 border-b border-slate-300 bg-white px-6 py-4">

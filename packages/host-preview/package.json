@@ -1,0 +1,29 @@
+{
+  "name": "@undrr-eval/host-preview",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "Apache-2.0",
+  "description": "Scaffold preview. Not a candidate demo: a control for exercising the harness before Brief 1 runs start.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "@undrr-eval/fixtures": "workspace:*",
+    "@undrr-eval/host-delta": "workspace:*",
+    "@undrr-eval/host-mangrove": "workspace:*",
+    "@undrr-eval/test-harness": "workspace:*",
+    "@undrr-eval/undrr-tokens": "workspace:*",
+    "@undrr/undrr-mangrove": "1.8.1",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.58.2",
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^6.0.7"
+  }
+}

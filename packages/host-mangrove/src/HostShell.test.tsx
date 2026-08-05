@@ -54,4 +54,32 @@ describe("Mangrove HostShell", () => {
     expect(html).toContain("mg-table mg-table--striped");
     expect(html).toContain("mg-card__content");
   });
+
+  it("invents no mg- classes outside the mg-host namespace", () => {
+    // An earlier version used mg-heading-1 and mg-link, neither of which exists
+    // in Mangrove. They were inert, so nothing looked wrong, but they implied an
+    // API the design system does not have. Classes we add are prefixed mg-host
+    // so they stay distinguishable from genuine ones during review.
+    const REAL_MANGROVE_CLASSES = new Set([
+      "mg-button",
+      "mg-button-primary",
+      "mg-button-secondary",
+      "mg-card",
+      "mg-card__content",
+      "mg-card__description",
+      "mg-card__title",
+      "mg-table",
+      "mg-table--striped",
+    ]);
+
+    const used = new Set(html.match(/mg-[a-zA-Z0-9_-]+/g) ?? []);
+    const unaccounted = [...used].filter(
+      (cls) => !cls.startsWith("mg-host") && !REAL_MANGROVE_CLASSES.has(cls),
+    );
+
+    expect(
+      unaccounted,
+      "these mg- classes are neither real Mangrove classes nor marked as ours",
+    ).toEqual([]);
+  });
 });

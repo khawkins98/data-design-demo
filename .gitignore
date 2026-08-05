@@ -14,3 +14,9 @@ test-results-tmp/
 # Local env
 .env
 .env.local
+
+# The preview is a scratch control, not evidence: its screenshots and results
+# are regenerated on demand and would only add churn. The eight real demos DO
+# commit theirs.
+packages/host-preview/screenshots/
+packages/host-preview/test-results/

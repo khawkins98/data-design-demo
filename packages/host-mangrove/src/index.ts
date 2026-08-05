@@ -21,3 +21,36 @@ export const HOST_NAME = "mangrove" as const;
 
 /** Pinned so every demo renders against the same design system build. */
 export const MANGROVE_VERSION = "1.8.1" as const;
+
+/**
+ * Mangrove 2.0 replaces SCSS variable theming with CSS custom properties. It is
+ * unlanded and unpublished, so the stylesheet above is still 1.8.1, but the
+ * forthcoming token API is available for theming work:
+ *
+ *   import "@undrr-eval/host-mangrove/mangrove-2-preview.css";
+ *
+ * Colours are space-separated RGB channels, so consume them as
+ * `rgb(var(--mg-color-interactive))`, with alpha as
+ * `rgb(var(--mg-color-interactive) / 0.1)`. Assigning a raw token to a colour
+ * property yields an invalid value and fails silently.
+ *
+ * Ten colour tokens are hex or named colours rather than channels and do not
+ * work with that pattern. See docs/host-derivation.md.
+ */
+export const MANGROVE_2_PREVIEW = Object.freeze({
+  available: true,
+  sourceBranch: "css-custom-properties-pilot",
+  /** Colour tokens that break the rgb(var(--x)) pattern. */
+  nonChannelColourTokens: [
+    "--mg-color-green",
+    "--mg-color-green-light",
+    "--mg-color-green-dark",
+    "--mg-color-yellow",
+    "--mg-color-yellow-light",
+    "--mg-color-yellow-dark",
+    "--mg-color-azure",
+    "--mg-color-azure-dark",
+    "--mg-color-azure-light",
+    "--mg-color-ebony-clay",
+  ],
+});

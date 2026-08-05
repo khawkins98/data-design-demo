@@ -9,7 +9,8 @@
   "types": "./src/index.ts",
   "exports": {
     ".": "./src/index.ts",
-    "./host.css": "./src/host-mangrove.css"
+    "./host.css": "./src/host-mangrove.css",
+    "./mangrove-2-preview.css": "./src/mangrove-2-preview.css"
   },
   "scripts": {
     "build": "tsc --build"
@@ -19,7 +20,7 @@
     "@undrr/undrr-mangrove": "1.8.1"
   },
   "peerDependencies": {
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
   }
 }

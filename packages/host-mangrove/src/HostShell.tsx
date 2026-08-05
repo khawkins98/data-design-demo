@@ -9,7 +9,7 @@
  * Import only. Brief 1 forbids modifying this package.
  */
 
-import type { ReactNode } from "react";
+import type { ReactElement, ReactNode } from "react";
 
 import { CANARY_IDS } from "@undrr-eval/test-harness/canaries";
 
@@ -43,21 +43,27 @@ const TABLE_ROWS = [
  * must not change how any of this renders. The `data-canary` attributes are the
  * harness's handles; the structure is identical to the Delta host so the two
  * are comparable.
+ *
+ * Headings and links carry no class on purpose. Mangrove styles bare `h1`-`h6`
+ * and `a` elements in `_foundational.scss` and ships no `mg-heading-*` or
+ * `mg-link` class, so element-level styling is the faithful reproduction. An
+ * earlier version invented those classes; they were inert and implied an API
+ * Mangrove does not have.
  */
-function Canaries(): JSX.Element {
+function Canaries(): ReactElement {
   return (
     <section className="mg-host-canaries" aria-labelledby="canary-heading">
-      <h2 id="canary-heading" data-canary="heading-2" className="mg-heading-2">
+      <h2 id="canary-heading" data-canary="heading-2">
         Host reference elements
       </h2>
-      <h3 data-canary="heading-3" className="mg-heading-3">
+      <h3 data-canary="heading-3">
         These are styled entirely by the host
       </h3>
 
       <p data-canary="paragraph">
         Every element in this block is plain host markup. If a candidate library
         changes how any of it renders, that is style leakage. Reference:{" "}
-        <a data-canary="link" href="https://www.undrr.org/" className="mg-link">
+        <a data-canary="link" href="https://www.undrr.org/">
           undrr.org
         </a>
         .
@@ -128,12 +134,12 @@ function Canaries(): JSX.Element {
   );
 }
 
-export function HostShell({ title, children, dir = "ltr" }: HostShellProps): JSX.Element {
+export function HostShell({ title, children, dir = "ltr" }: HostShellProps): ReactElement {
   return (
     <div className="mg-host" dir={dir}>
       <header className="mg-host__header">
         <span className="mg-host__brand">UNDRR</span>
-        <h1 data-canary="heading-1" className="mg-heading-1">
+        <h1 data-canary="heading-1">
           {title}
         </h1>
       </header>
