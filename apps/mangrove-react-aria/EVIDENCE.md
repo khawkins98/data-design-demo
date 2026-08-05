@@ -142,7 +142,55 @@ inputs were *visible*, which is why axe flagged them; once `hidden` works, axe
 correctly skips them and the violation disappears. **Scoped axe went from 1
 critical violation to 0.** React Aria was not at fault.
 
-### 3. `Radio` intercepts pointer events, so `getByRole("radio").click()` fails
+### 3. Portalled overlays lose the design tokens entirely
+
+**Found by looking at a screenshot, not by any test.** Every popover, calendar,
+modal and tooltip rendered transparent and borderless over the page content.
+
+React Aria portals overlays to a container appended to `document.body`, which is
+outside the `.undrr-tokens` element. CSS custom properties inherit down the DOM
+tree, so inside the portal every token resolved to nothing:
+
+| Declaration | Computed |
+| --- | --- |
+| `background: var(--undrr-color-surface)` | `rgba(0, 0, 0, 0)` |
+| `border: 1px solid var(--undrr-color-border-strong)` | `0px` — the whole declaration voided |
+| `z-index: var(--undrr-z-popover)` | `100000`, React Aria's inline default |
+
+The border case is the nastiest: one bad `var()` invalidates the entire shorthand
+at computed-value time, so the border vanished rather than falling back to a
+default colour. And **nothing warns you** — a failed `var()` is silent, there is
+no console message, and the component "works" in every functional sense. The e2e
+suite passed throughout, because it asserted behaviour and never asserted that an
+overlay had a background.
+
+Fixed by putting the token scope class on each portalled overlay
+(`src/overlay-class.ts`), so the properties are declared on the overlay itself
+and inherit from there.
+
+**This is not really a React Aria defect.** It is an interaction between
+portalling and the decision to scope tokens to a class instead of `:root` — a
+decision made deliberately to protect the leakage assertion. The cost of that
+protection is this, and it will recur for any candidate that styles via `var()`.
+Documented in `docs/requirements.md` so the remaining runs do not rediscover it.
+
+**The comparison here is genuinely interesting.** Measured on both demos: MUI's
+portalled popper is *also* outside the token scope and *also* sees an empty
+`--undrr-color-surface`, yet renders `rgb(255, 255, 255)` correctly — because
+MUI's theme resolves token values at build time and emotion emits literal
+colours, so there is no `var()` to fail.
+
+So the same property cuts both ways. Elsewhere in this evaluation MUI's
+build-time inlining is a drawback: tokens cannot change at runtime without a
+rebuild. Here it is an outright advantage. React Aria's CSS-variable approach is
+more flexible and more fragile.
+
+A smaller related finding: React Aria sets `z-index` **inline** on the portal
+container at 100000, which outranks any class rule. The token z-index scale is
+therefore not honoured by this candidate without `!important`, whereas MUI's
+z-index came from its theme object and was pinnable to the token layers.
+
+### 4. `Radio` intercepts pointer events, so `getByRole("radio").click()` fails
 
 React Aria's `Radio` renders a `<label>` wrapping a visually hidden `<input>`,
 and the label intercepts pointer events. Playwright's `getByRole("radio").click()`
@@ -152,7 +200,7 @@ Not a defect — but a real testing-ergonomics cost, and the kind of thing that
 silently eats an afternoon. Any team adopting React Aria should expect to write
 click helpers for its form controls.
 
-### 4. Horizontal scroll at 390px in German — unresolved
+### 5. Horizontal scroll at 390px in German — unresolved
 
 Measured: **desktop 0px, tablet 0px, mobile 261px.** Recorded in
 `test-results/long-labels-*.json`.
@@ -169,7 +217,7 @@ be worse evidence than a failing one that names it. `longLabels.status` is
 `"issues"`, and it needs a design decision: stack the range picker's two
 endpoints vertically at mobile, or accept horizontal scroll in that section.
 
-### 5. 400 options render 400 DOM nodes
+### 6. 400 options render 400 DOM nodes
 
 `ListBox` virtualises only when wrapped in `Virtualizer`. Left unwrapped so the
 comparison stays like-for-like across candidates. Whether that is acceptable, or

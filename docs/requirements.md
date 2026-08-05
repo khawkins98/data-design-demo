@@ -147,6 +147,53 @@ choosing a library whose range picker is paid.
 
 ---
 
+## Portalled overlays and class-scoped tokens
+
+**Read this before styling any popover, modal, tooltip or dropdown.** It cost the
+first run a page of transparent overlays that nothing warned about.
+
+`packages/undrr-tokens` scopes its custom properties to a `.undrr-tokens` class
+rather than `:root`, deliberately — tokens at `:root` would theme the host's
+canary elements and defeat the leakage assertion.
+
+Most libraries portal overlays to a container appended to `document.body`, which
+is **outside** that class. CSS custom properties inherit down the DOM tree, so
+inside a portal every `var(--undrr-*)` resolves to nothing, and a failed `var()`
+is silent:
+
+```
+background: var(--undrr-color-surface)              ->  rgba(0,0,0,0)
+border: 1px solid var(--undrr-color-border-strong)  ->  0px (whole declaration voided)
+z-index: var(--undrr-z-popover)                     ->  the library's inline default
+```
+
+The result is a transparent, borderless overlay floating over the page content.
+
+**If your candidate styles via CSS and `var()`** — React Aria, Carbon — put the
+token scope class on each portalled overlay so the properties are declared on the
+overlay itself:
+
+```tsx
+import { TOKEN_SCOPE_CLASS } from "@undrr-eval/undrr-tokens";
+
+<Popover className={`${TOKEN_SCOPE_CLASS} my-popover`}>
+```
+
+**If your candidate themes via a JavaScript object** — MUI, Mantine — you are
+probably immune, because the theme resolves token values at build time and the
+generated CSS carries literal values with no `var()` to fail. Verify rather than
+assume: open an overlay and check its computed `background-color`.
+
+**Assert it in your e2e run.** Behavioural tests cannot see this: the component
+works, the suite passes, and the overlay is invisible. Open each overlay type and
+check its computed `background-color` is not `rgba(0, 0, 0, 0)`. See
+`apps/mangrove-react-aria/e2e/demo.spec.ts` for the pattern.
+
+Either way, **record what you found in `EVIDENCE.md`**. Whether a library's
+theming survives portalling is a real architectural difference between the
+candidates, and it cuts both ways: build-time inlining is immune here but means
+tokens cannot be changed at runtime without a rebuild.
+
 ## Known host baseline axe violations
 
 The host shells are not axe-clean, and that is not your fault. Measured against

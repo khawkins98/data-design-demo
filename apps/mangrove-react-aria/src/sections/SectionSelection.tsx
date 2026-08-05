@@ -30,6 +30,7 @@ import { OPTIONS_LARGE, OPTIONS_MEDIUM, OPTIONS_SMALL } from "@undrr-eval/fixtur
 import type { SelectOption } from "@undrr-eval/fixtures";
 
 import { useDemo } from "../demo-state.js";
+import { POPOVER_CLASS } from "../overlay-class.js";
 
 function OptionSelect({
   label,
@@ -45,7 +46,7 @@ function OptionSelect({
         <SelectValue className="demo-select__value" />
         <span aria-hidden="true">▾</span>
       </Button>
-      <Popover className="demo-popover">
+      <Popover className={POPOVER_CLASS}>
         <ListBox className="demo-listbox" items={options}>
           {(item) => (
             <ListBoxItem
@@ -78,7 +79,7 @@ function OptionComboBox({
           ▾
         </Button>
       </div>
-      <Popover className="demo-popover">
+      <Popover className={POPOVER_CLASS}>
         <ListBox className="demo-listbox">
           {(item: SelectOption) => (
             <ListBoxItem

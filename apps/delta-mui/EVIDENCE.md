@@ -119,6 +119,14 @@ you need a rebuild; a `var()`-based consumer picks it up at runtime. This also
 means MUI's palette and the UNDRR tokens are two sources of truth that must be
 kept in step by hand.
 
+**Portalled overlays needed nothing, and that is worth stating.** MUI portals its
+popper to `document.body`, outside the `.undrr-tokens` element, and a computed-style
+check confirms it sees an empty `--undrr-color-surface` there. It renders
+`rgb(255, 255, 255)` correctly regardless, because the theme resolved token values
+at build time. The react-aria run had to put the token scope class on every overlay
+to avoid transparent popovers. The same build-time inlining listed above as a
+drawback is exactly what makes MUI immune here.
+
 **`cssVariables: true` was rejected deliberately.** It would make MUI emit
 `--mui-*` properties at `:root`, putting MUI's palette in the same global scope
 as the host. That would have made theming feel more native at the cost of the

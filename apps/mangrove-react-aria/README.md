@@ -47,7 +47,7 @@ pnpm --filter @undrr-eval/mangrove-react-aria test:e2e
 33 tests across three viewports. **One fails on purpose:** long labels overflow
 the viewport by 261px at 390px width in German. It was left failing rather than
 weakened, because a green suite that hid it would be worse evidence. See finding
-4 in `EVIDENCE.md`.
+5 in `EVIDENCE.md`.
 
 Outputs:
 

@@ -96,6 +96,41 @@ test.describe("kitchen sink", () => {
     await expect(trigger).toBeFocused();
   });
 
+  test("portalled overlays are actually styled", async ({ page }) => {
+    // This exists because the suite once passed with every overlay rendering
+    // transparent: the tokens do not inherit into a portal, and a failed var()
+    // is silent. Behavioural assertions cannot see it, so assert appearance.
+    await page.goto("/?candidate=on");
+
+    const cases = [
+      { name: "date picker calendar", trigger: "#section-3 .demo-dateinput__button" },
+      { name: "select popover", trigger: "#section-2 .demo-select__trigger" },
+    ];
+
+    for (const { name, trigger } of cases) {
+      await page.locator(trigger).first().click();
+      const overlay = page.locator(".demo-popover").first();
+      await expect(overlay, name).toBeVisible();
+
+      const styles = await overlay.evaluate((el) => {
+        const cs = getComputedStyle(el);
+        return {
+          background: cs.backgroundColor,
+          borderWidth: cs.borderTopWidth,
+          tokenSeen: cs.getPropertyValue("--undrr-color-surface").trim(),
+        };
+      });
+
+      expect(styles.background, `${name} background is transparent`).not.toBe(
+        "rgba(0, 0, 0, 0)",
+      );
+      expect(styles.borderWidth, `${name} border collapsed to 0`).not.toBe("0px");
+      expect(styles.tokenSeen, `${name} cannot see the design tokens`).not.toBe("");
+
+      await page.keyboard.press("Escape");
+    }
+  });
+
   test("passes the leakage assertion", async ({ page }, testInfo) => {
     const result = await checkLeakage(page, { url: "/" });
 

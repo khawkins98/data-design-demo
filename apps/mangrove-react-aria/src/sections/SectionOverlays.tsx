@@ -27,6 +27,11 @@ import {
 } from "react-aria-components";
 
 import { useDemo } from "../demo-state.js";
+import {
+  MODAL_OVERLAY_CLASS,
+  POPOVER_PADDED_CLASS,
+  TOOLTIP_CLASS,
+} from "../overlay-class.js";
 
 export function SectionOverlays(): ReactElement {
   const { labels } = useDemo();
@@ -40,7 +45,7 @@ export function SectionOverlays(): ReactElement {
       <div className="demo-row">
         <DialogTrigger>
           <Button className="demo-button demo-button--primary">Open modal</Button>
-          <ModalOverlay className="demo-modal__overlay" isDismissable>
+          <ModalOverlay className={MODAL_OVERLAY_CLASS} isDismissable>
             <Modal className="demo-modal">
               <Dialog className="demo-dialog">
                 {({ close }) => (
@@ -66,7 +71,7 @@ export function SectionOverlays(): ReactElement {
 
         <TooltipTrigger delay={200}>
           <Button className="demo-button">Hover or focus for tooltip</Button>
-          <Tooltip className="demo-tooltip">
+          <Tooltip className={TOOLTIP_CLASS}>
             <OverlayArrow className="demo-tooltip__arrow">
               <svg width={8} height={8} viewBox="0 0 8 8" aria-hidden="true">
                 <path d="M0 0 L4 4 L8 0" />
@@ -78,7 +83,7 @@ export function SectionOverlays(): ReactElement {
 
         <DialogTrigger>
           <Button className="demo-button">Open popover</Button>
-          <Popover className="demo-popover demo-popover--padded">
+          <Popover className={POPOVER_PADDED_CLASS}>
             <OverlayArrow className="demo-popover__arrow">
               <svg width={12} height={12} viewBox="0 0 12 12" aria-hidden="true">
                 <path d="M0 0 L6 6 L12 0" />

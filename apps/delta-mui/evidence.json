@@ -7,44 +7,186 @@
     "node": "22 (CI), 24.18.0 (local run)"
   },
   "requirements": [
-    { "id": "buttons", "status": "native", "notes": "Button with contained/outlined/error variants and disabled. textTransform: none set in the theme, since MUI uppercases labels by default and that mangles the German and Arabic fixtures.", "customLinesOfCode": 0 },
-    { "id": "links", "status": "native", "notes": "Link component, underlined by default.", "customLinesOfCode": 0 },
-    { "id": "text-input", "status": "native", "notes": "TextField bundles label, input, helper text and error state in one component. Far less markup than composing primitives.", "customLinesOfCode": 0 },
-    { "id": "validation-states", "status": "composed", "notes": "error + helperText cover the three client-side cases. server-rejected has no library channel: MUI has no form-level error API equivalent to React Aria's Form validationErrors, so it is component state we manage.", "customLinesOfCode": 8 },
-    { "id": "disabled-states", "status": "native", "notes": "disabled on Button, TextField and Select.", "customLinesOfCode": 0 },
-
-    { "id": "select-small", "status": "native", "notes": "Select + MenuItem, 8 options.", "customLinesOfCode": 0 },
-    { "id": "select-medium", "status": "native", "notes": "Same, 40 options, with a maxHeight on the menu paper.", "customLinesOfCode": 0 },
-    { "id": "select-large", "status": "native", "notes": "Same, 400 options. Renders all 400 MenuItems; MUI Select has no built-in virtualisation.", "customLinesOfCode": 0 },
-    { "id": "multiselect", "status": "native", "notes": "Autocomplete with multiple. Removable chips come free via renderValue and getItemProps. Notably stronger than React Aria, which has no multiselect component and needs ListBox + TagGroup composed.", "customLinesOfCode": 0 },
-    { "id": "combobox-searchable", "status": "native", "notes": "Autocomplete filters as you type. filterOptions caps the rendered list at 100 for the 400-item fixture, which is a documented prop rather than a workaround.", "customLinesOfCode": 5 },
-
-    { "id": "date-picker", "status": "native", "notes": "DatePicker from the free @mui/x-date-pickers.", "customLinesOfCode": 0 },
-    { "id": "datetime-range-picker", "status": "composed", "notes": "THE BLOCKER, resolved by composition per docs/requirements.md. MUI's range pickers exist only in @mui/x-date-pickers-pro, licence 'SEE LICENSE IN LICENSE' (commercial). Verified empirically: the community package ships ZERO Range* components. Composed from two free DateTimePickers with ampm=false and minute views, minDateTime/maxDateTime wired between them, and the span derived in application code. See EVIDENCE.md for exactly what this loses.", "customLinesOfCode": 31 },
-
-    { "id": "modal", "status": "native", "notes": "Dialog with DialogTitle/Content/Actions. Focus trap and Escape verified by e2e.", "customLinesOfCode": 0 },
-    { "id": "tooltip", "status": "native", "notes": "Tooltip, hover and keyboard-focus triggered by default.", "customLinesOfCode": 0 },
-    { "id": "popover", "status": "native", "notes": "Popover with anchorEl and outside-click dismiss.", "customLinesOfCode": 0 },
-    { "id": "accordion", "status": "native", "notes": "Accordion + AccordionSummary + AccordionDetails, single-expand via controlled expanded state.", "customLinesOfCode": 4 },
-
-    { "id": "cards", "status": "native", "notes": "Card + CardContent exist, unlike React Aria. Matching the host is the work: MUI's Card has its own elevation, radius and padding opinions, so variant=outlined and elevation=0 are needed to reach Delta's flat bordered cards.", "customLinesOfCode": 0 },
-    { "id": "left-nav", "status": "native", "notes": "List + ListItemButton with selected state.", "customLinesOfCode": 0 },
-
-    { "id": "table-render", "status": "native", "notes": "DataGrid over all 250 rows. Column type formatting via valueFormatter with Intl, driven by the active locale.", "customLinesOfCode": 0 },
-    { "id": "table-sort", "status": "native", "notes": "Built into DataGrid with an initial sortModel. No comparator written, in contrast to React Aria where sorting cost 22 lines.", "customLinesOfCode": 0 },
-    { "id": "table-multiselect", "status": "native", "notes": "checkboxSelection, with header select-all included.", "customLinesOfCode": 0 },
-    { "id": "table-filter", "status": "native", "notes": "showToolbar gives the built-in filter UI. No predicate written.", "customLinesOfCode": 0 },
-    { "id": "table-paginate", "status": "native", "notes": "paginationModel plus pageSizeOptions. Entirely native, where React Aria has no pagination component at all and needed 34 custom lines. The single clearest advantage MUI has in this evaluation.", "customLinesOfCode": 0 },
-    { "id": "table-column-resize-or-reorder", "status": "native", "notes": "resizable: true per column. Verified that GridColDef.resizable and disableColumnResize exist in the community build, while disableColumnReorder appears in its Pro-omit list, so reorder is Pro-only. The brief accepts either.", "customLinesOfCode": 0 },
-
-    { "id": "table-states", "status": "native", "notes": "DataGrid loading prop with a linear-progress overlay, localeText.noRowsLabel for empty, and Alert for error/success with correct ARIA roles.", "customLinesOfCode": 0 },
-    { "id": "form-states", "status": "native", "notes": "LinearProgress and Alert. No custom banner markup, unlike React Aria which needed role=alert/status by hand.", "customLinesOfCode": 0 },
-
-    { "id": "locale-switcher", "status": "native", "notes": "ToggleButtonGroup, exclusive.", "customLinesOfCode": 0 },
-    { "id": "rtl", "status": "composed", "notes": "Needs direction on the MUI theme, not just a dir attribute, so the theme is rebuilt per locale with createTheme(base, { direction }). React Aria needed only I18nProvider. Also needs adapterLocale threaded into LocalizationProvider for the pickers.", "customLinesOfCode": 6 },
-    { "id": "long-labels", "status": "native", "notes": "Clean at all three viewports: 0px horizontal overflow in German at 390, 1024 and 1440. Notably better than the React Aria run, which overflowed 261px at 390px. Two small CSS rules help the DataGrid header wrap.", "customLinesOfCode": 0 },
-
-    { "id": "side-by-side", "status": "composed", "notes": "Host and candidate button, table, card and nav list rendered adjacent in section 9.", "customLinesOfCode": 0 }
+    {
+      "id": "buttons",
+      "status": "native",
+      "notes": "Button with contained/outlined/error variants and disabled. textTransform: none set in the theme, since MUI uppercases labels by default and that mangles the German and Arabic fixtures.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "links",
+      "status": "native",
+      "notes": "Link component, underlined by default.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "text-input",
+      "status": "native",
+      "notes": "TextField bundles label, input, helper text and error state in one component. Far less markup than composing primitives.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "validation-states",
+      "status": "composed",
+      "notes": "error + helperText cover the three client-side cases. server-rejected has no library channel: MUI has no form-level error API equivalent to React Aria's Form validationErrors, so it is component state we manage.",
+      "customLinesOfCode": 8
+    },
+    {
+      "id": "disabled-states",
+      "status": "native",
+      "notes": "disabled on Button, TextField and Select.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "select-small",
+      "status": "native",
+      "notes": "Select + MenuItem, 8 options.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "select-medium",
+      "status": "native",
+      "notes": "Same, 40 options, with a maxHeight on the menu paper.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "select-large",
+      "status": "native",
+      "notes": "Same, 400 options. Renders all 400 MenuItems; MUI Select has no built-in virtualisation.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "multiselect",
+      "status": "native",
+      "notes": "Autocomplete with multiple. Removable chips come free via renderValue and getItemProps. Notably stronger than React Aria, which has no multiselect component and needs ListBox + TagGroup composed.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "combobox-searchable",
+      "status": "native",
+      "notes": "Autocomplete filters as you type. filterOptions caps the rendered list at 100 for the 400-item fixture, which is a documented prop rather than a workaround.",
+      "customLinesOfCode": 5
+    },
+    {
+      "id": "date-picker",
+      "status": "native",
+      "notes": "DatePicker from the free @mui/x-date-pickers.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "datetime-range-picker",
+      "status": "composed",
+      "notes": "THE BLOCKER, resolved by composition per docs/requirements.md. MUI's range pickers exist only in @mui/x-date-pickers-pro, licence 'SEE LICENSE IN LICENSE' (commercial). Verified empirically: the community package ships ZERO Range* components. Composed from two free DateTimePickers with ampm=false and minute views, minDateTime/maxDateTime wired between them, and the span derived in application code. See EVIDENCE.md for exactly what this loses.",
+      "customLinesOfCode": 31
+    },
+    {
+      "id": "modal",
+      "status": "native",
+      "notes": "Dialog with DialogTitle/Content/Actions. Focus trap and Escape verified by e2e.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "tooltip",
+      "status": "native",
+      "notes": "Tooltip, hover and keyboard-focus triggered by default.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "popover",
+      "status": "native",
+      "notes": "Popover with anchorEl and outside-click dismiss.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "accordion",
+      "status": "native",
+      "notes": "Accordion + AccordionSummary + AccordionDetails, single-expand via controlled expanded state.",
+      "customLinesOfCode": 4
+    },
+    {
+      "id": "cards",
+      "status": "native",
+      "notes": "Card + CardContent exist, unlike React Aria. Matching the host is the work: MUI's Card has its own elevation, radius and padding opinions, so variant=outlined and elevation=0 are needed to reach Delta's flat bordered cards.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "left-nav",
+      "status": "native",
+      "notes": "List + ListItemButton with selected state.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "table-render",
+      "status": "native",
+      "notes": "DataGrid over all 250 rows. Column type formatting via valueFormatter with Intl, driven by the active locale.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "table-sort",
+      "status": "native",
+      "notes": "Built into DataGrid with an initial sortModel. No comparator written, in contrast to React Aria where sorting cost 22 lines.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "table-multiselect",
+      "status": "native",
+      "notes": "checkboxSelection, with header select-all included.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "table-filter",
+      "status": "native",
+      "notes": "showToolbar gives the built-in filter UI. No predicate written.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "table-paginate",
+      "status": "native",
+      "notes": "paginationModel plus pageSizeOptions. Entirely native, where React Aria has no pagination component at all and needed 34 custom lines. The single clearest advantage MUI has in this evaluation.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "table-column-resize-or-reorder",
+      "status": "native",
+      "notes": "resizable: true per column. Verified that GridColDef.resizable and disableColumnResize exist in the community build, while disableColumnReorder appears in its Pro-omit list, so reorder is Pro-only. The brief accepts either.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "table-states",
+      "status": "native",
+      "notes": "DataGrid loading prop with a linear-progress overlay, localeText.noRowsLabel for empty, and Alert for error/success with correct ARIA roles.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "form-states",
+      "status": "native",
+      "notes": "LinearProgress and Alert. No custom banner markup, unlike React Aria which needed role=alert/status by hand.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "locale-switcher",
+      "status": "native",
+      "notes": "ToggleButtonGroup, exclusive.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "rtl",
+      "status": "composed",
+      "notes": "Needs direction on the MUI theme, not just a dir attribute, so the theme is rebuilt per locale with createTheme(base, { direction }). React Aria needed only I18nProvider. Also needs adapterLocale threaded into LocalizationProvider for the pickers.",
+      "customLinesOfCode": 6
+    },
+    {
+      "id": "long-labels",
+      "status": "native",
+      "notes": "Clean at all three viewports: 0px horizontal overflow in German at 390, 1024 and 1440. Notably better than the React Aria run, which overflowed 261px at 390px. Two small CSS rules help the DataGrid header wrap.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "side-by-side",
+      "status": "composed",
+      "notes": "Host and candidate button, table, card and nav list rendered adjacent in section 9.",
+      "customLinesOfCode": 0
+    }
   ],
   "customCss": {
     "lines": 14,
@@ -63,7 +205,8 @@
       "cssVariables: true deliberately NOT enabled. It makes MUI emit its own --mui-* custom properties at :root level, placing MUI's palette in the same global scope as the host and defeating containment.",
       "Two CSS rules reach into library-generated class names (.MuiDataGrid-root, .MuiDataGrid-columnHeaderTitle) to cap grid width and wrap long header labels. Recorded as overridesLibraryInternals: true.",
       "MUI's picker prop types are not compatible with exactOptionalPropertyTypes: true. minDateTime/maxDateTime are typed as Date rather than Date | undefined, so a conditional spread is needed instead of `value ?? undefined`.",
-      "Stack no longer accepts flexWrap/alignItems as direct props in v9; they must move into sx."
+      "Stack no longer accepts flexWrap/alignItems as direct props in v9; they must move into sx.",
+      "None needed for portalled overlays, which is a genuine advantage here. MUI portals its popper to document.body, outside the .undrr-tokens element, and a computed-style check confirms it sees an EMPTY --undrr-color-surface there -- yet it still renders rgb(255,255,255) correctly, because the theme resolved token values at build time and emotion emitted literal colours. The react-aria run had to apply the token scope class to every overlay to avoid transparent popovers. The same build-time inlining that prevents runtime theming is what makes MUI immune here."
     ]
   },
   "leakage": {

@@ -35,6 +35,7 @@ import { parseAbsolute, parseDate } from "@internationalized/date";
 import { DEFAULT_RANGE, FIXED_TIME_ZONE, TODAY_ISO } from "@undrr-eval/fixtures";
 
 import { useDemo } from "../demo-state.js";
+import { POPOVER_CLASS } from "../overlay-class.js";
 
 /** The fixture's fixed "today", as a calendar date. */
 const TODAY = parseDate(TODAY_ISO.slice(0, 10));
@@ -72,7 +73,7 @@ export function SectionDates(): ReactElement {
           <Text slot="description" className="demo-hint">
             Keyboard entry per segment; arrows adjust, type to overwrite.
           </Text>
-          <Popover className="demo-popover">
+          <Popover className={POPOVER_CLASS}>
             <Dialog className="demo-dialog demo-dialog--calendar">
               <Calendar className="demo-calendar">
                 <header className="demo-calendar__header">
@@ -124,7 +125,7 @@ export function SectionDates(): ReactElement {
           <Text slot="description" className="demo-hint">
             Native range with minute granularity, one popover, one focus trap.
           </Text>
-          <Popover className="demo-popover">
+          <Popover className={POPOVER_CLASS}>
             <Dialog className="demo-dialog demo-dialog--calendar">
               <RangeCalendar className="demo-calendar">
                 <header className="demo-calendar__header">

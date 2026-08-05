@@ -40,19 +40,19 @@
     {
       "id": "select-small",
       "status": "native",
-      "notes": "Select + ListBox, 8 options.",
+      "notes": "Select + ListBox, 8 options. Its popover is portalled, so it also needs the token scope class.",
       "customLinesOfCode": 0
     },
     {
       "id": "select-medium",
       "status": "native",
-      "notes": "Same component, 40 options.",
+      "notes": "Same component, 40 options. Its popover is portalled, so it also needs the token scope class.",
       "customLinesOfCode": 0
     },
     {
       "id": "select-large",
       "status": "native",
-      "notes": "Same component, 400 options. Renders all 400 DOM nodes: virtualisation requires wrapping in Virtualizer, which was not used so the comparison stays like-for-like.",
+      "notes": "Same component, 400 options. Renders all 400 DOM nodes: virtualisation requires wrapping in Virtualizer, which was not used so the comparison stays like-for-like. Its popover is portalled, so it also needs the token scope class.",
       "customLinesOfCode": 0
     },
     {
@@ -64,37 +64,37 @@
     {
       "id": "combobox-searchable",
       "status": "native",
-      "notes": "ComboBox filters as you type at all three sizes with no filter function supplied.",
+      "notes": "ComboBox filters as you type at all three sizes with no filter function supplied. Its popover is portalled, so it also needs the token scope class.",
       "customLinesOfCode": 0
     },
     {
       "id": "date-picker",
       "status": "native",
-      "notes": "DatePicker with per-segment keyboard entry and a Calendar popover.",
+      "notes": "DatePicker with per-segment keyboard entry and a Calendar popover. Its popover is portalled, so it also needs the token scope class.",
       "customLinesOfCode": 0
     },
     {
       "id": "datetime-range-picker",
       "status": "native",
-      "notes": "DateRangePicker with granularity=\"minute\" in the free tier. One popover, one focus trap, a single RangeCalendar highlighting the intervening days. This is the requirement that separates candidates: MUI needs two composed pickers because its range components are commercially licensed. Note the hidden form-integration inputs render visibly on this host until the `hidden` attribute is restored -- a Mangrove defect, see EVIDENCE.md.",
+      "notes": "DateRangePicker with granularity=\"minute\" in the free tier. One popover, one focus trap, a single RangeCalendar highlighting the intervening days. This is the requirement that separates candidates: MUI needs two composed pickers because its range components are commercially licensed. Note the hidden form-integration inputs render visibly on this host until the `hidden` attribute is restored -- a Mangrove defect, see EVIDENCE.md. Its popover is portalled, so it also needs the token scope class.",
       "customLinesOfCode": 0
     },
     {
       "id": "modal",
       "status": "native",
-      "notes": "ModalOverlay + Modal + Dialog. Focus trap, Escape dismiss and focus restoration to the trigger all verified by e2e test.",
+      "notes": "ModalOverlay + Modal + Dialog. Focus trap, Escape dismiss and focus restoration to the trigger all verified by e2e test. Requires the token scope class on the portalled element; see theming.escapeHatchesUsed.",
       "customLinesOfCode": 0
     },
     {
       "id": "tooltip",
       "status": "native",
-      "notes": "TooltipTrigger is hover AND keyboard-focus triggered by default.",
+      "notes": "TooltipTrigger is hover AND keyboard-focus triggered by default. Requires the token scope class on the portalled element; see theming.escapeHatchesUsed.",
       "customLinesOfCode": 0
     },
     {
       "id": "popover",
       "status": "native",
-      "notes": "DialogTrigger + Popover, dismiss on outside click, with OverlayArrow.",
+      "notes": "DialogTrigger + Popover, dismiss on outside click, with OverlayArrow. Requires the token scope class on the portalled element; see theming.escapeHatchesUsed.",
       "customLinesOfCode": 0
     },
     {
@@ -203,7 +203,8 @@
     "method": "CSS custom properties from packages/undrr-tokens consumed directly in a scoped stylesheet. React Aria ships no CSS of its own, so there is nothing to override and no specificity contest: components render the class names given to them plus data-* state attributes, which is the documented styling API.",
     "escapeHatchesUsed": [
       "One rule targets library-rendered markup: [data-testid=\"hidden-select-container\"] { overflow: hidden } plus a width cap on library-rendered <select> elements. Needed because React Aria's hidden native selects are hidden with clip/clip-path but remain in layout, so a long option label scrolls the whole page sideways. Targeting a data-testid is fragile and would break silently on upgrade.",
-      "`.demo [hidden] { display: none }` restores the hidden attribute, which the Mangrove host defeats: its `input[type=\"text\"] { display: block }` rule (0,1,1) outranks its own `[hidden] { display: none }` (0,1,0). Not a candidate problem -- it will affect all four Mangrove pairings."
+      "`.demo [hidden] { display: none }` restores the hidden attribute, which the Mangrove host defeats: its `input[type=\"text\"] { display: block }` rule (0,1,1) outranks its own `[hidden] { display: none }` (0,1,0). Not a candidate problem -- it will affect all four Mangrove pairings.",
+      "`.undrr-tokens` is applied to every portalled overlay (Popover, ModalOverlay, Tooltip) via src/overlay-class.ts. React Aria portals overlays to document.body, outside the token-scoped element, so every var(--undrr-*) inside them resolved to nothing: popovers rendered transparent and borderless with the library's inline z-index of 100000. Not a React Aria defect so much as an interaction between portalling and class-scoped tokens, but it is silent -- a failed var() produces no warning."
     ]
   },
   "leakage": {
@@ -238,6 +239,7 @@
     "The 400-option Select renders all 400 DOM nodes. Whether that is acceptable, or whether Virtualizer should be mandatory, is a performance decision not taken here.",
     "Keyboard and screen-reader testing by a human. axe is static analysis and cannot confirm that the range calendar, column resizer or listbox type-ahead are usable with a screen reader.",
     "MANGROVE DEFECT, affects all four Mangrove pairings: `input[type=...] { display: block }` outranks `[hidden] { display: none }`, so any library's hidden helper inputs render visibly. Worked around per-app here; should be fixed in Mangrove.",
-    "The Mangrove host also contributes a `link-in-text-block` serious violation (whole-page count 1, scoped count 0). Host finding, not a candidate one."
+    "The Mangrove host also contributes a `link-in-text-block` serious violation (whole-page count 1, scoped count 0). Host finding, not a candidate one.",
+    "React Aria sets z-index inline on its portal container (100000), which outranks the token z-index scale. The overlay layering tokens are therefore not honoured by this candidate without !important. MUI, whose z-index comes from its theme object, was pinnable to the token scale."
   ]
 }
