@@ -46,40 +46,23 @@ jobs:
       - name: Unit tests
         run: pnpm test
 
+      # Both steps below call the same scripts `pnpm site` uses locally, so what
+      # you browse on localhost:4180 and what gets published are assembled by
+      # one piece of code. The previous inline bash used `build -- --base`,
+      # which pnpm 10 does not forward: every demo built with base "/" and every
+      # published asset would have 404'd. build-apps.mjs now verifies the base
+      # landed in dist/index.html rather than trusting the flag.
       - name: Build demo apps
-        run: |
-          set -euo pipefail
-          shopt -s nullglob
-          apps=(apps/*/)
-          if [ ${#apps[@]} -eq 0 ]; then
-            echo "No apps yet. Publishing the landing page only."
-            exit 0
-          fi
-          for dir in "${apps[@]}"; do
-            name=$(basename "$dir")
-            echo "::group::build $name"
-            pnpm --filter "./apps/$name" build -- --base "/$REPO_NAME/$name/"
-            echo "::endgroup::"
-          done
+        run: pnpm build:apps
+        env:
+          BASE_PREFIX: /${{ env.REPO_NAME }}
 
       - name: Assemble site
         run: |
-          set -euo pipefail
-          shopt -s nullglob
           # Regenerate the landing page so it reflects the evidence.json files
           # present on this commit rather than whatever was last committed.
           pnpm docs:index
-          mkdir -p _site
-          cp -r docs/. _site/
-          for dir in apps/*/; do
-            name=$(basename "$dir")
-            if [ -d "$dir/dist" ]; then
-              mkdir -p "_site/$name"
-              cp -r "$dir/dist/." "_site/$name/"
-            else
-              echo "warning: $name has no dist/, so it will 404 from the landing page"
-            fi
-          done
+          pnpm site:assemble
 
       - uses: actions/upload-pages-artifact@v5
         with:

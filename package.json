@@ -10,7 +10,6 @@
   },
   "packageManager": "pnpm@10.34.5",
   "scripts": {
-    "build": "pnpm -r --filter \"./apps/*\" build",
     "build:packages": "pnpm -r --filter \"./packages/*\" build",
     "dev": "pnpm -r --parallel dev",
     "typecheck": "tsc --build && tsc -p tests/tsconfig.json && tsc -p packages/host-preview/tsconfig.json",
@@ -23,7 +22,12 @@
     "verify": "pnpm typecheck && pnpm test && pnpm docs:index",
     "mangrove2:tokens": "node scripts/fetch-mangrove-2-tokens.mjs",
     "preview": "pnpm --filter @undrr-eval/host-preview dev",
-    "preview:test": "pnpm --filter @undrr-eval/host-preview build && pnpm --filter @undrr-eval/host-preview test:e2e"
+    "preview:test": "pnpm --filter @undrr-eval/host-preview build && pnpm --filter @undrr-eval/host-preview test:e2e",
+    "build:apps": "node scripts/build-apps.mjs",
+    "site:assemble": "node scripts/build-site.mjs",
+    "site:serve": "vite preview --outDir _site --port 4180 --strictPort",
+    "site": "pnpm build:packages && pnpm build:apps && pnpm docs:index && pnpm site:assemble && pnpm site:serve",
+    "build": "pnpm build:packages && pnpm build:apps"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.10.2",

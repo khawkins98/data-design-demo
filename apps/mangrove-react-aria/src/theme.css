@@ -1,0 +1,817 @@
+/**
+ * Candidate theme: React Aria styled to the UNDRR tokens.
+ *
+ * React Aria ships no CSS whatsoever — every rule below is ours, which makes
+ * this file the honest measure of what "unstyled primitives" costs. Nothing
+ * here overrides library internals, because there are no library internals to
+ * override: the components render the class names we give them plus
+ * `data-*` state attributes, which is the documented styling API.
+ *
+ * Every declaration is scoped under `.demo` so nothing can reach the host
+ * canaries. That scoping is the reason the leakage assertion passes, and it was
+ * cheap precisely because the library contributes no global styles.
+ *
+ * All values come from packages/undrr-tokens. Where a token does not exist the
+ * fallback is noted, and those are what `theming.tokensUnreachable` counts.
+ */
+
+.demo {
+  color: var(--undrr-color-text-primary);
+  font-family: var(--undrr-font-family-sans);
+  font-size: var(--undrr-font-size-base);
+  line-height: var(--undrr-line-height-normal);
+  /* Without this the 250-row table's intrinsic width propagates up through the
+     grid and scrolls the whole document at 390px, instead of scrolling inside
+     its own container. Found by the long-labels test at mobile and tablet. */
+  min-width: 0;
+}
+
+.demo-section,
+.demo-field {
+  min-width: 0;
+}
+
+.demo__header {
+  margin-bottom: var(--undrr-space-6);
+}
+
+.demo__title {
+  margin: 0 0 var(--undrr-space-2);
+  font-family: var(--undrr-font-family-display);
+  font-size: var(--undrr-font-size-2xl);
+  line-height: var(--undrr-line-height-tight);
+}
+
+.demo__lede,
+.demo-prose {
+  max-width: 68ch;
+  color: var(--undrr-color-text-secondary);
+}
+
+.demo__footnote {
+  margin-top: var(--undrr-space-8);
+  color: var(--undrr-color-text-secondary);
+  font-size: var(--undrr-font-size-sm);
+}
+
+.demo-section {
+  padding-top: var(--undrr-space-8);
+  margin-top: var(--undrr-space-8);
+  border-top: 1px solid var(--undrr-color-border);
+}
+
+.demo-section__title {
+  margin: 0 0 var(--undrr-space-4);
+  font-family: var(--undrr-font-family-display);
+  font-size: var(--undrr-font-size-xl);
+  line-height: var(--undrr-line-height-snug);
+}
+
+.demo-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--undrr-space-3);
+  align-items: center;
+  margin-bottom: var(--undrr-space-4);
+}
+
+.demo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: var(--undrr-space-4);
+  margin-bottom: var(--undrr-space-4);
+}
+
+/* ---------------------------------------------------------------- buttons */
+
+.demo-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--undrr-space-2);
+  padding: var(--undrr-space-2) var(--undrr-space-4);
+  border: 1px solid var(--undrr-color-border-strong);
+  border-radius: var(--undrr-radius-md);
+  background: var(--undrr-color-surface);
+  color: var(--undrr-color-text-primary);
+  font: inherit;
+  font-weight: var(--undrr-font-weight-semibold);
+  cursor: pointer;
+}
+
+.demo-button[data-hovered] {
+  background: var(--undrr-color-surface-sunken);
+}
+
+/* React Aria sets data-focus-visible only for keyboard focus, so the ring
+   never appears on a mouse click. That behaviour is the library's, not ours. */
+.demo-button[data-focus-visible],
+.demo-input[data-focus-visible],
+.demo-listbox__item[data-focus-visible],
+.demo-nav__item[data-focus-visible],
+.demo-table__column[data-focus-visible],
+.demo-table__row[data-focus-visible],
+.demo-datesegment[data-focus-visible],
+.demo-accordion__trigger[data-focus-visible] {
+  outline: 2px solid var(--undrr-color-focus);
+  outline-offset: 2px;
+}
+
+.demo-button[data-pressed] {
+  background: var(--undrr-color-surface-sunken);
+}
+
+.demo-button[data-disabled] {
+  color: var(--undrr-color-text-disabled);
+  border-color: var(--undrr-color-border);
+  cursor: not-allowed;
+}
+
+.demo-button[data-active="true"] {
+  background: var(--undrr-color-accent-subtle);
+  border-color: var(--undrr-color-accent);
+}
+
+.demo-button--primary {
+  background: var(--undrr-color-accent);
+  border-color: var(--undrr-color-accent);
+  color: var(--undrr-color-on-accent);
+}
+
+.demo-button--primary[data-hovered] {
+  background: var(--undrr-color-accent-hover);
+}
+
+.demo-button--primary[data-pressed] {
+  background: var(--undrr-color-accent-active);
+}
+
+.demo-button--danger {
+  background: var(--undrr-color-error);
+  border-color: var(--undrr-color-error);
+  color: var(--undrr-color-text-inverse);
+}
+
+.demo-button--ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--undrr-color-accent);
+}
+
+.demo-link {
+  color: var(--undrr-color-accent);
+  /* Underlined, unlike the Mangrove host's own links. See EVIDENCE.md. */
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* ----------------------------------------------------------------- fields */
+
+.demo-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--undrr-space-1);
+  margin-bottom: var(--undrr-space-3);
+}
+
+.demo-field--inline {
+  margin-bottom: 0;
+}
+
+.demo-label {
+  font-size: var(--undrr-font-size-sm);
+  font-weight: var(--undrr-font-weight-medium);
+}
+
+.demo-input {
+  padding: var(--undrr-space-2) var(--undrr-space-3);
+  border: 1px solid var(--undrr-color-border-strong);
+  border-radius: var(--undrr-radius-md);
+  background: var(--undrr-color-surface);
+  color: var(--undrr-color-text-primary);
+  font: inherit;
+  /* A native <select> sizes to its content box by default and blew past the
+     viewport at 390px. */
+  max-width: 100%;
+  min-width: 0;
+}
+
+.demo-input[data-invalid],
+.demo-field [data-invalid] .demo-input {
+  border-color: var(--undrr-color-error);
+}
+
+.demo-input[data-disabled] {
+  background: var(--undrr-color-surface-sunken);
+  color: var(--undrr-color-text-disabled);
+}
+
+.demo-hint {
+  color: var(--undrr-color-text-secondary);
+  font-size: var(--undrr-font-size-xs);
+}
+
+.demo-error {
+  color: var(--undrr-color-error);
+  font-size: var(--undrr-font-size-xs);
+}
+
+.demo-form {
+  padding: var(--undrr-space-4);
+  border: 1px solid var(--undrr-color-border);
+  border-radius: var(--undrr-radius-lg);
+  background: var(--undrr-color-surface);
+}
+
+/**
+ * Restores the `hidden` attribute inside the candidate subtree.
+ *
+ * This is a HOST defect, not a candidate one, and it will affect all four
+ * Mangrove pairings. Mangrove's stylesheet contains both:
+ *
+ *   [hidden], template                  { display: none }   specificity (0,1,0)
+ *   input[type="text"], input[type="date"], ... { display: block }  (0,1,1)
+ *
+ * The second beats the first, so Mangrove's own `[hidden]` reset loses to its
+ * own input rule. Any component library that hides a helper input with the
+ * `hidden` attribute — React Aria's DatePicker and DateRangePicker form-
+ * integration inputs, and the equivalents in MUI, Carbon and Mantine — has
+ * them render as visible text boxes.
+ *
+ * `.demo [hidden]` is (0,2,0), which wins without needing !important.
+ * Reported in EVIDENCE.md as a Mangrove finding.
+ */
+.demo [hidden] {
+  display: none;
+}
+
+/* ------------------------------------------------------- select, combobox */
+
+/**
+ * The one place this theme reaches into library-rendered markup.
+ * Recorded as `customCss.overridesLibraryInternals: true` in evidence.json.
+ *
+ * React Aria's Select renders a hidden native <select> for form integration and
+ * mobile autofill, inside a container hidden with `clip` and `clip-path`. Those
+ * hide it visually but do not remove it from layout, so its intrinsic width —
+ * driven by the longest option label, 495px for the 40-item fixture list —
+ * expands the document scroll area and scrolls the whole page sideways at
+ * 390px. `overflow: hidden` contains it with no visual change.
+ *
+ * Targeting a `data-testid` is fragile and would break silently on upgrade.
+ * Reported as a React Aria issue rather than something a consumer should have
+ * to know. See EVIDENCE.md.
+ */
+.demo [data-testid="hidden-select-container"] {
+  overflow: hidden;
+}
+
+/* The container above is not the only wrapper React Aria uses, so cap the
+   hidden selects themselves too. `.demo-input` is the one real <select> in this
+   app (the table's page-size control); every other select on the page is
+   library-rendered and visually hidden, so capping its width is invisible. */
+.demo select:not(.demo-input) {
+  max-width: 100%;
+}
+
+.demo-select__trigger,
+.demo-combobox__button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--undrr-space-2);
+  padding: var(--undrr-space-2) var(--undrr-space-3);
+  border: 1px solid var(--undrr-color-border-strong);
+  border-radius: var(--undrr-radius-md);
+  background: var(--undrr-color-surface);
+  color: var(--undrr-color-text-primary);
+  font: inherit;
+  cursor: pointer;
+}
+
+.demo-combobox__control {
+  display: flex;
+  gap: var(--undrr-space-1);
+}
+
+.demo-combobox__control .demo-input {
+  flex: 1;
+  min-width: 0;
+}
+
+.demo-popover {
+  max-height: 18rem;
+  overflow: auto;
+  border: 1px solid var(--undrr-color-border-strong);
+  border-radius: var(--undrr-radius-md);
+  background: var(--undrr-color-surface);
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.15);
+  /* Token-driven so overlays sit above host chrome predictably. */
+  z-index: var(--undrr-z-popover);
+}
+
+.demo-popover--padded {
+  padding: var(--undrr-space-4);
+  max-width: 22rem;
+}
+
+.demo-listbox {
+  padding: var(--undrr-space-1);
+  margin: 0;
+  list-style: none;
+}
+
+.demo-listbox--inline {
+  max-height: 12rem;
+  overflow: auto;
+  border: 1px solid var(--undrr-color-border);
+  border-radius: var(--undrr-radius-md);
+}
+
+.demo-listbox__item,
+.demo-nav__item {
+  padding: var(--undrr-space-2) var(--undrr-space-3);
+  border-radius: var(--undrr-radius-sm);
+  cursor: pointer;
+}
+
+.demo-listbox__item[data-focused],
+.demo-nav__item[data-focused] {
+  background: var(--undrr-color-accent-subtle);
+}
+
+.demo-listbox__item[data-selected],
+.demo-nav__item[data-selected] {
+  background: var(--undrr-color-accent);
+  color: var(--undrr-color-on-accent);
+}
+
+.demo-taggroup {
+  margin-top: var(--undrr-space-2);
+}
+
+.demo-taglist {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--undrr-space-2);
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.demo-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--undrr-space-1);
+  padding: var(--undrr-space-1) var(--undrr-space-2);
+  border-radius: var(--undrr-radius-pill);
+  background: var(--undrr-color-accent-subtle);
+  font-size: var(--undrr-font-size-sm);
+}
+
+.demo-tag__remove {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+}
+
+/* ------------------------------------------------------------------ dates */
+
+.demo-dateinput {
+  display: flex;
+  align-items: center;
+  gap: var(--undrr-space-2);
+  padding: var(--undrr-space-1) var(--undrr-space-2);
+  border: 1px solid var(--undrr-color-border-strong);
+  border-radius: var(--undrr-radius-md);
+  background: var(--undrr-color-surface);
+  /* A date-time range is two full timestamps side by side, which cannot fit on
+     a 390px viewport. The segments themselves must not wrap — splitting a
+     timestamp mid-value is worse than wrapping the group — so the group wraps
+     instead and the two endpoints stack. Recorded in EVIDENCE.md as a real
+     constraint of the native range picker at mobile widths. */
+  flex-wrap: wrap;
+  max-width: 100%;
+}
+
+.demo-dateinput__segments {
+  display: flex;
+  white-space: nowrap;
+}
+
+.demo-datesegment {
+  padding: 0 1px;
+  border-radius: var(--undrr-radius-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+.demo-datesegment[data-placeholder] {
+  color: var(--undrr-color-text-disabled);
+}
+
+.demo-dateinput__button {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+}
+
+.demo-dateinput__dash {
+  color: var(--undrr-color-text-secondary);
+}
+
+.demo-calendar {
+  padding: var(--undrr-space-3);
+}
+
+.demo-calendar__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--undrr-space-2);
+  margin-bottom: var(--undrr-space-2);
+}
+
+.demo-calendar__heading {
+  margin: 0;
+  font-size: var(--undrr-font-size-base);
+}
+
+.demo-calendar__grid {
+  border-collapse: collapse;
+}
+
+.demo-calendar__cell {
+  padding: var(--undrr-space-2);
+  border-radius: var(--undrr-radius-sm);
+  text-align: center;
+  cursor: pointer;
+}
+
+.demo-calendar__cell[data-outside-month] {
+  color: var(--undrr-color-text-disabled);
+}
+
+.demo-calendar__cell[data-selected] {
+  background: var(--undrr-color-accent);
+  color: var(--undrr-color-on-accent);
+}
+
+/* The intervening days of a range: available natively, no custom logic. */
+.demo-calendar__cell[data-selection-start],
+.demo-calendar__cell[data-selection-end] {
+  background: var(--undrr-color-accent-active);
+}
+
+.demo-calendar__cell[data-focus-visible] {
+  outline: 2px solid var(--undrr-color-focus);
+  outline-offset: -2px;
+}
+
+/* --------------------------------------------------------------- overlays */
+
+.demo-modal__overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgb(0 0 0 / 0.4);
+  z-index: var(--undrr-z-modal);
+}
+
+.demo-modal {
+  max-width: 32rem;
+  width: calc(100% - 2rem);
+  border-radius: var(--undrr-radius-lg);
+  background: var(--undrr-color-surface);
+}
+
+.demo-dialog {
+  padding: var(--undrr-space-5);
+  outline: none;
+}
+
+.demo-dialog--calendar {
+  padding: 0;
+}
+
+.demo-dialog__title {
+  margin: 0 0 var(--undrr-space-3);
+  font-family: var(--undrr-font-family-display);
+  font-size: var(--undrr-font-size-lg);
+}
+
+.demo-tooltip {
+  max-width: 20rem;
+  padding: var(--undrr-space-2) var(--undrr-space-3);
+  border-radius: var(--undrr-radius-md);
+  background: var(--undrr-color-text-primary);
+  color: var(--undrr-color-text-inverse);
+  font-size: var(--undrr-font-size-sm);
+  z-index: var(--undrr-z-tooltip);
+}
+
+.demo-tooltip__arrow svg,
+.demo-popover__arrow svg {
+  fill: var(--undrr-color-text-primary);
+}
+
+.demo-popover__arrow svg {
+  fill: var(--undrr-color-surface);
+}
+
+.demo-accordion {
+  border: 1px solid var(--undrr-color-border);
+  border-radius: var(--undrr-radius-md);
+  overflow: hidden;
+}
+
+.demo-accordion__item + .demo-accordion__item {
+  border-top: 1px solid var(--undrr-color-border);
+}
+
+.demo-accordion__trigger {
+  width: 100%;
+  padding: var(--undrr-space-3) var(--undrr-space-4);
+  border: 0;
+  background: var(--undrr-color-surface);
+  color: inherit;
+  font: inherit;
+  font-weight: var(--undrr-font-weight-medium);
+  text-align: start;
+  cursor: pointer;
+}
+
+.demo-accordion__panel {
+  padding: 0 var(--undrr-space-4) var(--undrr-space-4);
+}
+
+/* ---------------------------------------------------------------- chrome */
+
+.demo-chrome {
+  display: grid;
+  grid-template-columns: minmax(12rem, 16rem) minmax(0, 1fr);
+  gap: var(--undrr-space-5);
+  align-items: start;
+}
+
+@media (max-width: 48rem) {
+  .demo-chrome,
+  .demo-sbs {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.demo-nav {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  border: 1px solid var(--undrr-color-border);
+  border-radius: var(--undrr-radius-md);
+}
+
+.demo-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: var(--undrr-space-4);
+}
+
+.demo-card {
+  padding: var(--undrr-space-4);
+  border: 1px solid var(--undrr-color-border);
+  border-radius: var(--undrr-radius-md);
+  background: var(--undrr-color-surface);
+}
+
+.demo-card__title {
+  margin: 0 0 var(--undrr-space-2);
+  font-family: var(--undrr-font-family-display);
+}
+
+.demo-card__description {
+  margin: 0;
+  color: var(--undrr-color-text-secondary);
+  font-size: var(--undrr-font-size-sm);
+}
+
+/* ----------------------------------------------------------------- table */
+
+.demo-tabletools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: var(--undrr-space-4);
+  margin-bottom: var(--undrr-space-3);
+  max-width: 100%;
+}
+
+/* A native <select> takes its intrinsic content width, which here resolved to
+   488px and pushed past a 390px viewport. */
+.demo-tabletools select.demo-input {
+  width: 6rem;
+}
+
+.demo-tabletools__status,
+.demo-pagination__status {
+  margin: 0;
+  color: var(--undrr-color-text-secondary);
+  font-size: var(--undrr-font-size-sm);
+}
+
+.demo-tablewrap {
+  overflow: auto;
+  border: 1px solid var(--undrr-color-border);
+  border-radius: var(--undrr-radius-md);
+  /* ResizableTableContainer sizes to the summed column widths rather than to
+     its parent, so without an explicit cap the table scrolls the document
+     instead of scrolling inside this box. */
+  max-width: 100%;
+  width: 100%;
+}
+
+.demo-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--undrr-font-size-sm);
+}
+
+.demo-table__column {
+  padding: var(--undrr-space-2) var(--undrr-space-3);
+  border-bottom: 1px solid var(--undrr-color-border-strong);
+  background: var(--undrr-color-surface-sunken);
+  font-weight: var(--undrr-font-weight-semibold);
+  text-align: start;
+  white-space: nowrap;
+}
+
+.demo-table__columnInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--undrr-space-2);
+}
+
+.demo-table__resizer {
+  width: 8px;
+  cursor: col-resize;
+  background: var(--undrr-color-border);
+  border-radius: var(--undrr-radius-pill);
+}
+
+.demo-table__resizer[data-resizing] {
+  background: var(--undrr-color-accent);
+}
+
+.demo-table__row[data-selected] {
+  background: var(--undrr-color-accent-subtle);
+}
+
+.demo-table__row[data-hovered] {
+  background: var(--undrr-color-surface-sunken);
+}
+
+.demo-table__cell {
+  padding: var(--undrr-space-2) var(--undrr-space-3);
+  border-bottom: 1px solid var(--undrr-color-border);
+}
+
+.demo-table__cell--num {
+  font-variant-numeric: tabular-nums;
+  text-align: end;
+}
+
+.demo-badge {
+  display: inline-block;
+  padding: 0 var(--undrr-space-2);
+  border-radius: var(--undrr-radius-pill);
+  font-size: var(--undrr-font-size-xs);
+}
+
+.demo-badge--verified {
+  background: var(--undrr-color-success-subtle);
+  color: var(--undrr-color-success);
+}
+
+.demo-badge--pending {
+  background: var(--undrr-color-warning-subtle);
+  color: var(--undrr-color-warning);
+}
+
+.demo-badge--disputed {
+  background: var(--undrr-color-error-subtle);
+  color: var(--undrr-color-error);
+}
+
+.demo-badge--withdrawn {
+  background: var(--undrr-color-surface-sunken);
+  color: var(--undrr-color-text-secondary);
+}
+
+.demo-pagination {
+  display: flex;
+  align-items: center;
+  gap: var(--undrr-space-3);
+  margin-top: var(--undrr-space-3);
+}
+
+/* ---------------------------------------------------------------- states */
+
+.demo-statebox {
+  min-height: 8rem;
+  padding: var(--undrr-space-4);
+  margin-bottom: var(--undrr-space-4);
+  border: 1px solid var(--undrr-color-border);
+  border-radius: var(--undrr-radius-md);
+}
+
+.demo-status {
+  padding: var(--undrr-space-2) var(--undrr-space-3);
+  border-radius: var(--undrr-radius-md);
+  font-size: var(--undrr-font-size-sm);
+}
+
+.demo-status--error {
+  background: var(--undrr-color-error-subtle);
+  color: var(--undrr-color-error);
+}
+
+.demo-status--success {
+  background: var(--undrr-color-success-subtle);
+  color: var(--undrr-color-success);
+}
+
+.demo-empty {
+  display: block;
+  padding: var(--undrr-space-4);
+  color: var(--undrr-color-text-secondary);
+  text-align: center;
+}
+
+.demo-progress__track {
+  display: block;
+  height: 6px;
+  margin-top: var(--undrr-space-2);
+  border-radius: var(--undrr-radius-pill);
+  background: var(--undrr-color-surface-sunken);
+  overflow: hidden;
+}
+
+.demo-progress__fill {
+  display: block;
+  width: 40%;
+  height: 100%;
+  border-radius: var(--undrr-radius-pill);
+  background: var(--undrr-color-accent);
+}
+
+/* ----------------------------------------------------------- side by side */
+
+.demo-sbs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--undrr-space-5);
+}
+
+.demo-sbs__col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--undrr-space-3);
+  min-width: 0;
+}
+
+.demo-sbs__heading {
+  margin: 0;
+  font-size: var(--undrr-font-size-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--undrr-color-text-secondary);
+}
+
+.demo-sbs__table {
+  width: 100%;
+}
+
+.demo-sbs__nav {
+  padding-inline-start: var(--undrr-space-5);
+  margin: 0;
+}
+
+.demo-locale {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--undrr-space-3);
+}
+
+.demo-locale__option {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--undrr-space-1);
+  cursor: pointer;
+}
+
+.demo-locale__option[data-selected] {
+  font-weight: var(--undrr-font-weight-semibold);
+}
