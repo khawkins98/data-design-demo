@@ -40,12 +40,14 @@ Taken so far: 5180/5181 (`host-preview`), 5190/5191 (`mangrove-react-aria`),
 ## Seeing your demo alongside the others
 
 ```sh
-pnpm site        # http://localhost:4180
+pnpm site
 ```
 
-Builds everything and serves the assembled comparison site, which is the only
-place you can click between demos. `pnpm dev` gives each app its own port with
-nothing linking them.
+Builds everything and serves the assembled comparison site — the only place you
+can click between demos. Vite prints the URL.
+
+While iterating on your own demo, `pnpm --filter ./apps/<host>-<candidate> dev`
+gives you hot reload on your fixed port.
 
 `pnpm-workspace.yaml` globs `apps/*`, so a new app joins the workspace with no
 shared-file edit. All eight pairings are already pre-registered in

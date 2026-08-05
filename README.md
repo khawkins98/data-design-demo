@@ -70,81 +70,91 @@ pnpm install
 
 ## Run
 
-### Browsing every demo from one URL
-
-This is almost certainly what you want. It builds everything, assembles the
-comparison site exactly as GitHub Pages will serve it, and serves it locally:
+**Almost always, you want one command:**
 
 ```sh
-pnpm site        # http://localhost:4180
+pnpm site
 ```
 
-The landing page lists all eight pairings; built ones are clickable, the rest
-show as pending. This is the only way to click *between* demos — `pnpm dev`
-starts each app on its own isolated port with nothing linking them.
+It builds the shared packages, builds every demo with the right subpath, assembles
+the comparison site exactly as GitHub Pages serves it, and serves it locally. Vite
+prints the URL — normally `http://localhost:4180`, or the next free port if that
+one is busy.
 
-`pnpm site` and the Pages workflow call the same two scripts
-(`scripts/build-apps.mjs`, `scripts/build-site.mjs`), so what you browse locally
-and what gets published cannot drift.
+The landing page lists all eight pairings with their headline metrics. Built ones
+are clickable; the rest show as pending. **This is the only way to click between
+demos.**
 
-### Working on a single demo
+`pnpm site` and the Pages workflow run the same scripts, so what you browse
+locally and what gets published cannot drift.
 
-```sh
-pnpm --filter ./apps/mangrove-react-aria dev    # hot reload, one app
-pnpm preview                                    # the scaffold preview, no candidate library
-pnpm dev                                        # every app at once, one port each
-```
+### Everything else
 
-Ports are fixed per app so Playwright configs stay in step:
+Only four commands matter day to day:
+
+| Command | When |
+| --- | --- |
+| `pnpm site` | Look at the demos. The default. |
+| `pnpm verify` | Before committing: typecheck + unit tests. |
+| `pnpm test` | Unit tests alone. |
+| `pnpm typecheck` | Types alone. |
+
+Occasionally useful:
+
+| Command | When |
+| --- | --- |
+| `pnpm --filter ./apps/delta-mui dev` | Hot reload while editing **one** demo. |
+| `pnpm scaffold` | The scaffold control app: both host shells, no candidate library. Useful when debugging the harness rather than a demo. |
+| `pnpm scaffold:test` | Run the harness against that control. |
+| `pnpm test:e2e` | Playwright across all demos. Slow. |
+
+The rest (`build:packages`, `build:apps`, `site:assemble`, `site:serve`) are the
+individual steps `pnpm site` chains together. CI calls them separately; you
+normally should not need to.
+
+`fixtures:generate`, `tokens:css` and `mangrove2:tokens` regenerate committed
+files and should almost never be run — see *Regenerating fixed inputs* below.
+
+### Ports
+
+Each app claims a fixed pair so Playwright configs stay in step. Only the
+assembled site falls back to another port if its preferred one is taken.
 
 | Target | Dev | Preview |
 | --- | --- | --- |
-| Assembled site (`pnpm site`) | — | 4180 |
-| `packages/host-preview` | 5180 | 5181 |
+| Assembled site (`pnpm site`) | — | 4180, or next free |
+| `packages/host-preview` (`pnpm scaffold`) | 5180 | 5181 |
 | `apps/mangrove-react-aria` | 5190 | 5191 |
 | `apps/delta-mui` | 5192 | 5193 |
 
-Each further pairing takes the next free pair. Claim them in `vite.config.ts`
-with `strictPort: true` so a collision fails loudly instead of silently moving.
+### The `candidate` query parameter
 
-## Looking at the scaffold before any demo exists
+Every demo, and the scaffold control, honours `?candidate=off`: it renders the
+host shell with an **empty** candidate subtree.
 
-`packages/host-preview` is a small app that renders both host shells over the
-real fixtures. It is **not** one of the eight demos: its "candidate" subtree is
-plain HTML with no component library, which makes it the control. Anything that
-fails there is a scaffold bug, not a candidate's.
+That is not a debugging convenience, it is how the leakage assertion works. The
+harness loads the page twice, once each way, and diffs the computed styles of the
+host's canary elements. If a candidate library reached outside its own subtree,
+the diff is non-empty.
 
-```sh
-pnpm preview      # http://localhost:5180
-```
-
-Switch host, candidate state and locale from the toolbar, or by URL:
-
-| URL | Shows |
+| URL | Renders |
 | --- | --- |
-| `/?host=mangrove` | Mangrove host, real design system CSS |
-| `/?host=delta` | Delta host, Tailwind 4 with Preflight |
-| `/?host=delta&candidate=off` | The leakage baseline: host with an empty candidate subtree |
+| `?candidate=on` (or omitted) | Host shell plus the candidate library |
+| `?candidate=off` | Host shell alone — the leakage baseline |
 
-Then run the harness against it — three viewports, both hosts, leakage
-assertion, axe and screenshots:
-
-```sh
-pnpm exec playwright install chromium   # once
-pnpm preview:test
-```
-
-This is what proves the harness works before eight agents depend on it.
+`pnpm scaffold` also takes `?host=delta` or `?host=mangrove` to switch host shell,
+since it is the one app that can render either.
 
 ## Build
 
 ```sh
-pnpm build             # shared packages, then every app under apps/
-pnpm build:packages    # shared packages only; host-delta compiles its Tailwind CSS
-pnpm build:apps        # apps only, each with the correct base path
-pnpm docs:index        # regenerate the comparison landing page
-pnpm site:assemble     # collect docs/ + apps/*/dist into _site/
+pnpm build:packages    # shared packages; host-delta compiles its Tailwind CSS
+pnpm build:apps        # every app, each with the correct base path
+pnpm site:assemble     # regenerate the landing page, then collect everything into _site/
 ```
+
+`pnpm site` chains all three and then serves the result, which is usually what
+you want instead.
 
 `build:packages` runs before `build:apps` because apps import
 `@undrr-eval/host-delta/host.css`, which is a build output.
@@ -162,10 +172,10 @@ BASE_PREFIX=/data-design-demo pnpm build:apps
 ## Test
 
 ```sh
+pnpm verify            # typecheck + unit tests. Run this before committing.
 pnpm test              # unit tests (Vitest)
-pnpm test:e2e          # browser tests and screenshots (Playwright)
+pnpm test:e2e          # browser tests and screenshots (Playwright), all demos
 pnpm typecheck         # TypeScript strict mode across all projects
-pnpm verify            # typecheck + unit tests + landing page
 ```
 
 Playwright needs its browsers once:

@@ -16,6 +16,7 @@
  * Assumes the apps are already built. `pnpm site` handles that ordering.
  */
 
+import { execFileSync } from "node:child_process";
 import { cpSync, existsSync, mkdirSync, readdirSync, rmSync, statSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -36,6 +37,12 @@ function appDirs() {
     })
     .sort();
 }
+
+// Regenerate the landing page first, so it always reflects the evidence.json
+// files present on this commit. This used to be a separate `docs:index` step
+// that both `pnpm site` and CI had to remember to call; folding it in here means
+// the site can never be assembled around a stale index.
+execFileSync("node", [join(HERE, "build-docs-index.mjs")], { cwd: ROOT, stdio: "inherit" });
 
 rmSync(SITE, { recursive: true, force: true });
 mkdirSync(SITE, { recursive: true });
