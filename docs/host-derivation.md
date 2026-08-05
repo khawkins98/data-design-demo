@@ -52,14 +52,14 @@ Apache-2.0. Pinned to the published npm package `@undrr/undrr-mangrove@1.8.1`.
 
 ### Findings worth carrying into the evaluation
 
-1. **Mangrove declares no CSS custom properties.** All 2,131 `mg-` classes in
-   the compiled stylesheet are themed at Sass compile time through `$mg-*`
-   variables; a grep for `--x:` declarations in `css/style.css` returns zero.
-   A candidate library therefore *cannot* be themed to match Mangrove by
-   pointing its own custom properties at Mangrove's. Reaching Mangrove's values
-   requires either recompiling the SCSS or hard-coding hex values. Brief 1 runs
-   against this host should expect `theming.tokensUnreachable` to be non-zero
-   and should say which route they took.
+1. **Mangrove 1.8.1 declares no CSS custom properties — but 2.0 will.** All
+   2,131 `mg-` classes in the compiled 1.8.1 stylesheet are themed at Sass
+   compile time through `$mg-*` variables; a grep for `--x:` declarations in
+   `css/style.css` returns zero. Against 1.8.1, a candidate cannot be themed to
+   match Mangrove by pointing its own custom properties at Mangrove's.
+
+   Mangrove 2.0 changes this. See **Mangrove 2.0** below; the constraint is
+   temporary, but three parts of it are not.
 
 2. **The published package's `main` field is broken.** `package.json` declares
    `main: dist/index.js`, but the tarball contains no `dist/` directory. A bare
@@ -71,6 +71,66 @@ Apache-2.0. Pinned to the published npm package `@undrr/undrr-mangrove@1.8.1`.
    `Table` are the entirety of its data presentation; there are no chart, axis,
    legend or plot primitives. Given that this evaluation is about *data* design
    systems, that gap is arguably the finding rather than a footnote.
+
+4. **Mangrove inline links fail WCAG 1.4.1.** Measured with axe against the
+   scaffold preview, which loads no component library: the Delta host reports
+   zero violations, the Mangrove host reports one serious
+   `link-in-text-block`. `.mg-link` renders blue with no underline, so an inline
+   link in a paragraph is distinguishable from surrounding text by colour alone.
+   Worth fixing in Mangrove; recorded in `docs/requirements.md` as a host
+   baseline so demos subtract it rather than being blamed for it.
+
+### Mangrove 2.0
+
+Unlanded at the time of writing. Branch `css-custom-properties-pilot`,
+38 commits ahead of `main`, 82 files changed, head commit `592ca0fa`
+(2026-06-26). Read from `docs/RELEASE-2.0.md` and
+`stories/assets/scss/_variables.scss` on that branch.
+
+2.0 replaces SCSS variable theming with CSS custom properties on `:root`, and
+replaces the four sub-brand `_variables-*.scss` files with `_theme-*.scss` files
+applied through `.mg-theme-X { }` selector blocks. For CDN and prebuilt-CSS
+consumers it is a drop-in replacement; for anyone importing the SCSS it is
+breaking.
+
+The 155 tokens are transcribed into
+`packages/host-mangrove/src/mangrove-2-preview.css` by
+`pnpm mangrove2:tokens`, so candidate demos can be themed against the real
+forthcoming API rather than a guess. `host-mangrove` still *loads* 1.8.1: the
+preview file is tokens only, and is deleted when 2.0 publishes.
+
+Three things about 2.0 matter to this evaluation, and two of them survive the
+upgrade:
+
+1. **Colours are space-separated RGB channels, not colour values.**
+   `--mg-color-blue-900: 0 79 145`, consumed as
+   `rgb(var(--mg-color-blue-900))` or `rgb(var(--mg-color-blue-900) / 0.1)`.
+   This is a deliberate choice that buys alpha compositing, but it means a
+   candidate whose theming API accepts only a colour *string* cannot be pointed
+   at a Mangrove token directly — the assignment produces an invalid value and
+   fails silently. Expect this to be a real, measurable integration cost, and
+   expect it to differ sharply between candidates.
+
+2. **Ten colour tokens are not in channel format.** `--mg-color-green: #008484`,
+   `--mg-color-yellow-light: lightyellow`, `--mg-color-ebony-clay: #3d4242` and
+   seven others are hex or named colours, so `rgb(var(--x))` is invalid for
+   exactly those. Of 102 colour tokens: 46 channel triplets, 32 `var()` aliases,
+   10 raw colour values. A consumer applying the documented pattern uniformly
+   will hit silent failures on the last group. **This looks like an
+   inconsistency in the pilot branch rather than an intentional split, and is
+   worth raising on the PR before it lands.**
+
+3. **Typography and breakpoints stay SCSS-only.** `RELEASE-2.0.md` is explicit
+   that `$mg-font-size-*`, `$mg-font-family*`, `$mg-breakpoint-*` and
+   `$mg-html-font-size` remain build-time variables with no custom property
+   equivalent, because they are needed for `@media` queries and interpolation.
+   One token, `--mg-font-size-button`, is declared as a custom property but its
+   value is still an SCSS expression; the generator comments it out rather than
+   emitting invalid CSS.
+
+   So even after 2.0, a candidate cannot reach Mangrove's type scale or font
+   stacks at runtime. `theming.tokensUnreachable` stays non-zero on this host
+   for typography, whichever version is loaded.
 
 ---
 

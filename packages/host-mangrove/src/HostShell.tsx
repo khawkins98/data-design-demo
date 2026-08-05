@@ -9,7 +9,7 @@
  * Import only. Brief 1 forbids modifying this package.
  */
 
-import type { ReactNode } from "react";
+import type { ReactElement, ReactNode } from "react";
 
 import { CANARY_IDS } from "@undrr-eval/test-harness/canaries";
 
@@ -44,7 +44,7 @@ const TABLE_ROWS = [
  * harness's handles; the structure is identical to the Delta host so the two
  * are comparable.
  */
-function Canaries(): JSX.Element {
+function Canaries(): ReactElement {
   return (
     <section className="mg-host-canaries" aria-labelledby="canary-heading">
       <h2 id="canary-heading" data-canary="heading-2" className="mg-heading-2">
@@ -128,7 +128,7 @@ function Canaries(): JSX.Element {
   );
 }
 
-export function HostShell({ title, children, dir = "ltr" }: HostShellProps): JSX.Element {
+export function HostShell({ title, children, dir = "ltr" }: HostShellProps): ReactElement {
   return (
     <div className="mg-host" dir={dir}>
       <header className="mg-host__header">

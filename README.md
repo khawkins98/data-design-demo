@@ -49,6 +49,18 @@ scripts/                 generators for fixtures, tokens CSS and the landing pag
   brief but reached end of life in April 2026, and the Mangrove package requires
   `>=22`.
 - **pnpm 10.**
+- **React 19.** The brief specified React 18, but Mantine 9 declares
+  `peerDependencies.react: ^19.2.0` and will not install on 18 at all, which
+  would kill two of the eight pairings outright. Both Delta and Mangrove develop
+  against React 19, and all four candidates support it.
+
+## Reading order
+
+| Document | What it settles |
+| --- | --- |
+| `docs/requirements.md` | Canonical requirement IDs, how to assign each `status`, the date-range fallback, known host baseline axe violations |
+| `docs/host-derivation.md` | What was taken from Delta and Mangrove, what was simplified, and the findings that came out of doing so |
+| `apps/README.md` | What a Brief 1 run owns and must not touch |
 
 ## Install
 
@@ -59,9 +71,39 @@ pnpm install
 ## Run
 
 ```sh
+pnpm preview                              # the scaffold preview (see below)
 pnpm dev                                  # every app in parallel
 pnpm --filter ./apps/delta-mui dev        # one app
 ```
+
+## Looking at the scaffold before any demo exists
+
+`packages/host-preview` is a small app that renders both host shells over the
+real fixtures. It is **not** one of the eight demos: its "candidate" subtree is
+plain HTML with no component library, which makes it the control. Anything that
+fails there is a scaffold bug, not a candidate's.
+
+```sh
+pnpm preview      # http://localhost:5180
+```
+
+Switch host, candidate state and locale from the toolbar, or by URL:
+
+| URL | Shows |
+| --- | --- |
+| `/?host=mangrove` | Mangrove host, real design system CSS |
+| `/?host=delta` | Delta host, Tailwind 4 with Preflight |
+| `/?host=delta&candidate=off` | The leakage baseline: host with an empty candidate subtree |
+
+Then run the harness against it — three viewports, both hosts, leakage
+assertion, axe and screenshots:
+
+```sh
+pnpm exec playwright install chromium   # once
+pnpm preview:test
+```
+
+This is what proves the harness works before eight agents depend on it.
 
 ## Build
 

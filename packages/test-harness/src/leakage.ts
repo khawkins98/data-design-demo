@@ -73,19 +73,43 @@ export interface AssertNoLeakageOptions {
  * Returns the result rather than throwing, because Brief 1 requires a failure
  * to be *documented* in evidence.json, not to abort the run.
  */
+/**
+ * Sets the `candidate` parameter while keeping the URL relative.
+ *
+ * Deliberately does not use `new URL()`: that requires an absolute base, and
+ * the resulting absolute URL overrides Playwright's `baseURL`. An earlier
+ * version did exactly that, navigated to port 80, snapshotted an error page
+ * with zero canaries, and reported "no leakage" — passing vacuously.
+ */
+export function withCandidate(url: string, value: "on" | "off"): string {
+  const [path = "", query = ""] = url.split("?");
+  const params = new URLSearchParams(query);
+  params.set("candidate", value);
+  return `${path}?${params.toString()}`;
+}
+
 export async function checkLeakage(
   page: Page,
   options: AssertNoLeakageOptions,
 ): Promise<LeakageResult> {
-  const url = new URL(options.url, "http://localhost");
-
-  url.searchParams.set("candidate", "off");
-  await page.goto(url.toString());
+  await page.goto(withCandidate(options.url, "off"));
   await settle(page);
   const before = await snapshot(page);
 
-  url.searchParams.set("candidate", "on");
-  await page.goto(url.toString());
+  if (Object.keys(before).length === 0) {
+    // Not a leakage result: the page never rendered the host shell, so there is
+    // nothing to compare and a "passed" verdict would be meaningless. Fail loudly
+    // rather than let a demo record a clean leakage result it did not earn.
+    throw new Error(
+      `Leakage baseline found no [data-canary] elements at "${withCandidate(
+        options.url,
+        "off",
+      )}". The host shell did not render. Check that the URL is relative to the ` +
+        `Playwright baseURL and that the page honours ?candidate=off.`,
+    );
+  }
+
+  await page.goto(withCandidate(options.url, "on"));
   await settle(page);
   const after = await snapshot(page);
 
