@@ -25,7 +25,7 @@ import type { ReactElement } from "react";
 
 import { TOKEN_SCOPE_CLASS } from "@undrr-eval/undrr-tokens";
 
-import { issuesFor } from "./issues.js";
+import { openIssuesFor } from "./issues.js";
 import type { IssueSeverity, KnownIssue } from "./issues.js";
 
 const SEVERITY_LABEL: Record<IssueSeverity, string> = {
@@ -61,7 +61,9 @@ export interface KnownIssuesProps {
 }
 
 export function KnownIssues({ candidate, host, candidateName }: KnownIssuesProps): ReactElement | null {
-  const issues = issuesFor(candidate, host);
+  // Open issues only. Findings we fixed stay in the registry as the audit trail;
+  // see openIssuesFor for why they do not belong in the box on a demo page.
+  const issues = openIssuesFor(candidate, host);
   if (issues.length === 0) return null;
 
   const counts = issues.reduce<Record<string, number>>((acc, issue) => {

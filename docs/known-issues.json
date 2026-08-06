@@ -1,6 +1,6 @@
 {
   "$comment": "GENERATED from packages/known-issues/src/issues.ts by scripts/build-known-issues-json.mjs. Do not edit: add issues to the TypeScript registry, which the demo pages also import.",
-  "issueCount": 23,
+  "issueCount": 34,
   "pairings": {
     "delta-react-aria": {
       "total": 4,
@@ -8,6 +8,8 @@
         "caveat": 3,
         "info": 1
       },
+      "resolvedCount": 6,
+      "scoreableBlockers": [],
       "headline": {
         "severity": "caveat",
         "title": "React Aria is unstyled, so this page carries 121 to 133 CSS rules"
@@ -20,6 +22,14 @@
         "caveat": 1,
         "info": 1
       },
+      "resolvedCount": 5,
+      "scoreableBlockers": [
+        {
+          "id": "mui-rtl-unfixable",
+          "title": "RTL is not achievable in the MUI Community tier",
+          "owner": "candidate"
+        }
+      ],
       "headline": {
         "severity": "blocker",
         "title": "RTL is not achievable in the MUI Community tier"
@@ -33,6 +43,14 @@
         "caveat": 2,
         "info": 1
       },
+      "resolvedCount": 7,
+      "scoreableBlockers": [
+        {
+          "id": "carbon-unreachable-tokens",
+          "title": "Carbon cannot express about 30% of the UNDRR design tokens",
+          "owner": "candidate"
+        }
+      ],
       "headline": {
         "severity": "blocker",
         "title": "Carbon cannot express about 30% of the UNDRR design tokens"
@@ -45,6 +63,14 @@
         "caveat": 2,
         "info": 1
       },
+      "resolvedCount": 7,
+      "scoreableBlockers": [
+        {
+          "id": "mantine-modal-close-unnamed",
+          "title": "Modal's close button ships with no accessible name",
+          "owner": "candidate"
+        }
+      ],
       "headline": {
         "severity": "blocker",
         "title": "Modal's close button ships with no accessible name"
@@ -56,6 +82,8 @@
         "caveat": 4,
         "info": 1
       },
+      "resolvedCount": 4,
+      "scoreableBlockers": [],
       "headline": {
         "severity": "caveat",
         "title": "The data table has an upstream accessibility defect"
@@ -67,6 +95,8 @@
         "caveat": 5,
         "info": 3
       },
+      "resolvedCount": 6,
+      "scoreableBlockers": [],
       "headline": {
         "severity": "caveat",
         "title": "React Aria is unstyled, so this page carries 121 to 133 CSS rules"
@@ -79,6 +109,14 @@
         "caveat": 1,
         "info": 3
       },
+      "resolvedCount": 5,
+      "scoreableBlockers": [
+        {
+          "id": "mui-rtl-unfixable",
+          "title": "RTL is not achievable in the MUI Community tier",
+          "owner": "candidate"
+        }
+      ],
       "headline": {
         "severity": "blocker",
         "title": "RTL is not achievable in the MUI Community tier"
@@ -92,6 +130,19 @@
         "caveat": 2,
         "info": 3
       },
+      "resolvedCount": 7,
+      "scoreableBlockers": [
+        {
+          "id": "carbon-unreachable-tokens",
+          "title": "Carbon cannot express about 30% of the UNDRR design tokens",
+          "owner": "candidate"
+        },
+        {
+          "id": "carbon-leakage-failure",
+          "title": "This pairing fails the style-containment assertion",
+          "owner": "pairing"
+        }
+      ],
       "headline": {
         "severity": "blocker",
         "title": "Carbon cannot express about 30% of the UNDRR design tokens"
@@ -104,6 +155,14 @@
         "caveat": 2,
         "info": 3
       },
+      "resolvedCount": 7,
+      "scoreableBlockers": [
+        {
+          "id": "mantine-modal-close-unnamed",
+          "title": "Modal's close button ships with no accessible name",
+          "owner": "candidate"
+        }
+      ],
       "headline": {
         "severity": "blocker",
         "title": "Modal's close button ships with no accessible name"
@@ -117,6 +176,14 @@
         "caveat": 4,
         "info": 3
       },
+      "resolvedCount": 4,
+      "scoreableBlockers": [
+        {
+          "id": "antd-select-value-hidden-on-mangrove",
+          "title": "Select controls do not display their selected value",
+          "owner": "pairing"
+        }
+      ],
       "headline": {
         "severity": "blocker",
         "title": "Select controls do not display their selected value"

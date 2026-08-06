@@ -18,7 +18,7 @@ import { fileURLToPath } from "node:url";
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, "..");
 
-const { KNOWN_ISSUES, issuesFor } = await import(
+const { KNOWN_ISSUES, SCOREABLE_OWNERS, issuesFor, openIssuesFor } = await import(
   join(ROOT, "packages", "known-issues", "src", "issues.ts")
 );
 
@@ -28,12 +28,39 @@ const HOSTS = ["delta", "mangrove"];
 const byPairing = {};
 for (const host of HOSTS) {
   for (const candidate of CANDIDATES) {
-    const issues = issuesFor(candidate, host);
+    /*
+     * OPEN issues drive the cards. A finding we fixed must not become a card's
+     * headline: several of the resolved entries are blockers by severity, and a
+     * card reading "Blocker: sort state was shown without being announced" about a
+     * bug that no longer exists would be worse than showing nothing.
+     *
+     * `resolvedCount` is still reported, because the number of defects this
+     * evaluation found in its own code is a fact about the evaluation's rigour and
+     * belongs on the record rather than in a footnote.
+     */
+    const issues = openIssuesFor(candidate, host);
+    const resolved = issuesFor(candidate, host).filter((issue) => issue.resolved);
+
+    /*
+     * Open blockers that belong to the thing being chosen.
+     *
+     * Emitted for the scoring layer, which cannot otherwise see them. Its axis
+     * bands are derived from evidence.json fields, and some blocking defects do not
+     * show up in any of those fields: antd's Select rendering its value invisible on
+     * the Mangrove host is a blocker, but leakage passes and axe is clean, so every
+     * A4 signal reads fine. Without this, antd scored as unblocked and would have
+     * been shortlisted on the strength of a defect nobody could see in the numbers.
+     */
+    const scoreableBlockers = openIssuesFor(candidate, host)
+      .filter((issue) => issue.severity === "blocker" && SCOREABLE_OWNERS.includes(issue.owner))
+      .map((issue) => ({ id: issue.id, title: issue.title, owner: issue.owner }));
     const counts = {};
     for (const issue of issues) counts[issue.severity] = (counts[issue.severity] ?? 0) + 1;
     byPairing[`${host}-${candidate}`] = {
       total: issues.length,
       counts,
+      resolvedCount: resolved.length,
+      scoreableBlockers,
       // Worst first, so a card can show the one that matters without logic.
       headline: issues[0] ? { severity: issues[0].severity, title: issues[0].title } : null,
     };

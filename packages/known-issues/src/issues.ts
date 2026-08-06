@@ -62,6 +62,19 @@ export interface KnownIssue {
     | "our implementation"
     | "this evaluation";
   readonly links: readonly IssueLink[];
+  /**
+   * Set when the defect has been fixed, describing what the fix was.
+   *
+   * Resolved findings are kept, not deleted. Almost all of them are
+   * `owner: "our implementation"`, and a record of the bugs this evaluation found
+   * in its own code is what entitles it to report bugs in anyone else's. It also
+   * stops the same mistake being made twice, which is the ordinary reason to keep
+   * a bug report after the fix.
+   *
+   * They are excluded from the demo pages by `openIssuesFor` and never counted by
+   * the scoring layer.
+   */
+  readonly resolved?: string;
 }
 
 const REPO = "https://github.com/khawkins98/data-design-demo";
@@ -358,6 +371,160 @@ export const KNOWN_ISSUES: readonly KnownIssue[] = Object.freeze([
     links: [{ label: "Mangrove tracker", href: `${REPO}/issues/4` }],
   },
   {
+    /* ------------------------------------------- our own bugs, found and fixed --
+     *
+     * Recorded as classes rather than one entry per site, because every one of
+     * these was shared across several pairings - which is itself the finding. They
+     * were caused by the demo code being written from a common reference, not by
+     * any library.
+     *
+     * All carry `resolved`, so they are absent from the demo pages and invisible to
+     * the scoring layer, and present in the registry as the audit trail. The reason
+     * for keeping them is stated on the `resolved` field.
+     */
+    id: "ours-sort-state-shown-xor-announced",
+    severity: "caveat",
+    candidates: ["react-aria", "mui"],
+    hosts: ["*"],
+    owner: "our implementation",
+    title: "Sort state was shown without being announced, or announced without being shown",
+    detail:
+      "The single most distorting defect this evaluation found in its own code, because it broke in opposite directions for two candidates and would have scored them in opposite, equally wrong ways. React Aria announced without showing: the library stamps documented [data-allows-sorting] and [data-sort-direction] selectors onto the th and sets aria-sort itself, and we styled neither, so screen-reader users had the state and sighted users had nothing. MUI showed without announcing: TableSortLabel rendered a visible arrow while TableCell's one-line sortDirection prop went unpassed, so no aria-sort reached the th at all. Found because a reviewer clicked a column header and asked whether it was our bug.",
+    resolved:
+      "React Aria styled from the library's own selectors, as a borders-only triangle rather than a glyph in content, since generated text is announced by some screen readers and would duplicate aria-sort. MUI passes sortDirection. Both assert ordering rather than attributes now.",
+    links: [{ label: "axis A7", href: "../axes.html" }],
+  },
+  {
+    id: "ours-descending-sort-by-array-reverse",
+    severity: "caveat",
+    candidates: ["react-aria", "mantine"],
+    hosts: ["*"],
+    owner: "our implementation",
+    title: "Descending sort was a reversed array, so it reordered tie groups too",
+    detail:
+      "Array.prototype.sort is stable, so an ascending sort preserves input order within groups of equal keys. Reversing the whole array reverses that secondary order as well, and these fixtures have enormous tie groups - hazardType has about 8 distinct values across 250 rows, verificationStatus has 4 - so toggling a column ascending, descending, ascending did not restore the original ordering. Compounded by a collator built with sensitivity: 'base', a MATCHING setting used for ordering, which made a and á and A compare equal and manufactured extra ties in exactly the French and German fixtures the set exists to stress.",
+    resolved:
+      "Comparators negate instead of reversing, with null and id tiebreaks deliberately left unsigned so equal keys hold one order in both directions. Tests compute both the correct ordering and the reverse-bug's prediction from the fixtures and name the wrong one.",
+    links: [{ label: "axis A1", href: "../axes.html" }],
+  },
+  {
+    id: "ours-collation-without-a-locale",
+    severity: "caveat",
+    candidates: ["mantine"],
+    hosts: ["*"],
+    owner: "our implementation",
+    title: "Row ordering depended on the machine's default locale",
+    detail:
+      "Three different collation strategies coexisted across the pairings: one passed the fixture locale to localeCompare, one built an Intl.Collator from it, and one called String#localeCompare with no locale at all - so German and French row order depended on whichever locale the runner happened to default to. A demo whose output changes with the machine it runs on cannot support a claim about a library.",
+    resolved:
+      "All comparators take an explicit Intl.Collator built from the selected bcp47 tag, asserted against a German ordering that a locale-less compare gets wrong.",
+    links: [{ label: "axis A1", href: "../axes.html" }],
+  },
+  {
+    id: "ours-rtl-defect-attributed-to-the-library",
+    severity: "caveat",
+    candidates: ["mui", "antd", "mantine"],
+    hosts: ["*"],
+    owner: "our implementation",
+    title: "An RTL defect of ours was recorded as MUI's, and two pairings scored credit against it",
+    detail:
+      "MUI's TableCell align prop is physical-only, so our align=\"right\" left the row-action column pinned to the physical right in Arabic while the row flipped. A code comment recorded that as an RTL limitation of MUI. It was not: TableCell also accepts sx, and sx={{textAlign:'end'}} hands over the logical property without leaving MUI's own API. The damage was not the misplaced column but the comment - the antd and Mantine views both cited it to explain why their own RTL was better, so three pairings were earning A6 credit against a defect we had introduced. Distinct from mui-rtl-unfixable, which is real, lives inside MUI's own stylesheet where no app-level prop reaches, and is untouched by this.",
+    resolved:
+      "Logical alignment via sx, the false comment rewritten, and the derived claims in the antd and Mantine views restated as properties of those libraries rather than as comparisons against a weakness we manufactured.",
+    links: [{ label: "axis A6", href: "../axes.html" }],
+  },
+  {
+    id: "ours-library-i18n-declined-or-overridden",
+    severity: "caveat",
+    candidates: ["mui", "react-aria", "carbon"],
+    hosts: ["*"],
+    owner: "our implementation",
+    title: "Translations the libraries already ship were declined or overwritten",
+    detail:
+      "Three shapes of the same mistake. MUI: pagination chrome left in English and recorded as a finding that MUI's locale bundles are a second translation source parallel to the fixtures - while @mui/material/locale ships exactly arEG, frFR and deDE, and the antd pairings wired antd's equivalent packs and were credited for it. The objection applied to both pairings or to neither. React Aria: explicit aria-label props on the tag remove button, both date pickers and the ComboBox trigger overrode names the library already sets from its own translation bundles, replacing working Arabic with English. Carbon: one app wired flatpickr's locale and its twin hardcoded locale=\"en\".",
+    resolved:
+      "MUI's core and X locale packs wired in all three views, including through integration-mui so the inventory matches. React Aria's overrides removed so the library names its own controls. Carbon's date locales wired in both apps. The genuinely missing fixture vocabulary is now recorded as a gap rather than filled with invented strings.",
+    links: [{ label: "axis A6", href: "../axes.html" }],
+  },
+  {
+    id: "ours-fixture-labels-reused-as-nouns",
+    severity: "caveat",
+    candidates: ["*"],
+    hosts: ["*"],
+    owner: "our implementation",
+    title: "Action labels were reused as the names of unrelated controls",
+    detail:
+      "The fixture LabelSet has no actionView, actionEdit, colActions or any all/any option string, and the realistic views borrowed whatever was closest instead of recording the gap. So an Edit button was named \"Save\", row-action columns were headed \"Review note\" (the name of a real and different field) or \"Settings\", and - worst - \"Clear filters\" became the label of the all/any option INSIDE several Selects, so a collapsed dropdown's visible text and accessible name both read \"Clear filters\" beside a real Clear-filters button saying the same thing. None of it was necessary: every library involved separates a placeholder from an option list.",
+    resolved:
+      "Library-native empty states replace the sentinel options, and where no fixture string exists the untranslated English word is used and the missing key recorded. One true English word beats four translations of something false - the same call Carbon's untranslated pagination chrome already made.",
+    links: [{ label: "axis A7", href: "../axes.html" }],
+  },
+  {
+    id: "ours-comments-citing-apis-that-do-not-exist",
+    severity: "caveat",
+    candidates: ["carbon"],
+    hosts: ["*"],
+    owner: "our implementation",
+    title: "Recorded reasoning cited a Carbon API that does not exist, and CSS rules that were not in the file",
+    detail:
+      "Two comments asserted that Carbon's Pagination has a translateWithId hook, which is why its chrome was left in English. Pagination.d.ts contains zero occurrences of it; the strings come from nine discrete props, which is a worse i18n surface than one hook and is the actual finding. Meanwhile translateWithId does exist on DataTable and TableHeader, where we never used it and where carbon-props.ts inventories the API in detail without mentioning it. Separately a demo.css comment described flex-end and padding-inline rules that were not in the file - the behaviour was correct and the cited evidence invented, which in a repository whose product is the accuracy of its record is the worse of the two faults.",
+    resolved:
+      "Both comments corrected against the installed package rather than from memory, itemRangeText wired so counts route through Intl, and the remaining seven Pagination strings plus the missing sort and selection vocabulary recorded as fixture gaps.",
+    links: [{ label: "axis A6", href: "../axes.html" }],
+  },
+  {
+    id: "ours-timezone-shifted-date-boundaries",
+    severity: "caveat",
+    candidates: ["carbon"],
+    hosts: ["*"],
+    owner: "our implementation",
+    title: "Date filters shifted by a day outside UTC",
+    detail:
+      "toISOString().slice(0,10) was called on flatpickr's local-midnight Date, so at any positive UTC offset the filter boundary moved back a day, and at negative offsets the displayed day moved instead. The harness pins timezoneId: 'UTC' for determinism, which is correct and which is also exactly why this survived: it cannot reproduce in CI. It sat beneath a header comment promising no new Date().",
+    resolved:
+      "Local-date formatting throughout, one time frame per surface, and a test block per date surface running under Australia/Sydney so the bug cannot come back invisibly.",
+    links: [{ label: "axis A1", href: "../axes.html" }],
+  },
+  {
+    id: "ours-divergence-between-twins",
+    severity: "caveat",
+    candidates: ["carbon", "antd", "mantine"],
+    hosts: ["*"],
+    owner: "our implementation",
+    title: "Two hosts of one candidate diverged in ways that changed what was measured",
+    detail:
+      "Carbon: delta-carbon lacked the aria-describedby workaround its Mangrove twin documented at length, and the twin's success disproved delta's own evidence.json claim that the violation could not be fixed from the consuming side. Applying it removed a CRITICAL. Carbon again: the Mangrove island omitted cds--layer-one while its comment claimed it carried it, so five Carbon tokens with no literal fallback were undefined in precisely the scoped mode the island exists to measure - invisible to screenshots, because all five drive pressed and selected states. Ant Design: the island shipped no sorter on any column while every other island sorted, understating antd's table. Mantine: three views styled the sort trigger three different ways.",
+    resolved:
+      "Each twin brought into line with the better of the two, and the false evidence.json and EVIDENCE.md claims retracted with their counts corrected.",
+    links: [{ label: "axis A3", href: "../axes.html" }],
+  },
+  {
+    id: "ours-accessibility-attributes-omitted",
+    severity: "caveat",
+    candidates: ["carbon", "mantine", "react-aria"],
+    hosts: ["*"],
+    owner: "our implementation",
+    title: "Accessible state we already knew how to supply was left out",
+    detail:
+      "aria-current missing from three of four SideNavs while our own fourth passed it; aria-controls pointing at nodes that keepMounted={false} had unmounted; filter counts changing silently in a plain paragraph while a sibling file demonstrated the role=status pattern; an unnamed DataTableSkeleton whose twin was named; selected state carried by colour alone with no aria-pressed; a live region with unconditional padding and background painting an empty coloured strip before any message existed; and two undebounced live regions announcing the same fact on every keystroke.",
+    resolved:
+      "All supplied. The empty live region keeps its element mounted and loses only its class, because conditionally rendering it would have traded a visible bug for a silent one - a live region must exist before its content changes or the announcement is lost.",
+    links: [{ label: "axis A7", href: "../axes.html" }],
+  },
+  {
+    id: "ours-assertions-that-could-not-fail",
+    severity: "caveat",
+    candidates: ["*"],
+    hosts: ["*"],
+    owner: "our implementation",
+    title: "Ten classes of assertion that could not fail - which is why the rest survived",
+    detail:
+      "Two axe tests with no expect at all. Four expect(violations).toBeGreaterThanOrEqual(0). Sort tests asserting aria-sort, which the library derives from state rather than from ordering, so a comparator returning 0 passed. Page-reset tests asserting toContainText('1'), satisfied by the '11-20 of 250' that preceded the action. Status-pill tests that 250 identically-labelled rows would pass, and which were the only assertion about that column. A post-delete focus test that was a ternary over the same two literals its expected set contained, so it was true by construction including in the case its own comment said it existed to catch. And in the token package, a test claiming to require an Arabic face in every font stack whose regex passed via system-ui, so deleting Noto Sans Arabic from every stack left it green.",
+    resolved:
+      "All replaced with assertions on ordering, counts, mappings and full strings, and every one proven falsifiable by breaking the thing it guards, confirming the failure, and restoring. The leakage assertions needed no change: each already checked that it had found every canary before checking that none had changed, which is the vacuous-pass guard the rest of the suite lacked.",
+    links: [{ label: "axis A7", href: "../axes.html" }],
+  },
+  {
     id: "long-labels-clean-is-not-reproducible",
     severity: "caveat",
     candidates: ["react-aria"],
@@ -398,4 +565,20 @@ export function issuesFor(candidate: string, host: string): readonly KnownIssue[
   return KNOWN_ISSUES.filter((issue) => applies(issue, candidate, host)).sort(
     (a, b) => SEVERITY_ORDER.indexOf(a.severity) - SEVERITY_ORDER.indexOf(b.severity),
   );
+}
+
+/**
+ * The issues a reader should see on a demo page: everything still open.
+ *
+ * Resolved findings stay in `KNOWN_ISSUES` deliberately. A defect we found,
+ * attributed to ourselves and fixed is exactly the record that makes the rest of
+ * the registry credible - deleting it on the grounds that it no longer reproduces
+ * is how an evaluation quietly becomes a sales document. But it does not belong in
+ * the box on a demo page, which answers "what should I know about what I am looking
+ * at", and a fixed bug is not that.
+ *
+ * So: `issuesFor` is the audit trail, `openIssuesFor` is the page.
+ */
+export function openIssuesFor(candidate: string, host: string): readonly KnownIssue[] {
+  return issuesFor(candidate, host).filter((issue) => !issue.resolved);
 }

@@ -5,7 +5,13 @@
  * file that measured it.
  */
 
-export { KNOWN_ISSUES, SEVERITY_ORDER, issuesFor } from "./issues.js";
+export {
+  KNOWN_ISSUES,
+  SCOREABLE_OWNERS,
+  SEVERITY_ORDER,
+  issuesFor,
+  openIssuesFor,
+} from "./issues.js";
 export type { IssueLink, IssueSeverity, KnownIssue } from "./issues.js";
 export { KnownIssues } from "./KnownIssues.js";
 export type { KnownIssuesProps } from "./KnownIssues.js";
