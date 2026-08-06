@@ -278,16 +278,16 @@ swap reaches every site at once; a rebuild is per site, forever.
 
 | Pairing | tokens applied | unreachable | propagation | live var() refs in shipped CSS |
 | --- | --- | --- | --- | --- |
-| delta-react-aria | 48 | 0 | **stylesheet-swap** | 257 |
-| mangrove-react-aria | 47 | 0 | **stylesheet-swap** | 226 |
-| delta-mui | 29 | 0 | **rebuild-per-site** | 0 |
-| mangrove-mui | 32 | 0 | **rebuild-per-site** | 0 |
-| delta-carbon | 50 | **21** | **stylesheet-swap** | 190 |
-| mangrove-carbon | 50 | **22** | **stylesheet-swap** | 157 |
-| delta-mantine | 66 | **5** | **mostly-rebuild** | 6 |
-| mangrove-mantine | 62 | 0 | **mostly-rebuild** | 6 |
-| delta-antd | 44 | 0 | **mostly-rebuild** | 3 |
-| mangrove-antd | 44 | 0 | **mostly-rebuild** | 3 |
+| delta-react-aria | 48 | 0 | **stylesheet-swap** | 295 |
+| mangrove-react-aria | 47 | 0 | **stylesheet-swap** | 264 |
+| delta-mui | 29 | 0 | **mostly-rebuild** | 38 |
+| mangrove-mui | 32 | 0 | **mostly-rebuild** | 38 |
+| delta-carbon | 50 | **21** | **stylesheet-swap** | 228 |
+| mangrove-carbon | 50 | **22** | **stylesheet-swap** | 195 |
+| delta-mantine | 66 | **5** | **mostly-rebuild** | 44 |
+| mangrove-mantine | 62 | 0 | **mostly-rebuild** | 44 |
+| delta-antd | 44 | 0 | **mostly-rebuild** | 41 |
+| mangrove-antd | 44 | 0 | **mostly-rebuild** | 41 |
 
 ## Supporting figures
 
