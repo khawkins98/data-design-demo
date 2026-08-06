@@ -132,12 +132,34 @@ export function App(): ReactElement {
               <SectionChrome />
               <SectionDataTable />
               <SectionStates />
-              <SectionSideBySide />
 
-              <p className="demo__footnote">
-                Section 8 is the locale switcher above, which drives every other
-                section. Arabic applies RTL through <code>I18nProvider</code>.
-              </p>
+              {/*
+                THE 7-TO-9 JUMP IN THE HEADINGS IS DELIBERATE, AND SAYING SO
+                HERE IS THE POINT.
+
+                Requirements section 8 is Locale, and it is met — by the
+                switcher in the header, which every section above consumes. It
+                has no numbered block of its own because it is a page-level
+                control, not a specimen. Renumbering to close the gap would hide
+                that a specified section exists; a note only at the foot of the
+                page arrives long after the reader has already read the jump as
+                a mistake. So it sits where section 8 would have been.
+              */}
+              <div className="demo-section" id="section-8-note">
+                <h3 className="demo-section__title">
+                  8. Locale — no numbered section of its own
+                </h3>
+                <p className="demo__footnote">
+                  Section 8 of the requirements (locale switcher, RTL, long
+                  labels) is exercised by the locale switcher at the top of this
+                  page, which drives every section above; Arabic applies RTL
+                  through <code>I18nProvider</code>. It gets no block here
+                  because it is page-wide rather than one specimen. The headings
+                  run 7 to 9 for that reason — nothing was dropped or hidden.
+                </p>
+              </div>
+
+              <SectionSideBySide />
 
               {/* Kept last so a screenshot of any section never captures it. */}
               <Button

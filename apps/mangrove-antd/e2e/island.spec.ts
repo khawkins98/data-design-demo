@@ -29,7 +29,7 @@ import { dirname } from "node:path";
 import { expect, test } from "@playwright/test";
 import type { Page } from "@playwright/test";
 
-import { LOSS_RECORDS } from "@undrr-eval/fixtures";
+import { LABELS, LOSS_RECORDS } from "@undrr-eval/fixtures";
 import type { VerificationStatus } from "@undrr-eval/fixtures";
 import { CANARY_IDS, captureScreens, checkLeakage, runAxe } from "@undrr-eval/test-harness";
 import { MANGROVE_FRAME_CANARY_IDS } from "@undrr-eval/test-harness/frame-canaries";
@@ -97,6 +97,183 @@ async function statusPills(
       }),
     ),
   );
+}
+
+/**
+ * Whether a Select's own text — its placeholder when unset, its chosen value when
+ * set — actually puts INK ON SCREEN in the closed control.
+ *
+ * The twin of `measureTextInk` in `apps/delta-antd/e2e/app.spec.ts`, kept identical so
+ * the two hosts' numbers read side by side. The measurement matters more than usual on
+ * this pairing, because both obvious ways of asking give the wrong answer:
+ *
+ *  - `elementsFromPoint` at the text's position returns antd's overlay input on
+ *    EVERY host. antd renders the value inside a div and lays a readonly input over
+ *    it by design, so "is it covered" is true on Delta and on Mangrove alike.
+ *    Reported below as `textIsCovered` for comparability, and asserted on neither.
+ *  - Screenshotting the control, hiding the text node and diffing the bytes reports
+ *    a difference on Mangrove where a 4x screenshot shows an EMPTY FIELD: removing
+ *    the node also moves the box it draws, by a couple of edge pixels.
+ *
+ * So this counts ink. Screenshot the control, decode it on a canvas inside the page,
+ * count dark pixels inside the text node's own rectangle, recolour that node's text
+ * to `transparent`, count again. `inkFromText` is the difference — the pixels that
+ * exist BECAUSE of the glyphs, with borders and chrome inside the same rectangle
+ * cancelling out. Zero means the reader sees nothing, whatever the DOM says.
+ *
+ * WHICH NODE, AND WHY IT IS FOUND RATHER THAN ASSUMED. antd puts the placeholder in
+ * its own `div.ant-select-placeholder`; a chosen value is a BARE TEXT NODE in
+ * `.ant-select-content`. That asymmetry is load-bearing on the Mangrove host:
+ * `.ant-select-content` is `display: flex`, so the placeholder is a flex item and its
+ * `z-index: 1` APPLIES despite `position: static`, putting it above the overlay
+ * input; the value text has no box of its own and no z-index, so it paints under it.
+ * Measured consequence — placeholder legible, value blank, same control. `state`,
+ * `textNodeZIndex` and `textNodePosition` are recorded so that story stays checkable.
+ *
+ * The hit test samples `.ant-select-content` rather than the text node itself:
+ * antd's placeholder is `pointer-events: none` and so absent from
+ * `elementsFromPoint` entirely, which would make `opaqueLayersAboveText` read as
+ * "everything" instead of "what is painted over this area".
+ */
+async function measureTextInk(page: Page, fieldId: string) {
+  const control = page
+    .locator(`#${fieldId}`)
+    .locator("xpath=ancestor::*[contains(concat(' ', @class, ' '), ' ant-select ')][1]");
+
+  /** Dark pixels inside the text node's rectangle, read off a real screenshot. */
+  const countInk = async (): Promise<number> => {
+    const shot = (await control.screenshot()).toString("base64");
+    return page.evaluate(
+      async ({ id, shot }) => {
+        const input = document.querySelector(`#${id}`) as HTMLElement;
+        const select = input.closest(".ant-select") as HTMLElement;
+        const node = (select.querySelector(".ant-select-placeholder") ??
+          input.closest(".ant-select-content")) as HTMLElement;
+        const selectBox = select.getBoundingClientRect();
+        const nodeBox = node.getBoundingClientRect();
+        const image = new Image();
+        await new Promise((resolve, reject) => {
+          image.onload = resolve;
+          image.onerror = reject;
+          image.src = `data:image/png;base64,${shot}`;
+        });
+        // Element screenshots come back at the device pixel ratio, so derive the
+        // scale rather than assuming 1.
+        const scale = image.width / selectBox.width;
+        const canvas = document.createElement("canvas");
+        canvas.width = image.width;
+        canvas.height = image.height;
+        const context = canvas.getContext("2d");
+        if (!context) return -1;
+        context.drawImage(image, 0, 0);
+        const x = Math.max(0, Math.round((nodeBox.left - selectBox.left) * scale));
+        const y = Math.max(0, Math.round((nodeBox.top - selectBox.top) * scale));
+        const width = Math.min(Math.round(nodeBox.width * scale), image.width - x);
+        const height = Math.min(Math.round(nodeBox.height * scale), image.height - y);
+        if (width <= 0 || height <= 0) return -1;
+        const { data } = context.getImageData(x, y, width, height);
+        let dark = 0;
+        for (let index = 0; index < data.length; index += 4) {
+          const luminance =
+            0.299 * (data[index] ?? 0) +
+            0.587 * (data[index + 1] ?? 0) +
+            0.114 * (data[index + 2] ?? 0);
+          // Meaningfully darker than the field's fill. antd's placeholder grey is
+          // well under this; antialiasing fringes on a border are not.
+          if (luminance < 200) dark += 1;
+        }
+        return dark;
+      },
+      { id: fieldId, shot },
+    );
+  };
+
+  const geometry = await page.evaluate((id) => {
+    const input = document.querySelector(`#${id}`) as HTMLElement | null;
+    const select = input?.closest(".ant-select") as HTMLElement | null;
+    const content = input?.closest(".ant-select-content") as HTMLElement | null;
+    if (!input || !select || !content) return null;
+    const placeholder = select.querySelector(".ant-select-placeholder") as HTMLElement | null;
+    const node = placeholder ?? content;
+    const nodeStyle = getComputedStyle(node);
+    // See the note above: hit-test the content box, not the text node.
+    const box = content.getBoundingClientRect();
+    const stack = document.elementsFromPoint(box.left + 4, box.top + box.height / 2);
+    const contentIndex = stack.indexOf(content);
+    const above = contentIndex < 0 ? stack : stack.slice(0, contentIndex);
+    const describe = (el: Element) =>
+      `${el.tagName.toLowerCase()}.${String(el.className).split(" ")[0]}:${
+        getComputedStyle(el).backgroundColor
+      }`;
+    const isOpaque = (el: Element) => {
+      const bg = getComputedStyle(el).backgroundColor;
+      const match = /^rgba?\(([^)]+)\)$/.exec(bg);
+      if (!match) return bg !== "transparent";
+      const parts = match[1]?.split(",") ?? [];
+      const alpha = parts.length > 3 ? Number(parts[3]) : 1;
+      return alpha > 0;
+    };
+    return {
+      text: (node.textContent ?? "").trim(),
+      state: placeholder ? ("placeholder" as const) : ("value" as const),
+      textNodeZIndex: nodeStyle.zIndex,
+      textNodePosition: nodeStyle.position,
+      contentDisplay: getComputedStyle(content).display,
+      overlayBackgroundColor: getComputedStyle(input).backgroundColor,
+      overlayHeightPx: Math.round(input.getBoundingClientRect().height),
+      contentHeightPx: Math.round(box.height),
+      topmostAtText: stack[0] ? describe(stack[0]) : "",
+      textIsCovered: stack[0] === input,
+      opaqueLayersAboveText: above.filter(isOpaque).map(describe),
+    };
+  }, fieldId);
+
+  if (!geometry) {
+    return {
+      error: `no ant Select found for #${fieldId}`,
+      text: "",
+      state: "value" as const,
+      textNodeZIndex: "",
+      textNodePosition: "",
+      contentDisplay: "",
+      overlayBackgroundColor: "",
+      overlayHeightPx: 0,
+      contentHeightPx: 0,
+      topmostAtText: "",
+      textIsCovered: false,
+      opaqueLayersAboveText: [] as string[],
+      inkWithText: 0,
+      inkWithoutText: 0,
+      inkFromText: 0,
+    };
+  }
+
+  const setTextColour = (colour: string) =>
+    page.evaluate(
+      ({ id, colour }) => {
+        const input = document.querySelector(`#${id}`) as HTMLElement | null;
+        const select = input?.closest(".ant-select");
+        const node = (select?.querySelector(".ant-select-placeholder") ??
+          input?.closest(".ant-select-content")) as HTMLElement | null;
+        if (!node) return;
+        node.style.color = colour;
+        node.style.webkitTextFillColor = colour;
+      },
+      { id: fieldId, colour },
+    );
+
+  const inkWithText = await countInk();
+  await setTextColour("transparent");
+  const inkWithoutText = await countInk();
+  await setTextColour("");
+
+  return {
+    error: null as string | null,
+    ...geometry,
+    inkWithText,
+    inkWithoutText,
+    inkFromText: inkWithText - inkWithoutText,
+  };
 }
 
 /** The status of each of these records, taken from the fixture. */
@@ -486,6 +663,177 @@ test.describe("embedded island", () => {
     expect(state.rowSelectionCheckboxes, "rowSelection is back; re-check aria-hidden-focus").toBe(
       0,
     );
+  });
+
+  /**
+   * THE FILTERS' RESTING TEXT, and the fix it locks in.
+   *
+   * All three of these Selects used to carry a first option labelled
+   * `labels.actionClearFilters`, with `value` defaulting to that sentinel — so the
+   * DOM text of every resting filter was "Clear filters", as was its accessible
+   * name. Worse here than on the Delta application screen, because this island had
+   * no Clear-filters button at all: the words were the label of three controls that
+   * did not perform the action, and the action was unavailable. antd's own
+   * `placeholder` plus `allowClear` replaces the sentinel, and the label moved to a
+   * real button beside the count.
+   *
+   * ASSERTED IN BOTH DIRECTIONS: resting text must NAME THE FIELD, and the
+   * clear-filters string must appear in none of the three controls and none of
+   * their option lists. The option-list half is the one that catches a regression.
+   *
+   * WHETHER A READER CAN SEE ANY OF IT IS A SEPARATE QUESTION, and this test
+   * measures it rather than assuming, because `packages/known-issues` rests on the
+   * answer. Mangrove's unlayered `input` rules paint antd's overlay input opaque
+   * white across the whole control, so the expectation going in was that the fix
+   * would be DOM-only here. IT IS NOT, and the two states diverge:
+   *
+   *   - the PLACEHOLDER is legible. antd renders it in its own
+   *     `.ant-select-placeholder` div, `.ant-select-content` is `display: flex`, so
+   *     that div is a flex item and its `z-index: 1` applies even at
+   *     `position: static` — it paints ABOVE the opaque input.
+   *   - a CHOSEN VALUE is not. It is a bare text node with no box and no z-index, so
+   *     it paints under the same input and the filled field reads as empty.
+   *
+   * Both halves are asserted below. The Delta host's identical probe returns ink for
+   * both states — see `apps/delta-antd/e2e/app.spec.ts` — which is the distinction
+   * the registry entry turns on: DELTA IS AFFECTED BY THE WRONG-WORD DEFECT AND NOT
+   * BY THE VALUE-HIDING ONE.
+   */
+  test("each filter rests on its field name, not on the clear-filters label", async ({
+    page,
+  }, testInfo) => {
+    await page.goto(`${URL}?candidate=on`);
+
+    const clearLabel = LABELS.en.actionClearFilters;
+    const fields = [
+      { id: "island-country", fieldName: LABELS.en.fieldCountry },
+      { id: "island-hazard", fieldName: LABELS.en.fieldHazard },
+      { id: "island-status", fieldName: LABELS.en.colStatus },
+    ] as const;
+
+    const resting = await page.evaluate(
+      (ids) =>
+        ids.map((id) => {
+          const input = document.querySelector(`#${id}`);
+          const select = input?.closest(".ant-select");
+          return { id, text: (select?.textContent ?? "").trim() };
+        }),
+      fields.map((field) => field.id),
+    );
+
+    for (const [index, field] of fields.entries()) {
+      const seen = resting[index];
+      expect(seen?.id).toBe(field.id);
+      expect(
+        seen?.text,
+        `${field.id} rests on "${seen?.text}" instead of its own field name`,
+      ).toBe(field.fieldName);
+      expect(
+        seen?.text,
+        `${field.id} is showing the clear-filters label as its resting text again`,
+      ).not.toContain(clearLabel);
+      await expect(
+        page.locator(ROOT).getByRole("combobox", { name: field.fieldName, exact: true }),
+      ).toHaveCount(1);
+    }
+
+    for (const field of fields) {
+      await page.locator(`#${field.id}`).click();
+      const dropdown = page
+        .locator(".ant-select-dropdown")
+        .filter({ has: page.locator(`#${field.id}_list`) });
+      await expect(dropdown).toHaveCSS("opacity", "1");
+      await expect(
+        dropdown.locator(`.ant-select-item-option[title="${clearLabel}"]`),
+        `${field.id} has a sentinel option labelled "${clearLabel}" again`,
+      ).toHaveCount(0);
+      await page.keyboard.press("Escape");
+      await expect(page.locator(`#${field.id}`)).toHaveAttribute("aria-expanded", "false");
+    }
+
+    // The label now lives on a control that performs the action, and only there.
+    const clearButton = page.locator(`${ROOT} [data-testid="island-clear-filters"]`);
+    await expect(clearButton).toHaveText(clearLabel);
+    await expect(clearButton).toBeDisabled();
+
+    const restingInk = await measureTextInk(page, "island-hazard");
+
+    await chooseOption(page, "island-hazard", "Drought");
+    await expect(page.locator(ROOT)).toContainText("34 / 250");
+    const chosenInk = await measureTextInk(page, "island-hazard");
+
+    // And the button is the way back to unfiltered.
+    await expect(clearButton).toBeEnabled();
+    await clearButton.click();
+    await expect(page.locator(ROOT)).toContainText("250 / 250");
+    const afterClear = await page.evaluate(() => {
+      const select = document.querySelector("#island-hazard")?.closest(".ant-select");
+      return (select?.textContent ?? "").trim();
+    });
+    expect(afterClear).toBe(LABELS.en.fieldHazard);
+
+    writeJson("test-results/island-filter-resting-text.json", {
+      resting,
+      clearFiltersLabel: clearLabel,
+      restingInk,
+      chosenInk,
+      note:
+        "Resting text is each field's own localised name, via antd's `placeholder` " +
+        "plus `allowClear`. THE TWO STATES DO NOT FARE THE SAME ON THIS HOST, which " +
+        "is the finding: the PLACEHOLDER reaches the reader (inkFromText > 0) " +
+        "because antd renders it in its own flex item with z-index 1, above the " +
+        "input Mangrove painted opaque white; a CHOSEN VALUE is a bare text node " +
+        "with no box and no z-index, so it paints under that input and the field " +
+        "goes blank (inkFromText == 0). Both are > 0 on the Delta host — see " +
+        "app-filter-resting-text.json — which is the measured form of the " +
+        "known-issues claim that Delta is unaffected by the value-hiding defect. " +
+        "textIsCovered is true on BOTH hosts and is not the discriminator.",
+    });
+
+    await testInfo.attach("island-filter-resting-text.json", {
+      body: JSON.stringify({ resting, restingInk, chosenInk }, null, 2),
+      contentType: "application/json",
+    });
+
+    /*
+     * THE PLACEHOLDER DOES REACH THE READER, and that is worth asserting rather than
+     * assuming: it is the difference between this fix helping the Mangrove island and
+     * being a DOM-only correction. `.ant-select-content` is `display: flex`, so
+     * antd's `.ant-select-placeholder` is a flex item and its `z-index: 1` applies
+     * even at `position: static` — it paints above the opaque input.
+     */
+    expect(restingInk.error).toBeNull();
+    expect(restingInk.state).toBe("placeholder");
+    expect(restingInk.text).toBe(LABELS.en.fieldHazard);
+    expect(restingInk.contentDisplay).toBe("flex");
+    expect(restingInk.textNodeZIndex).toBe("1");
+    expect(
+      restingInk.inkFromText,
+      "the placeholder naming the field puts no ink on screen either, so this fix is " +
+        "invisible on the Mangrove host and the note above needs rewriting",
+    ).toBeGreaterThan(0);
+
+    /*
+     * AND THE CHOSEN VALUE STILL DOES NOT, asserted deliberately, in the same spirit
+     * as the sibling test "Mangrove's input background hides antd's selected value":
+     * the fix above is right in the DOM and in the accessibility tree, and the filled
+     * control is still blank on this host. The day Mangrove adopts cascade layers
+     * this flips, the test fails, and the evidence gets re-measured rather than
+     * quietly going stale.
+     */
+    expect(chosenInk.error).toBeNull();
+    expect(chosenInk.state).toBe("value");
+    expect(chosenInk.text).toBe("Drought");
+    expect(
+      chosenInk.opaqueLayersAboveText.length,
+      "nothing opaque is painted over the value any more; re-measure this pairing's " +
+        "blocker and the known-issues entry",
+    ).toBeGreaterThan(0);
+    expect(
+      chosenInk.inkFromText,
+      "the chosen value now puts ink on screen, so Mangrove no longer hides it; " +
+        "re-measure the blocker and correct the known-issues entry",
+    ).toBe(0);
   });
 
   test("filters the table from the controls above it", async ({ page }) => {

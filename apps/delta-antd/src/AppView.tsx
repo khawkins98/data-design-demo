@@ -415,45 +415,76 @@ export function AppView(): ReactElement {
                             gridTemplateColumns: "repeat(auto-fit, minmax(13rem, 1fr))",
                           }}
                         >
+                          {/*
+                            * THE UNFILTERED STATE IS A PLACEHOLDER, NOT A SENTINEL OPTION.
+                            *
+                            * These three Selects used to carry a first option labelled
+                            * `labels.actionClearFilters`, so a resting dropdown read
+                            * "Clear filters" — the same words as the real Clear-filters
+                            * button in the panel header a few pixels above, and the
+                            * select's accessible name as well. antd has `placeholder`
+                            * and `allowClear`, which is the library's own answer: the
+                            * empty state is an empty control, and the clear affordance
+                            * belongs on the field rather than in its option list.
+                            * `value={x === ALL ? undefined : x}` is what makes the
+                            * placeholder show, since antd treats only `undefined` as
+                            * unset — `"all"` would be an unmatched key, rendered raw.
+                            *
+                            * THE PLACEHOLDER IS THE FIELD'S OWN LABEL, matching the
+                            * Carbon views, whose `Dropdown` splits `titleText` from the
+                            * collapsed `label` the same way. The register React Aria uses
+                            * ("Any hazard type" / "Any status") reads better, but it only
+                            * exists there in English: `@undrr-eval/fixtures` HAS NO
+                            * `optionAll`/`filterAny*` KEY in any of the four locales, and
+                            * the package is import-only for this run. The field name is
+                            * the only fully-localised string available for this slot, so
+                            * three fields stay Arabic and German instead of dropping to
+                            * English. THE FIXTURE GAP IS RECORDED, not papered over: add
+                            * an `optionAll` key and the "Any X" register can be adopted
+                            * in all four locales here, in Carbon, and in React Aria.
+                            */}
                           <Form.Item label={labels.fieldCountry} htmlFor="app-country">
                             <Select
                               id="app-country"
-                              value={country}
-                              onChange={(next) => onFilterChange(() => setCountry(next))}
+                              value={country === ALL ? undefined : country}
+                              placeholder={labels.fieldCountry}
+                              allowClear
+                              onChange={(next?: string) =>
+                                onFilterChange(() => setCountry(next ?? ALL))
+                              }
                               style={{ width: "100%" }}
-                              options={[
-                                { value: ALL, label: labels.actionClearFilters },
-                                ...COUNTRIES.map((name) => ({ value: name, label: name })),
-                              ]}
+                              options={COUNTRIES.map((name) => ({ value: name, label: name }))}
                             />
                           </Form.Item>
 
                           <Form.Item label={labels.fieldHazard} htmlFor="app-hazard">
                             <Select
                               id="app-hazard"
-                              value={hazard}
-                              onChange={(next) => onFilterChange(() => setHazard(next))}
+                              value={hazard === ALL ? undefined : hazard}
+                              placeholder={labels.fieldHazard}
+                              allowClear
+                              onChange={(next?: string) =>
+                                onFilterChange(() => setHazard(next ?? ALL))
+                              }
                               style={{ width: "100%" }}
-                              options={[
-                                { value: ALL, label: labels.actionClearFilters },
-                                ...OPTIONS_SMALL.map((option) => ({
-                                  value: option.value,
-                                  label: option.label,
-                                })),
-                              ]}
+                              options={OPTIONS_SMALL.map((option) => ({
+                                value: option.value,
+                                label: option.label,
+                              }))}
                             />
                           </Form.Item>
 
                           <Form.Item label={labels.colStatus} htmlFor="app-status">
                             <Select
                               id="app-status"
-                              value={status}
-                              onChange={(next) => onFilterChange(() => setStatus(next))}
+                              value={status === ALL ? undefined : status}
+                              placeholder={labels.colStatus}
+                              allowClear
+                              onChange={(next?: string) =>
+                                onFilterChange(() => setStatus(next ?? ALL))
+                              }
                               style={{ width: "100%" }}
-                              options={[
-                                { value: ALL, label: labels.actionClearFilters },
-                                ...STATUSES.map((value) => ({ value, label: value })),
-                              ]}
+                              options={STATUSES.map((value) => ({ value, label: value }))}
                             />
                           </Form.Item>
 

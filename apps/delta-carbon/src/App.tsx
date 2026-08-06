@@ -120,6 +120,31 @@ export function App(): ReactElement {
             <SectionChrome />
             <SectionDataTable />
             <SectionStates />
+
+            {/*
+              THE 7-TO-9 JUMP IN THE HEADINGS IS DELIBERATE, AND SAYING SO HERE
+              IS THE POINT. Requirements section 8 is Locale, and it is met — by
+              the switcher above, which every section consumes. It gets no
+              numbered block because it is a page-level control, not a specimen.
+              Renumbering would hide that a specified section exists, and a note
+              at the foot of the page arrives long after the reader has read the
+              jump as a mistake. So it sits where 8 would be.
+            */}
+            <div className="demo__section" id="section-8-note">
+              <h3 className="demo__heading">
+                8. Locale — no numbered section of its own
+              </h3>
+              <p className="demo__prose">
+                Section 8 of the requirements (locale switcher, RTL, long labels)
+                is exercised by the locale switcher at the top of this page,
+                which drives every section above; Arabic sets{" "}
+                <code>dir=&quot;rtl&quot;</code> on this wrapper. It gets no
+                block here because it is page-wide rather than one specimen. The
+                headings run 7 to 9 for that reason — nothing was dropped or
+                hidden.
+              </p>
+            </div>
+
             <SectionSideBySide />
           </DemoContext.Provider>
         </div>

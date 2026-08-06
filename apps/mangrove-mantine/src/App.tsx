@@ -139,14 +139,34 @@ export function App({
                   <SectionChrome />
                   <SectionDataTable />
                   <SectionStates />
+
+                  {/*
+                    THE 7-TO-9 JUMP IN THE HEADINGS IS DELIBERATE, AND SAYING SO
+                    HERE IS THE POINT. Requirements section 8 is Locale, and it
+                    is met — by the switcher above, which every section consumes.
+                    It gets no numbered block because it is a page-level control,
+                    not a specimen. Renumbering would hide that a specified
+                    section exists, and a note at the foot of the page arrives
+                    long after the reader has read the jump as a mistake. So it
+                    sits where 8 would be.
+                  */}
+                  <section id="section-8-note">
+                    <Title order={3} mb="md">
+                      8. Locale — no numbered section of its own
+                    </Title>
+                    <Text size="sm" c="dimmed" maw="68ch">
+                      Section 8 of the requirements (locale switcher, RTL, long
+                      labels) is exercised by the locale switcher at the top of
+                      this page, which drives every section above; Arabic applies
+                      RTL through Mantine&apos;s <code>DirectionProvider</code>.
+                      It gets no block here because it is page-wide rather than
+                      one specimen. The headings run 7 to 9 for that reason —
+                      nothing was dropped or hidden.
+                    </Text>
+                  </section>
+
                   <SectionSideBySide />
                 </Stack>
-
-                <Text size="sm" c="dimmed" mt="16">
-                  Section 8 is the locale switcher above, which drives every
-                  other section. Arabic applies RTL through Mantine&apos;s
-                  <code> DirectionProvider</code>.
-                </Text>
               </div>
             </DemoContext.Provider>
           </DatesProvider>

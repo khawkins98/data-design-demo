@@ -119,9 +119,12 @@ const questionsHtml = QUESTIONS.map(
  * cards and the box on each demo page cannot disagree about what is known.
  */
 const KNOWN_ISSUES_PATH = join(ROOT, "docs", "known-issues.json");
-const knownIssues = existsSync(KNOWN_ISSUES_PATH)
-  ? JSON.parse(readFileSync(KNOWN_ISSUES_PATH, "utf8")).pairings
+const knownIssuesDoc = existsSync(KNOWN_ISSUES_PATH)
+  ? JSON.parse(readFileSync(KNOWN_ISSUES_PATH, "utf8"))
   : {};
+const knownIssues = knownIssuesDoc.pairings ?? {};
+/** Candidate-level totals, so a link's count matches what the link opens. */
+const candidateCounts = knownIssuesDoc.candidates ?? {};
 
 /** Reads one pairing's evidence.json, or null if the run has not produced one. */
 function readEvidence(appDir) {
@@ -277,16 +280,34 @@ function metrics(evidence) {
  * ten cards to decide which to open should see that MUI cannot do RTL before they
  * spend time on it, not after.
  */
-function knownIssueNote(appDir) {
+function knownIssueNote(appDir, candidateId) {
   const entry = knownIssues[appDir];
   if (!entry || !entry.headline) return "";
   const { severity, title } = entry.headline;
   const others = entry.total - 1;
+  /*
+   * "and 3 more" used to be inert text, so the full wording of a finding existed
+   * only inside a demo page or the TypeScript registry - the most consequential
+   * facts in the evaluation were the least reachable. It is now a link into the
+   * register, anchored at this candidate.
+   */
+  /*
+   * The count must match what the link opens.
+   *
+   * This used to read "and 3 more" from the PAIRING count while linking to the
+   * register, which groups by CANDIDATE and showed 8. Both numbers were right about
+   * different things, so nothing was wrong and nobody could tell - the worst kind of
+   * inconsistency. It now counts what the destination counts.
+   */
+  const candidateTotal = candidateCounts[candidateId]?.open ?? entry.total;
+  const more = ` <a class="card__issue-more" href="./issues.html#${esc(candidateId)}">${
+    candidateTotal > 1 ? `all ${candidateTotal} findings` : "read it in full"
+  }</a>`;
   return `<p class="card__issue card__issue--${esc(severity)}">
       <span class="card__issue-badge">${esc(
         severity === "decision" ? "Decision needed" : severity === "blocker" ? "Blocker" : "Caveat",
       )}</span>
-      ${esc(title)}${others > 0 ? ` <span class="card__issue-more">and ${others} more</span>` : ""}
+      ${esc(title)}${more}
     </p>`;
 }
 
@@ -375,7 +396,8 @@ function cardMarkup(card) {
  */
 const cardHtml = groups
   .map((group) => {
-    const worst = group.cards.map((card) => knownIssueNote(card.appDir)).find(Boolean) ?? "";
+    const worst =
+      group.cards.map((card) => knownIssueNote(card.appDir, group.candidate.id)).find(Boolean) ?? "";
     return `
       <section class="pairing" aria-labelledby="pairing-${esc(group.candidate.id)}">
         <div class="pairing__meta">
@@ -543,7 +565,8 @@ const html = `<!doctype html>
         color: var(--muted);
         margin-bottom: 0.125rem;
       }
-      .card__issue-more { color: var(--muted); }
+      /* A link, so it has to look like one. It was inert text before. */
+      .card__issue-more { color: var(--accent); white-space: nowrap; }
       .card__link { margin-top: auto; padding-top: 0.75rem; font-size: 0.875rem; color: var(--accent); }
       .card__link--disabled { color: var(--muted); }
       footer { margin-top: 3rem; color: var(--muted); font-size: 0.8125rem; max-width: 70ch; }
@@ -557,6 +580,19 @@ const html = `<!doctype html>
       }
       .start__title { font-size: 1.125rem; margin: 0 0 0.5rem; }
       .start__lead { margin: 0 0 0.75rem; max-width: 72ch; }
+      .start__verdict {
+        margin: 0 0 1rem;
+        padding: 0.875rem 1rem;
+        background: var(--bg);
+        border: 1px solid var(--accent);
+        border-radius: 6px;
+        max-width: 82ch;
+      }
+      .glossary { margin: 0 0 2rem; font-size: 0.875rem; }
+      .glossary__summary { cursor: pointer; color: var(--accent); font-weight: 600; }
+      .glossary__list { margin: 0.875rem 0 0; max-width: 80ch; }
+      .glossary__list dt { font-weight: 700; margin-top: 0.75rem; }
+      .glossary__list dd { margin: 0.125rem 0 0; color: var(--muted); }
       .start__list { margin: 0; padding-inline-start: 1.125rem; max-width: 78ch; }
       .start__list li + li { margin-top: 0.5rem; }
     </style>
@@ -587,11 +623,47 @@ const html = `<!doctype html>
           discriminate, and these six questions do.
         </p>
 
+        <!--
+          The recommendation, on the first screen.
+          A project manager reviewing this site could assemble a director-ready
+          summary only by digging past the page meant to provide it, and reported
+          that the site "never makes a recommendation". Hedging is not neutrality
+          when the reader's job is to decide.
+        -->
+        <p class="start__verdict">
+          <strong>If you only read one thing:</strong> the evidence recommends
+          <strong>Adobe React Aria</strong> — it is the only candidate of five with
+          no blocking defect, and Arabic works without custom code. But it ships
+          behaviour and not appearance, so adopting it means UNDRR builds and owns
+          the visual layer permanently. Read it as <em>adopt this and fund a design
+          system</em>, not <em>adopt this and save work</em>.
+          <a href="./scores.html">The ranking, the weights and what they cost</a>.
+        </p>
+
+        <!--
+          Why three views. The argument for the whole realistic-layout exercise was
+          previously buried inside a collapsed accordion on one demo page, and it is
+          the strongest thing the evaluation has.
+        -->
+        <p class="start__lead">
+          <strong>Each option is shown three ways, and the differences are the
+          point.</strong> A component inventory proves the parts exist — and hides
+          things: Ant Design's filters look fine there because an unset dropdown and
+          a broken one look identical. Put the same library inside a real UNDRR page
+          and the filter renders blank, so a reviewer cannot see what they filtered
+          by. Two of the three defects that decide this evaluation are invisible in a
+          tidy component list.
+        </p>
+
         <div class="questions">
 ${questionsHtml}
         </div>
 
         <p class="start__more">
+          <a href="./scores.html"><strong>Weighted scores and the shortlist</strong></a>
+          — the five candidates ranked across all seven axes, with each blocker
+          shown beside the score rather than folded into it, and what it would
+          take to escape each one &middot;
           <a href="./axes.html"><strong>All seven decision axes</strong></a>, with
           what is measured on each and where a measurement cannot honestly be
           made &middot;
@@ -607,6 +679,64 @@ ${questionsHtml}
           the decision.
         </p>
       </section>
+
+      <!--
+        Glossary. Every term here was quoted back by a reviewer as a phrase that
+        stopped them, on a page they had been directed to as a decision-maker. The
+        two axes it defines - A1 and A2 - were never introduced anywhere, and A2
+        carries the second-heaviest weight in the score.
+      -->
+      <details class="glossary">
+        <summary class="glossary__summary">
+          Plain-English glossary — the words this evaluation uses without explaining
+          them
+        </summary>
+        <dl class="glossary__list">
+          <dt>Leakage</dt>
+          <dd>
+            A component library changing how the rest of the page looks, outside its
+            own area. If a library restyles UNDRR's own headings and buttons, every
+            page it appears on inherits that. The test loads each page twice, with
+            and without the library, and compares.
+          </dd>
+          <dt>Kitchen sink / component inventory</dt>
+          <dd>
+            One page showing every control at once. Proves the parts exist; tells you
+            almost nothing about using them together.
+          </dd>
+          <dt>Embedded island</dt>
+          <dd>
+            The library placed inside a real UNDRR Mangrove page, owning one region,
+            with genuine content around it. This is where the defects showed up.
+          </dd>
+          <dt>Portalled overlay</dt>
+          <dd>
+            A dialog or dropdown that the browser moves to the end of the page to
+            display it on top. It leaves the area being tested, so automated checks
+            can miss what is inside it — which is how a critical defect in Mantine's
+            dialog went unseen until a realistic screen was built.
+          </dd>
+          <dt>Escape hatch / off the documented route</dt>
+          <dd>
+            A place where the library's supported way of restyling something did not
+            reach, so we styled around it. Each one is a thing that could break when
+            the library updates, on every site using it.
+          </dd>
+          <dt>axe</dt>
+          <dd>
+            An automated accessibility scanner. It catches a minority of accessibility
+            problems, which is why every result here is described as a floor rather
+            than a pass.
+          </dd>
+          <dt>A1 Implementation effort &middot; A2 Maintainability at scale</dt>
+          <dd>
+            The two scored axes not covered by the six questions above. A1 is what it
+            costs to build the first site. A2 is what it costs to keep every site
+            working through library updates — weighted second-heaviest, because the
+            estate is the point.
+          </dd>
+        </dl>
+      </details>
 
       <div class="grid">
 ${cardHtml}

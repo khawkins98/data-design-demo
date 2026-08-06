@@ -41,7 +41,17 @@
 
 import { useMemo, useState } from "react";
 import type { ReactElement } from "react";
-import { ConfigProvider, Form, Input, Segmented, Select, Table, Tag, Typography } from "antd";
+import {
+  Button,
+  ConfigProvider,
+  Form,
+  Input,
+  Segmented,
+  Select,
+  Table,
+  Tag,
+  Typography,
+} from "antd";
 import type { ColumnsType } from "antd/es/table";
 import arEG from "antd/es/locale/ar_EG";
 import deDE from "antd/es/locale/de_DE";
@@ -222,6 +232,17 @@ export function IslandView(): ReactElement {
     setPage(1);
   };
 
+  const filtersActive = country !== ALL || hazard !== ALL || status !== ALL || query.trim() !== "";
+
+  const resetFilters = (): void => {
+    onFilterChange(() => {
+      setCountry(ALL);
+      setHazard(ALL);
+      setStatus(ALL);
+      setQuery("");
+    });
+  };
+
   return (
     <IslandFrame
       title={labels.appTitle}
@@ -301,45 +322,66 @@ export function IslandView(): ReactElement {
                     marginBottom: "1rem",
                   }}
                 >
+                  {/*
+                    * THE UNFILTERED STATE IS A PLACEHOLDER, NOT A SENTINEL OPTION.
+                    * Same fix, and the same reasoning, as
+                    * `apps/delta-antd/src/AppView.tsx`: these three Selects used to
+                    * carry a first option labelled `labels.actionClearFilters`, so a
+                    * resting dropdown's visible text AND its accessible name both read
+                    * "Clear filters". Worse here than on Delta, because this island had
+                    * no Clear-filters button at all, so the only place those words
+                    * appeared was three controls that did not perform the action.
+                    * `placeholder` plus `allowClear` is antd's own answer, and
+                    * `value={x === ALL ? undefined : x}` is what makes it show — antd
+                    * treats only `undefined` as unset, and would render `"all"` raw.
+                    *
+                    * THE PLACEHOLDER IS THE FIELD'S OWN LABEL, matching the Carbon
+                    * island's `Dropdown` `label` slot. React Aria's register ("Any
+                    * hazard type" / "Any status") reads better but exists only in
+                    * English: `@undrr-eval/fixtures` HAS NO `optionAll`/`filterAny*`
+                    * KEY in any of the four locales, and the package is import-only for
+                    * this run. The field name is the only fully-localised string for
+                    * this slot, so three fields stay Arabic and German rather than
+                    * dropping to English. THE FIXTURE GAP IS RECORDED, not papered over.
+                    */}
                   <Form.Item label={labels.fieldCountry} htmlFor="island-country">
                     <Select
                       id="island-country"
-                      value={country}
-                      onChange={(next) => onFilterChange(() => setCountry(next))}
+                      value={country === ALL ? undefined : country}
+                      placeholder={labels.fieldCountry}
+                      allowClear
+                      onChange={(next?: string) =>
+                        onFilterChange(() => setCountry(next ?? ALL))
+                      }
                       style={{ width: "100%" }}
-                      options={[
-                        { value: ALL, label: labels.actionClearFilters },
-                        ...COUNTRIES.map((name) => ({ value: name, label: name })),
-                      ]}
+                      options={COUNTRIES.map((name) => ({ value: name, label: name }))}
                     />
                   </Form.Item>
 
                   <Form.Item label={labels.fieldHazard} htmlFor="island-hazard">
                     <Select
                       id="island-hazard"
-                      value={hazard}
-                      onChange={(next) => onFilterChange(() => setHazard(next))}
+                      value={hazard === ALL ? undefined : hazard}
+                      placeholder={labels.fieldHazard}
+                      allowClear
+                      onChange={(next?: string) => onFilterChange(() => setHazard(next ?? ALL))}
                       style={{ width: "100%" }}
-                      options={[
-                        { value: ALL, label: labels.actionClearFilters },
-                        ...OPTIONS_SMALL.map((option) => ({
-                          value: option.value,
-                          label: option.label,
-                        })),
-                      ]}
+                      options={OPTIONS_SMALL.map((option) => ({
+                        value: option.value,
+                        label: option.label,
+                      }))}
                     />
                   </Form.Item>
 
                   <Form.Item label={labels.colStatus} htmlFor="island-status">
                     <Select
                       id="island-status"
-                      value={status}
-                      onChange={(next) => onFilterChange(() => setStatus(next))}
+                      value={status === ALL ? undefined : status}
+                      placeholder={labels.colStatus}
+                      allowClear
+                      onChange={(next?: string) => onFilterChange(() => setStatus(next ?? ALL))}
                       style={{ width: "100%" }}
-                      options={[
-                        { value: ALL, label: labels.actionClearFilters },
-                        ...STATUSES.map((value) => ({ value, label: value })),
-                      ]}
+                      options={STATUSES.map((value) => ({ value, label: value }))}
                     />
                   </Form.Item>
 
@@ -354,11 +396,43 @@ export function IslandView(): ReactElement {
                   </Form.Item>
                 </Form>
 
-                <Typography.Paragraph type="secondary" style={{ marginBottom: "0.5rem" }}>
-                  {new Intl.NumberFormat(bcp47).format(rows.length)} /{" "}
-                  {new Intl.NumberFormat(bcp47).format(LOSS_RECORDS.length)} —{" "}
-                  {labels.navRecords}
-                </Typography.Paragraph>
+                {/*
+                  * WHERE `labels.actionClearFilters` BELONGS: on a button that performs
+                  * the action. It used to be the resting label of the three Selects
+                  * above and of nothing else, so the words were on screen and the action
+                  * was not available anywhere. Matches the Carbon and Mantine islands,
+                  * which both grew this button for the same reason.
+                  *
+                  * OUTSIDE the `Form`, beside the count, rather than as a fifth
+                  * `Form.Item`: a Form.Item needs a label to keep the grid's baseline,
+                  * and a blank label to align a button is chrome pretending to be a
+                  * field name. This row is also where Mantine's island puts it.
+                  */}
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "baseline",
+                    justifyContent: "space-between",
+                    gap: "1rem",
+                    flexWrap: "wrap",
+                  }}
+                >
+                  <Typography.Paragraph type="secondary" style={{ marginBottom: "0.5rem" }}>
+                    {new Intl.NumberFormat(bcp47).format(rows.length)} /{" "}
+                    {new Intl.NumberFormat(bcp47).format(LOSS_RECORDS.length)} —{" "}
+                    {labels.navRecords}
+                  </Typography.Paragraph>
+
+                  <Button
+                    size="small"
+                    disabled={!filtersActive}
+                    onClick={resetFilters}
+                    style={{ marginBottom: "0.5rem" }}
+                    data-testid="island-clear-filters"
+                  >
+                    {labels.actionClearFilters}
+                  </Button>
+                </div>
 
                 <Table<LossRecord>
                   columns={columns}

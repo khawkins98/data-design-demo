@@ -197,5 +197,27 @@
         "title": "Select controls do not display their selected value"
       }
     }
+  },
+  "candidates": {
+    "react-aria": {
+      "open": 8,
+      "resolved": 6
+    },
+    "mui": {
+      "open": 5,
+      "resolved": 5
+    },
+    "carbon": {
+      "open": 8,
+      "resolved": 7
+    },
+    "mantine": {
+      "open": 6,
+      "resolved": 7
+    },
+    "antd": {
+      "open": 9,
+      "resolved": 4
+    }
   }
 }

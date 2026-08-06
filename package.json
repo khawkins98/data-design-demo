@@ -29,7 +29,8 @@
     "axes": "node scripts/build-axes.mjs",
     "scores": "node --experimental-strip-types scripts/build-scores.mjs",
     "deps:count": "node scripts/count-dependencies.mjs",
-    "known-issues:json": "node --experimental-strip-types scripts/build-known-issues-json.mjs"
+    "known-issues:json": "node --experimental-strip-types scripts/build-known-issues-json.mjs",
+    "issues:page": "node --experimental-strip-types scripts/build-issues-page.mjs"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.10.2",

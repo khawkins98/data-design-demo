@@ -8,20 +8,10 @@
     "wcag21aa",
     "wcag22aa"
   ],
-  "violations": [
-    {
-      "id": "color-contrast",
-      "impact": "serious",
-      "help": "Elements must meet minimum color contrast ratio thresholds",
-      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright",
-      "nodes": [
-        "#island-hazard"
-      ]
-    }
-  ],
+  "violations": [],
   "counts": {
-    "violations": 1,
-    "serious": 1,
+    "violations": 0,
+    "serious": 0,
     "critical": 0,
     "incomplete": 2
   },

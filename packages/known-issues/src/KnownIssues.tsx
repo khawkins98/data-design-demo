@@ -71,6 +71,8 @@ export function KnownIssues({ candidate, host, candidateName }: KnownIssuesProps
     return acc;
   }, {});
 
+  const hasBlocker = issues.some((issue) => issue.severity === "blocker");
+
   // Ordered worst-first by issuesFor, so the summary reads in the same order.
   const summaryBits = (["blocker", "decision", "caveat", "info"] as const)
     .filter((s) => counts[s])
@@ -94,7 +96,22 @@ export function KnownIssues({ candidate, host, candidateName }: KnownIssuesProps
       className={`${TOKEN_SCOPE_CLASS} undrr-known-issues`}
       aria-labelledby="known-issues-heading"
     >
-      <details className="undrr-known-issues__details">
+      {/*
+       * OPEN WHEN THERE IS A BLOCKER, collapsed otherwise.
+       *
+       * It used to be collapsed unconditionally, on the reasoning that `open` would
+       * change every screenshot's framing. True, and it lost to a worse problem: a
+       * reviewer looking at mangrove-antd sees three filter controls rendering
+       * blank, and the explanation of why - which is the difference between "Ant
+       * Design is broken" and "one cascade-layer setting is doing this, reversibly" -
+       * was hidden behind a summary they had no reason to click. A project manager
+       * reviewing the site reached the wrong conclusion for exactly this reason.
+       *
+       * So the framing cost is now paid only on the pairings that have a blocker,
+       * which are the pairings where a reader most needs the text, and the screenshot
+       * shows what a reader actually sees.
+       */}
+      <details className="undrr-known-issues__details" open={hasBlocker}>
         <summary className="undrr-known-issues__summary">
           <span id="known-issues-heading" className="undrr-known-issues__title">
             Known issues with this integration

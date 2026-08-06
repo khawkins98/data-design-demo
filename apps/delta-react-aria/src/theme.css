@@ -525,9 +525,15 @@ select.demo-input:focus-visible {
   background: transparent;
   cursor: pointer;
   font: inherit;
-  /* PREFLIGHT RECOVERY: without a declared line-height the emoji trigger sits
+  /* PREFLIGHT RECOVERY: without a declared line-height the trigger glyph sits
      off-baseline once `font: inherit` has flattened the button's metrics. */
   line-height: 1;
+}
+
+/* `display: block` so the inline SVG does not sit on the text baseline and leave
+   a descender gap under it. */
+.demo-dateinput__icon {
+  display: block;
 }
 
 .demo-dateinput__dash {

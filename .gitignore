@@ -27,3 +27,4 @@ apps/*/test-results/playwright/
 
 # Assembled comparison site, rebuilt by `pnpm site`.
 _site/
+.gstack/

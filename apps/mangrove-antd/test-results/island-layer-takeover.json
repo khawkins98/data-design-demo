@@ -16,7 +16,7 @@
     "height": "46px",
     "fontFamily": "Roboto, sans-serif"
   },
-  "antdStyleTagsUsingLayer": 16,
+  "antdStyleTagsUsingLayer": 18,
   "antdClassStillPresent": true,
   "note": "antd's Input and a bare Mangrove input, measured in the same page. Identical values mean Mangrove's unlayered element selectors beat antd's layered class selectors. Zero lines of repair CSS were written to achieve this; the seed tokens for controlHeight and borderRadius do not reach the control."
 }

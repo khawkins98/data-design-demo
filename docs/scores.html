@@ -24,23 +24,317 @@
   </head>
   <body>
     <div class="page">
-      <h1>Weighted scores</h1>
-      <h2>Weights</h2>
-      <h2>Ranking</h2>
-      <h2>Blockers, in full</h2>
-      <h2>Per pairing, per axis</h2>
-      <h3>`delta-react-aria` - composite 84 / 100</h3>
-      <h3>`mangrove-react-aria` - composite 84 / 100</h3>
-      <h3>`delta-mui` - composite 60 / 100</h3>
-      <h3>`mangrove-mui` - composite 56 / 100</h3>
-      <h3>`delta-carbon` - composite 49 / 100</h3>
-      <h3>`mangrove-carbon` - composite 43 / 100</h3>
-      <h3>`delta-mantine` - composite 60 / 100</h3>
-      <h3>`mangrove-mantine` - composite 70 / 100</h3>
-      <h3>`delta-antd` - composite 68 / 100</h3>
-      <h3>`mangrove-antd` - composite 68 / 100</h3>
-      <h2>What this cannot tell you</h2>
-      <p><a href="./scores.md">Full scores table (markdown)</a> &middot;
+<h1>Weighted scores</h1>
+
+<p>GENERATED FILE - regenerate with <code>pnpm scores</code>. Axis definitions are in <a href="./decision-axes.md">decision-axes.md</a>; the questions these serve are in <a href="./undrr-questions.md">undrr-questions.md</a>.</p>
+
+<p>Every value here is derived from <code>evidence.json</code>, the known-issues registry and <code>extraction-results.json</code>. Nothing is typed by hand, and only defects owned by the library or the pairing can affect a score - never a host defect, which is the same for all five, and never one of ours.</p>
+
+<h2>What this says to do</h2>
+
+<p><strong>Adopt Adobe React Aria.</strong></p>
+
+<p>It leads on the composite at 84 against 68 for Ant Design, and it is the only candidate of 5 carrying no blocking defect. Arabic works from a <code>dir</code> attribute alone. It stays inside its own subtree on both hosts.</p>
+
+<p><strong>The cost, which the composite does not charge it for.</strong> React Aria ships behaviour, not appearance. Adopting it means UNDRR builds and then owns the visual layer permanently - this evaluation's own demo carries 121 to 133 hand-written CSS rules for one page. Three of the seven axes reward exactly the property that creates that cost: a library with no opinions cannot conflict with Mangrove, cannot bake in wrong colours and cannot mistheme. **Read the recommendation as "adopt this and fund a design system", not as "adopt this and save work".**</p>
+
+<p><strong>Two things must happen before this is signed off, and neither is a technical task.</strong></p>
+
+<p>1. A human accessibility pass. Every A7 band on this page rests on automated scanning.    No screen-reader test and no human keyboard walkthrough was run on any candidate, so    no conformance claim can be made from this evidence. 2. A decision on MUI's exclusion. Its Arabic defect has a fix that this evaluation's    rules forbid. If UNDRR relaxes that rule, MUI returns to contention - which makes its    position a procurement question rather than an engineering result.</p>
+
+<h2>Weights</h2>
+
+<p>A judgement about what UNDRR values, not a measurement - so it is recorded as one.</p>
+
+<ul>
+<li><strong>Chosen by:</strong> Proposed by the evaluation author, not yet ratified by UNDRR</li>
+<li><strong>Date:</strong> 2026-08-06</li>
+<li><strong>Status:</strong> <strong>not ratified.</strong> Nobody at UNDRR has agreed these numbers.</li>
+<li><strong>Basis:</strong> Derived from the framing in undrr-questions.md: a continuity decision about an estate, so axes about living with a library across many sites outweigh the one about building the first site. A6 and A7 carry the most because they are standing obligations rather than preferences, and the composite model UNDRR chose cannot gate on them - weight is the only lever left.</li>
+
+</ul>
+<p>This matters more than it looks. A6 at 18 is the weight that removes MUI from contention; if it were 12 the ranking would change. Anyone defending this choice should expect to defend the weights first, and should be able to say who set them.</p>
+
+<div class="scroll"><table><thead>
+<tr><th>Axis</th><th>Weight</th></tr>
+</thead><tbody>
+<tr><td>A1 Implementation effort</td><td>8</td></tr>
+<tr><td>A2 Maintainability at scale</td><td>16</td></tr>
+<tr><td>A3 Reproducibility across sites</td><td>16</td></tr>
+<tr><td>A4 Mangrove compatibility</td><td>14</td></tr>
+<tr><td>A5 Theming fidelity</td><td>14</td></tr>
+<tr><td>A6 Right-to-left</td><td>18</td></tr>
+<tr><td>A7 Accessibility conformance</td><td>14</td></tr>
+</tbody></table></div>
+
+<h2>Ranking</h2>
+
+<p>Composite is the weighted mean of the two hosts. **Blockers are listed beside the score and never folded into it**: a weighted composite can otherwise let a good bundle size offset an unfixable defect, so the number ranks and is not permitted to hide anything.</p>
+
+<div class="scroll"><table><thead>
+<tr><th>#</th><th>Candidate</th><th>Composite</th><th>Library-owned blockers</th></tr>
+</thead><tbody>
+<tr><td>1</td><td>Adobe React Aria</td><td><strong>84</strong> / 100</td><td>none</td></tr>
+<tr><td>2</td><td>Ant Design</td><td><strong>68</strong> / 100</td><td><strong>1</strong> - see below</td></tr>
+<tr><td>3</td><td>Mantine</td><td><strong>65</strong> / 100</td><td><strong>1</strong> - see below</td></tr>
+<tr><td>4</td><td>MUI (Community only)</td><td><strong>58</strong> / 100</td><td><strong>2</strong> - see below</td></tr>
+<tr><td>5</td><td>IBM Carbon</td><td><strong>46</strong> / 100</td><td><strong>3</strong> - see below</td></tr>
+</tbody></table></div>
+
+<p><strong>1 of 5 candidates carry no blocker at all:</strong> Adobe React Aria.</p>
+
+<p>That is the recommendation. The next two - Ant Design and Mantine - are the credible fallbacks, because their blockers can be escaped: see the escape-cost table below. The bottom two cannot, or only by a decision that is UNDRR's rather than an engineer's. So the shortlist worth deeper work is the top three, and the recommendation within it is the first.</p>
+
+<h2>Blockers, in full</h2>
+
+<p>A blocked axis is not a low score. It is a statement that the axis is not satisfied at all, by the library rather than by our code.</p>
+
+<p>Two things to know before reading these as a ranking of severity.</p>
+
+<p><strong>A finding can appear twice</strong> - once as an axis verdict derived from <code>evidence.json</code>, once as its known-issues entry. Those are two records of one fact from two sources, deliberately not merged, because silently collapsing them would hide a disagreement if the two sources ever stopped matching.</p>
+
+<p><strong>Remediability is recorded but not scored.</strong> Each blocker carries how it could be escaped, taken from the registry rather than inferred. It is kept out of the composite on purpose: it describes the cost of living with a defect, not the axis the defect sits on, so averaging it in would double-count severity and blur both. It is here to answer one question the composite cannot - whether a candidate below the top of the ranking can be brought up to it.</p>
+
+<div class="scroll"><table><thead>
+<tr><th>Candidate</th><th>Blockers</th><th>Cheapest escape</th><th>Hardest escape</th></tr>
+</thead><tbody>
+<tr><td>Ant Design</td><td>1</td><td>reversible per site by changing a setting</td><td>reversible per site by changing a setting</td></tr>
+<tr><td>Mantine</td><td>1</td><td>fixable in consuming code, repeated per site</td><td>fixable in consuming code, repeated per site</td></tr>
+<tr><td>MUI (Community only)</td><td>2</td><td>a fix exists but this evaluation's rules forbid it - a policy decision</td><td>a fix exists but this evaluation's rules forbid it - a policy decision</td></tr>
+<tr><td>IBM Carbon</td><td>3</td><td>needs a change in the library</td><td>cannot be escaped while using the library as documented</td></tr>
+</tbody></table></div>
+
+<p><strong>Ant Design</strong></p>
+
+<ul>
+<li>antd-select-value-hidden-on-mangrove: Select controls do not display their selected value (owned by pairing) [escape: reversible per site by changing a setting]</li>
+
+</ul>
+<p><strong>Mantine</strong></p>
+
+<ul>
+<li>mantine-modal-close-unnamed: Modal's close button ships with no accessible name (owned by candidate) [escape: fixable in consuming code, repeated per site]</li>
+
+</ul>
+<p><strong>MUI (Community only)</strong></p>
+
+<ul>
+<li>A6 Right-to-left: Arabic is not correct as shipped: 2 recorded defects, unresolved</li>
+<li>mui-rtl-unfixable: RTL is not achievable in the MUI Community tier (owned by candidate) [escape: a fix exists but this evaluation's rules forbid it - a policy decision]</li>
+
+</ul>
+<p><strong>IBM Carbon</strong></p>
+
+<ul>
+<li>carbon-unreachable-tokens: Carbon cannot express about 30% of the UNDRR design tokens (owned by candidate) [escape: needs a change in the library]</li>
+<li>A4 Mangrove compatibility: the candidate restyled 19 computed properties on host markup outside its own subtree</li>
+<li>carbon-leakage-failure: This pairing fails the style-containment assertion (owned by pairing) [escape: cannot be escaped while using the library as documented]</li>
+
+</ul>
+<h2>Per pairing, per axis</h2>
+
+<p>Each cell carries the fact that assigned the band. <code>strong</code> scores full weight, <code>workable</code> 60%, <code>weak</code> 30%, <code>blocked</code> nothing.</p>
+
+<h3><code>delta-react-aria</code> - composite 84 / 100</h3>
+
+<p>Worst open issue: <strong>caveat</strong> - React Aria is unstyled, so this page carries 121 to 133 CSS rules</p>
+
+<p>4 open findings. 6 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.</p>
+
+<div class="scroll"><table><thead>
+<tr><th>Axis</th><th>Band</th><th>Weight</th><th>Why</th></tr>
+</thead><tbody>
+<tr><td>A1 Implementation effort</td><td><strong>workable</strong></td><td>8</td><td>10 of 30 requirements needed more than a documented component; 5 documented approaches failed and needed working around</td></tr>
+<tr><td>A2 Maintainability at scale</td><td><strong>workable</strong></td><td>16</td><td>5 escape hatches off the documented theming route; 0 scoreable maintenance findings</td></tr>
+<tr><td>A3 Reproducibility across sites</td><td><strong>workable</strong></td><td>16</td><td>extraction outcome recorded as analysed</td></tr>
+<tr><td>A4 Mangrove compatibility</td><td>strong</td><td>14</td><td>no host canary changed when the candidate mounted</td></tr>
+<tr><td>A5 Theming fidelity</td><td>strong</td><td>14</td><td>all 48 reachable tokens applied</td></tr>
+<tr><td>A6 Right-to-left</td><td>strong</td><td>18</td><td>Arabic worked from a dir attribute alone, at zero custom lines</td></tr>
+<tr><td>A7 Accessibility conformance</td><td>strong</td><td>14</td><td>no critical or serious automated violations; 1 checks axe declined to decide, each still owed a human</td></tr>
+</tbody></table></div>
+
+<h3><code>mangrove-react-aria</code> - composite 84 / 100</h3>
+
+<p>Worst open issue: <strong>caveat</strong> - React Aria is unstyled, so this page carries 121 to 133 CSS rules</p>
+
+<p>8 open findings. 6 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.</p>
+
+<div class="scroll"><table><thead>
+<tr><th>Axis</th><th>Band</th><th>Weight</th><th>Why</th></tr>
+</thead><tbody>
+<tr><td>A1 Implementation effort</td><td><strong>workable</strong></td><td>8</td><td>9 of 30 requirements needed more than a documented component; 3 documented approaches failed and needed working around</td></tr>
+<tr><td>A2 Maintainability at scale</td><td><strong>workable</strong></td><td>16</td><td>3 escape hatches off the documented theming route; 0 scoreable maintenance findings</td></tr>
+<tr><td>A3 Reproducibility across sites</td><td><strong>workable</strong></td><td>16</td><td>extraction outcome recorded as analysed</td></tr>
+<tr><td>A4 Mangrove compatibility</td><td>strong</td><td>14</td><td>no host canary changed when the candidate mounted</td></tr>
+<tr><td>A5 Theming fidelity</td><td>strong</td><td>14</td><td>all 47 reachable tokens applied</td></tr>
+<tr><td>A6 Right-to-left</td><td>strong</td><td>18</td><td>Arabic worked from a dir attribute alone, at zero custom lines</td></tr>
+<tr><td>A7 Accessibility conformance</td><td>strong</td><td>14</td><td>no critical or serious automated violations; 1 checks axe declined to decide, each still owed a human</td></tr>
+</tbody></table></div>
+
+<h3><code>delta-mui</code> - composite 60 / 100</h3>
+
+<p>Worst open issue: <strong>blocker</strong> - RTL is not achievable in the MUI Community tier</p>
+
+<p>3 open findings. 5 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.</p>
+
+<div class="scroll"><table><thead>
+<tr><th>Axis</th><th>Band</th><th>Weight</th><th>Why</th></tr>
+</thead><tbody>
+<tr><td>A1 Implementation effort</td><td><strong>workable</strong></td><td>8</td><td>4 of 30 requirements needed more than a documented component; 5 documented approaches failed and needed working around</td></tr>
+<tr><td>A2 Maintainability at scale</td><td><strong>workable</strong></td><td>16</td><td>5 escape hatches off the documented theming route; 0 scoreable maintenance findings</td></tr>
+<tr><td>A3 Reproducibility across sites</td><td><strong>workable</strong></td><td>16</td><td>extraction outcome recorded as measured</td></tr>
+<tr><td>A4 Mangrove compatibility</td><td>strong</td><td>14</td><td>no host canary changed when the candidate mounted</td></tr>
+<tr><td>A5 Theming fidelity</td><td>strong</td><td>14</td><td>all 29 reachable tokens applied</td></tr>
+<tr><td>A6 Right-to-left</td><td><strong>blocked</strong></td><td>18</td><td>Arabic is not correct as shipped: 2 recorded defects, unresolved</td></tr>
+<tr><td>A7 Accessibility conformance</td><td><strong>workable</strong></td><td>14</td><td>1 serious automated violations; 4 checks axe declined to decide, each still owed a human</td></tr>
+</tbody></table></div>
+
+<h3><code>mangrove-mui</code> - composite 56 / 100</h3>
+
+<p>Worst open issue: <strong>blocker</strong> - RTL is not achievable in the MUI Community tier</p>
+
+<p>5 open findings. 5 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.</p>
+
+<div class="scroll"><table><thead>
+<tr><th>Axis</th><th>Band</th><th>Weight</th><th>Why</th></tr>
+</thead><tbody>
+<tr><td>A1 Implementation effort</td><td><strong>workable</strong></td><td>8</td><td>4 of 30 requirements needed more than a documented component; 7 documented approaches failed and needed working around</td></tr>
+<tr><td>A2 Maintainability at scale</td><td><strong>weak</strong></td><td>16</td><td>7 escape hatches off the documented theming route; 0 scoreable maintenance findings</td></tr>
+<tr><td>A3 Reproducibility across sites</td><td><strong>workable</strong></td><td>16</td><td>extraction outcome recorded as measured</td></tr>
+<tr><td>A4 Mangrove compatibility</td><td>strong</td><td>14</td><td>no host canary changed when the candidate mounted</td></tr>
+<tr><td>A5 Theming fidelity</td><td>strong</td><td>14</td><td>all 32 reachable tokens applied</td></tr>
+<tr><td>A6 Right-to-left</td><td><strong>blocked</strong></td><td>18</td><td>Arabic is not correct as shipped: 1 recorded defect, unresolved</td></tr>
+<tr><td>A7 Accessibility conformance</td><td><strong>workable</strong></td><td>14</td><td>1 serious automated violations; 4 checks axe declined to decide, each still owed a human</td></tr>
+</tbody></table></div>
+
+<h3><code>delta-carbon</code> - composite 49 / 100</h3>
+
+<p>Worst open issue: <strong>blocker</strong> - Carbon cannot express about 30% of the UNDRR design tokens</p>
+
+<p>5 open findings. 7 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.</p>
+
+<div class="scroll"><table><thead>
+<tr><th>Axis</th><th>Band</th><th>Weight</th><th>Why</th></tr>
+</thead><tbody>
+<tr><td>A1 Implementation effort</td><td><strong>weak</strong></td><td>8</td><td>11 of 30 requirements needed more than a documented component; 12 documented approaches failed and needed working around</td></tr>
+<tr><td>A2 Maintainability at scale</td><td><strong>weak</strong></td><td>16</td><td>12 escape hatches off the documented theming route; 0 scoreable maintenance findings</td></tr>
+<tr><td>A3 Reproducibility across sites</td><td><strong>workable</strong></td><td>16</td><td>extraction outcome recorded as analysed</td></tr>
+<tr><td>A4 Mangrove compatibility</td><td><strong>workable</strong></td><td>14</td><td>clean only because the documented global stylesheet was not loaded as documented</td></tr>
+<tr><td>A5 Theming fidelity</td><td><strong>weak</strong></td><td>14</td><td>21 of 71 UNDRR tokens cannot be attached at all - a ceiling, not a cost</td></tr>
+<tr><td>A6 Right-to-left</td><td><strong>workable</strong></td><td>18</td><td>clean, but only after 0 custom lines and 1 recorded mitigations</td></tr>
+<tr><td>A7 Accessibility conformance</td><td><strong>workable</strong></td><td>14</td><td>2 serious automated violations; 2 checks axe declined to decide, each still owed a human</td></tr>
+</tbody></table></div>
+
+<h3><code>mangrove-carbon</code> - composite 43 / 100</h3>
+
+<p>Worst open issue: <strong>blocker</strong> - Carbon cannot express about 30% of the UNDRR design tokens</p>
+
+<p>8 open findings. 7 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.</p>
+
+<div class="scroll"><table><thead>
+<tr><th>Axis</th><th>Band</th><th>Weight</th><th>Why</th></tr>
+</thead><tbody>
+<tr><td>A1 Implementation effort</td><td><strong>workable</strong></td><td>8</td><td>11 of 30 requirements needed more than a documented component; 8 documented approaches failed and needed working around</td></tr>
+<tr><td>A2 Maintainability at scale</td><td><strong>weak</strong></td><td>16</td><td>8 escape hatches off the documented theming route; 0 scoreable maintenance findings</td></tr>
+<tr><td>A3 Reproducibility across sites</td><td><strong>workable</strong></td><td>16</td><td>extraction outcome recorded as analysed</td></tr>
+<tr><td>A4 Mangrove compatibility</td><td><strong>blocked</strong></td><td>14</td><td>the candidate restyled 19 computed properties on host markup outside its own subtree</td></tr>
+<tr><td>A5 Theming fidelity</td><td><strong>weak</strong></td><td>14</td><td>22 of 72 UNDRR tokens cannot be attached at all - a ceiling, not a cost</td></tr>
+<tr><td>A6 Right-to-left</td><td><strong>workable</strong></td><td>18</td><td>clean, but only after 6 custom lines and 2 recorded mitigations</td></tr>
+<tr><td>A7 Accessibility conformance</td><td><strong>workable</strong></td><td>14</td><td>1 serious automated violations; 2 checks axe declined to decide, each still owed a human</td></tr>
+</tbody></table></div>
+
+<h3><code>delta-mantine</code> - composite 60 / 100</h3>
+
+<p>Worst open issue: <strong>blocker</strong> - Modal's close button ships with no accessible name</p>
+
+<p>4 open findings. 7 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.</p>
+
+<div class="scroll"><table><thead>
+<tr><th>Axis</th><th>Band</th><th>Weight</th><th>Why</th></tr>
+</thead><tbody>
+<tr><td>A1 Implementation effort</td><td><strong>weak</strong></td><td>8</td><td>10 of 30 requirements needed more than a documented component; 11 documented approaches failed and needed working around</td></tr>
+<tr><td>A2 Maintainability at scale</td><td><strong>weak</strong></td><td>16</td><td>11 escape hatches off the documented theming route; 0 scoreable maintenance findings</td></tr>
+<tr><td>A3 Reproducibility across sites</td><td><strong>workable</strong></td><td>16</td><td>extraction outcome recorded as analysed</td></tr>
+<tr><td>A4 Mangrove compatibility</td><td>strong</td><td>14</td><td>no host canary changed when the candidate mounted</td></tr>
+<tr><td>A5 Theming fidelity</td><td><strong>weak</strong></td><td>14</td><td>5 of 71 UNDRR tokens cannot be attached at all - a ceiling, not a cost</td></tr>
+<tr><td>A6 Right-to-left</td><td><strong>workable</strong></td><td>18</td><td>clean, but only after 18 custom lines and 2 recorded mitigations</td></tr>
+<tr><td>A7 Accessibility conformance</td><td>strong</td><td>14</td><td>no critical or serious automated violations; 1 checks axe declined to decide, each still owed a human</td></tr>
+</tbody></table></div>
+
+<h3><code>mangrove-mantine</code> - composite 70 / 100</h3>
+
+<p>Worst open issue: <strong>blocker</strong> - Modal's close button ships with no accessible name</p>
+
+<p>6 open findings. 7 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.</p>
+
+<div class="scroll"><table><thead>
+<tr><th>Axis</th><th>Band</th><th>Weight</th><th>Why</th></tr>
+</thead><tbody>
+<tr><td>A1 Implementation effort</td><td><strong>weak</strong></td><td>8</td><td>11 of 30 requirements needed more than a documented component; 9 documented approaches failed and needed working around</td></tr>
+<tr><td>A2 Maintainability at scale</td><td><strong>weak</strong></td><td>16</td><td>9 escape hatches off the documented theming route; 0 scoreable maintenance findings</td></tr>
+<tr><td>A3 Reproducibility across sites</td><td><strong>workable</strong></td><td>16</td><td>extraction outcome recorded as analysed</td></tr>
+<tr><td>A4 Mangrove compatibility</td><td>strong</td><td>14</td><td>no host canary changed when the candidate mounted</td></tr>
+<tr><td>A5 Theming fidelity</td><td>strong</td><td>14</td><td>all 62 reachable tokens applied</td></tr>
+<tr><td>A6 Right-to-left</td><td><strong>workable</strong></td><td>18</td><td>clean, but only after 10 custom lines and 0 recorded mitigations</td></tr>
+<tr><td>A7 Accessibility conformance</td><td>strong</td><td>14</td><td>no critical or serious automated violations; 0 checks axe declined to decide, each still owed a human</td></tr>
+</tbody></table></div>
+
+<h3><code>delta-antd</code> - composite 68 / 100</h3>
+
+<p>Worst open issue: <strong>caveat</strong> - The data table has an upstream accessibility defect</p>
+
+<p>5 open findings. 4 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.</p>
+
+<div class="scroll"><table><thead>
+<tr><th>Axis</th><th>Band</th><th>Weight</th><th>Why</th></tr>
+</thead><tbody>
+<tr><td>A1 Implementation effort</td><td><strong>workable</strong></td><td>8</td><td>2 of 30 requirements needed more than a documented component; 7 documented approaches failed and needed working around</td></tr>
+<tr><td>A2 Maintainability at scale</td><td><strong>weak</strong></td><td>16</td><td>7 escape hatches off the documented theming route; 0 scoreable maintenance findings</td></tr>
+<tr><td>A3 Reproducibility across sites</td><td><strong>workable</strong></td><td>16</td><td>extraction outcome recorded as measured</td></tr>
+<tr><td>A4 Mangrove compatibility</td><td><strong>workable</strong></td><td>14</td><td>clean only because the documented global stylesheet was not loaded as documented</td></tr>
+<tr><td>A5 Theming fidelity</td><td>strong</td><td>14</td><td>all 44 reachable tokens applied</td></tr>
+<tr><td>A6 Right-to-left</td><td>strong</td><td>18</td><td>Arabic worked from a dir attribute alone, at zero custom lines</td></tr>
+<tr><td>A7 Accessibility conformance</td><td><strong>workable</strong></td><td>14</td><td>1 serious automated violations; 1 checks axe declined to decide, each still owed a human</td></tr>
+</tbody></table></div>
+
+<h3><code>mangrove-antd</code> - composite 68 / 100</h3>
+
+<p>Worst open issue: <strong>blocker</strong> - Select controls do not display their selected value</p>
+
+<p>9 open findings. 4 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.</p>
+
+<div class="scroll"><table><thead>
+<tr><th>Axis</th><th>Band</th><th>Weight</th><th>Why</th></tr>
+</thead><tbody>
+<tr><td>A1 Implementation effort</td><td><strong>workable</strong></td><td>8</td><td>2 of 30 requirements needed more than a documented component; 7 documented approaches failed and needed working around</td></tr>
+<tr><td>A2 Maintainability at scale</td><td><strong>weak</strong></td><td>16</td><td>7 escape hatches off the documented theming route; 0 scoreable maintenance findings</td></tr>
+<tr><td>A3 Reproducibility across sites</td><td><strong>workable</strong></td><td>16</td><td>extraction outcome recorded as measured</td></tr>
+<tr><td>A4 Mangrove compatibility</td><td><strong>workable</strong></td><td>14</td><td>clean only because the documented global stylesheet was not loaded as documented</td></tr>
+<tr><td>A5 Theming fidelity</td><td>strong</td><td>14</td><td>all 44 reachable tokens applied</td></tr>
+<tr><td>A6 Right-to-left</td><td>strong</td><td>18</td><td>Arabic worked from a dir attribute alone, at zero custom lines</td></tr>
+<tr><td>A7 Accessibility conformance</td><td><strong>workable</strong></td><td>14</td><td>1 serious automated violations; 1 checks axe declined to decide, each still owed a human</td></tr>
+</tbody></table></div>
+
+<h2>What this cannot tell you</h2>
+
+<ul>
+<li>A composite is a summary of the diagnostics, not a replacement for them. Where a</li>
+</ul>
+<p>  band and the axis prose disagree, the prose is the evidence.</p>
+<ul>
+<li>Accessibility bands rest on automated checks only. No screen-reader pass and no</li>
+</ul>
+<p>  human keyboard walkthrough was run on any pairing, so <code>strong</code> on A7 means the   automated floor was cleared, not that the pairing is accessible.</p>
+<ul>
+<li>A6 measures layout direction and mirroring, not whether Arabic reads well to an</li>
+</ul>
+<p>  Arabic reader.</p>
+<ul>
+<li>Changing the weights changes the ranking. If a decision rests on a two-point gap,</li>
+</ul>
+<p>  it rests on the weights and not on the evidence.</p>
+
+      <p><a href="./issues.html">every finding in full</a> &middot;
          <a href="./axes.html">decision axes</a> &middot;
          <a href="./">all pairings</a></p>
     </div>

@@ -231,6 +231,13 @@
   cursor: pointer;
 }
 
+/* `display: block` because an inline SVG otherwise sits on the text baseline and
+   leaves a descender gap under it inside the fixed-height button. */
+.demo-iconbutton__icon {
+  display: block;
+  flex: none;
+}
+
 .demo-iconbutton[data-hovered] {
   background: var(--undrr-color-surface-sunken);
 }

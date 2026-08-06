@@ -37,6 +37,38 @@ import type { LossRecord } from "@undrr-eval/fixtures";
 
 import { useDemo } from "../demo-state.js";
 
+/**
+ * Row-action glyphs as inline SVG, on the same Material path data every other
+ * pairing uses.
+ *
+ * These were emoji (✎, 🗑) until a review caught it. Emoji render as full-colour
+ * vendor glyphs that ignore `currentColor` and every design token, so the danger
+ * variant's colour change never reached the icon and the column looked unlike
+ * the same column in the other four candidates. That breaks the comparison, not
+ * just the aesthetics.
+ */
+const ROW_ACTION_PATHS = {
+  edit: "M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm17.71-10.21a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z",
+  remove: "M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z",
+} as const;
+
+/** Sized in `em` so the button's own font size keeps driving the glyph. */
+function RowActionIcon({ path }: { readonly path: string }): ReactElement {
+  return (
+    <svg
+      className="demo-iconbutton__icon"
+      viewBox="0 0 24 24"
+      width="1.25em"
+      height="1.25em"
+      fill="currentColor"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d={path} />
+    </svg>
+  );
+}
+
 export function RecordsTable({
   rows,
   sort,
@@ -133,14 +165,14 @@ export function RecordsTable({
                       className="demo-iconbutton"
                       aria-label={`${labels.colReviewNote}: ${record.id}`}
                     >
-                      <span aria-hidden="true">✎</span>
+                      <RowActionIcon path={ROW_ACTION_PATHS.edit} />
                     </Button>
                     <Button
                       className="demo-iconbutton demo-iconbutton--danger"
                       aria-label={`${labels.actionDelete}: ${record.id}`}
                       onPress={() => onDelete?.(record)}
                     >
-                      <span aria-hidden="true">🗑</span>
+                      <RowActionIcon path={ROW_ACTION_PATHS.remove} />
                     </Button>
                   </div>
                 </Cell>

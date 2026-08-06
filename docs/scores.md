@@ -9,10 +9,41 @@ Every value here is derived from `evidence.json`, the known-issues registry and
 the library or the pairing can affect a score - never a host defect, which is the
 same for all five, and never one of ours.
 
+## What this says to do
+
+**Adopt Adobe React Aria.**
+
+It leads on the composite at 84 against 68 for Ant Design, and it is the only candidate of 5 carrying no blocking defect. Arabic works from a `dir` attribute alone. It stays inside its own subtree on both hosts.
+
+**The cost, which the composite does not charge it for.** React Aria ships behaviour,
+not appearance. Adopting it means UNDRR builds and then owns the visual layer
+permanently - this evaluation's own demo carries 121 to 133 hand-written CSS rules for
+one page. Three of the seven axes reward exactly the property that creates that cost:
+a library with no opinions cannot conflict with Mangrove, cannot bake in wrong colours
+and cannot mistheme. **Read the recommendation as "adopt this and fund a design
+system", not as "adopt this and save work".**
+
+**Two things must happen before this is signed off, and neither is a technical task.**
+
+1. A human accessibility pass. Every A7 band on this page rests on automated scanning.
+   No screen-reader test and no human keyboard walkthrough was run on any candidate, so
+   no conformance claim can be made from this evidence.
+2. A decision on MUI's exclusion. Its Arabic defect has a fix that this evaluation's
+   rules forbid. If UNDRR relaxes that rule, MUI returns to contention - which makes its
+   position a procurement question rather than an engineering result.
+
 ## Weights
 
-A judgement about what UNDRR values, not a measurement. Change them in
-`scripts/build-scores.mjs` and regenerate; the ranking below will move.
+A judgement about what UNDRR values, not a measurement - so it is recorded as one.
+
+- **Chosen by:** Proposed by the evaluation author, not yet ratified by UNDRR
+- **Date:** 2026-08-06
+- **Status:** **not ratified.** Nobody at UNDRR has agreed these numbers.
+- **Basis:** Derived from the framing in undrr-questions.md: a continuity decision about an estate, so axes about living with a library across many sites outweigh the one about building the first site. A6 and A7 carry the most because they are standing obligations rather than preferences, and the composite model UNDRR chose cannot gate on them - weight is the only lever left.
+
+This matters more than it looks. A6 at 18 is the weight that removes MUI from
+contention; if it were 12 the ranking would change. Anyone defending this choice should
+expect to defend the weights first, and should be able to say who set them.
 
 | Axis | Weight |
 | --- | --- |
@@ -41,11 +72,10 @@ to hide anything.
 
 **1 of 5 candidates carry no blocker at all:** Adobe React Aria.
 
-That is narrower than a useful shortlist, so read it with the next two rows of the
-ranking rather than instead of them. The candidates immediately below carry one
-blocker each, and whether those blockers disqualify a candidate or merely cost
-something is a decision for UNDRR - it turns on remediability, which this file
-deliberately does not score. See the note under Blockers.
+That is the recommendation. The next two - Ant Design and Mantine - are the credible fallbacks, because their blockers can be escaped: see
+the escape-cost table below. The bottom two cannot, or only by a decision that is
+UNDRR's rather than an engineer's. So the shortlist worth deeper work is the top three,
+and the recommendation within it is the first.
 
 ## Blockers, in full
 

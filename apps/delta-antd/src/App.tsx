@@ -144,6 +144,41 @@ export function App(): ReactElement {
                 <SectionChrome />
                 <SectionDataTable />
                 <SectionStates />
+
+                {/*
+                  THE 7-TO-9 JUMP IN THE HEADINGS IS DELIBERATE, AND SAYING SO
+                  HERE IS THE POINT. Requirements section 8 is Locale
+                  (`docs/requirements.md`: locale-switcher, rtl, long-labels) and
+                  it is met — by the Segmented switcher above, which every section
+                  below consumes. It gets no numbered block because it is a
+                  page-level control rather than a specimen. Renumbering would
+                  hide that a specified section exists, and a note at the foot of
+                  the page arrives long after the reader has read the jump as a
+                  mistake. So it sits where 8 would be.
+
+                  Structure matches the numbered sections deliberately — a
+                  `<section>` and a `Typography.Title level={3}`, as in
+                  `packages/integration-antd/src/sections/*` — so it lands in the
+                  heading outline a reader is scanning rather than beside it. The
+                  id is `section-8-note`, NOT `section-8`: it is not a specimen
+                  block and must not be picked up as one.
+                */}
+                <section id="section-8-note" style={{ marginBottom: "4rem" }}>
+                  <Typography.Title level={3} style={{ marginBottom: "1.5rem" }}>
+                    8. Locale — no numbered section of its own
+                  </Typography.Title>
+                  <Typography.Paragraph type="secondary" style={{ maxWidth: "68ch" }}>
+                    Section 8 of the requirements (locale switcher, RTL, long labels) is
+                    exercised by the locale switcher at the top of this page, which drives
+                    every section above; Arabic applies RTL through{" "}
+                    <Typography.Text code>ConfigProvider</Typography.Text>&apos;s{" "}
+                    <Typography.Text code>direction</Typography.Text> prop, which carries it
+                    into component internals as well. It gets no block here because it is
+                    page-wide rather than one specimen. The headings run 7 to 9 for that
+                    reason — nothing was dropped or hidden.
+                  </Typography.Paragraph>
+                </section>
+
                 <SectionSideBySide />
               </DemoContext.Provider>
             </div>

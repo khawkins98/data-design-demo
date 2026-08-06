@@ -148,8 +148,8 @@ theming mechanism, which is what accumulates across sites and across upgrades.
 
 | Pairing | attribute | contract | off route | of which hashed | CSS rules |
 | --- | --- | --- | --- | --- | --- |
-| delta-react-aria | 19 | 0 | **0** | 0 | 165 |
-| mangrove-react-aria | 18 | 0 | **0** | 0 | 153 |
+| delta-react-aria | 19 | 0 | **0** | 0 | 166 |
+| mangrove-react-aria | 18 | 0 | **0** | 0 | 154 |
 | delta-mui | 0 | 2 | **0** | 0 | 3 |
 | mangrove-mui | 0 | 4 | **0** | 0 | 5 |
 | delta-carbon | 0 | 0 | **16** | 0 | 34 |

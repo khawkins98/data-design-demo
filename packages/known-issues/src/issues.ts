@@ -172,11 +172,15 @@ export const KNOWN_ISSUES: readonly KnownIssue[] = Object.freeze([
     owner: "pairing",
     title: "Select controls do not display their selected value",
     detail:
-      "Ant Design 6 renders Select as a div holding the visible value with a readonly input absolutely positioned over it, which antd's own CSS makes transparent. Because antd's CSS is layered and Mangrove's is not, Mangrove's element-level input rules win and paint that input opaque white at 46px over a 24px content div. The selected value is covered: elementFromPoint at the value's own text position returns the input. Measured on the island view, where a Hazard type filter showing 34 drought rows renders completely blank, so a reviewer cannot see what they filtered by. The same applies to the pagination page-size changer. The Delta host is unaffected, because Tailwind compiles Preflight into @layer base and antd's later layer wins there. This is the concrete consequence of antd-layer-loses-to-mangrove, and it is why keeping the layer setting on Mangrove is not a matter of taste.",
+      "Ant Design 6 renders Select as a div holding the visible value with a readonly input absolutely positioned over it, which antd's own CSS makes transparent. Because antd's CSS is layered and Mangrove's is not, Mangrove's element-level input rules win and paint that input opaque white at 46px over a 24px content div, so the SELECTED VALUE is covered and a reviewer cannot see what they filtered by. MEASURED BY INK, not by hit-testing: screenshot the control, count dark pixels inside the value's own rect, recolour the text transparent, count again. A chosen value gives 302 on Delta and 0 on Mangrove. The placeholder survives on both, because antd renders it in a flex item whose z-index:1 paints above the opaqued input while a chosen value is a bare text node with no box and no stacking context - so at rest the control looks fine on Mangrove and goes blank only once someone uses it. The Delta host is genuinely unaffected, by the same measurement, because Tailwind compiles Preflight into @layer base and antd's later layer wins there. DO NOT use elementFromPoint as the discriminator: it returns the overlaid input on BOTH hosts, by antd's design, so it reads as a defect everywhere and distinguishes nothing. An earlier version of this entry cited exactly that, and was wrong to. This is the concrete consequence of antd-layer-loses-to-mangrove, and it is why keeping the layer setting on Mangrove is not a matter of taste.",
     links: [
       {
-        label: "measurement",
-        href: `${BLOB}/apps/mangrove-antd/test-results/island-select-value-hidden.json`,
+        label: "ink measurement, Mangrove",
+        href: `${BLOB}/apps/mangrove-antd/test-results/island-filter-resting-text.json`,
+      },
+      {
+        label: "ink measurement, Delta",
+        href: `${BLOB}/apps/delta-antd/test-results/app-filter-resting-text.json`,
       },
       { label: "see it", href: "../mangrove-antd/island.html" },
       { label: "compare against the Delta host", href: "../delta-antd/app.html" },

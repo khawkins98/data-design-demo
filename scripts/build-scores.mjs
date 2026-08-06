@@ -67,6 +67,24 @@ const DOCS = join(ROOT, "docs");
  * preferences - the composite cannot gate on them, so weight is the only lever
  * left.
  */
+/**
+ * Who chose the weights, when, and on what basis.
+ *
+ * Printed on the page. A project manager reviewing the site put it exactly right:
+ * right-to-left at 18 is the weight that removes MUI from contention, and without
+ * provenance there is no way to defend that in a meeting - "change them in
+ * scripts/build-scores.mjs" is not an answer to "who decided this". A weight is a
+ * judgement, and an undocumented judgement presented beside measured evidence reads
+ * as if it were measured too.
+ */
+const WEIGHT_PROVENANCE = Object.freeze({
+  chosenBy: "Proposed by the evaluation author, not yet ratified by UNDRR",
+  date: "2026-08-06",
+  basis:
+    "Derived from the framing in undrr-questions.md: a continuity decision about an estate, so axes about living with a library across many sites outweigh the one about building the first site. A6 and A7 carry the most because they are standing obligations rather than preferences, and the composite model UNDRR chose cannot gate on them - weight is the only lever left.",
+  ratified: false,
+});
+
 const WEIGHTS = Object.freeze({
   A1_effort: 8,
   A2_maintainability: 16,
@@ -354,10 +372,56 @@ L.push("`extraction-results.json`. Nothing is typed by hand, and only defects ow
 L.push("the library or the pairing can affect a score - never a host defect, which is the");
 L.push("same for all five, and never one of ours.");
 L.push("");
+L.push("## What this says to do");
+L.push("");
+L.push(`**Adopt ${ranked[0].name}.**`);
+L.push("");
+if (ranked[0].blockers.length === 0) {
+  L.push(
+    `It leads on the composite at ${ranked[0].composite} against ${ranked[1].composite} for ` +
+      `${ranked[1].name}, and it is the only candidate of ${ranked.length} carrying no blocking ` +
+      "defect. Arabic works from a `dir` attribute alone. It stays inside its own subtree on both hosts.",
+  );
+  L.push("");
+  L.push("**The cost, which the composite does not charge it for.** React Aria ships behaviour,");
+  L.push("not appearance. Adopting it means UNDRR builds and then owns the visual layer");
+  L.push("permanently - this evaluation's own demo carries 121 to 133 hand-written CSS rules for");
+  L.push("one page. Three of the seven axes reward exactly the property that creates that cost:");
+  L.push("a library with no opinions cannot conflict with Mangrove, cannot bake in wrong colours");
+  L.push("and cannot mistheme. **Read the recommendation as \"adopt this and fund a design");
+  L.push("system\", not as \"adopt this and save work\".**");
+} else {
+  L.push(
+    `It leads on the composite at ${ranked[0].composite}, but carries ` +
+      `${ranked[0].blockers.length} blocking defect - so this is a recommendation with a ` +
+      "condition attached, not a clean one. See Blockers.",
+  );
+}
+L.push("");
+L.push("**Two things must happen before this is signed off, and neither is a technical task.**");
+L.push("");
+L.push("1. A human accessibility pass. Every A7 band on this page rests on automated scanning.");
+L.push("   No screen-reader test and no human keyboard walkthrough was run on any candidate, so");
+L.push("   no conformance claim can be made from this evidence.");
+L.push("2. A decision on MUI's exclusion. Its Arabic defect has a fix that this evaluation's");
+L.push("   rules forbid. If UNDRR relaxes that rule, MUI returns to contention - which makes its");
+L.push("   position a procurement question rather than an engineering result.");
+L.push("");
+
 L.push("## Weights");
 L.push("");
-L.push("A judgement about what UNDRR values, not a measurement. Change them in");
-L.push("`scripts/build-scores.mjs` and regenerate; the ranking below will move.");
+L.push("A judgement about what UNDRR values, not a measurement - so it is recorded as one.");
+L.push("");
+L.push(`- **Chosen by:** ${WEIGHT_PROVENANCE.chosenBy}`);
+L.push(`- **Date:** ${WEIGHT_PROVENANCE.date}`);
+L.push(
+  `- **Status:** ${WEIGHT_PROVENANCE.ratified ? "ratified by UNDRR" : "**not ratified.** Nobody at UNDRR has agreed these numbers."}`,
+);
+L.push(`- **Basis:** ${WEIGHT_PROVENANCE.basis}`);
+L.push("");
+L.push("This matters more than it looks. A6 at 18 is the weight that removes MUI from");
+L.push("contention; if it were 12 the ranking would change. Anyone defending this choice should");
+L.push("expect to defend the weights first, and should be able to say who set them.");
 L.push("");
 L.push(`| Axis | Weight |`);
 L.push(`| --- | --- |`);
@@ -388,11 +452,15 @@ if (clean.length > 0) {
       `${clean.map((c) => c.name).join(", ")}.`,
   );
   L.push("");
-  L.push("That is narrower than a useful shortlist, so read it with the next two rows of the");
-  L.push("ranking rather than instead of them. The candidates immediately below carry one");
-  L.push("blocker each, and whether those blockers disqualify a candidate or merely cost");
-  L.push("something is a decision for UNDRR - it turns on remediability, which this file");
-  L.push("deliberately does not score. See the note under Blockers.");
+  L.push(
+    `That is the recommendation. The next two - ${ranked
+      .slice(1, 3)
+      .map((c) => c.name)
+      .join(" and ")} - are the credible fallbacks, because their blockers can be escaped: see`,
+  );
+  L.push("the escape-cost table below. The bottom two cannot, or only by a decision that is");
+  L.push("UNDRR's rather than an engineer's. So the shortlist worth deeper work is the top three,");
+  L.push("and the recommendation within it is the first.");
 } else {
   L.push("**Every candidate carries at least one blocking axis.** No shortlist is defensible");
   L.push("from this evidence without a policy decision about which blocker UNDRR will accept.");
@@ -484,6 +552,81 @@ function esc(v) {
   return String(v).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
+/** `code`, **bold** and [links](x), the only inline markup this file emits. */
+function inline(text) {
+  return esc(text)
+    .replace(/`([^`]+)`/g, "<code>$1</code>")
+    .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+}
+
+/**
+ * Markdown to HTML for the subset this generator emits.
+ *
+ * THE FIRST VERSION OF THIS FUNCTION KEPT ONLY THE HEADINGS. It mapped the
+ * markdown lines, returned null for anything that was not an h1/h2/h3, and then
+ * filtered the nulls out - so the published page was a list of section titles with
+ * every table, paragraph, ranking and blocker silently discarded, while scores.md
+ * beside it was complete. It looked plausible enough to commit and was useless to
+ * read. Mirrors the converter in build-axes.mjs, which handles the same subset.
+ */
+function toHtml(markdown) {
+  const out = [];
+  let inTable = false;
+  let inList = false;
+  for (const raw of markdown.split("\n")) {
+    const line = raw.trimEnd();
+
+    if (line.startsWith("|")) {
+      const cells = line
+        .slice(1, -1)
+        .split(" | ")
+        .map((c) => c.trim());
+      if (/^-+$/.test(cells[0] ?? "")) continue;
+      if (inList) {
+        out.push("</ul>");
+        inList = false;
+      }
+      if (!inTable) {
+        out.push('<div class="scroll"><table><thead>');
+        out.push(`<tr>${cells.map((c) => `<th>${inline(c)}</th>`).join("")}</tr>`);
+        out.push("</thead><tbody>");
+        inTable = true;
+      } else {
+        out.push(`<tr>${cells.map((c) => `<td>${inline(c)}</td>`).join("")}</tr>`);
+      }
+      continue;
+    }
+    if (inTable) {
+      out.push("</tbody></table></div>");
+      inTable = false;
+    }
+
+    if (line.startsWith("- ")) {
+      if (!inList) {
+        out.push("<ul>");
+        inList = true;
+      }
+      out.push(`<li>${inline(line.slice(2))}</li>`);
+      continue;
+    }
+    if (inList && line !== "") {
+      out.push("</ul>");
+      inList = false;
+    }
+
+    if (line.startsWith("### ")) out.push(`<h3>${inline(line.slice(4))}</h3>`);
+    else if (line.startsWith("## ")) out.push(`<h2>${inline(line.slice(3))}</h2>`);
+    else if (line.startsWith("# ")) out.push(`<h1>${inline(line.slice(2))}</h1>`);
+    else if (line === "") out.push("");
+    else out.push(`<p>${inline(line)}</p>`);
+  }
+  if (inTable) out.push("</tbody></table></div>");
+  if (inList) out.push("</ul>");
+  // Consecutive paragraphs were one wrapped sentence in the source.
+  return out.join("\n").replace(/<\/p>\n<p>/g, " ");
+}
+
 const html = `<!doctype html>
 <!-- GENERATED FILE - produced by scripts/build-scores.mjs. Regenerate: pnpm scores -->
 <html lang="en">
@@ -510,17 +653,8 @@ const html = `<!doctype html>
   </head>
   <body>
     <div class="page">
-${md
-  .split("\n")
-  .map((line) => {
-    if (line.startsWith("# ")) return `      <h1>${esc(line.slice(2))}</h1>`;
-    if (line.startsWith("## ")) return `      <h2>${esc(line.slice(3))}</h2>`;
-    if (line.startsWith("### ")) return `      <h3>${esc(line.slice(4))}</h3>`;
-    return null;
-  })
-  .filter(Boolean)
-  .join("\n")}
-      <p><a href="./scores.md">Full scores table (markdown)</a> &middot;
+${toHtml(md)}
+      <p><a href="./issues.html">every finding in full</a> &middot;
          <a href="./axes.html">decision axes</a> &middot;
          <a href="./">all pairings</a></p>
     </div>
