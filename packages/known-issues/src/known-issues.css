@@ -1,0 +1,114 @@
+/**
+ * Styling for the known-issues box.
+ *
+ * Every selector is scoped under `.undrr-known-issues`, so this stylesheet cannot
+ * reach the host canaries and cannot be caught by the leakage assertion. Colours
+ * come from the UNDRR tokens, which already meet contrast, rather than being
+ * picked here.
+ *
+ * No `@layer`, deliberately. On the Mangrove host the candidate's layered CSS
+ * loses to Mangrove's unlayered rules; if this box were layered it would lose the
+ * same fight and the warning would end up styled by the design system it is
+ * warning about.
+ */
+
+.undrr-known-issues {
+  margin: 0 0 var(--undrr-space-5);
+  border: 1px solid var(--undrr-color-border-strong);
+  border-inline-start: 4px solid var(--undrr-color-warning);
+  border-radius: var(--undrr-radius-md);
+  background: var(--undrr-color-surface-raised);
+  font-family: var(--undrr-font-family-sans);
+  color: var(--undrr-color-text-primary);
+  line-height: var(--undrr-line-height-normal);
+}
+
+.undrr-known-issues__summary {
+  padding: var(--undrr-space-3) var(--undrr-space-4);
+  cursor: pointer;
+  font-size: var(--undrr-font-size-sm);
+}
+
+/* Keyboard focus must be obvious: this is the first interactive thing on the page. */
+.undrr-known-issues__summary:focus-visible {
+  outline: 2px solid var(--undrr-color-focus);
+  outline-offset: 2px;
+}
+
+.undrr-known-issues__title {
+  font-weight: var(--undrr-font-weight-semibold);
+}
+
+.undrr-known-issues__count {
+  color: var(--undrr-color-text-secondary);
+}
+
+.undrr-known-issues__intro,
+.undrr-known-issues__footer {
+  margin: 0;
+  padding: 0 var(--undrr-space-4) var(--undrr-space-3);
+  font-size: var(--undrr-font-size-sm);
+  color: var(--undrr-color-text-secondary);
+  max-width: 78ch;
+}
+
+.undrr-known-issues__list {
+  margin: 0;
+  padding: 0 var(--undrr-space-4) var(--undrr-space-3);
+  list-style: none;
+}
+
+.undrr-known-issues__item {
+  margin: 0 0 var(--undrr-space-3);
+  padding: 0 0 var(--undrr-space-3);
+  border-bottom: 1px solid var(--undrr-color-border);
+}
+
+.undrr-known-issues__item:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.undrr-known-issues__item-head,
+.undrr-known-issues__detail,
+.undrr-known-issues__meta {
+  margin: 0 0 var(--undrr-space-1);
+  max-width: 78ch;
+}
+
+.undrr-known-issues__detail {
+  font-size: var(--undrr-font-size-sm);
+}
+
+.undrr-known-issues__meta {
+  font-size: var(--undrr-font-size-xs);
+  color: var(--undrr-color-text-secondary);
+}
+
+.undrr-known-issues__badge {
+  display: inline-block;
+  padding: 0 var(--undrr-space-2);
+  border-radius: var(--undrr-radius-sm);
+  font-size: var(--undrr-font-size-xs);
+  font-weight: var(--undrr-font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--undrr-color-text-inverse);
+}
+
+.undrr-known-issues__badge--blocker { background: var(--undrr-color-error); }
+.undrr-known-issues__badge--decision { background: var(--undrr-color-warning); }
+.undrr-known-issues__badge--caveat { background: var(--undrr-color-text-secondary); }
+.undrr-known-issues__badge--info { background: var(--undrr-color-info); }
+
+/* Links are underlined, not colour-only: the same WCAG 1.4.1 rule this box
+   reports against Mangrove applies to the box itself. */
+.undrr-known-issues__link {
+  color: var(--undrr-color-accent);
+  text-decoration: underline;
+}
+
+.undrr-known-issues__link + .undrr-known-issues__link {
+  margin-inline-start: var(--undrr-space-3);
+}

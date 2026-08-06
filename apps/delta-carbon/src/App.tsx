@@ -22,6 +22,7 @@ import { LOCALES } from "@undrr-eval/fixtures";
 import type { LocaleCode } from "@undrr-eval/fixtures";
 import { HostShell } from "@undrr-eval/host-delta";
 import { TOKEN_SCOPE_CLASS } from "@undrr-eval/undrr-tokens";
+import { KnownIssues } from "@undrr-eval/known-issues";
 
 import { DemoContext, labelsFor } from "./demo-state.js";
 import type { DemoContextValue } from "./demo-state.js";
@@ -54,6 +55,15 @@ export function App(): ReactElement {
 
   return (
     <HostShell title={demo.labels.appTitle} dir={demo.dir}>
+      {/*
+        * Rendered OUTSIDE the candidate wrapper and in BOTH candidate states.
+        * Outside, so no candidate stylesheet restyles the warning box and every
+        * demo's box reads identically. In both states, so it is present in the
+        * leakage baseline as well as the candidate render and therefore cannot
+        * itself register as a difference.
+        */}
+      <KnownIssues candidate="carbon" host="delta" candidateName="IBM Carbon" />
+
       {candidateEnabled ? (
         /* `.undrr-tokens` declares the UNDRR custom properties; `.demo` maps
            them onto Carbon's `--cds-*` names. Both must be on an ancestor of

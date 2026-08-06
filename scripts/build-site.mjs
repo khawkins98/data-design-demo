@@ -42,6 +42,15 @@ function appDirs() {
 // files present on this commit. This used to be a separate `docs:index` step
 // that both `pnpm site` and CI had to remember to call; folding it in here means
 // the site can never be assembled around a stale index.
+// The known-issues JSON first, because the landing page reads it. It is
+// transcribed from the TypeScript registry the demo pages import, so the cards
+// and the box on each demo cannot disagree about what is known.
+execFileSync(
+  "node",
+  ["--experimental-strip-types", join(HERE, "build-known-issues-json.mjs")],
+  { cwd: ROOT, stdio: "inherit" },
+);
+
 execFileSync("node", [join(HERE, "build-docs-index.mjs")], { cwd: ROOT, stdio: "inherit" });
 
 // And the side-by-side comparison, for the same reason: it is derived entirely

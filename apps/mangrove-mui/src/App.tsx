@@ -36,6 +36,7 @@ import {
   undrrMuiTheme,
 } from "@undrr-eval/integration-mui";
 import type { DemoContextValue } from "@undrr-eval/integration-mui";
+import { KnownIssues } from "@undrr-eval/known-issues";
 
 import { SectionSideBySide } from "./sections/SectionSideBySide.js";
 
@@ -75,6 +76,15 @@ export function App(): ReactElement {
 
   return (
     <HostShell title={demo.labels.appTitle} dir={demo.dir}>
+      {/*
+        * Rendered OUTSIDE the candidate wrapper and in BOTH candidate states.
+        * Outside, so no candidate stylesheet restyles the warning box and every
+        * demo's box reads identically. In both states, so it is present in the
+        * leakage baseline as well as the candidate render and therefore cannot
+        * itself register as a difference.
+        */}
+      <KnownIssues candidate="mui" host="mangrove" candidateName="MUI Community" />
+
       {candidateEnabled ? (
         <ThemeProvider theme={theme}>
           {/* Scoped, not global: see the note in main.tsx. */}

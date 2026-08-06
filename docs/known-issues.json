@@ -1,0 +1,123 @@
+{
+  "$comment": "GENERATED from packages/known-issues/src/issues.ts by scripts/build-known-issues-json.mjs. Do not edit: add issues to the TypeScript registry, which the demo pages also import.",
+  "issueCount": 19,
+  "pairings": {
+    "delta-react-aria": {
+      "total": 3,
+      "counts": {
+        "caveat": 2,
+        "info": 1
+      },
+      "headline": {
+        "severity": "caveat",
+        "title": "React Aria is unstyled, so this page carries 121 to 133 CSS rules"
+      }
+    },
+    "delta-mui": {
+      "total": 3,
+      "counts": {
+        "blocker": 1,
+        "caveat": 1,
+        "info": 1
+      },
+      "headline": {
+        "severity": "blocker",
+        "title": "RTL is not achievable in the MUI Community tier"
+      }
+    },
+    "delta-carbon": {
+      "total": 5,
+      "counts": {
+        "blocker": 1,
+        "decision": 1,
+        "caveat": 2,
+        "info": 1
+      },
+      "headline": {
+        "severity": "blocker",
+        "title": "Carbon cannot express about 30% of the UNDRR design tokens"
+      }
+    },
+    "delta-mantine": {
+      "total": 3,
+      "counts": {
+        "caveat": 2,
+        "info": 1
+      },
+      "headline": {
+        "severity": "caveat",
+        "title": "Column resizing does not exist in the library and is implemented here"
+      }
+    },
+    "delta-antd": {
+      "total": 5,
+      "counts": {
+        "caveat": 4,
+        "info": 1
+      },
+      "headline": {
+        "severity": "caveat",
+        "title": "The data table has an upstream accessibility defect"
+      }
+    },
+    "mangrove-react-aria": {
+      "total": 6,
+      "counts": {
+        "caveat": 3,
+        "info": 3
+      },
+      "headline": {
+        "severity": "caveat",
+        "title": "React Aria is unstyled, so this page carries 121 to 133 CSS rules"
+      }
+    },
+    "mangrove-mui": {
+      "total": 5,
+      "counts": {
+        "blocker": 1,
+        "caveat": 1,
+        "info": 3
+      },
+      "headline": {
+        "severity": "blocker",
+        "title": "RTL is not achievable in the MUI Community tier"
+      }
+    },
+    "mangrove-carbon": {
+      "total": 8,
+      "counts": {
+        "blocker": 2,
+        "decision": 1,
+        "caveat": 2,
+        "info": 3
+      },
+      "headline": {
+        "severity": "blocker",
+        "title": "Carbon cannot express about 30% of the UNDRR design tokens"
+      }
+    },
+    "mangrove-mantine": {
+      "total": 5,
+      "counts": {
+        "caveat": 2,
+        "info": 3
+      },
+      "headline": {
+        "severity": "caveat",
+        "title": "Column resizing does not exist in the library and is implemented here"
+      }
+    },
+    "mangrove-antd": {
+      "total": 8,
+      "counts": {
+        "decision": 1,
+        "caveat": 4,
+        "info": 3
+      },
+      "headline": {
+        "severity": "decision",
+        "title": "Mangrove overrides Ant Design entirely, because Mangrove has no cascade layers"
+      }
+    }
+  }
+}

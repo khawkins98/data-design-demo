@@ -75,6 +75,27 @@
       .flag { font-size: 0.6875rem; padding: 0.125rem 0.5rem; border-radius: 999px; border: 1px solid var(--border); }
       .flag--ok { color: var(--ok); }
       .flag--bad { color: var(--bad); }
+      .card__issue {
+        margin: 0.25rem 0 0;
+        padding: 0.5rem 0.625rem;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        line-height: 1.35;
+        background: color-mix(in srgb, var(--border) 28%, transparent);
+        border-inline-start: 3px solid var(--muted);
+      }
+      .card__issue--blocker { border-inline-start-color: var(--bad); }
+      .card__issue--decision { border-inline-start-color: var(--pending); }
+      .card__issue-badge {
+        display: block;
+        font-size: 0.625rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--muted);
+        margin-bottom: 0.125rem;
+      }
+      .card__issue-more { color: var(--muted); }
       .metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.375rem 0.75rem; margin: 0.5rem 0 0; }
       .metric dt { font-size: 0.6875rem; color: var(--muted); margin: 0; }
       .metric dd { margin: 0; font-size: 0.9375rem; font-variant-numeric: tabular-nums; }
@@ -99,6 +120,10 @@
         </header>
         <p class="card__status" data-status="complete">Complete</p>
         <p class="card__licence">react-aria-components &middot; Apache-2.0</p>
+        <p class="card__issue card__issue--caveat">
+      <span class="card__issue-badge">Caveat</span>
+      React Aria is unstyled, so this page carries 121 to 133 CSS rules <span class="card__issue-more">and 2 more</span>
+    </p>
         <ul class="flags"><li class="flag flag--ok">Leakage: clean</li><li class="flag flag--ok">RTL: clean</li><li class="flag flag--ok">Long labels: clean</li></ul>
         <dl class="metrics"><div class="metric"><dt>Custom CSS</dt><dd>715 <span class="unit">lines</span></dd></div><div class="metric"><dt>Wrappers</dt><dd>5</dd></div><div class="metric"><dt>Tokens applied</dt><dd>48</dd></div><div class="metric"><dt>axe violations</dt><dd>0</dd></div><div class="metric"><dt>Bundle</dt><dd>238.8 <span class="unit">kB gz</span></dd></div></dl>
         <a class="card__link" href="./delta-react-aria/">Open demo</a>
@@ -111,6 +136,10 @@
         </header>
         <p class="card__status" data-status="complete">Complete</p>
         <p class="card__licence">@mui/material &middot; MIT</p>
+        <p class="card__issue card__issue--blocker">
+      <span class="card__issue-badge">Blocker</span>
+      RTL is not achievable in the MUI Community tier <span class="card__issue-more">and 2 more</span>
+    </p>
         <ul class="flags"><li class="flag flag--ok">Leakage: clean</li><li class="flag flag--bad">RTL: issues</li><li class="flag flag--ok">Long labels: clean</li></ul>
         <dl class="metrics"><div class="metric"><dt>Custom CSS</dt><dd>14 <span class="unit">lines</span></dd></div><div class="metric"><dt>Wrappers</dt><dd>3</dd></div><div class="metric"><dt>Tokens applied</dt><dd>29</dd></div><div class="metric"><dt>axe violations</dt><dd>1</dd></div><div class="metric"><dt>Bundle</dt><dd>387.4 <span class="unit">kB gz</span></dd></div></dl>
         <a class="card__link" href="./delta-mui/">Open demo</a>
@@ -123,6 +152,10 @@
         </header>
         <p class="card__status" data-status="complete">Complete</p>
         <p class="card__licence">@carbon/react &middot; Apache-2.0</p>
+        <p class="card__issue card__issue--blocker">
+      <span class="card__issue-badge">Blocker</span>
+      Carbon cannot express about 30% of the UNDRR design tokens <span class="card__issue-more">and 4 more</span>
+    </p>
         <ul class="flags"><li class="flag flag--ok">Leakage: clean</li><li class="flag flag--ok">RTL: clean</li><li class="flag flag--ok">Long labels: clean</li></ul>
         <dl class="metrics"><div class="metric"><dt>Custom CSS</dt><dd>300 <span class="unit">lines</span></dd></div><div class="metric"><dt>Wrappers</dt><dd>4</dd></div><div class="metric"><dt>Tokens applied</dt><dd>50</dd></div><div class="metric"><dt>axe violations</dt><dd>3</dd></div><div class="metric"><dt>Bundle</dt><dd>261.5 <span class="unit">kB gz</span></dd></div></dl>
         <a class="card__link" href="./delta-carbon/">Open demo</a>
@@ -135,6 +168,10 @@
         </header>
         <p class="card__status" data-status="complete">Complete</p>
         <p class="card__licence">@mantine/core &middot; MIT</p>
+        <p class="card__issue card__issue--caveat">
+      <span class="card__issue-badge">Caveat</span>
+      Column resizing does not exist in the library and is implemented here <span class="card__issue-more">and 2 more</span>
+    </p>
         <ul class="flags"><li class="flag flag--ok">Leakage: clean</li><li class="flag flag--ok">RTL: clean</li><li class="flag flag--ok">Long labels: clean</li></ul>
         <dl class="metrics"><div class="metric"><dt>Custom CSS</dt><dd>72 <span class="unit">lines</span></dd></div><div class="metric"><dt>Wrappers</dt><dd>4</dd></div><div class="metric"><dt>Tokens applied</dt><dd>66</dd></div><div class="metric"><dt>axe violations</dt><dd>0</dd></div><div class="metric"><dt>Bundle</dt><dd>238.8 <span class="unit">kB gz</span></dd></div></dl>
         <a class="card__link" href="./delta-mantine/">Open demo</a>
@@ -147,6 +184,10 @@
         </header>
         <p class="card__status" data-status="complete">Complete</p>
         <p class="card__licence">antd &middot; MIT</p>
+        <p class="card__issue card__issue--caveat">
+      <span class="card__issue-badge">Caveat</span>
+      The data table has an upstream accessibility defect <span class="card__issue-more">and 4 more</span>
+    </p>
         <ul class="flags"><li class="flag flag--ok">Leakage: clean</li><li class="flag flag--ok">RTL: clean</li><li class="flag flag--ok">Long labels: clean</li></ul>
         <dl class="metrics"><div class="metric"><dt>Custom CSS</dt><dd>46 <span class="unit">lines</span></dd></div><div class="metric"><dt>Wrappers</dt><dd>4</dd></div><div class="metric"><dt>Tokens applied</dt><dd>44</dd></div><div class="metric"><dt>axe violations</dt><dd>1</dd></div><div class="metric"><dt>Bundle</dt><dd>392.3 <span class="unit">kB gz</span></dd></div></dl>
         <a class="card__link" href="./delta-antd/">Open demo</a>
@@ -159,6 +200,10 @@
         </header>
         <p class="card__status" data-status="complete">Complete</p>
         <p class="card__licence">react-aria-components &middot; Apache-2.0</p>
+        <p class="card__issue card__issue--caveat">
+      <span class="card__issue-badge">Caveat</span>
+      React Aria is unstyled, so this page carries 121 to 133 CSS rules <span class="card__issue-more">and 5 more</span>
+    </p>
         <ul class="flags"><li class="flag flag--ok">Leakage: clean</li><li class="flag flag--ok">RTL: clean</li><li class="flag flag--ok">Long labels: clean</li></ul>
         <dl class="metrics"><div class="metric"><dt>Custom CSS</dt><dd>661 <span class="unit">lines</span></dd></div><div class="metric"><dt>Wrappers</dt><dd>3</dd></div><div class="metric"><dt>Tokens applied</dt><dd>47</dd></div><div class="metric"><dt>axe violations</dt><dd>0</dd></div><div class="metric"><dt>Bundle</dt><dd>237.6 <span class="unit">kB gz</span></dd></div></dl>
         <a class="card__link" href="./mangrove-react-aria/">Open demo</a>
@@ -171,6 +216,10 @@
         </header>
         <p class="card__status" data-status="complete">Complete</p>
         <p class="card__licence">@mui/material &middot; MIT</p>
+        <p class="card__issue card__issue--blocker">
+      <span class="card__issue-badge">Blocker</span>
+      RTL is not achievable in the MUI Community tier <span class="card__issue-more">and 4 more</span>
+    </p>
         <ul class="flags"><li class="flag flag--ok">Leakage: clean</li><li class="flag flag--bad">RTL: issues</li><li class="flag flag--ok">Long labels: clean</li></ul>
         <dl class="metrics"><div class="metric"><dt>Custom CSS</dt><dd>27 <span class="unit">lines</span></dd></div><div class="metric"><dt>Wrappers</dt><dd>2</dd></div><div class="metric"><dt>Tokens applied</dt><dd>32</dd></div><div class="metric"><dt>axe violations</dt><dd>1</dd></div><div class="metric"><dt>Bundle</dt><dd>397.6 <span class="unit">kB gz</span></dd></div></dl>
         <a class="card__link" href="./mangrove-mui/">Open demo</a>
@@ -183,6 +232,10 @@
         </header>
         <p class="card__status" data-status="complete">Complete</p>
         <p class="card__licence">@carbon/react &middot; Apache-2.0</p>
+        <p class="card__issue card__issue--blocker">
+      <span class="card__issue-badge">Blocker</span>
+      Carbon cannot express about 30% of the UNDRR design tokens <span class="card__issue-more">and 7 more</span>
+    </p>
         <ul class="flags"><li class="flag flag--bad">Leakage: 19 differences</li><li class="flag flag--ok">RTL: clean</li><li class="flag flag--ok">Long labels: clean</li></ul>
         <dl class="metrics"><div class="metric"><dt>Custom CSS</dt><dd>351 <span class="unit">lines</span></dd></div><div class="metric"><dt>Wrappers</dt><dd>4</dd></div><div class="metric"><dt>Tokens applied</dt><dd>50</dd></div><div class="metric"><dt>axe violations</dt><dd>1</dd></div><div class="metric"><dt>Bundle</dt><dd>207.8 <span class="unit">kB gz</span></dd></div></dl>
         <a class="card__link" href="./mangrove-carbon/">Open demo</a>
@@ -195,6 +248,10 @@
         </header>
         <p class="card__status" data-status="complete">Complete</p>
         <p class="card__licence">@mantine/core &middot; MIT</p>
+        <p class="card__issue card__issue--caveat">
+      <span class="card__issue-badge">Caveat</span>
+      Column resizing does not exist in the library and is implemented here <span class="card__issue-more">and 4 more</span>
+    </p>
         <ul class="flags"><li class="flag flag--ok">Leakage: clean</li><li class="flag flag--ok">RTL: clean</li><li class="flag flag--ok">Long labels: clean</li></ul>
         <dl class="metrics"><div class="metric"><dt>Custom CSS</dt><dd>103 <span class="unit">lines</span></dd></div><div class="metric"><dt>Wrappers</dt><dd>4</dd></div><div class="metric"><dt>Tokens applied</dt><dd>62</dd></div><div class="metric"><dt>axe violations</dt><dd>0</dd></div><div class="metric"><dt>Bundle</dt><dd>270.9 <span class="unit">kB gz</span></dd></div></dl>
         <a class="card__link" href="./mangrove-mantine/">Open demo</a>
@@ -207,6 +264,10 @@
         </header>
         <p class="card__status" data-status="complete">Complete</p>
         <p class="card__licence">antd &middot; MIT</p>
+        <p class="card__issue card__issue--decision">
+      <span class="card__issue-badge">Decision needed</span>
+      Mangrove overrides Ant Design entirely, because Mangrove has no cascade layers <span class="card__issue-more">and 7 more</span>
+    </p>
         <ul class="flags"><li class="flag flag--ok">Leakage: clean</li><li class="flag flag--ok">RTL: clean</li><li class="flag flag--ok">Long labels: clean</li></ul>
         <dl class="metrics"><div class="metric"><dt>Custom CSS</dt><dd>46 <span class="unit">lines</span></dd></div><div class="metric"><dt>Wrappers</dt><dd>4</dd></div><div class="metric"><dt>Tokens applied</dt><dd>44</dd></div><div class="metric"><dt>axe violations</dt><dd>1</dd></div><div class="metric"><dt>Bundle</dt><dd>423.4 <span class="unit">kB gz</span></dd></div></dl>
         <a class="card__link" href="./mangrove-antd/">Open demo</a>
