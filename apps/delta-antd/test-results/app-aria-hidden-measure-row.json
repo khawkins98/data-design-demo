@@ -1,0 +1,7 @@
+{
+  "error": null,
+  "measureRows": 1,
+  "offenders": [],
+  "rowSelectionCheckboxes": 0,
+  "note": "The row-action icon buttons are in normal DOM order, not in the measure row, so they are unaffected. What is missing is rowSelection: no select-all, no bulk actions on a records screen that would want them."
+}

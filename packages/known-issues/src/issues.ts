@@ -76,6 +76,24 @@ export const KNOWN_ISSUES: readonly KnownIssue[] = Object.freeze([
 
   /* ---------------------------------------------------------------- antd -- */
   {
+    id: "antd-select-value-hidden-on-mangrove",
+    severity: "blocker",
+    candidates: ["antd"],
+    hosts: ["mangrove"],
+    owner: "pairing",
+    title: "Select controls do not display their selected value",
+    detail:
+      "Ant Design 6 renders Select as a div holding the visible value with a readonly input absolutely positioned over it, which antd's own CSS makes transparent. Because antd's CSS is layered and Mangrove's is not, Mangrove's element-level input rules win and paint that input opaque white at 46px over a 24px content div. The selected value is covered: elementFromPoint at the value's own text position returns the input. Measured on the island view, where a Hazard type filter showing 34 drought rows renders completely blank, so a reviewer cannot see what they filtered by. The same applies to the pagination page-size changer. The Delta host is unaffected, because Tailwind compiles Preflight into @layer base and antd's later layer wins there. This is the concrete consequence of antd-layer-loses-to-mangrove, and it is why keeping the layer setting on Mangrove is not a matter of taste.",
+    links: [
+      {
+        label: "measurement",
+        href: `${BLOB}/apps/mangrove-antd/test-results/island-select-value-hidden.json`,
+      },
+      { label: "see it", href: "../mangrove-antd/island.html" },
+      { label: "compare against the Delta host", href: "../delta-antd/app.html" },
+    ],
+  },
+  {
     id: "antd-layer-loses-to-mangrove",
     severity: "decision",
     candidates: ["antd"],
@@ -83,7 +101,7 @@ export const KNOWN_ISSUES: readonly KnownIssue[] = Object.freeze([
     owner: "pairing",
     title: "Mangrove overrides Ant Design entirely, because Mangrove has no cascade layers",
     detail:
-      "Ant Design's CSS is wrapped in a CSS @layer, and unlayered CSS beats layered CSS regardless of specificity. Mangrove 1.8.1 declares zero @layer at-rules, so its element rules win outright: the inputs on this page render with Mangrove's 2px #1a1a1a border, 46px height, square corners and Roboto, measured byte-identical to a bare Mangrove input. The controlHeight and borderRadius design tokens do not reach them. This cost zero lines of repair CSS, where the MUI pairing needed 27 lines to prevent it. Whether that is desirable is UNDRR's decision, and it is reversible per site by dropping the layer setting. If Mangrove adopts cascade layers, the behaviour inverts and Ant Design starts winning instead.",
+      "Ant Design's CSS is wrapped in a CSS @layer, and unlayered CSS beats layered CSS regardless of specificity. Mangrove 1.8.1 declares zero @layer at-rules, so its element rules win outright: the inputs on this page render with Mangrove's 2px #1a1a1a border, 46px height, square corners and Roboto, measured byte-identical to a bare Mangrove input. The controlHeight and borderRadius design tokens do not reach them. This cost zero lines of repair CSS, where the MUI pairing needed 27 lines to prevent it. It is reversible per site by dropping the layer setting, and if Mangrove adopts cascade layers the behaviour inverts and Ant Design starts winning instead. WHAT CHANGED: this was recorded as a decision between two acceptable appearances. The island view showed it is not. Mangrove's element rules also cover Select's own value - see antd-select-value-hidden-on-mangrove - so the choice is between Ant Design's look and a working control, not between two looks. The kitchen sink could not surface that, because its selects start with no value and a blank select reads as an empty one.",
     links: [
       { label: "evidence", href: `${BLOB}/apps/mangrove-antd/EVIDENCE.md` },
       { label: "compare against the Delta host", href: "../delta-antd/" },

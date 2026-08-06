@@ -1,6 +1,6 @@
 {
   "$comment": "GENERATED from packages/known-issues/src/issues.ts by scripts/build-known-issues-json.mjs. Do not edit: add issues to the TypeScript registry, which the demo pages also import.",
-  "issueCount": 20,
+  "issueCount": 21,
   "pairings": {
     "delta-react-aria": {
       "total": 3,
@@ -110,15 +110,16 @@
       }
     },
     "mangrove-antd": {
-      "total": 8,
+      "total": 9,
       "counts": {
+        "blocker": 1,
         "decision": 1,
         "caveat": 4,
         "info": 3
       },
       "headline": {
-        "severity": "decision",
-        "title": "Mangrove overrides Ant Design entirely, because Mangrove has no cascade layers"
+        "severity": "blocker",
+        "title": "Select controls do not display their selected value"
       }
     }
   }

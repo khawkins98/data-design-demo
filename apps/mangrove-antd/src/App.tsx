@@ -24,7 +24,8 @@ import "dayjs/locale/en-gb";
 
 import { LOCALES } from "@undrr-eval/fixtures";
 import type { LocaleCode } from "@undrr-eval/fixtures";
-import { HostShell } from "@undrr-eval/host-mangrove";
+import { HostShell, ViewSwitcher } from "@undrr-eval/host-mangrove";
+import { viewLinks } from "@undrr-eval/test-harness/views";
 import { TOKEN_SCOPE_CLASS } from "@undrr-eval/undrr-tokens";
 import {
   DemoContext,
@@ -70,6 +71,20 @@ export function App(): ReactElement {
 
   return (
     <HostShell title={demo.labels.appTitle} dir={demo.dir}>
+      {/*
+        * Cross-view navigation, immediately before the known-issues box and for
+        * the same reasons: host chrome, outside the candidate wrapper, present in
+        * both candidate states. This page is the inventory, so it is the one
+        * flagged `current`. `"application"` is NOT listed — that view belongs to
+        * the Delta host, and the link to it goes through `otherHost` instead. This
+        * host ships no `app.html`, so listing it would be a dead link.
+        */}
+      <ViewSwitcher
+        views={viewLinks(["island", "inventory"], "inventory")}
+        pairingName="Ant Design on Mangrove"
+        otherHost={{ label: "Ant Design on Delta", href: "../delta-antd/" }}
+      />
+
       {/*
         * Rendered OUTSIDE the candidate wrapper and in BOTH candidate states.
         * Outside, so no candidate stylesheet restyles the warning box and every

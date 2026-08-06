@@ -2,11 +2,11 @@
   "config": {
     "argv": [
       "/Users/khawkins/.nvm/versions/node/v24.18.0/bin/node",
-      "/Users/khawkins/Documents/git/data-design-demo/node_modules/.pnpm/@playwright+test@1.62.1/node_modules/@playwright/test/cli.js",
+      "/Users/khawkins/Documents/git/data-design-demo/.claude/worktrees/feat-continuity-framing/node_modules/.pnpm/@playwright+test@1.62.1/node_modules/@playwright/test/cli.js",
       "test"
     ],
-    "configFile": "/Users/khawkins/Documents/git/data-design-demo/apps/delta-antd/playwright.config.ts",
-    "rootDir": "/Users/khawkins/Documents/git/data-design-demo/apps/delta-antd/e2e",
+    "configFile": "/Users/khawkins/Documents/git/data-design-demo/.claude/worktrees/feat-continuity-framing/apps/delta-antd/playwright.config.ts",
+    "rootDir": "/Users/khawkins/Documents/git/data-design-demo/.claude/worktrees/feat-continuity-framing/apps/delta-antd/e2e",
     "failOnFlakyTests": false,
     "forbidOnly": false,
     "fullyParallel": false,
@@ -22,7 +22,7 @@
     "preserveOutput": "always",
     "projects": [
       {
-        "outputDir": "/Users/khawkins/Documents/git/data-design-demo/apps/delta-antd/test-results/playwright",
+        "outputDir": "/Users/khawkins/Documents/git/data-design-demo/.claude/worktrees/feat-continuity-framing/apps/delta-antd/test-results/playwright",
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
@@ -30,7 +30,7 @@
         },
         "id": "mobile",
         "name": "mobile",
-        "testDir": "/Users/khawkins/Documents/git/data-design-demo/apps/delta-antd/e2e",
+        "testDir": "/Users/khawkins/Documents/git/data-design-demo/.claude/worktrees/feat-continuity-framing/apps/delta-antd/e2e",
         "testIgnore": [],
         "testMatch": [
           "**/*.@(spec|test).?(c|m)[jt]s?(x)"
@@ -38,7 +38,7 @@
         "timeout": 30000
       },
       {
-        "outputDir": "/Users/khawkins/Documents/git/data-design-demo/apps/delta-antd/test-results/playwright",
+        "outputDir": "/Users/khawkins/Documents/git/data-design-demo/.claude/worktrees/feat-continuity-framing/apps/delta-antd/test-results/playwright",
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
@@ -46,7 +46,7 @@
         },
         "id": "tablet",
         "name": "tablet",
-        "testDir": "/Users/khawkins/Documents/git/data-design-demo/apps/delta-antd/e2e",
+        "testDir": "/Users/khawkins/Documents/git/data-design-demo/.claude/worktrees/feat-continuity-framing/apps/delta-antd/e2e",
         "testIgnore": [],
         "testMatch": [
           "**/*.@(spec|test).?(c|m)[jt]s?(x)"
@@ -54,7 +54,7 @@
         "timeout": 30000
       },
       {
-        "outputDir": "/Users/khawkins/Documents/git/data-design-demo/apps/delta-antd/test-results/playwright",
+        "outputDir": "/Users/khawkins/Documents/git/data-design-demo/.claude/worktrees/feat-continuity-framing/apps/delta-antd/test-results/playwright",
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
@@ -62,7 +62,7 @@
         },
         "id": "desktop",
         "name": "desktop",
-        "testDir": "/Users/khawkins/Documents/git/data-design-demo/apps/delta-antd/e2e",
+        "testDir": "/Users/khawkins/Documents/git/data-design-demo/.claude/worktrees/feat-continuity-framing/apps/delta-antd/e2e",
         "testIgnore": [],
         "testMatch": [
           "**/*.@(spec|test).?(c|m)[jt]s?(x)"
@@ -102,6 +102,2039 @@
   },
   "suites": [
     {
+      "title": "app.spec.ts",
+      "file": "app.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "full application",
+          "file": "app.spec.ts",
+          "line": 97,
+          "column": 6,
+          "specs": [
+            {
+              "title": "renders the whole records screen inside the host frame",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 854,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:56:51.175Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-25f1426641c3bb9f11a3",
+              "file": "app.spec.ts",
+              "line": 98,
+              "column": 3
+            },
+            {
+              "title": "the candidate subtree is empty with candidate=off",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 276,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:56:52.467Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-5085e0000aa4286b7dfe",
+              "file": "app.spec.ts",
+              "line": 135,
+              "column": 3
+            },
+            {
+              "title": "renders every host canary and every frame canary",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 582,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:56:52.761Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-34dcc5d869f689cefb74",
+              "file": "app.spec.ts",
+              "line": 154,
+              "column": 3
+            },
+            {
+              "title": "passes the leakage assertion",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1214,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:56:53.352Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "app-leakage.json",
+                          "contentType": "application/json",
+                          "body": "ewogICJhc3NlcnRpb25QYXNzZWQiOiB0cnVlLAogICJkaWZmZXJlbmNlcyI6IFtdLAogICJjYW5hcmllc0NoZWNrZWQiOiAxNAp9"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-669617e32f1c8c4fd199",
+              "file": "app.spec.ts",
+              "line": 173,
+              "column": 3
+            },
+            {
+              "title": "the aria-hidden measure row contains nothing focusable",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 499,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:56:54.576Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-ac16f36542387ecb2629",
+              "file": "app.spec.ts",
+              "line": 209,
+              "column": 3
+            },
+            {
+              "title": "collapses and expands the filter card",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1030,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:56:55.084Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-2931ea522320a0b2f5f5",
+              "file": "app.spec.ts",
+              "line": 263,
+              "column": 3
+            },
+            {
+              "title": "filters the table and reports the count in the page header",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1122,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:56:56.122Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-0fa1b7d5cbbad1e7edfd",
+              "file": "app.spec.ts",
+              "line": 286,
+              "column": 3
+            },
+            {
+              "title": "sorts by a column header",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 670,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:56:57.253Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-9bc6f8afe0f28eb03ce7",
+              "file": "app.spec.ts",
+              "line": 303,
+              "column": 3
+            },
+            {
+              "title": "paginates, and returns to page one when sorting changes",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 704,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:56:57.934Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-8adb5294909477e1c110",
+              "file": "app.spec.ts",
+              "line": 319,
+              "column": 3
+            },
+            {
+              "title": "confirms a delete through the modal flow",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1913,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:56:58.647Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-55cdd58f708232533389",
+              "file": "app.spec.ts",
+              "line": 335,
+              "column": 3
+            },
+            {
+              "title": "closes the delete dialog on Escape and restores focus",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1058,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:57:00.570Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-85cf37ddceb024f6fcb4",
+              "file": "app.spec.ts",
+              "line": 360,
+              "column": 3
+            },
+            {
+              "title": "applies RTL for Arabic",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 618,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:57:01.639Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-2676e7012afb3c6b3e2b",
+              "file": "app.spec.ts",
+              "line": 374,
+              "column": 3
+            },
+            {
+              "title": "RTL flips the row-action column with the row",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 540,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:57:02.268Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-b92cf983075ac53788d9",
+              "file": "app.spec.ts",
+              "line": 395,
+              "column": 3
+            },
+            {
+              "title": "the portalled modal keeps its direction in RTL",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 744,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:57:02.815Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-614f51dc9f5465647b6b",
+              "file": "app.spec.ts",
+              "line": 483,
+              "column": 3
+            },
+            {
+              "title": "axe on the candidate region and the whole page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2070,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "axe app scoped: 0 violations (0 critical, 0 serious), 1 incomplete (rules: none) | whole page: 0 violations (rules: none)\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:57:03.566Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "axe-app-summary.json",
+                          "contentType": "application/json",
+                          "body": "ewogICJzY29wZWQiOiB7CiAgICAic2VjdGlvbiI6ICJhcHAtY2FuZGlkYXRlLXN1YnRyZWUiLAogICAgInVybCI6ICJodHRwOi8vbG9jYWxob3N0OjUyMDcvYXBwLmh0bWw/Y2FuZGlkYXRlPW9uIiwKICAgICJ0YWdzIjogWwogICAgICAid2NhZzJhIiwKICAgICAgIndjYWcyYWEiLAogICAgICAid2NhZzIxYSIsCiAgICAgICJ3Y2FnMjFhYSIsCiAgICAgICJ3Y2FnMjJhYSIKICAgIF0sCiAgICAidmlvbGF0aW9ucyI6IFtdLAogICAgImNvdW50cyI6IHsKICAgICAgInZpb2xhdGlvbnMiOiAwLAogICAgICAic2VyaW91cyI6IDAsCiAgICAgICJjcml0aWNhbCI6IDAsCiAgICAgICJpbmNvbXBsZXRlIjogMQogICAgfSwKICAgICJpbmNvbXBsZXRlUnVsZUlkcyI6IFsKICAgICAgImNvbG9yLWNvbnRyYXN0IgogICAgXQogIH0sCiAgIndob2xlUGFnZSI6IHsKICAgICJzZWN0aW9uIjogImFwcC13aG9sZS1wYWdlIiwKICAgICJ1cmwiOiAiaHR0cDovL2xvY2FsaG9zdDo1MjA3L2FwcC5odG1sP2NhbmRpZGF0ZT1vbiIsCiAgICAidGFncyI6IFsKICAgICAgIndjYWcyYSIsCiAgICAgICJ3Y2FnMmFhIiwKICAgICAgIndjYWcyMWEiLAogICAgICAid2NhZzIxYWEiLAogICAgICAid2NhZzIyYWEiCiAgICBdLAogICAgInZpb2xhdGlvbnMiOiBbXSwKICAgICJjb3VudHMiOiB7CiAgICAgICJ2aW9sYXRpb25zIjogMCwKICAgICAgInNlcmlvdXMiOiAwLAogICAgICAiY3JpdGljYWwiOiAwLAogICAgICAiaW5jb21wbGV0ZSI6IDEKICAgIH0sCiAgICAiaW5jb21wbGV0ZVJ1bGVJZHMiOiBbCiAgICAgICJjb2xvci1jb250cmFzdCIKICAgIF0KICB9Cn0="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-f1813f022653896a937c",
+              "file": "app.spec.ts",
+              "line": 538,
+              "column": 3
+            },
+            {
+              "title": "axe on the open delete dialog",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1760,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "axe app delete dialog: 0 violations (0 critical, 0 serious), 1 incomplete (rules: none)\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:57:05.643Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "axe-app-delete-dialog.json",
+                          "contentType": "application/json",
+                          "body": "ewogICJzZWN0aW9uIjogImFwcC1kZWxldGUtZGlhbG9nIiwKICAidXJsIjogImh0dHA6Ly9sb2NhbGhvc3Q6NTIwNy9hcHAuaHRtbD9jYW5kaWRhdGU9b24iLAogICJ0YWdzIjogWwogICAgIndjYWcyYSIsCiAgICAid2NhZzJhYSIsCiAgICAid2NhZzIxYSIsCiAgICAid2NhZzIxYWEiLAogICAgIndjYWcyMmFhIgogIF0sCiAgInZpb2xhdGlvbnMiOiBbXSwKICAiY291bnRzIjogewogICAgInZpb2xhdGlvbnMiOiAwLAogICAgInNlcmlvdXMiOiAwLAogICAgImNyaXRpY2FsIjogMCwKICAgICJpbmNvbXBsZXRlIjogMQogIH0sCiAgImluY29tcGxldGVSdWxlSWRzIjogWwogICAgImNvbG9yLWNvbnRyYXN0IgogIF0KfQ=="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-13fce6b67ff0dd623c2a",
+              "file": "app.spec.ts",
+              "line": 579,
+              "column": 3
+            },
+            {
+              "title": "screenshots",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1090,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:57:07.411Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-2218ae32ee6655231637",
+              "file": "app.spec.ts",
+              "line": 618,
+              "column": 3
+            },
+            {
+              "title": "screenshots in RTL",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 792,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:57:08.508Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-20ad7699a75d49c3ab5e",
+              "file": "app.spec.ts",
+              "line": 634,
+              "column": 3
+            },
+            {
+              "title": "long labels do not overflow the viewport",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 512,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:57:09.306Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-948d16aa4fc18727bdd7",
+              "file": "app.spec.ts",
+              "line": 653,
+              "column": 3
+            },
+            {
+              "title": "renders the whole records screen inside the host frame",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 508,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:57:26.372Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-b0b7aee7697557bf9d81",
+              "file": "app.spec.ts",
+              "line": 98,
+              "column": 3
+            },
+            {
+              "title": "the candidate subtree is empty with candidate=off",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 225,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:57:27.056Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-ba1fb83b479eaa0d0cbc",
+              "file": "app.spec.ts",
+              "line": 135,
+              "column": 3
+            },
+            {
+              "title": "renders every host canary and every frame canary",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 534,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:57:27.294Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-34a5f5e588c5334195e8",
+              "file": "app.spec.ts",
+              "line": 154,
+              "column": 3
+            },
+            {
+              "title": "passes the leakage assertion",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1171,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:57:27.835Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "app-leakage.json",
+                          "contentType": "application/json",
+                          "body": "ewogICJhc3NlcnRpb25QYXNzZWQiOiB0cnVlLAogICJkaWZmZXJlbmNlcyI6IFtdLAogICJjYW5hcmllc0NoZWNrZWQiOiAxNAp9"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-42519f80f2761f1033d4",
+              "file": "app.spec.ts",
+              "line": 173,
+              "column": 3
+            },
+            {
+              "title": "the aria-hidden measure row contains nothing focusable",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 322,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:57:29.013Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-7ed600419746f1454a1c",
+              "file": "app.spec.ts",
+              "line": 209,
+              "column": 3
+            },
+            {
+              "title": "collapses and expands the filter card",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 858,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:57:29.341Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-2120f682b36c0decd9ba",
+              "file": "app.spec.ts",
+              "line": 263,
+              "column": 3
+            },
+            {
+              "title": "filters the table and reports the count in the page header",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 954,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:57:30.207Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-a9212c606cb74dc9aad5",
+              "file": "app.spec.ts",
+              "line": 286,
+              "column": 3
+            },
+            {
+              "title": "sorts by a column header",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 552,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:57:31.169Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-6468d7e947c53991b72b",
+              "file": "app.spec.ts",
+              "line": 303,
+              "column": 3
+            },
+            {
+              "title": "paginates, and returns to page one when sorting changes",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 558,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:57:31.728Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-9b87dec111702c28a227",
+              "file": "app.spec.ts",
+              "line": 319,
+              "column": 3
+            },
+            {
+              "title": "confirms a delete through the modal flow",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1297,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:57:32.293Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-c77e1caf5b03c1eba9bc",
+              "file": "app.spec.ts",
+              "line": 335,
+              "column": 3
+            },
+            {
+              "title": "closes the delete dialog on Escape and restores focus",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 849,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:57:33.596Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-60a2e3c2e72d849f96ac",
+              "file": "app.spec.ts",
+              "line": 360,
+              "column": 3
+            },
+            {
+              "title": "applies RTL for Arabic",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 518,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:57:34.452Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-9b3b7fc486147f11b865",
+              "file": "app.spec.ts",
+              "line": 374,
+              "column": 3
+            },
+            {
+              "title": "RTL flips the row-action column with the row",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 450,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:57:34.976Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-b0649da0ac00c7a6907a",
+              "file": "app.spec.ts",
+              "line": 395,
+              "column": 3
+            },
+            {
+              "title": "the portalled modal keeps its direction in RTL",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 579,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:57:35.431Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-bf82e93ebf0fa97853a5",
+              "file": "app.spec.ts",
+              "line": 483,
+              "column": 3
+            },
+            {
+              "title": "axe on the candidate region and the whole page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1988,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "axe app scoped: 0 violations (0 critical, 0 serious), 1 incomplete (rules: none) | whole page: 0 violations (rules: none)\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:57:36.017Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "axe-app-summary.json",
+                          "contentType": "application/json",
+                          "body": "ewogICJzY29wZWQiOiB7CiAgICAic2VjdGlvbiI6ICJhcHAtY2FuZGlkYXRlLXN1YnRyZWUiLAogICAgInVybCI6ICJodHRwOi8vbG9jYWxob3N0OjUyMDcvYXBwLmh0bWw/Y2FuZGlkYXRlPW9uIiwKICAgICJ0YWdzIjogWwogICAgICAid2NhZzJhIiwKICAgICAgIndjYWcyYWEiLAogICAgICAid2NhZzIxYSIsCiAgICAgICJ3Y2FnMjFhYSIsCiAgICAgICJ3Y2FnMjJhYSIKICAgIF0sCiAgICAidmlvbGF0aW9ucyI6IFtdLAogICAgImNvdW50cyI6IHsKICAgICAgInZpb2xhdGlvbnMiOiAwLAogICAgICAic2VyaW91cyI6IDAsCiAgICAgICJjcml0aWNhbCI6IDAsCiAgICAgICJpbmNvbXBsZXRlIjogMQogICAgfSwKICAgICJpbmNvbXBsZXRlUnVsZUlkcyI6IFsKICAgICAgImNvbG9yLWNvbnRyYXN0IgogICAgXQogIH0sCiAgIndob2xlUGFnZSI6IHsKICAgICJzZWN0aW9uIjogImFwcC13aG9sZS1wYWdlIiwKICAgICJ1cmwiOiAiaHR0cDovL2xvY2FsaG9zdDo1MjA3L2FwcC5odG1sP2NhbmRpZGF0ZT1vbiIsCiAgICAidGFncyI6IFsKICAgICAgIndjYWcyYSIsCiAgICAgICJ3Y2FnMmFhIiwKICAgICAgIndjYWcyMWEiLAogICAgICAid2NhZzIxYWEiLAogICAgICAid2NhZzIyYWEiCiAgICBdLAogICAgInZpb2xhdGlvbnMiOiBbXSwKICAgICJjb3VudHMiOiB7CiAgICAgICJ2aW9sYXRpb25zIjogMCwKICAgICAgInNlcmlvdXMiOiAwLAogICAgICAiY3JpdGljYWwiOiAwLAogICAgICAiaW5jb21wbGV0ZSI6IDEKICAgIH0sCiAgICAiaW5jb21wbGV0ZVJ1bGVJZHMiOiBbCiAgICAgICJjb2xvci1jb250cmFzdCIKICAgIF0KICB9Cn0="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-1b294104b0099635f4d1",
+              "file": "app.spec.ts",
+              "line": 538,
+              "column": 3
+            },
+            {
+              "title": "axe on the open delete dialog",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1779,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "axe app delete dialog: 0 violations (0 critical, 0 serious), 1 incomplete (rules: none)\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:57:38.011Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "axe-app-delete-dialog.json",
+                          "contentType": "application/json",
+                          "body": "ewogICJzZWN0aW9uIjogImFwcC1kZWxldGUtZGlhbG9nIiwKICAidXJsIjogImh0dHA6Ly9sb2NhbGhvc3Q6NTIwNy9hcHAuaHRtbD9jYW5kaWRhdGU9b24iLAogICJ0YWdzIjogWwogICAgIndjYWcyYSIsCiAgICAid2NhZzJhYSIsCiAgICAid2NhZzIxYSIsCiAgICAid2NhZzIxYWEiLAogICAgIndjYWcyMmFhIgogIF0sCiAgInZpb2xhdGlvbnMiOiBbXSwKICAiY291bnRzIjogewogICAgInZpb2xhdGlvbnMiOiAwLAogICAgInNlcmlvdXMiOiAwLAogICAgImNyaXRpY2FsIjogMCwKICAgICJpbmNvbXBsZXRlIjogMQogIH0sCiAgImluY29tcGxldGVSdWxlSWRzIjogWwogICAgImNvbG9yLWNvbnRyYXN0IgogIF0KfQ=="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-25a6655e11dc2f5fc5b0",
+              "file": "app.spec.ts",
+              "line": 579,
+              "column": 3
+            },
+            {
+              "title": "screenshots",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1116,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:57:39.797Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-c717867dd5123af9d1b9",
+              "file": "app.spec.ts",
+              "line": 618,
+              "column": 3
+            },
+            {
+              "title": "screenshots in RTL",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 936,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:57:40.921Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-400a65b4e710c82eb5c7",
+              "file": "app.spec.ts",
+              "line": 634,
+              "column": 3
+            },
+            {
+              "title": "long labels do not overflow the viewport",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 445,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:57:41.864Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-e88851d51c85299b1f01",
+              "file": "app.spec.ts",
+              "line": 653,
+              "column": 3
+            },
+            {
+              "title": "renders the whole records screen inside the host frame",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 568,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:57:58.777Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-a8b214d5020115a4d872",
+              "file": "app.spec.ts",
+              "line": 98,
+              "column": 3
+            },
+            {
+              "title": "the candidate subtree is empty with candidate=off",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 280,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:57:59.488Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-3ebc8218113d955423e5",
+              "file": "app.spec.ts",
+              "line": 135,
+              "column": 3
+            },
+            {
+              "title": "renders every host canary and every frame canary",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 563,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:57:59.777Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-99b802bbb13a0b39d860",
+              "file": "app.spec.ts",
+              "line": 154,
+              "column": 3
+            },
+            {
+              "title": "passes the leakage assertion",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1175,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:58:00.349Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "app-leakage.json",
+                          "contentType": "application/json",
+                          "body": "ewogICJhc3NlcnRpb25QYXNzZWQiOiB0cnVlLAogICJkaWZmZXJlbmNlcyI6IFtdLAogICJjYW5hcmllc0NoZWNrZWQiOiAxNAp9"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-8ff66f1f4117fc9e10ec",
+              "file": "app.spec.ts",
+              "line": 173,
+              "column": 3
+            },
+            {
+              "title": "the aria-hidden measure row contains nothing focusable",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 521,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:58:01.533Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-2b8dac803683d05fee64",
+              "file": "app.spec.ts",
+              "line": 209,
+              "column": 3
+            },
+            {
+              "title": "collapses and expands the filter card",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1162,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:58:02.072Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-a820bafdab5156602ca1",
+              "file": "app.spec.ts",
+              "line": 263,
+              "column": 3
+            },
+            {
+              "title": "filters the table and reports the count in the page header",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1137,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:58:03.246Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-ddbb4085e1e88c511e3d",
+              "file": "app.spec.ts",
+              "line": 286,
+              "column": 3
+            },
+            {
+              "title": "sorts by a column header",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 590,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:58:04.394Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-ea1da2e04bfdb5cd2c6e",
+              "file": "app.spec.ts",
+              "line": 303,
+              "column": 3
+            },
+            {
+              "title": "paginates, and returns to page one when sorting changes",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 514,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:58:04.990Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-5e1598f42eea9fa2cdd0",
+              "file": "app.spec.ts",
+              "line": 319,
+              "column": 3
+            },
+            {
+              "title": "confirms a delete through the modal flow",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1319,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:58:05.511Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-524a2c2cd7440da36842",
+              "file": "app.spec.ts",
+              "line": 335,
+              "column": 3
+            },
+            {
+              "title": "closes the delete dialog on Escape and restores focus",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 835,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:58:06.836Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-a1481ff5c28d5f5e8806",
+              "file": "app.spec.ts",
+              "line": 360,
+              "column": 3
+            },
+            {
+              "title": "applies RTL for Arabic",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 566,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:58:07.677Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-9daa05c57b940164369f",
+              "file": "app.spec.ts",
+              "line": 374,
+              "column": 3
+            },
+            {
+              "title": "RTL flips the row-action column with the row",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 578,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:58:08.250Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-546fba2918a23c89f333",
+              "file": "app.spec.ts",
+              "line": 395,
+              "column": 3
+            },
+            {
+              "title": "the portalled modal keeps its direction in RTL",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 605,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:58:08.834Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-47cbf3a9fd93ce810a82",
+              "file": "app.spec.ts",
+              "line": 483,
+              "column": 3
+            },
+            {
+              "title": "axe on the candidate region and the whole page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2130,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "axe app scoped: 0 violations (0 critical, 0 serious), 1 incomplete (rules: none) | whole page: 0 violations (rules: none)\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:58:09.445Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "axe-app-summary.json",
+                          "contentType": "application/json",
+                          "body": "ewogICJzY29wZWQiOiB7CiAgICAic2VjdGlvbiI6ICJhcHAtY2FuZGlkYXRlLXN1YnRyZWUiLAogICAgInVybCI6ICJodHRwOi8vbG9jYWxob3N0OjUyMDcvYXBwLmh0bWw/Y2FuZGlkYXRlPW9uIiwKICAgICJ0YWdzIjogWwogICAgICAid2NhZzJhIiwKICAgICAgIndjYWcyYWEiLAogICAgICAid2NhZzIxYSIsCiAgICAgICJ3Y2FnMjFhYSIsCiAgICAgICJ3Y2FnMjJhYSIKICAgIF0sCiAgICAidmlvbGF0aW9ucyI6IFtdLAogICAgImNvdW50cyI6IHsKICAgICAgInZpb2xhdGlvbnMiOiAwLAogICAgICAic2VyaW91cyI6IDAsCiAgICAgICJjcml0aWNhbCI6IDAsCiAgICAgICJpbmNvbXBsZXRlIjogMQogICAgfSwKICAgICJpbmNvbXBsZXRlUnVsZUlkcyI6IFsKICAgICAgImNvbG9yLWNvbnRyYXN0IgogICAgXQogIH0sCiAgIndob2xlUGFnZSI6IHsKICAgICJzZWN0aW9uIjogImFwcC13aG9sZS1wYWdlIiwKICAgICJ1cmwiOiAiaHR0cDovL2xvY2FsaG9zdDo1MjA3L2FwcC5odG1sP2NhbmRpZGF0ZT1vbiIsCiAgICAidGFncyI6IFsKICAgICAgIndjYWcyYSIsCiAgICAgICJ3Y2FnMmFhIiwKICAgICAgIndjYWcyMWEiLAogICAgICAid2NhZzIxYWEiLAogICAgICAid2NhZzIyYWEiCiAgICBdLAogICAgInZpb2xhdGlvbnMiOiBbXSwKICAgICJjb3VudHMiOiB7CiAgICAgICJ2aW9sYXRpb25zIjogMCwKICAgICAgInNlcmlvdXMiOiAwLAogICAgICAiY3JpdGljYWwiOiAwLAogICAgICAiaW5jb21wbGV0ZSI6IDEKICAgIH0sCiAgICAiaW5jb21wbGV0ZVJ1bGVJZHMiOiBbCiAgICAgICJjb2xvci1jb250cmFzdCIKICAgIF0KICB9Cn0="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-a9ad855801e925f5bb23",
+              "file": "app.spec.ts",
+              "line": 538,
+              "column": 3
+            },
+            {
+              "title": "axe on the open delete dialog",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1699,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "axe app delete dialog: 0 violations (0 critical, 0 serious), 1 incomplete (rules: none)\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:58:11.580Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "axe-app-delete-dialog.json",
+                          "contentType": "application/json",
+                          "body": "ewogICJzZWN0aW9uIjogImFwcC1kZWxldGUtZGlhbG9nIiwKICAidXJsIjogImh0dHA6Ly9sb2NhbGhvc3Q6NTIwNy9hcHAuaHRtbD9jYW5kaWRhdGU9b24iLAogICJ0YWdzIjogWwogICAgIndjYWcyYSIsCiAgICAid2NhZzJhYSIsCiAgICAid2NhZzIxYSIsCiAgICAid2NhZzIxYWEiLAogICAgIndjYWcyMmFhIgogIF0sCiAgInZpb2xhdGlvbnMiOiBbXSwKICAiY291bnRzIjogewogICAgInZpb2xhdGlvbnMiOiAwLAogICAgInNlcmlvdXMiOiAwLAogICAgImNyaXRpY2FsIjogMCwKICAgICJpbmNvbXBsZXRlIjogMQogIH0sCiAgImluY29tcGxldGVSdWxlSWRzIjogWwogICAgImNvbG9yLWNvbnRyYXN0IgogIF0KfQ=="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-0e413d100c57516f8d5e",
+              "file": "app.spec.ts",
+              "line": 579,
+              "column": 3
+            },
+            {
+              "title": "screenshots",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1371,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:58:13.284Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-2b59b3c047556186ec4f",
+              "file": "app.spec.ts",
+              "line": 618,
+              "column": 3
+            },
+            {
+              "title": "screenshots in RTL",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 882,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:58:14.663Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-14eed1e3c8b6f0e8090a",
+              "file": "app.spec.ts",
+              "line": 634,
+              "column": 3
+            },
+            {
+              "title": "long labels do not overflow the viewport",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 464,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T13:58:15.552Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c31ff144dc4fee3acd0a-16539616f3fd4423c880",
+              "file": "app.spec.ts",
+              "line": 653,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
       "title": "demo.spec.ts",
       "file": "demo.spec.ts",
       "column": 0,
@@ -130,12 +2163,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 532,
+                      "duration": 530,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T10:01:21.783Z",
+                      "startTime": "2026-08-06T13:57:09.833Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -164,12 +2197,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 379,
+                      "duration": 470,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T10:01:22.503Z",
+                      "startTime": "2026-08-06T13:57:10.371Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -198,12 +2231,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 401,
+                      "duration": 495,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T10:01:22.898Z",
+                      "startTime": "2026-08-06T13:57:10.850Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -232,12 +2265,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 597,
+                      "duration": 689,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T10:01:23.307Z",
+                      "startTime": "2026-08-06T13:57:11.351Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -266,12 +2299,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 413,
+                      "duration": 617,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T10:01:23.912Z",
+                      "startTime": "2026-08-06T13:57:12.046Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -300,12 +2333,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1123,
+                      "duration": 1161,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T10:01:24.337Z",
+                      "startTime": "2026-08-06T13:57:12.669Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -340,12 +2373,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 406,
+                      "duration": 730,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T10:01:25.466Z",
+                      "startTime": "2026-08-06T13:57:13.837Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -374,12 +2407,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 840,
+                      "duration": 966,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T10:01:25.881Z",
+                      "startTime": "2026-08-06T13:57:14.576Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -408,12 +2441,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 664,
+                      "duration": 750,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T10:01:26.728Z",
+                      "startTime": "2026-08-06T13:57:15.551Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -442,7 +2475,7 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 4220,
+                      "duration": 6258,
                       "errors": [],
                       "stdout": [
                         {
@@ -475,7 +2508,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T10:01:27.399Z",
+                      "startTime": "2026-08-06T13:57:16.307Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -510,12 +2543,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1011,
+                      "duration": 1176,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T10:01:31.625Z",
+                      "startTime": "2026-08-06T13:57:22.570Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -544,12 +2577,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1181,
+                      "duration": 1528,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T10:01:32.642Z",
+                      "startTime": "2026-08-06T13:57:23.753Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -578,12 +2611,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 470,
+                      "duration": 590,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T10:01:33.829Z",
+                      "startTime": "2026-08-06T13:57:25.288Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -612,12 +2645,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 523,
+                      "duration": 454,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T10:01:34.721Z",
+                      "startTime": "2026-08-06T13:57:42.323Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -646,12 +2679,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 400,
+                      "duration": 458,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T10:01:35.388Z",
+                      "startTime": "2026-08-06T13:57:42.783Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -680,12 +2713,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 387,
+                      "duration": 471,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T10:01:35.805Z",
+                      "startTime": "2026-08-06T13:57:43.249Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -714,12 +2747,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 560,
+                      "duration": 650,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T10:01:36.199Z",
+                      "startTime": "2026-08-06T13:57:43.727Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -748,12 +2781,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 387,
+                      "duration": 498,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T10:01:36.767Z",
+                      "startTime": "2026-08-06T13:57:44.383Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -782,12 +2815,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1125,
+                      "duration": 1139,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T10:01:37.159Z",
+                      "startTime": "2026-08-06T13:57:44.887Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -822,12 +2855,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 362,
+                      "duration": 426,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T10:01:38.290Z",
+                      "startTime": "2026-08-06T13:57:46.032Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -856,12 +2889,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 995,
+                      "duration": 974,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T10:01:38.660Z",
+                      "startTime": "2026-08-06T13:57:46.467Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -890,12 +2923,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 576,
+                      "duration": 680,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T10:01:39.664Z",
+                      "startTime": "2026-08-06T13:57:47.448Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -924,7 +2957,7 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 4450,
+                      "duration": 6652,
                       "errors": [],
                       "stdout": [
                         {
@@ -957,7 +2990,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T10:01:40.248Z",
+                      "startTime": "2026-08-06T13:57:48.135Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -992,12 +3025,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1007,
+                      "duration": 1346,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T10:01:44.705Z",
+                      "startTime": "2026-08-06T13:57:54.793Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1026,12 +3059,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1260,
+                      "duration": 1543,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T10:01:45.717Z",
+                      "startTime": "2026-08-06T13:57:56.146Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1060,12 +3093,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 468,
+                      "duration": 630,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T10:01:46.982Z",
+                      "startTime": "2026-08-06T13:57:57.697Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1094,12 +3127,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 488,
+                      "duration": 487,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T10:01:47.837Z",
+                      "startTime": "2026-08-06T13:58:16.029Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1128,12 +3161,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 400,
+                      "duration": 457,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T10:01:48.476Z",
+                      "startTime": "2026-08-06T13:58:16.523Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1162,12 +3195,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 425,
+                      "duration": 500,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T10:01:48.883Z",
+                      "startTime": "2026-08-06T13:58:16.987Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1196,12 +3229,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 569,
+                      "duration": 726,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T10:01:49.317Z",
+                      "startTime": "2026-08-06T13:58:17.493Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1230,12 +3263,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 413,
+                      "duration": 538,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T10:01:49.893Z",
+                      "startTime": "2026-08-06T13:58:18.226Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1264,12 +3297,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1146,
+                      "duration": 1158,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T10:01:50.313Z",
+                      "startTime": "2026-08-06T13:58:18.771Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -1304,12 +3337,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 357,
+                      "duration": 705,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T10:01:51.465Z",
+                      "startTime": "2026-08-06T13:58:19.936Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1338,12 +3371,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 838,
+                      "duration": 989,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T10:01:51.830Z",
+                      "startTime": "2026-08-06T13:58:20.652Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1372,12 +3405,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 574,
+                      "duration": 931,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T10:01:52.674Z",
+                      "startTime": "2026-08-06T13:58:21.649Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1406,7 +3439,7 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 4766,
+                      "duration": 6547,
                       "errors": [],
                       "stdout": [
                         {
@@ -1439,7 +3472,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T10:01:53.254Z",
+                      "startTime": "2026-08-06T13:58:22.591Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -1474,12 +3507,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1314,
+                      "duration": 1586,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T10:01:58.028Z",
+                      "startTime": "2026-08-06T13:58:29.147Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1508,12 +3541,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1480,
+                      "duration": 1934,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T10:01:59.354Z",
+                      "startTime": "2026-08-06T13:58:30.742Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1542,12 +3575,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 494,
+                      "duration": 600,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T10:02:00.840Z",
+                      "startTime": "2026-08-06T13:58:32.684Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1567,9 +3600,9 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-08-06T10:01:21.519Z",
-    "duration": 39876.339,
-    "expected": 39,
+    "startTime": "2026-08-06T13:56:49.485Z",
+    "duration": 103906.179,
+    "expected": 96,
     "skipped": 0,
     "unexpected": 0,
     "flaky": 0

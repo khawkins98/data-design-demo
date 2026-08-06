@@ -1,0 +1,8 @@
+{
+  "error": null,
+  "actionCellTextAlign": "end",
+  "actionCellIsLeftOfFirstCell": true,
+  "firstCellTextAlign": "start",
+  "buttonsInLeftHalfOfCell": true,
+  "note": "antd column `align` is logical (start/center/end), so the row-action column follows the direction. MUI's Table has only the physical align=right, which is why the same column in apps/delta-mui stays at the physical right in Arabic. Zero custom RTL lines on either side of this comparison."
+}

@@ -1,0 +1,11 @@
+{
+  "error": null,
+  "selectedValue": "Drought",
+  "inputBackgroundColor": "rgb(255, 255, 255)",
+  "inputPosition": "absolute",
+  "inputHeightPx": 46,
+  "contentHeightPx": 24,
+  "valueIsCovered": true,
+  "topmostAtValue": "input.ant-select-input",
+  "note": "antd renders the Select's value in a div and overlays a readonly input on top of it. antd's CSS makes that input transparent; Mangrove's unlayered input rules make it opaque white and 46px tall, and layered CSS cannot win. The selected value is painted over. Zero repair CSS was written, which is the pairing's whole premise — and this is what that premise costs."
+}

@@ -73,7 +73,7 @@ const QUESTIONS = [
     axis: "A4",
     axisName: "Mangrove compatibility",
     answer:
-      "Leakage is clean for every pairing except mangrove-carbon. Ant Design loses every cascade conflict to Mangrove, which may be desirable or not - a decision for UNDRR.",
+      "Leakage is clean for every pairing except mangrove-carbon, whose global stylesheet is not containable. Ant Design loses every cascade conflict to Mangrove - which the realistic layouts showed is not a matter of taste: Mangrove's rules also cover Select's own value, so its filters render blank on the Mangrove host.",
   },
   {
     question: "Design-token alignment",

@@ -1,0 +1,9 @@
+{
+  "error": null,
+  "direction": "rtl",
+  "textAlign": "start",
+  "hasRtlClass": true,
+  "insideCandidateRoot": true,
+  "parentIsBody": false,
+  "note": "The pilot found portalled overlays lose CSS direction against these frames because dir sits on a frame wrapper rather than on <html>. antd avoids it twice over: getPopupContainer keeps the overlay inside the candidate root, and ConfigProvider stamps the -rtl class independently."
+}

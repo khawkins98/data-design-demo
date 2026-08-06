@@ -1,0 +1,21 @@
+{
+  "section": "app-delete-dialog",
+  "url": "http://localhost:5207/app.html?candidate=on",
+  "tags": [
+    "wcag2a",
+    "wcag2aa",
+    "wcag21a",
+    "wcag21aa",
+    "wcag22aa"
+  ],
+  "violations": [],
+  "counts": {
+    "violations": 0,
+    "serious": 0,
+    "critical": 0,
+    "incomplete": 1
+  },
+  "incompleteRuleIds": [
+    "color-contrast"
+  ]
+}

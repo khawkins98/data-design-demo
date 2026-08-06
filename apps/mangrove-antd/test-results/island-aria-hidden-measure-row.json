@@ -1,0 +1,8 @@
+{
+  "error": null,
+  "measureRows": 1,
+  "ariaHiddenSubtrees": 9,
+  "offenders": [],
+  "rowSelectionCheckboxes": 0,
+  "note": "rc-table renders an aria-hidden measure row whenever scroll.x is set. With rowSelection it carries a focusable checkbox and axe reports aria-hidden-focus (serious). This view keeps scroll.x and drops rowSelection, so it has no bulk-action affordance at all. That is the cost."
+}

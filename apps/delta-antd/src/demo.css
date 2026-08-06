@@ -45,6 +45,22 @@
 }
 
 /* ---------------------------------------------------------------------------
+ * The full-application view's page header (`AppView.tsx`).
+ *
+ * Three lines, and they are here rather than in an inline style because they
+ * carry a media-query-free wrap: `flex-wrap` plus a `gap` is enough for the
+ * locale switcher to drop below the title block at the mobile viewport, and a
+ * grid with breakpoints would be more machinery for the same result.
+ * ------------------------------------------------------------------------- */
+.demo .demo-app-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--undrr-space-4);
+}
+
+/* ---------------------------------------------------------------------------
  * Section 9's two-column layout.
  *
  * Base rule first, media query after. That order is deliberate: an earlier run

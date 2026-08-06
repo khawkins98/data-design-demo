@@ -1,3 +1,5 @@
+import { resolve } from "node:path";
+
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 
@@ -10,4 +12,17 @@ export default defineConfig({
   plugins: [react()],
   server: { port: 5206, strictPort: true },
   preview: { port: 5207, strictPort: true },
+  /**
+   * Vite emits only the entries an app declares. Without `app` here the build
+   * would still succeed and silently drop the full-application view; see
+   * apps/README.md.
+   */
+  build: {
+    rollupOptions: {
+      input: {
+        index: resolve(__dirname, "index.html"),
+        app: resolve(__dirname, "app.html"),
+      },
+    },
+  },
 });
