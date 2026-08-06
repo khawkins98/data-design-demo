@@ -8,9 +8,15 @@ number is largest, which is lines of code.
 
 Lines of code is the wrong number. It is merely the easiest one to count.
 
-This document defines the five axes that actually bear on the decision, states
+This document defines the seven axes that actually bear on the decision, states
 for each what is measured and what is judgement, and records where a measurement
 cannot honestly be made.
+
+The axes exist to answer a question larger than DELTA's component needs. What is
+selected becomes the default front-end foundation for DELTA, for Mangrove-based
+properties, and for data systems not yet built, replacing the PrimeReact
+incumbent DELTA runs today. `undrr-questions.md` maps the six questions that
+framing raises onto the axes below.
 
 ## Why lines of code misleads
 
@@ -100,6 +106,17 @@ else.*
 
 This is the axis nothing in the original evaluation measured, because it built
 eight standalone demos - the opposite arrangement to the one being asked about.
+
+**Standardisation is the same question asked at estate scale**, and it is worth
+naming rather than leaving implied. An integration that cannot be shared does not
+merely cost more per site; it produces one dialect of the design system per
+project, each with its own component names, its own token mapping and its own
+bugs. What `packaged` buys is a single shared vocabulary; what `fork-per-site`
+guarantees is divergence, whatever any individual site's code quality. This is
+also the axis on which a migration differs from a greenfield build: there is
+existing PrimeReact code to convert, so a candidate whose idioms map onto
+`DataTable`/`Dialog`/`Paginator` shapes is cheaper to reach than one that does
+not, independent of how it scores here on a fresh build.
 
 **Measured by experiment.** The host-independent part of the integration is
 extracted into a single shared package and both host apps are rewired to consume
@@ -203,6 +220,110 @@ closes that gap, because there is no hook to attach them to.
 
 This is where a build-time theme system quietly costs more than its tidy
 `createTheme()` call suggests, and it is invisible in any line count.
+
+## A6 - Right-to-left
+
+*Does Arabic work, in the components as well as the page?*
+
+This was a requirement row before it was an axis, which understated it. It is the
+most consequential unresolved finding in the run, and a requirement row is not
+where a reader looks for that.
+
+**Measured**
+
+| Signal | Source | Reading |
+| --- | --- | --- |
+| Outcome | `rtl.status` | `clean` or `issues` after the run's own mitigations |
+| Recorded defects | `rtl.issues[]` | Each is a specific component and a measured symptom |
+| Setup cost | requirement `rtl`, `status` + `customLinesOfCode` | `native` means a `dir` attribute sufficed; `composed` means the library needed configuring beyond it |
+| Consistency across hosts | both pairings for one candidate | A candidate differing by host means the host is implicated; agreeing means the candidate is |
+
+**`clean` is not one state, and the status field alone hides that.** Read it
+against the setup cost. React Aria and Ant Design are `native` at zero custom
+lines on both hosts: a `dir` attribute and, for React Aria, an `I18nProvider`.
+Mantine also reports `clean`, but only after 10-18 lines and two mitigations,
+because its `Portal` drops `dir` and freezes its container's props at mount, so
+portalled overlays rendered LTR inside an RTL page and stayed LTR across locale
+changes. Both are `clean`; they are not the same purchase.
+
+**The mechanism generalises, and the recorded defects do not.** A library
+authored in logical properties (`inset-inline-start`) flips because CSS flips it.
+A library emitting physical offsets (`left: 0`) does not flip, and no
+configuration reaches values already emitted. That distinction predicts the
+result better than any count: Carbon's own components all flip for exactly this
+reason, and MUI's outlined floating labels do not. Judge a candidate on which
+side of it the library sits, not on how many defects this run happened to
+provoke.
+
+**Ownership is judgement, and it changes what a defect means.** Three recorded
+issues have three different owners. MUI's floating-label failure is the
+candidate's own CSS, reproduces on both hosts, and MUI's remedy is
+`stylis-plugin-rtl` - a third-party package outside the candidate's own ecosystem
+that constraint 2 forbids, so it cannot be fixed within the rules of this
+evaluation. Carbon's is `flatpickr`, a third-party non-React widget whose month
+arrows keep LTR positions, so it indicts a dependency choice rather than Carbon.
+Mantine's was real and was mitigated, at a cost recorded in
+`theming.escapeHatchesUsed`. Only the first is a property of the candidate UNDRR
+would be adopting.
+
+**Not measured, and cannot be here.** Whether Arabic *reads* correctly to an
+Arabic reader. These fixtures test layout direction and mirroring, not
+typography, line breaking, numeral form or translation quality. A clean result
+means nothing is visibly inverted; it does not mean the interface is good in
+Arabic.
+
+**The decision this axis puts to UNDRR.** Whether misplaced field labels in
+Arabic disqualify MUI Community for a service UNDRR delivers in Arabic, or
+whether `stylis-plugin-rtl` is acceptable as part of adopting MUI. That is a
+policy call about an Arabic-serving service, not a bug to be closed.
+
+## A7 - Accessibility conformance
+
+*Does it meet UNDRR's accessibility commitments in practice?*
+
+Also a matrix cell before it was an axis. Accessibility is a standing
+organisational obligation across every property, not a per-project feature, which
+puts it on the same footing as the other six axes.
+
+**Measured**
+
+| Signal | Source | Reading |
+| --- | --- | --- |
+| Violations by impact | `axe.critical`, `axe.serious` | Automated WCAG failures at run time |
+| Incomplete | `axe.incomplete` | Checks axe could not decide, each needing a human |
+| Scope | `axe.scope`, `axe.wholePage` | Whether the figure covers the candidate subtree or the whole page including host baseline |
+| Ownership | `axe.notes`, `EVIDENCE.md` | Whether a violation is the integration's or the library's own |
+
+**Ownership decides whether a number is actionable.** A violation in integration
+code is a bug to fix once. A violation inside the library's own markup is a
+property of the library, arriving on every site that adopts it and fixable only
+upstream. Ant Design's remaining `aria-hidden-focus` is the second kind: `rc-table`
+renders an `aria-hidden` measure row whenever `scroll.x` is set and `rowSelection`
+puts a focusable checkbox inside it - verified in the DOM. Row selection plus a
+horizontally scrolling table is an ordinary combination, so it will affect any
+real UNDRR table. The same run found and fixed two critical violations that were
+its own. Both figures are 1 serious; only one of them is UNDRR's to fix.
+
+**`incomplete` is not a pass.** It counts checks axe declined to decide, and each
+is work a human still owes. MUI carries 4 on both hosts, the highest in the run,
+against 0-1 for React Aria and Mantine. Reading `incomplete` as "clean" converts
+unfinished review into a good score.
+
+**A measurement limitation that must be stated.** The runs are not strictly
+comparable. Nine of the ten ran axe unscoped; only `mangrove-mui` recorded a
+scope and separated a whole-page figure from the candidate subtree, which is why
+its whole-page count is higher (it includes a known Mangrove host baseline
+`link-in-text-block` on the host's own canary paragraph, documented in
+`requirements.md`, and not caused by MUI). Cross-row comparison is therefore
+sound at the level of "0 versus some" and unsound at the level of exact counts.
+
+**Not measured, and cannot be from this repository.** Automated tooling reaches a
+minority of WCAG criteria. No screen-reader pass was run, on any pairing, with
+any assistive technology. No human keyboard-only walkthrough was performed. No
+cognitive-load or plain-language review. A pairing at 0 critical and 0 serious has
+passed the automated subset and has not been accessibility tested in the sense
+UNDRR's obligations mean. **Zero automated violations is a floor, not a
+conformance claim**, and this repository cannot be cited as one.
 
 ## What this does not cover
 

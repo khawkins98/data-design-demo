@@ -199,10 +199,23 @@ Apache-2.0, TypeScript, read at commit state of 2026-08-05.
   `/assets/css/style-dts.css?asof=20250630` from Delta's own `public/assets`.
   This is not published on the UNDRR assets CDN (it returns 404 there), so it
   could not be retrieved without cloning Delta's asset tree. Its absence means
-  the Delta host is Tailwind-only, which is the dominant influence anyway.
-- **React 18, not Delta's React 19.** Brief 0 specifies React 18 and the
-  candidate libraries are being compared on equal footing, so all eight demos
-  use 18. Noted because it is a divergence from the real Delta.
+  the Delta host is Tailwind-only.
+- **Tailwind-only overstates the separation between the two hosts.** Measured
+  against a Delta checkout, Delta's own markup uses Mangrove classes throughout
+  alongside its Tailwind utilities: `mg-button` 72 times, `mg-grid` 68,
+  `mg-container` 14, plus local `dts-*` classes (`dts-table`, `dts-status`,
+  `dts-page-header`), and `app/frontend/container.tsx` wraps every page in
+  `mg-container`. Real Delta is a Mangrove consumer with Tailwind layered on top,
+  not an alternative to Mangrove.
+
+  So `host-delta` and `host-mangrove` are further apart than the two hosts they
+  model, and the scaffold's clean split is a simplification in the candidates'
+  favour: no demo currently has to coexist with Tailwind utilities and `mg-`
+  classes in the same page, which is the condition a real Delta screen imposes.
+  Issue #11 tracks closing that gap with a full-application Delta layout.
+- **React 19, matching Delta.** Brief 0 specified React 18, but Mantine 9 will
+  not install on 18 at all, so all ten demos use 19 - which is what both Delta and
+  Mangrove develop against. See the README's requirements section.
 - **No routing, data layer, maps or charts.** Delta is a full application; the
   brief asks for its conventions, not its features.
 

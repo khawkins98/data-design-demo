@@ -6,6 +6,15 @@ Ten controlled proofs of concept: five candidate UI libraries built against two
 UNDRR host shells, each rendering the same kitchen-sink page over the same
 fixture data, so the results can actually be compared.
 
+**This is a continuity decision, not a component-library purchase.** DELTA runs
+PrimeReact today. Whatever replaces it becomes the default front-end foundation
+for DELTA, for Mangrove-based properties, and for data systems not yet built - so
+the test is not whether a library covers DELTA's components, but whether one
+library can carry the whole estate: repeatably, standardised, integrating with
+Mangrove, driven by UNDRR tokens, working in Arabic, and meeting UNDRR's
+accessibility obligations. [`docs/undrr-questions.md`](docs/undrr-questions.md)
+maps those six questions onto the axes that answer them.
+
 This is exploratory work on a personal account. It is not a UNDRR product and
 carries no UNDRR endorsement.
 
@@ -68,7 +77,8 @@ scripts/                 generators for fixtures, tokens CSS and the landing pag
 
 | | |
 | --- | --- |
-| [Decision axes](https://khawkins98.github.io/data-design-demo/axes.html) | **Read this first.** Implementation effort, maintainability across many sites, reproducibility, Mangrove compatibility, theming propagation |
+| [Decision axes](https://khawkins98.github.io/data-design-demo/axes.html) | **Read this first.** Implementation effort, maintainability across many sites, reproducibility, Mangrove compatibility, theming propagation, right-to-left, accessibility |
+| [`docs/undrr-questions.md`](docs/undrr-questions.md) | The six UNDRR-wide questions, and which axis answers each |
 | [Live site](https://khawkins98.github.io/data-design-demo/) | All ten demos, click through from the landing page |
 | [Comparison matrix](https://khawkins98.github.io/data-design-demo/comparison.html) | 10 pairings x 30 requirements, plus metrics, generated from the evidence files |
 | [Issue #8](https://github.com/khawkins98/data-design-demo/issues/8) | Decisions UNDRR needs to make, which do not show up in a feature comparison |
@@ -87,6 +97,11 @@ that matter are not volume:
   into each bundle, making it a rebuild of every site.
 - **Theming ceilings.** Carbon leaves 21-22 of 71 UNDRR tokens unreachable. That
   is a ceiling, not a cost.
+- **Arabic.** MUI Community's outlined floating labels do not flip: `direction` on
+  the theme cannot move physical offsets Emotion has already emitted. It reproduces
+  on both hosts, so it is the candidate and not the host, and MUI's own remedy is a
+  third-party package the brief forbids. For a service UNDRR delivers in Arabic
+  this is the single most consequential unresolved item in the run.
 - **Cascade layers.** Ant Design can wrap its CSS in `@layer`, which makes it lose
   every conflict with Mangrove's unlayered CSS. Its controls then render as
   Mangrove's, with no repair CSS at all. Whether that is desirable is a decision
@@ -98,7 +113,8 @@ The evidence for each is in `apps/<host>-<candidate>/EVIDENCE.md`.
 
 | Document | What it settles |
 | --- | --- |
-| `docs/decision-axes.md` | The five axes that bear on the decision, what is measured on each, and where a measurement cannot honestly be made |
+| `docs/undrr-questions.md` | The six UNDRR-wide continuity questions, the axis answering each, and what the answers do not settle |
+| `docs/decision-axes.md` | The seven axes that bear on the decision, what is measured on each, and where a measurement cannot honestly be made |
 | `docs/requirements.md` | Canonical requirement IDs, how to assign each `status`, the date-range fallback, known host baseline axe violations |
 | `docs/host-derivation.md` | What was taken from Delta and Mangrove, what was simplified, and the findings that came out of doing so |
 | `apps/README.md` | What a Brief 1 run owns and must not touch |

@@ -298,9 +298,17 @@ ${cardHtml}
         <p>
           <strong><a href="./axes.html">Decision axes</a></strong>
           — start here if you are choosing. Implementation effort, maintainability
-          across many sites, reproducibility, Mangrove compatibility and theming
-          propagation. The requirement matrix says every candidate can do the job;
-          these axes say what each costs to live with.
+          across many sites, reproducibility, Mangrove compatibility, theming
+          propagation, right-to-left and accessibility. The requirement matrix says
+          every candidate can do the job; these axes say what each costs to live
+          with.
+        </p>
+        <p>
+          This is a continuity decision, not a component-library purchase. DELTA
+          runs PrimeReact today; whatever replaces it becomes the default
+          front-end foundation for DELTA, Mangrove-based properties and data
+          systems not yet built. <code>docs/undrr-questions.md</code> maps the six
+          questions that raises onto the axes that answer them.
         </p>
         <p>
           <strong><a href="./comparison.html">Side-by-side comparison</a></strong>

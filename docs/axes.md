@@ -257,18 +257,22 @@ What resists extraction:
 
 ## A4 - Mangrove compatibility
 
-| Pairing | leakage | documented setup loadable as-is | RTL | axe critical/serious |
-| --- | --- | --- | --- | --- |
-| delta-react-aria | clean | not probed | clean | 0 / 0 |
-| mangrove-react-aria | clean | not probed | clean | 0 / 0 |
-| delta-mui | clean | not probed | **issues** | 0 / 1 |
-| mangrove-mui | clean | not probed | **issues** | 0 / 1 |
-| delta-carbon | clean | **no** - global stylesheet restyles the host | clean | 1 / 2 |
-| mangrove-carbon | **FAILED** (19 diffs) | not probed | clean | 0 / 1 |
-| delta-mantine | clean | not probed | clean | 0 / 0 |
-| mangrove-mantine | clean | not probed | clean | 0 / 0 |
-| delta-antd | clean | **no** - global stylesheet restyles the host | clean | 0 / 1 |
-| mangrove-antd | clean | **no** - global stylesheet restyles the host | clean | 0 / 1 |
+RTL and accessibility used to be two columns here. They are now A6 and A7: both are
+estate-wide obligations rather than symptoms of host coexistence, and both were too
+consequential to leave as columns in someone else's table.
+
+| Pairing | leakage | documented setup loadable as-is |
+| --- | --- | --- |
+| delta-react-aria | clean | not probed |
+| mangrove-react-aria | clean | not probed |
+| delta-mui | clean | not probed |
+| mangrove-mui | clean | not probed |
+| delta-carbon | clean | **no** - global stylesheet restyles the host |
+| mangrove-carbon | **FAILED** (19 diffs) | not probed |
+| delta-mantine | clean | not probed |
+| mangrove-mantine | clean | not probed |
+| delta-antd | clean | **no** - global stylesheet restyles the host |
+| mangrove-antd | clean | **no** - global stylesheet restyles the host |
 
 ## A5 - Theming fidelity and propagation
 
@@ -278,16 +282,92 @@ swap reaches every site at once; a rebuild is per site, forever.
 
 | Pairing | tokens applied | unreachable | propagation | live var() refs in shipped CSS |
 | --- | --- | --- | --- | --- |
-| delta-react-aria | 48 | 0 | **stylesheet-swap** | 295 |
-| mangrove-react-aria | 47 | 0 | **stylesheet-swap** | 264 |
-| delta-mui | 29 | 0 | **mostly-rebuild** | 38 |
-| mangrove-mui | 32 | 0 | **mostly-rebuild** | 38 |
-| delta-carbon | 50 | **21** | **stylesheet-swap** | 228 |
-| mangrove-carbon | 50 | **22** | **stylesheet-swap** | 195 |
-| delta-mantine | 66 | **5** | **mostly-rebuild** | 44 |
-| mangrove-mantine | 62 | 0 | **mostly-rebuild** | 44 |
-| delta-antd | 44 | 0 | **mostly-rebuild** | 41 |
-| mangrove-antd | 44 | 0 | **mostly-rebuild** | 41 |
+| delta-react-aria | 48 | 0 | **unknown** | not built |
+| mangrove-react-aria | 47 | 0 | **unknown** | not built |
+| delta-mui | 29 | 0 | **unknown** | not built |
+| mangrove-mui | 32 | 0 | **unknown** | not built |
+| delta-carbon | 50 | **21** | **unknown** | not built |
+| mangrove-carbon | 50 | **22** | **unknown** | not built |
+| delta-mantine | 66 | **5** | **unknown** | not built |
+| mangrove-mantine | 62 | 0 | **unknown** | not built |
+| delta-antd | 44 | 0 | **unknown** | not built |
+| mangrove-antd | 44 | 0 | **unknown** | not built |
+
+## A6 - Right-to-left
+
+Read `status` against `setup`. `clean` at `native`/0 lines means a `dir` attribute
+sufficed. `clean` at `composed`/18 lines means the library needed configuring and
+mitigating first. Both print as clean; they are not the same purchase.
+
+| Pairing | status | setup | custom lines | recorded issues |
+| --- | --- | --- | --- | --- |
+| delta-react-aria | clean | native | 0 | 0 |
+| mangrove-react-aria | clean | native | 0 | 0 |
+| delta-mui | **issues** | composed | 6 | 2 |
+| mangrove-mui | **issues** | composed | 6 | 1 |
+| delta-carbon | clean | native | 0 | 1 |
+| mangrove-carbon | clean | composed | 6 | 2 |
+| delta-mantine | clean | composed | 18 | 2 |
+| mangrove-mantine | clean | composed | 10 | 0 |
+| delta-antd | clean | native | 0 | 0 |
+| mangrove-antd | clean | native | 0 | 0 |
+
+A candidate whose two hosts disagree implicates the host; one whose two hosts agree
+implicates the candidate. Every recorded issue is reproduced verbatim below, because
+ownership - candidate, third-party dependency, or mitigated - decides what it means,
+and that is judgement rather than a number.
+
+<details><summary>Recorded RTL issues, per pairing</summary>
+
+**`delta-mui`** - 2 recorded
+
+- MUI's outlined floating labels do not flip in RTL. `direction: "rtl"` on the theme does not change the physical offsets emotion has already emitted: `.MuiInputLabel-outlined` uses `left: 0`, so wherever a FormControl is wider than its input the label detaches from its field. Measured at 1440x900 in Arabic: 4 fields displaced by more than 100px, the worst a visible 218px-wide input whose label sits 854px away. Visible in screenshots/desktop/rtl/01-forms.png, bottom form.
+- MUI's documented remedy is `stylis-plugin-rtl`, a third-party package that Brief 1 constraint 2 forbids. So this is not fixable within the rules, and it is a genuine RTL limitation of MUI Community for a service that must serve Arabic.
+
+**`mangrove-mui`** - 1 recorded
+
+- MuiInputLabel-outlined is positioned with a physical `left: 0` that theme direction does not flip. A TextField whose FormControl is wider than its input renders its floating label at the physical left edge: measured label x=51, input x=921, gap 870px, at all three viewports. Fix requires stylis-plugin-rtl, which constraint 2 forbids. The e2e assertion is left failing.
+
+**`delta-carbon`** - 1 recorded
+
+- flatpickr's calendar is a third-party non-React widget and is not mirrored: its previous/next month arrows keep their LTR positions in Arabic. Carbon's own components all flip correctly because they are authored in logical properties.
+
+**`mangrove-carbon`** - 2 recorded
+
+- Carbon's own internals mirror correctly at all three viewports; no direction-aware CSS was written except one padding-inline-start.
+- The flatpickr calendar inside DatePicker keeps English month and weekday names in Arabic, because Carbon's `locale` prop was left at "en". Carbon does bundle flatpickr l10ns, so this is a wiring gap rather than a missing capability, but it is not automatic the way React Aria's I18nProvider is.
+
+**`delta-mantine`** - 2 recorded
+
+- Clean as shipped, but only after two mitigations. Mantine's Portal drops `dir` and freezes its container's props at mount, so portalled overlays initially rendered LTR inside the RTL page and stayed LTR across locale changes. See theming.escapeHatchesUsed.
+- In Arabic the range picker's formatted value renders with its endpoints visually reversed (`23:59 15/06/2026 – 00:00 01/05/2026`). Bidi reordering of an LTR-formatted string in an RTL context, not a wrong value; needs a bidi-isolation decision from the design system.
+
+</details>
+
+## A7 - Accessibility conformance
+
+`incomplete` is not a pass: it counts checks axe declined to decide, each of which is
+work a human still owes. Nine of the ten runs ran axe unscoped, so these counts are
+sound at the level of *zero versus some* and unsound at the level of exact numbers.
+
+| Pairing | critical | serious | incomplete | scope |
+| --- | --- | --- | --- | --- |
+| delta-react-aria | 0 | 0 | 1 | whole page, unscoped |
+| mangrove-react-aria | 0 | 0 | 1 | whole page, unscoped |
+| delta-mui | 0 | 1 | 4 | whole page, unscoped |
+| mangrove-mui | 0 | 1 | 4 | candidate subtree |
+| delta-carbon | **1** | 2 | 2 | whole page, unscoped |
+| mangrove-carbon | 0 | 1 | 2 | whole page, unscoped |
+| delta-mantine | 0 | 0 | 1 | whole page, unscoped |
+| mangrove-mantine | 0 | 0 | 0 | whole page, unscoped |
+| delta-antd | 0 | 1 | 1 | whole page, unscoped |
+| mangrove-antd | 0 | 1 | 1 | whole page, unscoped |
+
+**Zero automated violations is a floor, not a conformance claim.** No screen-reader
+pass, no human keyboard-only walkthrough and no plain-language review was run on any
+pairing. Automated tooling reaches a minority of WCAG criteria, so a row of zeroes
+means the automated subset passed - not that the pairing is accessible. See
+[decision-axes.md](./decision-axes.md) for what ownership does to these numbers.
 
 ## Supporting figures
 
