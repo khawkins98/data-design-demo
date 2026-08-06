@@ -45,6 +45,8 @@ packages/undrr-tokens    neutral design tokens, CSS custom properties and TS
 packages/host-delta      Delta host shell
 packages/host-mangrove   Mangrove host shell
 packages/test-harness    Playwright config, axe wrapper, screenshots, leakage assertion
+packages/known-issues    measured integration issues, and the box every demo shows
+packages/integration-*   the host-independent part of an integration, shared by both hosts
 docs/                    comparison landing page and its manifest
 scripts/                 generators for fixtures, tokens CSS and the landing page
 ```
@@ -100,6 +102,7 @@ The evidence for each is in `apps/<host>-<candidate>/EVIDENCE.md`.
 | `docs/requirements.md` | Canonical requirement IDs, how to assign each `status`, the date-range fallback, known host baseline axe violations |
 | `docs/host-derivation.md` | What was taken from Delta and Mangrove, what was simplified, and the findings that came out of doing so |
 | `apps/README.md` | What a Brief 1 run owns and must not touch |
+| `packages/known-issues/README.md` | How to record a finding so it appears on the demo pages |
 
 ## Install
 

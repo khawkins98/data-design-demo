@@ -1,11 +1,11 @@
 {
   "hostIntoCandidate": {
-    "totalRules": 44,
-    "totalMatchedElements": 1594,
+    "totalRules": 48,
+    "totalMatchedElements": 1748,
     "rules": [
       {
         "selector": "*, ::after, ::before",
-        "matches": 968,
+        "matches": 1053,
         "declarations": "box-sizing: border-box; overflow-wrap: break-word;"
       },
       {
@@ -34,6 +34,11 @@
         "declarations": "appearance: auto;"
       },
       {
+        "selector": "p",
+        "matches": 41,
+        "declarations": "margin-top: 0px;"
+      },
+      {
         "selector": ".mg-form-group__legend, details.mg-details > summary, label, label.error",
         "matches": 38,
         "declarations": "font-size: 1rem;"
@@ -47,6 +52,21 @@
         "selector": "label",
         "matches": 38,
         "declarations": "display: block;"
+      },
+      {
+        "selector": "a",
+        "matches": 23,
+        "declarations": "color: rgb(0, 79, 145); text-decoration: none;"
+      },
+      {
+        "selector": "a",
+        "matches": 23,
+        "declarations": "background-color: transparent;"
+      },
+      {
+        "selector": "ol li, ul li",
+        "matches": 22,
+        "declarations": "margin-bottom: 0px; padding-left: 0px;"
       },
       {
         "selector": "caption, h1, h2, h3, h4, h5, h6",
@@ -69,34 +89,19 @@
         "declarations": "font-weight: 600; line-height: 1.15;"
       },
       {
-        "selector": "p",
-        "matches": 15,
-        "declarations": "margin-top: 0px;"
-      },
-      {
         "selector": "[type=\"checkbox\"], [type=\"radio\"]",
         "matches": 15,
         "declarations": "box-sizing: border-box; padding: 0px;"
       },
       {
-        "selector": "ol li, ul li",
-        "matches": 14,
-        "declarations": "margin-bottom: 0px; padding-left: 0px;"
-      },
-      {
-        "selector": "a",
-        "matches": 12,
-        "declarations": "color: rgb(0, 79, 145); text-decoration: none;"
-      },
-      {
-        "selector": "a",
-        "matches": 12,
-        "declarations": "background-color: transparent;"
-      },
-      {
         "selector": "ol, ul",
-        "matches": 11,
+        "matches": 12,
         "declarations": "list-style-position: outside; margin: 0px 0px 0.625rem; padding-left: 1.25rem;"
+      },
+      {
+        "selector": "b, strong",
+        "matches": 9,
+        "declarations": "font-weight: bolder;"
       },
       {
         "selector": "h3",
@@ -147,11 +152,6 @@
         "selector": "code, kbd, samp",
         "matches": 3,
         "declarations": "font-family: monospace; font-size: 1em;"
-      },
-      {
-        "selector": ".mg-code, code",
-        "matches": 3,
-        "declarations": "background: rgb(242, 242, 242); border: 1px solid rgb(204, 204, 204); border-radius: 0.15625rem; color: rgb(26, 26, 26); font-family: Monaco, Menlo, \"Ubuntu Mon"
       }
     ]
   },

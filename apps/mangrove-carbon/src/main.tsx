@@ -45,6 +45,7 @@ async function mount(): Promise<void> {
 
   // Tokens and our theme last, so `--cds-*` overrides win over Carbon's own.
   await import("@undrr-eval/undrr-tokens/tokens.css");
+  await import("@undrr-eval/known-issues/known-issues.css");
   await import("./theme.css");
 
   const { App } = await import("./App.js");

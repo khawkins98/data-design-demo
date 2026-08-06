@@ -68,6 +68,9 @@ importers:
       '@undrr-eval/integration-antd':
         specifier: workspace:*
         version: link:../../packages/integration-antd
+      '@undrr-eval/known-issues':
+        specifier: workspace:*
+        version: link:../../packages/known-issues
       '@undrr-eval/test-harness':
         specifier: workspace:*
         version: link:../../packages/test-harness
@@ -111,6 +114,9 @@ importers:
       '@undrr-eval/host-delta':
         specifier: workspace:*
         version: link:../../packages/host-delta
+      '@undrr-eval/known-issues':
+        specifier: workspace:*
+        version: link:../../packages/known-issues
       '@undrr-eval/test-harness':
         specifier: workspace:*
         version: link:../../packages/test-harness
@@ -154,6 +160,9 @@ importers:
       '@undrr-eval/host-delta':
         specifier: workspace:*
         version: link:../../packages/host-delta
+      '@undrr-eval/known-issues':
+        specifier: workspace:*
+        version: link:../../packages/known-issues
       '@undrr-eval/test-harness':
         specifier: workspace:*
         version: link:../../packages/test-harness
@@ -206,6 +215,9 @@ importers:
       '@undrr-eval/integration-mui':
         specifier: workspace:*
         version: link:../../packages/integration-mui
+      '@undrr-eval/known-issues':
+        specifier: workspace:*
+        version: link:../../packages/known-issues
       '@undrr-eval/test-harness':
         specifier: workspace:*
         version: link:../../packages/test-harness
@@ -243,6 +255,9 @@ importers:
       '@undrr-eval/host-delta':
         specifier: workspace:*
         version: link:../../packages/host-delta
+      '@undrr-eval/known-issues':
+        specifier: workspace:*
+        version: link:../../packages/known-issues
       '@undrr-eval/test-harness':
         specifier: workspace:*
         version: link:../../packages/test-harness
@@ -283,6 +298,9 @@ importers:
       '@undrr-eval/integration-antd':
         specifier: workspace:*
         version: link:../../packages/integration-antd
+      '@undrr-eval/known-issues':
+        specifier: workspace:*
+        version: link:../../packages/known-issues
       '@undrr-eval/test-harness':
         specifier: workspace:*
         version: link:../../packages/test-harness
@@ -329,6 +347,9 @@ importers:
       '@undrr-eval/host-mangrove':
         specifier: workspace:*
         version: link:../../packages/host-mangrove
+      '@undrr-eval/known-issues':
+        specifier: workspace:*
+        version: link:../../packages/known-issues
       '@undrr-eval/test-harness':
         specifier: workspace:*
         version: link:../../packages/test-harness
@@ -375,6 +396,9 @@ importers:
       '@undrr-eval/host-mangrove':
         specifier: workspace:*
         version: link:../../packages/host-mangrove
+      '@undrr-eval/known-issues':
+        specifier: workspace:*
+        version: link:../../packages/known-issues
       '@undrr-eval/test-harness':
         specifier: workspace:*
         version: link:../../packages/test-harness
@@ -430,6 +454,9 @@ importers:
       '@undrr-eval/integration-mui':
         specifier: workspace:*
         version: link:../../packages/integration-mui
+      '@undrr-eval/known-issues':
+        specifier: workspace:*
+        version: link:../../packages/known-issues
       '@undrr-eval/test-harness':
         specifier: workspace:*
         version: link:../../packages/test-harness
@@ -470,6 +497,9 @@ importers:
       '@undrr-eval/host-mangrove':
         specifier: workspace:*
         version: link:../../packages/host-mangrove
+      '@undrr-eval/known-issues':
+        specifier: workspace:*
+        version: link:../../packages/known-issues
       '@undrr-eval/test-harness':
         specifier: workspace:*
         version: link:../../packages/test-harness
@@ -625,6 +655,15 @@ importers:
       react-dom:
         specifier: ^19.2.0
         version: 19.2.8(react@19.2.8)
+
+  packages/known-issues:
+    dependencies:
+      '@undrr-eval/undrr-tokens':
+        specifier: workspace:*
+        version: link:../undrr-tokens
+      react:
+        specifier: ^19.2.0
+        version: 19.2.8
 
   packages/test-harness:
     dependencies:

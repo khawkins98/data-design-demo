@@ -24,6 +24,7 @@ import { createRoot } from "react-dom/client";
 
 import "@undrr-eval/host-delta/host.css";
 import "@undrr-eval/undrr-tokens/tokens.css";
+import "@undrr-eval/known-issues/known-issues.css";
 import "./theme.css";
 
 import { App } from "./App.js";

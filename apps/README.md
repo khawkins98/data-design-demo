@@ -66,6 +66,17 @@ Two things a NEW candidate does have to touch, because they cannot be globbed:
 `docs/manifest.json` needs the candidate entry, and `tsconfig.json` needs a
 project reference if the run adds a shared `packages/integration-<candidate>`.
 
+## The known-issues box
+
+Every app renders `<KnownIssues>` as the first child of its `HostShell`. It lists
+that pairing's measured problems from a shared registry, so a reader does not have
+to open `EVIDENCE.md` to discover the integration in front of them has a known
+limitation.
+
+If a run finds something, add it to `packages/known-issues/src/issues.ts` with a
+link to the file that measured it, rather than describing it only in prose. See
+that package's README.
+
 ## What a Brief 1 run owns
 
 Everything inside its own directory, and nothing else:

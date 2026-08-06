@@ -17,6 +17,7 @@
     "@mantine/hooks": "^9.5.1",
     "@undrr-eval/fixtures": "workspace:*",
     "@undrr-eval/host-mangrove": "workspace:*",
+    "@undrr-eval/known-issues": "workspace:*",
     "@undrr-eval/test-harness": "workspace:*",
     "@undrr-eval/undrr-tokens": "workspace:*",
     "@undrr/undrr-mangrove": "1.8.1",

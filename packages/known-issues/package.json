@@ -1,0 +1,23 @@
+{
+  "name": "@undrr-eval/known-issues",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "Apache-2.0",
+  "description": "Registry of measured integration issues, plus the box every demo renders at the top of its page. Import only.",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./known-issues.css": "./src/known-issues.css"
+  },
+  "scripts": {
+    "build": "tsc --build"
+  },
+  "peerDependencies": {
+    "react": "^19.2.0"
+  },
+  "dependencies": {
+    "@undrr-eval/undrr-tokens": "workspace:*"
+  }
+}

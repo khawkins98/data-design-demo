@@ -33,6 +33,7 @@ import "dayjs/locale/ar.js";
 
 import "@undrr-eval/host-delta/host.css";
 import "@undrr-eval/undrr-tokens/tokens.css";
+import "@undrr-eval/known-issues/known-issues.css";
 import "./mantine-styles.css";
 import "./demo.css";
 
