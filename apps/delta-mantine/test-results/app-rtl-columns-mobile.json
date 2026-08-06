@@ -1,0 +1,5 @@
+{
+  "actionCellTextAlign": "end",
+  "actionCellIsLeftOfFirstCell": true,
+  "note": "Mantine's `ta` style prop takes logical values, so the action column's own alignment follows the row. MUI's TableCell align=right does not."
+}

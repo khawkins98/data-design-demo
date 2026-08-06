@@ -109,6 +109,27 @@ export function withCandidate(url: string, value: "on" | "off"): string {
   return `${path}?${params.toString()}`;
 }
 
+/**
+ * Diffs the host canaries across `?candidate=off` and `?candidate=on`.
+ *
+ * WHAT THIS CANNOT MEASURE, AND WHY IT HAS FOOLED TWO RUNS.
+ *
+ * `withCandidate` preserves every other query parameter, which is correct for
+ * keeping the URL relative but means a SECOND toggle cannot be probed with this
+ * function. Pass `?globalcss=on` or `?carbonCss=scoped` and the flag lands in
+ * BOTH snapshots, so whatever it switches on is present in the baseline too and
+ * cancels itself out. The result is a confident `differences: []` that measured
+ * nothing - the most dangerous possible output, because it is indistinguishable
+ * from a genuine clean result.
+ *
+ * Two Carbon runs hit this: the kitchen sink, and later the full-application
+ * layout, which reported a clean 0 until the probe was replaced by two manual
+ * snapshots (baseline at `?candidate=off`, probe at `?candidate=on&yourFlag=on`).
+ *
+ * If a demo needs to compare two stylesheet arrangements rather than two
+ * candidate states, snapshot manually with `WATCHED_PROPERTIES` and
+ * `diffSnapshots` and do not route it through here.
+ */
 export async function checkLeakage(
   page: Page,
   options: AssertNoLeakageOptions,

@@ -332,6 +332,90 @@
 }
 
 /* ------------------------------------------------------------------ *
+ * The full-application view (app.html)
+ *
+ * Layout only, and NO new `.cds--` hook: the application screen reuses
+ * `.demo__heading`, `.demo__prose` and `.demo__table-scroll` as-is, and its
+ * remaining needs are all expressible on its own class names. That was the
+ * target — Carbon already carries the worst off-route-hook count of the five
+ * candidates on axis A2, and a realistic layout that needed more would itself
+ * have been the finding.
+ * ------------------------------------------------------------------ */
+
+.demo__app {
+  min-width: 0;
+}
+
+.demo__app-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--undrr-space-4);
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-block-end: var(--undrr-space-6);
+}
+
+/* `ContentSwitcher` is a non-wrapping flex row with an intrinsic width, so it
+   needs a bound at 390px. Set on our own class rather than Carbon's. */
+.demo__app-locale {
+  max-width: 100%;
+}
+
+.demo__filter-card {
+  margin-block-end: var(--undrr-space-6);
+}
+
+.demo__filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--undrr-space-2);
+  align-items: center;
+  justify-content: space-between;
+}
+
+/*
+ * THE 18REM MINIMUM IS CARBON'S, NOT A DESIGN CHOICE, and it is the one place
+ * either realistic layout had to bend around a Carbon literal.
+ *
+ * `.cds--date-picker--single .cds--date-picker__input` is `inline-size: 18rem` —
+ * a hard 288px with no token behind it, no size prop that changes it, and a
+ * shrink-to-fit `span` wrapper between it and its column, so neither
+ * `max-inline-size: 100%` on the input nor `min-inline-size: 0` on the container
+ * makes it narrower. With 13rem columns the picker overflowed its own column and
+ * scrolled the DOCUMENT: measured at 19px in German at 1024px, and only at
+ * 1024px, because that is the width at which the grid fits four columns.
+ *
+ * Widening the track to Carbon's own minimum fixes it with no `.cds--` override
+ * at all, which is why this comment is here instead of another escape hatch
+ * below. The cost is real and belongs in the record: one component's hard-coded
+ * width sets the minimum column width of the whole filter card.
+ */
+.demo__filter-grid {
+  display: grid;
+  gap: var(--undrr-space-4);
+  grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
+  align-items: end;
+  margin-block-start: var(--undrr-space-4);
+  min-width: 0;
+}
+
+/* Three icon buttons on one row, at the row's logical end. `flex-end` and
+   `padding-inline` are logical, so this mirrors in Arabic — unlike MUI's
+   `align="right"` on a TableCell, which has no logical equivalent. */
+.demo__row-actions {
+  white-space: nowrap;
+}
+
+.demo__row-actions > * + * {
+  margin-inline-start: var(--undrr-space-1);
+}
+
+.demo__delete-target {
+  margin-block-start: var(--undrr-space-3);
+  color: var(--undrr-color-text-primary);
+}
+
+/* ------------------------------------------------------------------ *
  * ESCAPE HATCHES: rules that reach into `.cds--` class names.
  * Each one is a token Carbon's theme API cannot express. Counted in
  * evidence.json as customCss.overridesLibraryInternals.

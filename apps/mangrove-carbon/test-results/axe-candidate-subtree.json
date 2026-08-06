@@ -18,20 +18,11 @@
         "#forms-disabled-helper-text",
         "#forms-disabled-select-helper-text"
       ]
-    },
-    {
-      "id": "scrollable-region-focusable",
-      "impact": "serious",
-      "help": "Scrollable region must have keyboard access",
-      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/scrollable-region-focusable?application=playwright",
-      "nodes": [
-        ".demo-statebox:nth-child(3) > .cds--data-table-container > .cds--data-table-content"
-      ]
     }
   ],
   "counts": {
-    "violations": 2,
-    "serious": 2,
+    "violations": 1,
+    "serious": 1,
     "critical": 0,
     "incomplete": 2
   },

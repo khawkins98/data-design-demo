@@ -22,7 +22,8 @@ import { RadioButton, RadioButtonGroup } from "@carbon/react";
 
 import { LOCALES } from "@undrr-eval/fixtures";
 import type { LocaleCode } from "@undrr-eval/fixtures";
-import { HostShell } from "@undrr-eval/host-mangrove";
+import { HostShell, ViewSwitcher } from "@undrr-eval/host-mangrove";
+import { viewLinks } from "@undrr-eval/test-harness/views";
 import { TOKEN_SCOPE_CLASS } from "@undrr-eval/undrr-tokens";
 import { KnownIssues } from "@undrr-eval/known-issues";
 
@@ -98,6 +99,19 @@ export function App(): ReactElement {
         * leakage baseline as well as the candidate render and therefore cannot
         * itself register as a difference.
         */}
+      {/*
+        * Cross-view navigation, a sibling of the known-issues box and for the same
+        * reason: host chrome, outside the candidate wrapper, present in both
+        * candidate states. `"application"` is absent from `available` because the
+        * whole-DELTA-screen view belongs to the Delta host and this app ships no
+        * `app.html`.
+        */}
+      <ViewSwitcher
+        views={viewLinks(["island", "inventory"], "inventory")}
+        pairingName="IBM Carbon on Mangrove"
+        otherHost={{ label: "Carbon on Delta", href: "../delta-carbon/" }}
+      />
+
       <KnownIssues candidate="carbon" host="mangrove" candidateName="IBM Carbon" />
 
       {CANDIDATE_ON ? (

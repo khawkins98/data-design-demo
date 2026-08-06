@@ -28,7 +28,8 @@ import { DatesProvider } from "@mantine/dates";
 
 import { LOCALES } from "@undrr-eval/fixtures";
 import type { LocaleCode } from "@undrr-eval/fixtures";
-import { HostShell } from "@undrr-eval/host-delta";
+import { HostShell, ViewSwitcher } from "@undrr-eval/host-delta";
+import { viewLinks } from "@undrr-eval/test-harness/views";
 import { TOKEN_SCOPE_CLASS } from "@undrr-eval/undrr-tokens";
 import { KnownIssues } from "@undrr-eval/known-issues";
 
@@ -85,6 +86,19 @@ export function App(): ReactElement {
 
   return (
     <HostShell title={demo.labels.appTitle} dir={demo.dir}>
+      {/*
+        * Cross-view navigation, outside the candidate wrapper for the same reason the
+        * known-issues box is. `"island"` is deliberately absent from `available`: the
+        * embedded-island view is a Mangrove view and this is the Delta host, so
+        * listing it would produce a dead link to an `island.html` this app does not
+        * ship.
+        */}
+      <ViewSwitcher
+        views={viewLinks(["application", "inventory"], "inventory")}
+        pairingName="Mantine on Delta"
+        otherHost={{ label: "Mantine on Mangrove", href: "../mangrove-mantine/" }}
+      />
+
       {/*
         * Rendered OUTSIDE the candidate wrapper and in BOTH candidate states.
         * Outside, so no candidate stylesheet restyles the warning box and every

@@ -20,7 +20,8 @@ import { ContentSwitcher, Switch } from "@carbon/react";
 
 import { LOCALES } from "@undrr-eval/fixtures";
 import type { LocaleCode } from "@undrr-eval/fixtures";
-import { HostShell } from "@undrr-eval/host-delta";
+import { HostShell, ViewSwitcher } from "@undrr-eval/host-delta";
+import { viewLinks } from "@undrr-eval/test-harness/views";
 import { TOKEN_SCOPE_CLASS } from "@undrr-eval/undrr-tokens";
 import { KnownIssues } from "@undrr-eval/known-issues";
 
@@ -62,6 +63,19 @@ export function App(): ReactElement {
         * leakage baseline as well as the candidate render and therefore cannot
         * itself register as a difference.
         */}
+      {/*
+        * Cross-view navigation, a sibling of the known-issues box and for the same
+        * reason: host chrome, outside the candidate wrapper, present in both
+        * candidate states. `"island"` is absent from `available` because the
+        * embedded-island view belongs to the Mangrove host and this app ships no
+        * `island.html`.
+        */}
+      <ViewSwitcher
+        views={viewLinks(["application", "inventory"], "inventory")}
+        pairingName="IBM Carbon on Delta"
+        otherHost={{ label: "Carbon on Mangrove", href: "../mangrove-carbon/" }}
+      />
+
       <KnownIssues candidate="carbon" host="delta" candidateName="IBM Carbon" />
 
       {candidateEnabled ? (

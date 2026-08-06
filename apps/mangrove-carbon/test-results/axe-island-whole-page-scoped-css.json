@@ -1,0 +1,32 @@
+{
+  "section": "island-whole-page-scoped-css",
+  "url": "http://localhost:5201/island.html?candidate=on&carbonCss=scoped",
+  "tags": [
+    "wcag2a",
+    "wcag2aa",
+    "wcag21a",
+    "wcag21aa",
+    "wcag22aa"
+  ],
+  "violations": [
+    {
+      "id": "link-in-text-block",
+      "impact": "serious",
+      "help": "Links must be distinguishable without relying on color",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/link-in-text-block?application=playwright",
+      "nodes": [
+        "a[data-canary=\"link\"]"
+      ]
+    }
+  ],
+  "counts": {
+    "violations": 1,
+    "serious": 1,
+    "critical": 0,
+    "incomplete": 2
+  },
+  "incompleteRuleIds": [
+    "aria-valid-attr-value",
+    "color-contrast"
+  ]
+}

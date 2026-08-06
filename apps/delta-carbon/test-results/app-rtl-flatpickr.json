@@ -1,0 +1,7 @@
+{
+  "calendarDirection": "ltr",
+  "pageDirection": "rtl",
+  "prevLeft": 148,
+  "nextLeft": 388,
+  "note": "Carbon's stylesheet sets `.flatpickr-calendar { direction: ltr }` unconditionally and ships no RTL build, so the calendar keeps its LTR layout inside an otherwise mirrored screen. Every Carbon-authored component on this page mirrors correctly."
+}

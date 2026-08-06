@@ -1,0 +1,22 @@
+{
+  "section": "island-candidate-subtree",
+  "url": "http://localhost:5201/island.html?candidate=on",
+  "tags": [
+    "wcag2a",
+    "wcag2aa",
+    "wcag21a",
+    "wcag21aa",
+    "wcag22aa"
+  ],
+  "violations": [],
+  "counts": {
+    "violations": 0,
+    "serious": 0,
+    "critical": 0,
+    "incomplete": 2
+  },
+  "incompleteRuleIds": [
+    "aria-valid-attr-value",
+    "color-contrast"
+  ]
+}
