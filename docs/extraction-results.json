@@ -1,0 +1,71 @@
+{
+  "$comment": "Axis A3 (docs/decision-axes.md). `basis` is load-bearing: only MUI was actually extracted and both host apps rewired to consume the package. The rest is analysis, labelled as such, because unifying the Carbon and Mantine pairs would mean discarding one of two independent implementations rather than refactoring one.",
+  "mui": {
+    "basis": "measured",
+    "verdict": "packaged",
+    "package": "packages/integration-mui",
+    "sharedLines": 809,
+    "perSiteLines": 277,
+    "perSiteRange": [273, 281],
+    "perSiteExcludingDemoOnly": 135,
+    "sharedPercent": 74,
+    "sharedPercentExcludingDemoOnly": 86,
+    "resists": [
+      "App.tsx - wires in the host's own HostShell (100-105 ln)",
+      "main.tsx - stylesheet imports and their order, load-bearing per host (13-14 ln)",
+      "demo.css - host repair, 11 ln on Delta against 27 on Mangrove",
+      "SectionSideBySide.tsx - renders host markup beside candidate markup, so host-specific by definition (135-149 ln); an artefact of the evaluation, not of a real site"
+    ],
+    "verification": [
+      "9 of 13 source files were already code-identical between the two hosts once comments are stripped, including the whole token mapping in theme.ts",
+      "typecheck clean; 66 unit tests pass",
+      "built CSS bundle byte-identical to baseline (same content hash, index-CDoIL4xk.css)",
+      "layout identical: document scrollHeight 4733 and all 8 section offsets unchanged, input geometry unchanged, same 17 injected style tags",
+      "delta-mui screenshots reproduce to within 1-5 pixels at max channel delta 2, i.e. antialiasing noise"
+    ],
+    "notes": "The residue's shape matters more than its size. Three of the four items are wiring. The fourth, demo.css, is the only one that is real per-site work, and it is a function of how aggressively the host styles bare elements rather than of MUI: 11 lines against Delta, 27 against Mangrove, because Mangrove styles input[type=...] at (0,1,1) and beats MUI's own slot class at (0,1,0)."
+  },
+  "react-aria": {
+    "basis": "analysed",
+    "verdict": "likely packaged",
+    "sharedLines": null,
+    "perSiteLines": null,
+    "resists": [
+      "SectionDataTable and SectionForms diverged between the two runs and would need reconciling first",
+      "theme.css differs, though it consumes only var(--undrr-*) so it is host-independent by construction"
+    ],
+    "notes": "5 of 13 files are already code-identical (517 code lines), and the styling is CSS custom properties read from the shared tokens, which is host-independent by construction and needs no rebuild to retarget. Not extracted, so no measured figure is offered."
+  },
+  "carbon": {
+    "basis": "analysed",
+    "verdict": "unknown - confounded",
+    "sharedLines": null,
+    "perSiteLines": null,
+    "resists": [
+      "0 of 18 files are code-identical between the two hosts, but both were written independently and in parallel, so this measures authorship rather than the library",
+      "the 15-16 off-route .cds--* overrides are host-matching CSS, so they are the most likely per-site residue"
+    ],
+    "notes": "Unifying the two Carbon apps would mean discarding one of two independent implementations, which is a rewrite and not a refactor, so it would not measure what A3 asks. The theming route is a hand-maintained --cds-* mapping, which does package, but it leaves 21-22 UNDRR tokens unreachable (A5) and needs re-verifying per Carbon upgrade."
+  },
+  "mantine": {
+    "basis": "analysed",
+    "verdict": "unknown - confounded",
+    "sharedLines": null,
+    "perSiteLines": null,
+    "resists": [
+      "0 of 17 files are code-identical, for the same authorship reason as Carbon",
+      "three helper modules (table-model, table-behaviour, use-column-resize) exist on only one host"
+    ],
+    "notes": "createTheme() output is data and packages cleanly, but Mantine bakes token values into each bundle (A5), so a Mangrove change is a rebuild per site regardless of how well the integration packages."
+  },
+  "shadcn": {
+    "basis": "not-run",
+    "verdict": "fork-per-site",
+    "sharedLines": null,
+    "perSiteLines": null,
+    "resists": [
+      "the distribution model is to copy component source into the consuming project, so each site owns a divergent copy with no upstream upgrade path"
+    ],
+    "notes": "This is a property of how shadcn/ui is distributed rather than a measurement, and it is the reason it was not built as a pairing. Recorded here so the axis is not silently blank."
+  }
+}
