@@ -55,7 +55,7 @@ const BUTTON_BASE =
  * class names, so a difference between the two hosts is attributable to host
  * styling rather than to different markup.
  */
-function Canaries(): ReactElement {
+export function HostCanaries(): ReactElement {
   return (
     <section aria-labelledby="canary-heading" className="border-b-2 border-dashed border-slate-300 pb-8 mb-8">
       <h2 id="canary-heading" data-canary="heading-2" className="text-2xl font-bold text-slate-900">
@@ -194,7 +194,7 @@ export function HostShell({ title, children, dir = "ltr" }: HostShellProps): Rea
         </nav>
 
         <main className="min-w-0">
-          <Canaries />
+          <HostCanaries />
           {/* The candidate library renders here, and nowhere else. */}
           <section className="min-w-0" data-candidate-root="">
             {children}

@@ -11,8 +11,15 @@
  * collisions with a candidate library's own base styles.
  */
 
-export { HostShell, CANARY_IDS } from "./HostShell.js";
+export { HostShell, HostCanaries, CANARY_IDS } from "./HostShell.js";
 export type { HostShellProps } from "./HostShell.js";
+
+/**
+ * The realistic application layout, where the candidate owns the viewport.
+ * See AppFrame.tsx for why it carries Mangrove classes as well as Tailwind.
+ */
+export { AppFrame, DELTA_FRAME_CANARY_IDS } from "./AppFrame.js";
+export type { AppFrameProps } from "./AppFrame.js";
 
 /** Identifies which host a demo was built against, for evidence.json. */
 export const HOST_NAME = "delta" as const;

@@ -13,8 +13,16 @@
  * docs/host-derivation.md.
  */
 
-export { HostShell, CANARY_IDS } from "./HostShell.js";
+export { HostShell, HostCanaries, CANARY_IDS } from "./HostShell.js";
 export type { HostShellProps } from "./HostShell.js";
+
+/**
+ * The realistic island layout: a believable UNDRR page with the candidate owning
+ * one embedded region. Derived from the real published page frame; see
+ * IslandFrame.tsx.
+ */
+export { IslandFrame, MANGROVE_FRAME_CANARY_IDS } from "./IslandFrame.js";
+export type { IslandFrameProps } from "./IslandFrame.js";
 
 /** Identifies which host a demo was built against, for evidence.json. */
 export const HOST_NAME = "mangrove" as const;

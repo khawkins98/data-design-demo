@@ -9,7 +9,8 @@
   "types": "./src/index.ts",
   "exports": {
     ".": "./src/index.ts",
-    "./canaries": "./src/canaries.ts"
+    "./canaries": "./src/canaries.ts",
+    "./frame-canaries": "./src/frame-canaries.ts"
   },
   "scripts": {
     "build": "tsc --build"

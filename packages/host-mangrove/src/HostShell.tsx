@@ -50,7 +50,7 @@ const TABLE_ROWS = [
  * earlier version invented those classes; they were inert and implied an API
  * Mangrove does not have.
  */
-function Canaries(): ReactElement {
+export function HostCanaries(): ReactElement {
   return (
     <section className="mg-host-canaries" aria-labelledby="canary-heading">
       <h2 id="canary-heading" data-canary="heading-2">
@@ -162,7 +162,7 @@ export function HostShell({ title, children, dir = "ltr" }: HostShellProps): Rea
         </nav>
 
         <main className="mg-host__main">
-          <Canaries />
+          <HostCanaries />
           {/* The candidate library renders here, and nowhere else. */}
           <section className="mg-host__candidate" data-candidate-root="">
             {children}

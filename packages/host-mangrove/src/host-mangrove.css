@@ -100,3 +100,21 @@
 .mg-host__candidate {
   min-width: 0;
 }
+
+/**
+ * Island frame.
+ *
+ * Almost nothing is needed here, and that is the point: the island frame uses
+ * Mangrove's own published page components (`mg-page-header`, `mg-mega-topbar`,
+ * `mg-container`, `mg-page-content--padded`), so Mangrove lays the page out. The
+ * two rules below only give the embedded candidate region room to scroll and
+ * enough separation to read as a distinct region on the page.
+ *
+ * `.mg-island` deliberately does not reset the flex column `.mg-host` sets, since
+ * the frame carries both classes: `mg-host` for the shared canary appearance
+ * rules above, `mg-island` for this.
+ */
+.mg-island__candidate {
+  min-width: 0;
+  margin: 2rem 0;
+}
