@@ -48,6 +48,12 @@ execFileSync("node", [join(HERE, "build-docs-index.mjs")], { cwd: ROOT, stdio: "
 // from apps/*/evidence.json, so it must be rebuilt from whatever is present now.
 execFileSync("node", [join(HERE, "build-comparison.mjs")], { cwd: ROOT, stdio: "inherit" });
 
+// The axis scores, which read both evidence.json and the apps' own stylesheets
+// and build output. This runs after build:apps for that reason: the A5
+// propagation measurement inspects shipped CSS, and reports "not built" without
+// it rather than guessing.
+execFileSync("node", [join(HERE, "build-axes.mjs")], { cwd: ROOT, stdio: "inherit" });
+
 rmSync(SITE, { recursive: true, force: true });
 mkdirSync(SITE, { recursive: true });
 

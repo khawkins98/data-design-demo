@@ -25,7 +25,8 @@
     "fixtures:generate": "node scripts/generate-fixtures.mjs",
     "tokens:css": "node --experimental-strip-types scripts/generate-tokens-css.mjs",
     "mangrove2:tokens": "node scripts/fetch-mangrove-2-tokens.mjs",
-    "comparison": "node scripts/build-comparison.mjs"
+    "comparison": "node scripts/build-comparison.mjs",
+    "axes": "node scripts/build-axes.mjs"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.10.2",

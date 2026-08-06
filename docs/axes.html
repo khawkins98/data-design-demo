@@ -1,0 +1,159 @@
+<!doctype html>
+<!-- GENERATED FILE - produced by scripts/build-axes.mjs. Regenerate: pnpm axes -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Axis scores - UNDRR data design system evaluation</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #f4f6f8; --surface: #fff; --text: #14232e; --muted: #4a5c69;
+        --border: #c8d2da; --accent: #2f6f8f; --bad: #a11f2c;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #10191f; --surface: #17232b; --text: #e8eef2; --muted: #a3b3bf;
+          --border: #2c3d48; --accent: #7fb3cc; --bad: #ef8b96;
+        }
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0; padding: 2rem 1.5rem 4rem; background: var(--bg); color: var(--text);
+        font-family: system-ui, -apple-system, "Segoe UI", sans-serif; line-height: 1.55;
+      }
+      main { max-width: 74rem; margin: 0 auto; }
+      h1 { font-size: 1.75rem; margin: 0 0 1rem; }
+      h2 { font-size: 1.1875rem; margin: 2.5rem 0 0.5rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+      p { margin: 0 0 0.75rem; max-width: 68ch; color: var(--text); }
+      code { font-size: 0.875em; background: color-mix(in srgb, var(--border) 35%, transparent); padding: 0.1em 0.35em; border-radius: 3px; }
+      strong { color: var(--text); }
+      .scroll { overflow-x: auto; margin: 0 0 1rem; border: 1px solid var(--border); border-radius: 6px; background: var(--surface); }
+      table { border-collapse: collapse; width: 100%; font-size: 0.8125rem; }
+      th, td { text-align: left; padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); white-space: nowrap; }
+      th { background: color-mix(in srgb, var(--border) 30%, transparent); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; }
+      tbody tr:last-child td { border-bottom: 0; }
+      td:first-child { font-family: ui-monospace, monospace; font-size: 0.75rem; }
+      li { max-width: 68ch; font-size: 0.875rem; }
+      details { margin: 0 0 1rem; }
+      summary { cursor: pointer; color: var(--accent); font-size: 0.875rem; }
+      a { color: var(--accent); }
+      nav { margin-bottom: 1.5rem; font-size: 0.875rem; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <nav><a href="./">Back to the demos</a> &middot; <a href="./comparison.html">Requirement matrix</a></nav>
+<h1>Axis scores</h1>
+
+<p>GENERATED FILE - regenerate with <code>pnpm axes</code>. Axis definitions and measurement rules are in <a href="./decision-axes.md">decision-axes.md</a>.</p>
+
+<p>Read this instead of the requirement matrix when choosing. The matrix says every candidate can do the job; these axes say what each one costs to live with.</p>
+
+<h2>A1 - Implementation effort</h2>
+
+<p><code>beyond native</code> is the count of the 30 requirements needing more than dropping in a documented component. <code>traps</code> counts documented approaches that failed and needed working around. Neither is a time estimate; see the axis definition.</p>
+
+<div class="scroll"><table><thead>
+<tr><th>Pairing</th><th>native</th><th>composed</th><th>custom</th><th>beyond native</th><th>traps</th><th>wrappers</th><th>flagged for review</th></tr>
+</thead><tbody>
+<tr><td>delta-react-aria</td><td>20</td><td>8</td><td>2</td><td><strong>10</strong></td><td>5</td><td>5 (104 ln)</td><td>7</td></tr>
+<tr><td>mangrove-react-aria</td><td>21</td><td>7</td><td>2</td><td><strong>9</strong></td><td>3</td><td>3 (78 ln)</td><td>7</td></tr>
+<tr><td>delta-mui</td><td>26</td><td>4</td><td>0</td><td><strong>4</strong></td><td>5</td><td>3 (62 ln)</td><td>7</td></tr>
+<tr><td>mangrove-mui</td><td>26</td><td>4</td><td>0</td><td><strong>4</strong></td><td>7</td><td>2 (53 ln)</td><td>10</td></tr>
+<tr><td>delta-carbon</td><td>19</td><td>10</td><td>1</td><td><strong>11</strong></td><td>12</td><td>4 (71 ln)</td><td>10</td></tr>
+<tr><td>mangrove-carbon</td><td>19</td><td>10</td><td>1</td><td><strong>11</strong></td><td>8</td><td>4 (71 ln)</td><td>11</td></tr>
+<tr><td>delta-mantine</td><td>20</td><td>7</td><td>3</td><td><strong>10</strong></td><td>11</td><td>4 (179 ln)</td><td>10</td></tr>
+<tr><td>mangrove-mantine</td><td>19</td><td>10</td><td>1</td><td><strong>11</strong></td><td>9</td><td>4 (176 ln)</td><td>9</td></tr>
+</tbody></table></div>
+
+<h2>A2 - Maintainability at scale</h2>
+
+<p>Every distinct styling hook, classified by the promise behind it.</p>
+
+<p><code>attribute</code> hooks are semantic (<code>[data-*]</code>, <code>[slot]</code>) and survive DOM restructuring. <code>contract</code> hooks are class names the library documents as a styling API. <code>off route</code> hooks are the ones that matter: styling achieved by going around the library's own theming mechanism, which is what accumulates across sites and across upgrades.</p>
+
+<div class="scroll"><table><thead>
+<tr><th>Pairing</th><th>attribute</th><th>contract</th><th>off route</th><th>of which hashed</th><th>CSS rules</th></tr>
+</thead><tbody>
+<tr><td>delta-react-aria</td><td>16</td><td>0</td><td><strong>0</strong></td><td>0</td><td>133</td></tr>
+<tr><td>mangrove-react-aria</td><td>15</td><td>0</td><td><strong>0</strong></td><td>0</td><td>121</td></tr>
+<tr><td>delta-mui</td><td>0</td><td>2</td><td><strong>0</strong></td><td>0</td><td>3</td></tr>
+<tr><td>mangrove-mui</td><td>0</td><td>4</td><td><strong>0</strong></td><td>0</td><td>5</td></tr>
+<tr><td>delta-carbon</td><td>0</td><td>0</td><td><strong>16</strong></td><td>0</td><td>25</td></tr>
+<tr><td>mangrove-carbon</td><td>0</td><td>0</td><td><strong>15</strong></td><td>0</td><td>48</td></tr>
+<tr><td>delta-mantine</td><td>2</td><td>3</td><td><strong>0</strong></td><td>0</td><td>14</td></tr>
+<tr><td>mangrove-mantine</td><td>1</td><td>4</td><td><strong>0</strong></td><td>0</td><td>18</td></tr>
+</tbody></table></div>
+
+<p>Checking the documentation moved two libraries here, and both moves were away from my first reading. Mantine's <code>.mantine-{Component}-{element}</code> classes are a documented styling API gated behind a <code>withStaticClasses</code> provider prop, not an internal - so Mantine's overrides are contract hooks. Carbon's <code>cds--</code> classes are documented as an internal BEM authoring convention with a *reconfigurable* prefix, while Carbon points consumers at <code>--cds-*</code> custom properties for theming - so Carbon's overrides are off-route. That is not a prediction that they will break; Carbon's class names are stable in practice. It is a count of the places the supported theming route did not reach.</p>
+
+<p><strong>Every run declared <code>overridesLibraryInternals: true</code>, including 6 with no off-route hook at all</strong> (delta-react-aria, mangrove-react-aria, delta-mui, mangrove-mui, delta-mantine, mangrove-mantine). Self-assessment of this collapsed to a constant and carries no information, which is why the field is reported but not scored.</p>
+
+<details><summary>Every class hook, per pairing</summary>
+
+<li><code>delta-mui</code> - contract: <code>.MuiDataGrid-columnHeaderTitle</code>, <code>.MuiDataGrid-root</code></li>
+<li><code>mangrove-mui</code> - contract: <code>.MuiDataGrid-columnHeaderTitle</code>, <code>.MuiDataGrid-root</code>, <code>.MuiInputBase-input</code>, <code>.MuiOutlinedInput-input</code></li>
+<li><code>delta-carbon</code> - off route: <code>.cds--action-list</code>, <code>.cds--batch-actions</code>, <code>.cds--btn</code>, <code>.cds--data-table</code>, <code>.cds--date-picker</code>, <code>.cds--date-picker-container</code>, <code>.cds--list-box</code>, <code>.cds--modal-container</code>, <code>.cds--search-input</code>, <code>.cds--select-input</code>, <code>.cds--side-nav</code>, <code>.cds--table-header-label</code>, <code>.cds--tag</code>, <code>.cds--text-area</code>, <code>.cds--text-input</code>, <code>.cds--tile</code></li>
+<li><code>mangrove-carbon</code> - off route: <code>.cds--data-table</code>, <code>.cds--data-table-container</code>, <code>.cds--data-table-content</code>, <code>.cds--date-picker</code>, <code>.cds--layer-one</code>, <code>.cds--link</code>, <code>.cds--modal</code>, <code>.cds--radio-button-group</code>, <code>.cds--search-input</code>, <code>.cds--side-nav</code>, <code>.cds--table-sort</code>, <code>.cds--text-area</code>, <code>.cds--text-input</code>, <code>.cds--tile</code>, <code>.cds--time-picker</code></li>
+<li><code>delta-mantine</code> - contract: <code>.mantine-InputWrapper-label</code>, <code>.mantine-SegmentedControl-label</code>, <code>.mantine-Select-label</code></li>
+<li><code>mangrove-mantine</code> - contract: <code>.mantine-PillsInputField-field</code>, <code>.mantine-TimePicker-field</code>, <code>.mantine-focus-always</code>, <code>.mantine-focus-auto</code></li>
+
+</details>
+
+<h2>A3 - Reproducibility across sites</h2>
+
+<p><strong>Not yet measured.</strong> The extraction experiment has not been run, so this axis is blank rather than guessed. Divergence between the two host apps is not a valid substitute - see the caveat in the axis definition.</p>
+
+<h2>A4 - Mangrove compatibility</h2>
+
+<div class="scroll"><table><thead>
+<tr><th>Pairing</th><th>leakage</th><th>documented setup loadable as-is</th><th>RTL</th><th>axe critical/serious</th></tr>
+</thead><tbody>
+<tr><td>delta-react-aria</td><td>clean</td><td>not probed</td><td>clean</td><td>0 / 0</td></tr>
+<tr><td>mangrove-react-aria</td><td>clean</td><td>not probed</td><td>clean</td><td>0 / 0</td></tr>
+<tr><td>delta-mui</td><td>clean</td><td>not probed</td><td><strong>issues</strong></td><td>0 / 1</td></tr>
+<tr><td>mangrove-mui</td><td>clean</td><td>not probed</td><td><strong>issues</strong></td><td>0 / 1</td></tr>
+<tr><td>delta-carbon</td><td>clean</td><td><strong>no</strong> - global stylesheet restyles the host</td><td>clean</td><td>1 / 2</td></tr>
+<tr><td>mangrove-carbon</td><td><strong>FAILED</strong> (19 diffs)</td><td>not probed</td><td>clean</td><td>0 / 1</td></tr>
+<tr><td>delta-mantine</td><td>clean</td><td>not probed</td><td>clean</td><td>0 / 0</td></tr>
+<tr><td>mangrove-mantine</td><td>clean</td><td>not probed</td><td>clean</td><td>0 / 0</td></tr>
+</tbody></table></div>
+
+<h2>A5 - Theming fidelity and propagation</h2>
+
+<p><code>unreachable</code> tokens are a ceiling, not a cost: there is no hook to attach them to. <code>propagation</code> is how a Mangrove token change reaches a built site - a stylesheet swap reaches every site at once; a rebuild is per site, forever.</p>
+
+<div class="scroll"><table><thead>
+<tr><th>Pairing</th><th>tokens applied</th><th>unreachable</th><th>propagation</th><th>live var() refs in shipped CSS</th></tr>
+</thead><tbody>
+<tr><td>delta-react-aria</td><td>48</td><td>0</td><td><strong>stylesheet-swap</strong></td><td>257</td></tr>
+<tr><td>mangrove-react-aria</td><td>47</td><td>0</td><td><strong>stylesheet-swap</strong></td><td>226</td></tr>
+<tr><td>delta-mui</td><td>29</td><td>0</td><td><strong>rebuild-per-site</strong></td><td>0</td></tr>
+<tr><td>mangrove-mui</td><td>32</td><td>0</td><td><strong>rebuild-per-site</strong></td><td>0</td></tr>
+<tr><td>delta-carbon</td><td>50</td><td><strong>21</strong></td><td><strong>stylesheet-swap</strong></td><td>190</td></tr>
+<tr><td>mangrove-carbon</td><td>50</td><td><strong>22</strong></td><td><strong>stylesheet-swap</strong></td><td>157</td></tr>
+<tr><td>delta-mantine</td><td>66</td><td><strong>5</strong></td><td><strong>mostly-rebuild</strong></td><td>6</td></tr>
+<tr><td>mangrove-mantine</td><td>62</td><td>0</td><td><strong>mostly-rebuild</strong></td><td>6</td></tr>
+</tbody></table></div>
+
+<h2>Supporting figures</h2>
+
+<p>Reported because they are asked for, not because they decide anything.</p>
+
+<div class="scroll"><table><thead>
+<tr><th>Pairing</th><th>custom CSS lines</th><th>bundle kB gz</th><th>dependencies</th><th>build s</th></tr>
+</thead><tbody>
+<tr><td>delta-react-aria</td><td>715</td><td>238.8</td><td>19</td><td>2</td></tr>
+<tr><td>mangrove-react-aria</td><td>661</td><td>237.6</td><td>20</td><td>1.2</td></tr>
+<tr><td>delta-mui</td><td>14</td><td>387.4</td><td>142</td><td>2.4</td></tr>
+<tr><td>mangrove-mui</td><td>27</td><td>397.6</td><td>158</td><td>1.7</td></tr>
+<tr><td>delta-carbon</td><td>300</td><td>261.5</td><td>145</td><td>2.8</td></tr>
+<tr><td>mangrove-carbon</td><td>351</td><td>207.8</td><td>146</td><td>4.7</td></tr>
+<tr><td>delta-mantine</td><td>72</td><td>238.8</td><td>112</td><td>2.6</td></tr>
+<tr><td>mangrove-mantine</td><td>103</td><td>270.9</td><td>113</td><td>3.58</td></tr>
+</tbody></table></div>
+
+    </main>
+  </body>
+</html>
