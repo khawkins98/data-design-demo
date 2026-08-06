@@ -1,9 +1,11 @@
 /**
  * Shared demo state and fixture-derived helpers.
  *
- * Deliberately identical in shape to the delta-mui demo's equivalent, so the two
- * MUI runs differ in host and in host-driven workarounds rather than in
- * scaffolding.
+ * Deliberately identical in shape to the react-aria demo's equivalent, so the
+ * runs differ in candidate usage rather than in scaffolding.
+ *
+ * Both MUI apps had a byte-identical copy of this file before the A3 extraction;
+ * it is host-independent, so it lives here now and both import it.
  *
  * No `new Date()` anywhere. The fixtures' fixed values are the only clock.
  */

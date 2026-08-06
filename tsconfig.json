@@ -1,10 +1,23 @@
 {
   "files": [],
   "references": [
-    { "path": "./packages/fixtures" },
-    { "path": "./packages/undrr-tokens" },
-    { "path": "./packages/host-delta" },
-    { "path": "./packages/host-mangrove" },
-    { "path": "./packages/test-harness" }
+    {
+      "path": "./packages/fixtures"
+    },
+    {
+      "path": "./packages/undrr-tokens"
+    },
+    {
+      "path": "./packages/host-delta"
+    },
+    {
+      "path": "./packages/host-mangrove"
+    },
+    {
+      "path": "./packages/test-harness"
+    },
+    {
+      "path": "./packages/integration-mui"
+    }
   ]
 }

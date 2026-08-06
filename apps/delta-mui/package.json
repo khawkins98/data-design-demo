@@ -19,6 +19,7 @@
     "@mui/x-date-pickers": "^9.10.1",
     "@undrr-eval/fixtures": "workspace:*",
     "@undrr-eval/host-delta": "workspace:*",
+    "@undrr-eval/integration-mui": "workspace:*",
     "@undrr-eval/test-harness": "workspace:*",
     "@undrr-eval/undrr-tokens": "workspace:*",
     "date-fns": "^4.4.0",

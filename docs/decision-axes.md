@@ -101,10 +101,10 @@ else.*
 This is the axis nothing in the original evaluation measured, because it built
 eight standalone demos - the opposite arrangement to the one being asked about.
 
-**Measured by experiment.** For each candidate, the host-independent part of the
-integration is extracted into a single shared package and both host apps are
-rewired to consume it. What is left in each app is, by construction, the
-per-site cost. What refuses to move is recorded with the reason.
+**Measured by experiment.** The host-independent part of the integration is
+extracted into a single shared package and both host apps are rewired to consume
+it. What is left in each app is, by construction, the per-site cost. What refuses
+to move is recorded with the reason.
 
 | Outcome | Meaning |
 | --- | --- |
@@ -112,13 +112,50 @@ per-site cost. What refuses to move is recorded with the reason.
 | `partial` | A shared core exists but each site re-authors a named part, for a stated reason |
 | `fork-per-site` | The library's distribution model requires each site to own a copy of the source |
 
+**Done for MUI only, and the results say `basis: measured` or `analysed`
+accordingly.** `packages/integration-mui` holds 809 code lines - the entire token
+mapping and seven of the eight page sections - and both MUI apps now import it.
+809 shared against 273-281 per site, and 135-149 of that residue is
+`SectionSideBySide`, which renders host markup beside candidate markup and so
+exists only because this is an evaluation. Excluding it, 86% is shared.
+
+The residue's *shape* matters more than its size: three of four items are wiring,
+and the fourth is host repair that scales with how aggressively the host styles
+bare elements - 11 lines against Delta, 27 against Mangrove.
+
+The refactor was checked for behaviour preservation rather than assumed: the built
+CSS bundle is byte-identical, `document.scrollHeight` and all eight section
+offsets are unchanged, and screenshots reproduce to within 1-5 pixels at a maximum
+channel delta of 2.
+
+**Not done for Carbon or Mantine, deliberately.** Zero of their files are
+code-identical across hosts, so unifying them means discarding one of two
+independent implementations. That is a rewrite, and a rewrite cannot measure
+whether an integration is shareable - it only measures whether I can write one.
+
+**A caveat found while verifying.** The committed `mangrove-mui` tablet RTL
+screenshots do not reproduce from their own code: the unmodified baseline
+regenerates them with 9-30% of pixels different, identically on repeated runs.
+So those particular PNGs were captured under conditions the repository no longer
+reproduces. Unrelated to the extraction, but it means committed screenshots are
+not a reliable regression baseline, and any future refactor should verify against
+computed layout instead, as this one did.
+
 **A caveat that must be stated.** The raw divergence between `delta-<x>` and
 `mangrove-<x>` is *not* evidence for this axis, however tempting it looks.
 `delta-mui` and `mangrove-react-aria` were built first; the other six were built
 afterwards in parallel, so the MUI and React Aria runs had a sibling to copy and
 the Carbon and Mantine runs did not. Divergence therefore measures whether an
-agent had a head start, not whether a library needs per-site work. Only the
-extraction experiment settles this.
+agent had a head start, not whether a library needs per-site work.
+
+Two further measurements were tried and discarded for the same reason. Counting
+host-coupling points gave 2-3 files for every pairing, because the scaffold hides
+the host behind `HostShell` by design - it measures the scaffold, not the library.
+Classifying CSS declarations as token-valued or neutralising put MUI at zero
+because MUI's styling lives in `theme.ts` rather than in CSS, so it systematically
+misreads whichever library themes in JavaScript. Extraction is the only method
+that treats all four fairly, which is why the axis reports `basis` per candidate
+instead of a number for everyone.
 
 ## A4 - Mangrove compatibility
 

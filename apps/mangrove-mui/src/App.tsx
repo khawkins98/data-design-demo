@@ -23,17 +23,21 @@ import type { LocaleCode } from "@undrr-eval/fixtures";
 import { HostShell } from "@undrr-eval/host-mangrove";
 import { TOKEN_SCOPE_CLASS } from "@undrr-eval/undrr-tokens";
 
-import { DemoContext, labelsFor } from "./demo-state.js";
-import type { DemoContextValue } from "./demo-state.js";
-import { undrrMuiTheme } from "./theme.js";
-import { SectionChrome } from "./sections/SectionChrome.js";
-import { SectionDataTable } from "./sections/SectionDataTable.js";
-import { SectionDates } from "./sections/SectionDates.js";
-import { SectionForms } from "./sections/SectionForms.js";
-import { SectionOverlays } from "./sections/SectionOverlays.js";
-import { SectionSelection } from "./sections/SectionSelection.js";
+import {
+  DemoContext,
+  SectionChrome,
+  SectionDataTable,
+  SectionDates,
+  SectionForms,
+  SectionOverlays,
+  SectionSelection,
+  SectionStates,
+  labelsFor,
+  undrrMuiTheme,
+} from "@undrr-eval/integration-mui";
+import type { DemoContextValue } from "@undrr-eval/integration-mui";
+
 import { SectionSideBySide } from "./sections/SectionSideBySide.js";
-import { SectionStates } from "./sections/SectionStates.js";
 
 const params = new URLSearchParams(window.location.search);
 

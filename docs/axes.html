@@ -67,6 +67,96 @@
 <tr><td>mangrove-mantine</td><td>19</td><td>10</td><td>1</td><td><strong>11</strong></td><td>9</td><td>4 (176 ln)</td><td>9</td></tr>
 </tbody></table></div>
 
+<p>The friction log is the honest proxy for time: implementation time goes on dead ends, not on typing. Each entry below is a place the documented approach did not suffice, recorded by the run that hit it.</p>
+
+<details><summary>The friction log, per pairing</summary>
+
+<p><strong><code>delta-react-aria</code></strong> - 5 entries</p>
+
+<li><code>.undrr-tokens</code> is applied to every portalled overlay (Popover, ModalOverlay, Tooltip) via src/overlay-class.ts.</li>
+<li>One rule targets library-rendered markup: [data-testid="hidden-select-container"] { overflow: hidden } plus a width cap on library-rendered &lt;select&gt; elements.</li>
+<li><code>position: relative</code> on our own ResizableTableContainer wrapper, to contain ColumnResizer's visually hidden &lt;input type=range&gt;.</li>
+<li><code>overflow: hidden</code> plus text-overflow on the table's column headers.</li>
+<li>NO <code>[hidden]</code> workaround was needed, and that is worth recording as an escape hatch NOT used.</li>
+
+<p><strong><code>mangrove-react-aria</code></strong> - 3 entries</p>
+
+<li>One rule targets library-rendered markup: [data-testid="hidden-select-container"] { overflow: hidden } plus a width cap on library-rendered &lt;select&gt; elements.</li>
+<li><code>.demo [hidden] { display: none }</code> restores the hidden attribute, which the Mangrove host defeats: its <code>input[type="text"] { display: block }</code> rule (0,1,1) outranks its own <code>[hidden] { display: none }</code> (0,1,0).</li>
+<li><code>.undrr-tokens</code> is applied to every portalled overlay (Popover, ModalOverlay, Tooltip) via src/overlay-class.ts.</li>
+
+<p><strong><code>delta-mui</code></strong> - 5 entries</p>
+
+<li>cssVariables: true deliberately NOT enabled.</li>
+<li>Two CSS rules reach into library-generated class names (.MuiDataGrid-root, .MuiDataGrid-columnHeaderTitle) to cap grid width and wrap long header labels.</li>
+<li>MUI's picker prop types are not compatible with exactOptionalPropertyTypes: true.</li>
+<li>Stack no longer accepts flexWrap/alignItems as direct props in v9; they must move into sx.</li>
+<li>None needed for portalled overlays, which is a genuine advantage here.</li>
+
+<p><strong><code>mangrove-mui</code></strong> - 7 entries</p>
+
+<li>cssVariables: true deliberately NOT enabled.</li>
+<li>CssBaseline replaced with ScopedCssBaseline.</li>
+<li>Two CSS rules reach into library-generated class names (.MuiOutlinedInput-input / .MuiInputBase-input, .MuiDataGrid-root, .MuiDataGrid-columnHeaderTitle).</li>
+<li>MUI's picker prop types are not compatible with exactOptionalPropertyTypes: true.</li>
+<li>Stack no longer accepts flexWrap/alignItems as direct props in v9; they must move into sx.</li>
+<li>stylis-plugin-rtl was NOT added, because it is outside the candidate's ecosystem and constraint 2 forbids it.</li>
+<li>None needed for portalled overlays.</li>
+
+<p><strong><code>delta-carbon</code></strong> - 12 entries</p>
+
+<li>@carbon/styles/css/styles.css IS NOT IMPORTED.</li>
+<li>TRAP 1, silent and consequential: <code>@carbon/styles/scss/layout</code> is REQUIRED but is not a component partial.</li>
+<li>TRAP 2, the same shape one level down: components/data-table/_index.scss includes only the CORE table mixin.</li>
+<li>A 20-line Vite plugin in vite.config.ts rewrites the one <code>:root</code> rule Carbon's layer module emits onto the token scope class, so the shipped stylesheet contains zero selectors that can match host markup.</li>
+<li>Nineteen CSS rules reach into .cds-- class names, each for a token Carbon's theme cannot express: corner radius (Carbon has no radius token and is square by design), list-box menu max-height, table-header and list-box option wrapping for th...</li>
+<li>Carbon's published TypeScript types do not compile under exactOptionalPropertyTypes: true.</li>
+<li>@carbon/styles/scss/fonts is NOT loaded.</li>
+<li>PORTALS ARE MOSTLY A NON-ISSUE HERE, and that is a finding rather than luck avoided.</li>
+<li>SPACING IS UNREACHABLE AT ANY LAYER.</li>
+<li>Z-INDEX IS UNREACHABLE, AND CARBON WINS EVERY COLLISION.</li>
+<li>FONT FAMILY IS UNREACHABLE THROUGH THE SUPPORTED API.</li>
+<li>TYPE SCALE IS FULLY REACHABLE, unusually.</li>
+
+<p><strong><code>mangrove-carbon</code></strong> - 8 entries</p>
+
+<li>22 of 71 tokens are UNREACHABLE and no mechanism exists to change that: all 10 z-index tokens and all 12 spacing tokens.</li>
+<li>Font FAMILY is not a Carbon token.</li>
+<li>Ten declarations re-assert Carbon's own field styling at (0,2,0) to beat Mangrove's <code>input[type=*], textarea</code> rule at (0,1,1), which was overriding <code>.cds--text-input</code> at (0,1,0) and rendering every Carbon field as a 46px box with a 2px blac...</li>
+<li>Three rules reach into Carbon-rendered class names to make SideNav sit inline instead of position: fixed at 100vh (.cds--side-nav, .cds--side-nav__navigation), and two more cap the width of .cds--data-table-container and .cds--data-table-co...</li>
+<li>One rule adds flex-wrap to .cds--radio-button-group, which Carbon does not wrap and which therefore overflows a 390px viewport with four locale labels.</li>
+<li>aria-describedby is passed by hand to the three invalid TextInputs to work around Carbon's aria-errormessage target having no role=alert.</li>
+<li>NO WORKAROUND WAS NEEDED for the Mangrove [hidden] specificity defect, and the rule that was there has been deleted.</li>
+<li>NO ESCAPE HATCH WAS NEEDED for portalled overlays, which is the opposite of the React Aria result.</li>
+
+<p><strong><code>delta-mantine</code></strong> - 11 entries</p>
+
+<li>theme.colors[name] is typed MantineColorsTuple — TEN shades.</li>
+<li>cssVariablesResolver's three buckets are written at three DIFFERENT selectors: variables at ':root, :host', light/dark at ':root[data-mantine-color-scheme="…"]'.</li>
+<li>@mantine/core/styles.css is NOT imported.</li>
+<li>The per-component import ORDER had to be lifted from Mantine's own styles.css.</li>
+<li>Mantine has no theme-level z-index scale.</li>
+<li>Table's striping, hover and border colours are props rather than theme slots, so the canvas and accentSubtle tokens are only reachable through Table defaultProps.</li>
+<li>portalProps carries the token scope class onto every portal container.</li>
+<li>portalProps also carries a direction class, and an effect in App.tsx stamps dir on .demo-portal containers after each locale change, because Mantine's Portal drops a dir prop and freezes className at mount.</li>
+<li>reuseTargetNode: false on every portal.</li>
+<li>Three CSS rules reach library-generated class names (.mantine-InputWrapper-label, .mantine-Select-label, .mantine-SegmentedControl-label) to wrap the 60+ character German fixture labels.</li>
+<li>Pagination's four edge controls and the clearable inputs' clear button ship with no accessible name.</li>
+
+<p><strong><code>mangrove-mantine</code></strong> - 9 entries</p>
+
+<li>@mantine/core/styles.css was NOT imported.</li>
+<li>THE PER-COMPONENT IMPORT ORDER IS LOAD-BEARING AND UNDOCUMENTED.</li>
+<li>MANTINE REQUIRES TEN SHADES PER COLOUR and theme.primaryColor must be a KEY of theme.colors -- a hex string is rejected by validateMantineTheme.</li>
+<li>NO FOCUS COLOUR IN THE THEME.</li>
+<li>NO Z-INDEX SCALE IN THE THEME.</li>
+<li>HOST-INTO-CANDIDATE COLLISION REPAIR: 2 rules, 4 selectors, reaching into library-generated class names (.mantine-PillsInputField-field, .mantine-TimePicker-field) at (0,3,1).</li>
+<li>Mantine's CSS is loaded by an AWAITED DYNAMIC IMPORT inside the candidate=on branch of main.tsx, not a static import.</li>
+<li>MantineProvider mutates document.documentElement, setting data-mantine-color-scheme="light" through its default getRootElement; DirectionProvider.setDirection() sets dir there too.</li>
+<li>forceColorScheme="light" is set because the token set has no dark palette and the host is light-only; without it Mantine reads localStorage and could render a dark subtree inside a light host between runs.</li>
+
+</details>
+
 <h2>A2 - Maintainability at scale</h2>
 
 <p>Every distinct styling hook, classified by the promise behind it.</p>
@@ -103,7 +193,62 @@
 
 <h2>A3 - Reproducibility across sites</h2>
 
-<p><strong>Not yet measured.</strong> The extraction experiment has not been run, so this axis is blank rather than guessed. Divergence between the two host apps is not a valid substitute - see the caveat in the axis definition.</p>
+<p><code>basis</code> is the most important column. Only MUI was actually extracted and both host apps rewired onto the package; everything else is analysis and says so.</p>
+
+<div class="scroll"><table><thead>
+<tr><th>Candidate</th><th>basis</th><th>verdict</th><th>shared</th><th>per site</th><th>shared %</th></tr>
+</thead><tbody>
+<tr><td>react-aria</td><td>analysed</td><td><strong>likely packaged</strong></td><td>-</td><td>-</td><td>-</td></tr>
+<tr><td>mui</td><td><strong>measured</strong></td><td><strong>packaged</strong></td><td>809 ln</td><td>277 ln</td><td>74%</td></tr>
+<tr><td>carbon</td><td>analysed</td><td><strong>unknown - confounded</strong></td><td>-</td><td>-</td><td>-</td></tr>
+<tr><td>mantine</td><td>analysed</td><td><strong>unknown - confounded</strong></td><td>-</td><td>-</td><td>-</td></tr>
+<tr><td>shadcn</td><td>not-run</td><td><strong>fork-per-site</strong></td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table></div>
+
+<p><strong>react-aria</strong> - 5 of 13 files are already code-identical (517 code lines), and the styling is CSS custom properties read from the shared tokens, which is host-independent by construction and needs no rebuild to retarget. Not extracted, so no measured figure is offered.</p>
+
+<p>What resists extraction:</p>
+
+<li>SectionDataTable and SectionForms diverged between the two runs and would need reconciling first</li>
+<li>theme.css differs, though it consumes only var(--undrr-*) so it is host-independent by construction</li>
+
+<p><strong>mui</strong> - The residue's shape matters more than its size. Three of the four items are wiring. The fourth, demo.css, is the only one that is real per-site work, and it is a function of how aggressively the host styles bare elements rather than of MUI: 11 lines against Delta, 27 against Mangrove, because Mangrove styles input[type=...] at (0,1,1) and beats MUI's own slot class at (0,1,0).</p>
+
+<p>What resists extraction:</p>
+
+<li>App.tsx - wires in the host's own HostShell (100-105 ln)</li>
+<li>main.tsx - stylesheet imports and their order, load-bearing per host (13-14 ln)</li>
+<li>demo.css - host repair, 11 ln on Delta against 27 on Mangrove</li>
+<li>SectionSideBySide.tsx - renders host markup beside candidate markup, so host-specific by definition (135-149 ln); an artefact of the evaluation, not of a real site</li>
+
+<p>Verified by:</p>
+
+<li>9 of 13 source files were already code-identical between the two hosts once comments are stripped, including the whole token mapping in theme.ts</li>
+<li>typecheck clean; 66 unit tests pass</li>
+<li>built CSS bundle byte-identical to baseline (same content hash, index-CDoIL4xk.css)</li>
+<li>layout identical: document scrollHeight 4733 and all 8 section offsets unchanged, input geometry unchanged, same 17 injected style tags</li>
+<li>delta-mui screenshots reproduce to within 1-5 pixels at max channel delta 2, i.e. antialiasing noise</li>
+
+<p><strong>carbon</strong> - Unifying the two Carbon apps would mean discarding one of two independent implementations, which is a rewrite and not a refactor, so it would not measure what A3 asks. The theming route is a hand-maintained --cds-* mapping, which does package, but it leaves 21-22 UNDRR tokens unreachable (A5) and needs re-verifying per Carbon upgrade.</p>
+
+<p>What resists extraction:</p>
+
+<li>0 of 18 files are code-identical between the two hosts, but both were written independently and in parallel, so this measures authorship rather than the library</li>
+<li>the 15-16 off-route .cds--* overrides are host-matching CSS, so they are the most likely per-site residue</li>
+
+<p><strong>mantine</strong> - createTheme() output is data and packages cleanly, but Mantine bakes token values into each bundle (A5), so a Mangrove change is a rebuild per site regardless of how well the integration packages.</p>
+
+<p>What resists extraction:</p>
+
+<li>0 of 17 files are code-identical, for the same authorship reason as Carbon</li>
+<li>three helper modules (table-model, table-behaviour, use-column-resize) exist on only one host</li>
+
+<p><strong>shadcn</strong> - This is a property of how shadcn/ui is distributed rather than a measurement, and it is the reason it was not built as a pairing. Recorded here so the axis is not silently blank.</p>
+
+<p>What resists extraction:</p>
+
+<li>the distribution model is to copy component source into the consuming project, so each site owns a divergent copy with no upstream upgrade path</li>
+
 
 <h2>A4 - Mangrove compatibility</h2>
 

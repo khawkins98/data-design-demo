@@ -27,7 +27,7 @@ import {
 
 import { LOSS_RECORDS } from "@undrr-eval/fixtures";
 
-import { useDemo } from "../demo-state.js";
+import { useDemo } from "@undrr-eval/integration-mui";
 
 const SAMPLE = LOSS_RECORDS.slice(0, 3);
 

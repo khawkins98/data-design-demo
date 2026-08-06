@@ -225,6 +225,7 @@ const rows = appDirs().map((app) => {
     beyondNative: mix.composed + mix.custom,
     wrappers: evidence.wrappers ?? {},
     escapeHatches: (evidence.theming?.escapeHatchesUsed ?? []).length,
+    escapeHatchText: evidence.theming?.escapeHatchesUsed ?? [],
     humanReview: (evidence.humanReviewRequired ?? []).length,
     hooks,
     declaredOverridesInternals: evidence.customCss?.overridesLibraryInternals ?? null,
@@ -289,6 +290,28 @@ lines.push(
     ]),
   ),
 );
+lines.push("");
+lines.push(
+  "The friction log is the honest proxy for time: implementation time goes on dead",
+);
+lines.push(
+  "ends, not on typing. Each entry below is a place the documented approach did not",
+);
+lines.push("suffice, recorded by the run that hit it.");
+lines.push("");
+lines.push("<details><summary>The friction log, per pairing</summary>");
+lines.push("");
+for (const r of rows.filter((x) => x.escapeHatchText.length > 0)) {
+  lines.push(`**\`${r.app}\`** - ${r.escapeHatches} entries`);
+  lines.push("");
+  for (const h of r.escapeHatchText) {
+    // These are long prose notes; keep the first sentence, which states the trap.
+    const first = String(h).split(/(?<=\.)\s+/)[0];
+    lines.push(`- ${first.length > 240 ? `${first.slice(0, 240)}...` : first}`);
+  }
+  lines.push("");
+}
+lines.push("</details>");
 lines.push("");
 
 lines.push("## A2 - Maintainability at scale");
@@ -388,21 +411,47 @@ if (!extractionResults) {
   );
   lines.push("substitute - see the caveat in the axis definition.");
 } else {
+  const entries = CANDIDATE_ORDER.filter((c) => extractionResults[c]).map((c) => [
+    c,
+    extractionResults[c],
+  ]);
+  lines.push(
+    "`basis` is the most important column. Only MUI was actually extracted and both",
+  );
+  lines.push(
+    "host apps rewired onto the package; everything else is analysis and says so.",
+  );
+  lines.push("");
   lines.push(
     table(
-      ["Candidate", "verdict", "shared package", "per site", "what resists extraction"],
-      CANDIDATE_ORDER.filter((c) => extractionResults[c]).map((c) => {
-        const e = extractionResults[c];
-        return [
-          c,
-          `**${e.verdict}**`,
-          `${e.sharedLines} ln`,
-          `${e.perSiteLines} ln`,
-          e.resists?.length ? e.resists.join("; ") : "nothing",
-        ];
-      }),
+      ["Candidate", "basis", "verdict", "shared", "per site", "shared %"],
+      entries.map(([c, e]) => [
+        c,
+        e.basis === "measured" ? "**measured**" : e.basis,
+        `**${e.verdict}**`,
+        e.sharedLines === null ? "-" : `${e.sharedLines} ln`,
+        e.perSiteLines === null ? "-" : `${e.perSiteLines} ln`,
+        e.sharedPercent === undefined ? "-" : `${e.sharedPercent}%`,
+      ]),
     ),
   );
+  lines.push("");
+  for (const [c, e] of entries) {
+    lines.push(`**${c}** - ${e.notes}`);
+    lines.push("");
+    if (e.resists?.length) {
+      lines.push("What resists extraction:");
+      lines.push("");
+      for (const r of e.resists) lines.push(`- ${r}`);
+      lines.push("");
+    }
+    if (e.verification?.length) {
+      lines.push("Verified by:");
+      lines.push("");
+      for (const v of e.verification) lines.push(`- ${v}`);
+      lines.push("");
+    }
+  }
 }
 lines.push("");
 

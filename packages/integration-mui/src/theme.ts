@@ -11,6 +11,16 @@
  * `--mui-*` custom properties on a `:root`-level selector, which would place
  * MUI's palette in the same global scope as the host and defeat the point of
  * scoping. See EVIDENCE.md.
+ *
+ * This file was byte-identical in both MUI demos before the A3 extraction, which
+ * is the single most useful fact about it: the token mapping did not change
+ * between a Tailwind host and the Mangrove design system, so everything the host
+ * cost is isolated in each app's own `demo.css` where it can be counted. The
+ * theming therefore lives here, once, for every consuming site.
+ *
+ * Mangrove 1.8.1 is NOT themed against. Its compiled stylesheet declares zero
+ * custom properties (docs/host-derivation.md finding 1), so its palette is
+ * unreachable at runtime.
  */
 
 import { createTheme } from "@mui/material/styles";
