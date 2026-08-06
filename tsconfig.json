@@ -18,6 +18,9 @@
     },
     {
       "path": "./packages/integration-mui"
+    },
+    {
+      "path": "./packages/integration-antd"
     }
   ]
 }

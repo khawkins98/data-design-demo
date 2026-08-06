@@ -65,6 +65,8 @@
 <tr><td>mangrove-carbon</td><td>19</td><td>10</td><td>1</td><td><strong>11</strong></td><td>8</td><td>4 (71 ln)</td><td>11</td></tr>
 <tr><td>delta-mantine</td><td>20</td><td>7</td><td>3</td><td><strong>10</strong></td><td>11</td><td>4 (179 ln)</td><td>10</td></tr>
 <tr><td>mangrove-mantine</td><td>19</td><td>10</td><td>1</td><td><strong>11</strong></td><td>9</td><td>4 (176 ln)</td><td>9</td></tr>
+<tr><td>delta-antd</td><td>28</td><td>1</td><td>1</td><td><strong>2</strong></td><td>7</td><td>4 (128 ln)</td><td>7</td></tr>
+<tr><td>mangrove-antd</td><td>28</td><td>1</td><td>1</td><td><strong>2</strong></td><td>7</td><td>4 (128 ln)</td><td>9</td></tr>
 </tbody></table></div>
 
 <p>The friction log is the honest proxy for time: implementation time goes on dead ends, not on typing. Each entry below is a place the documented approach did not suffice, recorded by the run that hit it.</p>
@@ -155,6 +157,26 @@
 <li>MantineProvider mutates document.documentElement, setting data-mantine-color-scheme="light" through its default getRootElement; DirectionProvider.setDirection() sets dir there too.</li>
 <li>forceColorScheme="light" is set because the token set has no dark palette and the host is light-only; without it Mantine reads localStorage and could render a dark subtree inside a light host between runs.</li>
 
+<p><strong><code>delta-antd</code></strong> - 7 entries</p>
+
+<li>antd/dist/reset.css IS NOT IMPORTED.</li>
+<li>StyleProvider layer is enabled, which wraps every antd rule in a CSS @layer.</li>
+<li>ConfigProvider getPopupContainer mounts overlays inside the candidate subtree.</li>
+<li>FINDING, not a preference: antd derives its secondary, description, placeholder and label greys from colorTextBase by lowering opacity, and that derivation produced FOUR axe colour-contrast failures from a palette whose own secondary text p...</li>
+<li>Menu.itemSelectedColor and itemSelectedBg pinned for the same reason: the derived selected-item colour did not reach 4.5:1 against antd's own selected background.</li>
+<li>Tag colours come from the UNDRR tokens rather than antd's green/gold/red presets, which failed contrast as filled tags and would have been antd's hues rather than UNDRR's in any case.</li>
+<li>Form.Item label does NOT associate the label with its control unless the item also has a name, because that is what antd uses to generate the id it points for at.</li>
+
+<p><strong><code>mangrove-antd</code></strong> - 7 entries</p>
+
+<li>antd/dist/reset.css IS NOT IMPORTED.</li>
+<li>StyleProvider layer is enabled, which wraps every antd rule in a CSS @layer.</li>
+<li>ConfigProvider getPopupContainer mounts overlays inside the candidate subtree.</li>
+<li>FINDING, not a preference: antd derives its secondary, description, placeholder and label greys from colorTextBase by lowering opacity, and that derivation produced FOUR axe colour-contrast failures from a palette whose own secondary text p...</li>
+<li>Menu.itemSelectedColor and itemSelectedBg pinned for the same reason: the derived selected-item colour did not reach 4.5:1 against antd's own selected background.</li>
+<li>Tag colours come from the UNDRR tokens rather than antd's green/gold/red presets, which failed contrast as filled tags and would have been antd's hues rather than UNDRR's in any case.</li>
+<li>Form.Item label does NOT associate the label with its control unless the item also has a name, because that is what antd uses to generate the id it points for at.</li>
+
 </details>
 
 <h2>A2 - Maintainability at scale</h2>
@@ -174,6 +196,8 @@
 <tr><td>mangrove-carbon</td><td>0</td><td>0</td><td><strong>15</strong></td><td>0</td><td>48</td></tr>
 <tr><td>delta-mantine</td><td>2</td><td>3</td><td><strong>0</strong></td><td>0</td><td>14</td></tr>
 <tr><td>mangrove-mantine</td><td>1</td><td>4</td><td><strong>0</strong></td><td>0</td><td>18</td></tr>
+<tr><td>delta-antd</td><td>0</td><td>0</td><td><strong>0</strong></td><td>0</td><td>6</td></tr>
+<tr><td>mangrove-antd</td><td>0</td><td>0</td><td><strong>0</strong></td><td>0</td><td>6</td></tr>
 </tbody></table></div>
 
 <p>Checking the documentation moved two libraries here, and both moves were away from my first reading. Mantine's <code>.mantine-{Component}-{element}</code> classes are a documented styling API gated behind a <code>withStaticClasses</code> provider prop, not an internal - so Mantine's overrides are contract hooks. Carbon's <code>cds--</code> classes are documented as an internal BEM authoring convention with a *reconfigurable* prefix, while Carbon points consumers at <code>--cds-*</code> custom properties for theming - so Carbon's overrides are off-route. That is not a prediction that they will break; Carbon's class names are stable in practice. It is a count of the places the supported theming route did not reach.</p>
@@ -202,6 +226,7 @@
 <tr><td>mui</td><td><strong>measured</strong></td><td><strong>packaged</strong></td><td>809 ln</td><td>277 ln</td><td>74%</td></tr>
 <tr><td>carbon</td><td>analysed</td><td><strong>unknown - confounded</strong></td><td>-</td><td>-</td><td>-</td></tr>
 <tr><td>mantine</td><td>analysed</td><td><strong>unknown - confounded</strong></td><td>-</td><td>-</td><td>-</td></tr>
+<tr><td>antd</td><td><strong>measured</strong></td><td><strong>packaged</strong></td><td>868 ln</td><td>248 ln</td><td>78%</td></tr>
 <tr><td>shadcn</td><td>not-run</td><td><strong>fork-per-site</strong></td><td>-</td><td>-</td><td>-</td></tr>
 </tbody></table></div>
 
@@ -243,6 +268,20 @@
 <li>0 of 17 files are code-identical, for the same authorship reason as Carbon</li>
 <li>three helper modules (table-model, table-behaviour, use-column-resize) exist on only one host</li>
 
+<p><strong>antd</strong> - Built shared-first, which is a change of method after the MUI extraction and carries an honest caveat: building it this way could flatter the result. Any host-specific need was pushed OUT to the consuming app and counted there rather than absorbed into the package. The striking result is that the per-site residue contains NO host-repair CSS on either host, where mangrove-mui needed 27 lines. That is not because antd is tidier: it is because StyleProvider layer makes antd lose every conflict with unlayered host CSS, so on Mangrove there is nothing to repair because the host simply wins. Cheap per-site cost and loss of control over appearance are the same fact viewed from two sides.</p>
+
+<p>What resists extraction:</p>
+
+<li>main.tsx - stylesheet imports and their order</li>
+<li>App.tsx - the host's HostShell plus the ConfigProvider and StyleProvider wiring</li>
+<li>demo.css - the resize grip and section 9's grid. ZERO lines of host repair on EITHER host, which is the finding</li>
+<li>SectionSideBySide.tsx - renders host markup beside candidate markup, so host-specific by definition</li>
+
+<p>Verified by:</p>
+
+<li>Built shared-first rather than extracted later: packages/integration-antd held the host-independent part from the start and both apps consumed it, so the arrangement a multi-site deployment would use was the arrangement tested.</li>
+<li>Both pairings pass 39 e2e assertions each, with 0 critical axe violations and a clean leakage assertion.</li>
+
 <p><strong>shadcn</strong> - This is a property of how shadcn/ui is distributed rather than a measurement, and it is the reason it was not built as a pairing. Recorded here so the axis is not silently blank.</p>
 
 <p>What resists extraction:</p>
@@ -263,6 +302,8 @@
 <tr><td>mangrove-carbon</td><td><strong>FAILED</strong> (19 diffs)</td><td>not probed</td><td>clean</td><td>0 / 1</td></tr>
 <tr><td>delta-mantine</td><td>clean</td><td>not probed</td><td>clean</td><td>0 / 0</td></tr>
 <tr><td>mangrove-mantine</td><td>clean</td><td>not probed</td><td>clean</td><td>0 / 0</td></tr>
+<tr><td>delta-antd</td><td>clean</td><td><strong>no</strong> - global stylesheet restyles the host</td><td>clean</td><td>0 / 1</td></tr>
+<tr><td>mangrove-antd</td><td>clean</td><td><strong>no</strong> - global stylesheet restyles the host</td><td>clean</td><td>0 / 1</td></tr>
 </tbody></table></div>
 
 <h2>A5 - Theming fidelity and propagation</h2>
@@ -280,23 +321,29 @@
 <tr><td>mangrove-carbon</td><td>50</td><td><strong>22</strong></td><td><strong>stylesheet-swap</strong></td><td>157</td></tr>
 <tr><td>delta-mantine</td><td>66</td><td><strong>5</strong></td><td><strong>mostly-rebuild</strong></td><td>6</td></tr>
 <tr><td>mangrove-mantine</td><td>62</td><td>0</td><td><strong>mostly-rebuild</strong></td><td>6</td></tr>
+<tr><td>delta-antd</td><td>44</td><td>0</td><td><strong>mostly-rebuild</strong></td><td>3</td></tr>
+<tr><td>mangrove-antd</td><td>44</td><td>0</td><td><strong>mostly-rebuild</strong></td><td>3</td></tr>
 </tbody></table></div>
 
 <h2>Supporting figures</h2>
 
 <p>Reported because they are asked for, not because they decide anything.</p>
 
+<p>The two dependency columns disagree, and the disagreement is the point. <code>prod pkgs</code> is the production tree measured for every app by one method (<code>pnpm deps:count</code>). <code>as recorded</code> is whatever each run put in its own <code>evidence.json</code>. Those figures were each measured differently and they reorder the candidates - Mantine was recorded at 112 where a production count gives 27 - so only the first column is safe to compare across rows.</p>
+
 <div class="scroll"><table><thead>
-<tr><th>Pairing</th><th>custom CSS lines</th><th>bundle kB gz</th><th>dependencies</th><th>build s</th></tr>
+<tr><th>Pairing</th><th>custom CSS lines</th><th>bundle kB gz</th><th>prod pkgs</th><th>as recorded</th><th>licences</th><th>build s</th></tr>
 </thead><tbody>
-<tr><td>delta-react-aria</td><td>715</td><td>238.8</td><td>19</td><td>2</td></tr>
-<tr><td>mangrove-react-aria</td><td>661</td><td>237.6</td><td>20</td><td>1.2</td></tr>
-<tr><td>delta-mui</td><td>14</td><td>387.4</td><td>142</td><td>2.4</td></tr>
-<tr><td>mangrove-mui</td><td>27</td><td>397.6</td><td>158</td><td>1.7</td></tr>
-<tr><td>delta-carbon</td><td>300</td><td>261.5</td><td>145</td><td>2.8</td></tr>
-<tr><td>mangrove-carbon</td><td>351</td><td>207.8</td><td>146</td><td>4.7</td></tr>
-<tr><td>delta-mantine</td><td>72</td><td>238.8</td><td>112</td><td>2.6</td></tr>
-<tr><td>mangrove-mantine</td><td>103</td><td>270.9</td><td>113</td><td>3.58</td></tr>
+<tr><td>delta-react-aria</td><td>715</td><td>238.8</td><td><strong>16</strong></td><td>19</td><td>0BSD 1, Apache-2.0 8, MIT 7</td><td>2</td></tr>
+<tr><td>mangrove-react-aria</td><td>661</td><td>237.6</td><td><strong>17</strong></td><td>20</td><td>0BSD 1, Apache-2.0 9, MIT 7</td><td>1.2</td></tr>
+<tr><td>delta-mui</td><td>14</td><td>387.4</td><td><strong>92</strong></td><td>142</td><td>BSD-3-Clause 3, ISC 2, MIT 87</td><td>2.4</td></tr>
+<tr><td>mangrove-mui</td><td>27</td><td>397.6</td><td><strong>93</strong></td><td>158</td><td>Apache-2.0 1, BSD-3-Clause 3, ISC 2, MIT 87</td><td>1.7</td></tr>
+<tr><td>delta-carbon</td><td>300</td><td>261.5</td><td><strong>78</strong></td><td>145</td><td>0BSD 1, Apache-2.0 16, BSD-3-Clause 1, MIT 51, OFL-1.1 9</td><td>2.8</td></tr>
+<tr><td>mangrove-carbon</td><td>351</td><td>207.8</td><td><strong>79</strong></td><td>146</td><td>0BSD 1, Apache-2.0 17, BSD-3-Clause 1, MIT 51, OFL-1.1 9</td><td>4.7</td></tr>
+<tr><td>delta-mantine</td><td>72</td><td>238.8</td><td><strong>27</strong></td><td>112</td><td>(MIT OR CC0-1.0) 1, 0BSD 1, MIT 25</td><td>2.6</td></tr>
+<tr><td>mangrove-mantine</td><td>103</td><td>270.9</td><td><strong>28</strong></td><td>113</td><td>(MIT OR CC0-1.0) 1, 0BSD 1, Apache-2.0 1, MIT 25</td><td>3.58</td></tr>
+<tr><td>delta-antd</td><td>46</td><td>392.3</td><td><strong>68</strong></td><td>68</td><td>MIT 68</td><td>1.5</td></tr>
+<tr><td>mangrove-antd</td><td>46</td><td>423.4</td><td><strong>69</strong></td><td>69</td><td>Apache-2.0 1, MIT 68</td><td>1.5</td></tr>
 </tbody></table></div>
 
     </main>

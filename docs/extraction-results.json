@@ -1,12 +1,26 @@
 {
-  "$comment": "Axis A3 (docs/decision-axes.md). `basis` is load-bearing: only MUI was actually extracted and both host apps rewired to consume the package. The rest is analysis, labelled as such, because unifying the Carbon and Mantine pairs would mean discarding one of two independent implementations rather than refactoring one.",
+  "$comment": "Axis A3 (docs/decision-axes.md). `basis` is load-bearing. MUI was extracted after the fact and both host apps rewired onto the package; antd was built shared-first, which is the arrangement a multi-site deployment would use but carries its own caveat (see its notes). Carbon and Mantine are `analysed`, not measured, because unifying their pairs would mean discarding one of two independent implementations - a rewrite, which cannot measure whether an integration is shareable.",
+  "react-aria": {
+    "basis": "analysed",
+    "verdict": "likely packaged",
+    "sharedLines": null,
+    "perSiteLines": null,
+    "resists": [
+      "SectionDataTable and SectionForms diverged between the two runs and would need reconciling first",
+      "theme.css differs, though it consumes only var(--undrr-*) so it is host-independent by construction"
+    ],
+    "notes": "5 of 13 files are already code-identical (517 code lines), and the styling is CSS custom properties read from the shared tokens, which is host-independent by construction and needs no rebuild to retarget. Not extracted, so no measured figure is offered."
+  },
   "mui": {
     "basis": "measured",
     "verdict": "packaged",
     "package": "packages/integration-mui",
     "sharedLines": 809,
     "perSiteLines": 277,
-    "perSiteRange": [273, 281],
+    "perSiteRange": [
+      273,
+      281
+    ],
     "perSiteExcludingDemoOnly": 135,
     "sharedPercent": 74,
     "sharedPercentExcludingDemoOnly": 86,
@@ -24,17 +38,6 @@
       "delta-mui screenshots reproduce to within 1-5 pixels at max channel delta 2, i.e. antialiasing noise"
     ],
     "notes": "The residue's shape matters more than its size. Three of the four items are wiring. The fourth, demo.css, is the only one that is real per-site work, and it is a function of how aggressively the host styles bare elements rather than of MUI: 11 lines against Delta, 27 against Mangrove, because Mangrove styles input[type=...] at (0,1,1) and beats MUI's own slot class at (0,1,0)."
-  },
-  "react-aria": {
-    "basis": "analysed",
-    "verdict": "likely packaged",
-    "sharedLines": null,
-    "perSiteLines": null,
-    "resists": [
-      "SectionDataTable and SectionForms diverged between the two runs and would need reconciling first",
-      "theme.css differs, though it consumes only var(--undrr-*) so it is host-independent by construction"
-    ],
-    "notes": "5 of 13 files are already code-identical (517 code lines), and the styling is CSS custom properties read from the shared tokens, which is host-independent by construction and needs no rebuild to retarget. Not extracted, so no measured figure is offered."
   },
   "carbon": {
     "basis": "analysed",
@@ -57,6 +60,31 @@
       "three helper modules (table-model, table-behaviour, use-column-resize) exist on only one host"
     ],
     "notes": "createTheme() output is data and packages cleanly, but Mantine bakes token values into each bundle (A5), so a Mangrove change is a rebuild per site regardless of how well the integration packages."
+  },
+  "antd": {
+    "basis": "measured",
+    "verdict": "packaged",
+    "package": "packages/integration-antd",
+    "sharedLines": 868,
+    "perSiteLines": 248,
+    "resists": [
+      "main.tsx - stylesheet imports and their order",
+      "App.tsx - the host's HostShell plus the ConfigProvider and StyleProvider wiring",
+      "demo.css - the resize grip and section 9's grid. ZERO lines of host repair on EITHER host, which is the finding",
+      "SectionSideBySide.tsx - renders host markup beside candidate markup, so host-specific by definition"
+    ],
+    "verification": [
+      "Built shared-first rather than extracted later: packages/integration-antd held the host-independent part from the start and both apps consumed it, so the arrangement a multi-site deployment would use was the arrangement tested.",
+      "Both pairings pass 39 e2e assertions each, with 0 critical axe violations and a clean leakage assertion."
+    ],
+    "notes": "Built shared-first, which is a change of method after the MUI extraction and carries an honest caveat: building it this way could flatter the result. Any host-specific need was pushed OUT to the consuming app and counted there rather than absorbed into the package. The striking result is that the per-site residue contains NO host-repair CSS on either host, where mangrove-mui needed 27 lines. That is not because antd is tidier: it is because StyleProvider layer makes antd lose every conflict with unlayered host CSS, so on Mangrove there is nothing to repair because the host simply wins. Cheap per-site cost and loss of control over appearance are the same fact viewed from two sides.",
+    "perSiteRange": [
+      242,
+      253
+    ],
+    "perSiteExcludingDemoOnly": 139,
+    "sharedPercent": 78,
+    "sharedPercentExcludingDemoOnly": 86
   },
   "shadcn": {
     "basis": "not-run",

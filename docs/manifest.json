@@ -1,7 +1,7 @@
 {
   "$comment": "All eight pairings are pre-registered so Brief 1 runs never need to edit a shared file to appear on the landing page. A run flips its own entry's status to 'complete' or 'blocked' from within its own app directory via scripts/build-docs-index.mjs reading apps/*/evidence.json.",
   "title": "UNDRR data design system evaluation",
-  "subtitle": "Eight controlled proofs of concept: four candidate UI libraries against two UNDRR host shells.",
+  "subtitle": "Ten controlled proofs of concept: five candidate UI libraries against two UNDRR host shells.",
   "candidates": [
     {
       "id": "react-aria",
@@ -25,6 +25,12 @@
       "id": "mantine",
       "name": "Mantine",
       "package": "@mantine/core",
+      "licence": "MIT"
+    },
+    {
+      "id": "antd",
+      "name": "Ant Design",
+      "package": "antd",
       "licence": "MIT"
     }
   ],

@@ -8,8 +8,8 @@ One directory per candidate/host pairing. Empty until Brief 1 runs begin.
 apps/{host}-{candidate}
 ```
 
-`host` is `delta` or `mangrove`. `candidate` is `react-aria`, `mui`, `carbon` or
-`mantine`. That gives exactly eight directories:
+`host` is `delta` or `mangrove`. `candidate` is `react-aria`, `mui`, `carbon`,
+`mantine` or `antd`. That gives ten directories:
 
 | | Delta | Mangrove |
 | --- | --- | --- |
@@ -17,6 +17,13 @@ apps/{host}-{candidate}
 | MUI (Community) | `delta-mui` | `mangrove-mui` |
 | IBM Carbon | `delta-carbon` | `mangrove-carbon` |
 | Mantine | `delta-mantine` | `mangrove-mantine` |
+| Ant Design | `delta-antd` | `mangrove-antd` |
+
+shadcn/ui was considered and deliberately NOT built as a pairing. Its
+distribution model is to copy component source into the consuming project, so
+each site would own a divergent fork with no upstream upgrade path - which is
+the failure mode axis A3 exists to detect. The reasoning is recorded in
+`docs/extraction-results.json` rather than left implicit.
 
 The directory name is the GitHub Pages subpath, so a demo deploys to
 `/<repo>/delta-mui/`.
@@ -34,8 +41,9 @@ server: { port: 5194, strictPort: true },
 preview: { port: 5195, strictPort: true },
 ```
 
-Taken so far: 5180/5181 (`host-preview`), 5190/5191 (`mangrove-react-aria`),
-5192/5193 (`delta-mui`).
+Taken so far: 5180/5181 (`host-preview`), then 5190 upwards for the pairings.
+`delta-antd` holds 5206/5207 and `mangrove-antd` holds 5208/5209, so the next
+free pair is 5210/5211.
 
 ## Seeing your demo alongside the others
 
@@ -50,9 +58,13 @@ While iterating on your own demo, `pnpm --filter ./apps/<host>-<candidate> dev`
 gives you hot reload on your fixed port.
 
 `pnpm-workspace.yaml` globs `apps/*`, so a new app joins the workspace with no
-shared-file edit. All eight pairings are already pre-registered in
-`docs/manifest.json`, so a run does not need to edit that either — the landing
-page picks up your `evidence.json` automatically.
+shared-file edit. Every pairing is pre-registered in `docs/manifest.json`, so a
+run does not need to edit that either - the landing page picks up your
+`evidence.json` automatically.
+
+Two things a NEW candidate does have to touch, because they cannot be globbed:
+`docs/manifest.json` needs the candidate entry, and `tsconfig.json` needs a
+project reference if the run adds a shared `packages/integration-<candidate>`.
 
 ## What a Brief 1 run owns
 

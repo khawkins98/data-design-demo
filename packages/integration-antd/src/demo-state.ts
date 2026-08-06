@@ -1,0 +1,50 @@
+/**
+ * Shared demo state and fixture-derived helpers.
+ *
+ * Deliberately identical in shape to the other integrations equivalents, so the
+ * runs differ in candidate usage rather than in scaffolding.
+ *
+ * This file is byte-identical to packages/integration-mui/src/demo-state.ts. That
+ * duplication is itself an A3 finding: it is candidate-independent as well as
+ * host-independent, so it belongs in the scaffold rather than in each
+ * integration package. Left duplicated rather than moved, because packages/ is
+ * import-only for demo runs and relocating it would churn six other apps.
+ *
+ * No `new Date()` anywhere. The fixtures' fixed values are the only clock.
+ */
+
+import { createContext, useContext } from "react";
+
+import { LABELS } from "@undrr-eval/fixtures";
+import type { LabelSet, LocaleCode, LossRecord } from "@undrr-eval/fixtures";
+
+export interface DemoContextValue {
+  readonly locale: LocaleCode;
+  readonly labels: LabelSet;
+  readonly bcp47: string;
+  readonly dir: "ltr" | "rtl";
+}
+
+export const DemoContext = createContext<DemoContextValue | null>(null);
+
+export function useDemo(): DemoContextValue {
+  const value = useContext(DemoContext);
+  if (!value) throw new Error("useDemo must be used inside DemoContext");
+  return value;
+}
+
+export type LoadState = "loading" | "empty" | "error" | "success";
+
+export const LOAD_STATES: readonly LoadState[] = ["success", "loading", "empty", "error"];
+
+/** Mocked at the fixture boundary, per Brief 1 constraint 7. */
+export function recordsForState(
+  state: LoadState,
+  all: readonly LossRecord[],
+): readonly LossRecord[] {
+  return state === "success" ? all : [];
+}
+
+export function labelsFor(locale: LocaleCode): LabelSet {
+  return LABELS[locale];
+}
