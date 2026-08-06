@@ -203,11 +203,50 @@
   min-width: 0;
 }
 
+/* ------------------------------------------------------- table sort headers */
+
+/* `Table.Th` renders a plain <th>; the sort trigger inside it is ours. Same
+   three classes as apps/delta-mantine/src/demo.css, because all four Mantine
+   tables in this repo now render the same sort-trigger shape — the island view,
+   the kitchen sink's section 6, and the two delta-mantine equivalents. Before
+   this, three of them styled the trigger three different ways and one of them
+   not at all. */
+.demo .demo-sort {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--mantine-spacing-xs);
+  width: 100%;
+  text-align: start;
+  font: inherit;
+  font-weight: var(--mantine-font-weight-semibold);
+  color: inherit;
+  cursor: pointer;
+}
+
+.demo .demo-sort:hover {
+  color: var(--mantine-color-anchor);
+}
+
+.demo .demo-sort__indicator {
+  flex: none;
+  font-size: var(--mantine-font-size-xs);
+  opacity: 0.65;
+}
+
 /* Long German fixture labels must wrap inside table headers rather than forcing
    the column wider than the viewport. */
-.demo th .demo-th__label {
+.demo .demo-sort__label {
   white-space: normal;
   overflow-wrap: anywhere;
+}
+
+/* A numeric column's header follows its cells to the logical end: the trigger
+   above is full-width, so without this it would pull the label back to the start
+   and undo the `ta="end"` on the `<th>`. Both values are logical, so the Arabic
+   pass needs no second rule. */
+.demo .demo-sort[data-numeric="true"] {
+  justify-content: flex-end;
+  text-align: end;
 }
 
 /* The resize handle we had to build ourselves: Mantine's Table has no column

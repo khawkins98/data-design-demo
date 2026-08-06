@@ -1,11 +1,11 @@
 {
   "$comment": "GENERATED from packages/known-issues/src/issues.ts by scripts/build-known-issues-json.mjs. Do not edit: add issues to the TypeScript registry, which the demo pages also import.",
-  "issueCount": 21,
+  "issueCount": 23,
   "pairings": {
     "delta-react-aria": {
-      "total": 3,
+      "total": 4,
       "counts": {
-        "caveat": 2,
+        "caveat": 3,
         "info": 1
       },
       "headline": {
@@ -62,9 +62,9 @@
       }
     },
     "mangrove-react-aria": {
-      "total": 6,
+      "total": 8,
       "counts": {
-        "caveat": 3,
+        "caveat": 5,
         "info": 3
       },
       "headline": {

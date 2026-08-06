@@ -99,6 +99,14 @@ export function IslandView(): ReactElement {
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
+  /**
+   * Mirrors antd's own sort state rather than controlling it, exactly as
+   * `apps/delta-antd/src/AppView.tsx` does. antd owns the comparators and the
+   * ordering; this is here only so a sort change can return the reader to page
+   * one, which antd does not do for you.
+   */
+  const [sortKey, setSortKey] = useState<string | undefined>("eventDate");
+  const [sortOrder, setSortOrder] = useState<string | undefined>("descend");
 
   const demo: DemoContextValue = useMemo(() => {
     const meta = LOCALES.find((entry) => entry.code === locale);
@@ -131,14 +139,40 @@ export function IslandView(): ReactElement {
     });
     const date = new Intl.DateTimeFormat(bcp47, { dateStyle: "medium", timeZone: "UTC" });
 
+    /*
+     * EVERY COLUMN SORTS, and none of it is written here. `sorter` is a comparator
+     * plus a prop; antd supplies the header affordance, the tri-state cycle
+     * (ascending → descending → unsorted), the `aria-sort` on the `<th>`, the
+     * localised tooltip and the reordering. The string comparators pass `bcp47`, so
+     * German and French order accented country names by the SELECTED locale rather
+     * than by the runner's default. The island used to be the only one of the ten
+     * views with an unsortable table — an omission of this view's, not a limit of
+     * antd's, and the island views are meant to be a comparable feature surface.
+     */
     return [
-      { key: "country", dataIndex: "country", title: labels.colCountry, width: 130 },
-      { key: "hazardType", dataIndex: "hazardType", title: labels.colHazard, width: 150 },
+      {
+        key: "country",
+        dataIndex: "country",
+        title: labels.colCountry,
+        width: 130,
+        sorter: (a, b) => a.country.localeCompare(b.country, bcp47),
+      },
+      {
+        key: "hazardType",
+        dataIndex: "hazardType",
+        title: labels.colHazard,
+        width: 150,
+        sorter: (a, b) => a.hazardType.localeCompare(b.hazardType, bcp47),
+      },
       {
         key: "eventDate",
         dataIndex: "eventDate",
         title: labels.colEventDate,
         width: 140,
+        // ISO strings sort correctly as strings, which is why the fixtures use ISO;
+        // no locale and no clock involved.
+        defaultSortOrder: "descend",
+        sorter: (a, b) => a.eventDate.localeCompare(b.eventDate),
         render: (value: string) => date.format(new Date(`${value}T00:00:00Z`)),
       },
       {
@@ -146,10 +180,13 @@ export function IslandView(): ReactElement {
         dataIndex: "peopleAffected",
         title: labels.colPeopleAffected,
         width: 150,
-        // `align: "end"` is antd's LOGICAL alignment value, so it follows the
-        // direction rather than pinning to the physical right the way MUI's
-        // `align="right"` does. One of the reasons antd's RTL scores `native`.
+        // `align: "end"` is a LOGICAL value: antd's column `align` accepts
+        // `"start" | "center" | "end"`, so the column follows the reading
+        // direction in Arabic on its own, with no RTL code in this view. One of
+        // the reasons antd's RTL scores `native` — a property of antd's column
+        // API, stated on its own terms.
         align: "end",
+        sorter: (a, b) => a.peopleAffected - b.peopleAffected,
         render: (value: number) => number.format(value),
       },
       {
@@ -158,6 +195,7 @@ export function IslandView(): ReactElement {
         title: labels.colEconomicLoss,
         width: 180,
         align: "end",
+        sorter: (a, b) => a.economicLossUsdMillions - b.economicLossUsdMillions,
         render: (value: number) => decimal.format(value),
       },
       {
@@ -165,6 +203,7 @@ export function IslandView(): ReactElement {
         dataIndex: "verificationStatus",
         title: labels.colStatus,
         width: 160,
+        sorter: (a, b) => a.verificationStatus.localeCompare(b.verificationStatus, bcp47),
         render: (value: VerificationStatus) => <Tag color={STATUS_COLOUR[value]}>{value}</Tag>,
       },
       {
@@ -172,6 +211,7 @@ export function IslandView(): ReactElement {
         dataIndex: "dataSource",
         title: labels.colDataSource,
         width: 220,
+        sorter: (a, b) => a.dataSource.localeCompare(b.dataSource, bcp47),
       },
     ];
   }, [labels, bcp47]);
@@ -332,23 +372,36 @@ export function IslandView(): ReactElement {
                    * checkbox and produce a real `aria-hidden-focus` violation.
                    */
                   scroll={{ x: "max-content" }}
+                  /*
+                   * ONE handler for paging AND sorting, because a sort change while
+                   * on page five would otherwise strand the reader mid-list — antd
+                   * does not reset the page for you. This is the only paging or
+                   * sorting logic the view owns; the comparators are props and the
+                   * ordering is antd's. Same shape as `delta-antd/src/AppView.tsx`.
+                   */
+                  onChange={(nextPagination, _filters, nextSorter) => {
+                    const single = Array.isArray(nextSorter) ? nextSorter[0] : nextSorter;
+                    const key = single?.columnKey ? String(single.columnKey) : undefined;
+                    const order = single?.order ?? undefined;
+                    const sortChanged = key !== sortKey || order !== sortOrder;
+                    setSortKey(key);
+                    setSortOrder(order);
+                    setPageSize(nextPagination.pageSize ?? 10);
+                    setPage(sortChanged ? 1 : (nextPagination.current ?? 1));
+                  }}
                   pagination={{
                     current: page,
                     pageSize,
-                    onChange: (nextPage, nextSize) => {
-                      setPage(nextPage);
-                      setPageSize(nextSize);
-                    },
                     showSizeChanger: true,
                     pageSizeOptions: [10, 25, 50],
                     /*
                      * "1-10 of 250" is written here rather than taken from antd,
-                     * because the fixtures carry no pagination strings. Everything
-                     * ELSE in the pagination and table chrome — the page-size
-                     * suffix, the sort tooltips, the empty state — IS localised,
-                     * from antd's own locale pack via ConfigProvider. That is a
-                     * difference from the MUI pairing, whose pagination chrome
-                     * stays English in all four locales.
+                     * because the fixtures carry no pagination strings — and it is
+                     * the only string in this chrome that is ours. The page-size
+                     * suffix, the sort tooltips and the empty state all come from
+                     * `antd/es/locale/*` through the one `locale` prop on
+                     * ConfigProvider above, in all four locales. Stated as what
+                     * antd ships, which is a wired locale pack.
                      */
                     showTotal: (total, range) => `${range[0]}-${range[1]} of ${total}`,
                   }}

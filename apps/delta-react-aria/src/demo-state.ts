@@ -54,6 +54,27 @@ export type SortDirection = "ascending" | "descending";
  * string (which sorts correctly lexicographically), and plain string, which
  * needs locale-aware comparison so accented French and German labels order
  * sensibly rather than by code point.
+ *
+ * TWO BUGS THIS FUNCTION USED TO HAVE, both ours and both invisible to a test
+ * that only checks `aria-sort`.
+ *
+ * 1. Descending was `sorted.reverse()`. `Array.prototype.sort` is required to be
+ *    stable, so reversing the result also reverses the order WITHIN every group
+ *    of equal keys — which is the opposite of what stability is for. On
+ *    `hazardType`, ~8 distinct values across 250 rows, that means ~31 rows per
+ *    group shuffled on every direction toggle: the primary key looked right while
+ *    everything under it moved. Negating the comparator is the fix, and it is
+ *    also cheaper — one pass, not a pass plus a reverse.
+ * 2. The collator was built with `sensitivity: "base"`, which treats `a`, `á` and
+ *    `A` as EQUAL. That is a matching setting, not an ordering one; here it did
+ *    nothing but manufacture ties in exactly the two fixtures the locale-aware
+ *    comparison exists for, French and German, and those ties then fed bug 1. The
+ *    default (`"variant"`) still orders `á` next to `a` rather than by code
+ *    point — which was the actual requirement — while keeping them distinct.
+ *
+ * The `id` tiebreak is deliberately NOT negated. Equal keys therefore hold one
+ * order in both directions, so toggling direction moves only what the user asked
+ * to move.
  */
 export function sortRecords(
   records: readonly LossRecord[],
@@ -61,19 +82,20 @@ export function sortRecords(
   direction: SortDirection,
   bcp47: string,
 ): LossRecord[] {
-  const collator = new Intl.Collator(bcp47, { numeric: true, sensitivity: "base" });
+  const collator = new Intl.Collator(bcp47, { numeric: true });
+  const factor = direction === "descending" ? -1 : 1;
 
-  const sorted = [...records].sort((a, b) => {
+  return [...records].sort((a, b) => {
     const left = a[column];
     const right = b[column];
 
-    if (typeof left === "number" && typeof right === "number") {
-      return left - right;
-    }
-    return collator.compare(String(left), String(right));
-  });
+    const primary =
+      typeof left === "number" && typeof right === "number"
+        ? left - right
+        : collator.compare(String(left), String(right));
 
-  return direction === "descending" ? sorted.reverse() : sorted;
+    return primary === 0 ? collator.compare(a.id, b.id) : factor * primary;
+  });
 }
 
 /** Case-insensitive substring match across the columns a user would search. */

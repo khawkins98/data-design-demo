@@ -34,6 +34,7 @@ import {
   SectionSelection,
   SectionStates,
   labelsFor,
+  MUI_LOCALES,
   undrrMuiTheme,
 } from "@undrr-eval/integration-mui";
 import type { DemoContextValue } from "@undrr-eval/integration-mui";
@@ -66,8 +67,16 @@ export function App(): ReactElement {
    * Unlike React Aria's I18nProvider, this is a theme rebuild per locale.
    */
   const theme = useMemo(
-    () => createTheme(undrrMuiTheme, { direction: demo.dir }),
-    [demo.dir],
+    // Locale pack LAST, so the direction patch cannot overwrite it. Wired here as
+    // well as in the realistic views: an inventory whose chrome is English while
+    // the other views are localised would make the pairing internally
+    // inconsistent, and the comparison is only fair if all three views of a
+    // candidate are configured the same way.
+    () => createTheme(undrrMuiTheme, { direction: demo.dir }, MUI_LOCALES[locale]),
+    // `locale` as well as `demo.dir`: en, fr and de are all ltr, so keying on
+    // direction alone would never rebuild the theme when switching between them
+    // and the French and German packs would never apply.
+    [demo.dir, locale],
   );
 
   return (

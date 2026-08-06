@@ -26,6 +26,8 @@ import { dirname } from "node:path";
 import { expect, test } from "@playwright/test";
 import type { Page } from "@playwright/test";
 
+import { arEG, deDE, frFR } from "@mui/material/locale";
+
 import { LABELS } from "@undrr-eval/fixtures";
 import type { LocaleCode } from "@undrr-eval/fixtures";
 import { CANARY_IDS, captureScreens, checkLeakage, runAxe } from "@undrr-eval/test-harness";
@@ -81,7 +83,11 @@ test.describe("full application", () => {
     await expect(page.locator("[data-candidate-root] #records-filters")).toHaveCount(1);
     await expect(page.locator("[data-candidate-root] table")).toHaveCount(1);
     await expect(page.locator("[data-candidate-root] .MuiTablePagination-root")).toHaveCount(1);
-    await expect(page.locator("[data-candidate-root] .MuiChip-root").first()).toBeVisible();
+    // One status pill per row on the page, not merely "a pill exists somewhere":
+    // `.first()).toBeVisible()` passed with 250 identical pills, and the pill is the
+    // only rendering of `verificationStatus` in the table. The content and the
+    // variant are asserted in "status pills read the row's own status".
+    await expect(page.locator(`${ROOT} tbody tr .MuiChip-root`)).toHaveCount(10);
 
     // The known-issues box is host chrome and must sit OUTSIDE the candidate
     // subtree, where no candidate stylesheet can restyle it.
@@ -201,12 +207,190 @@ test.describe("full application", () => {
     // not library behaviour — the cost of composing Table instead of DataGrid.
     await page.getByRole("button", { name: "Country" }).click();
     await expect(firstCell).toHaveText("Bangladesh");
+    const afterAscending = await firstCell.innerText();
+
+    // COMPARED, not merely recorded. `before` used to be captured, written to JSON
+    // and never looked at, so a sort click that did nothing would still have passed
+    // as long as the default order happened to start with the alphabetical first
+    // row. The default order is `eventDate` descending, which starts elsewhere.
+    expect(
+      afterAscending,
+      "sorting by Country did not change the first row: the click is a no-op and the " +
+        "default order already began with the alphabetically first country",
+    ).not.toBe(before);
 
     // Second click reverses it, and the two ends of the sort must differ.
     await page.getByRole("button", { name: "Country" }).click();
     await expect(firstCell).not.toHaveText("Bangladesh");
+    const afterDescending = await firstCell.innerText();
+    expect(afterDescending, "the second click did not reverse the sort").not.toBe(
+      afterAscending,
+    );
 
-    writeJson("test-results/app-sort.json", { unsortedFirstCountry: before });
+    writeJson("test-results/app-sort.json", {
+      unsortedFirstCountry: before,
+      ascendingFirstCountry: afterAscending,
+      descendingFirstCountry: afterDescending,
+    });
+  });
+
+  /**
+   * The sort state as a screen reader receives it.
+   *
+   * `TableSortLabel` draws an arrow; `aria-sort` on the `th` is the only part a
+   * screen reader gets, and it comes from `TableCell`'s `sortDirection` prop.
+   * Before this was wired the view scored as having sort support on the strength of
+   * a visual affordance alone, so this asserts the attribute directly rather than
+   * the arrow.
+   */
+  test("announces the sort state with aria-sort", async ({ page }) => {
+    await page.goto(`${URL}?candidate=on`);
+
+    const sorted = page.locator(`${ROOT} thead th[aria-sort]`);
+    const header = (name: string) =>
+      page.locator(`${ROOT} thead th`).filter({ hasText: name });
+
+    // Exactly one column may claim the sort, and on load it is the default
+    // `eventDate` descending — the same state the arrow is showing.
+    await expect(sorted).toHaveCount(1);
+    await expect(header("Event date")).toHaveAttribute("aria-sort", "descending");
+
+    await page.getByRole("button", { name: "Country" }).click();
+    await expect(sorted).toHaveCount(1);
+    await expect(header("Country")).toHaveAttribute("aria-sort", "ascending");
+    // The previous column must give it up, or two columns claim to be sorted.
+    await expect(header("Event date")).not.toHaveAttribute("aria-sort", /.*/);
+
+    // The attribute must track the reversal, not just appear once.
+    await page.getByRole("button", { name: "Country" }).click();
+    await expect(header("Country")).toHaveAttribute("aria-sort", "descending");
+
+    const state = await page.evaluate(() =>
+      [...document.querySelectorAll("[data-candidate-root] thead th")].map((th) => ({
+        column: (th.textContent ?? "").trim(),
+        ariaSort: th.getAttribute("aria-sort"),
+      })),
+    );
+    writeJson("test-results/app-aria-sort.json", state);
+  });
+
+  /**
+   * The status column, asserted on its content rather than its existence.
+   *
+   * This pill is the ONLY place the table renders `verificationStatus`, and it was
+   * covered by a single `.first()).toBeVisible()` — an assertion that 250 rows all
+   * reading "verified" would have satisfied. Both halves matter: the text has to be
+   * the row's own status, and the colour variant has to track it, because the
+   * colour is what a sighted reader actually scans the column by.
+   */
+  test("status pills read the row's own status, and the variant tracks it", async ({ page }) => {
+    const VARIANT: Record<string, string> = {
+      verified: "MuiChip-colorSuccess",
+      pending: "MuiChip-colorWarning",
+      disputed: "MuiChip-colorError",
+      withdrawn: "MuiChip-colorDefault",
+    };
+
+    await page.goto(`${URL}?candidate=on`);
+
+    const readPills = () =>
+      page.evaluate(() =>
+        [...document.querySelectorAll("[data-candidate-root] tbody tr .MuiChip-root")].map(
+          (chip) => ({
+            text: (chip.textContent ?? "").trim(),
+            className: chip.className,
+          }),
+        ),
+      );
+
+    await expect(page.locator(`${ROOT} tbody tr .MuiChip-root`)).toHaveCount(10);
+    const unfiltered = await readPills();
+    expect(unfiltered).toHaveLength(10);
+    for (const pill of unfiltered) {
+      expect(Object.keys(VARIANT), `unknown status text "${pill.text}"`).toContain(pill.text);
+      expect(
+        pill.className,
+        `pill "${pill.text}" carries the wrong colour variant: ${pill.className}`,
+      ).toContain(VARIANT[pill.text] as string);
+    }
+    // Page one of the fixture spans four statuses. A uniform column would mean the
+    // pill had stopped reading the row.
+    expect(
+      new Set(unfiltered.map((pill) => pill.text)).size,
+      "every pill on page one reads the same status; the pill is not reading its row",
+    ).toBeGreaterThan(1);
+
+    // Filtering by a status pins the expected value for every visible row, which is
+    // what ties the pill to `verificationStatus` rather than to row order.
+    for (const status of Object.keys(VARIANT)) {
+      await chooseOption(page, "Verification status", status);
+      // Retrying assertion first, so React has re-rendered before the one-shot
+      // `evaluate` below reads the DOM.
+      await expect(page.locator(`${ROOT} tbody tr .MuiChip-root`).first()).toHaveText(status);
+      const pills = await readPills();
+      expect(pills.length, `no rows left after filtering to "${status}"`).toBeGreaterThan(0);
+      for (const pill of pills) {
+        expect(pill.text, `filtered to "${status}" but a pill reads "${pill.text}"`).toBe(status);
+        expect(pill.className).toContain(VARIANT[status] as string);
+      }
+    }
+
+    writeJson("test-results/app-status-pills.json", { unfiltered });
+  });
+
+  /**
+   * Pagination chrome in the three non-English locales.
+   *
+   * The strings come from MUI's own core locale bundle, applied to the theme in
+   * `AppView.tsx`. Expected values are imported FROM the bundle rather than copied
+   * out of it, so a pack change moves the test instead of breaking it; the English
+   * case is a literal, because `enUS` is an empty object and MUI's built-in
+   * defaults are the English pack.
+   */
+  test("localises the pagination chrome from MUI's own locale bundle", async ({ page }) => {
+    await page.goto(`${URL}?candidate=on`);
+
+    const rowsPerPage = page.locator(".MuiTablePagination-selectLabel");
+    const displayed = page.locator(".MuiTablePagination-displayedRows");
+
+    await expect(rowsPerPage).toHaveText("Rows per page:");
+    await expect(displayed).toHaveText("1–10 of 250");
+
+    const cases = [
+      { locale: "Français", pack: frFR },
+      { locale: "Deutsch", pack: deDE },
+      { locale: "العربية", pack: arEG },
+    ] as const;
+
+    const recorded: Array<Record<string, string>> = [];
+
+    for (const { locale, pack } of cases) {
+      await selectLocale(page, locale);
+
+      const props = pack.components?.MuiTablePagination?.defaultProps;
+      const expectedRows = props?.labelRowsPerPage as string;
+      const labelDisplayedRows = props?.labelDisplayedRows as (info: {
+        from: number;
+        to: number;
+        count: number;
+        page: number;
+      }) => string;
+      const expectedDisplayed = labelDisplayedRows({ from: 1, to: 10, count: 250, page: 0 });
+
+      await expect(
+        rowsPerPage,
+        `"Rows per page" is still English in ${locale}; the locale bundle is not wired`,
+      ).toHaveText(expectedRows);
+      await expect(displayed).toHaveText(expectedDisplayed);
+
+      recorded.push({ locale, expectedRows, expectedDisplayed });
+    }
+
+    // The Arabic row counts are Arabic-Indic digits, which is the bundle formatting
+    // numbers for `ar-EG` rather than merely swapping words.
+    await expect(displayed).toHaveText(/[٠-٩]/);
+
+    writeJson("test-results/app-pagination-locale.json", recorded);
   });
 
   test("paginates, and returns to page one when sorting changes", async ({ page }) => {
@@ -277,19 +461,24 @@ test.describe("full application", () => {
   });
 
   /**
-   * Two separate RTL defects, measured in this layout.
+   * ONE RTL defect and one RTL guard, measured in this layout. They were previously
+   * asserted side by side as two defects, which was wrong about the second one.
    *
-   * 1. The known floating-label defect (`mui-rtl-unfixable`): `MuiInputLabel-
-   *    outlined` uses a physical `left: 0` that theme direction does not flip.
-   *    Bounded here by the filter card's ~235px grid columns rather than by the
-   *    content column, so smaller than the kitchen sink's 843px worst case and
-   *    exactly as wrong.
-   * 2. `TableCell align="right"` is a PHYSICAL value with no logical equivalent in
-   *    MUI's Table API, so the row-actions column stays pinned to the physical
-   *    right while the row itself has flipped to RTL.
-   *
-   * Both assert the defect, so a future MUI release that fixes either one fails
-   * this test rather than letting the evidence go stale.
+   * 1. THE DEFECT (`mui-rtl-unfixable`), asserted as still present:
+   *    `MuiInputLabel-outlined` uses a physical `left: 0` plus
+   *    `transformOrigin: 'top left'` inside MUI's own stylesheet, which theme
+   *    direction does not flip and no app-level prop reaches. Bounded here by the
+   *    filter card's ~235px grid columns rather than by the content column, so
+   *    smaller than the kitchen sink's 843px worst case and exactly as wrong. The
+   *    day MUI fixes it this fails, and the evidence gets revisited rather than
+   *    going stale.
+   * 2. THE GUARD, asserted as CORRECT: the row-actions column aligns to the row's
+   *    logical end. `TableCell`'s `align` prop is physical-only, and passing
+   *    `align="right"` used to pin the actions to the physical right in Arabic —
+   *    our shortcut, recorded at the time as a MUI defect it never was. The cell
+   *    now uses `sx={{ textAlign: "end" }}`, so this asserts the correct
+   *    behaviour: a regression to `align="right"` fails here rather than quietly
+   *    reappearing as a finding.
    */
   test("RTL leaves physical offsets unflipped", async ({ page }) => {
     await page.goto(`${URL}?candidate=on`);
@@ -316,15 +505,71 @@ test.describe("full application", () => {
       const actionCell = document.querySelector("[data-candidate-root] tbody tr td:last-child");
       const firstCell = document.querySelector("[data-candidate-root] tbody tr td:first-child");
 
+      /*
+       * Measured as well as read off the computed style, because Chromium reports
+       * `text-align: end` back verbatim rather than resolving it to a side: the
+       * keyword proves the property is logical, the geometry proves it is being
+       * honoured in this direction.
+       *
+       * The gaps are cell-edge to content-edge. Whichever gap is the smaller names
+       * the side the content is hugging.
+       */
+      const gaps = (
+        cell: Element | null | undefined,
+        content: { left: number; right: number } | null,
+      ): { startGapPx: number; endGapPx: number } | null => {
+        if (!cell || !content) return null;
+        const box = cell.getBoundingClientRect();
+        return {
+          startGapPx: Math.round(content.left - box.left),
+          endGapPx: Math.round(box.right - content.right),
+        };
+      };
+
+      const buttonBoxes = actionCell
+        ? [...actionCell.querySelectorAll(".MuiIconButton-root")].map((el) =>
+            el.getBoundingClientRect(),
+          )
+        : [];
+      const buttonEnvelope = buttonBoxes.length
+        ? {
+            left: Math.min(...buttonBoxes.map((b) => b.left)),
+            right: Math.max(...buttonBoxes.map((b) => b.right)),
+          }
+        : null;
+
+      /*
+       * The geometry is asserted on the "People affected" BODY cell rather than on
+       * the actions cell, because that is where the alignment has room to show. The
+       * actions column is sized by its three icon buttons, so at tablet and mobile
+       * the buttons fill the cell and both gaps are the padding — equal under a
+       * logical alignment AND under a physical one, i.e. unfalsifiable. A formatted
+       * number is much narrower than the "People affected" header that sets the
+       * column width, so the slack is real at every viewport. Measured with a Range,
+       * since a text node has no box of its own.
+       */
+      const textEdges = (cell: Element | undefined): { left: number; right: number } | null => {
+        if (!cell) return null;
+        const range = document.createRange();
+        range.selectNodeContents(cell);
+        const box = range.getBoundingClientRect();
+        return { left: box.left, right: box.right };
+      };
+
+      const numericCell = document.querySelectorAll("[data-candidate-root] tbody tr td")[3];
+      const numericHeader = document.querySelectorAll("[data-candidate-root] thead th")[3];
+
       return {
         labels,
-        // In RTL the row's logical end is its physical LEFT. `align="right"`
-        // keeps the action buttons at the physical right instead.
         actionCellTextAlign: actionCell ? getComputedStyle(actionCell).textAlign : "",
+        numericCellTextAlign: numericCell ? getComputedStyle(numericCell).textAlign : "",
+        numericHeaderTextAlign: numericHeader ? getComputedStyle(numericHeader).textAlign : "",
         actionCellIsLeftOfFirstCell:
           actionCell && firstCell
             ? actionCell.getBoundingClientRect().left < firstCell.getBoundingClientRect().left
             : null,
+        actionGaps: gaps(actionCell, buttonEnvelope),
+        numericCellGaps: gaps(numericCell, textEdges(numericCell)),
       };
     });
 
@@ -337,8 +582,10 @@ test.describe("full application", () => {
       ...measurement,
       note:
         "Label displacement is bounded by the filter card's column width, so smaller " +
-        "than the kitchen sink's 843px worst case. Same unfixable defect. The action " +
-        "column's `align=right` is a physical value with no logical equivalent.",
+        "than the kitchen sink's 843px worst case. Same unfixable defect, inside MUI's " +
+        "own InputLabel stylesheet. Table alignment is a SEPARATE mechanism and is no " +
+        "longer a finding: `sx={{ textAlign: 'end' }}` on TableCell is logical and " +
+        "flips with the row, which `numericCellGaps` measures.",
     });
 
     expect(measurement.labels.length, "no labelled controls found to measure").toBeGreaterThan(
@@ -349,9 +596,69 @@ test.describe("full application", () => {
       "MUI's RTL floating-label defect appears to be fixed; re-measure and update " +
         "the known-issues registry (mui-rtl-unfixable)",
     ).toBeGreaterThan(16);
-    // The row does flip — the actions cell is physically LEFT of the country cell
-    // in RTL — but its own content alignment does not follow.
-    expect(measurement.actionCellTextAlign).toBe("right");
+    // The row flips — the actions cell is physically LEFT of the country cell in
+    // RTL — and the cell's own content alignment now follows it.
+    expect(
+      measurement.actionCellIsLeftOfFirstCell,
+      "the row did not flip in Arabic, so the alignment measurements below mean nothing",
+    ).toBe(true);
+    for (const [name, align] of [
+      ["row-actions cell", measurement.actionCellTextAlign],
+      ["People affected header", measurement.numericHeaderTextAlign],
+      ["People affected cell", measurement.numericCellTextAlign],
+    ] as const) {
+      expect(
+        align,
+        `the ${name} is back on a physical text-align (\`align="right"\`?); it must use ` +
+          "the logical `end` so Arabic flips with the row",
+      ).toBe("end");
+    }
+
+    // Logical end in RTL is the physical LEFT, so the start gap is the small one.
+    const numeric = measurement.numericCellGaps;
+    expect(numeric, "no People affected cell found to measure").not.toBeNull();
+    expect(
+      (numeric?.startGapPx ?? 0) + (numeric?.endGapPx ?? 0),
+      "the number fills its cell, so this measurement cannot tell logical alignment " +
+        "from physical and proves nothing",
+    ).toBeGreaterThan(24);
+    expect(
+      numeric?.startGapPx,
+      "the People affected number is not at the row's logical end in Arabic: left gap " +
+        `${numeric?.startGapPx}px vs right gap ${numeric?.endGapPx}px`,
+    ).toBeLessThan(numeric?.endGapPx ?? 0);
+  });
+
+  /**
+   * The LTR half of the same guard. `textAlign: "end"` has to put the numbers on the
+   * physical RIGHT in English — otherwise the RTL assertion above could be satisfied
+   * by a table that is simply left-aligned in both directions, which is what the
+   * `sx` would do if the property were misspelled.
+   */
+  test("numeric columns sit at the row's logical end in LTR too", async ({ page }) => {
+    await page.goto(`${URL}?candidate=on`);
+
+    const measurement = await page.evaluate(() => {
+      const cell = document.querySelectorAll("[data-candidate-root] tbody tr td")[3];
+      if (!cell) return null;
+      const range = document.createRange();
+      range.selectNodeContents(cell);
+      const text = range.getBoundingClientRect();
+      const box = cell.getBoundingClientRect();
+      return {
+        textAlign: getComputedStyle(cell).textAlign,
+        inlineStartGapPx: Math.round(text.left - box.left),
+        inlineEndGapPx: Math.round(box.right - text.right),
+      };
+    });
+
+    expect(measurement, "no People affected cell found to measure").not.toBeNull();
+    expect(measurement?.textAlign).toBe("end");
+    expect(
+      measurement?.inlineEndGapPx,
+      "the People affected number is not at the row's logical end in English: " +
+        `left gap ${measurement?.inlineStartGapPx}px vs right gap ${measurement?.inlineEndGapPx}px`,
+    ).toBeLessThan(measurement?.inlineStartGapPx ?? 0);
   });
 
   test("axe on the candidate region and the whole page", async ({ page }, testInfo) => {

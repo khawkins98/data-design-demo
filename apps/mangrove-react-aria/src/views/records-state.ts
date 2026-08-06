@@ -19,7 +19,7 @@
  * No `new Date()` anywhere. The fixtures' fixed clock is the only clock.
  */
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type { SortDescriptor } from "react-aria-components";
 
 import { LOSS_RECORDS, OPTIONS_SMALL } from "@undrr-eval/fixtures";
@@ -72,6 +72,40 @@ export const STATUS_OPTIONS: readonly SelectOption[] = Object.freeze(
  */
 export function useOverlayDir(): "ltr" | "rtl" {
   return useDemo().dir;
+}
+
+/**
+ * Delay before a live region repeats itself, in milliseconds.
+ *
+ * Long enough that ordinary typing produces one announcement rather than one per
+ * character, short enough that a Next/Previous click still feels immediate.
+ */
+const ANNOUNCE_DELAY_MS = 500;
+
+/**
+ * A settled copy of a value, for text that feeds a live region.
+ *
+ * WHY THIS EXISTS. This screen used to have TWO `role="status"` regions — the
+ * filter result count and the pagination range — both driven straight off the
+ * search box. Typing "Bangladesh" therefore queued twenty announcements, ten of
+ * them redundant with the other ten, and a screen reader user heard the result
+ * count change nine times before it meant anything. Neither region was the
+ * library's; React Aria models no pagination and no filter bar, so the
+ * announcement policy was ours to get wrong.
+ *
+ * The fix is one region, announced once the value stops moving. The visible
+ * readout still updates on every keystroke — sighted users want that — and is
+ * `aria-hidden` so the two copies do not both reach the accessibility tree.
+ */
+export function useSettled<T>(value: T, delayMs: number = ANNOUNCE_DELAY_MS): T {
+  const [settled, setSettled] = useState(value);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setSettled(value), delayMs);
+    return () => clearTimeout(timer);
+  }, [value, delayMs]);
+
+  return settled;
 }
 
 export interface RecordsViewOptions {

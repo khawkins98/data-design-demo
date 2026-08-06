@@ -134,7 +134,12 @@ function FilterFields({ view }: { readonly view: RecordsView }): ReactElement {
         >
           {labels.actionClearFilters}
         </Button>
-        <p className="demo-filters__count" role="status">
+        {/* NOT a live region, deliberately. It used to be one, and so is the
+            pagination range readout, so typing in the search box queued two
+            announcements per character for the same fact. The pagination region
+            reports the filtered total as well as the range, so it is the one that
+            survived — see useSettled in records-state.ts. */}
+        <p className="demo-filters__count">
           {view.matched} / {view.total}
         </p>
       </div>

@@ -43,6 +43,7 @@
 import { useMemo, useState } from "react";
 import type { ReactElement } from "react";
 import {
+  Button,
   ContentSwitcher,
   DataTable,
   Dropdown,
@@ -76,7 +77,25 @@ const CSS_MODE = carbonCssMode();
 
 const PAGE_SIZES = [10, 25, 50];
 
-/** Sentinel for "no filter". Carbon's Dropdown has no empty-option concept. */
+/**
+ * Sentinel for "no filter", in OUR state only. It is deliberately NOT an option
+ * in any Dropdown.
+ *
+ * Carbon's Dropdown has no empty-option concept and no `clearSelection` (its
+ * ComboBox does, via the clear button; Dropdown does not). Earlier revisions
+ * papered over that by prepending a sentinel option whose label was
+ * `labels.actionClearFilters`, so a collapsed dropdown read "Clear filters" —
+ * both as its visible text and as its accessible name — immediately beside a real
+ * Clear-filters button saying the same thing. The fixture set carries no
+ * "All"/"Any" string and inventing one in four locales is out of bounds, so the
+ * sentinel is gone and Carbon's own empty state does the job instead:
+ * `selectedItem={null}` renders the `label` placeholder.
+ *
+ * WHAT THAT COSTS, recorded rather than hidden: there is no per-filter "back to
+ * all" affordance, because Carbon's Dropdown does not offer one. So the label goes
+ * where it was always meant to go — on a real Clear-filters `Button` below the
+ * controls, which `resetFilters` wires to every filter at once.
+ */
 const ALL = "all";
 
 const STATUSES: readonly LossRecord["verificationStatus"][] = [
@@ -119,8 +138,8 @@ interface FilterOption {
   readonly label: string;
 }
 
-function optionsFor(values: readonly string[], allLabel: string): readonly FilterOption[] {
-  return [{ value: ALL, label: allLabel }, ...values.map((v) => ({ value: v, label: v }))];
+function optionsFor(values: readonly string[]): readonly FilterOption[] {
+  return values.map((v) => ({ value: v, label: v }));
 }
 
 export function IslandView(): ReactElement {
@@ -187,21 +206,22 @@ export function IslandView(): ReactElement {
     [labels],
   );
 
-  const countryOptions = useMemo(
-    () => optionsFor(COUNTRIES, labels.actionClearFilters),
-    [labels],
-  );
+  const countryOptions = useMemo(() => optionsFor(COUNTRIES), []);
   const hazardOptions = useMemo(
-    () => [
-      { value: ALL, label: labels.actionClearFilters },
-      ...OPTIONS_SMALL.map((option) => ({ value: option.value, label: option.label })),
-    ],
-    [labels],
+    () => OPTIONS_SMALL.map((option) => ({ value: option.value, label: option.label })),
+    [],
   );
-  const statusOptions = useMemo(
-    () => optionsFor(STATUSES, labels.actionClearFilters),
-    [labels],
-  );
+  const statusOptions = useMemo(() => optionsFor(STATUSES), []);
+
+  const filtersActive = country !== ALL || hazard !== ALL || status !== ALL || query.trim() !== "";
+
+  const resetFilters = (): void => {
+    setCountry(ALL);
+    setHazard(ALL);
+    setStatus(ALL);
+    setQuery("");
+    setPage(1);
+  };
 
   /** Formats one cell. Sorting never sees these strings. */
   function renderCell(key: string, value: unknown): ReactElement | string {
@@ -256,11 +276,31 @@ export function IslandView(): ReactElement {
       {CANDIDATE_ON ? (
         <DemoContext.Provider value={demo}>
           {/*
-            * Three classes, all load-bearing, and the same three the kitchen sink
-            * carries: `demo` is the scope every rule in theme.css hangs off,
+            * Four classes, all load-bearing. Three are the same three the kitchen
+            * sink carries: `demo` is the scope every rule in theme.css hangs off,
             * `undrr-tokens` declares the `--undrr-*` values, and
             * `cds--layer-one` restores the layer tokens that the scoped-CSS build
             * turns into a `.demo :root` selector that never matches. See App.tsx.
+            * The fourth, `island`, is this view's own layout hook.
+            *
+            * `cds--layer-one` was MISSING here for several commits while this comment
+            * already claimed it was present. Under `?carbonCss=scoped` — the one mode
+            * this view exists to measure — Carbon's `:root` layer block becomes
+            * `.demo :root` and matches nothing, so the class is the only source for
+            * the 15 tokens it declares. theme.css restates 10 of them; these five it
+            * does not, and they were therefore UNDEFINED in the island:
+            *
+            *   --cds-layer-active           --cds-layer-accent-hover
+            *   --cds-layer-background       --cds-layer-accent-active
+            *   --cds-border-subtle-selected
+            *
+            * Carbon references all five without a literal fallback, so they were
+            * invalid at computed-value time rather than merely off-brand: the
+            * declarations dropped out entirely. All five drive pressed/active/selected
+            * states and `.cds--layer__with-background`, which is why nothing was
+            * visible in the static screenshots — and why it would only have surfaced
+            * under a keyboard or mouse in front of a reviewer. See
+            * src/carbon-scoped.scss, cost 2.
             *
             * NO `dir` HERE. The frame's root carries it and Carbon is authored with
             * logical properties, so inheritance is the whole RTL story for Carbon's
@@ -268,7 +308,7 @@ export function IslandView(): ReactElement {
             * e2e run for no behavioural gain.
             */}
           <div
-            className={`${TOKEN_SCOPE_CLASS} demo island`}
+            className={`${TOKEN_SCOPE_CLASS} demo island cds--layer-one`}
             data-locale={locale}
             data-carbon-css={CSS_MODE}
           >
@@ -305,7 +345,11 @@ export function IslandView(): ReactElement {
               <Dropdown
                 id="island-country"
                 titleText={labels.fieldCountry}
-                label={labels.actionClearFilters}
+                /* Carbon's `label` is the collapsed placeholder, a separate slot
+                   from `titleText`, and it is what the empty state reads as. The
+                   field's own name is the only fully-localised string the fixture
+                   set has for it. */
+                label={labels.fieldCountry}
                 items={[...countryOptions]}
                 itemToString={(item) => item?.label ?? ""}
                 selectedItem={countryOptions.find((option) => option.value === country) ?? null}
@@ -319,7 +363,7 @@ export function IslandView(): ReactElement {
               <Dropdown
                 id="island-hazard"
                 titleText={labels.fieldHazard}
-                label={labels.actionClearFilters}
+                label={labels.fieldHazard}
                 items={[...hazardOptions]}
                 itemToString={(item) => item?.label ?? ""}
                 selectedItem={hazardOptions.find((option) => option.value === hazard) ?? null}
@@ -333,7 +377,7 @@ export function IslandView(): ReactElement {
               <Dropdown
                 id="island-status"
                 titleText={labels.colStatus}
-                label={labels.actionClearFilters}
+                label={labels.colStatus}
                 items={[...statusOptions]}
                 itemToString={(item) => item?.label ?? ""}
                 selectedItem={statusOptions.find((option) => option.value === status) ?? null}
@@ -367,9 +411,31 @@ export function IslandView(): ReactElement {
                   setPage(1);
                 }}
               />
+
+              {/*
+                * Where `labels.actionClearFilters` belongs: on a button that
+                * performs the action, not on a sentinel option inside a Dropdown.
+                * See the note on `ALL` above.
+                */}
+              <Button
+                kind="ghost"
+                size="md"
+                type="button"
+                disabled={!filtersActive}
+                onClick={resetFilters}
+              >
+                {labels.actionClearFilters}
+              </Button>
             </form>
 
-            <p className="demo-hint island__count" id="island-count">
+            {/*
+              * `role="status"` because this number CHANGES in place as filters are
+              * applied and is the only confirmation that a filter took effect. A
+              * bare <p> updates silently for a screen reader user, who is left with
+              * a table that reflowed for no announced reason. Same pattern as
+              * `#range-summary` in sections/SectionDates.tsx.
+              */}
+            <p className="demo-hint island__count" id="island-count" role="status">
               {formatters.integer.format(rows.length)} /{" "}
               {formatters.integer.format(LOSS_RECORDS.length)} — {labels.navRecords}
             </p>
@@ -442,20 +508,45 @@ export function IslandView(): ReactElement {
                     </Table>
 
                     {/*
-                      * Carbon's control, our slice. `itemsPerPageText` is a fixture
-                      * label; the rest of Pagination's chrome ("1–10 of 250", "Next
-                      * page") stays in Carbon's English, because the fixtures carry
-                      * no pagination strings and inventing translations is out of
-                      * bounds. Carbon has `translateWithId` for this — a second,
-                      * parallel translation source to maintain. Recorded, not
-                      * papered over.
+                      * Carbon's control, our slice.
+                      *
+                      * CORRECTION, and the earlier note here was wrong about the
+                      * library: `Pagination` has NO `translateWithId`. Zero
+                      * occurrences in `Pagination.d.ts` — verified against the
+                      * installed 1.113.0, not remembered. Its strings come from
+                      * NINE discrete function/string props: `itemRangeText`,
+                      * `itemText`, `itemsPerPageText`, `forwardText`,
+                      * `backwardText`, `pageRangeText`, `pageText`,
+                      * `pageNumberText` and `pageSelectLabelText`. That is a
+                      * genuinely worse i18n surface than one hook, not a better
+                      * one, and it is the finding.
+                      *
+                      * `itemRangeText` is wired because the fixture set does supply
+                      * the one word it needs — the noun naming the item type — and
+                      * wiring it also routes the numbers through `Intl`, which
+                      * Carbon's default ("1–10 of 250 items") does not do.
+                      *
+                      * `itemsPerPageText` is deliberately NOT passed. It used to
+                      * carry `labels.navRecords`, which made the rows-per-page
+                      * selector read "Loss records"; it is a control label, not a
+                      * noun, so Carbon's untouched "Items per page:" is more
+                      * correct than the substitution was.
+                      *
+                      * The remaining seven stay in Carbon's English. THAT IS A REAL
+                      * FIXTURE GAP: "Next page", "Previous page", "of 25 pages",
+                      * "Page number" have no counterpart in LabelSet and inventing
+                      * translations in four locales is out of bounds.
                       */}
                     <Pagination
                       page={safePage}
                       pageSize={pageSize}
                       pageSizes={PAGE_SIZES}
                       totalItems={total}
-                      itemsPerPageText={labels.navRecords}
+                      itemRangeText={(min, max, totalItems) =>
+                        `${formatters.integer.format(min)}–${formatters.integer.format(max)} / ` +
+                        `${formatters.integer.format(totalItems)} ` +
+                        `${labels.navRecords.toLocaleLowerCase(bcp47)}`
+                      }
                       onChange={({ page: nextPage, pageSize: nextSize }) => {
                         setPage(nextPage);
                         setPageSize(nextSize);

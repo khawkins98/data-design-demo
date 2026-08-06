@@ -117,6 +117,57 @@ test.describe("kitchen sink", () => {
     await expect(page.locator("#server-form .cds--inline-notification--error")).toBeVisible();
   });
 
+  /**
+   * The accessibility patches this demo adds ON TOP of Carbon, asserted one by one.
+   *
+   * Every item here is a place where Carbon renders something that looks right and
+   * is not announced, and where the patch is a single attribute that is easy to lose
+   * in a refactor and impossible to see in a screenshot. Two of them had already
+   * been lost: the `aria-describedby` fix existed only in the mangrove-carbon twin,
+   * and `aria-current` only on one of this app's two `SideNav`s. axe catches the
+   * first; nothing caught the second, which is why they are asserted directly rather
+   * than left to the axe totals.
+   */
+  test("carries the accessibility patches Carbon does not supply", async ({ page }) => {
+    await page.goto("/?candidate=on");
+
+    // 1. `aria-describedby` on every invalid field. Carbon sets `aria-errormessage`
+    //    at a div with no announcement technique and offers no prop for this.
+    for (const id of ["form-required", "form-format"]) {
+      await expect(page.locator(`#${id}`)).toHaveAttribute(
+        "aria-describedby",
+        `${id}-error-msg`,
+      );
+    }
+    // The `warn` tier is Carbon's own `aria-describedby`, and must NOT be overwritten
+    // by ours — passing one there would detach the warning message.
+    await expect(page.locator("#form-range")).toHaveAttribute(
+      "aria-describedby",
+      "form-range-warn-msg",
+    );
+
+    // 2. `aria-current` on the active SideNavLink. Carbon's `isActive` only paints a
+    //    class — `SideNavLink.js` emits no `aria-current` at all — so without this
+    //    the current page is communicated by colour alone.
+    await expect(page.locator('#section-5 a[aria-current="page"]')).toHaveCount(1);
+    await expect(page.locator('#section-9 a[aria-current="page"]')).toHaveCount(1);
+
+    // 3. `aria-pressed` on the state-toggle groups. Carbon's `kind` swap is colour
+    //    only; nothing else says which of the four buttons is active.
+    await expect(page.locator('#section-7 button[aria-pressed="true"]')).toHaveCount(2);
+    await expect(page.locator('#section-7 button[aria-pressed="false"]')).toHaveCount(6);
+
+    // 4. The loading skeleton is named. Carbon renders an unnamed block of grey bars.
+    await page.locator("#section-7 button", { hasText: "table: loading" }).click();
+    // `.cds--skeleton` is on three nested elements and `...rest` lands on the inner
+    // `<table>` (DataTableSkeleton.js:51-53), not on the container — so the label
+    // names the table, which is what you want, but the selector has to know.
+    await expect(page.locator("#section-7 table.cds--skeleton")).toHaveAttribute(
+      "aria-label",
+      "Loading records",
+    );
+  });
+
   test("renders the 250-row table with pagination and a page-size control", async ({
     page,
   }, testInfo) => {
@@ -147,10 +198,49 @@ test.describe("kitchen sink", () => {
   test("sorts, filters and select-alls the table", async ({ page }) => {
     await page.goto("/?candidate=on");
 
-    // Sort on the integer column: Carbon's default comparator, not ours.
+    /*
+     * Sort on the integer column (index 4, `peopleAffected`): Carbon's default
+     * comparator, not ours.
+     *
+     * ASSERT THE ORDERING, not just the attribute. This used to click the header and
+     * only count `th[aria-sort='ascending']`, which measures that Carbon painted a
+     * caret — a comparator returning 0 for every pair would have passed it, and so
+     * would one that sorted the pre-formatted strings and put "1,234,567" before
+     * "999". The values are what the test is for.
+     *
+     * Cells are Intl-formatted (`en-GB`, so group separators), so the digits are
+     * pulled back out before comparing.
+     */
     const header = page.locator("#section-6 th.cds--table-sort__header button").nth(4);
+    const affectedColumn = async (): Promise<number[]> =>
+      // nth-child(6), not (5): the first cell in every row is the select checkbox
+      // Carbon's `getSelectionProps` renders, so column index 4 is the sixth cell.
+      (await page.locator("#section-6 .cds--data-table tbody tr td:nth-child(6)").allInnerTexts())
+        .map((text) => Number(text.replace(/\D/g, "")))
+        .filter((value) => Number.isFinite(value));
+
     await header.click();
     await expect(page.locator("#section-6 th[aria-sort='ascending']")).toHaveCount(1);
+
+    const ascending = await affectedColumn();
+    expect(ascending.length).toBe(10);
+    expect(
+      ascending,
+      `Carbon's comparator did not order the integer column ascending: ${ascending.join(", ")}`,
+    ).toEqual([...ascending].sort((a, b) => a - b));
+    // Not all-equal, or the sorted-equals-itself check above would be vacuous too.
+    expect(new Set(ascending).size, "every value in the column is identical").toBeGreaterThan(1);
+
+    await header.click();
+    await expect(page.locator("#section-6 th[aria-sort='descending']")).toHaveCount(1);
+    const descending = await affectedColumn();
+    expect(
+      descending,
+      `Carbon's comparator did not order the integer column descending: ${descending.join(", ")}`,
+    ).toEqual([...descending].sort((a, b) => b - a));
+    expect(descending[0], "descending page 1 does not start above ascending page 1").toBeGreaterThan(
+      ascending[0] ?? 0,
+    );
 
     // Filter: TableToolbarSearch + onInputChange.
     await page.locator("#section-6 .cds--search-input").fill("Flood");
@@ -205,6 +295,49 @@ test.describe("kitchen sink", () => {
     // not by the library: flatpickr's minDate only guards the DATE.
     await page.locator("#section-3 #range-start-time").fill("bad");
     await expect(page.locator("#section-3 .cds--inline-notification--error")).toHaveCount(1);
+  });
+
+  /**
+   * THE TIMEZONE REGRESSION, which needs its own browser context.
+   *
+   * `packages/test-harness/src/playwright.config.ts` pins `timezoneId: "UTC"` for
+   * every project, for good reasons — the fixture "today" is fixed and formatted
+   * output must not depend on the runner. The side effect is that an entire class of
+   * date bug is unreachable from this suite, and `SectionDates.tsx` shipped one:
+   * `combine()` cloned flatpickr's LOCAL-midnight instant and then overwrote its UTC
+   * clock fields with `setUTCHours`, mixing two frames, so the composed date-time
+   * landed on the wrong calendar day at any positive UTC offset. Invisible at UTC.
+   *
+   * The tell is that the two halves DISAGREE: flatpickr formats the input itself, so
+   * the input showed the right date while the derived summary used the wrong one.
+   * Both are asserted, and the input assertion is what makes the failure diagnosable.
+   *
+   * `test.use({ timezoneId })` scopes the override to this block.
+   */
+  test.describe("date-time composition outside UTC", () => {
+    test.use({ timezoneId: "Australia/Sydney" });
+
+    test("composes from the calendar day the user clicked", async ({ page }) => {
+      await page.goto("/?candidate=on");
+
+      await page.locator("#range-start-date").click();
+      await page
+        .locator(
+          ".flatpickr-calendar.open .flatpickr-day:not(.prevMonthDay):not(.nextMonthDay)",
+          { hasText: /^20$/ },
+        )
+        .first()
+        .click();
+
+      // flatpickr's own formatting (`d/m/Y` in this app, both zero-padded), which was
+      // never wrong.
+      await expect(page.locator("#range-start-date")).toHaveValue("20/05/2026");
+
+      // Our composed instant, which was. With the bug this read "19 May 2026".
+      const summary = page.locator("#section-3 .cds--inline-notification");
+      await expect(summary).toContainText("20 May 2026");
+      await expect(summary).not.toContainText("19 May 2026");
+    });
   });
 
   test("keeps the flatpickr calendar inside the token scope and themed", async ({ page }) => {

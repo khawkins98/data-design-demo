@@ -117,6 +117,32 @@
   outline-offset: 2px;
 }
 
+/**
+ * THE CONTROLS THE RULE ABOVE COULD NOT REACH.
+ *
+ * `data-focus-visible` is React Aria's attribute, so it only ever appears on
+ * React Aria's elements. Two controls in these apps are deliberately native
+ * `<select class="demo-input">` — the rows-per-page pickers in
+ * `sections/SectionDataTable.tsx` and `views/RecordsPagination.tsx`, both chosen
+ * so a third portalled listbox would not be built for no extra evidence. A native
+ * element never receives that attribute, so both fell through every focus rule in
+ * this file and showed the browser's default outline instead of
+ * `--undrr-color-focus`. Neither app had a single `:focus-visible` rule.
+ *
+ * Worth recording rather than merely fixing: "style the library's data
+ * attributes" is a complete styling API only for as long as every control is the
+ * library's. The moment one is not, the native selector is needed too, and
+ * nothing warns you — the control still has A focus ring, just not yours.
+ *
+ * Scoped to `select` on purpose. `.demo-input:focus-visible` would also match the
+ * text inputs, where browsers report `:focus-visible` on a mouse click as well,
+ * and that would contradict the keyboard-only behaviour documented above.
+ */
+select.demo-input:focus-visible {
+  outline: 2px solid var(--undrr-color-focus);
+  outline-offset: 2px;
+}
+
 .demo-button[data-pressed] {
   background: var(--undrr-color-surface-sunken);
 }
@@ -671,6 +697,53 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--undrr-space-2);
+}
+
+/**
+ * SORT STATE ON A SORTABLE HEADER, from the library's own documented selectors.
+ *
+ * `Column` stamps its render state onto the `<th>` and documents the attributes
+ * as the styling API: `react-aria-components@1.20.0`
+ * `dist/types/src/Table.d.ts:170` declares `@selector [data-allows-sorting]`,
+ * `:176` declares `@selector [data-sort-direction="ascending | descending"]`, and
+ * `dist/private/Table.mjs:753-754` emits both. We styled `[data-focus-visible]`
+ * from the same list and skipped these, so `aria-sort` reached screen readers
+ * while sighted users saw nothing — no hint a header was clickable, and no way to
+ * tell which column was sorted or which way. Our omission, not a library gap.
+ *
+ * Drawn with borders on an EMPTY `::after`, not a glyph in `content`: generated
+ * text is announced by some screen readers and would duplicate `aria-sort`, and
+ * the `content: "▲" / ""` alt-text form that silences it has uneven support —
+ * where unsupported the declaration drops and the indicator disappears entirely.
+ *
+ * It goes on the inner flex row rather than the `<th>` because the header's
+ * contents are a block-level flex container here; an inline `::after` on the cell
+ * itself would start a new line box and sit under the label. `margin-inline-end:
+ * auto` keeps it beside the label instead of being spread apart by the row's
+ * `justify-content: space-between`.
+ */
+.demo-table__column[data-allows-sorting] .demo-table__columnInner::after {
+  content: "";
+  flex: none;
+  width: 0;
+  height: 0;
+  margin-inline-end: auto;
+  /* Symmetric, so the triangle needs no RTL mirror. */
+  border-right: 0.25rem solid transparent;
+  border-bottom: 0.3rem solid currentcolor;
+  border-left: 0.25rem solid transparent;
+  /* Dimmed: "this column can be sorted", not "this column is sorted". */
+  opacity: 0.35;
+}
+
+.demo-table__column[data-sort-direction="ascending"] .demo-table__columnInner::after {
+  opacity: 1;
+}
+
+.demo-table__column[data-sort-direction="descending"] .demo-table__columnInner::after {
+  border-top: 0.3rem solid currentcolor;
+  border-bottom: 0;
+  opacity: 1;
 }
 
 .demo-table__resizer {

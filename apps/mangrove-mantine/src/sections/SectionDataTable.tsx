@@ -280,13 +280,17 @@ export function SectionDataTable(): ReactElement {
                   ta={column.numeric ? "end" : undefined}
                 >
                   <UnstyledButton
+                    className="demo-sort"
+                    data-numeric={column.numeric ? "true" : undefined}
                     onClick={() => toggleSort(column.key)}
                     aria-label={`Sort by ${column.label}`}
                   >
-                    <Text span size="sm" fw="semibold" className="demo-th__label">
+                    <Text span size="sm" fw="semibold" className="demo-sort__label">
                       {column.label}
-                      {sort.key === column.key ? (sort.direction === "asc" ? " ▲" : " ▼") : ""}
                     </Text>
+                    <span aria-hidden="true" className="demo-sort__indicator">
+                      {sort.key === column.key ? (sort.direction === "asc" ? "▲" : "▼") : "↕"}
+                    </span>
                   </UnstyledButton>
                   {/* No Mantine primitive exists for this. See use-column-resize.ts. */}
                   <span {...resize.handleProps(column.key, column.label)} />

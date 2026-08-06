@@ -36,6 +36,31 @@ export function labelsFor(locale: LocaleCode): LabelSet {
   return LABELS[locale];
 }
 
+/**
+ * Formats a calendar date as `YYYY-MM-DD` from its LOCAL fields.
+ *
+ * WHY THIS EXISTS, and it is a bug this repo shipped rather than a Carbon defect.
+ * Carbon's `DatePicker` wraps flatpickr, and every `Date` flatpickr hands to
+ * `onChange` is built as `new Date(year, month, day)` — LOCAL midnight, not UTC
+ * midnight. Calling `.toISOString().slice(0, 10)` on that reads the UTC day, which
+ * at any POSITIVE UTC offset is the PREVIOUS calendar day: in Australia/Sydney,
+ * picking 1 January 2026 yields "2025-12-31".
+ *
+ * The fixture `eventDate` values are plain `YYYY-MM-DD` strings compared as
+ * strings, so a one-day shift silently moves a boundary. It is invisible in CI
+ * because the shared Playwright config pins `timezoneId: "UTC"` — which is exactly
+ * what made it dangerous.
+ *
+ * No `new Date()` here: the argument is the only clock, and only its local calendar
+ * fields are read.
+ */
+export function calendarDateToIso(date: Date): string {
+  const year = String(date.getFullYear()).padStart(4, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
 /*
  * NO SORT COMPARATOR AND NO FILTER PREDICATE HERE, and their absence is the
  * finding.
@@ -74,12 +99,28 @@ export function recordsForState(state: LoadState): readonly LossRecord[] {
   return state === "success" ? LOSS_RECORDS : [];
 }
 
-/** Carbon `Tag` colour per verification status. Presentation only. */
+/**
+ * Carbon `Tag` colour per verification status. Presentation only.
+ *
+ * MUST STAY IDENTICAL TO `apps/delta-carbon/src/AppView.tsx` and
+ * `apps/delta-carbon/src/sections/SectionDataTable.tsx`. It did not: `pending` was
+ * `"blue"` here and `"warm-gray"` there, so the same enum value carried two
+ * different semantics across screenshots that are meant to be read side by side.
+ *
+ * `warm-gray` is the one that wins, and only because Carbon leaves no better
+ * option. Carbon's `Tag` `type` union is red | magenta | purple | blue | cyan |
+ * teal | green | gray | cool-gray | warm-gray | high-contrast | outline — verified
+ * against the installed `Tag.d.ts`. THERE IS NO YELLOW OR AMBER. Every other
+ * pairing in this comparison maps `pending` onto its library's `warning` hue;
+ * Carbon has no warning hue in its tag palette at all, so `warm-gray` is the
+ * nearest warm neutral and theme.css re-points its three tag tokens at the UNDRR
+ * warning tokens to close the gap by hand.
+ */
 export const STATUS_TAG_COLOUR: Readonly<
-  Record<LossRecord["verificationStatus"], "green" | "blue" | "red" | "gray">
+  Record<LossRecord["verificationStatus"], "green" | "warm-gray" | "red" | "gray">
 > = Object.freeze({
   verified: "green",
-  pending: "blue",
+  pending: "warm-gray",
   disputed: "red",
   withdrawn: "gray",
 });

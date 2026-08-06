@@ -201,10 +201,24 @@ function RecordsScreen(): ReactElement {
 
       <RecordsPagination view={view} id="app-page-size" />
 
-      {/* Announced rather than rendered as a toast: React Aria's toast component
-          is not in the free tier, so a live region is the honest equivalent. */}
-      <p className="demo-status demo-status--success" role="status">
-        {lastAction ?? ""}
+      {/*
+        Announced rather than rendered as a toast: React Aria's toast component
+        is not in the free tier, so a live region is the honest equivalent.
+
+        THE ELEMENT STAYS MOUNTED, THE STYLING DOES NOT. A live region has to be
+        in the DOM before its content changes or the change is not announced, so
+        conditionally rendering the whole `<p>` would trade a visual bug for a
+        silent one. But `.demo-status--success` carries unconditional padding and
+        a pale-green background, so with `{lastAction ?? ""}` inside it the first
+        paint showed a 1008x16px empty green strip above the dialog — a status
+        message reporting nothing. Dropping the classes while keeping the node
+        leaves an empty `<p>` with no box, and the announcement path untouched.
+      */}
+      <p
+        className={lastAction === null ? undefined : "demo-status demo-status--success"}
+        role="status"
+      >
+        {lastAction}
       </p>
 
       <DeleteDialog

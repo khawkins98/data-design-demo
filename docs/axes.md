@@ -148,15 +148,15 @@ theming mechanism, which is what accumulates across sites and across upgrades.
 
 | Pairing | attribute | contract | off route | of which hashed | CSS rules |
 | --- | --- | --- | --- | --- | --- |
-| delta-react-aria | 16 | 0 | **0** | 0 | 133 |
-| mangrove-react-aria | 15 | 0 | **0** | 0 | 121 |
+| delta-react-aria | 19 | 0 | **0** | 0 | 165 |
+| mangrove-react-aria | 18 | 0 | **0** | 0 | 153 |
 | delta-mui | 0 | 2 | **0** | 0 | 3 |
 | mangrove-mui | 0 | 4 | **0** | 0 | 5 |
-| delta-carbon | 0 | 0 | **16** | 0 | 25 |
-| mangrove-carbon | 0 | 0 | **15** | 0 | 48 |
-| delta-mantine | 2 | 3 | **0** | 0 | 14 |
-| mangrove-mantine | 1 | 4 | **0** | 0 | 18 |
-| delta-antd | 0 | 0 | **0** | 0 | 6 |
+| delta-carbon | 0 | 0 | **16** | 0 | 34 |
+| mangrove-carbon | 0 | 0 | **15** | 0 | 53 |
+| delta-mantine | 3 | 3 | **0** | 0 | 16 |
+| mangrove-mantine | 2 | 4 | **0** | 0 | 22 |
+| delta-antd | 0 | 0 | **0** | 0 | 7 |
 | mangrove-antd | 0 | 0 | **0** | 0 | 6 |
 
 Checking the documentation moved two libraries here, and both moves were away from
@@ -282,16 +282,16 @@ swap reaches every site at once; a rebuild is per site, forever.
 
 | Pairing | tokens applied | unreachable | propagation | live var() refs in shipped CSS |
 | --- | --- | --- | --- | --- |
-| delta-react-aria | 48 | 0 | **unknown** | not built |
-| mangrove-react-aria | 47 | 0 | **unknown** | not built |
-| delta-mui | 29 | 0 | **unknown** | not built |
-| mangrove-mui | 32 | 0 | **unknown** | not built |
-| delta-carbon | 50 | **21** | **unknown** | not built |
-| mangrove-carbon | 50 | **22** | **unknown** | not built |
-| delta-mantine | 66 | **5** | **unknown** | not built |
-| mangrove-mantine | 62 | 0 | **unknown** | not built |
-| delta-antd | 44 | 0 | **unknown** | not built |
-| mangrove-antd | 44 | 0 | **unknown** | not built |
+| delta-react-aria | 48 | 0 | **stylesheet-swap** | 340 |
+| mangrove-react-aria | 47 | 0 | **stylesheet-swap** | 309 |
+| delta-mui | 29 | 0 | **mostly-rebuild** | 38 |
+| mangrove-mui | 32 | 0 | **mostly-rebuild** | 38 |
+| delta-carbon | 50 | **21** | **stylesheet-swap** | 237 |
+| mangrove-carbon | 50 | **22** | **stylesheet-swap** | 201 |
+| delta-mantine | 66 | **5** | **mostly-rebuild** | 44 |
+| mangrove-mantine | 62 | 0 | **mostly-rebuild** | 44 |
+| delta-antd | 44 | 0 | **mostly-rebuild** | 42 |
+| mangrove-antd | 44 | 0 | **mostly-rebuild** | 41 |
 
 ## A6 - Right-to-left
 
@@ -356,7 +356,7 @@ sound at the level of *zero versus some* and unsound at the level of exact numbe
 | mangrove-react-aria | 0 | 0 | 1 | whole page, unscoped |
 | delta-mui | 0 | 1 | 4 | whole page, unscoped |
 | mangrove-mui | 0 | 1 | 4 | candidate subtree |
-| delta-carbon | **1** | 2 | 2 | whole page, unscoped |
+| delta-carbon | 0 | 2 | 2 | whole page, unscoped |
 | mangrove-carbon | 0 | 1 | 2 | whole page, unscoped |
 | delta-mantine | 0 | 0 | 1 | whole page, unscoped |
 | mangrove-mantine | 0 | 0 | 0 | whole page, unscoped |

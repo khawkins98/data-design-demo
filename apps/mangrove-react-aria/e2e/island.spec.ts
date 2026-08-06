@@ -208,6 +208,119 @@ test.describe("embedded island", () => {
     await expect(page.locator("[data-candidate-root] tbody tr").first()).toBeVisible();
   });
 
+  /**
+   * Three fixes that had no test between them, which is how they became defects.
+   *
+   * All three are CSS or markup rather than behaviour, so nothing in this file
+   * could see them: `aria-sort` was correct while the header showed no sort state,
+   * the rows-per-page select was operable while showing the browser's focus ring
+   * instead of the token's, and two live regions announced correctly — just twice,
+   * per keystroke. Asserted on computed style and on the accessibility tree,
+   * because that is where each of them lived.
+   */
+  test("a sortable header shows its sort state, not just aria-sort", async ({ page }) => {
+    await page.goto(`${URL}?candidate=on`);
+
+    const readIndicator = (name: string) =>
+      page.getByRole("columnheader", { name }).evaluate((el) => {
+        const cs = getComputedStyle(el, "::after");
+        return {
+          content: cs.content,
+          opacity: Number.parseFloat(cs.opacity),
+          borderTopWidth: Number.parseFloat(cs.borderTopWidth),
+          borderBottomWidth: Number.parseFloat(cs.borderBottomWidth),
+        };
+      });
+
+    // Unsorted but sortable: an indicator exists, dimmed.
+    const idle = await readIndicator("Country");
+    expect(idle.content, "no ::after box on a [data-allows-sorting] header").not.toBe(
+      "none",
+    );
+    expect(idle.borderBottomWidth, "the affordance triangle has no size").toBeGreaterThan(0);
+    expect(idle.opacity, "an unsorted column should be dimmed").toBeLessThan(1);
+
+    // Ascending: full strength, pointing one way.
+    await page.getByRole("columnheader", { name: "Country" }).click();
+    const ascending = await readIndicator("Country");
+    expect(ascending.opacity).toBe(1);
+    expect(ascending.borderBottomWidth).toBeGreaterThan(0);
+    expect(ascending.borderTopWidth).toBe(0);
+
+    // Descending: the triangle must actually flip, not just stay lit.
+    await page.getByRole("columnheader", { name: "Country" }).click();
+    const descending = await readIndicator("Country");
+    expect(descending.opacity).toBe(1);
+    expect(
+      descending.borderTopWidth,
+      "the indicator did not flip between ascending and descending",
+    ).toBeGreaterThan(0);
+    expect(descending.borderBottomWidth).toBe(0);
+  });
+
+  test("the native rows-per-page select honours the token focus ring", async ({ page }) => {
+    await page.goto(`${URL}?candidate=on`);
+
+    // Every other focus style keys off React Aria's `data-focus-visible`, which a
+    // native element never receives, so this one needs `:focus-visible`.
+    const select = page.locator("select.demo-input");
+    await expect(select).toHaveCount(1);
+    await select.focus();
+
+    const ring = await select.evaluate((el) => {
+      const cs = getComputedStyle(el);
+      return {
+        width: cs.outlineWidth,
+        style: cs.outlineStyle,
+        colour: cs.outlineColor,
+        // Resolved through a probe rather than read as a string: the token is a
+        // hex literal and `outline-color` computes to `rgb(...)`, so comparing
+        // the raw values would fail on notation alone.
+        token: (() => {
+          const probe = document.createElement("span");
+          probe.style.color = "var(--undrr-color-focus)";
+          el.parentElement!.append(probe);
+          const resolved = getComputedStyle(probe).color;
+          probe.remove();
+          return resolved;
+        })(),
+      };
+    });
+
+    expect(ring.style).toBe("solid");
+    expect(Number.parseFloat(ring.width)).toBeGreaterThanOrEqual(2);
+    expect(ring.token, "the focus token is unreachable here").not.toBe("");
+    expect(
+      ring.colour,
+      `native select focus ring is ${ring.colour}, not the token ${ring.token}`,
+    ).toBe(ring.token);
+  });
+
+  test("the island announces once, not twice per keystroke", async ({ page }) => {
+    await page.goto(`${URL}?candidate=on`);
+
+    // Two live regions both driven off the search box meant every character
+    // queued two announcements of the same fact.
+    await expect(
+      page.locator('.demo-filters [role="status"], .demo-filters [aria-live]'),
+      "the filter card still has a live region announcing on every keystroke",
+    ).toHaveCount(0);
+
+    const live = page.locator(
+      '.demo-pagination [role="status"], .demo-pagination [aria-live]',
+    );
+    await expect(live, "the range readout should be the one live region").toHaveCount(1);
+
+    // The surviving one carries the range AND the filtered total, so nothing the
+    // dropped region announced has been lost.
+    await expect(live).toHaveText("1–10 / 250");
+
+    // And it settles rather than firing per character.
+    await page.locator(".demo-filters .demo-input").first().fill("Bangladesh");
+    await expect(page.locator(".demo-pagination__status")).toHaveText("1–10 / 19");
+    await expect(live).toHaveText("1–10 / 19");
+  });
+
   test("paginates, and resets to the first page when a facet changes", async ({ page }) => {
     await page.goto(`${URL}?candidate=on`);
 
@@ -225,17 +338,106 @@ test.describe("embedded island", () => {
     // this is entirely application code and is exactly the kind of thing that
     // breaks silently — a user left on page 3 of a 1-page result set.
     await page.locator(".demo-filters .demo-input").first().fill("Bangladesh");
-    await expect(status).toContainText("1–");
+    // The full string, not `toContainText("1–")`. The prior state was
+    // "11–20 / 250", which contains "1–" — so the weaker form was already
+    // satisfied before the reset happened and could not detect its absence.
+    // 19 of the 250 fixture rows are Bangladesh.
+    await expect(status).toHaveText("1–10 / 19");
     await expect(previous).toBeDisabled();
   });
 
+  /**
+   * This used to assert only `aria-sort` matching /ascending|descending/, which
+   * could not fail for the reason it was written. React Aria derives `aria-sort`
+   * from the `sortDescriptor` we hand back to it, not from the row order, so the
+   * attribute appears whether or not `sortRecords` sorted anything — gutting the
+   * comparator left the test green. The regex accepting either value also meant a
+   * toggle stuck in one direction passed. It really did miss two live defects in
+   * `demo-state.ts`: descending implemented as `.reverse()` and a `sensitivity:
+   * "base"` collator.
+   *
+   * The ordering of the first column is now the assertion; `aria-sort` is kept
+   * beside it, pinned to a specific direction, because the wiring and the result
+   * are separate claims.
+   */
   test("sorts on a column header", async ({ page }) => {
     await page.goto(`${URL}?candidate=on`);
 
+    const collator = new Intl.Collator("en");
+    const countryColumn = page.locator("[data-candidate-root] tbody tr td:first-child");
+
+    /** Reads the visible page's first column and asserts it is ordered. */
+    const readOrdered = async (direction: "ascending" | "descending") => {
+      const sign = direction === "ascending" ? 1 : -1;
+      const column = await countryColumn.allInnerTexts();
+      expect(column.length, "the page should still hold 10 rows").toBe(10);
+      for (let i = 1; i < column.length; i += 1) {
+        expect(
+          sign * collator.compare(column[i - 1]!, column[i]!),
+          `${direction}: row ${i} ("${column[i]}") sorts before row ${i - 1} ` +
+            `("${column[i - 1]}")`,
+        ).toBeLessThanOrEqual(0);
+      }
+      return column;
+    };
+
     const header = page.getByRole("columnheader", { name: "Country" });
+
+    // First click sorts ascending. Pinned to the specific direction, not a regex
+    // over both, so a toggle stuck one way cannot pass.
     await header.click();
-    await expect(header).toHaveAttribute("aria-sort", /ascending|descending/);
-    await expect(page.locator("[data-candidate-root] tbody tr")).toHaveCount(10);
+    await expect(header).toHaveAttribute("aria-sort", "ascending");
+    const ascending = await readOrdered("ascending");
+
+    await header.click();
+    await expect(header).toHaveAttribute("aria-sort", "descending");
+    const descending = await readOrdered("descending");
+
+    expect(
+      descending[0],
+      "reversing the sort direction did not change the first row",
+    ).not.toBe(ascending[0]);
+  });
+
+  /**
+   * The second half of the sort defect, which ordering alone cannot see.
+   *
+   * `sortRecords` used to implement descending as `sorted.reverse()`. The primary
+   * key still came out ordered, so every "is it sorted?" assertion passed — but
+   * `Array.prototype.sort` is stable, and reversing its output also reverses the
+   * order WITHIN each group of equal keys. `hazardType` has ~8 distinct values
+   * across 250 rows, so toggling direction silently reshuffled ~31 rows per group.
+   *
+   * Narrowing to ONE hazard makes every key in the sort column tie, so the row
+   * order is decided entirely by the tiebreak — which is direction-independent by
+   * design. Ascending and descending must therefore produce the IDENTICAL page.
+   * Under `.reverse()` they were exact opposites.
+   */
+  test("sorting is stable within tie groups", async ({ page }) => {
+    await page.goto(`${URL}?candidate=on`);
+
+    // Every remaining row now has the same hazardType.
+    await page.locator(".demo-select__trigger").first().click();
+    await page.getByRole("option", { name: "Drought", exact: true }).click();
+
+    const firstColumn = page.locator("[data-candidate-root] tbody tr td:first-child");
+    const header = page.getByRole("columnheader", { name: "Hazard type" });
+
+    await header.click();
+    await expect(header).toHaveAttribute("aria-sort", "ascending");
+    const ascending = await firstColumn.allInnerTexts();
+    expect(ascending.length).toBeGreaterThan(1);
+
+    await header.click();
+    await expect(header).toHaveAttribute("aria-sort", "descending");
+    const descending = await firstColumn.allInnerTexts();
+
+    expect(
+      descending,
+      "all keys in this column tie, so flipping direction must not reorder the " +
+        "rows. If these are reverses of each other, descending is implemented as " +
+        "a reverse of the ascending array rather than a negated comparator.",
+    ).toEqual(ascending);
   });
 
   test("passes the leakage assertion", async ({ page }, testInfo) => {
@@ -308,6 +510,26 @@ test.describe("embedded island", () => {
     const wholePage = await runAxe(page, { section: "island-whole-page" });
     writeJson("test-results/axe-island-whole-page.json", wholePage);
 
+    /*
+      THE FACET POPOVER, which neither scan above reaches and nothing else covered.
+
+      "applies RTL for Arabic" above already proves it: it asserts
+      `el.closest("[data-candidate-root]") === null` on this very element, because
+      React Aria portals every overlay to a container appended to `document.body`.
+      So the scoped scan misses it by construction, and the whole-page scan misses
+      it because the popover is not in the DOM until the trigger is pressed. The
+      listbox, its options and its selection semantics were the largest piece of
+      candidate markup on this view with no accessibility scan at all.
+    */
+    await page.locator(".demo-select__trigger").first().click();
+    await expect(page.locator(".demo-popover")).toBeVisible();
+    const popover = await runAxe(page, {
+      section: "island-facet-popover",
+      include: ".demo-popover",
+    });
+    writeJson("test-results/axe-island-facet-popover.json", popover);
+    await page.keyboard.press("Escape");
+
     // eslint-disable-next-line no-console
     console.log(
       `axe island scoped: ${scoped.counts.violations} violations ` +
@@ -315,13 +537,39 @@ test.describe("embedded island", () => {
         `${scoped.counts.incomplete} incomplete | whole page: ` +
         `${wholePage.counts.violations} violations ` +
         `(${wholePage.counts.critical} critical, ${wholePage.counts.serious} serious), ` +
-        `${wholePage.counts.incomplete} incomplete`,
+        `${wholePage.counts.incomplete} incomplete | facet popover: ` +
+        `${popover.counts.violations} violations ` +
+        `(${popover.counts.critical} critical, ${popover.counts.serious} serious), ` +
+        `${popover.counts.incomplete} incomplete`,
     );
 
     await testInfo.attach("axe-island-summary.json", {
-      body: JSON.stringify({ scoped, wholePage }, null, 2),
+      body: JSON.stringify({ scoped, wholePage, popover }, null, 2),
       contentType: "application/json",
     });
+
+    /*
+      THIS TEST HAD NO `expect` AT ALL. It ran axe, wrote its JSON and passed
+      unconditionally — including if a scan returned nothing, or if the candidate
+      shipped a hundred critical violations.
+
+      Asserting zero CRITICAL is the line the MUI and Mantine specs draw, and it is
+      compatible with the file header: Brief 1 forbids claiming conformance, so the
+      serious/moderate/minor counts stay recorded-not-asserted and remain the
+      output. Critical is different — it is not a grading curve, it is "this is
+      unusable" — and there is no evidence value in leaving it unchecked.
+    */
+    for (const [name, result] of [
+      ["candidate subtree", scoped],
+      ["whole framed page", wholePage],
+      ["facet popover", popover],
+    ] as const) {
+      expect(
+        result.counts.critical,
+        `axe found ${result.counts.critical} critical violation(s) in the ${name}; ` +
+          `see test-results/axe-island-*.json`,
+      ).toBe(0);
+    }
   });
 
   test("screenshots per viewport", async ({ page }, testInfo) => {

@@ -1,0 +1,40 @@
+{
+  "hazard": "wildfire",
+  "groupSize": 37,
+  "rendered": [
+    "Bangladesh",
+    "Mozambique",
+    "Kyrgyzstan",
+    "Indonesia",
+    "Kyrgyzstan",
+    "Malawi",
+    "Philippines",
+    "Peru",
+    "Guatemala",
+    "Kyrgyzstan"
+  ],
+  "correct": [
+    "Bangladesh",
+    "Mozambique",
+    "Kyrgyzstan",
+    "Indonesia",
+    "Kyrgyzstan",
+    "Malawi",
+    "Philippines",
+    "Peru",
+    "Guatemala",
+    "Kyrgyzstan"
+  ],
+  "reversedArray": [
+    "Malawi",
+    "Bangladesh",
+    "Nepal",
+    "Morocco",
+    "Nepal",
+    "Saint Lucia",
+    "Saint Lucia",
+    "Indonesia",
+    "Saint Lucia",
+    "Kyrgyzstan"
+  ]
+}

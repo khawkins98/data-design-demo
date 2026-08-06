@@ -236,7 +236,11 @@ export function SectionDataTable(): ReactElement {
   return (
     <section className="demo-section" id="section-6" aria-labelledby="s6">
       <h3 className="demo-section__title" id="s6">
-        6. Data table, {LOSS_RECORDS.length} rows
+        {/* `numberFormat`, not a bare `{LOSS_RECORDS.length}`. Every count in this
+            section sits beside cells that ARE Intl-formatted, so an unformatted one
+            makes the same page show "1.234.567" in a cell and "1234567" in the
+            caption in German. */}
+        6. Data table, {numberFormat.format(LOSS_RECORDS.length)} rows
       </h3>
 
       <p className="demo-hint">
@@ -266,7 +270,10 @@ export function SectionDataTable(): ReactElement {
           return (
             <TableContainer
               title={labels.navRecords}
-              description={`${total} / ${LOSS_RECORDS.length} rows · ${selectedRows.length} selected`}
+              description={
+                `${numberFormat.format(total)} / ${numberFormat.format(LOSS_RECORDS.length)} ` +
+                `rows · ${numberFormat.format(selectedRows.length)} selected`
+              }
               className="demo-tablewrap"
               {...getTableContainerProps()}
             >

@@ -1,0 +1,82 @@
+{
+  "pills": [
+    {
+      "text": "pending",
+      "background": "rgb(253, 243, 220)"
+    },
+    {
+      "text": "disputed",
+      "background": "rgb(251, 233, 235)"
+    },
+    {
+      "text": "withdrawn",
+      "background": "rgb(233, 237, 241)"
+    },
+    {
+      "text": "pending",
+      "background": "rgb(253, 243, 220)"
+    },
+    {
+      "text": "verified",
+      "background": "rgb(228, 242, 234)"
+    },
+    {
+      "text": "verified",
+      "background": "rgb(228, 242, 234)"
+    },
+    {
+      "text": "withdrawn",
+      "background": "rgb(233, 237, 241)"
+    },
+    {
+      "text": "pending",
+      "background": "rgb(253, 243, 220)"
+    },
+    {
+      "text": "pending",
+      "background": "rgb(253, 243, 220)"
+    },
+    {
+      "text": "pending",
+      "background": "rgb(253, 243, 220)"
+    }
+  ],
+  "rowIds": [
+    "DRR-0005",
+    "DRR-0181",
+    "DRR-0233",
+    "DRR-0104",
+    "DRR-0003",
+    "DRR-0093",
+    "DRR-0046",
+    "DRR-0094",
+    "DRR-0174",
+    "DRR-0089"
+  ],
+  "colours": [
+    {
+      "status": "pending",
+      "colours": [
+        "rgb(253, 243, 220)"
+      ]
+    },
+    {
+      "status": "disputed",
+      "colours": [
+        "rgb(251, 233, 235)"
+      ]
+    },
+    {
+      "status": "withdrawn",
+      "colours": [
+        "rgb(233, 237, 241)"
+      ]
+    },
+    {
+      "status": "verified",
+      "colours": [
+        "rgb(228, 242, 234)"
+      ]
+    }
+  ]
+}

@@ -51,11 +51,20 @@ export function SectionChrome(): ReactElement {
             className="demo-sidenav"
           >
             <SideNavItems>
+              {/*
+                * `aria-current` is ours and has to be. Carbon's `isActive` only
+                * paints a class: `SideNavLink.js` puts it into `classnames` and
+                * emits no `aria-current` anywhere in the file — verified against
+                * the installed 1.113.0. So the current page is communicated by
+                * colour alone unless the attribute is passed explicitly, which
+                * works because `...rest` spreads onto the inner `Link`.
+                */}
               {navItems.map((item, index) => (
                 <SideNavLink
                   key={item.id}
                   href="#section-5"
                   isActive={index === 1}
+                  {...(index === 1 ? { "aria-current": "page" as const } : {})}
                   large
                 >
                   {item.label}

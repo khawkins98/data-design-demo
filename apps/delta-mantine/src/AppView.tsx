@@ -183,6 +183,13 @@ function RecordsScreen({
         maximumFractionDigits: 2,
       }),
       date: new Intl.DateTimeFormat(bcp47, { dateStyle: "medium", timeZone: "UTC" }),
+      /*
+       * The comparator's collator, built from the SELECTED locale. Without it
+       * `localeCompare` falls back to the runtime default and the German and
+       * French passes order accented country names by whatever locale the runner
+       * happens to have. See `sortRecords` in src/table-model.ts.
+       */
+      collator: new Intl.Collator(bcp47),
     }),
     [bcp47],
   );
@@ -199,8 +206,16 @@ function RecordsScreen({
     });
   }, [country, hazard, status, query, deleted, bcp47]);
 
-  /** `sortRecords` is the kitchen sink's comparator, reused unchanged. */
-  const sorted = useMemo(() => sortRecords(filtered, sort), [filtered, sort]);
+  /**
+   * `sortRecords` is the kitchen sink's comparator, reused unchanged — including
+   * its required `Intl.Collator` argument, so this view's ordering is locale-
+   * correct rather than runner-dependent, and its descending sort is the exact
+   * inverse of its ascending one.
+   */
+  const sorted = useMemo(
+    () => sortRecords(filtered, sort, formatters.collator),
+    [filtered, sort, formatters],
+  );
 
   const totalPages = Math.max(1, Math.ceil(sorted.length / PAGE_SIZE));
   const safePage = Math.min(page, totalPages);
@@ -251,11 +266,21 @@ function RecordsScreen({
       {/* ------------------------------------------------- collapsible filters -- */}
       <Card withBorder padding="0" mb="lg">
         <Group justify="space-between" align="center" px="md" py="sm">
+          {/*
+            * `aria-controls` IS PRESENT ONLY WHILE THE PANEL IS MOUNTED. With
+            * `keepMounted={false}` below, the collapsed panel leaves the DOM, and an
+            * `aria-controls` IDREF that resolves to nothing is not a documented
+            * trade-off — it is a dangling reference. `aria-expanded` carries the
+            * state in both cases, which is the attribute assistive technology acts
+            * on; `aria-controls` is the optional one, so it is the one that goes
+            * when its target does. Asserted both ways in
+            * `e2e/app.spec.ts` ("collapses and expands the filter card").
+            */}
           <Button
             variant="subtle"
             onClick={() => setFiltersOpen((previous) => !previous)}
             aria-expanded={filtersOpen}
-            aria-controls="records-filters"
+            aria-controls={filtersOpen ? "records-filters" : undefined}
             rightSection={<Icon path={PATHS.chevron} spin={filtersOpen} />}
           >
             {labels.actionFilter}
@@ -279,8 +304,8 @@ function RecordsScreen({
 
         {/*
           * `keepMounted={false}` so the panel LEAVES the DOM when collapsed,
-          * which is also why `aria-controls` above points at an element that may
-          * not exist. Mantine's default keeps it mounted behind React's
+          * which is why `aria-controls` above is conditional rather than constant.
+          * Mantine's default keeps it mounted behind React's
           * `<Activity>`, which preserves field state but leaves the fields in the
           * accessibility tree — the wrong trade for a filter panel whose whole
           * state is already lifted into this component.
@@ -300,41 +325,53 @@ function RecordsScreen({
             pb="md"
             onSubmit={(event) => event.preventDefault()}
           >
+            {/*
+              * THE UNFILTERED STATE IS AN EMPTY FIELD, NOT A SENTINEL OPTION.
+              *
+              * These three Selects used to carry a first option whose label was
+              * `labels.actionClearFilters` — so a collapsed dropdown read "Clear
+              * filters", its accessible name was "Clear filters", and the real
+              * Clear-filters button sat a few pixels away saying the same thing.
+              * `Select` has `clearable`, which is the library's own answer: the
+              * clear affordance belongs on the field, not in the option list.
+              *
+              * NO PLACEHOLDER, deliberately. The fixture label set has no "All"
+              * string in any of the four locales and inventing four translations is
+              * out of bounds, so the unfiltered state is Mantine's own default —
+              * an empty input under a visible `Country` / `Hazard type` /
+              * `Verification status` label. THE FIXTURE GAP IS: no `optionAll` (or
+              * equivalent) key in `@undrr-eval/fixtures`. Recorded rather than
+              * papered over with a label that means something else.
+              */}
             <Select
               label={labels.fieldCountry}
-              value={country}
+              value={country === ALL ? null : country}
               onChange={(next) => onFilterChange(() => setCountry(next ?? ALL))}
-              data={[
-                { value: ALL, label: labels.actionClearFilters },
-                ...COUNTRIES.map((name) => ({ value: name, label: name })),
-              ]}
+              data={COUNTRIES.map((name) => ({ value: name, label: name }))}
+              clearable
               allowDeselect={false}
               comboboxProps={comboboxProps}
               data-testid="app-filter-country"
             />
             <Select
               label={labels.fieldHazard}
-              value={hazard}
+              value={hazard === ALL ? null : hazard}
               onChange={(next) => onFilterChange(() => setHazard(next ?? ALL))}
-              data={[
-                { value: ALL, label: labels.actionClearFilters },
-                ...OPTIONS_SMALL.map((option) => ({
-                  value: option.value,
-                  label: option.label,
-                })),
-              ]}
+              data={OPTIONS_SMALL.map((option) => ({
+                value: option.value,
+                label: option.label,
+              }))}
+              clearable
               allowDeselect={false}
               comboboxProps={comboboxProps}
               data-testid="app-filter-hazard"
             />
             <Select
               label={labels.colStatus}
-              value={status}
+              value={status === ALL ? null : status}
               onChange={(next) => onFilterChange(() => setStatus(next ?? ALL))}
-              data={[
-                { value: ALL, label: labels.actionClearFilters },
-                ...STATUSES.map((value) => ({ value, label: value })),
-              ]}
+              data={STATUSES.map((value) => ({ value, label: value }))}
+              clearable
               allowDeselect={false}
               comboboxProps={comboboxProps}
               data-testid="app-filter-status"
@@ -360,27 +397,51 @@ function RecordsScreen({
                   aria-sort={ariaSort(sort, column.key)}
                   ta={column.numeric ? "end" : undefined}
                 >
+                  {/*
+                    * ONE sort-trigger shape across all four Mantine tables — this
+                    * view, `sections/SectionDataTable.tsx`, and the two
+                    * mangrove-mantine equivalents. `demo-sort` carries the full-width
+                    * hit area, the logical `text-align: start` and the hover colour;
+                    * `demo-sort__indicator` carries the glyph and is `aria-hidden`,
+                    * because `aria-sort` on the `<th>` is what announces the state and
+                    * a screen reader should not also hear "▲". Earlier this view
+                    * inlined the arrow into the label text and set no class at all, so
+                    * `demo.css`'s `.demo-sort` rules reached the kitchen sink and not
+                    * the application screen.
+                    */}
                   <UnstyledButton
+                    className="demo-sort"
+                    data-numeric={column.numeric ? "true" : undefined}
                     onClick={() => toggleSort(column.key)}
                     aria-label={`Sort by ${labels[column.labelKey]}`}
+                    data-testid={`app-sort-${column.key}`}
                   >
-                    <Text span size="sm" fw="semibold">
+                    <Text span size="sm" fw="semibold" className="demo-sort__label">
                       {labels[column.labelKey]}
-                      {sort?.key === column.key ? (sort.direction === "asc" ? " ▲" : " ▼") : ""}
                     </Text>
+                    <span aria-hidden="true" className="demo-sort__indicator">
+                      {sort?.key === column.key ? (sort.direction === "asc" ? "▲" : "▼") : "↕"}
+                    </span>
                   </UnstyledButton>
                 </Table.Th>
               ))}
               {/*
-                * `ta="end"` is a LOGICAL value, so the row-action column follows
-                * the reading direction in Arabic. The delta-mui run had to use
-                * `align="right"` here because MUI's `TableCell` exposes no logical
-                * equivalent, and recorded the physical pinning as a finding.
-                * Mantine's `Box` style props take logical values, so it does not
-                * reproduce — worth recording as the one place Mantine's styling
-                * API is straightforwardly better in this layout.
+                * `ta="end"` is a LOGICAL value on Mantine's own style-prop API, so
+                * the row-action column follows the reading direction in Arabic
+                * without a second rule and without any RTL code of ours. Stated as
+                * a property of Mantine's `Box` style props, which is all it is.
+                *
+                * THE HEADER IS ENGLISH IN ALL FOUR LOCALES, and that is the honest
+                * option here. This column holds the three row actions; the fixture
+                * label set has no "Actions" string, and it previously borrowed
+                * `labels.colReviewNote` — "Review note" — which names a DIFFERENT
+                * column that this table also renders in the kitchen sink. Mantine
+                * has no default header text to fall back on either. So: an
+                * untranslated English word, recorded, exactly as the pagination
+                * "Page" line below is. THE FIXTURE GAP IS a missing `colActions`
+                * key in `@undrr-eval/fixtures`.
                 */}
-              <Table.Th ta="end">{labels.colReviewNote}</Table.Th>
+              <Table.Th ta="end">Actions</Table.Th>
             </Table.Tr>
           </Table.Thead>
 
@@ -422,30 +483,44 @@ function RecordsScreen({
                       * a `dir` prop nor the frame's `dir` attribute. See
                       * src/overlay-class.ts and the effect in `AppView` below.
                       */}
+                    {/*
+                      * "VIEW" AND "EDIT" ARE ENGLISH IN ALL FOUR LOCALES, recorded
+                      * for the same reason as the column header above. The fixture
+                      * action strings are Save / Cancel / Delete / Filter / Clear
+                      * filters / Export: there is no "view" and no "edit". These
+                      * buttons previously borrowed `labels.navRecords` ("Loss
+                      * records") and `labels.actionSave` ("Save"), so the row's edit
+                      * control announced itself as "Save DRR-0001" — a button that
+                      * says it will write when it will not. Only DELETE has a true
+                      * fixture label, and it keeps it. THE FIXTURE GAP IS missing
+                      * `actionView` / `actionEdit` keys in `@undrr-eval/fixtures`;
+                      * until they exist, an untranslated verb that is correct beats
+                      * a translated one that is wrong.
+                      */}
                     <Group gap="0" justify="flex-end" wrap="nowrap">
                       <Tooltip
-                        label={`${labels.navRecords}: ${record.id}`}
+                        label={`View: ${record.id}`}
                         events={{ hover: true, focus: true, touch: true }}
                         portalProps={portalProps}
                       >
                         <ActionIcon
                           variant="subtle"
                           color="undrrAccent"
-                          aria-label={`${labels.navRecords} ${record.id}`}
+                          aria-label={`View ${record.id}`}
                         >
                           <Icon path={PATHS.view} />
                         </ActionIcon>
                       </Tooltip>
 
                       <Tooltip
-                        label={`${labels.actionSave}: ${record.id}`}
+                        label={`Edit: ${record.id}`}
                         events={{ hover: true, focus: true, touch: true }}
                         portalProps={portalProps}
                       >
                         <ActionIcon
                           variant="subtle"
                           color="undrrAccent"
-                          aria-label={`${labels.actionSave} ${record.id}`}
+                          aria-label={`Edit ${record.id}`}
                         >
                           <Icon path={PATHS.edit} />
                         </ActionIcon>
@@ -479,11 +554,15 @@ function RecordsScreen({
                 {/*
                   * "Page" IS ENGLISH IN ALL FOUR LOCALES, deliberately. The fixture
                   * label set carries no pagination strings and inventing translations
-                  * is out of bounds, so this line reads "٣ / 1 Page" in Arabic —
-                  * an English word in a right-to-left line. Mantine has no locale
-                  * bundle for it either: `Pagination` renders no text of its own, so
-                  * unlike MUI's `TablePagination` there is not even a parallel
-                  * translation source to point at. Recorded, not papered over.
+                  * is out of bounds, so this line reads "٣ / 1 Page" in Arabic — an
+                  * English word in a right-to-left line.
+                  *
+                  * AND MANTINE OFFERS NOTHING TO FALL BACK ON. `Pagination` renders
+                  * no text of its own — the controls are icons and page numbers — so
+                  * `@mantine/core` ships no translations for pagination at all and
+                  * there is no locale bundle to point at. Any wording around it is
+                  * application text by construction. Recorded as what Mantine ships,
+                  * not papered over.
                   */}
         <Text size="sm" c="dimmed" data-testid="app-page-summary">
           Page {formatters.integer.format(safePage)} / {formatters.integer.format(totalPages)}

@@ -69,6 +69,49 @@ test.describe("kitchen sink", () => {
     }
   });
 
+  /**
+   * The accessibility patches this demo adds ON TOP of Carbon, asserted one by one.
+   *
+   * Every item is a place where Carbon renders something that looks right and is not
+   * announced, and where the patch is a single attribute that is easy to lose in a
+   * refactor and impossible to see in a screenshot. Two of them HAD been lost in the
+   * delta-carbon twin — `aria-current` on one of its two `SideNav`s, and the
+   * skeleton's `aria-label` here — which is why they are asserted directly rather
+   * than left to the axe totals.
+   */
+  test("carries the accessibility patches Carbon does not supply", async ({ page }) => {
+    await page.goto("/?candidate=on");
+
+    // 1. `aria-describedby` on every invalid field. Carbon sets `aria-errormessage`
+    //    at a div with no announcement technique and offers no prop for this.
+    for (const id of ["forms-required", "forms-format", "forms-range"]) {
+      await expect(page.locator(`#${id}`)).toHaveAttribute(
+        "aria-describedby",
+        `${id}-error-msg`,
+      );
+    }
+
+    // 2. `aria-current` on the active SideNavLink. Carbon's `isActive` only paints a
+    //    class — `SideNavLink.js` emits no `aria-current` at all.
+    await expect(page.locator('#section-5 a[aria-current="page"]')).toHaveCount(1);
+    await expect(page.locator('#section-9 a[aria-current="page"]')).toHaveCount(1);
+
+    // 3. `aria-pressed` on the state-toggle groups. Carbon's `kind` swap is colour
+    //    only; nothing else says which of the four buttons is active.
+    await expect(page.locator('#section-7 button[aria-pressed="true"]')).toHaveCount(2);
+    await expect(page.locator('#section-7 button[aria-pressed="false"]')).toHaveCount(6);
+
+    // 4. The loading skeleton is named. Carbon renders an unnamed block of grey bars.
+    //    `...rest` lands on the inner `<table>` (DataTableSkeleton.js:51-53), not on
+    //    the container, so the label names the table — which is what you want, but
+    //    the selector has to know.
+    await page.locator("#section-7 button", { hasText: "table: loading" }).click();
+    await expect(page.locator("#section-7 table.cds--skeleton")).toHaveAttribute(
+      "aria-label",
+      "Loading records",
+    );
+  });
+
   test("renders all 250 fixture rows behind Carbon's pagination", async ({ page }) => {
     await page.goto("/?candidate=on");
     // TableContainer's description reports the filtered total.
@@ -169,6 +212,50 @@ test.describe("kitchen sink", () => {
       await page.locator(".flatpickr-day.inRange").count(),
       "no intervening days highlighted",
     ).toBeGreaterThan(0);
+  });
+
+  /**
+   * THE TIMEZONE REGRESSION, which needs its own browser context.
+   *
+   * `packages/test-harness/src/playwright.config.ts` pins `timezoneId: "UTC"` for
+   * every project, for good reasons — the fixture "today" is fixed and formatted
+   * output must not depend on the runner. The side effect is that an entire class of
+   * date bug is unreachable from this suite, and this section shipped one:
+   * `SectionDates.tsx` read flatpickr's chosen dates with
+   * `.toISOString().slice(0, 10)`, and flatpickr builds every date it reports at
+   * LOCAL midnight, so at any positive UTC offset the stored day was one behind the
+   * day the user clicked. Invisible at UTC. Wrong for every user east of Greenwich.
+   *
+   * The tell is that the two halves DISAGREE: flatpickr formats the input itself, so
+   * the input showed the right date while the derived summary — and the
+   * end-before-start comparison — used the wrong one. Both are asserted below, and
+   * the input assertion is what makes the failure diagnosable rather than mysterious.
+   *
+   * `test.use({ timezoneId })` scopes the override to this block, so the rest of the
+   * suite keeps its determinism.
+   */
+  test.describe("date selection outside UTC", () => {
+    test.use({ timezoneId: "Australia/Sydney" });
+
+    test("derives the range from the calendar day the user clicked", async ({ page }) => {
+      await page.goto("/?candidate=on");
+
+      await page.locator("#range-start-date").click();
+      await page
+        .locator(
+          ".flatpickr-calendar.open .flatpickr-day:not(.prevMonthDay):not(.nextMonthDay)",
+          { hasText: /^20$/ },
+        )
+        .first()
+        .click();
+
+      // flatpickr's own formatting, which was never wrong.
+      await expect(page.locator("#range-start-date")).toHaveValue("2026-05-20");
+
+      // Our derived value, which was. With the bug this reads "19 May 2026".
+      await expect(page.locator("#section-3 #range-summary")).toContainText("20 May 2026");
+      await expect(page.locator("#section-3 #range-summary")).not.toContainText("19 May 2026");
+    });
   });
 
   test("validates an inverted range with the VALIDATION_CASES treatment", async ({ page }) => {

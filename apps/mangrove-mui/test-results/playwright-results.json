@@ -130,12 +130,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 330,
+                      "duration": 427,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:39:29.472Z",
+                      "startTime": "2026-08-06T17:12:12.274Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -164,12 +164,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 280,
+                      "duration": 380,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:39:29.895Z",
+                      "startTime": "2026-08-06T17:12:12.816Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -198,12 +198,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 285,
+                      "duration": 429,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:39:30.180Z",
+                      "startTime": "2026-08-06T17:12:13.205Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -232,12 +232,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 263,
+                      "duration": 364,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:39:30.468Z",
+                      "startTime": "2026-08-06T17:12:13.640Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -266,12 +266,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 271,
+                      "duration": 391,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:39:30.735Z",
+                      "startTime": "2026-08-06T17:12:14.009Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -300,12 +300,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 364,
+                      "duration": 515,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:39:31.009Z",
+                      "startTime": "2026-08-06T17:12:14.405Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -334,12 +334,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 651,
+                      "duration": 687,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:39:31.376Z",
+                      "startTime": "2026-08-06T17:12:14.926Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -368,12 +368,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1373,
+                      "duration": 1577,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:39:32.031Z",
+                      "startTime": "2026-08-06T17:12:15.619Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -408,12 +408,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 390,
+                      "duration": 496,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:39:33.409Z",
+                      "startTime": "2026-08-06T17:12:17.203Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -442,10 +442,10 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "failed",
-                      "duration": 407,
+                      "duration": 676,
                       "error": {
-                        "message": "Error: MUI's floating label is positioned with a physical `left` that RTL does not flip; the documented fix is stylis-plugin-rtl, which constraint 2 forbids\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m16\u001b[39m\nReceived:    \u001b[31m100\u001b[39m",
-                        "stack": "Error: MUI's floating label is positioned with a physical `left` that RTL does not flip; the documented fix is stylis-plugin-rtl, which constraint 2 forbids\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m16\u001b[39m\nReceived:    \u001b[31m100\u001b[39m\n    at /Users/khawkins/Documents/git/data-design-demo/.claude/worktrees/feat-continuity-framing/apps/mangrove-mui/e2e/demo.spec.ts:268:7",
+                        "message": "Error: MUI's floating label is positioned with a physical `left` that RTL does not flip; the documented fix is stylis-plugin-rtl, which constraint 2 forbids\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m16\u001b[39m\nReceived:    \u001b[31m82\u001b[39m",
+                        "stack": "Error: MUI's floating label is positioned with a physical `left` that RTL does not flip; the documented fix is stylis-plugin-rtl, which constraint 2 forbids\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m16\u001b[39m\nReceived:    \u001b[31m82\u001b[39m\n    at /Users/khawkins/Documents/git/data-design-demo/.claude/worktrees/feat-continuity-framing/apps/mangrove-mui/e2e/demo.spec.ts:268:7",
                         "location": {
                           "file": "/Users/khawkins/Documents/git/data-design-demo/.claude/worktrees/feat-continuity-framing/apps/mangrove-mui/e2e/demo.spec.ts",
                           "column": 7,
@@ -460,13 +460,13 @@
                             "column": 7,
                             "line": 268
                           },
-                          "message": "Error: MUI's floating label is positioned with a physical `left` that RTL does not flip; the documented fix is stylis-plugin-rtl, which constraint 2 forbids\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m16\u001b[39m\nReceived:    \u001b[31m100\u001b[39m\n\n  266 |       \"MUI's floating label is positioned with a physical `left` that RTL does not \" +\n  267 |         \"flip; the documented fix is stylis-plugin-rtl, which constraint 2 forbids\",\n> 268 |     ).toBeLessThanOrEqual(16);\n      |       ^\n  269 |   });\n  270 |\n  271 |   test(\"axe per section\", async ({ page }, testInfo) => {\n    at /Users/khawkins/Documents/git/data-design-demo/.claude/worktrees/feat-continuity-framing/apps/mangrove-mui/e2e/demo.spec.ts:268:7"
+                          "message": "Error: MUI's floating label is positioned with a physical `left` that RTL does not flip; the documented fix is stylis-plugin-rtl, which constraint 2 forbids\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m16\u001b[39m\nReceived:    \u001b[31m82\u001b[39m\n\n  266 |       \"MUI's floating label is positioned with a physical `left` that RTL does not \" +\n  267 |         \"flip; the documented fix is stylis-plugin-rtl, which constraint 2 forbids\",\n> 268 |     ).toBeLessThanOrEqual(16);\n      |       ^\n  269 |   });\n  270 |\n  271 |   test(\"axe per section\", async ({ page }, testInfo) => {\n    at /Users/khawkins/Documents/git/data-design-demo/.claude/worktrees/feat-continuity-framing/apps/mangrove-mui/e2e/demo.spec.ts:268:7"
                         }
                       ],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:39:33.803Z",
+                      "startTime": "2026-08-06T17:12:17.706Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -511,7 +511,7 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 4809,
+                      "duration": 4161,
                       "errors": [],
                       "stdout": [
                         {
@@ -544,7 +544,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:39:34.427Z",
+                      "startTime": "2026-08-06T17:12:18.708Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -579,12 +579,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1115,
+                      "duration": 956,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:39:39.333Z",
+                      "startTime": "2026-08-06T17:12:22.961Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -613,12 +613,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1284,
+                      "duration": 1165,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:39:40.457Z",
+                      "startTime": "2026-08-06T17:12:23.923Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -647,12 +647,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 344,
+                      "duration": 322,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:39:41.746Z",
+                      "startTime": "2026-08-06T17:12:25.092Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -681,12 +681,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 301,
+                      "duration": 514,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:39:48.078Z",
+                      "startTime": "2026-08-06T17:12:37.652Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -715,12 +715,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 265,
+                      "duration": 475,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:39:48.478Z",
+                      "startTime": "2026-08-06T17:12:38.284Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -749,12 +749,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 276,
+                      "duration": 498,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:39:48.749Z",
+                      "startTime": "2026-08-06T17:12:38.772Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -783,12 +783,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 262,
+                      "duration": 474,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:39:49.029Z",
+                      "startTime": "2026-08-06T17:12:39.277Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -817,12 +817,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 299,
+                      "duration": 518,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:39:49.295Z",
+                      "startTime": "2026-08-06T17:12:39.760Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -851,12 +851,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 447,
+                      "duration": 633,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:39:49.602Z",
+                      "startTime": "2026-08-06T17:12:40.287Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -885,12 +885,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 820,
+                      "duration": 885,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:39:50.053Z",
+                      "startTime": "2026-08-06T17:12:40.928Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -919,12 +919,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1404,
+                      "duration": 1802,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:39:50.879Z",
+                      "startTime": "2026-08-06T17:12:41.821Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -959,12 +959,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 492,
+                      "duration": 603,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:39:52.287Z",
+                      "startTime": "2026-08-06T17:12:43.632Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -993,7 +993,7 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "failed",
-                      "duration": 510,
+                      "duration": 685,
                       "error": {
                         "message": "Error: MUI's floating label is positioned with a physical `left` that RTL does not flip; the documented fix is stylis-plugin-rtl, which constraint 2 forbids\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m16\u001b[39m\nReceived:    \u001b[31m454\u001b[39m",
                         "stack": "Error: MUI's floating label is positioned with a physical `left` that RTL does not flip; the documented fix is stylis-plugin-rtl, which constraint 2 forbids\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m16\u001b[39m\nReceived:    \u001b[31m454\u001b[39m\n    at /Users/khawkins/Documents/git/data-design-demo/.claude/worktrees/feat-continuity-framing/apps/mangrove-mui/e2e/demo.spec.ts:268:7",
@@ -1017,7 +1017,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:39:52.789Z",
+                      "startTime": "2026-08-06T17:12:44.241Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -1062,7 +1062,7 @@
                       "workerIndex": 3,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 5559,
+                      "duration": 7663,
                       "errors": [],
                       "stdout": [
                         {
@@ -1095,7 +1095,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:39:53.549Z",
+                      "startTime": "2026-08-06T17:12:45.460Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -1130,12 +1130,12 @@
                       "workerIndex": 3,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1162,
+                      "duration": 1889,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:39:59.205Z",
+                      "startTime": "2026-08-06T17:12:53.288Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1164,12 +1164,12 @@
                       "workerIndex": 3,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1139,
+                      "duration": 1441,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:40:00.373Z",
+                      "startTime": "2026-08-06T17:12:55.183Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1198,12 +1198,12 @@
                       "workerIndex": 3,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 408,
+                      "duration": 722,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:40:01.517Z",
+                      "startTime": "2026-08-06T17:12:56.630Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1232,12 +1232,12 @@
                       "workerIndex": 4,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 461,
+                      "duration": 499,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:40:10.504Z",
+                      "startTime": "2026-08-06T17:13:11.977Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1266,12 +1266,12 @@
                       "workerIndex": 4,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 367,
+                      "duration": 395,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:40:11.095Z",
+                      "startTime": "2026-08-06T17:13:12.621Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1300,12 +1300,12 @@
                       "workerIndex": 4,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 466,
+                      "duration": 444,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:40:11.470Z",
+                      "startTime": "2026-08-06T17:13:13.022Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1334,12 +1334,12 @@
                       "workerIndex": 4,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 443,
+                      "duration": 462,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:40:11.944Z",
+                      "startTime": "2026-08-06T17:13:13.472Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1368,12 +1368,12 @@
                       "workerIndex": 4,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 397,
+                      "duration": 482,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:40:12.393Z",
+                      "startTime": "2026-08-06T17:13:13.943Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1402,12 +1402,12 @@
                       "workerIndex": 4,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 510,
+                      "duration": 1118,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:40:12.795Z",
+                      "startTime": "2026-08-06T17:13:14.431Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1436,12 +1436,12 @@
                       "workerIndex": 4,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 665,
+                      "duration": 1299,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:40:13.310Z",
+                      "startTime": "2026-08-06T17:13:15.575Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1470,12 +1470,12 @@
                       "workerIndex": 4,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1455,
+                      "duration": 1571,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:40:13.984Z",
+                      "startTime": "2026-08-06T17:13:16.896Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -1510,12 +1510,12 @@
                       "workerIndex": 4,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 509,
+                      "duration": 661,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:40:15.443Z",
+                      "startTime": "2026-08-06T17:13:18.473Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1544,7 +1544,7 @@
                       "workerIndex": 4,
                       "parallelIndex": 0,
                       "status": "failed",
-                      "duration": 569,
+                      "duration": 930,
                       "error": {
                         "message": "Error: MUI's floating label is positioned with a physical `left` that RTL does not flip; the documented fix is stylis-plugin-rtl, which constraint 2 forbids\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m16\u001b[39m\nReceived:    \u001b[31m870\u001b[39m",
                         "stack": "Error: MUI's floating label is positioned with a physical `left` that RTL does not flip; the documented fix is stylis-plugin-rtl, which constraint 2 forbids\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m16\u001b[39m\nReceived:    \u001b[31m870\u001b[39m\n    at /Users/khawkins/Documents/git/data-design-demo/.claude/worktrees/feat-continuity-framing/apps/mangrove-mui/e2e/demo.spec.ts:268:7",
@@ -1568,7 +1568,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:40:15.956Z",
+                      "startTime": "2026-08-06T17:13:19.140Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -1613,7 +1613,7 @@
                       "workerIndex": 5,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 5907,
+                      "duration": 7919,
                       "errors": [],
                       "stdout": [
                         {
@@ -1646,7 +1646,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:40:16.897Z",
+                      "startTime": "2026-08-06T17:13:20.670Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -1681,12 +1681,12 @@
                       "workerIndex": 5,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1175,
+                      "duration": 1711,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:40:22.931Z",
+                      "startTime": "2026-08-06T17:13:28.796Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1715,12 +1715,12 @@
                       "workerIndex": 5,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1307,
+                      "duration": 2028,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:40:24.112Z",
+                      "startTime": "2026-08-06T17:13:30.515Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1749,12 +1749,12 @@
                       "workerIndex": 5,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 548,
+                      "duration": 658,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:40:25.425Z",
+                      "startTime": "2026-08-06T17:13:32.553Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1781,7 +1781,7 @@
         {
           "title": "embedded island",
           "file": "island.spec.ts",
-          "line": 56,
+          "line": 57,
           "column": 6,
           "specs": [
             {
@@ -1800,12 +1800,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 182,
+                      "duration": 192,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:39:42.097Z",
+                      "startTime": "2026-08-06T17:12:25.432Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1815,7 +1815,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-95c6e15524aec3884bc9",
               "file": "island.spec.ts",
-              "line": 57,
+              "line": 58,
               "column": 3
             },
             {
@@ -1834,12 +1834,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 125,
+                      "duration": 134,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:39:42.282Z",
+                      "startTime": "2026-08-06T17:12:25.627Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1849,7 +1849,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-e364afafb02c59eff16b",
               "file": "island.spec.ts",
-              "line": 73,
+              "line": 74,
               "column": 3
             },
             {
@@ -1868,12 +1868,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 207,
+                      "duration": 263,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:39:42.411Z",
+                      "startTime": "2026-08-06T17:12:25.764Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1883,7 +1883,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-cdb01a0930e6cb0df872",
               "file": "island.spec.ts",
-              "line": 94,
+              "line": 95,
               "column": 3
             },
             {
@@ -1902,12 +1902,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1326,
+                      "duration": 1529,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:39:42.621Z",
+                      "startTime": "2026-08-06T17:12:26.032Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -1923,7 +1923,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-dca1e9f336e2e5cc78ea",
               "file": "island.spec.ts",
-              "line": 111,
+              "line": 112,
               "column": 3
             },
             {
@@ -1942,12 +1942,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 288,
+                      "duration": 661,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:39:43.951Z",
+                      "startTime": "2026-08-06T17:12:27.566Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1957,7 +1957,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-42ac899ec4546ba9d447",
               "file": "island.spec.ts",
-              "line": 134,
+              "line": 135,
               "column": 3
             },
             {
@@ -1976,12 +1976,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 345,
+                      "duration": 477,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:39:44.244Z",
+                      "startTime": "2026-08-06T17:12:28.231Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1991,7 +1991,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-5f477acd960399fde7ee",
               "file": "island.spec.ts",
-              "line": 149,
+              "line": 150,
               "column": 3
             },
             {
@@ -2010,12 +2010,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 344,
+                      "duration": 557,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:39:44.591Z",
+                      "startTime": "2026-08-06T17:12:28.713Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2025,7 +2025,75 @@
               ],
               "id": "151e2ac1b06ef54fe07f-657de8e40204202fc504",
               "file": "island.spec.ts",
-              "line": 163,
+              "line": 164,
+              "column": 3
+            },
+            {
+              "title": "status pills read the row's own status, and the variant tracks it",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2647,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T17:12:29.275Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-22b0c78bf5bfbbee244c",
+              "file": "island.spec.ts",
+              "line": 185,
+              "column": 3
+            },
+            {
+              "title": "localises the grid footer from MUI X's own locale pack",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 396,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T17:12:31.926Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-15b035a892410563de3a",
+              "file": "island.spec.ts",
+              "line": 244,
               "column": 3
             },
             {
@@ -2044,12 +2112,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 269,
+                      "duration": 270,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:39:44.939Z",
+                      "startTime": "2026-08-06T17:12:32.326Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2059,7 +2127,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-bfb1bacfb9c8cd33a5e3",
               "file": "island.spec.ts",
-              "line": 175,
+              "line": 298,
               "column": 3
             },
             {
@@ -2078,12 +2146,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 280,
+                      "duration": 339,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:39:45.211Z",
+                      "startTime": "2026-08-06T17:12:32.600Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2093,7 +2161,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-7e609b4ce058f5dd688c",
               "file": "island.spec.ts",
-              "line": 201,
+              "line": 324,
               "column": 3
             },
             {
@@ -2112,7 +2180,7 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1125,
+                      "duration": 2090,
                       "errors": [],
                       "stdout": [
                         {
@@ -2121,7 +2189,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:39:45.494Z",
+                      "startTime": "2026-08-06T17:12:32.943Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -2137,7 +2205,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-233abba4d66242009936",
               "file": "island.spec.ts",
-              "line": 250,
+              "line": 373,
               "column": 3
             },
             {
@@ -2156,12 +2224,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 514,
+                      "duration": 1097,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:39:46.622Z",
+                      "startTime": "2026-08-06T17:12:35.040Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2171,7 +2239,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-0ac6fb5b17ccbdc4e35e",
               "file": "island.spec.ts",
-              "line": 291,
+              "line": 414,
               "column": 3
             },
             {
@@ -2190,12 +2258,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 415,
+                      "duration": 613,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:39:47.141Z",
+                      "startTime": "2026-08-06T17:12:36.143Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2205,7 +2273,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-582c1b995f1772c2b628",
               "file": "island.spec.ts",
-              "line": 304,
+              "line": 427,
               "column": 3
             },
             {
@@ -2224,12 +2292,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 288,
+                      "duration": 473,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:39:47.560Z",
+                      "startTime": "2026-08-06T17:12:36.762Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2239,7 +2307,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-354664fe0f1f1e4ae7d8",
               "file": "island.spec.ts",
-              "line": 317,
+              "line": 440,
               "column": 3
             },
             {
@@ -2258,12 +2326,12 @@
                       "workerIndex": 3,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 248,
+                      "duration": 424,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:40:01.936Z",
+                      "startTime": "2026-08-06T17:12:57.395Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2273,7 +2341,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-13a0161603284f0febfb",
               "file": "island.spec.ts",
-              "line": 57,
+              "line": 58,
               "column": 3
             },
             {
@@ -2292,12 +2360,12 @@
                       "workerIndex": 3,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 183,
+                      "duration": 253,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:40:02.188Z",
+                      "startTime": "2026-08-06T17:12:57.828Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2307,7 +2375,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-fe1b0055338abdbc5bad",
               "file": "island.spec.ts",
-              "line": 73,
+              "line": 74,
               "column": 3
             },
             {
@@ -2326,12 +2394,12 @@
                       "workerIndex": 3,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 366,
+                      "duration": 484,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:40:02.376Z",
+                      "startTime": "2026-08-06T17:12:58.092Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2341,7 +2409,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-51d95aa5b59fd752f633",
               "file": "island.spec.ts",
-              "line": 94,
+              "line": 95,
               "column": 3
             },
             {
@@ -2360,12 +2428,12 @@
                       "workerIndex": 3,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1427,
+                      "duration": 1682,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:40:02.747Z",
+                      "startTime": "2026-08-06T17:12:58.585Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -2381,7 +2449,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-66d9d60e17854e47c631",
               "file": "island.spec.ts",
-              "line": 111,
+              "line": 112,
               "column": 3
             },
             {
@@ -2400,12 +2468,12 @@
                       "workerIndex": 3,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 659,
+                      "duration": 747,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:40:04.183Z",
+                      "startTime": "2026-08-06T17:13:00.274Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2415,7 +2483,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-b6c1c7b3f6426451a193",
               "file": "island.spec.ts",
-              "line": 134,
+              "line": 135,
               "column": 3
             },
             {
@@ -2434,12 +2502,12 @@
                       "workerIndex": 3,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 418,
+                      "duration": 607,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:40:04.847Z",
+                      "startTime": "2026-08-06T17:13:01.031Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2449,7 +2517,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-d493ea50b762fba4ffa4",
               "file": "island.spec.ts",
-              "line": 149,
+              "line": 150,
               "column": 3
             },
             {
@@ -2468,12 +2536,12 @@
                       "workerIndex": 3,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 531,
+                      "duration": 587,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:40:05.279Z",
+                      "startTime": "2026-08-06T17:13:01.650Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2483,7 +2551,75 @@
               ],
               "id": "151e2ac1b06ef54fe07f-ed21077433f8db2143fc",
               "file": "island.spec.ts",
-              "line": 163,
+              "line": 164,
+              "column": 3
+            },
+            {
+              "title": "status pills read the row's own status, and the variant tracks it",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2697,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T17:13:02.243Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-bbaacd1bf6b365845452",
+              "file": "island.spec.ts",
+              "line": 185,
+              "column": 3
+            },
+            {
+              "title": "localises the grid footer from MUI X's own locale pack",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 707,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T17:13:04.947Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-221abf98d50e87a438bb",
+              "file": "island.spec.ts",
+              "line": 244,
               "column": 3
             },
             {
@@ -2502,12 +2638,12 @@
                       "workerIndex": 3,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 422,
+                      "duration": 498,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:40:05.816Z",
+                      "startTime": "2026-08-06T17:13:05.661Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2517,7 +2653,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-eb7bd908768bdcc0dece",
               "file": "island.spec.ts",
-              "line": 175,
+              "line": 298,
               "column": 3
             },
             {
@@ -2536,12 +2672,12 @@
                       "workerIndex": 3,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 425,
+                      "duration": 544,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:40:06.242Z",
+                      "startTime": "2026-08-06T17:13:06.165Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2551,7 +2687,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-2bc77f3d46bc03390085",
               "file": "island.spec.ts",
-              "line": 201,
+              "line": 324,
               "column": 3
             },
             {
@@ -2570,7 +2706,7 @@
                       "workerIndex": 3,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1650,
+                      "duration": 2316,
                       "errors": [],
                       "stdout": [
                         {
@@ -2579,7 +2715,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:40:06.672Z",
+                      "startTime": "2026-08-06T17:13:06.716Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -2595,7 +2731,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-6be8cce9413496559bb8",
               "file": "island.spec.ts",
-              "line": 250,
+              "line": 373,
               "column": 3
             },
             {
@@ -2614,12 +2750,12 @@
                       "workerIndex": 3,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 873,
+                      "duration": 1177,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:40:08.326Z",
+                      "startTime": "2026-08-06T17:13:09.044Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2629,7 +2765,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-f71a0b2a4968214b9035",
               "file": "island.spec.ts",
-              "line": 291,
+              "line": 414,
               "column": 3
             },
             {
@@ -2648,12 +2784,12 @@
                       "workerIndex": 3,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 550,
+                      "duration": 740,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:40:09.204Z",
+                      "startTime": "2026-08-06T17:13:10.228Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2663,7 +2799,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-a59ba763f0f61831897d",
               "file": "island.spec.ts",
-              "line": 304,
+              "line": 427,
               "column": 3
             },
             {
@@ -2682,12 +2818,12 @@
                       "workerIndex": 3,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 388,
+                      "duration": 480,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:40:09.759Z",
+                      "startTime": "2026-08-06T17:13:10.976Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2697,7 +2833,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-f6bf3fc84651a58e4128",
               "file": "island.spec.ts",
-              "line": 317,
+              "line": 440,
               "column": 3
             },
             {
@@ -2716,12 +2852,12 @@
                       "workerIndex": 5,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 309,
+                      "duration": 318,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:40:25.988Z",
+                      "startTime": "2026-08-06T17:13:33.299Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2731,7 +2867,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-bb13c50e3ba8afa378ed",
               "file": "island.spec.ts",
-              "line": 57,
+              "line": 58,
               "column": 3
             },
             {
@@ -2750,12 +2886,12 @@
                       "workerIndex": 5,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 202,
+                      "duration": 208,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:40:26.303Z",
+                      "startTime": "2026-08-06T17:13:33.625Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2765,7 +2901,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-d25f0e670ac320951444",
               "file": "island.spec.ts",
-              "line": 73,
+              "line": 74,
               "column": 3
             },
             {
@@ -2784,12 +2920,12 @@
                       "workerIndex": 5,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 378,
+                      "duration": 358,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:40:26.513Z",
+                      "startTime": "2026-08-06T17:13:33.841Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2799,7 +2935,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-86a0fe237b4eb269778e",
               "file": "island.spec.ts",
-              "line": 94,
+              "line": 95,
               "column": 3
             },
             {
@@ -2818,12 +2954,12 @@
                       "workerIndex": 5,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1399,
+                      "duration": 1585,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:40:26.896Z",
+                      "startTime": "2026-08-06T17:13:34.205Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -2839,7 +2975,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-05ffeb80a42b414ac024",
               "file": "island.spec.ts",
-              "line": 111,
+              "line": 112,
               "column": 3
             },
             {
@@ -2858,12 +2994,12 @@
                       "workerIndex": 5,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 616,
+                      "duration": 698,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:40:28.299Z",
+                      "startTime": "2026-08-06T17:13:35.797Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2873,7 +3009,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-666e0c108a7c7541cbe1",
               "file": "island.spec.ts",
-              "line": 134,
+              "line": 135,
               "column": 3
             },
             {
@@ -2892,12 +3028,12 @@
                       "workerIndex": 5,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 490,
+                      "duration": 615,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:40:28.919Z",
+                      "startTime": "2026-08-06T17:13:36.502Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2907,7 +3043,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-ec5f834fa494761d625b",
               "file": "island.spec.ts",
-              "line": 149,
+              "line": 150,
               "column": 3
             },
             {
@@ -2926,12 +3062,12 @@
                       "workerIndex": 5,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 593,
+                      "duration": 1032,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:40:29.417Z",
+                      "startTime": "2026-08-06T17:13:37.125Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2941,7 +3077,75 @@
               ],
               "id": "151e2ac1b06ef54fe07f-c53581a49320a0bb3ef6",
               "file": "island.spec.ts",
-              "line": 163,
+              "line": 164,
+              "column": 3
+            },
+            {
+              "title": "status pills read the row's own status, and the variant tracks it",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2801,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T17:13:38.164Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-c29642dee0099ef8d574",
+              "file": "island.spec.ts",
+              "line": 185,
+              "column": 3
+            },
+            {
+              "title": "localises the grid footer from MUI X's own locale pack",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 746,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T17:13:40.972Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-1a12ed54bf7217aa4d41",
+              "file": "island.spec.ts",
+              "line": 244,
               "column": 3
             },
             {
@@ -2960,12 +3164,12 @@
                       "workerIndex": 5,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 458,
+                      "duration": 602,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:40:30.015Z",
+                      "startTime": "2026-08-06T17:13:41.727Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2975,7 +3179,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-9df48fc11e984660ae23",
               "file": "island.spec.ts",
-              "line": 175,
+              "line": 298,
               "column": 3
             },
             {
@@ -2994,12 +3198,12 @@
                       "workerIndex": 5,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 479,
+                      "duration": 618,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:40:30.478Z",
+                      "startTime": "2026-08-06T17:13:42.337Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -3009,7 +3213,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-0519888c99f41362734a",
               "file": "island.spec.ts",
-              "line": 201,
+              "line": 324,
               "column": 3
             },
             {
@@ -3028,7 +3232,7 @@
                       "workerIndex": 5,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1563,
+                      "duration": 2483,
                       "errors": [],
                       "stdout": [
                         {
@@ -3037,7 +3241,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:40:30.961Z",
+                      "startTime": "2026-08-06T17:13:42.963Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -3053,7 +3257,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-fd9b93a8dcada6fb8822",
               "file": "island.spec.ts",
-              "line": 250,
+              "line": 373,
               "column": 3
             },
             {
@@ -3072,12 +3276,12 @@
                       "workerIndex": 5,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1011,
+                      "duration": 1308,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:40:32.530Z",
+                      "startTime": "2026-08-06T17:13:45.453Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -3087,7 +3291,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-d70374e846759412ce81",
               "file": "island.spec.ts",
-              "line": 291,
+              "line": 414,
               "column": 3
             },
             {
@@ -3106,12 +3310,12 @@
                       "workerIndex": 5,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 543,
+                      "duration": 786,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:40:33.546Z",
+                      "startTime": "2026-08-06T17:13:46.769Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -3121,7 +3325,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-d26dff632eea6747c76b",
               "file": "island.spec.ts",
-              "line": 304,
+              "line": 427,
               "column": 3
             },
             {
@@ -3140,12 +3344,12 @@
                       "workerIndex": 5,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 363,
+                      "duration": 581,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T12:40:34.094Z",
+                      "startTime": "2026-08-06T17:13:47.565Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -3155,7 +3359,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-147545a5755ad22d148b",
               "file": "island.spec.ts",
-              "line": 317,
+              "line": 440,
               "column": 3
             }
           ]
@@ -3165,9 +3369,9 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-08-06T12:39:28.893Z",
-    "duration": 65621.49299999999,
-    "expected": 78,
+    "startTime": "2026-08-06T17:12:11.113Z",
+    "duration": 97149.431,
+    "expected": 84,
     "skipped": 0,
     "unexpected": 3,
     "flaky": 0

@@ -29,6 +29,8 @@ import { dirname } from "node:path";
 import { expect, test } from "@playwright/test";
 import type { Page } from "@playwright/test";
 
+import { LOSS_RECORDS } from "@undrr-eval/fixtures";
+import type { VerificationStatus } from "@undrr-eval/fixtures";
 import { CANARY_IDS, captureScreens, checkLeakage, runAxe } from "@undrr-eval/test-harness";
 import { MANGROVE_FRAME_CANARY_IDS } from "@undrr-eval/test-harness/frame-canaries";
 
@@ -56,6 +58,52 @@ function writeJson(path: string, value: unknown): void {
  */
 async function selectLocale(page: Page, label: string): Promise<void> {
   await page.locator(`.ant-segmented-item-label[title="${label}"]`).click();
+}
+
+/** The view's page size and the fixture's four statuses. */
+const PAGE_SIZE = 10;
+const STATUSES: readonly VerificationStatus[] = ["verified", "pending", "disputed", "withdrawn"];
+
+/**
+ * The record id of every rendered row, in render order.
+ *
+ * `rowKey="id"` puts it on the `<tr>` as `data-row-key`, so the rendered table can
+ * be checked against the fixture without re-deriving anything from the cells.
+ */
+async function renderedRowIds(page: Page): Promise<readonly string[]> {
+  return page.evaluate(() =>
+    [...document.querySelectorAll("[data-candidate-root] tbody tr[data-row-key]")].map(
+      (row) => row.getAttribute("data-row-key") ?? "",
+    ),
+  );
+}
+
+/**
+ * Every status pill on the current page, paired with the colour it was painted.
+ *
+ * Both halves feed one assertion: that the pill's colour is a FUNCTION of the
+ * record's `verificationStatus`. `toBeVisible()` on the first tag — which is what
+ * this column's only assertion used to be — passes on 250 rows all reading
+ * "verified" in one colour.
+ */
+async function statusPills(
+  page: Page,
+): Promise<ReadonlyArray<{ text: string; background: string }>> {
+  return page.evaluate(() =>
+    [...document.querySelectorAll("[data-candidate-root] tbody tr[data-row-key] .ant-tag")].map(
+      (pill) => ({
+        text: (pill.textContent ?? "").trim(),
+        background: getComputedStyle(pill).backgroundColor,
+      }),
+    ),
+  );
+}
+
+/** The status of each of these records, taken from the fixture. */
+function fixtureStatuses(ids: readonly string[]): readonly string[] {
+  return ids.map(
+    (id) => LOSS_RECORDS.find((row) => row.id === id)?.verificationStatus ?? "unknown",
+  );
 }
 
 /**
@@ -92,7 +140,7 @@ test.describe("embedded island", () => {
     await expect(page.locator(`${ROOT} #island-filters`)).toHaveCount(1);
     await expect(page.locator(`${ROOT} .ant-table`)).toHaveCount(1);
     await expect(page.locator(`${ROOT} .ant-pagination`)).toHaveCount(1);
-    await expect(page.locator(`${ROOT} .ant-tag`).first()).toBeVisible();
+    await expect(page.locator(`${ROOT} tbody tr[data-row-key] .ant-tag`)).toHaveCount(PAGE_SIZE);
 
     // The known-issues box is host chrome and must sit OUTSIDE the candidate
     // subtree, where no candidate stylesheet can restyle it.
@@ -483,6 +531,189 @@ test.describe("embedded island", () => {
 
     await chooseOption(page, "island-hazard", "Drought");
     await expect(page.locator(`${ROOT} .ant-pagination-total-text`)).toContainText("1-10 of 34");
+  });
+
+  /**
+   * SORTING, which this view did not have.
+   *
+   * The island was the only one of the ten views whose table could not be sorted:
+   * it carried no `sorter` on any column while its Delta twin carried four and
+   * every other island sorted. That was an omission of this view's, not a limit of
+   * antd's — `sorter` is a comparator and a prop, and antd supplies the header
+   * affordance, the tri-state cycle, `aria-sort` and the reordering. Asserted here
+   * so the gap cannot reopen quietly.
+   */
+  test("sorts from a column header", async ({ page }) => {
+    await page.goto(`${URL}?candidate=on`);
+
+    // Every column, not a subset: the island's feature surface is meant to be
+    // comparable with the other nine views'.
+    await expect(page.locator(`${ROOT} thead th.ant-table-column-has-sorters`)).toHaveCount(7);
+
+    const firstCell = page.locator(`${ROOT} tbody tr[data-row-key] td`).first();
+    const countryHeader = page.locator(`${ROOT} thead th`).filter({ hasText: "Country" });
+
+    // The default is eventDate descending, declared with `defaultSortOrder`.
+    await expect(page.locator(`${ROOT} thead th[aria-sort="descending"]`)).toHaveCount(1);
+    const defaultIds = await renderedRowIds(page);
+
+    await countryHeader.click();
+    await expect(page.locator(`${ROOT} thead th[aria-sort="ascending"]`)).toHaveCount(1);
+    await expect(firstCell).toHaveText("Bangladesh");
+    const ascendingIds = await renderedRowIds(page);
+    expect(ascendingIds, "clicking the header did not reorder the table").not.toEqual(defaultIds);
+
+    // Ascending across the whole visible page, not only its first cell.
+    const ascendingCountries = await page.evaluate(() =>
+      [...document.querySelectorAll("[data-candidate-root] tbody tr[data-row-key]")].map((row) =>
+        (row.querySelector("td")?.textContent ?? "").trim(),
+      ),
+    );
+    expect([...ascendingCountries].sort(new Intl.Collator("en-GB").compare)).toEqual(
+      ascendingCountries,
+    );
+
+    await countryHeader.click();
+    await expect(page.locator(`${ROOT} thead th[aria-sort="descending"]`)).toHaveCount(1);
+    await expect(firstCell).not.toHaveText("Bangladesh");
+
+    writeJson("test-results/island-sort.json", { defaultIds, ascendingIds, ascendingCountries });
+  });
+
+  /**
+   * A descending sort is the true inverse of ascending, tie groups included.
+   *
+   * `hazardType` has eight values over 250 rows, so a descending sort on it fills
+   * the first page with rows that all compare equal. antd sorts a copy with
+   * `Array#sort`, which is stable, so those rows must stay in the fixture's own
+   * order. The wrong prediction — the tail of the group, backwards, which is what a
+   * `.reverse()`-based descending sort produces — is computed here too and named,
+   * so a regression cannot read as a new expectation.
+   */
+  test("a descending sort preserves the source order inside tie groups", async ({ page }) => {
+    const collator = new Intl.Collator("en-GB");
+    const hazards = [...new Set(LOSS_RECORDS.map((row) => row.hazardType))].sort(
+      collator.compare,
+    );
+    const highest = hazards.at(-1) as string;
+    const group = LOSS_RECORDS.filter((row) => row.hazardType === highest);
+    const correct = group.slice(0, PAGE_SIZE).map((row) => row.id);
+    const reversedArray = [...group].reverse().slice(0, PAGE_SIZE).map((row) => row.id);
+
+    await page.goto(`${URL}?candidate=on`);
+    const hazardHeader = page.locator(`${ROOT} thead th`).filter({ hasText: "Hazard type" });
+    await hazardHeader.click();
+    await expect(page.locator(`${ROOT} thead th[aria-sort="ascending"]`)).toHaveCount(1);
+    await hazardHeader.click();
+    await expect(page.locator(`${ROOT} thead th[aria-sort="descending"]`)).toHaveCount(1);
+
+    const rendered = await renderedRowIds(page);
+
+    writeJson("test-results/island-sort-tie-groups.json", {
+      hazard: highest,
+      groupSize: group.length,
+      rendered,
+      correct,
+      reversedArray,
+    });
+
+    expect(group.length).toBeGreaterThan(PAGE_SIZE);
+    expect(correct, "the fixture's tie group is palindromic; this test cannot tell").not.toEqual(
+      reversedArray,
+    );
+    expect(rendered).toEqual(correct);
+    expect(rendered, "the descending sort behaves like a reversed array").not.toEqual(
+      reversedArray,
+    );
+  });
+
+  test("returns to page one when the sort changes", async ({ page }) => {
+    // antd does NOT reset the page for you, so this is the one piece of paging
+    // logic the view owns.
+    await page.goto(`${URL}?candidate=on`);
+
+    await page.locator(`${ROOT} .ant-pagination-next`).click();
+    await expect(page.locator(`${ROOT} .ant-pagination-total-text`)).toContainText("11-20 of 250");
+
+    await page.locator(`${ROOT} thead th`).filter({ hasText: "Country" }).click();
+    await expect(page.locator(`${ROOT} .ant-pagination-total-text`)).toContainText("1-10 of 250");
+  });
+
+  /**
+   * ORDERING IS THE SELECTED LOCALE'S, not the runner's.
+   *
+   * The string `sorter`s pass `bcp47` to `localeCompare`. Playwright pins the
+   * browser locale to `en-GB`, so this runs the GERMAN pass: the rendered order has
+   * to match a `de-DE` collator rather than the runtime default.
+   */
+  test("orders by the selected locale's collation in German", async ({ page }) => {
+    await page.goto(`${URL}?candidate=on`);
+    await selectLocale(page, "Deutsch");
+
+    await page.locator(`${ROOT} thead th`).filter({ hasText: "Land" }).click();
+    await expect(page.locator(`${ROOT} thead th[aria-sort="ascending"]`)).toHaveCount(1);
+
+    const rendered = await page.evaluate(() =>
+      [...document.querySelectorAll("[data-candidate-root] tbody tr[data-row-key]")].map((row) =>
+        (row.querySelector("td")?.textContent ?? "").trim(),
+      ),
+    );
+    const expectedFirstPage = LOSS_RECORDS.map((row) => row.country)
+      .sort(new Intl.Collator("de-DE").compare)
+      .slice(0, PAGE_SIZE);
+
+    writeJson("test-results/island-sort-locale.json", { locale: "de", rendered });
+
+    expect([...rendered].sort(new Intl.Collator("de-DE").compare)).toEqual(rendered);
+    expect(rendered).toEqual(expectedFirstPage);
+  });
+
+  /**
+   * STATUS PILLS, asserted as a mapping rather than as a presence.
+   *
+   * The pill text is checked against the fixture by the row's own `data-row-key`,
+   * and the pill colour is checked to be a function of that text. The old
+   * assertion, `.first()).toBeVisible()`, was satisfied by any one visible tag.
+   */
+  test("status pills read the record's status and their colour tracks it", async ({ page }) => {
+    await page.goto(`${URL}?candidate=on`);
+
+    const ids = await renderedRowIds(page);
+    const pills = await statusPills(page);
+
+    const byStatus = new Map<string, Set<string>>();
+    for (const pill of pills) {
+      const seen = byStatus.get(pill.text) ?? new Set<string>();
+      seen.add(pill.background);
+      byStatus.set(pill.text, seen);
+    }
+
+    writeJson("test-results/island-status-pills.json", {
+      ids,
+      pills,
+      colours: [...byStatus].map(([status, colours]) => ({ status, colours: [...colours] })),
+    });
+
+    expect(ids).toHaveLength(PAGE_SIZE);
+    expect(pills).toHaveLength(PAGE_SIZE);
+    expect(pills.map((pill) => pill.text)).toEqual(fixtureStatuses(ids));
+    for (const status of pills.map((pill) => pill.text)) {
+      expect(STATUSES).toContain(status as VerificationStatus);
+    }
+
+    // The colour is a FUNCTION of the status: one colour each, no two statuses
+    // sharing one. Vacuous unless more than one status is on the page.
+    expect(byStatus.size, "only one status on the page; the mapping is untested").toBeGreaterThan(
+      1,
+    );
+    for (const [status, colours] of byStatus) {
+      expect([...colours], `"${status}" was painted more than one colour`).toHaveLength(1);
+    }
+    const distinctColours = new Set([...byStatus.values()].map((set) => [...set][0]));
+    expect(distinctColours.size, "two statuses share a pill colour").toBe(byStatus.size);
+    for (const pill of pills) {
+      expect(pill.background).not.toBe("rgba(0, 0, 0, 0)");
+    }
   });
 
   test("applies RTL for Arabic", async ({ page }) => {

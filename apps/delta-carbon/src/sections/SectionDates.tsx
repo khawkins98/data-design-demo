@@ -56,13 +56,33 @@ import {
 import { DEFAULT_RANGE, FIXED_TIME_ZONE, TODAY_ISO } from "@undrr-eval/fixtures";
 import type { LocaleCode } from "@undrr-eval/fixtures";
 
-import { useDemo } from "../demo-state.js";
+import { combineCalendarDateWithUtcTime, useDemo } from "../demo-state.js";
 import { useOverlayHost } from "../overlay-scope.js";
 
-/** Parsed once from the fixtures, in UTC, so rendering never depends on the runner. */
-const TODAY = new Date(TODAY_ISO);
-const RANGE_START = new Date(DEFAULT_RANGE.startIso);
-const RANGE_END = new Date(DEFAULT_RANGE.endIso);
+/**
+ * Parsed once from the fixtures as LOCAL midnight on the fixture's calendar day.
+ *
+ * NOT `new Date(TODAY_ISO)`, which is a UTC instant. flatpickr renders and returns
+ * calendar dates in local terms, so seeding the state with UTC-midnight instants
+ * put the two halves in different frames: at any negative UTC offset the picker
+ * would DISPLAY the previous day, and combining with `setUTCHours` shifted it again
+ * on the way back out. Both were invisible under the runner's pinned
+ * `timezoneId: "UTC"`. One frame throughout — flatpickr's — is the fix.
+ *
+ * Still no `new Date()`: every field comes from a fixture string.
+ */
+function fixtureLocalMidnight(iso: string): Date {
+  const [year = 0, month = 1, day = 1] = iso.slice(0, 10).split("-").map(Number);
+  return new Date(year, month - 1, day);
+}
+
+const TODAY = fixtureLocalMidnight(TODAY_ISO);
+const RANGE_START = fixtureLocalMidnight(DEFAULT_RANGE.startIso);
+const RANGE_END = fixtureLocalMidnight(DEFAULT_RANGE.endIso);
+
+/** `HH:mm`, sliced out of the fixture rather than recomputed from an instant. */
+const RANGE_START_TIME = DEFAULT_RANGE.startIso.slice(11, 16);
+const RANGE_END_TIME = DEFAULT_RANGE.endIso.slice(11, 16);
 
 /** flatpickr's locale keys happen to match the fixture codes for all four. */
 const FLATPICKR_LOCALE: Readonly<Record<LocaleCode, "en" | "fr" | "de" | "ar">> = {
@@ -72,22 +92,20 @@ const FLATPICKR_LOCALE: Readonly<Record<LocaleCode, "en" | "fr" | "de" | "ar">> 
   ar: "ar",
 };
 
-/** `HH:mm` in UTC, without Intl, so the value round-trips through TimePicker. */
-function toTimeValue(date: Date): string {
-  const hours = String(date.getUTCHours()).padStart(2, "0");
-  const minutes = String(date.getUTCMinutes()).padStart(2, "0");
-  return `${hours}:${minutes}`;
-}
-
 const TIME_PATTERN = /^([01]\d|2[0-3]):[0-5]\d$/;
 
-/** Combines a calendar date with an `HH:mm` string, in UTC. */
+/**
+ * Combines a calendar date with an `HH:mm` string, in UTC.
+ *
+ * The date comes from flatpickr, which builds it at LOCAL midnight. The previous
+ * form here — clone the instant, then `setUTCHours` — mixed the two frames and
+ * landed on the wrong calendar day at any positive UTC offset. See
+ * `combineCalendarDateWithUtcTime` in demo-state.ts.
+ */
 function combine(date: Date | null, time: string): Date | null {
   if (!date || !TIME_PATTERN.test(time)) return null;
   const [hours = "0", minutes = "0"] = time.split(":");
-  const combined = new Date(date.getTime());
-  combined.setUTCHours(Number(hours), Number(minutes), 0, 0);
-  return combined;
+  return combineCalendarDateWithUtcTime(date, Number(hours), Number(minutes));
 }
 
 export function SectionDates(): ReactElement {
@@ -97,8 +115,8 @@ export function SectionDates(): ReactElement {
   const [eventDate, setEventDate] = useState<Date | null>(TODAY);
   const [startDate, setStartDate] = useState<Date | null>(RANGE_START);
   const [endDate, setEndDate] = useState<Date | null>(RANGE_END);
-  const [startTime, setStartTime] = useState(toTimeValue(RANGE_START));
-  const [endTime, setEndTime] = useState(toTimeValue(RANGE_END));
+  const [startTime, setStartTime] = useState(RANGE_START_TIME);
+  const [endTime, setEndTime] = useState(RANGE_END_TIME);
 
   /** The range logic a real date-time range component would own. */
   const range = useMemo(() => {

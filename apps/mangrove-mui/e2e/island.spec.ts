@@ -27,6 +27,7 @@ import { dirname } from "node:path";
 
 import { expect, test } from "@playwright/test";
 import type { Page } from "@playwright/test";
+import { arSD, deDE, frFR } from "@mui/x-data-grid/locales";
 
 import { CANARY_IDS, captureScreens, checkLeakage, runAxe } from "@undrr-eval/test-harness";
 import { MANGROVE_FRAME_CANARY_IDS } from "@undrr-eval/test-harness/frame-canaries";
@@ -170,6 +171,128 @@ test.describe("embedded island", () => {
 
     await chooseOption(page, "Hazard type", "Drought");
     await expect(page.locator(".MuiTablePagination-displayedRows")).toContainText("1–10");
+  });
+
+  /**
+   * The status column, asserted on its content rather than its existence.
+   *
+   * The pill is the ONLY rendering of `verificationStatus` in the grid and it was
+   * covered by a single visibility check, which 250 identical pills would have
+   * satisfied. In this view the pill also comes out of a `renderCell` inside a
+   * VIRTUALISED grid, so only the mounted rows can be read — one more reason to
+   * assert what they say rather than that one of them exists.
+   */
+  test("status pills read the row's own status, and the variant tracks it", async ({ page }) => {
+    const VARIANT: Record<string, string> = {
+      verified: "MuiChip-colorSuccess",
+      pending: "MuiChip-colorWarning",
+      disputed: "MuiChip-colorError",
+      withdrawn: "MuiChip-colorDefault",
+    };
+
+    await page.goto(`${URL}?candidate=on`);
+
+    const readPills = () =>
+      page.evaluate(() =>
+        [...document.querySelectorAll(".MuiDataGrid-row .MuiChip-root")].map((chip) => ({
+          text: (chip.textContent ?? "").trim(),
+          className: chip.className,
+        })),
+      );
+
+    // One pill per mounted row, whatever the virtualiser has mounted.
+    const unfiltered = await readPills();
+    expect(unfiltered.length).toBe(await page.locator(".MuiDataGrid-row").count());
+    expect(unfiltered.length).toBeGreaterThan(1);
+    for (const pill of unfiltered) {
+      expect(Object.keys(VARIANT), `unknown status text "${pill.text}"`).toContain(pill.text);
+      expect(
+        pill.className,
+        `pill "${pill.text}" carries the wrong colour variant: ${pill.className}`,
+      ).toContain(VARIANT[pill.text] as string);
+    }
+    expect(
+      new Set(unfiltered.map((pill) => pill.text)).size,
+      "every pill on page one reads the same status; the pill is not reading its row",
+    ).toBeGreaterThan(1);
+
+    for (const status of Object.keys(VARIANT)) {
+      await chooseOption(page, "Verification status", status);
+      // Retrying assertion first, so the grid has re-rendered before the one-shot
+      // `evaluate` below reads the DOM.
+      await expect(page.locator(".MuiDataGrid-row .MuiChip-root").first()).toHaveText(status);
+      const pills = await readPills();
+      expect(pills.length, `no rows left after filtering to "${status}"`).toBeGreaterThan(0);
+      for (const pill of pills) {
+        expect(pill.text, `filtered to "${status}" but a pill reads "${pill.text}"`).toBe(status);
+        expect(pill.className).toContain(VARIANT[status] as string);
+      }
+    }
+
+    writeJson("test-results/island-status-pills.json", { unfiltered });
+  });
+
+  /**
+   * The grid footer in the three non-English locales.
+   *
+   * The strings come from MUI X's OWN pack (`@mui/x-data-grid/locales`), merged
+   * under the one fixture label the grid takes, in `IslandView.tsx`. Expected values
+   * are imported from the pack rather than copied out of it, so a pack change moves
+   * the test. Arabic is `arSD` because MUI X ships no `arEG`; that mismatch is
+   * recorded at `GRID_LOCALES` and is visible here in the pack the test imports.
+   */
+  test("localises the grid footer from MUI X's own locale pack", async ({ page }) => {
+    await page.goto(`${URL}?candidate=on`);
+
+    const rowsPerPage = page.locator(".MuiTablePagination-selectLabel");
+    const displayed = page.locator(".MuiTablePagination-displayedRows");
+
+    await expect(rowsPerPage).toHaveText("Rows per page:");
+    await expect(displayed).toHaveText("1–10 of 250");
+
+    const cases = [
+      { locale: "Français", pack: frFR },
+      { locale: "Deutsch", pack: deDE },
+      { locale: "العربية", pack: arSD },
+    ] as const;
+
+    const recorded: Array<Record<string, string>> = [];
+
+    for (const { locale, pack } of cases) {
+      await selectLocale(page, locale);
+
+      const text = pack.components.MuiDataGrid.defaultProps.localeText;
+      const expectedRows = text.paginationRowsPerPage as string;
+      const displayedRows = text.paginationDisplayedRows as (info: {
+        from: number;
+        to: number;
+        count: number;
+        page: number;
+        paginationMode: "client" | "server";
+        estimated?: number;
+      }) => string;
+      const expectedDisplayed = displayedRows({
+        from: 1,
+        to: 10,
+        count: 250,
+        page: 0,
+        paginationMode: "client",
+      });
+
+      await expect(
+        rowsPerPage,
+        `the grid footer is still English in ${locale}; the MUI X pack is not wired`,
+      ).toHaveText(expectedRows);
+      await expect(displayed).toHaveText(expectedDisplayed);
+
+      recorded.push({ locale, expectedRows, expectedDisplayed });
+    }
+
+    // Arabic-Indic digits, i.e. the pack is formatting the counts for the locale
+    // rather than only swapping the words around them.
+    await expect(displayed).toHaveText(/[٠-٩]/);
+
+    writeJson("test-results/island-pagination-locale.json", recorded);
   });
 
   test("applies RTL for Arabic", async ({ page }) => {

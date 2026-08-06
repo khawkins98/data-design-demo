@@ -156,11 +156,15 @@ export function SectionSideBySide(): ReactElement {
               addMouseListeners={false}
             >
               <SideNavItems>
+                {/* `aria-current` is ours: Carbon's `isActive` only paints a class
+                    (`SideNavLink.js` emits no `aria-current` at all). Same as
+                    sections/SectionChrome.tsx, which already passed it. */}
                 {navItems.map((item) => (
                   <SideNavLink
                     key={item.id}
                     href="#section-9"
                     isActive={item.id === "records"}
+                    aria-current={item.id === "records" ? "page" : undefined}
                   >
                     {item.label}
                   </SideNavLink>

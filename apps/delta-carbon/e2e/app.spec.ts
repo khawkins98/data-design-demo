@@ -23,12 +23,25 @@
  * a clean result would be read as "Carbon does not leak" rather than "this demo
  * paid to stop it".
  *
- * AXE COUNTS ARE RECORDED, NOT ASSERTED AGAINST ZERO. Claiming conformance is
- * forbidden by the brief, and delta-carbon already carries one CRITICAL violation
- * in the kitchen sink (`aria-valid-attr-value`, two nodes, on Carbon's own
- * ComboBox/MultiSelect markup). Whether a realistic layout adds, removes or
- * reveals more is exactly the thing that must be measured rather than asserted
- * away.
+ * AXE TOTALS ARE RECORDED, NOT ASSERTED AGAINST ZERO. Claiming conformance is
+ * forbidden by the brief, and whether a realistic layout adds, removes or reveals
+ * violations is the thing to measure rather than assert away.
+ *
+ * CRITICAL COUNT IS A DIFFERENT MATTER AND IS ASSERTED AT ZERO, the same way every
+ * sibling pairing's app spec does it. Recording a total is honest; `expect(count)
+ * .toBeGreaterThanOrEqual(0)` is not a record, it is an assertion that cannot fail
+ * — it was here on both axe tests below and it made this spec read as verified in
+ * the run log while checking nothing.
+ *
+ * A NOTE ON THE CRITICAL THAT USED TO BE HERE. An earlier version of this comment
+ * said delta-carbon carried one CRITICAL in the kitchen sink,
+ * "`aria-valid-attr-value`, two nodes, on Carbon's own ComboBox/MultiSelect
+ * markup". Two nodes was right; ComboBox/MultiSelect was not — the nodes were
+ * `#form-required` and `#form-format`, the two invalid `TextInput`s, and the fix
+ * (an explicit `aria-describedby`) had been sitting in the mangrove-carbon twin the
+ * whole time. It is applied now and the count is 0. The ComboBox does appear in the
+ * axe output, but under INCOMPLETE, for a different rule about
+ * `aria-controls` + `aria-haspopup`.
  */
 
 import { mkdirSync, writeFileSync } from "node:fs";
@@ -142,7 +155,45 @@ test.describe("full application", () => {
     await expect(page.locator(`${ROOT} #records-filters`)).toHaveCount(1);
     await expect(page.locator(`${ROOT} table`)).toHaveCount(1);
     await expect(page.locator(`${ROOT} .cds--pagination`)).toHaveCount(1);
-    await expect(page.locator(`${ROOT} .cds--tag`).first()).toBeVisible();
+
+    /*
+     * STATUS PILLS: one per rendered row, each naming a real status, each carrying
+     * the Tag colour class the status maps to. `.first()).toBeVisible()` was the
+     * whole assertion here, and it passed on a single stray Tag anywhere in the
+     * region — it could not tell a status column from a decoration, and it said
+     * nothing about the status→colour mapping the two Carbon apps must agree on
+     * (they did not: `pending` was "warm-gray" here and "blue" in mangrove-carbon).
+     */
+    const pills = page.locator(`${ROOT} tbody .cds--tag`);
+    await expect(pills).toHaveCount(10);
+    const pillState = await pills.evaluateAll((nodes) =>
+      nodes.map((node) => ({
+        text: (node.textContent ?? "").trim(),
+        // `cds--tag--sm` is the SIZE modifier and shares the prefix, so the size
+        // names are excluded rather than taking the first match.
+        colour:
+          Array.from(node.classList)
+            .filter((c) => c.startsWith("cds--tag--"))
+            .map((c) => c.replace("cds--tag--", ""))
+            .find((c) => !["sm", "md", "lg"].includes(c)) ?? "",
+      })),
+    );
+    const EXPECTED_COLOUR: Record<string, string> = {
+      verified: "green",
+      pending: "warm-gray",
+      disputed: "red",
+      withdrawn: "gray",
+    };
+    for (const pill of pillState) {
+      expect(Object.keys(EXPECTED_COLOUR), `unexpected status pill "${pill.text}"`).toContain(
+        pill.text,
+      );
+      expect(pill.colour, `status "${pill.text}" is painted ${pill.colour}`).toBe(
+        EXPECTED_COLOUR[pill.text],
+      );
+    }
+    await expect(pills.first()).toBeVisible();
+
     await expect(deleteButton(page)).toBeVisible();
 
     // The known-issues box and the view switcher are host chrome and must sit
@@ -369,6 +420,53 @@ test.describe("full application", () => {
 
     await expect(page.locator(ROOT)).not.toContainText("250 / 250");
     await expect(page.locator(ROOT)).toContainText("/ 250");
+
+    // The exact boundary, in the runner's pinned UTC. 19 fixture rows have an
+    // eventDate on or after 2026-01-01; 20 have one on or after 2025-12-31. The
+    // non-UTC counterpart of this assertion is the describe block below, and the
+    // difference between those two numbers is the whole bug it catches.
+    await input.fill("01/01/2026");
+    await input.press("Enter");
+    await expect(page.locator(ROOT)).toContainText("19 / 250");
+  });
+
+  /**
+   * THE TIMEZONE REGRESSION, which needs its own browser context.
+   *
+   * `packages/test-harness/src/playwright.config.ts` pins `timezoneId: "UTC"` for
+   * every project, for good reasons — the fixture "today" is fixed and formatted
+   * output must not depend on the runner. The side effect is that an entire class of
+   * date bug is unreachable from this suite, and delta-carbon shipped one:
+   * `AppView.tsx` read the date filter's boundary with
+   * `fromDate.toISOString().slice(0, 10)`, and flatpickr hands back a LOCAL-midnight
+   * `Date`, so at any positive UTC offset the boundary moved back one calendar day.
+   * Invisible at UTC. Wrong for every user east of Greenwich.
+   *
+   * `test.use({ timezoneId })` overrides the context for this block only, so the
+   * rest of the suite keeps its determinism. Australia/Sydney is UTC+10/+11 —
+   * 1 January 2026 local midnight is 31 December 2025 13:00Z, which is exactly the
+   * shift that produced the wrong answer.
+   */
+  test.describe("date filtering outside UTC", () => {
+    test.use({ timezoneId: "Australia/Sydney" });
+
+    test("uses the calendar day the user picked, not its UTC equivalent", async ({ page }) => {
+      await page.goto(`${URL}?candidate=on`);
+
+      const input = page.locator("#app-from-date");
+      await input.fill("01/01/2026");
+      await input.press("Enter");
+
+      /*
+       * 19 fixture rows have `eventDate >= "2026-01-01"`. 20 have
+       * `eventDate >= "2025-12-31"`. The one row dated 2025-12-31 is the entire
+       * discriminator: with the bug this reads "20 / 250", and Carbon's own
+       * pagination footer agrees with it, so the screen is internally consistent and
+       * quietly wrong.
+       */
+      await expect(page.locator(ROOT)).toContainText("19 / 250");
+      await expect(page.locator(PAGINATION_COUNT)).toContainText("19");
+    });
   });
 
   test("sorts by a column header", async ({ page }) => {
@@ -576,12 +674,36 @@ test.describe("full application", () => {
     });
 
     /*
-     * NOT ASSERTED AGAINST ZERO, on purpose. Claiming conformance is forbidden by
-     * the brief, and this pairing carries a known CRITICAL violation in the
-     * kitchen sink. The number is the output; asserting zero here would only
-     * pressure a future run into hiding it. The counts land in evidence.json.
+     * The TOTAL is recorded, not asserted against zero: claiming conformance is
+     * forbidden by the brief and the number is the output. But the total is written
+     * to disk and to evidence.json, so `expect(total).toBeGreaterThanOrEqual(0)` —
+     * which is what stood here — recorded nothing and could not fail.
+     *
+     * What IS asserted is the shape of the result, all three parts falsifiable:
+     *   - the `include` selector matched something, because a scope that matches
+     *     nothing produces a clean result and is the failure mode that makes an axe
+     *     suite worthless. `AxeResult` carries no tested-node count, so this is
+     *     asserted on the locator instead;
+     *   - no CRITICAL violations in the candidate subtree, the same bar every
+     *     sibling pairing's app spec holds;
+     *   - none on the whole page either, so a violation cannot hide by sitting just
+     *     outside the scope.
      */
-    expect(scoped.counts.violations).toBeGreaterThanOrEqual(0);
+    await expect(page.locator("[data-candidate-root]")).toHaveCount(1);
+    expect(
+      scoped.counts.critical,
+      `CRITICAL axe violations in the application view: ${scoped.violations
+        .filter((v) => v.impact === "critical")
+        .map((v) => `${v.id} (${v.nodes.join(", ")})`)
+        .join("; ")}`,
+    ).toBe(0);
+    expect(
+      wholePage.counts.critical,
+      `CRITICAL axe violations on the whole application page: ${wholePage.violations
+        .filter((v) => v.impact === "critical")
+        .map((v) => `${v.id} (${v.nodes.join(", ")})`)
+        .join("; ")}`,
+    ).toBe(0);
   });
 
   test("axe on the open delete dialog", async ({ page }, testInfo) => {
@@ -619,7 +741,21 @@ test.describe("full application", () => {
       contentType: "application/json",
     });
 
-    expect(result.counts.violations).toBeGreaterThanOrEqual(0);
+    /*
+     * Same repair as above: `toBeGreaterThanOrEqual(0)` stood here and could not
+     * fail. The dialog is the highest-stakes scan in the suite — it is modal, it
+     * traps focus, and a critical violation in it makes the delete flow unusable —
+     * so it gets the same zero-critical bar every sibling pairing asserts, plus a
+     * check that the scope matched a dialog at all.
+     */
+    await expect(page.getByRole("dialog")).toHaveCount(1);
+    expect(
+      result.counts.critical,
+      `CRITICAL axe violations in the open delete dialog: ${result.violations
+        .filter((v) => v.impact === "critical")
+        .map((v) => `${v.id} (${v.nodes.join(", ")})`)
+        .join("; ")}`,
+    ).toBe(0);
   });
 
   test("screenshots", async ({ page }, testInfo) => {

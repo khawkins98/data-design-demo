@@ -1,0 +1,17 @@
+[
+  {
+    "locale": "Français",
+    "expectedRows": "Lignes par page :",
+    "expectedDisplayed": "1–10 sur 250"
+  },
+  {
+    "locale": "Deutsch",
+    "expectedRows": "Zeilen pro Seite:",
+    "expectedDisplayed": "1–10 von 250"
+  },
+  {
+    "locale": "العربية",
+    "expectedRows": "عدد الصفوف في الصفحة:",
+    "expectedDisplayed": "‎١٠-١‎ من ٢٥٠"
+  }
+]

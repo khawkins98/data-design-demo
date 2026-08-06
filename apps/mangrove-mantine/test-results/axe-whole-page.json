@@ -23,7 +23,9 @@
     "violations": 1,
     "serious": 1,
     "critical": 0,
-    "incomplete": 0
+    "incomplete": 1
   },
-  "incompleteRuleIds": []
+  "incompleteRuleIds": [
+    "color-contrast"
+  ]
 }

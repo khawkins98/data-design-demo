@@ -100,12 +100,27 @@ describe("token coverage required by the brief", () => {
     expect(n(zIndex.toast)).toBeGreaterThan(n(zIndex.tooltip));
   });
 
-  it("includes an Arabic-capable fallback in every font stack", () => {
-    // The RTL locale must not silently fall back to a system default that
-    // renders Arabic differently on each runner.
-    for (const stack of Object.values(tokens.fontFamily)) {
-      expect(stack.toLowerCase()).toMatch(/noto sans arabic|system-ui|ui-monospace/);
+  it("names an Arabic face explicitly in every text stack", () => {
+    // The RTL locale must not silently fall back to a system default that renders
+    // Arabic differently on each runner.
+    //
+    // THIS ASSERTION USED TO PROVE NOTHING. It was written as
+    //   expect(stack).toMatch(/noto sans arabic|system-ui|ui-monospace/)
+    // over every stack including `mono`. Since `sans` and `display` both end in
+    // `system-ui` and `mono` contains `ui-monospace`, deleting "Noto Sans Arabic"
+    // from every stack left it green - the exact failure its own comment named. The
+    // alternation was doing the opposite of its stated job.
+    //
+    // `mono` is exempt deliberately and by name, not by a regex branch that
+    // happens to match it: Arabic is not rendered in the monospace stack anywhere
+    // in these demos, and no monospace face here carries Arabic coverage. If that
+    // changes, this test should be the thing that notices.
+    for (const key of ["sans", "display"] as const) {
+      expect(tokens.fontFamily[key].toLowerCase(), `${key} stack`).toContain(
+        "noto sans arabic",
+      );
     }
+    expect(Object.keys(tokens.fontFamily).sort()).toEqual(["display", "mono", "sans"]);
   });
 });
 

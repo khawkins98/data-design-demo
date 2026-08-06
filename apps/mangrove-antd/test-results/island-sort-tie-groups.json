@@ -1,0 +1,40 @@
+{
+  "hazard": "wildfire",
+  "groupSize": 37,
+  "rendered": [
+    "DRR-0002",
+    "DRR-0005",
+    "DRR-0006",
+    "DRR-0014",
+    "DRR-0016",
+    "DRR-0024",
+    "DRR-0025",
+    "DRR-0042",
+    "DRR-0062",
+    "DRR-0073"
+  ],
+  "correct": [
+    "DRR-0002",
+    "DRR-0005",
+    "DRR-0006",
+    "DRR-0014",
+    "DRR-0016",
+    "DRR-0024",
+    "DRR-0025",
+    "DRR-0042",
+    "DRR-0062",
+    "DRR-0073"
+  ],
+  "reversedArray": [
+    "DRR-0245",
+    "DRR-0243",
+    "DRR-0241",
+    "DRR-0226",
+    "DRR-0223",
+    "DRR-0220",
+    "DRR-0196",
+    "DRR-0181",
+    "DRR-0179",
+    "DRR-0174"
+  ]
+}

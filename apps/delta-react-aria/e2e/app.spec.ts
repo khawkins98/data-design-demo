@@ -232,15 +232,240 @@ test.describe("full application", () => {
   test("sorts on a column header", async ({ page }) => {
     await page.goto(`${URL}?candidate=on`);
 
-    const header = page.getByRole("columnheader", { name: "Country" });
-    await header.click();
-    await expect(header).toHaveAttribute("aria-sort", /ascending|descending/);
+    const collator = new Intl.Collator("en");
+    const countryColumn = page.locator("[data-candidate-root] tbody tr td:first-child");
 
-    const first = await page.locator("[data-candidate-root] tbody td").first().innerText();
+    /** Reads the visible page's first column and asserts it is ordered. */
+    const readOrdered = async (direction: "ascending" | "descending") => {
+      const sign = direction === "ascending" ? 1 : -1;
+      const column = await countryColumn.allInnerTexts();
+      expect(column.length, "the page should still hold 10 rows").toBe(10);
+      for (let i = 1; i < column.length; i += 1) {
+        expect(
+          sign * collator.compare(column[i - 1]!, column[i]!),
+          `${direction}: row ${i} ("${column[i]}") sorts before row ${i - 1} ` +
+            `("${column[i - 1]}")`,
+        ).toBeLessThanOrEqual(0);
+      }
+      return column;
+    };
+
+    // `aria-sort` is pinned to a specific direction rather than matched against a
+    // regex over both, so a toggle stuck one way cannot pass. And the ordering is
+    // asserted separately, because React Aria derives `aria-sort` from the
+    // `sortDescriptor` we hand back rather than from the rows.
+    const header = page.getByRole("columnheader", { name: "Country" });
+
     await header.click();
-    await expect(header).toHaveAttribute("aria-sort", /ascending|descending/);
-    const reversed = await page.locator("[data-candidate-root] tbody td").first().innerText();
-    expect(reversed, "reversing the sort direction changed nothing").not.toBe(first);
+    await expect(header).toHaveAttribute("aria-sort", "ascending");
+    const ascending = await readOrdered("ascending");
+
+    await header.click();
+    await expect(header).toHaveAttribute("aria-sort", "descending");
+    const descending = await readOrdered("descending");
+
+    expect(descending[0], "reversing the sort direction changed nothing").not.toBe(
+      ascending[0],
+    );
+  });
+
+  /**
+   * The second half of the sort defect, which ordering alone cannot see.
+   *
+   * `sortRecords` used to implement descending as `sorted.reverse()`. The primary
+   * key still came out ordered, so every "is it sorted?" assertion passed — but
+   * `Array.prototype.sort` is stable, and reversing its output also reverses the
+   * order WITHIN each group of equal keys. `hazardType` has ~8 distinct values
+   * across 250 rows, so toggling direction silently reshuffled ~31 rows per group.
+   *
+   * Narrowing to ONE hazard makes every key in the sort column tie, so the row
+   * order is decided entirely by the tiebreak — which is direction-independent by
+   * design. Ascending and descending must therefore produce the IDENTICAL page.
+   * Under `.reverse()` they were exact opposites.
+   */
+  test("sorting is stable within tie groups", async ({ page }) => {
+    await page.goto(`${URL}?candidate=on`);
+
+    // Every remaining row now has the same hazardType.
+    await page.locator(".demo-select__trigger").first().click();
+    await page.getByRole("option", { name: "Drought", exact: true }).click();
+
+    const firstColumn = page.locator("[data-candidate-root] tbody tr td:first-child");
+    const header = page.getByRole("columnheader", { name: "Hazard type" });
+
+    await header.click();
+    await expect(header).toHaveAttribute("aria-sort", "ascending");
+    const ascending = await firstColumn.allInnerTexts();
+    expect(ascending.length).toBeGreaterThan(1);
+
+    await header.click();
+    await expect(header).toHaveAttribute("aria-sort", "descending");
+    const descending = await firstColumn.allInnerTexts();
+
+    expect(
+      descending,
+      "all keys in this column tie, so flipping direction must not reorder the " +
+        "rows. If these are reverses of each other, descending is implemented as " +
+        "a reverse of the ascending array rather than a negated comparator.",
+    ).toEqual(ascending);
+  });
+
+  /**
+   * Four fixes that had no test between them, which is how they became defects.
+   *
+   * All four are CSS or markup rather than behaviour, so nothing in this file
+   * could see them: `aria-sort` was correct while the header showed no sort
+   * state, the status bar's live region worked while painting an empty green
+   * strip, the rows-per-face select was operable while showing the wrong focus
+   * ring, and two live regions announced correctly — just twice, per keystroke.
+   * Asserted on computed style and on the accessibility tree, because that is
+   * where each of them lived.
+   */
+  test("a sortable header shows its sort state, not just aria-sort", async ({ page }) => {
+    await page.goto(`${URL}?candidate=on`);
+
+    const readIndicator = (name: string) =>
+      page.getByRole("columnheader", { name }).evaluate((el) => {
+        const cs = getComputedStyle(el, "::after");
+        return {
+          content: cs.content,
+          opacity: Number.parseFloat(cs.opacity),
+          borderTopWidth: Number.parseFloat(cs.borderTopWidth),
+          borderBottomWidth: Number.parseFloat(cs.borderBottomWidth),
+        };
+      });
+
+    // Unsorted but sortable: an indicator exists, dimmed.
+    const idle = await readIndicator("Country");
+    expect(idle.content, "no ::after box on a [data-allows-sorting] header").not.toBe(
+      "none",
+    );
+    expect(idle.borderBottomWidth, "the affordance triangle has no size").toBeGreaterThan(0);
+    expect(idle.opacity, "an unsorted column should be dimmed").toBeLessThan(1);
+
+    // Ascending: full strength, pointing one way.
+    await page.getByRole("columnheader", { name: "Country" }).click();
+    const ascending = await readIndicator("Country");
+    expect(ascending.opacity).toBe(1);
+    expect(ascending.borderBottomWidth).toBeGreaterThan(0);
+    expect(ascending.borderTopWidth).toBe(0);
+
+    // Descending: the triangle must actually flip, not just stay lit.
+    await page.getByRole("columnheader", { name: "Country" }).click();
+    const descending = await readIndicator("Country");
+    expect(descending.opacity).toBe(1);
+    expect(
+      descending.borderTopWidth,
+      "the indicator did not flip between ascending and descending",
+    ).toBeGreaterThan(0);
+    expect(descending.borderBottomWidth).toBe(0);
+  });
+
+  test("the status region paints nothing until there is something to say", async ({
+    page,
+  }) => {
+    await page.goto(`${URL}?candidate=on`);
+
+    // The live region must be in the DOM from the first paint or the first
+    // announcement is lost, so this asserts the BOX is empty, not the node.
+    // Located structurally, not by class: when there is no message the element
+    // deliberately carries no class at all, which is the fix.
+    const region = page.locator('[data-candidate-root] p[role="status"]');
+    await expect(region).toHaveCount(1);
+
+    const before = await region.evaluate((el) => {
+      const r = el.getBoundingClientRect();
+      const cs = getComputedStyle(el);
+      return {
+        height: Math.round(r.height),
+        paddingTop: cs.paddingTop,
+        background: cs.backgroundColor,
+        text: el.textContent ?? "",
+      };
+    });
+    expect(before.text).toBe("");
+    expect(before.height, "an empty status message still occupies a strip").toBe(0);
+    expect(before.paddingTop).toBe("0px");
+    expect(
+      before.background,
+      "an empty status message is painting a background",
+    ).toMatch(/rgba\(0, 0, 0, 0\)|transparent/);
+
+    // And it does style itself once it has a message.
+    const id = await openDeleteForFirstRow(page);
+    await page.locator(".demo-dialog__actions .demo-button--danger").click();
+    await expect(page.locator(".demo-status--success")).toContainText(id);
+    const after = await page.locator(".demo-status--success").evaluate((el) => ({
+      height: Math.round(el.getBoundingClientRect().height),
+      background: getComputedStyle(el).backgroundColor,
+    }));
+    expect(after.height).toBeGreaterThan(0);
+    expect(after.background).not.toBe(before.background);
+  });
+
+  test("the native rows-per-page select honours the token focus ring", async ({ page }) => {
+    await page.goto(`${URL}?candidate=on`);
+
+    // Every other focus style keys off React Aria's `data-focus-visible`, which a
+    // native element never receives, so this one needs `:focus-visible`.
+    const select = page.locator("select.demo-input");
+    await expect(select).toHaveCount(1);
+    await select.focus();
+
+    const ring = await select.evaluate((el) => {
+      const cs = getComputedStyle(el);
+      return {
+        width: cs.outlineWidth,
+        style: cs.outlineStyle,
+        colour: cs.outlineColor,
+        // Resolved through a probe rather than read as a string: the token is a
+        // hex literal and `outline-color` computes to `rgb(...)`, so comparing
+        // the raw values would fail on notation alone.
+        token: (() => {
+          const probe = document.createElement("span");
+          probe.style.color = "var(--undrr-color-focus)";
+          el.parentElement!.append(probe);
+          const resolved = getComputedStyle(probe).color;
+          probe.remove();
+          return resolved;
+        })(),
+      };
+    });
+
+    expect(ring.style).toBe("solid");
+    expect(Number.parseFloat(ring.width)).toBeGreaterThanOrEqual(2);
+    expect(ring.token, "the focus token is unreachable here").not.toBe("");
+    expect(
+      ring.colour,
+      `native select focus ring is ${ring.colour}, not the token ${ring.token}`,
+    ).toBe(ring.token);
+  });
+
+  test("the records screen announces once, not twice per keystroke", async ({ page }) => {
+    await page.goto(`${URL}?candidate=on`);
+
+    // Two live regions both driven off the search box meant every character
+    // queued two announcements of the same fact. The filter card's is the one
+    // that went; the delete confirmation's status line is a different fact and
+    // is not driven by typing, so it stays.
+    await expect(
+      page.locator('.demo-filters [role="status"], .demo-filters [aria-live]'),
+      "the filter card still has a live region announcing on every keystroke",
+    ).toHaveCount(0);
+
+    const live = page.locator(
+      '.demo-pagination [role="status"], .demo-pagination [aria-live]',
+    );
+    await expect(live, "the range readout should be the one live region").toHaveCount(1);
+
+    // The surviving one carries the range AND the filtered total, so nothing the
+    // dropped region announced has been lost.
+    await expect(live).toHaveText("1–10 / 250");
+
+    // And it settles rather than firing per character.
+    await page.locator(".demo-filters .demo-input").first().fill("Bangladesh");
+    await expect(page.locator(".demo-pagination__status")).toHaveText("1–10 / 19");
+    await expect(live).toHaveText("1–10 / 19");
   });
 
   test("paginates, and resets to the first page when a facet changes", async ({ page }) => {
@@ -257,7 +482,11 @@ test.describe("full application", () => {
     await expect(previous).toBeEnabled();
 
     await page.locator(".demo-filters .demo-input").first().fill("Bangladesh");
-    await expect(status).toContainText("1–");
+    // The full string, not `toContainText("1–")`. The prior state was
+    // "11–20 / 250", which contains "1–" — so the weaker form was already
+    // satisfied before the reset happened and could not detect its absence.
+    // 19 of the 250 fixture rows are Bangladesh.
+    await expect(status).toHaveText("1–10 / 19");
     await expect(previous).toBeDisabled();
   });
 
@@ -339,6 +568,26 @@ test.describe("full application", () => {
    * than pinning either. Pinning one would have made this flaky, which is exactly
    * the trap the nondeterminism sets. If this test fails, React Aria's restoration
    * behaviour has changed and the finding needs re-measuring; that is the point.
+   *
+   * HOW IT USED TO FAIL TO DO THAT — repaired below, and worth spelling out because
+   * the shape is a common one. `outcome` was a two-branch ternary over the same two
+   * string literals this array holds:
+   *
+   *     const outcome = observed.isBody ? "lost-to-body" : "unrelated-row-action";
+   *     expect(KNOWN_FOCUS_OUTCOMES).toContain(outcome);
+   *
+   * so `toContain` was true by construction. Every case landed in one of the two
+   * branches, including the case the comment claimed it caught: if React Aria began
+   * restoring focus somewhere sensible — the table, a heading, the status line — the
+   * else-branch still labelled it "unrelated-row-action" and the test still passed.
+   * It could not detect the defect being fixed, which is the only thing it existed
+   * for. The `not.toContain(deletedId)` that followed was vacuous in the body branch
+   * too, where `observed.label` is null and the subject is the empty string.
+   *
+   * The repair keeps the enumerated-set shape but derives the label from what was
+   * actually observed rather than from a coin flip, so "neither known outcome" is
+   * now a reachable third value. Both nondeterministic outcomes still pass, so it
+   * is no more flaky than before.
    */
   const KNOWN_FOCUS_OUTCOMES = ["unrelated-row-action", "lost-to-body"] as const;
 
@@ -360,7 +609,30 @@ test.describe("full application", () => {
       };
     });
 
-    const outcome = observed.isBody ? "lost-to-body" : "unrelated-row-action";
+    /*
+      Each outcome is recognised by what it IS, not by elimination. Anything that
+      matches neither — focus restored to the table, to a heading, to the status
+      line, or to a control that still names the deleted record — falls through to
+      "unmeasured" and fails the assertion below, which is what makes this a test
+      rather than a description.
+     */
+    const isLostToBody = observed.isBody;
+    const isUnrelatedRowAction =
+      !observed.isBody &&
+      observed.insideTable &&
+      (observed.className ?? "").includes("demo-iconbutton") &&
+      // Names some record...
+      /DRR-\d+/.test(observed.label ?? "") &&
+      // ...but not the one just deleted. Folded in here rather than asserted
+      // separately, because in the body branch there is no label at all and
+      // asserting `"".not.toContain(id)` proves nothing.
+      !(observed.label ?? "").includes(deletedId);
+
+    const outcome = isLostToBody
+      ? "lost-to-body"
+      : isUnrelatedRowAction
+        ? "unrelated-row-action"
+        : "unmeasured";
 
     // Written before the assertions, so the evidence survives a failure.
     writeJson(`test-results/focus-after-delete-${testInfo.project.name}.json`, {
@@ -377,22 +649,23 @@ test.describe("full application", () => {
     });
 
     // The stable core of the defect: focus never comes back anywhere meaningful.
+    // `outcome` can now be "unmeasured", so this is no longer true by construction.
     expect(
       KNOWN_FOCUS_OUTCOMES,
-      `unmeasured post-delete focus outcome "${outcome}"; re-measure the finding`,
+      `unmeasured post-delete focus outcome — focus went to ` +
+        `${JSON.stringify(observed)} after deleting ${deletedId}. Either React ` +
+        `Aria's restoration behaviour changed (good news, re-measure the finding) ` +
+        `or focus is on a control for the deleted record (worse news).`,
     ).toContain(outcome);
 
-    // And in neither outcome does focus reference the record just deleted.
-    expect(
-      observed.label ?? "",
-      "focus is on a control for the deleted record, which should not exist",
-    ).not.toContain(deletedId);
-
-    if (outcome === "unrelated-row-action") {
-      // The bad-but-not-worst case: still in the table, on someone else's row.
-      expect(observed.className ?? "").toContain("demo-iconbutton");
-      expect(observed.label ?? "", "focused control names no record").toMatch(/DRR-\d+/);
-      expect(observed.insideTable).toBe(true);
+    // Recorded separately from the classification: in the body case the observed
+    // element must genuinely be <body>, not merely something without a label.
+    if (outcome === "lost-to-body") {
+      expect(
+        observed.tag === "body" || observed.tag === null,
+        `classified lost-to-body but the focused element is <${observed.tag}>`,
+      ).toBe(true);
+      expect(observed.insideTable).toBe(false);
     }
   });
 
@@ -476,6 +749,29 @@ test.describe("full application", () => {
       body: JSON.stringify({ scoped, wholePage, dialog }, null, 2),
       contentType: "application/json",
     });
+
+    /*
+      THIS TEST HAD NO `expect` AT ALL. It ran axe three times, wrote three JSON
+      files and passed unconditionally — including if a scan returned nothing, or
+      if the candidate shipped a hundred critical violations.
+
+      Asserting zero CRITICAL is the line the MUI and Mantine specs draw, and it
+      is compatible with the file header: Brief 1 forbids claiming conformance, so
+      the serious/moderate/minor counts stay recorded-not-asserted and remain the
+      output. Critical is different — it is not a grading curve, it is "this is
+      unusable" — and there is no evidence value in leaving it unchecked.
+    */
+    for (const [name, result] of [
+      ["candidate subtree", scoped],
+      ["whole page", wholePage],
+      ["delete dialog", dialog],
+    ] as const) {
+      expect(
+        result.counts.critical,
+        `axe found ${result.counts.critical} critical violation(s) in the ${name}; ` +
+          `see test-results/axe-app-*.json`,
+      ).toBe(0);
+    }
   });
 
   test("screenshots per viewport", async ({ page }, testInfo) => {

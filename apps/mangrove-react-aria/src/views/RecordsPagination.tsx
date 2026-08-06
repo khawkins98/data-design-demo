@@ -5,7 +5,7 @@
  * rather than one import.
  *
  * REACT ARIA SHIPS NO PAGINATION COMPONENT, so all of this is ours: the
- * `<nav aria-label>`, the `role="status"` range readout, the disabled edges, and
+ * `<nav aria-label>`, the range readout and its live region, the disabled edges, and
  * the rows-per-page control. The kitchen sink recorded the same gap; a realistic
  * screen makes it more expensive, because a records table needs the page range
  * ("11-20 of 250") rather than just next/previous.
@@ -21,7 +21,7 @@ import type { ReactElement } from "react";
 import { Button } from "react-aria-components";
 
 import { useDemo } from "../demo-state.js";
-import { PAGE_SIZES } from "./records-state.js";
+import { PAGE_SIZES, useSettled } from "./records-state.js";
 import type { RecordsView } from "./records-state.js";
 
 export function RecordsPagination({
@@ -33,6 +33,16 @@ export function RecordsPagination({
   readonly id: string;
 }): ReactElement {
   const { labels } = useDemo();
+
+  const range =
+    view.matched === 0
+      ? labels.stateEmpty
+      : `${view.firstRow}–${view.lastRow} / ${view.matched}`;
+
+  /* THE SCREEN'S ONE LIVE REGION. It reports the range AND the filtered total, so
+     it subsumes what the filter card's own `role="status"` used to duplicate on
+     every keystroke — see useSettled in records-state.ts for the full note. */
+  const announced = useSettled(range);
 
   return (
     <nav className="demo-pagination demo-pagination--split" aria-label="Pagination">
@@ -55,10 +65,13 @@ export function RecordsPagination({
       </div>
 
       <div className="demo-pagination__group">
-        <span className="demo-pagination__status" role="status">
-          {view.matched === 0
-            ? labels.stateEmpty
-            : `${view.firstRow}–${view.lastRow} / ${view.matched}`}
+        {/* Visible copy: updates on every keystroke, and hidden from the
+            accessibility tree so it does not duplicate the live region below. */}
+        <span className="demo-pagination__status" aria-hidden="true">
+          {range}
+        </span>
+        <span className="demo-visually-hidden" role="status">
+          {announced}
         </span>
         <Button
           className="demo-button"

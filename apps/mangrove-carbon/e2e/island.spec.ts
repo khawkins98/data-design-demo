@@ -99,7 +99,45 @@ test.describe("embedded island", () => {
     await expect(page.locator(`${ROOT} #island-filters`)).toHaveCount(1);
     await expect(page.locator(`${ROOT} .cds--data-table`)).toHaveCount(1);
     await expect(page.locator(`${ROOT} .cds--pagination`)).toHaveCount(1);
-    await expect(page.locator(`${ROOT} .cds--tag`).first()).toBeVisible();
+
+    /*
+     * STATUS PILLS: one per rendered row, each naming a real status, each carrying
+     * the Tag colour class the status maps to. `.first()).toBeVisible()` was the
+     * whole assertion here, and it passed on a single stray Tag anywhere in the
+     * region — it could not tell a status column from a decoration, and it said
+     * nothing at all about the status→colour mapping that both Carbon apps must
+     * agree on (they did not: `pending` was "blue" here and "warm-gray" in
+     * delta-carbon).
+     */
+    const pills = page.locator(`${ROOT} tbody .cds--tag`);
+    await expect(pills).toHaveCount(10);
+    const pillState = await pills.evaluateAll((nodes) =>
+      nodes.map((node) => ({
+        text: (node.textContent ?? "").trim(),
+        // `cds--tag--sm` is the SIZE modifier and shares the prefix, so the size
+        // names are excluded rather than taking the first match.
+        colour:
+          Array.from(node.classList)
+            .filter((c) => c.startsWith("cds--tag--"))
+            .map((c) => c.replace("cds--tag--", ""))
+            .find((c) => !["sm", "md", "lg"].includes(c)) ?? "",
+      })),
+    );
+    const EXPECTED_COLOUR: Record<string, string> = {
+      verified: "green",
+      pending: "warm-gray",
+      disputed: "red",
+      withdrawn: "gray",
+    };
+    for (const pill of pillState) {
+      expect(Object.keys(EXPECTED_COLOUR), `unexpected status pill "${pill.text}"`).toContain(
+        pill.text,
+      );
+      expect(pill.colour, `status "${pill.text}" is painted ${pill.colour}`).toBe(
+        EXPECTED_COLOUR[pill.text],
+      );
+    }
+    await expect(pills.first()).toBeVisible();
 
     // The known-issues box and the view switcher are host chrome and must sit
     // OUTSIDE the candidate subtree, where no candidate stylesheet can restyle
@@ -278,9 +316,14 @@ test.describe("embedded island", () => {
     // Page state and filter state are separate — Carbon's Pagination knows nothing
     // about the table — so a filter change on page 2 would otherwise strand the
     // reader on an empty page.
+    //
+    // ASSERT THE WHOLE RANGE STRING. This used to be two separate `toContainText`
+    // calls for "34" and "1", and the second one proved nothing: "1" is a substring
+    // of "11–20 of 250" just as much as of "1–10 of 34", so the assertion passed
+    // whether or not the page reset. The full string is the only form that
+    // distinguishes them.
     await chooseOption(page, "island-hazard", "Drought");
-    await expect(page.locator(PAGINATION_COUNT)).toContainText("34");
-    await expect(page.locator(PAGINATION_COUNT)).toContainText("1");
+    await expect(page.locator(PAGINATION_COUNT)).toHaveText("1–10 / 34 loss records");
   });
 
   test("applies RTL for Arabic", async ({ page }) => {
@@ -363,9 +406,39 @@ test.describe("embedded island", () => {
       contentType: "application/json",
     });
 
-    // Recorded, not asserted against zero: the counts are the output, and claiming
-    // conformance is forbidden by the brief.
-    expect(scoped.counts.violations).toBeGreaterThanOrEqual(0);
+    /*
+     * TOTALS are recorded, not asserted against zero: the counts are the output and
+     * claiming conformance is forbidden by the brief. But they are already written
+     * to disk above, so `expect(total).toBeGreaterThanOrEqual(0)` — which stood here
+     * — recorded nothing and was arithmetically incapable of failing.
+     *
+     * What is asserted instead, all falsifiable:
+     *   - the `include` scope matched something. A scope that matches nothing scans
+     *     nothing and reports clean, which is the failure mode that makes an axe
+     *     suite worthless. `AxeResult` carries no tested-node count, so this is
+     *     asserted on the locator.
+     *   - no CRITICAL violations in the candidate subtree, in either CSS mode. The
+     *     whole-page count is deliberately NOT held to zero: the Mangrove frame
+     *     contributes its own documented `link-in-text-block` and a `role="menubar"`
+     *     navigation rendered as a deliberate adversary, and those are host
+     *     baseline.
+     */
+    await expect(page.locator(ROOT)).toHaveCount(1);
+
+    const criticals = (result: typeof scoped): string =>
+      result.violations
+        .filter((v) => v.impact === "critical")
+        .map((v) => `${v.id} (${v.nodes.join(", ")})`)
+        .join("; ");
+
+    expect(
+      scoped.counts.critical,
+      `CRITICAL axe violations in the island candidate region: ${criticals(scoped)}`,
+    ).toBe(0);
+    expect(
+      scopedBuild.counts.critical,
+      `CRITICAL axe violations with Carbon contained: ${criticals(scopedBuild)}`,
+    ).toBe(0);
   });
 
   test("screenshots", async ({ page }, testInfo) => {

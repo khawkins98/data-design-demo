@@ -66,9 +66,21 @@ export function SectionDates(): ReactElement {
             <DateInput className="demo-dateinput__segments">
               {(segment) => <DateSegment segment={segment} className="demo-datesegment" />}
             </DateInput>
-            <Button className="demo-dateinput__button" aria-label="Open calendar">
-              📅
-            </Button>
+            {/*
+              NO aria-label HERE ON PURPOSE, and it used to say "Open calendar".
+
+              `DatePicker` gives its trigger button the props `useDatePicker`
+              builds, and those already include a localised name:
+              `react-aria/dist/private/datepicker/useDatePicker.mjs:147` sets
+              `'aria-label': stringFormatter.format('calendar')`, which
+              `react-aria-components/i18n/ar-AE.mjs` renders as `التقويم`. Our
+              explicit prop won that merge and put English back in Arabic.
+
+              Same reason the `slot="previous"`/`slot="next"` buttons below are
+              unlabelled. The rule for this library: if the component supplies the
+              props, it supplies the name too.
+            */}
+            <Button className="demo-dateinput__button">📅</Button>
           </Group>
           <Text slot="description" className="demo-hint">
             Keyboard entry per segment; arrows adjust, type to overwrite.
@@ -122,9 +134,10 @@ export function SectionDates(): ReactElement {
             <DateInput slot="end" className="demo-dateinput__segments">
               {(segment) => <DateSegment segment={segment} className="demo-datesegment" />}
             </DateInput>
-            <Button className="demo-dateinput__button" aria-label="Open range calendar">
-              📅
-            </Button>
+            {/* Unlabelled for the same reason as the single picker above:
+                `useDateRangePicker` names this trigger from the translation
+                bundle (`useDateRangePicker.mjs:149`). */}
+            <Button className="demo-dateinput__button">📅</Button>
           </Group>
           <Text slot="description" className="demo-hint">
             Native range with minute granularity, one popover, one focus trap.

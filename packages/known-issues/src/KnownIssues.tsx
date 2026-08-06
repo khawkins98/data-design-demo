@@ -35,10 +35,19 @@ const SEVERITY_LABEL: Record<IssueSeverity, string> = {
   info: "Context",
 };
 
+/**
+ * Owner labels, written for a reader whose first question is whose problem it is.
+ *
+ * "our own demo code" is deliberately blunt. A finding we caused must not be
+ * mistaken for a property of the library on the page it appears on, and hedged
+ * wording is how that mistake happens.
+ */
 const OWNER_LABEL: Record<KnownIssue["owner"], string> = {
   candidate: "the library",
-  host: "the host design system",
   pairing: "this combination",
+  "third party": "a dependency the library pulls in",
+  host: "the host design system",
+  "our implementation": "our own demo code, not the library",
   "this evaluation": "this evaluation's method",
 };
 

@@ -62,12 +62,20 @@ export function SectionStates(): ReactElement {
     <section id="section-7" className="demo__section">
       <h3 className="demo__heading">7. Loading, empty, error and success states</h3>
 
-      <div className="demo__row">
+      {/*
+        * `aria-pressed` is ours. Carbon's `kind` swap between "primary" and
+        * "tertiary" is COLOUR ONLY — nothing in the accessibility tree says which of
+        * the four buttons is active, so the group reads as four identical buttons.
+        * Carbon has no toggle-button variant; `ContentSwitcher` is the nearest and
+        * it is a tablist rather than a set of buttons.
+        */}
+      <div className="demo__row" role="group" aria-label="Table state">
         {LOAD_STATES.map((state) => (
           <Button
             key={state}
             size="sm"
             kind={state === tableState ? "primary" : "tertiary"}
+            aria-pressed={state === tableState}
             onClick={() => setTableState(state)}
           >
             table: {state}
@@ -145,12 +153,13 @@ export function SectionStates(): ReactElement {
         ) : null}
       </div>
 
-      <div className="demo__row">
+      <div className="demo__row" role="group" aria-label="Form state">
         {LOAD_STATES.map((state) => (
           <Button
             key={state}
             size="sm"
             kind={state === formState ? "primary" : "tertiary"}
+            aria-pressed={state === formState}
             onClick={() => setFormState(state)}
           >
             form: {state}

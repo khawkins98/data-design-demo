@@ -37,9 +37,17 @@ import {
   ToggleButtonGroup,
   Typography,
 } from "@mui/material";
+import { arEG, deDE, enUS, frFR } from "@mui/material/locale";
+import type { Localization } from "@mui/material/locale";
 import { createTheme } from "@mui/material/styles";
 import { DataGrid } from "@mui/x-data-grid";
 import type { GridColDef, GridPaginationModel } from "@mui/x-data-grid";
+import {
+  arSD as gridArSD,
+  deDE as gridDeDE,
+  enUS as gridEnUS,
+  frFR as gridFrFR,
+} from "@mui/x-data-grid/locales";
 
 import { LOCALES, LOSS_RECORDS, OPTIONS_SMALL } from "@undrr-eval/fixtures";
 import type { LocaleCode, VerificationStatus } from "@undrr-eval/fixtures";
@@ -73,6 +81,38 @@ const COUNTRIES = Array.from(new Set(LOSS_RECORDS.map((row) => row.country))).so
 
 const ALL = "all";
 
+/**
+ * TWO locale bundles, because MUI X is a separate product from MUI core.
+ *
+ * `MUI_LOCALES` is core's (`@mui/material/locale`) and rides the theme;
+ * `GRID_LOCALES` is the grid's own (`@mui/x-data-grid/locales`) and is passed as
+ * `localeText`, because the grid resolves every string it renders through
+ * `getLocaleText` and passes them to its footer explicitly, so theme defaults
+ * cannot reach them. Two packages, two bundles — a real cost of the X dependency,
+ * and the only honest thing to record about MUI's i18n here.
+ *
+ * ONE GENUINE GAP, named precisely: the fixtures declare Arabic as `ar-EG`, core
+ * ships `arEG`, and the grid does not — its Arabic packs are `arSD` (Saudi) and
+ * `arSA`. `gridArSD` is therefore the closest available pack rather than an exact
+ * tag match. It is Modern Standard Arabic in both cases, so the grid's chrome is
+ * correct Arabic; the mismatch is regional, and it is a gap in MUI X's pack
+ * coverage rather than in our wiring. Everything else lines up exactly: `frFR`,
+ * `deDE` and `enUS` exist in both packages.
+ */
+const MUI_LOCALES: Record<LocaleCode, Localization> = {
+  en: enUS,
+  fr: frFR,
+  de: deDE,
+  ar: arEG,
+};
+
+const GRID_LOCALES = {
+  en: gridEnUS,
+  fr: gridFrFR,
+  de: gridDeDE,
+  ar: gridArSD,
+} as const satisfies Record<LocaleCode, unknown>;
+
 export function IslandView(): ReactElement {
   const [locale, setLocale] = useState<LocaleCode>("en");
 
@@ -92,10 +132,14 @@ export function IslandView(): ReactElement {
     };
   }, [locale]);
 
-  /** Same theme rebuild per direction as the kitchen sink; see `App.tsx`. */
+  /**
+   * Same theme rebuild per direction as the kitchen sink; see `App.tsx`. Core's
+   * locale bundle rides along as a third `createTheme` argument — MUI's documented
+   * way in, since the bundles are plain `components.*.defaultProps`.
+   */
   const theme = useMemo(
-    () => createTheme(undrrMuiTheme, { direction: demo.dir }),
-    [demo.dir],
+    () => createTheme(undrrMuiTheme, { direction: demo.dir }, MUI_LOCALES[locale]),
+    [demo.dir, locale],
   );
 
   const { labels, bcp47 } = demo;
@@ -313,14 +357,27 @@ export function IslandView(): ReactElement {
                   onPaginationModelChange={setPagination}
                   pageSizeOptions={[10, 25, 50]}
                   /*
-                   * Only the empty state has a fixture label. The grid footer's
-                   * own strings ("Rows per page", "1-10 of 250") stay English in
-                   * all four locales: the fixtures carry no pagination strings and
-                   * inventing translations is out of bounds. DataGrid has its own
-                   * `localeText` bundles, separate from core MUI's — a second
-                   * translation source to maintain. Recorded, not papered over.
+                   * The grid's own locale pack FIRST, the one fixture label it can
+                   * take LAST, so `noRowsLabel` still comes from the fixtures while
+                   * `paginationRowsPerPage`, `paginationDisplayedRows` and
+                   * `paginationItemAriaLabel` come from MUI X. The footer's strings
+                   * were previously left English in all four locales and recorded as
+                   * a finding; they were a wiring gap of ours, since
+                   * `@mui/x-data-grid/locales` ships every locale this demo uses.
+                   *
+                   * The finding that survives is narrower and stated at
+                   * `GRID_LOCALES`: MUI X is a second package with a second bundle,
+                   * and its Arabic pack is `arSD`, not the `arEG` the fixtures
+                   * declare. The pack coverage claim — "a second, parallel
+                   * translation source to the fixtures" — did not survive, because
+                   * these bundles translate MUI's chrome, which the fixtures never
+                   * carried, and because the antd pairings wire their equivalent
+                   * packs and were credited for it.
                    */
-                  localeText={{ noRowsLabel: labels.stateEmpty }}
+                  localeText={{
+                    ...GRID_LOCALES[locale].components.MuiDataGrid.defaultProps.localeText,
+                    noRowsLabel: labels.stateEmpty,
+                  }}
                   aria-label={labels.navRecords}
                 />
               </Box>

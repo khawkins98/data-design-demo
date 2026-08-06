@@ -34,7 +34,7 @@ import {
 
 import { DEFAULT_RANGE, FIXED_TIME_ZONE, TODAY_ISO } from "@undrr-eval/fixtures";
 
-import { useDemo } from "../demo-state.js";
+import { calendarDateToIso, useDemo } from "../demo-state.js";
 
 /** `2026-06-15`. flatpickr parses this with `dateFormat="Y-m-d"`. */
 const TODAY_DATE = TODAY_ISO.slice(0, 10);
@@ -161,6 +161,16 @@ export function SectionDates(): ReactElement {
           truth for the derived range. Carbon's date pickers are not controlled
           components in the React sense, whatever the prop name suggests.
         */}
+        {/*
+          `onChange` uses `calendarDateToIso`, NOT `toISOString().slice(0, 10)`.
+          flatpickr builds every date it reports as `new Date(year, month, day)` —
+          LOCAL midnight — so the ISO form reads the UTC day and yields the PREVIOUS
+          calendar day at any positive UTC offset. Picking 1 January 2026 in
+          Australia/Sydney produced "2025-12-31", and `toInstant` then fed that wrong
+          day into the summary and into the end-before-start comparison. Invisible
+          under the shared runner config's pinned `timezoneId: "UTC"`, which is
+          exactly what made it dangerous. See demo-state.ts.
+        */}
         <DatePicker
           datePickerType="range"
           dateFormat="Y-m-d"
@@ -170,10 +180,10 @@ export function SectionDates(): ReactElement {
           onChange={(dates) => {
             const [nextStart, nextEnd] = dates;
             if (nextStart instanceof Date) {
-              setStartDate(nextStart.toISOString().slice(0, 10));
+              setStartDate(calendarDateToIso(nextStart));
             }
             if (nextEnd instanceof Date) {
-              setEndDate(nextEnd.toISOString().slice(0, 10));
+              setEndDate(calendarDateToIso(nextEnd));
             }
           }}
         >

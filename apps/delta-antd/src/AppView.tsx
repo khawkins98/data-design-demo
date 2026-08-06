@@ -212,9 +212,12 @@ export function AppView(): ReactElement {
         dataIndex: "peopleAffected",
         title: labels.colPeopleAffected,
         width: 150,
-        // `"end"` is antd's LOGICAL alignment, so it follows the direction. MUI's
-        // Table has only the physical `align="right"`, which is why its row-action
-        // column stays pinned to the physical right in Arabic and this one does not.
+        // antd's column `align` takes `"start" | "center" | "end"`. Those are
+        // LOGICAL values, so this column — and the row-action column below it —
+        // follows the reading direction in Arabic with no RTL code of ours, no
+        // second stylesheet and no per-locale branch. Asserted in `app.spec.ts`
+        // ("RTL flips the row-action column with the row"), which reads the
+        // computed keyword back as `end` rather than a resolved physical side.
         align: "end",
         sorter: (a, b) => a.peopleAffected - b.peopleAffected,
         render: (value: number) => formatters.number.format(value),
@@ -242,9 +245,25 @@ export function AppView(): ReactElement {
         width: 240,
         render: (value: string | null) => value ?? "—",
       },
+      /*
+       * "ACTIONS", "VIEW" AND "EDIT" ARE ENGLISH IN ALL FOUR LOCALES, recorded
+       * rather than substituted. This column previously took its header from
+       * `labels.navSettings` ("Settings" — a nav destination, not a column), its
+       * view button from `labels.navRecords` ("Loss records") and its edit button
+       * from `labels.actionSave` ("Save"), so the row's edit control announced
+       * itself as a control that writes. The fixture action strings are Save /
+       * Cancel / Delete / Filter / Clear filters / Export; there is no view, no
+       * edit and no actions among them, and antd's locale packs carry table chrome
+       * rather than application vocabulary, so there is no library default to fall
+       * back on either. Only DELETE has a true fixture label and it keeps it. THE
+       * FIXTURE GAP IS missing `colActions` / `actionView` / `actionEdit` keys in
+       * `@undrr-eval/fixtures`; until they exist, an untranslated verb that is
+       * correct beats a translated one that is wrong. Same decision, same three
+       * strings, as `apps/delta-mantine/src/AppView.tsx`.
+       */
       {
         key: "actions",
-        title: labels.navSettings,
+        title: "Actions",
         width: 140,
         align: "end",
         render: (_value, row) => (
@@ -252,15 +271,15 @@ export function AppView(): ReactElement {
             <Button
               type="text"
               size="small"
-              aria-label={`${labels.navRecords} ${row.id}`}
-              title={`${labels.navRecords}: ${row.id}`}
+              aria-label={`View ${row.id}`}
+              title={`View: ${row.id}`}
               icon={<Icon path={PATHS.view} />}
             />
             <Button
               type="text"
               size="small"
-              aria-label={`${labels.actionSave} ${row.id}`}
-              title={`${labels.actionSave}: ${row.id}`}
+              aria-label={`Edit ${row.id}`}
+              title={`Edit: ${row.id}`}
               icon={<Icon path={PATHS.edit} />}
             />
             <Button
@@ -481,10 +500,13 @@ export function AppView(): ReactElement {
                     pageSizeOptions: [10, 25, 50],
                     /*
                      * "1-10 of 250" is written here because the fixtures carry no
-                     * pagination strings. Everything else in the table and
-                     * pagination chrome — page-size suffix, sort tooltips, empty
-                     * state — IS localised from antd's own locale pack via
-                     * ConfigProvider, which the MUI pairing's pagination is not.
+                     * pagination strings, and it is the ONLY string in this table's
+                     * chrome that is. Everything else — the page-size suffix, the
+                     * sort tooltips, the empty state, the page-jump label — comes
+                     * from `antd/es/locale/*` through ConfigProvider, in all four
+                     * locales, from the one `locale` prop at the top of this view.
+                     * A wired locale pack rather than a comparison: antd ships the
+                     * translations and one prop switches them.
                      */
                     showTotal: (total, range) => `${range[0]}-${range[1]} of ${total}`,
                   }}

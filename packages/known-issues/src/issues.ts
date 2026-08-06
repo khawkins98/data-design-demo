@@ -36,7 +36,31 @@ export interface KnownIssue {
   /** One or two sentences. Specific and measured, not a warning label. */
   readonly detail: string;
   /** Whose problem it is, which is usually the first thing a reader wants. */
-  readonly owner: "candidate" | "host" | "pairing" | "this evaluation";
+  /**
+   * Who owns the defect. This field decides whether a finding may affect a
+   * candidate's score, so it is the most consequential field in the registry.
+   *
+   * - `candidate`  a property of the library UNDRR would adopt. Counts.
+   * - `pairing`    an interaction between a candidate and a host. Counts.
+   * - `third party` a dependency the candidate pulls in, not the candidate's own
+   *   code. Counts at a discount: it indicts a choice, not the library.
+   * - `host`       Delta's or Mangrove's own behaviour. Does NOT count against a
+   *   candidate; it is the same for all five.
+   * - `our implementation` a bug or omission in THIS repository's demo code.
+   *   Must NOT count. Scoring a library down for a caret we forgot to draw ranks
+   *   our mistakes rather than the libraries, and the first such finding - React
+   *   Aria's missing sort indicator - was caught only because a reviewer clicked
+   *   a column header and asked whether it was ours.
+   * - `this evaluation` a limitation of the scaffold or harness rather than of
+   *   any candidate. Does not count.
+   */
+  readonly owner:
+    | "candidate"
+    | "pairing"
+    | "third party"
+    | "host"
+    | "our implementation"
+    | "this evaluation";
   readonly links: readonly IssueLink[];
 }
 
@@ -45,6 +69,30 @@ const BLOB = `${REPO}/blob/main`;
 
 /** Severity order for display: worst first. */
 export const SEVERITY_ORDER: readonly IssueSeverity[] = ["blocker", "decision", "caveat", "info"];
+
+/**
+ * The owners whose findings may affect a candidate's score.
+ *
+ * The single gate between the diagnostic layer and the scoring layer, and the
+ * reason it is a named export rather than an inline filter: a ranking is only
+ * meaningful if it counts defects belonging to the thing being chosen.
+ *
+ * `host` is excluded because Delta and Mangrove behave identically for all five
+ * candidates, so a host defect cannot discriminate between them. `our
+ * implementation` and `this evaluation` are excluded because they are ours -
+ * counting them would rank our own mistakes. All three stay fully visible in the
+ * diagnostics; they simply do not move a number.
+ *
+ * `third party` counts, because choosing a library means accepting what it pulls
+ * in, but it is weighted at a discount in the scoring generator: Carbon shipping
+ * flatpickr's LTR-only calendar is a weaker charge than Carbon's own CSS failing
+ * to mirror would be.
+ */
+export const SCOREABLE_OWNERS: readonly KnownIssue["owner"][] = [
+  "candidate",
+  "pairing",
+  "third party",
+];
 
 export const KNOWN_ISSUES: readonly KnownIssue[] = Object.freeze([
   /* ---------------------------------------------------------------- MUI --- */
@@ -212,6 +260,17 @@ export const KNOWN_ISSUES: readonly KnownIssue[] = Object.freeze([
     links: [{ label: "axis A2", href: "../axes.html" }],
   },
   {
+    id: "react-aria-sort-no-indicator",
+    severity: "caveat",
+    candidates: ["react-aria"],
+    hosts: ["*"],
+    owner: "our implementation",
+    title: "Sortable columns show no visual sort indicator - our bug, not the library's",
+    detail:
+      "Clicking a column header sorts the table and nothing visibly changes. The library is not at fault: react-aria-components 1.20.0 exposes sortDirection as a Column render prop and sets aria-sort itself, so assistive technology is told the state correctly. What is missing is any caret or arrow in our markup and any sort rule in our stylesheets - a visual-only gap, which means sighted keyboard and mouse users get no feedback while screen-reader users do. Recorded here rather than quietly fixed because it is the first example of a class of finding this evaluation must separate out: a defect in our demo code must never count against the library being evaluated.",
+    links: [{ label: "axis A7", href: "../axes.html" }],
+  },
+  {
     id: "react-aria-no-multiselect",
     severity: "caveat",
     candidates: ["react-aria"],
@@ -297,6 +356,17 @@ export const KNOWN_ISSUES: readonly KnownIssue[] = Object.freeze([
     detail:
       "Mangrove's base rule distinguishes inline links from surrounding body text by colour alone. Any axe run against the whole page on this host reports it. It is a host finding, present regardless of which candidate is mounted, and it is not counted against the candidate.",
     links: [{ label: "Mangrove tracker", href: `${REPO}/issues/4` }],
+  },
+  {
+    id: "long-labels-clean-is-not-reproducible",
+    severity: "caveat",
+    candidates: ["react-aria"],
+    hosts: ["mangrove"],
+    owner: "this evaluation",
+    title: "The recorded long-labels result does not reproduce",
+    detail:
+      "evidence.json records longLabels.status: \"clean\" and test-results/long-labels-mobile.json records overflowPx: 0, but the mobile assertion fails intermittently: measured at 2 failures in 10 consecutive runs of the unmodified suite, at scrollWidth 406 against clientWidth 390 - a 16px overflow. The offender is the table inside SectionStates' statebox, which has no sortable columns, so it is unrelated to the sort work done alongside this finding. THE CAUSE IS NOT ATTRIBUTED. It could be our markup or React Aria's, and this entry deliberately does not guess: owner is recorded as this evaluation because what is certainly wrong is the RECORD - a value captured on a passing run and reported as a stable fact. Kept out of anything scoreable for that reason, since scoring a candidate on an unattributed defect would be worse than not scoring it. Needs a deterministic measurement before either the status or the cause can be stated.",
+    links: [{ label: "axis A7", href: "../axes.html" }],
   },
   {
     id: "harness-static-css-limitation",

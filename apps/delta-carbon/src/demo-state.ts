@@ -45,6 +45,46 @@ export function labelsFor(locale: LocaleCode): LabelSet {
 }
 
 /**
+ * Formats a calendar date as `YYYY-MM-DD` from its LOCAL fields.
+ *
+ * WHY THIS EXISTS, and it is a bug this repo shipped rather than a Carbon defect.
+ * Carbon's `DatePicker` wraps flatpickr, and every `Date` flatpickr hands to
+ * `onChange` is constructed as `new Date(year, month, day)` — LOCAL midnight, not
+ * UTC midnight. Calling `.toISOString().slice(0, 10)` on that reads the UTC day,
+ * which at any POSITIVE UTC offset is the PREVIOUS calendar day: in
+ * Australia/Sydney, picking 1 January 2026 yields "2025-12-31".
+ *
+ * The fixture `eventDate` values are plain `YYYY-MM-DD` strings compared as
+ * strings, so a one-day shift silently moves a filter boundary and includes or
+ * excludes real rows. It is invisible in CI because the shared Playwright config
+ * pins `timezoneId: "UTC"`, which is exactly what made it dangerous.
+ *
+ * No `new Date()` here: the argument is the only clock, and only its local
+ * calendar fields are read.
+ */
+export function calendarDateToIso(date: Date): string {
+  const year = String(date.getFullYear()).padStart(4, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+/**
+ * Combines flatpickr's local-midnight calendar date with an `HH:mm` UTC time.
+ *
+ * The naive form — `new Date(date.getTime())` then `setUTCHours(...)` — mixes the
+ * two frames: it keeps the local-midnight INSTANT and then overwrites its UTC
+ * clock fields, so at UTC+10 the 1 January local date becomes 31 December 09:00Z.
+ * Reading the local calendar fields and rebuilding through `Date.UTC` keeps the day
+ * the user clicked.
+ */
+export function combineCalendarDateWithUtcTime(date: Date, hours: number, minutes: number): Date {
+  return new Date(
+    Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), hours, minutes, 0, 0),
+  );
+}
+
+/**
  * The Intl formatters every section shares.
  *
  * Carbon formats nothing for you — unlike MUI's DataGrid `valueFormatter` there

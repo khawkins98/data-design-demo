@@ -5,7 +5,7 @@ Structured record in `evidence.json`. This is the prose.
 **Summary.** Of 30 requirements: **19 native, 10 composed, 1 custom, 0
 unsupported**, for 171 custom lines. Leakage clean **in the shipped
 configuration** — and catastrophic in the documented one, which is the finding
-this pairing existed to produce. Scoped axe: **3 violations (1 critical, 2
+this pairing existed to produce. Scoped axe: **2 violations (0 critical, 2
 serious)**, 2 incomplete. Long labels clean at every viewport, after five CSS
 escape hatches. 51 Playwright tests pass across three viewports.
 
@@ -560,10 +560,10 @@ human review is listed in `evidence.json.humanReviewRequired`.
 The Delta host's baseline is **0 violations**, so scoped and whole-page counts are
 identical and every violation below is the candidate's.
 
-**Scoped to `[data-candidate-root]`: 3 violations — 1 critical, 2 serious — and
+**Scoped to `[data-candidate-root]`: 2 violations — 0 critical, 2 serious — and
 2 incomplete rules.**
 
-### `aria-valid-attr-value` — 1 **critical**, and it is Carbon's
+### `aria-valid-attr-value` — was 1 **critical**, now 0, and the correction matters
 
 On `#form-required` and `#form-format`, the two invalid `TextInput`s. axe verbatim:
 
@@ -571,13 +571,25 @@ On `#form-required` and `#form-format`, the two invalid `TextInput`s. axe verbat
 > announce the message (e.g., aria-live, aria-describedby, role=alert, etc.)
 
 Carbon's invalid input sets `aria-errormessage` pointing at its
-`.cds--form-requirement` div, which carries no `role="alert"`, no `aria-live`, and
-is not referenced by `aria-describedby`. **The div is Carbon's internal render and
-is not reachable through props**, so this cannot be fixed from the consuming side.
+`.cds--form-requirement` div, which carries no `role="alert"`, no `aria-live` and
+no `aria-describedby`. **That part is Carbon's, and it deserves an upstream
+issue:** it affects every invalid Carbon input in every Carbon application, and
+Carbon exposes no prop for it.
 
-If upheld against a real screen reader, this affects **every invalid Carbon input
-in every Carbon application**, and it deserves an upstream issue. It is the only
-critical violation produced by any of the three runs so far.
+**This section previously claimed the violation "cannot be fixed from the
+consuming side". That was wrong**, and the `mangrove-carbon` pairing had already
+disproved it against the same `@carbon/react` version. Passing an explicit
+`aria-describedby="${id}-error-msg"` alongside `invalid` gives axe the
+announcement technique it wants and takes the count to 0. The workaround is only
+available because `...rest` is spread last in Carbon's `sharedTextInputProps`, and
+only if you know the id is derived as `${id}-error-msg` — both internals, and
+neither documented — so the library gap is real even though the symptom is
+avoidable. What was *ours* was shipping the workaround in one app of two and then
+recording the unpatched app's result as an unavoidable library defect.
+
+Still needs confirmation against a real screen reader: `aria-describedby` satisfies
+axe, but whether it produces the same announcement as a proper
+`aria-errormessage` + live-region pairing is a question automation cannot answer.
 
 Note the interaction with the `readOnly` finding: this violation only appeared
 once the validation states actually rendered. The earlier, broken version of the
@@ -691,7 +703,11 @@ avoid Carbon's global reset.** The whole leakage result above depends on it.
    commit. Full detail in `licences.md`. **No other candidate installs anything
    comparable.**
 
-2. **`aria-errormessage` on every invalid Carbon input.** The critical axe
-   violation above is not specific to this demo and cannot be fixed by a consumer.
-   If it survives screen-reader verification it is an upstream bug worth reporting
-   on `carbon-design-system/carbon`.
+2. **`aria-errormessage` on every invalid Carbon input.** Not specific to this
+   demo: Carbon points `aria-errormessage` at a div it renders itself and gives
+   that div no announcement technique, and exposes no prop to add one. A consumer
+   *can* work around it — `aria-describedby="${id}-error-msg"`, which is what both
+   Carbon apps now do — but only by relying on two undocumented internals (the id
+   derivation, and `...rest` being spread last). Worth reporting on
+   `carbon-design-system/carbon` regardless of the workaround, and worth
+   screen-reader verification either way.

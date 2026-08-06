@@ -81,9 +81,31 @@ export function SectionForms(): ReactElement {
           helperText={labels.longSubmissionGuidance}
         />
 
-        {/* required-empty */}
+        {/*
+          required-empty.
+
+          THE EXPLICIT `aria-describedby` IS THE FIX FOR A CARBON DEFECT, and its
+          absence here was ours alone: `apps/mangrove-carbon/src/sections/
+          SectionForms.tsx` has carried it since that section was written, against
+          the same @carbon/react version, and this twin never got it.
+
+          On an invalid field Carbon sets `aria-errormessage="<id>-error-msg"` and
+          renders the message in a `.cds--form-requirement` with that id — but adds
+          no `role="alert"`, no `aria-live` and no `aria-describedby`. axe's
+          `aria-valid-attr-value` rule requires an `aria-errormessage` target to be
+          reachable one of those three ways, so every invalid field reports a
+          CRITICAL violation. Carbon exposes no prop for it; duplicating the
+          reference through `aria-describedby` works only because `...rest` is
+          spread last in Carbon's `sharedTextInputProps`, and only if you know the
+          id is derived as `${id}-error-msg`. Both are internals.
+
+          NOT applied to the `warn` field below: Carbon's own `warnProps` already
+          sets `aria-describedby="<id>-warn-msg"` there, and passing ours would
+          overwrite it through the same `...rest` spread.
+        */}
         <TextInput
           id="form-required"
+          aria-describedby="form-required-error-msg"
           labelText={labels.fieldDataSource}
           defaultValue=""
           invalid
@@ -93,6 +115,7 @@ export function SectionForms(): ReactElement {
         {/* format-invalid */}
         <TextInput
           id="form-format"
+          aria-describedby="form-format-error-msg"
           labelText={labels.fieldEventDate}
           defaultValue={format?.input ?? ""}
           invalid
@@ -144,8 +167,14 @@ export function SectionForms(): ReactElement {
           borderRadius: "var(--undrr-radius-md)",
         }}
       >
+        {/*
+          Same fix, but CONDITIONAL: the `.cds--form-requirement` only exists while
+          `invalid` is true, so an unconditional `aria-describedby` would point at an
+          unmounted node — the same class of defect as a stale `aria-controls`.
+        */}
         <TextInput
           id="form-server"
+          {...(serverRejected ? { "aria-describedby": "form-server-error-msg" } : {})}
           labelText={labels.fieldDataSource}
           defaultValue={server?.input ?? ""}
           invalid={serverRejected}

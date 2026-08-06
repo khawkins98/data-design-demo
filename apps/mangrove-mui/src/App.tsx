@@ -34,6 +34,7 @@ import {
   SectionSelection,
   SectionStates,
   labelsFor,
+  MUI_LOCALES,
   undrrMuiTheme,
 } from "@undrr-eval/integration-mui";
 import type { DemoContextValue } from "@undrr-eval/integration-mui";
@@ -71,8 +72,13 @@ export function App(): ReactElement {
    * Unlike React Aria's I18nProvider, this is a theme rebuild per locale.
    */
   const theme = useMemo(
-    () => createTheme(undrrMuiTheme, { direction: demo.dir }),
-    [demo.dir],
+    // Locale pack LAST, so the direction patch cannot overwrite it. See the twin
+    // in apps/delta-mui/src/App.tsx for why all three views must be configured
+    // the same way.
+    () => createTheme(undrrMuiTheme, { direction: demo.dir }, MUI_LOCALES[locale]),
+    // `locale` too: en, fr and de share ltr, so direction alone would never
+    // rebuild the theme between them.
+    [demo.dir, locale],
   );
 
   return (

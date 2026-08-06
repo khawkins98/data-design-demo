@@ -75,9 +75,12 @@ function OptionComboBox({
       <Label className="demo-label">{label}</Label>
       <div className="demo-combobox__control">
         <Input className="demo-input" />
-        <Button className="demo-combobox__button" aria-label="Show suggestions">
-          ▾
-        </Button>
+        {/* Unlabelled for the same reason as the Tag remove button below:
+            `useComboBox.mjs:257` names this trigger from the translation bundle
+            (`buttonLabel`, which ar-AE renders as `عرض المقترحات`) and also
+            points `aria-labelledby` at the field's own label. Ours said
+            "Show suggestions" and won that merge in every locale. */}
+        <Button className="demo-combobox__button">▾</Button>
       </div>
       <Popover className={POPOVER_CLASS}>
         <ListBox className="demo-listbox">
@@ -159,7 +162,22 @@ export function SectionSelection(): ReactElement {
             {(item) => (
               <Tag id={item.value} textValue={item.label} className="demo-tag">
                 {item.label}
-                <Button slot="remove" className="demo-tag__remove" aria-label="Remove">
+                {/*
+                  NO aria-label HERE ON PURPOSE, and it used to have one.
+
+                  `slot="remove"` hands this button the props `useTag` builds, and
+                  those already include a NAME from the library's translation
+                  bundle: `react-aria/dist/private/tag/useTag.mjs:85` sets
+                  `'aria-label': stringFormatter.format('removeButtonLabel')`, and
+                  `react-aria-components/i18n/ar-AE.mjs` gives `إزالة`. Passing
+                  `aria-label="Remove"` won that merge and replaced working Arabic
+                  with English in the one locale this demo switches to.
+
+                  Same reason the calendar's `slot="previous"`/`slot="next"`
+                  buttons in SectionDates.tsx carry no label: naming a slotted
+                  button is overriding the library, not helping it.
+                */}
+                <Button slot="remove" className="demo-tag__remove">
                   ×
                 </Button>
               </Tag>

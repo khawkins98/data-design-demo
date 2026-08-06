@@ -30,6 +30,8 @@ import { dirname } from "node:path";
 import { expect, test } from "@playwright/test";
 import type { Page } from "@playwright/test";
 
+import { LOSS_RECORDS } from "@undrr-eval/fixtures";
+import type { VerificationStatus } from "@undrr-eval/fixtures";
 import { CANARY_IDS, captureScreens, checkLeakage, runAxe } from "@undrr-eval/test-harness";
 import { MANGROVE_FRAME_CANARY_IDS } from "@undrr-eval/test-harness/frame-canaries";
 
@@ -83,6 +85,39 @@ async function chooseOption(page: Page, testId: string, option: string): Promise
   await expect(page.getByRole("option")).toHaveCount(0);
 }
 
+/** The view's page size and the fixture's four statuses. */
+const PAGE_SIZE = 10;
+const STATUSES: readonly VerificationStatus[] = ["verified", "pending", "disputed", "withdrawn"];
+
+/**
+ * Every status pill on the current page, paired with the colour it was painted.
+ *
+ * Both halves are needed for the assertion they feed: that the pill's VARIANT is a
+ * function of the record's `verificationStatus`. `toBeVisible()` on the first badge
+ * — which is what this used to be, and the only assertion about this column —
+ * passes on 250 rows all reading "verified" in one colour.
+ */
+async function statusPills(
+  page: Page,
+): Promise<ReadonlyArray<{ text: string; background: string }>> {
+  return page.evaluate(() => {
+    const root = document.querySelector("[data-candidate-root]");
+    return [...(root?.querySelectorAll(".mantine-Badge-root") ?? [])].map((pill) => ({
+      text: (pill.textContent ?? "").trim(),
+      background: getComputedStyle(pill).backgroundColor,
+    }));
+  });
+}
+
+/** The first column's cell text, top to bottom, inside the candidate region. */
+async function firstColumn(page: Page): Promise<readonly string[]> {
+  return page.evaluate(() =>
+    [...document.querySelectorAll("[data-candidate-root] tbody tr")].map((row) =>
+      (row.querySelector("td")?.textContent ?? "").trim(),
+    ),
+  );
+}
+
 test.describe("embedded island", () => {
   test("renders the candidate region inside the host frame", async ({ page }) => {
     await page.goto(`${URL}?candidate=on`);
@@ -92,7 +127,7 @@ test.describe("embedded island", () => {
     await expect(page.locator(`${ROOT} form`)).toHaveCount(1);
     await expect(page.locator(`${ROOT} table`)).toHaveCount(1);
     await expect(page.locator(`${ROOT} .mantine-Pagination-root`)).toHaveCount(1);
-    await expect(page.locator(`${ROOT} .mantine-Badge-root`).first()).toBeVisible();
+    await expect(page.locator(`${ROOT} .mantine-Badge-root`)).toHaveCount(PAGE_SIZE);
 
     // The known-issues box and the view switcher are host chrome and must sit
     // OUTSIDE the candidate subtree, where no candidate stylesheet can restyle them.
@@ -243,20 +278,216 @@ test.describe("embedded island", () => {
     await page.goto(`${URL}?candidate=on`);
 
     const firstCell = page.locator(`${ROOT} tbody tr td`).first();
-    const before = await firstCell.innerText();
 
     // Default sort is eventDate descending, declared through `aria-sort` because
     // Mantine's `Table.Th` has no sorting affordance of its own.
     await expect(page.locator(`${ROOT} th[aria-sort="descending"]`)).toHaveCount(1);
+    const defaultOrder = await firstColumn(page);
 
     await page.getByRole("button", { name: "Sort by Country" }).click();
     await expect(page.locator(`${ROOT} th[aria-sort="ascending"]`)).toHaveCount(1);
     await expect(firstCell).toHaveText("Bangladesh");
+    const ascending = await firstColumn(page);
+    expect(ascending, "clicking Country did not reorder the table").not.toEqual(defaultOrder);
+    // Ascending across the whole visible page, not only its first cell.
+    expect([...ascending].sort(new Intl.Collator("en-GB").compare)).toEqual(ascending);
 
     await page.getByRole("button", { name: "Sort by Country" }).click();
+    await expect(page.locator(`${ROOT} th[aria-sort="descending"]`)).toHaveCount(1);
     await expect(firstCell).not.toHaveText("Bangladesh");
 
-    writeJson("test-results/island-sort.json", { unsortedFirstCountry: before });
+    writeJson("test-results/island-sort.json", { defaultOrder, ascending });
+  });
+
+  /**
+   * THE SORT INDICATOR, asserted through the computed style.
+   *
+   * The three Mantine tables in this repo styled their sort trigger three different
+   * ways and one of them not at all; they now share `.demo-sort` and
+   * `.demo-sort__indicator`. Checked as computed values rather than class names,
+   * because a class no stylesheet matches would satisfy a class-name check and
+   * still leave the header unstyled.
+   */
+  test("every header carries a styled sort indicator", async ({ page }) => {
+    await page.goto(`${URL}?candidate=on`);
+
+    const indicators = page.locator(`${ROOT} thead .demo-sort__indicator`);
+    await expect(indicators).toHaveCount(6);
+    await expect(indicators.first()).toBeVisible();
+
+    const measurement = await page.evaluate(() => {
+      const head = document.querySelector("[data-candidate-root] thead");
+      const triggers = [...(head?.querySelectorAll(".demo-sort") ?? [])];
+      const sortedHeader = head?.querySelector('th[aria-sort="descending"]');
+      return {
+        triggers: triggers.length,
+        indicatorOpacity: getComputedStyle(
+          head?.querySelector(".demo-sort__indicator") as Element,
+        ).opacity,
+        triggerIsFullWidth: triggers.every((node) => {
+          const th = node.closest("th");
+          return th ? Math.abs(node.clientWidth - th.clientWidth) <= 24 : false;
+        }),
+        sortedGlyph: (
+          sortedHeader?.querySelector(".demo-sort__indicator")?.textContent ?? ""
+        ).trim(),
+        unsortedGlyphs: [
+          ...new Set(
+            [
+              ...(head?.querySelectorAll(
+                "th:not([aria-sort='descending']) .demo-sort__indicator",
+              ) ?? []),
+            ].map((node) => (node.textContent ?? "").trim()),
+          ),
+        ],
+        indicatorsHidden: [...(head?.querySelectorAll(".demo-sort__indicator") ?? [])].every(
+          (node) => node.getAttribute("aria-hidden") === "true",
+        ),
+      };
+    });
+
+    writeJson("test-results/island-sort-indicator.json", measurement);
+
+    expect(measurement.triggers).toBe(6);
+    expect(measurement.indicatorOpacity, "demo.css did not reach the sort indicator").toBe(
+      "0.65",
+    );
+    expect(measurement.triggerIsFullWidth, "the sort trigger is not a full-width hit area").toBe(
+      true,
+    );
+    expect(measurement.sortedGlyph).toBe("▼");
+    expect(measurement.unsortedGlyphs).toEqual(["↕"]);
+    expect(measurement.indicatorsHidden).toBe(true);
+  });
+
+  /**
+   * DESCENDING IS THE NEGATED COMPARATOR, NOT A REVERSED ARRAY — asserted where it
+   * shows, which is inside a tie group.
+   *
+   * `hazardType` has eight values over 250 rows, so a descending sort on it fills
+   * the first page with rows that all compare equal. A stable sort with a negated
+   * comparator leaves them in the fixture's own order; `sorted.reverse()` — which
+   * the delta-mantine twin was doing — shows the TAIL of the group, backwards. Both
+   * predictions are computed here from the fixture and the wrong one is named, so a
+   * regression cannot read as a new expectation.
+   */
+  test("a descending sort is the true inverse of ascending, inside tie groups too", async ({
+    page,
+  }) => {
+    const collator = new Intl.Collator("en-GB");
+    const hazards = [...new Set(LOSS_RECORDS.map((row) => row.hazardType))].sort(
+      collator.compare,
+    );
+    const highest = hazards.at(-1) as string;
+    const group = LOSS_RECORDS.filter((row) => row.hazardType === highest);
+    const correct = group.slice(0, PAGE_SIZE).map((row) => row.country);
+    const reversedArray = [...group].reverse().slice(0, PAGE_SIZE).map((row) => row.country);
+
+    await page.goto(`${URL}?candidate=on`);
+    await page.getByTestId("island-sort-hazardType").click();
+    await expect(page.locator(`${ROOT} th[aria-sort="ascending"]`)).toHaveCount(1);
+    await page.getByTestId("island-sort-hazardType").click();
+    await expect(page.locator(`${ROOT} th[aria-sort="descending"]`)).toHaveCount(1);
+
+    const rendered = await firstColumn(page);
+
+    writeJson("test-results/island-sort-tie-groups.json", {
+      hazard: highest,
+      groupSize: group.length,
+      rendered,
+      correct,
+      reversedArray,
+    });
+
+    expect(group.length).toBeGreaterThan(PAGE_SIZE);
+    expect(correct, "the fixture's tie group is palindromic; this test cannot tell").not.toEqual(
+      reversedArray,
+    );
+    expect(
+      rendered,
+      "descending on a tie-heavy column did not preserve the source order within the tie group",
+    ).toEqual(correct);
+    expect(rendered, "the descending sort is a reversed array").not.toEqual(reversedArray);
+  });
+
+  /**
+   * ORDERING IS THE SELECTED LOCALE'S, not the runner's.
+   *
+   * `compareRecords` takes an `Intl.Collator` built from the demo's own `bcp47`.
+   * Playwright pins the browser locale to `en-GB`, so running this in GERMAN is the
+   * point: the rendered order has to match a `de-DE` collator rather than the
+   * runtime default.
+   */
+  test("orders by the selected locale's collation in German", async ({ page }) => {
+    await page.goto(`${URL}?candidate=on`);
+    await selectLocale(page, "Deutsch");
+
+    await page.getByTestId("island-sort-country").click();
+    await expect(page.locator(`${ROOT} th[aria-sort="ascending"]`)).toHaveCount(1);
+
+    const rendered = await firstColumn(page);
+    const expectedFirstPage = LOSS_RECORDS.map((row) => row.country)
+      .sort(new Intl.Collator("de-DE").compare)
+      .slice(0, PAGE_SIZE);
+
+    writeJson("test-results/island-sort-locale.json", { locale: "de", rendered });
+
+    expect([...rendered].sort(new Intl.Collator("de-DE").compare)).toEqual(rendered);
+    expect(rendered).toEqual(expectedFirstPage);
+  });
+
+  /**
+   * STATUS PILLS, asserted as a mapping rather than as a presence.
+   *
+   * This column's only assertion used to be `.first()).toBeVisible()`, which 250
+   * rows all reading "verified" in one colour would satisfy. The pill text is
+   * checked against the fixture — the default `eventDate` descending order is
+   * recomputed here rather than taken from the app — and the pill colour is checked
+   * to be a function of that text.
+   */
+  test("status pills read the record's status and their colour tracks it", async ({ page }) => {
+    await page.goto(`${URL}?candidate=on`);
+
+    const collator = new Intl.Collator("en-GB");
+    const expected = [...LOSS_RECORDS]
+      .sort((a, b) => collator.compare(b.eventDate, a.eventDate))
+      .slice(0, PAGE_SIZE)
+      .map((row) => row.verificationStatus);
+
+    const pills = await statusPills(page);
+
+    const byStatus = new Map<string, Set<string>>();
+    for (const pill of pills) {
+      const seen = byStatus.get(pill.text) ?? new Set<string>();
+      seen.add(pill.background);
+      byStatus.set(pill.text, seen);
+    }
+
+    writeJson("test-results/island-status-pills.json", {
+      pills,
+      expected,
+      colours: [...byStatus].map(([status, colours]) => ({ status, colours: [...colours] })),
+    });
+
+    expect(pills).toHaveLength(PAGE_SIZE);
+    expect(pills.map((pill) => pill.text)).toEqual(expected);
+    for (const status of pills.map((pill) => pill.text)) {
+      expect(STATUSES).toContain(status as VerificationStatus);
+    }
+
+    // The variant is a FUNCTION of the status: one colour each, no two statuses
+    // sharing one. Vacuous unless more than one status is on the page.
+    expect(byStatus.size, "only one status on the page; the mapping is untested").toBeGreaterThan(
+      1,
+    );
+    for (const [status, colours] of byStatus) {
+      expect([...colours], `"${status}" was painted more than one colour`).toHaveLength(1);
+    }
+    const distinctColours = new Set([...byStatus.values()].map((set) => [...set][0]));
+    expect(distinctColours.size, "two statuses share a pill colour").toBe(byStatus.size);
+    for (const pill of pills) {
+      expect(pill.background).not.toBe("rgba(0, 0, 0, 0)");
+    }
   });
 
   test("applies RTL for Arabic", async ({ page }) => {

@@ -28,7 +28,17 @@
       "labelCssLeft": "0px"
     }
   ],
-  "actionCellTextAlign": "right",
+  "actionCellTextAlign": "end",
+  "numericCellTextAlign": "end",
+  "numericHeaderTextAlign": "end",
   "actionCellIsLeftOfFirstCell": true,
-  "note": "Label displacement is bounded by the filter card's column width, so smaller than the kitchen sink's 843px worst case. Same unfixable defect. The action column's `align=right` is a physical value with no logical equivalent."
+  "actionGaps": {
+    "startGapPx": 16,
+    "endGapPx": 27
+  },
+  "numericCellGaps": {
+    "startGapPx": 16,
+    "endGapPx": 115
+  },
+  "note": "Label displacement is bounded by the filter card's column width, so smaller than the kitchen sink's 843px worst case. Same unfixable defect, inside MUI's own InputLabel stylesheet. Table alignment is a SEPARATE mechanism and is no longer a finding: `sx={{ textAlign: 'end' }}` on TableCell is logical and flips with the row, which `numericCellGaps` measures."
 }

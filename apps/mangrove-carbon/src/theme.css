@@ -118,11 +118,20 @@
   --cds-support-warning: var(--undrr-color-warning);
   --cds-support-info: var(--undrr-color-info);
 
-  /* Tags, used for the verification-status column. */
+  /*
+   * Tags, used for the verification-status column.
+   *
+   * `warm-gray` carries `pending`, and the mapping below is the reason it can:
+   * Carbon's Tag palette has no yellow or amber (see STATUS_TAG_COLOUR in
+   * demo-state.ts), so the nearest warm neutral is re-pointed at the UNDRR warning
+   * tokens rather than accepting IBM's warm grey. Identical to the same three
+   * declarations in apps/delta-carbon/src/demo.css.
+   */
   --cds-tag-background-green: var(--undrr-color-success-subtle);
   --cds-tag-color-green: var(--undrr-color-success);
-  --cds-tag-background-blue: var(--undrr-color-accent-subtle);
-  --cds-tag-color-blue: var(--undrr-color-accent);
+  --cds-tag-background-warm-gray: var(--undrr-color-warning-subtle);
+  --cds-tag-color-warm-gray: var(--undrr-color-warning);
+  --cds-tag-border-warm-gray: var(--undrr-color-warning);
   --cds-tag-background-red: var(--undrr-color-error-subtle);
   --cds-tag-color-red: var(--undrr-color-error);
   --cds-tag-background-gray: var(--undrr-color-surface-sunken);

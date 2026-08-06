@@ -263,41 +263,48 @@ export function IslandView({
                 mb="md"
                 onSubmit={(event) => event.preventDefault()}
               >
+                {/*
+                  * THE UNFILTERED STATE IS AN EMPTY FIELD, NOT A SENTINEL OPTION.
+                  * Same fix, and the same reasoning, as
+                  * `apps/delta-mantine/src/AppView.tsx`: these three Selects used to
+                  * carry a first option labelled `labels.actionClearFilters`, so a
+                  * collapsed dropdown's visible text AND its accessible name both
+                  * read "Clear filters" next to the real Clear-filters button.
+                  * `clearable` is the library's own answer. NO PLACEHOLDER: the
+                  * fixture set has no "All" string in any of the four locales, so the
+                  * unfiltered state is Mantine's default empty input under the
+                  * field's visible label. The gap is a missing `optionAll` key in
+                  * `@undrr-eval/fixtures`, recorded rather than substituted.
+                  */}
                 <Select
                   label={labels.fieldCountry}
-                  value={country}
+                  value={country === ALL ? null : country}
                   onChange={(next) => onFilterChange(() => setCountry(next ?? ALL))}
-                  data={[
-                    { value: ALL, label: labels.actionClearFilters },
-                    ...COUNTRIES.map((name) => ({ value: name, label: name })),
-                  ]}
+                  data={COUNTRIES.map((name) => ({ value: name, label: name }))}
+                  clearable
                   allowDeselect={false}
                   comboboxProps={{ classNames: { dropdown: OVERLAY_CLASS } }}
                   data-testid="island-filter-country"
                 />
                 <Select
                   label={labels.fieldHazard}
-                  value={hazard}
+                  value={hazard === ALL ? null : hazard}
                   onChange={(next) => onFilterChange(() => setHazard(next ?? ALL))}
-                  data={[
-                    { value: ALL, label: labels.actionClearFilters },
-                    ...OPTIONS_SMALL.map((option) => ({
-                      value: option.value,
-                      label: option.label,
-                    })),
-                  ]}
+                  data={OPTIONS_SMALL.map((option) => ({
+                    value: option.value,
+                    label: option.label,
+                  }))}
+                  clearable
                   allowDeselect={false}
                   comboboxProps={{ classNames: { dropdown: OVERLAY_CLASS } }}
                   data-testid="island-filter-hazard"
                 />
                 <Select
                   label={labels.colStatus}
-                  value={status}
+                  value={status === ALL ? null : status}
                   onChange={(next) => onFilterChange(() => setStatus(next ?? ALL))}
-                  data={[
-                    { value: ALL, label: labels.actionClearFilters },
-                    ...STATUSES.map((value) => ({ value, label: value })),
-                  ]}
+                  data={STATUSES.map((value) => ({ value, label: value }))}
+                  clearable
                   allowDeselect={false}
                   comboboxProps={{ classNames: { dropdown: OVERLAY_CLASS } }}
                   data-testid="island-filter-status"
@@ -359,22 +366,30 @@ export function IslandView({
                           {/*
                             * The sort affordance, `aria-sort` above it and the
                             * arrow glyph are all ours: `Table.Th` has no sorting
-                            * of any kind. Same shape as the kitchen sink's, so
-                            * the two are comparable.
+                            * of any kind. ONE shape across all four Mantine
+                            * tables — this view, `sections/SectionDataTable.tsx`
+                            * and the two delta-mantine equivalents — so the
+                            * `.demo-sort` rules in demo.css reach every one of
+                            * them. The glyph is `aria-hidden` because `aria-sort`
+                            * on the `<th>` is what announces the state.
                             */}
                           <UnstyledButton
+                            className="demo-sort"
+                            data-numeric={column.numeric ? "true" : undefined}
                             onClick={() => toggleSort(column.key)}
                             aria-label={`Sort by ${labels[column.labelKey]}`}
                             data-testid={`island-sort-${column.key}`}
                           >
-                            <Text span size="sm" fw="semibold" className="demo-th__label">
+                            <Text span size="sm" fw="semibold" className="demo-sort__label">
                               {labels[column.labelKey]}
+                            </Text>
+                            <span aria-hidden="true" className="demo-sort__indicator">
                               {sort.key === column.key
                                 ? sort.direction === "asc"
-                                  ? " ▲"
-                                  : " ▼"
-                                : ""}
-                            </Text>
+                                  ? "▲"
+                                  : "▼"
+                                : "↕"}
+                            </span>
                           </UnstyledButton>
                         </Table.Th>
                       ))}
@@ -430,11 +445,14 @@ export function IslandView({
                 {/*
                   * "Page" IS ENGLISH IN ALL FOUR LOCALES, deliberately. The fixture
                   * label set carries no pagination strings and inventing translations
-                  * is out of bounds, so this line reads "٣ / 1 Page" in Arabic —
-                  * an English word in a right-to-left line. Mantine has no locale
-                  * bundle for it either: `Pagination` renders no text of its own, so
-                  * unlike MUI's `TablePagination` there is not even a parallel
-                  * translation source to point at. Recorded, not papered over.
+                  * is out of bounds, so this line reads "٣ / 1 Page" in Arabic — an
+                  * English word in a right-to-left line.
+                  *
+                  * AND MANTINE OFFERS NOTHING TO FALL BACK ON. `Pagination` renders
+                  * no text of its own — icons and page numbers only — so
+                  * `@mantine/core` ships no pagination translations and there is no
+                  * locale bundle to point at. Any wording around it is application
+                  * text by construction. Recorded as what Mantine ships.
                   */}
                 <Text size="sm" c="dimmed" data-testid="island-page-summary">
                   Page {formatters.integer.format(safePage)} /{" "}

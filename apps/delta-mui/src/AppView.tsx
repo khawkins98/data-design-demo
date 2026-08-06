@@ -62,6 +62,9 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
+import type { SortDirection } from "@mui/material";
+import { arEG, deDE, enUS, frFR } from "@mui/material/locale";
+import type { Localization } from "@mui/material/locale";
 import { createTheme } from "@mui/material/styles";
 
 import { LOCALES, LOSS_RECORDS, OPTIONS_SMALL } from "@undrr-eval/fixtures";
@@ -105,6 +108,27 @@ const PATHS = {
   chevron: "M7.41 8.59 12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z",
 } as const;
 
+/**
+ * MUI's OWN core locale bundles, one per fixture locale.
+ *
+ * `@mui/material/locale` ships `arEG`, `frFR` and `deDE` — the exact BCP 47 tags
+ * the fixture locales declare (`ar-EG`, `fr-FR`, `de-DE`), so no locale has to be
+ * approximated here. `enUS` is an empty object: MUI's built-in strings ARE the
+ * English pack, so wiring it is a no-op that keeps the map total rather than
+ * making `en` a special case at the call site.
+ *
+ * These bundles cover MUI's own component chrome only — pagination labels, pager
+ * button accessible names, Autocomplete and Alert affordances. The fixtures stay
+ * the single source for every application string; the two do not overlap, so this
+ * is not a second translation of anything.
+ */
+const MUI_LOCALES: Record<LocaleCode, Localization> = {
+  en: enUS,
+  fr: frFR,
+  de: deDE,
+  ar: arEG,
+};
+
 type SortField = "country" | "eventDate" | "peopleAffected" | "economicLossUsdMillions";
 
 export function AppView(): ReactElement {
@@ -134,10 +158,16 @@ export function AppView(): ReactElement {
     };
   }, [locale]);
 
-  /** Same theme rebuild per direction as the kitchen sink; see `App.tsx`. */
+  /**
+   * Same theme rebuild per direction as the kitchen sink; see `App.tsx`. The
+   * locale bundle rides along as a third `createTheme` argument, which is MUI's
+   * documented way in: the bundles are plain `components.*.defaultProps`, so
+   * every MUI component below inherits its own chrome in the active locale
+   * without a single string being passed down by hand.
+   */
   const theme = useMemo(
-    () => createTheme(undrrMuiTheme, { direction: demo.dir }),
-    [demo.dir],
+    () => createTheme(undrrMuiTheme, { direction: demo.dir }, MUI_LOCALES[locale]),
+    [demo.dir, locale],
   );
 
   const { labels, bcp47 } = demo;
@@ -192,6 +222,21 @@ export function AppView(): ReactElement {
     setQuery("");
     setPage(0);
   };
+
+  /**
+   * The state `TableSortLabel` shows as an arrow, in the form a screen reader can
+   * read: `TableCell`'s `sortDirection` prop (`SortDirection = 'asc' | 'desc' |
+   * false`) is what emits `aria-sort` on the `th`, and it is the documented
+   * pairing for `TableSortLabel` — the sort label draws the affordance, the cell
+   * announces the state. Rendering the label alone left sighted users with an
+   * arrow and everyone else with an unsorted-looking table.
+   *
+   * `false` for the inactive columns, which is MUI's "no `aria-sort` attribute".
+   * ARIA would also allow `aria-sort="none"` on the other sortable headers; the
+   * prop cannot express it, and omitting the attribute is the conforming default.
+   */
+  const sortDirectionFor = (field: SortField): SortDirection =>
+    sortField === field ? (sortAsc ? "asc" : "desc") : false;
 
   const sortHeader = (field: SortField, label: string): ReactElement => (
     <TableSortLabel
@@ -408,17 +453,32 @@ export function AppView(): ReactElement {
                 <Table size="small" aria-label={labels.navRecords}>
                   <TableHead>
                     <TableRow>
-                      <TableCell>{sortHeader("country", labels.colCountry)}</TableCell>
+                      <TableCell sortDirection={sortDirectionFor("country")}>
+                        {sortHeader("country", labels.colCountry)}
+                      </TableCell>
                       <TableCell>{labels.colHazard}</TableCell>
-                      <TableCell>{sortHeader("eventDate", labels.colEventDate)}</TableCell>
-                      <TableCell align="right">
+                      <TableCell sortDirection={sortDirectionFor("eventDate")}>
+                        {sortHeader("eventDate", labels.colEventDate)}
+                      </TableCell>
+                      {/*
+                        * `sx={{ textAlign: "end" }}`, not `align="right"`; see the
+                        * row-actions cell below for why every alignment in this
+                        * table is written logically.
+                        */}
+                      <TableCell
+                        sortDirection={sortDirectionFor("peopleAffected")}
+                        sx={{ textAlign: "end" }}
+                      >
                         {sortHeader("peopleAffected", labels.colPeopleAffected)}
                       </TableCell>
-                      <TableCell align="right">
+                      <TableCell
+                        sortDirection={sortDirectionFor("economicLossUsdMillions")}
+                        sx={{ textAlign: "end" }}
+                      >
                         {sortHeader("economicLossUsdMillions", labels.colEconomicLoss)}
                       </TableCell>
                       <TableCell>{labels.colStatus}</TableCell>
-                      <TableCell align="right">{labels.colReviewNote}</TableCell>
+                      <TableCell sx={{ textAlign: "end" }}>{labels.colReviewNote}</TableCell>
                     </TableRow>
                   </TableHead>
 
@@ -439,10 +499,10 @@ export function AppView(): ReactElement {
                           <TableCell>
                             {formatters.date.format(new Date(`${row.eventDate}T00:00:00Z`))}
                           </TableCell>
-                          <TableCell align="right">
+                          <TableCell sx={{ textAlign: "end" }}>
                             {formatters.number.format(row.peopleAffected)}
                           </TableCell>
-                          <TableCell align="right">
+                          <TableCell sx={{ textAlign: "end" }}>
                             {formatters.decimal.format(row.economicLossUsdMillions)}
                           </TableCell>
                           <TableCell>
@@ -453,12 +513,31 @@ export function AppView(): ReactElement {
                             />
                           </TableCell>
                           {/*
-                            * Row actions. `align="right"` is a PHYSICAL value and
-                            * MUI's Table has no logical equivalent, so in Arabic
-                            * this column stays pinned to the physical right while
-                            * the row itself has flipped. Recorded as a finding.
+                            * Row actions, aligned to the row's LOGICAL end.
+                            *
+                            * `TableCell`'s `align` prop is physical-only — its type
+                            * is `'inherit' | 'left' | 'center' | 'right' |
+                            * 'justify'` (TableCell.d.ts:26) with no `start`/`end`
+                            * member. This cell used to pass `align="right"`, which
+                            * pinned the actions to the physical right and left them
+                            * there in Arabic while the row itself flipped. That was
+                            * OUR shortcut, not an RTL limitation of MUI: `TableCell`
+                            * also accepts `sx` (TableCell.d.ts:61), and
+                            * `sx={{ textAlign: "end" }}` hands the logical CSS
+                            * property straight to Emotion without leaving MUI's own
+                            * API. Same for the two numeric columns above. There is
+                            * nothing to record against MUI here, and the earlier
+                            * comment claiming otherwise was wrong.
+                            *
+                            * DIFFERENT MECHANISM from `mui-rtl-unfixable`, which is
+                            * real and untouched by this: `InputLabel` positions
+                            * outlined floating labels with a physical `left: 0` and
+                            * `transformOrigin: 'top left'` inside MUI's own
+                            * stylesheet (InputLabel.js:70-74), where no app-level
+                            * prop reaches. Table alignment was app-level all along;
+                            * the floating labels are not.
                             */}
-                          <TableCell align="right">
+                          <TableCell sx={{ textAlign: "end" }}>
                             <Stack direction="row" spacing={0} sx={{ justifyContent: "flex-end" }}>
                               <Tooltip title={`${labels.navRecords}: ${row.id}`}>
                                 <IconButton
@@ -514,13 +593,23 @@ export function AppView(): ReactElement {
                   }}
                   rowsPerPageOptions={[10, 25, 50]}
                   /*
-                   * `labelRowsPerPage` and `labelDisplayedRows` are LEFT AT MUI's
-                   * English defaults on purpose. The fixture label set has no
-                   * pagination strings, and inventing translations is out of
-                   * bounds. So in Arabic, French and German this screen shows
-                   * English pagination chrome. MUI ships locale bundles for this
-                   * (`@mui/material/locale`), but they are a second, parallel
-                   * translation source to the fixtures — a finding, not a fix.
+                   * NO per-string wiring here, and no English left behind either:
+                   * `labelRowsPerPage`, `labelDisplayedRows` and the four pager
+                   * button accessible names all arrive from MUI's own locale bundle
+                   * via the theme (`MUI_LOCALES`, above). In Arabic the row counts
+                   * come out in Arabic-Indic digits, because the bundle formats them
+                   * for `ar-EG`.
+                   *
+                   * This used to be recorded as a finding — "MUI ships locale
+                   * bundles but they are a second, parallel translation source".
+                   * That was a wiring gap of ours dressed up as a limitation, and it
+                   * was scored asymmetrically: the antd pairings wire
+                   * `ConfigProvider locale=` from antd's equivalent packs and were
+                   * credited for it, so the objection applied to both pairings or to
+                   * neither. It applies to neither. The bundles translate MUI's own
+                   * component chrome, which the fixture label set does not carry and
+                   * was never intended to; the fixtures remain the only source for
+                   * application strings. Nothing is translated twice.
                    */
                 />
               </TableContainer>

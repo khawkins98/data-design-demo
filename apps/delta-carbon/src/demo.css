@@ -399,9 +399,19 @@
   min-width: 0;
 }
 
-/* Three icon buttons on one row, at the row's logical end. `flex-end` and
-   `padding-inline` are logical, so this mirrors in Arabic — unlike MUI's
-   `align="right"` on a TableCell, which has no logical equivalent. */
+/* Three icon buttons on one row.
+ *
+ * CORRECTION: this comment used to claim the rules below were `flex-end` and
+ * `padding-inline`. They are not and never were — the cell is not a flex container
+ * and there is no padding here. The behaviour was always fine; the cited evidence
+ * was fabricated, which in this repo is the worse fault of the two.
+ *
+ * What actually mirrors, and why: `white-space: nowrap` is direction-neutral, and
+ * the gap between buttons is `margin-inline-start`, which is logical — so in Arabic
+ * the gap moves to the physical right without a second rule. The cell's own
+ * alignment comes from Carbon, which sets `text-align: start` on every `th`/`td`
+ * (@carbon/styles/scss/components/data-table/_data-table.scss:185) — also logical.
+ * Contrast MUI, whose `align="right"` on a TableCell has no logical equivalent. */
 .demo__row-actions {
   white-space: nowrap;
 }

@@ -48,21 +48,53 @@ export interface SortState {
  * ISO date and datetime strings sort correctly as strings, which is why the
  * fixtures use ISO. Nulls sort last in both directions — a choice a built-in
  * grid would have made for us, and one that has to be made explicitly here.
+ *
+ * THE COLLATOR IS A REQUIRED ARGUMENT, not an optional convenience. A bare
+ * `String#localeCompare()` with no locale sorts by whatever default locale the
+ * runtime happens to have, so the German and French passes would order accented
+ * country names differently on a developer's machine and on CI. Taking an
+ * `Intl.Collator` built from the demo's own `bcp47` makes the ordering a property
+ * of the selected locale rather than of the runner — the same contract as
+ * `apps/mangrove-mantine/src/table-behaviour.ts` and as the `Intl.Collator` in the
+ * React Aria pairing, and the same thing the antd views get for free by passing
+ * the locale to `localeCompare`.
  */
-function compareValues(a: unknown, b: unknown): number {
+function compareValues(
+  a: unknown,
+  b: unknown,
+  collator: Intl.Collator,
+  sign: 1 | -1,
+): number {
+  // The null branches are UNSIGNED on purpose: `reviewNote` is nullable and nulls
+  // belong at the bottom of the list in both directions, so the direction sign
+  // must not reach them.
   if (a === null || a === undefined) return b === null || b === undefined ? 0 : 1;
   if (b === null || b === undefined) return -1;
-  if (typeof a === "number" && typeof b === "number") return a - b;
-  return String(a).localeCompare(String(b));
+  if (typeof a === "number" && typeof b === "number") return (a - b) * sign;
+  return collator.compare(String(a), String(b)) * sign;
 }
 
+/**
+ * DESCENDING IS THE NEGATED COMPARATOR, NOT A REVERSED ARRAY.
+ *
+ * `Array#sort` is stable, so `.reverse()` on the ascending result also reverses
+ * the order WITHIN every tie group. `hazardType` has eight distinct values across
+ * 250 rows, so a descending sort on it reversed ~31 rows inside each group as a
+ * side effect, and asc → desc → asc did not restore the original secondary
+ * ordering. Negating the comparator flips only the key being sorted on and leaves
+ * stability — and therefore the secondary ordering — intact, which is what a
+ * built-in grid's `sortComparator` does.
+ */
 export function sortRecords(
   records: readonly LossRecord[],
   sort: SortState | null,
+  collator: Intl.Collator,
 ): readonly LossRecord[] {
   if (!sort) return records;
-  const sorted = [...records].sort((a, b) => compareValues(a[sort.key], b[sort.key]));
-  return sort.direction === "asc" ? sorted : sorted.reverse();
+  const sign: 1 | -1 = sort.direction === "asc" ? 1 : -1;
+  return [...records].sort((a, b) =>
+    compareValues(a[sort.key], b[sort.key], collator, sign),
+  );
 }
 
 /* ---------------------------------------------------------------- filtering */

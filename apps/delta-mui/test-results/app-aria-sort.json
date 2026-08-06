@@ -1,0 +1,30 @@
+[
+  {
+    "column": "Country",
+    "ariaSort": "descending"
+  },
+  {
+    "column": "Hazard type",
+    "ariaSort": null
+  },
+  {
+    "column": "Event date",
+    "ariaSort": null
+  },
+  {
+    "column": "People affected",
+    "ariaSort": null
+  },
+  {
+    "column": "Economic loss (USD m)",
+    "ariaSort": null
+  },
+  {
+    "column": "Verification status",
+    "ariaSort": null
+  },
+  {
+    "column": "Review note",
+    "ariaSort": null
+  }
+]

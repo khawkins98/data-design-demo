@@ -130,12 +130,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 371,
+                      "duration": 500,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:01:49.587Z",
+                      "startTime": "2026-08-06T17:32:26.945Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -164,12 +164,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 243,
+                      "duration": 424,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:01:50.110Z",
+                      "startTime": "2026-08-06T17:32:27.554Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -198,12 +198,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 257,
+                      "duration": 475,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:01:50.358Z",
+                      "startTime": "2026-08-06T17:32:27.987Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -232,12 +232,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 422,
+                      "duration": 715,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:01:50.618Z",
+                      "startTime": "2026-08-06T17:32:28.469Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -266,12 +266,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 299,
+                      "duration": 605,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:01:51.043Z",
+                      "startTime": "2026-08-06T17:32:29.190Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -300,12 +300,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1233,
+                      "duration": 1387,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:01:51.345Z",
+                      "startTime": "2026-08-06T17:32:29.800Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -340,12 +340,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 242,
+                      "duration": 317,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:01:52.583Z",
+                      "startTime": "2026-08-06T17:32:31.192Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -374,12 +374,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 642,
+                      "duration": 894,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:01:52.830Z",
+                      "startTime": "2026-08-06T17:32:31.514Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -408,12 +408,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 401,
+                      "duration": 656,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:01:53.480Z",
+                      "startTime": "2026-08-06T17:32:32.412Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -442,11 +442,11 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2854,
+                      "duration": 4942,
                       "errors": [],
                       "stdout": [
                         {
-                          "text": "axe 01-forms: 0 violations (0 critical, 0 serious), 0 incomplete\n"
+                          "text": "axe 01-forms: 0 violations (0 critical, 0 serious), 1 incomplete\n"
                         },
                         {
                           "text": "axe 02-selection: 0 violations (0 critical, 0 serious), 0 incomplete\n"
@@ -475,7 +475,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:01:53.885Z",
+                      "startTime": "2026-08-06T17:32:33.073Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -510,12 +510,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 812,
+                      "duration": 1222,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:01:56.742Z",
+                      "startTime": "2026-08-06T17:32:38.020Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -544,12 +544,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1012,
+                      "duration": 1674,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:01:57.558Z",
+                      "startTime": "2026-08-06T17:32:39.247Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -578,12 +578,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 407,
+                      "duration": 572,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:01:58.572Z",
+                      "startTime": "2026-08-06T17:32:40.925Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -612,12 +612,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 274,
+                      "duration": 683,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:08.419Z",
+                      "startTime": "2026-08-06T17:33:01.595Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -646,12 +646,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 243,
+                      "duration": 565,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:08.771Z",
+                      "startTime": "2026-08-06T17:33:02.446Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -680,12 +680,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 261,
+                      "duration": 649,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:09.019Z",
+                      "startTime": "2026-08-06T17:33:03.020Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -714,12 +714,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 446,
+                      "duration": 884,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:09.283Z",
+                      "startTime": "2026-08-06T17:33:03.682Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -748,12 +748,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 304,
+                      "duration": 635,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:09.733Z",
+                      "startTime": "2026-08-06T17:33:04.577Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -782,12 +782,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1228,
+                      "duration": 1567,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:10.041Z",
+                      "startTime": "2026-08-06T17:33:05.219Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -822,12 +822,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 249,
+                      "duration": 436,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:11.273Z",
+                      "startTime": "2026-08-06T17:33:06.792Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -856,12 +856,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 644,
+                      "duration": 1100,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:11.526Z",
+                      "startTime": "2026-08-06T17:33:07.234Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -890,12 +890,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 429,
+                      "duration": 875,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:12.175Z",
+                      "startTime": "2026-08-06T17:33:08.342Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -924,11 +924,11 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2840,
+                      "duration": 6976,
                       "errors": [],
                       "stdout": [
                         {
-                          "text": "axe 01-forms: 0 violations (0 critical, 0 serious), 0 incomplete\n"
+                          "text": "axe 01-forms: 0 violations (0 critical, 0 serious), 1 incomplete\n"
                         },
                         {
                           "text": "axe 02-selection: 0 violations (0 critical, 0 serious), 0 incomplete\n"
@@ -957,7 +957,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:12.608Z",
+                      "startTime": "2026-08-06T17:33:09.225Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -992,12 +992,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 924,
+                      "duration": 1465,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:15.450Z",
+                      "startTime": "2026-08-06T17:33:16.214Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1026,12 +1026,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1095,
+                      "duration": 1836,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:16.377Z",
+                      "startTime": "2026-08-06T17:33:17.689Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1060,12 +1060,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 367,
+                      "duration": 898,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:17.476Z",
+                      "startTime": "2026-08-06T17:33:19.533Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1094,12 +1094,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 281,
+                      "duration": 486,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:27.753Z",
+                      "startTime": "2026-08-06T17:33:39.158Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1128,12 +1128,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 251,
+                      "duration": 468,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:28.107Z",
+                      "startTime": "2026-08-06T17:33:39.766Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1162,12 +1162,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 262,
+                      "duration": 558,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:28.363Z",
+                      "startTime": "2026-08-06T17:33:40.244Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1196,12 +1196,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 451,
+                      "duration": 802,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:28.628Z",
+                      "startTime": "2026-08-06T17:33:40.809Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1230,12 +1230,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 308,
+                      "duration": 648,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:29.083Z",
+                      "startTime": "2026-08-06T17:33:41.618Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1264,12 +1264,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1233,
+                      "duration": 1451,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:29.395Z",
+                      "startTime": "2026-08-06T17:33:42.274Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -1304,12 +1304,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 258,
+                      "duration": 510,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:30.632Z",
+                      "startTime": "2026-08-06T17:33:43.733Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1338,12 +1338,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 727,
+                      "duration": 1142,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:30.895Z",
+                      "startTime": "2026-08-06T17:33:44.250Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1372,12 +1372,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 424,
+                      "duration": 870,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:31.629Z",
+                      "startTime": "2026-08-06T17:33:45.401Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1406,11 +1406,11 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2903,
+                      "duration": 5964,
                       "errors": [],
                       "stdout": [
                         {
-                          "text": "axe 01-forms: 0 violations (0 critical, 0 serious), 0 incomplete\n"
+                          "text": "axe 01-forms: 0 violations (0 critical, 0 serious), 1 incomplete\n"
                         },
                         {
                           "text": "axe 02-selection: 0 violations (0 critical, 0 serious), 0 incomplete\n"
@@ -1439,7 +1439,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:32.056Z",
+                      "startTime": "2026-08-06T17:33:46.280Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -1474,12 +1474,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 964,
+                      "duration": 1406,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:34.963Z",
+                      "startTime": "2026-08-06T17:33:52.251Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1508,12 +1508,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1127,
+                      "duration": 2084,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:35.931Z",
+                      "startTime": "2026-08-06T17:33:53.663Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1542,12 +1542,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 356,
+                      "duration": 888,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:37.061Z",
+                      "startTime": "2026-08-06T17:33:55.756Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1574,7 +1574,7 @@
         {
           "title": "embedded island",
           "file": "island.spec.ts",
-          "line": 85,
+          "line": 133,
           "column": 6,
           "specs": [
             {
@@ -1593,12 +1593,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 182,
+                      "duration": 323,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:01:58.988Z",
+                      "startTime": "2026-08-06T17:32:41.522Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1608,7 +1608,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-95c6e15524aec3884bc9",
               "file": "island.spec.ts",
-              "line": 86,
+              "line": 134,
               "column": 3
             },
             {
@@ -1627,12 +1627,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 109,
+                      "duration": 178,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:01:59.172Z",
+                      "startTime": "2026-08-06T17:32:41.850Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1642,7 +1642,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-e364afafb02c59eff16b",
               "file": "island.spec.ts",
-              "line": 115,
+              "line": 163,
               "column": 3
             },
             {
@@ -1661,12 +1661,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 196,
+                      "duration": 354,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:01:59.284Z",
+                      "startTime": "2026-08-06T17:32:42.032Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1676,7 +1676,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-cdb01a0930e6cb0df872",
               "file": "island.spec.ts",
-              "line": 137,
+              "line": 185,
               "column": 3
             },
             {
@@ -1695,12 +1695,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1302,
+                      "duration": 1484,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:01:59.483Z",
+                      "startTime": "2026-08-06T17:32:42.391Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -1716,7 +1716,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-dca1e9f336e2e5cc78ea",
               "file": "island.spec.ts",
-              "line": 154,
+              "line": 202,
               "column": 3
             },
             {
@@ -1735,18 +1735,18 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 179,
+                      "duration": 208,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:00.790Z",
+                      "startTime": "2026-08-06T17:32:43.879Z",
                       "annotations": [],
                       "attachments": [
                         {
                           "name": "island-layer-takeover.json",
                           "contentType": "application/json",
-                          "body": "ewogICJlcnJvciI6IG51bGwsCiAgImFudGQiOiB7CiAgICAiYm9yZGVyVG9wV2lkdGgiOiAiMnB4IiwKICAgICJib3JkZXJUb3BDb2xvciI6ICJyZ2IoMjYsIDI2LCAyNikiLAogICAgImJvcmRlclRvcFN0eWxlIjogInNvbGlkIiwKICAgICJib3JkZXJSYWRpdXMiOiAiMHB4IiwKICAgICJoZWlnaHQiOiAiNDZweCIsCiAgICAiZm9udEZhbWlseSI6ICJSb2JvdG8sIHNhbnMtc2VyaWYiCiAgfSwKICAiYmFyZU1hbmdyb3ZlSW5wdXQiOiB7CiAgICAiYm9yZGVyVG9wV2lkdGgiOiAiMnB4IiwKICAgICJib3JkZXJUb3BDb2xvciI6ICJyZ2IoMjYsIDI2LCAyNikiLAogICAgImJvcmRlclRvcFN0eWxlIjogInNvbGlkIiwKICAgICJib3JkZXJSYWRpdXMiOiAiMHB4IiwKICAgICJoZWlnaHQiOiAiNDZweCIsCiAgICAiZm9udEZhbWlseSI6ICJSb2JvdG8sIHNhbnMtc2VyaWYiCiAgfSwKICAiYW50ZFN0eWxlVGFnc1VzaW5nTGF5ZXIiOiAxNSwKICAiYW50ZENsYXNzU3RpbGxQcmVzZW50IjogdHJ1ZQp9"
+                          "body": "ewogICJlcnJvciI6IG51bGwsCiAgImFudGQiOiB7CiAgICAiYm9yZGVyVG9wV2lkdGgiOiAiMnB4IiwKICAgICJib3JkZXJUb3BDb2xvciI6ICJyZ2IoMjYsIDI2LCAyNikiLAogICAgImJvcmRlclRvcFN0eWxlIjogInNvbGlkIiwKICAgICJib3JkZXJSYWRpdXMiOiAiMHB4IiwKICAgICJoZWlnaHQiOiAiNDZweCIsCiAgICAiZm9udEZhbWlseSI6ICJSb2JvdG8sIHNhbnMtc2VyaWYiCiAgfSwKICAiYmFyZU1hbmdyb3ZlSW5wdXQiOiB7CiAgICAiYm9yZGVyVG9wV2lkdGgiOiAiMnB4IiwKICAgICJib3JkZXJUb3BDb2xvciI6ICJyZ2IoMjYsIDI2LCAyNikiLAogICAgImJvcmRlclRvcFN0eWxlIjogInNvbGlkIiwKICAgICJib3JkZXJSYWRpdXMiOiAiMHB4IiwKICAgICJoZWlnaHQiOiAiNDZweCIsCiAgICAiZm9udEZhbWlseSI6ICJSb2JvdG8sIHNhbnMtc2VyaWYiCiAgfSwKICAiYW50ZFN0eWxlVGFnc1VzaW5nTGF5ZXIiOiAxNiwKICAiYW50ZENsYXNzU3RpbGxQcmVzZW50IjogdHJ1ZQp9"
                         }
                       ]
                     }
@@ -1756,7 +1756,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-d52d942f8d98c25d9f96",
               "file": "island.spec.ts",
-              "line": 190,
+              "line": 238,
               "column": 3
             },
             {
@@ -1775,12 +1775,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 586,
+                      "duration": 721,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:00.973Z",
+                      "startTime": "2026-08-06T17:32:44.091Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -1796,7 +1796,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-2d9ae155903422419a41",
               "file": "island.spec.ts",
-              "line": 303,
+              "line": 351,
               "column": 3
             },
             {
@@ -1815,12 +1815,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 165,
+                      "duration": 404,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:01.562Z",
+                      "startTime": "2026-08-06T17:32:44.817Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1830,7 +1830,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-3468568f9318cf60cf03",
               "file": "island.spec.ts",
-              "line": 383,
+              "line": 431,
               "column": 3
             },
             {
@@ -1849,12 +1849,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1456,
+                      "duration": 1495,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:01.731Z",
+                      "startTime": "2026-08-06T17:32:45.228Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1864,7 +1864,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-42ac899ec4546ba9d447",
               "file": "island.spec.ts",
-              "line": 443,
+              "line": 491,
               "column": 3
             },
             {
@@ -1883,12 +1883,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 317,
+                      "duration": 605,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:03.190Z",
+                      "startTime": "2026-08-06T17:32:46.731Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1898,7 +1898,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-5f477acd960399fde7ee",
               "file": "island.spec.ts",
-              "line": 462,
+              "line": 510,
               "column": 3
             },
             {
@@ -1917,12 +1917,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1126,
+                      "duration": 1015,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:03.510Z",
+                      "startTime": "2026-08-06T17:32:47.342Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1932,7 +1932,177 @@
               ],
               "id": "151e2ac1b06ef54fe07f-657de8e40204202fc504",
               "file": "island.spec.ts",
-              "line": 476,
+              "line": 524,
+              "column": 3
+            },
+            {
+              "title": "sorts from a column header",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 610,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T17:32:48.365Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-777eb2849a00d67d3214",
+              "file": "island.spec.ts",
+              "line": 546,
+              "column": 3
+            },
+            {
+              "title": "a descending sort preserves the source order inside tie groups",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 616,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T17:32:48.982Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-fea3db158a29a0e8cee4",
+              "file": "island.spec.ts",
+              "line": 593,
+              "column": 3
+            },
+            {
+              "title": "returns to page one when the sort changes",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 586,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T17:32:49.606Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-9c4acc6da85841b21a6e",
+              "file": "island.spec.ts",
+              "line": 630,
+              "column": 3
+            },
+            {
+              "title": "orders by the selected locale's collation in German",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 610,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T17:32:50.199Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-a6efef83e9ec740d3f74",
+              "file": "island.spec.ts",
+              "line": 649,
+              "column": 3
+            },
+            {
+              "title": "status pills read the record's status and their colour tracks it",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 384,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T17:32:50.815Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-b1c77f279c79bb03639c",
+              "file": "island.spec.ts",
+              "line": 678,
               "column": 3
             },
             {
@@ -1951,12 +2121,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 275,
+                      "duration": 673,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:04.640Z",
+                      "startTime": "2026-08-06T17:32:51.207Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1966,7 +2136,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-bfb1bacfb9c8cd33a5e3",
               "file": "island.spec.ts",
-              "line": 488,
+              "line": 719,
               "column": 3
             },
             {
@@ -1985,12 +2155,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 316,
+                      "duration": 756,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:04.919Z",
+                      "startTime": "2026-08-06T17:32:51.889Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2000,7 +2170,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-33bdd2dee751d7e643a8",
               "file": "island.spec.ts",
-              "line": 514,
+              "line": 745,
               "column": 3
             },
             {
@@ -2019,22 +2189,22 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 743,
+                      "duration": 1932,
                       "errors": [],
                       "stdout": [
                         {
-                          "text": "axe island scoped: 1 violations (0 critical, 1 serious), 1 incomplete (rules: scrollable-region-focusable) | whole page: 2 violations (rules: link-in-text-block, scrollable-region-focusable)\n"
+                          "text": "axe island scoped: 0 violations (0 critical, 0 serious), 1 incomplete (rules: none) | whole page: 1 violations (rules: link-in-text-block)\n"
                         }
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:05.238Z",
+                      "startTime": "2026-08-06T17:32:52.652Z",
                       "annotations": [],
                       "attachments": [
                         {
                           "name": "axe-island-summary.json",
                           "contentType": "application/json",
-                          "body": "ewogICJzY29wZWQiOiB7CiAgICAic2VjdGlvbiI6ICJpc2xhbmQtY2FuZGlkYXRlLXN1YnRyZWUiLAogICAgInVybCI6ICJodHRwOi8vbG9jYWxob3N0OjUyMDkvaXNsYW5kLmh0bWw/Y2FuZGlkYXRlPW9uIiwKICAgICJ0YWdzIjogWwogICAgICAid2NhZzJhIiwKICAgICAgIndjYWcyYWEiLAogICAgICAid2NhZzIxYSIsCiAgICAgICJ3Y2FnMjFhYSIsCiAgICAgICJ3Y2FnMjJhYSIKICAgIF0sCiAgICAidmlvbGF0aW9ucyI6IFsKICAgICAgewogICAgICAgICJpZCI6ICJzY3JvbGxhYmxlLXJlZ2lvbi1mb2N1c2FibGUiLAogICAgICAgICJpbXBhY3QiOiAic2VyaW91cyIsCiAgICAgICAgImhlbHAiOiAiU2Nyb2xsYWJsZSByZWdpb24gbXVzdCBoYXZlIGtleWJvYXJkIGFjY2VzcyIsCiAgICAgICAgImhlbHBVcmwiOiAiaHR0cHM6Ly9kZXF1ZXVuaXZlcnNpdHkuY29tL3J1bGVzL2F4ZS80LjEyL3Njcm9sbGFibGUtcmVnaW9uLWZvY3VzYWJsZT9hcHBsaWNhdGlvbj1wbGF5d3JpZ2h0IiwKICAgICAgICAibm9kZXMiOiBbCiAgICAgICAgICAiLmFudC10YWJsZS1jb250ZW50IgogICAgICAgIF0KICAgICAgfQogICAgXSwKICAgICJjb3VudHMiOiB7CiAgICAgICJ2aW9sYXRpb25zIjogMSwKICAgICAgInNlcmlvdXMiOiAxLAogICAgICAiY3JpdGljYWwiOiAwLAogICAgICAiaW5jb21wbGV0ZSI6IDEKICAgIH0sCiAgICAiaW5jb21wbGV0ZVJ1bGVJZHMiOiBbCiAgICAgICJjb2xvci1jb250cmFzdCIKICAgIF0KICB9LAogICJ3aG9sZVBhZ2UiOiB7CiAgICAic2VjdGlvbiI6ICJpc2xhbmQtd2hvbGUtcGFnZSIsCiAgICAidXJsIjogImh0dHA6Ly9sb2NhbGhvc3Q6NTIwOS9pc2xhbmQuaHRtbD9jYW5kaWRhdGU9b24iLAogICAgInRhZ3MiOiBbCiAgICAgICJ3Y2FnMmEiLAogICAgICAid2NhZzJhYSIsCiAgICAgICJ3Y2FnMjFhIiwKICAgICAgIndjYWcyMWFhIiwKICAgICAgIndjYWcyMmFhIgogICAgXSwKICAgICJ2aW9sYXRpb25zIjogWwogICAgICB7CiAgICAgICAgImlkIjogImxpbmstaW4tdGV4dC1ibG9jayIsCiAgICAgICAgImltcGFjdCI6ICJzZXJpb3VzIiwKICAgICAgICAiaGVscCI6ICJMaW5rcyBtdXN0IGJlIGRpc3Rpbmd1aXNoYWJsZSB3aXRob3V0IHJlbHlpbmcgb24gY29sb3IiLAogICAgICAgICJoZWxwVXJsIjogImh0dHBzOi8vZGVxdWV1bml2ZXJzaXR5LmNvbS9ydWxlcy9heGUvNC4xMi9saW5rLWluLXRleHQtYmxvY2s/YXBwbGljYXRpb249cGxheXdyaWdodCIsCiAgICAgICAgIm5vZGVzIjogWwogICAgICAgICAgImFbZGF0YS1jYW5hcnk9XCJsaW5rXCJdIgogICAgICAgIF0KICAgICAgfSwKICAgICAgewogICAgICAgICJpZCI6ICJzY3JvbGxhYmxlLXJlZ2lvbi1mb2N1c2FibGUiLAogICAgICAgICJpbXBhY3QiOiAic2VyaW91cyIsCiAgICAgICAgImhlbHAiOiAiU2Nyb2xsYWJsZSByZWdpb24gbXVzdCBoYXZlIGtleWJvYXJkIGFjY2VzcyIsCiAgICAgICAgImhlbHBVcmwiOiAiaHR0cHM6Ly9kZXF1ZXVuaXZlcnNpdHkuY29tL3J1bGVzL2F4ZS80LjEyL3Njcm9sbGFibGUtcmVnaW9uLWZvY3VzYWJsZT9hcHBsaWNhdGlvbj1wbGF5d3JpZ2h0IiwKICAgICAgICAibm9kZXMiOiBbCiAgICAgICAgICAiLmFudC10YWJsZS1jb250ZW50IgogICAgICAgIF0KICAgICAgfQogICAgXSwKICAgICJjb3VudHMiOiB7CiAgICAgICJ2aW9sYXRpb25zIjogMiwKICAgICAgInNlcmlvdXMiOiAyLAogICAgICAiY3JpdGljYWwiOiAwLAogICAgICAiaW5jb21wbGV0ZSI6IDEKICAgIH0sCiAgICAiaW5jb21wbGV0ZVJ1bGVJZHMiOiBbCiAgICAgICJjb2xvci1jb250cmFzdCIKICAgIF0KICB9Cn0="
+                          "body": "ewogICJzY29wZWQiOiB7CiAgICAic2VjdGlvbiI6ICJpc2xhbmQtY2FuZGlkYXRlLXN1YnRyZWUiLAogICAgInVybCI6ICJodHRwOi8vbG9jYWxob3N0OjUyMDkvaXNsYW5kLmh0bWw/Y2FuZGlkYXRlPW9uIiwKICAgICJ0YWdzIjogWwogICAgICAid2NhZzJhIiwKICAgICAgIndjYWcyYWEiLAogICAgICAid2NhZzIxYSIsCiAgICAgICJ3Y2FnMjFhYSIsCiAgICAgICJ3Y2FnMjJhYSIKICAgIF0sCiAgICAidmlvbGF0aW9ucyI6IFtdLAogICAgImNvdW50cyI6IHsKICAgICAgInZpb2xhdGlvbnMiOiAwLAogICAgICAic2VyaW91cyI6IDAsCiAgICAgICJjcml0aWNhbCI6IDAsCiAgICAgICJpbmNvbXBsZXRlIjogMQogICAgfSwKICAgICJpbmNvbXBsZXRlUnVsZUlkcyI6IFsKICAgICAgImNvbG9yLWNvbnRyYXN0IgogICAgXQogIH0sCiAgIndob2xlUGFnZSI6IHsKICAgICJzZWN0aW9uIjogImlzbGFuZC13aG9sZS1wYWdlIiwKICAgICJ1cmwiOiAiaHR0cDovL2xvY2FsaG9zdDo1MjA5L2lzbGFuZC5odG1sP2NhbmRpZGF0ZT1vbiIsCiAgICAidGFncyI6IFsKICAgICAgIndjYWcyYSIsCiAgICAgICJ3Y2FnMmFhIiwKICAgICAgIndjYWcyMWEiLAogICAgICAid2NhZzIxYWEiLAogICAgICAid2NhZzIyYWEiCiAgICBdLAogICAgInZpb2xhdGlvbnMiOiBbCiAgICAgIHsKICAgICAgICAiaWQiOiAibGluay1pbi10ZXh0LWJsb2NrIiwKICAgICAgICAiaW1wYWN0IjogInNlcmlvdXMiLAogICAgICAgICJoZWxwIjogIkxpbmtzIG11c3QgYmUgZGlzdGluZ3Vpc2hhYmxlIHdpdGhvdXQgcmVseWluZyBvbiBjb2xvciIsCiAgICAgICAgImhlbHBVcmwiOiAiaHR0cHM6Ly9kZXF1ZXVuaXZlcnNpdHkuY29tL3J1bGVzL2F4ZS80LjEyL2xpbmstaW4tdGV4dC1ibG9jaz9hcHBsaWNhdGlvbj1wbGF5d3JpZ2h0IiwKICAgICAgICAibm9kZXMiOiBbCiAgICAgICAgICAiYVtkYXRhLWNhbmFyeT1cImxpbmtcIl0iCiAgICAgICAgXQogICAgICB9CiAgICBdLAogICAgImNvdW50cyI6IHsKICAgICAgInZpb2xhdGlvbnMiOiAxLAogICAgICAic2VyaW91cyI6IDEsCiAgICAgICJjcml0aWNhbCI6IDAsCiAgICAgICJpbmNvbXBsZXRlIjogMQogICAgfSwKICAgICJpbmNvbXBsZXRlUnVsZUlkcyI6IFsKICAgICAgImNvbG9yLWNvbnRyYXN0IgogICAgXQogIH0KfQ=="
                         }
                       ]
                     }
@@ -2044,7 +2214,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-233abba4d66242009936",
               "file": "island.spec.ts",
-              "line": 582,
+              "line": 813,
               "column": 3
             },
             {
@@ -2063,22 +2233,22 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 847,
+                      "duration": 1673,
                       "errors": [],
                       "stdout": [
                         {
-                          "text": "axe island open dropdown: 2 violations (0 critical, 2 serious), 2 incomplete (rules: color-contrast, scrollable-region-focusable)\n"
+                          "text": "axe island open dropdown: 1 violations (0 critical, 1 serious), 2 incomplete (rules: color-contrast)\n"
                         }
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:05.984Z",
+                      "startTime": "2026-08-06T17:32:54.591Z",
                       "annotations": [],
                       "attachments": [
                         {
                           "name": "axe-island-open-dropdown.json",
                           "contentType": "application/json",
-                          "body": "ewogICJzZWN0aW9uIjogImlzbGFuZC1vcGVuLWRyb3Bkb3duIiwKICAidXJsIjogImh0dHA6Ly9sb2NhbGhvc3Q6NTIwOS9pc2xhbmQuaHRtbD9jYW5kaWRhdGU9b24iLAogICJ0YWdzIjogWwogICAgIndjYWcyYSIsCiAgICAid2NhZzJhYSIsCiAgICAid2NhZzIxYSIsCiAgICAid2NhZzIxYWEiLAogICAgIndjYWcyMmFhIgogIF0sCiAgInZpb2xhdGlvbnMiOiBbCiAgICB7CiAgICAgICJpZCI6ICJjb2xvci1jb250cmFzdCIsCiAgICAgICJpbXBhY3QiOiAic2VyaW91cyIsCiAgICAgICJoZWxwIjogIkVsZW1lbnRzIG11c3QgbWVldCBtaW5pbXVtIGNvbG9yIGNvbnRyYXN0IHJhdGlvIHRocmVzaG9sZHMiLAogICAgICAiaGVscFVybCI6ICJodHRwczovL2RlcXVldW5pdmVyc2l0eS5jb20vcnVsZXMvYXhlLzQuMTIvY29sb3ItY29udHJhc3Q/YXBwbGljYXRpb249cGxheXdyaWdodCIsCiAgICAgICJub2RlcyI6IFsKICAgICAgICAiI2lzbGFuZC1oYXphcmQiCiAgICAgIF0KICAgIH0sCiAgICB7CiAgICAgICJpZCI6ICJzY3JvbGxhYmxlLXJlZ2lvbi1mb2N1c2FibGUiLAogICAgICAiaW1wYWN0IjogInNlcmlvdXMiLAogICAgICAiaGVscCI6ICJTY3JvbGxhYmxlIHJlZ2lvbiBtdXN0IGhhdmUga2V5Ym9hcmQgYWNjZXNzIiwKICAgICAgImhlbHBVcmwiOiAiaHR0cHM6Ly9kZXF1ZXVuaXZlcnNpdHkuY29tL3J1bGVzL2F4ZS80LjEyL3Njcm9sbGFibGUtcmVnaW9uLWZvY3VzYWJsZT9hcHBsaWNhdGlvbj1wbGF5d3JpZ2h0IiwKICAgICAgIm5vZGVzIjogWwogICAgICAgICIuYW50LXRhYmxlLWNvbnRlbnQiCiAgICAgIF0KICAgIH0KICBdLAogICJjb3VudHMiOiB7CiAgICAidmlvbGF0aW9ucyI6IDIsCiAgICAic2VyaW91cyI6IDIsCiAgICAiY3JpdGljYWwiOiAwLAogICAgImluY29tcGxldGUiOiAyCiAgfSwKICAiaW5jb21wbGV0ZVJ1bGVJZHMiOiBbCiAgICAiYXJpYS12YWxpZC1hdHRyLXZhbHVlIiwKICAgICJjb2xvci1jb250cmFzdCIKICBdCn0="
+                          "body": "ewogICJzZWN0aW9uIjogImlzbGFuZC1vcGVuLWRyb3Bkb3duIiwKICAidXJsIjogImh0dHA6Ly9sb2NhbGhvc3Q6NTIwOS9pc2xhbmQuaHRtbD9jYW5kaWRhdGU9b24iLAogICJ0YWdzIjogWwogICAgIndjYWcyYSIsCiAgICAid2NhZzJhYSIsCiAgICAid2NhZzIxYSIsCiAgICAid2NhZzIxYWEiLAogICAgIndjYWcyMmFhIgogIF0sCiAgInZpb2xhdGlvbnMiOiBbCiAgICB7CiAgICAgICJpZCI6ICJjb2xvci1jb250cmFzdCIsCiAgICAgICJpbXBhY3QiOiAic2VyaW91cyIsCiAgICAgICJoZWxwIjogIkVsZW1lbnRzIG11c3QgbWVldCBtaW5pbXVtIGNvbG9yIGNvbnRyYXN0IHJhdGlvIHRocmVzaG9sZHMiLAogICAgICAiaGVscFVybCI6ICJodHRwczovL2RlcXVldW5pdmVyc2l0eS5jb20vcnVsZXMvYXhlLzQuMTIvY29sb3ItY29udHJhc3Q/YXBwbGljYXRpb249cGxheXdyaWdodCIsCiAgICAgICJub2RlcyI6IFsKICAgICAgICAiI2lzbGFuZC1oYXphcmQiCiAgICAgIF0KICAgIH0KICBdLAogICJjb3VudHMiOiB7CiAgICAidmlvbGF0aW9ucyI6IDEsCiAgICAic2VyaW91cyI6IDEsCiAgICAiY3JpdGljYWwiOiAwLAogICAgImluY29tcGxldGUiOiAyCiAgfSwKICAiaW5jb21wbGV0ZVJ1bGVJZHMiOiBbCiAgICAiYXJpYS12YWxpZC1hdHRyLXZhbHVlIiwKICAgICJjb2xvci1jb250cmFzdCIKICBdCn0="
                         }
                       ]
                     }
@@ -2088,7 +2258,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-e9c6d3b6068ce75c258b",
               "file": "island.spec.ts",
-              "line": 651,
+              "line": 882,
               "column": 3
             },
             {
@@ -2107,12 +2277,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 753,
+                      "duration": 1261,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:06.834Z",
+                      "startTime": "2026-08-06T17:32:56.271Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2122,7 +2292,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-0ac6fb5b17ccbdc4e35e",
               "file": "island.spec.ts",
-              "line": 683,
+              "line": 914,
               "column": 3
             },
             {
@@ -2141,12 +2311,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 363,
+                      "duration": 3005,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:07.590Z",
+                      "startTime": "2026-08-06T17:32:57.540Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2156,7 +2326,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-582c1b995f1772c2b628",
               "file": "island.spec.ts",
-              "line": 696,
+              "line": 927,
               "column": 3
             },
             {
@@ -2175,12 +2345,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 237,
+                      "duration": 532,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:07.957Z",
+                      "startTime": "2026-08-06T17:33:00.553Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2190,7 +2360,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-354664fe0f1f1e4ae7d8",
               "file": "island.spec.ts",
-              "line": 709,
+              "line": 940,
               "column": 3
             },
             {
@@ -2209,12 +2379,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 181,
+                      "duration": 509,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:17.852Z",
+                      "startTime": "2026-08-06T17:33:20.466Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2224,7 +2394,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-13a0161603284f0febfb",
               "file": "island.spec.ts",
-              "line": 86,
+              "line": 134,
               "column": 3
             },
             {
@@ -2243,12 +2413,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 104,
+                      "duration": 250,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:18.036Z",
+                      "startTime": "2026-08-06T17:33:20.982Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2258,7 +2428,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-fe1b0055338abdbc5bad",
               "file": "island.spec.ts",
-              "line": 115,
+              "line": 163,
               "column": 3
             },
             {
@@ -2277,12 +2447,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 197,
+                      "duration": 611,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:18.142Z",
+                      "startTime": "2026-08-06T17:33:21.240Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2292,7 +2462,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-51d95aa5b59fd752f633",
               "file": "island.spec.ts",
-              "line": 137,
+              "line": 185,
               "column": 3
             },
             {
@@ -2311,12 +2481,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1314,
+                      "duration": 1642,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:18.343Z",
+                      "startTime": "2026-08-06T17:33:21.858Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -2332,7 +2502,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-66d9d60e17854e47c631",
               "file": "island.spec.ts",
-              "line": 154,
+              "line": 202,
               "column": 3
             },
             {
@@ -2351,18 +2521,18 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 185,
+                      "duration": 367,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:19.660Z",
+                      "startTime": "2026-08-06T17:33:23.509Z",
                       "annotations": [],
                       "attachments": [
                         {
                           "name": "island-layer-takeover.json",
                           "contentType": "application/json",
-                          "body": "ewogICJlcnJvciI6IG51bGwsCiAgImFudGQiOiB7CiAgICAiYm9yZGVyVG9wV2lkdGgiOiAiMnB4IiwKICAgICJib3JkZXJUb3BDb2xvciI6ICJyZ2IoMjYsIDI2LCAyNikiLAogICAgImJvcmRlclRvcFN0eWxlIjogInNvbGlkIiwKICAgICJib3JkZXJSYWRpdXMiOiAiMHB4IiwKICAgICJoZWlnaHQiOiAiNDZweCIsCiAgICAiZm9udEZhbWlseSI6ICJSb2JvdG8sIHNhbnMtc2VyaWYiCiAgfSwKICAiYmFyZU1hbmdyb3ZlSW5wdXQiOiB7CiAgICAiYm9yZGVyVG9wV2lkdGgiOiAiMnB4IiwKICAgICJib3JkZXJUb3BDb2xvciI6ICJyZ2IoMjYsIDI2LCAyNikiLAogICAgImJvcmRlclRvcFN0eWxlIjogInNvbGlkIiwKICAgICJib3JkZXJSYWRpdXMiOiAiMHB4IiwKICAgICJoZWlnaHQiOiAiNDZweCIsCiAgICAiZm9udEZhbWlseSI6ICJSb2JvdG8sIHNhbnMtc2VyaWYiCiAgfSwKICAiYW50ZFN0eWxlVGFnc1VzaW5nTGF5ZXIiOiAxNSwKICAiYW50ZENsYXNzU3RpbGxQcmVzZW50IjogdHJ1ZQp9"
+                          "body": "ewogICJlcnJvciI6IG51bGwsCiAgImFudGQiOiB7CiAgICAiYm9yZGVyVG9wV2lkdGgiOiAiMnB4IiwKICAgICJib3JkZXJUb3BDb2xvciI6ICJyZ2IoMjYsIDI2LCAyNikiLAogICAgImJvcmRlclRvcFN0eWxlIjogInNvbGlkIiwKICAgICJib3JkZXJSYWRpdXMiOiAiMHB4IiwKICAgICJoZWlnaHQiOiAiNDZweCIsCiAgICAiZm9udEZhbWlseSI6ICJSb2JvdG8sIHNhbnMtc2VyaWYiCiAgfSwKICAiYmFyZU1hbmdyb3ZlSW5wdXQiOiB7CiAgICAiYm9yZGVyVG9wV2lkdGgiOiAiMnB4IiwKICAgICJib3JkZXJUb3BDb2xvciI6ICJyZ2IoMjYsIDI2LCAyNikiLAogICAgImJvcmRlclRvcFN0eWxlIjogInNvbGlkIiwKICAgICJib3JkZXJSYWRpdXMiOiAiMHB4IiwKICAgICJoZWlnaHQiOiAiNDZweCIsCiAgICAiZm9udEZhbWlseSI6ICJSb2JvdG8sIHNhbnMtc2VyaWYiCiAgfSwKICAiYW50ZFN0eWxlVGFnc1VzaW5nTGF5ZXIiOiAxNiwKICAiYW50ZENsYXNzU3RpbGxQcmVzZW50IjogdHJ1ZQp9"
                         }
                       ]
                     }
@@ -2372,7 +2542,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-3c84eccc1026bcc108a4",
               "file": "island.spec.ts",
-              "line": 190,
+              "line": 238,
               "column": 3
             },
             {
@@ -2391,12 +2561,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 591,
+                      "duration": 878,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:19.848Z",
+                      "startTime": "2026-08-06T17:33:23.883Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -2412,7 +2582,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-9d18dfe1d2d81fff8ddd",
               "file": "island.spec.ts",
-              "line": 303,
+              "line": 351,
               "column": 3
             },
             {
@@ -2431,12 +2601,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 163,
+                      "duration": 360,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:20.442Z",
+                      "startTime": "2026-08-06T17:33:24.768Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2446,7 +2616,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-6c3e2041021072e974f0",
               "file": "island.spec.ts",
-              "line": 383,
+              "line": 431,
               "column": 3
             },
             {
@@ -2465,12 +2635,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1510,
+                      "duration": 1355,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:20.608Z",
+                      "startTime": "2026-08-06T17:33:25.136Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2480,7 +2650,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-b6c1c7b3f6426451a193",
               "file": "island.spec.ts",
-              "line": 443,
+              "line": 491,
               "column": 3
             },
             {
@@ -2499,12 +2669,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 301,
+                      "duration": 656,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:22.122Z",
+                      "startTime": "2026-08-06T17:33:26.499Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2514,7 +2684,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-d493ea50b762fba4ffa4",
               "file": "island.spec.ts",
-              "line": 462,
+              "line": 510,
               "column": 3
             },
             {
@@ -2533,12 +2703,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1140,
+                      "duration": 1041,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:22.427Z",
+                      "startTime": "2026-08-06T17:33:27.163Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2548,7 +2718,177 @@
               ],
               "id": "151e2ac1b06ef54fe07f-ed21077433f8db2143fc",
               "file": "island.spec.ts",
-              "line": 476,
+              "line": 524,
+              "column": 3
+            },
+            {
+              "title": "sorts from a column header",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 768,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T17:33:28.212Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-2c69956940f5dd526e76",
+              "file": "island.spec.ts",
+              "line": 546,
+              "column": 3
+            },
+            {
+              "title": "a descending sort preserves the source order inside tie groups",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 645,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T17:33:28.989Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-eb1c1c0116047efe4f82",
+              "file": "island.spec.ts",
+              "line": 593,
+              "column": 3
+            },
+            {
+              "title": "returns to page one when the sort changes",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 647,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T17:33:29.641Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-58fb5f492d7f17c63c3a",
+              "file": "island.spec.ts",
+              "line": 630,
+              "column": 3
+            },
+            {
+              "title": "orders by the selected locale's collation in German",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 587,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T17:33:30.296Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-475403833c016415539f",
+              "file": "island.spec.ts",
+              "line": 649,
+              "column": 3
+            },
+            {
+              "title": "status pills read the record's status and their colour tracks it",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 329,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T17:33:30.890Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-210257e6a3991bed199d",
+              "file": "island.spec.ts",
+              "line": 678,
               "column": 3
             },
             {
@@ -2567,12 +2907,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 288,
+                      "duration": 533,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:23.571Z",
+                      "startTime": "2026-08-06T17:33:31.224Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2582,7 +2922,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-eb7bd908768bdcc0dece",
               "file": "island.spec.ts",
-              "line": 488,
+              "line": 719,
               "column": 3
             },
             {
@@ -2601,12 +2941,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 321,
+                      "duration": 551,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:23.862Z",
+                      "startTime": "2026-08-06T17:33:31.762Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2616,7 +2956,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-5d30e093a3fd8826603d",
               "file": "island.spec.ts",
-              "line": 514,
+              "line": 745,
               "column": 3
             },
             {
@@ -2635,22 +2975,22 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 888,
+                      "duration": 1386,
                       "errors": [],
                       "stdout": [
                         {
-                          "text": "axe island scoped: 1 violations (0 critical, 1 serious), 1 incomplete (rules: scrollable-region-focusable) | whole page: 2 violations (rules: link-in-text-block, scrollable-region-focusable)\n"
+                          "text": "axe island scoped: 0 violations (0 critical, 0 serious), 1 incomplete (rules: none) | whole page: 1 violations (rules: link-in-text-block)\n"
                         }
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:24.189Z",
+                      "startTime": "2026-08-06T17:33:32.320Z",
                       "annotations": [],
                       "attachments": [
                         {
                           "name": "axe-island-summary.json",
                           "contentType": "application/json",
-                          "body": "ewogICJzY29wZWQiOiB7CiAgICAic2VjdGlvbiI6ICJpc2xhbmQtY2FuZGlkYXRlLXN1YnRyZWUiLAogICAgInVybCI6ICJodHRwOi8vbG9jYWxob3N0OjUyMDkvaXNsYW5kLmh0bWw/Y2FuZGlkYXRlPW9uIiwKICAgICJ0YWdzIjogWwogICAgICAid2NhZzJhIiwKICAgICAgIndjYWcyYWEiLAogICAgICAid2NhZzIxYSIsCiAgICAgICJ3Y2FnMjFhYSIsCiAgICAgICJ3Y2FnMjJhYSIKICAgIF0sCiAgICAidmlvbGF0aW9ucyI6IFsKICAgICAgewogICAgICAgICJpZCI6ICJzY3JvbGxhYmxlLXJlZ2lvbi1mb2N1c2FibGUiLAogICAgICAgICJpbXBhY3QiOiAic2VyaW91cyIsCiAgICAgICAgImhlbHAiOiAiU2Nyb2xsYWJsZSByZWdpb24gbXVzdCBoYXZlIGtleWJvYXJkIGFjY2VzcyIsCiAgICAgICAgImhlbHBVcmwiOiAiaHR0cHM6Ly9kZXF1ZXVuaXZlcnNpdHkuY29tL3J1bGVzL2F4ZS80LjEyL3Njcm9sbGFibGUtcmVnaW9uLWZvY3VzYWJsZT9hcHBsaWNhdGlvbj1wbGF5d3JpZ2h0IiwKICAgICAgICAibm9kZXMiOiBbCiAgICAgICAgICAiLmFudC10YWJsZS1jb250ZW50IgogICAgICAgIF0KICAgICAgfQogICAgXSwKICAgICJjb3VudHMiOiB7CiAgICAgICJ2aW9sYXRpb25zIjogMSwKICAgICAgInNlcmlvdXMiOiAxLAogICAgICAiY3JpdGljYWwiOiAwLAogICAgICAiaW5jb21wbGV0ZSI6IDEKICAgIH0sCiAgICAiaW5jb21wbGV0ZVJ1bGVJZHMiOiBbCiAgICAgICJjb2xvci1jb250cmFzdCIKICAgIF0KICB9LAogICJ3aG9sZVBhZ2UiOiB7CiAgICAic2VjdGlvbiI6ICJpc2xhbmQtd2hvbGUtcGFnZSIsCiAgICAidXJsIjogImh0dHA6Ly9sb2NhbGhvc3Q6NTIwOS9pc2xhbmQuaHRtbD9jYW5kaWRhdGU9b24iLAogICAgInRhZ3MiOiBbCiAgICAgICJ3Y2FnMmEiLAogICAgICAid2NhZzJhYSIsCiAgICAgICJ3Y2FnMjFhIiwKICAgICAgIndjYWcyMWFhIiwKICAgICAgIndjYWcyMmFhIgogICAgXSwKICAgICJ2aW9sYXRpb25zIjogWwogICAgICB7CiAgICAgICAgImlkIjogImxpbmstaW4tdGV4dC1ibG9jayIsCiAgICAgICAgImltcGFjdCI6ICJzZXJpb3VzIiwKICAgICAgICAiaGVscCI6ICJMaW5rcyBtdXN0IGJlIGRpc3Rpbmd1aXNoYWJsZSB3aXRob3V0IHJlbHlpbmcgb24gY29sb3IiLAogICAgICAgICJoZWxwVXJsIjogImh0dHBzOi8vZGVxdWV1bml2ZXJzaXR5LmNvbS9ydWxlcy9heGUvNC4xMi9saW5rLWluLXRleHQtYmxvY2s/YXBwbGljYXRpb249cGxheXdyaWdodCIsCiAgICAgICAgIm5vZGVzIjogWwogICAgICAgICAgImFbZGF0YS1jYW5hcnk9XCJsaW5rXCJdIgogICAgICAgIF0KICAgICAgfSwKICAgICAgewogICAgICAgICJpZCI6ICJzY3JvbGxhYmxlLXJlZ2lvbi1mb2N1c2FibGUiLAogICAgICAgICJpbXBhY3QiOiAic2VyaW91cyIsCiAgICAgICAgImhlbHAiOiAiU2Nyb2xsYWJsZSByZWdpb24gbXVzdCBoYXZlIGtleWJvYXJkIGFjY2VzcyIsCiAgICAgICAgImhlbHBVcmwiOiAiaHR0cHM6Ly9kZXF1ZXVuaXZlcnNpdHkuY29tL3J1bGVzL2F4ZS80LjEyL3Njcm9sbGFibGUtcmVnaW9uLWZvY3VzYWJsZT9hcHBsaWNhdGlvbj1wbGF5d3JpZ2h0IiwKICAgICAgICAibm9kZXMiOiBbCiAgICAgICAgICAiLmFudC10YWJsZS1jb250ZW50IgogICAgICAgIF0KICAgICAgfQogICAgXSwKICAgICJjb3VudHMiOiB7CiAgICAgICJ2aW9sYXRpb25zIjogMiwKICAgICAgInNlcmlvdXMiOiAyLAogICAgICAiY3JpdGljYWwiOiAwLAogICAgICAiaW5jb21wbGV0ZSI6IDEKICAgIH0sCiAgICAiaW5jb21wbGV0ZVJ1bGVJZHMiOiBbCiAgICAgICJjb2xvci1jb250cmFzdCIKICAgIF0KICB9Cn0="
+                          "body": "ewogICJzY29wZWQiOiB7CiAgICAic2VjdGlvbiI6ICJpc2xhbmQtY2FuZGlkYXRlLXN1YnRyZWUiLAogICAgInVybCI6ICJodHRwOi8vbG9jYWxob3N0OjUyMDkvaXNsYW5kLmh0bWw/Y2FuZGlkYXRlPW9uIiwKICAgICJ0YWdzIjogWwogICAgICAid2NhZzJhIiwKICAgICAgIndjYWcyYWEiLAogICAgICAid2NhZzIxYSIsCiAgICAgICJ3Y2FnMjFhYSIsCiAgICAgICJ3Y2FnMjJhYSIKICAgIF0sCiAgICAidmlvbGF0aW9ucyI6IFtdLAogICAgImNvdW50cyI6IHsKICAgICAgInZpb2xhdGlvbnMiOiAwLAogICAgICAic2VyaW91cyI6IDAsCiAgICAgICJjcml0aWNhbCI6IDAsCiAgICAgICJpbmNvbXBsZXRlIjogMQogICAgfSwKICAgICJpbmNvbXBsZXRlUnVsZUlkcyI6IFsKICAgICAgImNvbG9yLWNvbnRyYXN0IgogICAgXQogIH0sCiAgIndob2xlUGFnZSI6IHsKICAgICJzZWN0aW9uIjogImlzbGFuZC13aG9sZS1wYWdlIiwKICAgICJ1cmwiOiAiaHR0cDovL2xvY2FsaG9zdDo1MjA5L2lzbGFuZC5odG1sP2NhbmRpZGF0ZT1vbiIsCiAgICAidGFncyI6IFsKICAgICAgIndjYWcyYSIsCiAgICAgICJ3Y2FnMmFhIiwKICAgICAgIndjYWcyMWEiLAogICAgICAid2NhZzIxYWEiLAogICAgICAid2NhZzIyYWEiCiAgICBdLAogICAgInZpb2xhdGlvbnMiOiBbCiAgICAgIHsKICAgICAgICAiaWQiOiAibGluay1pbi10ZXh0LWJsb2NrIiwKICAgICAgICAiaW1wYWN0IjogInNlcmlvdXMiLAogICAgICAgICJoZWxwIjogIkxpbmtzIG11c3QgYmUgZGlzdGluZ3Vpc2hhYmxlIHdpdGhvdXQgcmVseWluZyBvbiBjb2xvciIsCiAgICAgICAgImhlbHBVcmwiOiAiaHR0cHM6Ly9kZXF1ZXVuaXZlcnNpdHkuY29tL3J1bGVzL2F4ZS80LjEyL2xpbmstaW4tdGV4dC1ibG9jaz9hcHBsaWNhdGlvbj1wbGF5d3JpZ2h0IiwKICAgICAgICAibm9kZXMiOiBbCiAgICAgICAgICAiYVtkYXRhLWNhbmFyeT1cImxpbmtcIl0iCiAgICAgICAgXQogICAgICB9CiAgICBdLAogICAgImNvdW50cyI6IHsKICAgICAgInZpb2xhdGlvbnMiOiAxLAogICAgICAic2VyaW91cyI6IDEsCiAgICAgICJjcml0aWNhbCI6IDAsCiAgICAgICJpbmNvbXBsZXRlIjogMQogICAgfSwKICAgICJpbmNvbXBsZXRlUnVsZUlkcyI6IFsKICAgICAgImNvbG9yLWNvbnRyYXN0IgogICAgXQogIH0KfQ=="
                         }
                       ]
                     }
@@ -2660,7 +3000,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-6be8cce9413496559bb8",
               "file": "island.spec.ts",
-              "line": 582,
+              "line": 813,
               "column": 3
             },
             {
@@ -2679,22 +3019,22 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 957,
+                      "duration": 1295,
                       "errors": [],
                       "stdout": [
                         {
-                          "text": "axe island open dropdown: 2 violations (0 critical, 2 serious), 2 incomplete (rules: color-contrast, scrollable-region-focusable)\n"
+                          "text": "axe island open dropdown: 1 violations (0 critical, 1 serious), 2 incomplete (rules: color-contrast)\n"
                         }
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:25.082Z",
+                      "startTime": "2026-08-06T17:33:33.711Z",
                       "annotations": [],
                       "attachments": [
                         {
                           "name": "axe-island-open-dropdown.json",
                           "contentType": "application/json",
-                          "body": "ewogICJzZWN0aW9uIjogImlzbGFuZC1vcGVuLWRyb3Bkb3duIiwKICAidXJsIjogImh0dHA6Ly9sb2NhbGhvc3Q6NTIwOS9pc2xhbmQuaHRtbD9jYW5kaWRhdGU9b24iLAogICJ0YWdzIjogWwogICAgIndjYWcyYSIsCiAgICAid2NhZzJhYSIsCiAgICAid2NhZzIxYSIsCiAgICAid2NhZzIxYWEiLAogICAgIndjYWcyMmFhIgogIF0sCiAgInZpb2xhdGlvbnMiOiBbCiAgICB7CiAgICAgICJpZCI6ICJjb2xvci1jb250cmFzdCIsCiAgICAgICJpbXBhY3QiOiAic2VyaW91cyIsCiAgICAgICJoZWxwIjogIkVsZW1lbnRzIG11c3QgbWVldCBtaW5pbXVtIGNvbG9yIGNvbnRyYXN0IHJhdGlvIHRocmVzaG9sZHMiLAogICAgICAiaGVscFVybCI6ICJodHRwczovL2RlcXVldW5pdmVyc2l0eS5jb20vcnVsZXMvYXhlLzQuMTIvY29sb3ItY29udHJhc3Q/YXBwbGljYXRpb249cGxheXdyaWdodCIsCiAgICAgICJub2RlcyI6IFsKICAgICAgICAiI2lzbGFuZC1oYXphcmQiCiAgICAgIF0KICAgIH0sCiAgICB7CiAgICAgICJpZCI6ICJzY3JvbGxhYmxlLXJlZ2lvbi1mb2N1c2FibGUiLAogICAgICAiaW1wYWN0IjogInNlcmlvdXMiLAogICAgICAiaGVscCI6ICJTY3JvbGxhYmxlIHJlZ2lvbiBtdXN0IGhhdmUga2V5Ym9hcmQgYWNjZXNzIiwKICAgICAgImhlbHBVcmwiOiAiaHR0cHM6Ly9kZXF1ZXVuaXZlcnNpdHkuY29tL3J1bGVzL2F4ZS80LjEyL3Njcm9sbGFibGUtcmVnaW9uLWZvY3VzYWJsZT9hcHBsaWNhdGlvbj1wbGF5d3JpZ2h0IiwKICAgICAgIm5vZGVzIjogWwogICAgICAgICIuYW50LXRhYmxlLWNvbnRlbnQiCiAgICAgIF0KICAgIH0KICBdLAogICJjb3VudHMiOiB7CiAgICAidmlvbGF0aW9ucyI6IDIsCiAgICAic2VyaW91cyI6IDIsCiAgICAiY3JpdGljYWwiOiAwLAogICAgImluY29tcGxldGUiOiAyCiAgfSwKICAiaW5jb21wbGV0ZVJ1bGVJZHMiOiBbCiAgICAiYXJpYS12YWxpZC1hdHRyLXZhbHVlIiwKICAgICJjb2xvci1jb250cmFzdCIKICBdCn0="
+                          "body": "ewogICJzZWN0aW9uIjogImlzbGFuZC1vcGVuLWRyb3Bkb3duIiwKICAidXJsIjogImh0dHA6Ly9sb2NhbGhvc3Q6NTIwOS9pc2xhbmQuaHRtbD9jYW5kaWRhdGU9b24iLAogICJ0YWdzIjogWwogICAgIndjYWcyYSIsCiAgICAid2NhZzJhYSIsCiAgICAid2NhZzIxYSIsCiAgICAid2NhZzIxYWEiLAogICAgIndjYWcyMmFhIgogIF0sCiAgInZpb2xhdGlvbnMiOiBbCiAgICB7CiAgICAgICJpZCI6ICJjb2xvci1jb250cmFzdCIsCiAgICAgICJpbXBhY3QiOiAic2VyaW91cyIsCiAgICAgICJoZWxwIjogIkVsZW1lbnRzIG11c3QgbWVldCBtaW5pbXVtIGNvbG9yIGNvbnRyYXN0IHJhdGlvIHRocmVzaG9sZHMiLAogICAgICAiaGVscFVybCI6ICJodHRwczovL2RlcXVldW5pdmVyc2l0eS5jb20vcnVsZXMvYXhlLzQuMTIvY29sb3ItY29udHJhc3Q/YXBwbGljYXRpb249cGxheXdyaWdodCIsCiAgICAgICJub2RlcyI6IFsKICAgICAgICAiI2lzbGFuZC1oYXphcmQiCiAgICAgIF0KICAgIH0KICBdLAogICJjb3VudHMiOiB7CiAgICAidmlvbGF0aW9ucyI6IDEsCiAgICAic2VyaW91cyI6IDEsCiAgICAiY3JpdGljYWwiOiAwLAogICAgImluY29tcGxldGUiOiAyCiAgfSwKICAiaW5jb21wbGV0ZVJ1bGVJZHMiOiBbCiAgICAiYXJpYS12YWxpZC1hdHRyLXZhbHVlIiwKICAgICJjb2xvci1jb250cmFzdCIKICBdCn0="
                         }
                       ]
                     }
@@ -2704,7 +3044,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-96cb678c3c8ea1ef47f9",
               "file": "island.spec.ts",
-              "line": 651,
+              "line": 882,
               "column": 3
             },
             {
@@ -2723,12 +3063,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 801,
+                      "duration": 2742,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:26.043Z",
+                      "startTime": "2026-08-06T17:33:35.012Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2738,7 +3078,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-f71a0b2a4968214b9035",
               "file": "island.spec.ts",
-              "line": 683,
+              "line": 914,
               "column": 3
             },
             {
@@ -2757,12 +3097,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 429,
+                      "duration": 610,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:26.847Z",
+                      "startTime": "2026-08-06T17:33:37.759Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2772,7 +3112,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-a59ba763f0f61831897d",
               "file": "island.spec.ts",
-              "line": 696,
+              "line": 927,
               "column": 3
             },
             {
@@ -2791,12 +3131,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 247,
+                      "duration": 401,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:27.280Z",
+                      "startTime": "2026-08-06T17:33:38.375Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2806,7 +3146,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-f6bf3fc84651a58e4128",
               "file": "island.spec.ts",
-              "line": 709,
+              "line": 940,
               "column": 3
             },
             {
@@ -2825,12 +3165,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 181,
+                      "duration": 437,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:37.426Z",
+                      "startTime": "2026-08-06T17:33:56.688Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2840,7 +3180,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-bb13c50e3ba8afa378ed",
               "file": "island.spec.ts",
-              "line": 86,
+              "line": 134,
               "column": 3
             },
             {
@@ -2859,12 +3199,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 106,
+                      "duration": 253,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:37.609Z",
+                      "startTime": "2026-08-06T17:33:57.133Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2874,7 +3214,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-d25f0e670ac320951444",
               "file": "island.spec.ts",
-              "line": 115,
+              "line": 163,
               "column": 3
             },
             {
@@ -2893,12 +3233,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 194,
+                      "duration": 540,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:37.718Z",
+                      "startTime": "2026-08-06T17:33:57.393Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2908,7 +3248,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-86a0fe237b4eb269778e",
               "file": "island.spec.ts",
-              "line": 137,
+              "line": 185,
               "column": 3
             },
             {
@@ -2927,12 +3267,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1305,
+                      "duration": 1533,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:37.916Z",
+                      "startTime": "2026-08-06T17:33:57.943Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -2948,7 +3288,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-05ffeb80a42b414ac024",
               "file": "island.spec.ts",
-              "line": 154,
+              "line": 202,
               "column": 3
             },
             {
@@ -2967,18 +3307,18 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 174,
+                      "duration": 374,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:39.225Z",
+                      "startTime": "2026-08-06T17:33:59.485Z",
                       "annotations": [],
                       "attachments": [
                         {
                           "name": "island-layer-takeover.json",
                           "contentType": "application/json",
-                          "body": "ewogICJlcnJvciI6IG51bGwsCiAgImFudGQiOiB7CiAgICAiYm9yZGVyVG9wV2lkdGgiOiAiMnB4IiwKICAgICJib3JkZXJUb3BDb2xvciI6ICJyZ2IoMjYsIDI2LCAyNikiLAogICAgImJvcmRlclRvcFN0eWxlIjogInNvbGlkIiwKICAgICJib3JkZXJSYWRpdXMiOiAiMHB4IiwKICAgICJoZWlnaHQiOiAiNDZweCIsCiAgICAiZm9udEZhbWlseSI6ICJSb2JvdG8sIHNhbnMtc2VyaWYiCiAgfSwKICAiYmFyZU1hbmdyb3ZlSW5wdXQiOiB7CiAgICAiYm9yZGVyVG9wV2lkdGgiOiAiMnB4IiwKICAgICJib3JkZXJUb3BDb2xvciI6ICJyZ2IoMjYsIDI2LCAyNikiLAogICAgImJvcmRlclRvcFN0eWxlIjogInNvbGlkIiwKICAgICJib3JkZXJSYWRpdXMiOiAiMHB4IiwKICAgICJoZWlnaHQiOiAiNDZweCIsCiAgICAiZm9udEZhbWlseSI6ICJSb2JvdG8sIHNhbnMtc2VyaWYiCiAgfSwKICAiYW50ZFN0eWxlVGFnc1VzaW5nTGF5ZXIiOiAxNSwKICAiYW50ZENsYXNzU3RpbGxQcmVzZW50IjogdHJ1ZQp9"
+                          "body": "ewogICJlcnJvciI6IG51bGwsCiAgImFudGQiOiB7CiAgICAiYm9yZGVyVG9wV2lkdGgiOiAiMnB4IiwKICAgICJib3JkZXJUb3BDb2xvciI6ICJyZ2IoMjYsIDI2LCAyNikiLAogICAgImJvcmRlclRvcFN0eWxlIjogInNvbGlkIiwKICAgICJib3JkZXJSYWRpdXMiOiAiMHB4IiwKICAgICJoZWlnaHQiOiAiNDZweCIsCiAgICAiZm9udEZhbWlseSI6ICJSb2JvdG8sIHNhbnMtc2VyaWYiCiAgfSwKICAiYmFyZU1hbmdyb3ZlSW5wdXQiOiB7CiAgICAiYm9yZGVyVG9wV2lkdGgiOiAiMnB4IiwKICAgICJib3JkZXJUb3BDb2xvciI6ICJyZ2IoMjYsIDI2LCAyNikiLAogICAgImJvcmRlclRvcFN0eWxlIjogInNvbGlkIiwKICAgICJib3JkZXJSYWRpdXMiOiAiMHB4IiwKICAgICJoZWlnaHQiOiAiNDZweCIsCiAgICAiZm9udEZhbWlseSI6ICJSb2JvdG8sIHNhbnMtc2VyaWYiCiAgfSwKICAiYW50ZFN0eWxlVGFnc1VzaW5nTGF5ZXIiOiAxNiwKICAiYW50ZENsYXNzU3RpbGxQcmVzZW50IjogdHJ1ZQp9"
                         }
                       ]
                     }
@@ -2988,85 +3328,11 @@
               ],
               "id": "151e2ac1b06ef54fe07f-5712a859f79f69417d01",
               "file": "island.spec.ts",
-              "line": 190,
+              "line": 238,
               "column": 3
             },
             {
               "title": "Mangrove's input background hides antd's selected value",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "desktop",
-                  "projectName": "desktop",
-                  "results": [
-                    {
-                      "workerIndex": 2,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 586,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2026-08-06T14:02:39.402Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "island-select-value-hidden.json",
-                          "contentType": "application/json",
-                          "body": "ewogICJlcnJvciI6IG51bGwsCiAgInNlbGVjdGVkVmFsdWUiOiAiRHJvdWdodCIsCiAgImlucHV0QmFja2dyb3VuZENvbG9yIjogInJnYigyNTUsIDI1NSwgMjU1KSIsCiAgImlucHV0UG9zaXRpb24iOiAiYWJzb2x1dGUiLAogICJpbnB1dEhlaWdodFB4IjogNDYsCiAgImNvbnRlbnRIZWlnaHRQeCI6IDI0LAogICJ2YWx1ZUlzQ292ZXJlZCI6IHRydWUsCiAgInRvcG1vc3RBdFZhbHVlIjogImlucHV0LmFudC1zZWxlY3QtaW5wdXQiCn0="
-                        }
-                      ]
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "151e2ac1b06ef54fe07f-11efe691f80276fc43f8",
-              "file": "island.spec.ts",
-              "line": 303,
-              "column": 3
-            },
-            {
-              "title": "the aria-hidden measure row contains nothing focusable",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "desktop",
-                  "projectName": "desktop",
-                  "results": [
-                    {
-                      "workerIndex": 2,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 159,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2026-08-06T14:02:39.991Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "151e2ac1b06ef54fe07f-0ba35b87e6d289975aad",
-              "file": "island.spec.ts",
-              "line": 383,
-              "column": 3
-            },
-            {
-              "title": "filters the table from the controls above it",
               "ok": true,
               "tags": [],
               "tests": [
@@ -3086,7 +3352,81 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:40.154Z",
+                      "startTime": "2026-08-06T17:33:59.867Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "island-select-value-hidden.json",
+                          "contentType": "application/json",
+                          "body": "ewogICJlcnJvciI6IG51bGwsCiAgInNlbGVjdGVkVmFsdWUiOiAiRHJvdWdodCIsCiAgImlucHV0QmFja2dyb3VuZENvbG9yIjogInJnYigyNTUsIDI1NSwgMjU1KSIsCiAgImlucHV0UG9zaXRpb24iOiAiYWJzb2x1dGUiLAogICJpbnB1dEhlaWdodFB4IjogNDYsCiAgImNvbnRlbnRIZWlnaHRQeCI6IDI0LAogICJ2YWx1ZUlzQ292ZXJlZCI6IHRydWUsCiAgInRvcG1vc3RBdFZhbHVlIjogImlucHV0LmFudC1zZWxlY3QtaW5wdXQiCn0="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-11efe691f80276fc43f8",
+              "file": "island.spec.ts",
+              "line": 351,
+              "column": 3
+            },
+            {
+              "title": "the aria-hidden measure row contains nothing focusable",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 375,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T17:34:00.807Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-0ba35b87e6d289975aad",
+              "file": "island.spec.ts",
+              "line": 431,
+              "column": 3
+            },
+            {
+              "title": "filters the table from the controls above it",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1350,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T17:34:01.189Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -3096,7 +3436,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-666e0c108a7c7541cbe1",
               "file": "island.spec.ts",
-              "line": 443,
+              "line": 491,
               "column": 3
             },
             {
@@ -3115,12 +3455,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 286,
+                      "duration": 569,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:41.088Z",
+                      "startTime": "2026-08-06T17:34:02.547Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -3130,7 +3470,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-ec5f834fa494761d625b",
               "file": "island.spec.ts",
-              "line": 462,
+              "line": 510,
               "column": 3
             },
             {
@@ -3149,12 +3489,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 677,
+                      "duration": 951,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:41.377Z",
+                      "startTime": "2026-08-06T17:34:03.124Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -3164,7 +3504,177 @@
               ],
               "id": "151e2ac1b06ef54fe07f-c53581a49320a0bb3ef6",
               "file": "island.spec.ts",
-              "line": 476,
+              "line": 524,
+              "column": 3
+            },
+            {
+              "title": "sorts from a column header",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 666,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T17:34:04.083Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-78ee50d84c25b1d5dfe9",
+              "file": "island.spec.ts",
+              "line": 546,
+              "column": 3
+            },
+            {
+              "title": "a descending sort preserves the source order inside tie groups",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 649,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T17:34:04.757Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-745c6ca41fd076c2066d",
+              "file": "island.spec.ts",
+              "line": 593,
+              "column": 3
+            },
+            {
+              "title": "returns to page one when the sort changes",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 617,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T17:34:05.413Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-087c151002e2a4a61a44",
+              "file": "island.spec.ts",
+              "line": 630,
+              "column": 3
+            },
+            {
+              "title": "orders by the selected locale's collation in German",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 659,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T17:34:06.039Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-cec5335f169608f76336",
+              "file": "island.spec.ts",
+              "line": 649,
+              "column": 3
+            },
+            {
+              "title": "status pills read the record's status and their colour tracks it",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 449,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-06T17:34:06.707Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-da4f9cb838da0a8243ce",
+              "file": "island.spec.ts",
+              "line": 678,
               "column": 3
             },
             {
@@ -3183,12 +3693,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 277,
+                      "duration": 556,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:42.056Z",
+                      "startTime": "2026-08-06T17:34:07.164Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -3198,7 +3708,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-9df48fc11e984660ae23",
               "file": "island.spec.ts",
-              "line": 488,
+              "line": 719,
               "column": 3
             },
             {
@@ -3217,12 +3727,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 296,
+                      "duration": 630,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:42.336Z",
+                      "startTime": "2026-08-06T17:34:07.727Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -3232,7 +3742,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-804fb3daa5f8a2c163ac",
               "file": "island.spec.ts",
-              "line": 514,
+              "line": 745,
               "column": 3
             },
             {
@@ -3251,7 +3761,7 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 786,
+                      "duration": 1677,
                       "errors": [],
                       "stdout": [
                         {
@@ -3260,7 +3770,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:42.635Z",
+                      "startTime": "2026-08-06T17:34:08.363Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -3276,7 +3786,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-fd9b93a8dcada6fb8822",
               "file": "island.spec.ts",
-              "line": 582,
+              "line": 813,
               "column": 3
             },
             {
@@ -3295,7 +3805,7 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 835,
+                      "duration": 1565,
                       "errors": [],
                       "stdout": [
                         {
@@ -3304,7 +3814,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:43.424Z",
+                      "startTime": "2026-08-06T17:34:10.047Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -3320,7 +3830,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-b8defdc436e01891c991",
               "file": "island.spec.ts",
-              "line": 651,
+              "line": 882,
               "column": 3
             },
             {
@@ -3339,12 +3849,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1306,
+                      "duration": 1390,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:44.262Z",
+                      "startTime": "2026-08-06T17:34:11.619Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -3354,7 +3864,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-d70374e846759412ce81",
               "file": "island.spec.ts",
-              "line": 683,
+              "line": 914,
               "column": 3
             },
             {
@@ -3373,12 +3883,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 424,
+                      "duration": 878,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:45.572Z",
+                      "startTime": "2026-08-06T17:34:13.017Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -3388,7 +3898,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-d26dff632eea6747c76b",
               "file": "island.spec.ts",
-              "line": 696,
+              "line": 927,
               "column": 3
             },
             {
@@ -3407,12 +3917,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 269,
+                      "duration": 605,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-06T14:02:45.999Z",
+                      "startTime": "2026-08-06T17:34:13.907Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -3422,7 +3932,7 @@
               ],
               "id": "151e2ac1b06ef54fe07f-147545a5755ad22d148b",
               "file": "island.spec.ts",
-              "line": 709,
+              "line": 940,
               "column": 3
             }
           ]
@@ -3432,9 +3942,9 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-08-06T14:01:49.379Z",
-    "duration": 56928.967000000004,
-    "expected": 90,
+    "startTime": "2026-08-06T17:32:25.789Z",
+    "duration": 108853.57,
+    "expected": 105,
     "skipped": 0,
     "unexpected": 0,
     "flaky": 0

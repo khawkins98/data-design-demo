@@ -83,7 +83,7 @@ import { viewLinks } from "@undrr-eval/test-harness/views";
 import { TOKEN_SCOPE_CLASS } from "@undrr-eval/undrr-tokens";
 
 import { asProps } from "./carbon-props.js";
-import { DemoContext, formattersFor, labelsFor } from "./demo-state.js";
+import { DemoContext, calendarDateToIso, formattersFor, labelsFor } from "./demo-state.js";
 import type { DemoContextValue } from "./demo-state.js";
 import { useOverlayHost } from "./overlay-scope.js";
 
@@ -91,8 +91,45 @@ import { useOverlayHost } from "./overlay-scope.js";
 const params = new URLSearchParams(window.location.search);
 const candidateEnabled = params.get("candidate") !== "off";
 
-/** Sentinel for "no filter". Carbon's Dropdown has no empty-option concept. */
+/**
+ * Sentinel for "no filter", in OUR state only. It is deliberately NOT an option in
+ * any Dropdown.
+ *
+ * Carbon's Dropdown has no empty-option concept and no `clearSelection` (its
+ * ComboBox has a clear button; Dropdown does not). Earlier revisions papered over
+ * that by prepending a sentinel option labelled `labels.actionClearFilters`, so a
+ * collapsed dropdown's visible text AND its accessible name were both "Clear
+ * filters" — sitting directly beside the real Clear-filters button saying the same
+ * thing. The fixture set carries no "All"/"Any" string and inventing one in four
+ * locales is out of bounds, so the sentinel is gone and Carbon's own empty state
+ * does the job: `selectedItem={null}` renders the `label` placeholder, and
+ * `resetFilters` puts every dropdown back to it.
+ *
+ * WHAT THAT COSTS, recorded rather than hidden: there is no per-filter "back to
+ * all", because Carbon's Dropdown offers none. The Clear-filters button below the
+ * controls clears all five at once.
+ */
 const ALL = "all";
+
+/**
+ * FIXTURE GAPS, named rather than filled with a wrong-but-localised label.
+ *
+ * `LabelSet` has no word for "view", "edit" or a row-actions column. Earlier
+ * revisions substituted the nearest-looking fixture keys, which produced an EDIT
+ * button whose accessible name was "Save", a VIEW button called "Loss records", and
+ * a row-actions column header reading "Review note" — the name of a real, different
+ * fixture field. Localised and wrong is worse than English and right in a record
+ * whose product is the accuracy of the record, and it is the same call made for
+ * Carbon's untranslated Pagination chrome below.
+ *
+ * These three strings are therefore English in all four locales, and that is the
+ * finding: the fixture set needs `actionView`, `actionEdit` and `colActions`.
+ */
+const UNTRANSLATED = Object.freeze({
+  view: "View",
+  edit: "Edit",
+  rowActions: "Actions",
+});
 
 const PAGE_SIZES = [10, 25, 50];
 
@@ -150,8 +187,8 @@ interface FilterOption {
   readonly label: string;
 }
 
-function optionsFor(values: readonly string[], allLabel: string): readonly FilterOption[] {
-  return [{ value: ALL, label: allLabel }, ...values.map((v) => ({ value: v, label: v }))];
+function optionsFor(values: readonly string[]): readonly FilterOption[] {
+  return values.map((v) => ({ value: v, label: v }));
 }
 
 export function AppView(): ReactElement {
@@ -214,7 +251,13 @@ export function AppView(): ReactElement {
   /** The full filtered set, before Carbon sorts it and before we slice a page. */
   const records = useMemo<readonly LossRecord[]>(() => {
     const needle = query.trim().toLocaleLowerCase(bcp47);
-    const fromIso = fromDate ? fromDate.toISOString().slice(0, 10) : null;
+    /*
+     * `calendarDateToIso`, NOT `toISOString().slice(0, 10)`. flatpickr hands back a
+     * LOCAL-midnight Date, so the ISO form reads the UTC day and moves this
+     * boundary back one day at every positive UTC offset — silently, and
+     * invisibly under the runner's pinned `timezoneId: "UTC"`. See demo-state.ts.
+     */
+    const fromIso = fromDate ? calendarDateToIso(fromDate) : null;
     return LOSS_RECORDS.filter((record) => {
       if (deleted.includes(record.id)) return false;
       if (country !== ALL && record.country !== country) return false;
@@ -255,15 +298,12 @@ export function AppView(): ReactElement {
     [labels],
   );
 
-  const countryOptions = useMemo(() => optionsFor(COUNTRIES, labels.actionClearFilters), [labels]);
+  const countryOptions = useMemo(() => optionsFor(COUNTRIES), []);
   const hazardOptions = useMemo(
-    () => [
-      { value: ALL, label: labels.actionClearFilters },
-      ...OPTIONS_SMALL.map((option) => ({ value: option.value, label: option.label })),
-    ],
-    [labels],
+    () => OPTIONS_SMALL.map((option) => ({ value: option.value, label: option.label })),
+    [],
   );
-  const statusOptions = useMemo(() => optionsFor(STATUSES, labels.actionClearFilters), [labels]);
+  const statusOptions = useMemo(() => optionsFor(STATUSES), []);
 
   function renderCell(key: string, value: unknown): ReactElement | string {
     switch (key) {
@@ -331,7 +371,13 @@ export function AppView(): ReactElement {
             <div className="demo__app-header">
               <div>
                 <h2 className="demo__heading">{labels.navRecords}</h2>
-                <p className="demo__prose">
+                {/*
+                  * `role="status"` because this count CHANGES in place as filters
+                  * are applied and is the only confirmation that a filter took
+                  * effect. A bare <p> updates silently for a screen reader user, who
+                  * is left with a table that reflowed for no announced reason.
+                  */}
+                <p className="demo__prose" role="status">
                   {formatters.integer.format(records.length)} /{" "}
                   {formatters.integer.format(LOSS_RECORDS.length)} —{" "}
                   {labels.longVerificationBanner}
@@ -367,12 +413,20 @@ export function AppView(): ReactElement {
                   * `aria-expanded`, `aria-controls` and the conditional render
                   * below are application code.
                   */}
+                {/*
+                  * `aria-controls` ONLY WHILE THE PANEL EXISTS. The disclosure is a
+                  * conditional render — Carbon has no Collapse, so there is no
+                  * hidden-but-mounted node to point at — and an `aria-controls`
+                  * naming an id that is not in the document is an axe
+                  * `aria-valid-attr-value` violation as well as a lie to a screen
+                  * reader. `aria-expanded` alone carries the collapsed state.
+                  */}
                 <Button
                   kind="ghost"
                   size="sm"
                   renderIcon={filtersOpen ? ChevronUp : ChevronDown}
                   aria-expanded={filtersOpen}
-                  aria-controls="records-filters"
+                  {...(filtersOpen ? { "aria-controls": "records-filters" } : {})}
                   onClick={() => setFiltersOpen((open) => !open)}
                 >
                   {labels.actionFilter}
@@ -397,7 +451,11 @@ export function AppView(): ReactElement {
                   <Dropdown
                     id="app-country"
                     titleText={labels.fieldCountry}
-                    label={labels.actionClearFilters}
+                    /* Carbon's `label` is the collapsed placeholder, a separate slot
+                       from `titleText`, and it is what the empty state reads as. The
+                       field's own name is the only fully-localised string the
+                       fixture set has for it. See the note on ALL above. */
+                    label={labels.fieldCountry}
                     items={[...countryOptions]}
                     itemToString={(item) => item?.label ?? ""}
                     selectedItem={
@@ -413,7 +471,7 @@ export function AppView(): ReactElement {
                   <Dropdown
                     id="app-hazard"
                     titleText={labels.fieldHazard}
-                    label={labels.actionClearFilters}
+                    label={labels.fieldHazard}
                     items={[...hazardOptions]}
                     itemToString={(item) => item?.label ?? ""}
                     selectedItem={hazardOptions.find((option) => option.value === hazard) ?? null}
@@ -427,7 +485,7 @@ export function AppView(): ReactElement {
                   <Dropdown
                     id="app-status"
                     titleText={labels.colStatus}
-                    label={labels.actionClearFilters}
+                    label={labels.colStatus}
                     items={[...statusOptions]}
                     itemToString={(item) => item?.label ?? ""}
                     selectedItem={statusOptions.find((option) => option.value === status) ?? null}
@@ -510,15 +568,23 @@ export function AppView(): ReactElement {
                               );
                             })}
                             {/*
-                              * The row-actions column. Its header uses a fixture
-                              * label rather than an invented English word:
-                              * inventing "Actions" would ship one untranslated
-                              * string into four locales. `isSortable` is passed
-                              * explicitly because Carbon's own types require it
-                              * while its render props declare it optional.
+                              * The row-actions column.
+                              *
+                              * CORRECTION. This header used to carry
+                              * `labels.colReviewNote` — "Review note" — on the
+                              * reasoning that a fixture label beats an invented
+                              * English word. That was wrong: `reviewNote` is a real
+                              * and DIFFERENT fixture field, so the column announced
+                              * itself as data it does not contain. One untranslated
+                              * English word that is true beats four translations of
+                              * something false. See UNTRANSLATED above.
+                              *
+                              * `isSortable` is passed explicitly because Carbon's own
+                              * types require it while its render props declare it
+                              * optional.
                               */}
                             <TableHeader isSortable={false} key="row-actions">
-                              {labels.colReviewNote}
+                              {UNTRANSLATED.rowActions}
                             </TableHeader>
                           </TableRow>
                         </TableHead>
@@ -546,25 +612,44 @@ export function AppView(): ReactElement {
                                   <TableCell className="demo__row-actions">
                                     {/*
                                       * Icon buttons from `@carbon/react/icons`,
-                                      * which is part of the library. Each carries
-                                      * a localised label including the record id,
-                                      * so the accessible name is unique per row —
-                                      * without that, a screen reader hears
-                                      * "Delete" thirty times.
+                                      * which is part of the library. Each carries a
+                                      * label including the record id, so the
+                                      * accessible name is unique per row — without
+                                      * that, a screen reader hears "Delete" thirty
+                                      * times. Only the DELETE verb is localised:
+                                      * `LabelSet` has no "view" or "edit" (see
+                                      * UNTRANSLATED), and the earlier substitutions
+                                      * named this button "Save" and the one above it
+                                      * "Loss records".
+                                      *
+                                      * `autoAlign` instead of `align="left"`.
+                                      * Carbon's `Popover` alignment union is
+                                      * PHYSICAL only — `'left' | 'right' | 'top' |
+                                      * 'bottom'` and their variants, with no logical
+                                      * equivalent and no RTL mapping — so a
+                                      * hard-coded `align` pins the tooltip to the
+                                      * physical left in Arabic too. THAT PART IS
+                                      * CARBON'S: there is no `align="start"` to
+                                      * reach for. What was ours is not having used
+                                      * `autoAlign` (IconButton/index.d.ts:21), which
+                                      * lets Carbon place the tooltip against the
+                                      * viewport instead of trusting one fixed side.
+                                      * It is flagged Experimental in Carbon's own
+                                      * types, which is the remaining cost.
                                       */}
                                     <IconButton
                                       kind="ghost"
                                       size="sm"
-                                      align="left"
-                                      label={`${labels.navRecords} ${row.id}`}
+                                      autoAlign
+                                      label={`${UNTRANSLATED.view} ${row.id}`}
                                     >
                                       <View />
                                     </IconButton>
                                     <IconButton
                                       kind="ghost"
                                       size="sm"
-                                      align="left"
-                                      label={`${labels.actionSave} ${row.id}`}
+                                      autoAlign
+                                      label={`${UNTRANSLATED.edit} ${row.id}`}
                                     >
                                       <Edit />
                                     </IconButton>
@@ -585,7 +670,7 @@ export function AppView(): ReactElement {
                                     <IconButton
                                       kind="ghost"
                                       size="sm"
-                                      align="left"
+                                      autoAlign
                                       label={`${labels.actionDelete} ${row.id}`}
                                       onClick={(event) => {
                                         launcher.current = event.currentTarget;
@@ -604,19 +689,46 @@ export function AppView(): ReactElement {
                     </div>
 
                     {/*
-                      * Carbon's control, our slice. `itemsPerPageText` is a fixture
-                      * label; Pagination's remaining chrome ("1–10 of 250", "Next
-                      * page") stays in Carbon's English, because the fixtures carry
-                      * no pagination strings and inventing translations is out of
-                      * bounds. Carbon's `translateWithId` would be a second,
-                      * parallel translation source to maintain.
+                      * Carbon's control, our slice.
+                      *
+                      * CORRECTION, and the earlier note here was wrong about the
+                      * library: `Pagination` has NO `translateWithId`. Zero
+                      * occurrences in `Pagination.d.ts` — verified against the
+                      * installed 1.113.0, not remembered. Its strings come from NINE
+                      * discrete props: `itemRangeText`, `itemText`,
+                      * `itemsPerPageText`, `forwardText`, `backwardText`,
+                      * `pageRangeText`, `pageText`, `pageNumberText` and
+                      * `pageSelectLabelText`. Nine call sites to keep in step is a
+                      * worse i18n surface than one hook, not a better one, and that
+                      * is the finding. (`translateWithId` DOES exist on `DataTable`
+                      * and `TableHeader` — see carbon-props.ts.)
+                      *
+                      * `itemRangeText` is wired because the fixture set supplies the
+                      * one word it needs, the noun naming the item type, and because
+                      * wiring it routes the numbers through `Intl` — Carbon's default
+                      * "1–10 of 250 items" does not.
+                      *
+                      * `itemsPerPageText` is deliberately NOT passed. It used to
+                      * carry `labels.navRecords`, which made the rows-per-page
+                      * selector read "Loss records"; it labels a control rather than
+                      * naming a thing, so Carbon's untouched "Items per page:" is
+                      * more correct than the substitution was.
+                      *
+                      * The other seven stay in Carbon's English, and THAT IS A REAL
+                      * FIXTURE GAP: "Next page", "Previous page", "of 25 pages" and
+                      * "Page number" have no counterpart in `LabelSet`, and inventing
+                      * translations in four locales is out of bounds.
                       */}
                     <Pagination
                       page={safePage}
                       pageSize={pageSize}
                       pageSizes={PAGE_SIZES}
                       totalItems={total}
-                      itemsPerPageText={labels.navRecords}
+                      itemRangeText={(min, max, totalItems) =>
+                        `${formatters.integer.format(min)}–${formatters.integer.format(max)} / ` +
+                        `${formatters.integer.format(totalItems)} ` +
+                        `${labels.navRecords.toLocaleLowerCase(bcp47)}`
+                      }
                       onChange={({ page: nextPage, pageSize: nextSize }) => {
                         setPage(nextPage);
                         setPageSize(nextSize);

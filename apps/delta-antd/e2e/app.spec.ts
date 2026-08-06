@@ -26,8 +26,8 @@ import { dirname } from "node:path";
 import { expect, test } from "@playwright/test";
 import type { Page } from "@playwright/test";
 
-import { LABELS } from "@undrr-eval/fixtures";
-import type { LocaleCode } from "@undrr-eval/fixtures";
+import { LABELS, LOSS_RECORDS } from "@undrr-eval/fixtures";
+import type { LocaleCode, VerificationStatus } from "@undrr-eval/fixtures";
 import { CANARY_IDS, captureScreens, checkLeakage, runAxe } from "@undrr-eval/test-harness";
 import { DELTA_FRAME_CANARY_IDS } from "@undrr-eval/test-harness/frame-canaries";
 
@@ -94,6 +94,44 @@ function filterToggle(page: Page) {
   return page.locator(`${ROOT} .ant-collapse-header`);
 }
 
+/** The view's page size and the fixture's four statuses. */
+const PAGE_SIZE = 10;
+const STATUSES: readonly VerificationStatus[] = ["verified", "pending", "disputed", "withdrawn"];
+
+/**
+ * The record id of every rendered row, in render order. `rowKey="id"` puts it on
+ * the `<tr>` as `data-row-key`, so the table can be checked against the fixture
+ * without re-deriving anything from the cells.
+ */
+async function renderedRowIds(page: Page): Promise<readonly string[]> {
+  return page.evaluate(() =>
+    [...document.querySelectorAll("[data-candidate-root] tbody tr[data-row-key]")].map(
+      (row) => row.getAttribute("data-row-key") ?? "",
+    ),
+  );
+}
+
+/**
+ * Every status pill on the current page, paired with the colour it was painted.
+ *
+ * Both halves feed one assertion: that the pill's colour is a FUNCTION of the
+ * record's `verificationStatus`. `toBeVisible()` on the first tag — which is what
+ * this column's only assertion used to be — passes on 250 rows all reading
+ * "verified" in one colour.
+ */
+async function statusPills(
+  page: Page,
+): Promise<ReadonlyArray<{ text: string; background: string }>> {
+  return page.evaluate(() =>
+    [...document.querySelectorAll("[data-candidate-root] tbody tr[data-row-key] .ant-tag")].map(
+      (pill) => ({
+        text: (pill.textContent ?? "").trim(),
+        background: getComputedStyle(pill).backgroundColor,
+      }),
+    ),
+  );
+}
+
 test.describe("full application", () => {
   test("renders the whole records screen inside the host frame", async ({ page }) => {
     await page.goto(`${URL}?candidate=on`);
@@ -105,7 +143,7 @@ test.describe("full application", () => {
     await expect(page.locator(`${ROOT} .ant-collapse`)).toHaveCount(1);
     await expect(page.locator(`${ROOT} .ant-table`)).toHaveCount(1);
     await expect(page.locator(`${ROOT} .ant-pagination`)).toHaveCount(1);
-    await expect(page.locator(`${ROOT} .ant-tag`).first()).toBeVisible();
+    await expect(page.locator(`${ROOT} tbody tr[data-row-key] .ant-tag`)).toHaveCount(PAGE_SIZE);
     await expect(deleteButton(page)).toBeVisible();
 
     // The known-issues box is host chrome and must sit OUTSIDE the candidate
@@ -316,6 +354,58 @@ test.describe("full application", () => {
     await expect(firstCell).not.toHaveText("Bangladesh");
   });
 
+  /**
+   * STATUS PILLS, asserted as a mapping rather than as a presence.
+   *
+   * The pill text is checked against the fixture by the row's own `data-row-key`,
+   * and the pill colour is checked to be a function of that text. The old
+   * assertion, `.first()).toBeVisible()`, was the only assertion about this column
+   * and was satisfied by any one visible tag — 250 rows all reading "verified" in
+   * one colour would have passed it.
+   */
+  test("status pills read the record's status and their colour tracks it", async ({ page }) => {
+    await page.goto(`${URL}?candidate=on`);
+
+    const ids = await renderedRowIds(page);
+    const pills = await statusPills(page);
+
+    const byStatus = new Map<string, Set<string>>();
+    for (const pill of pills) {
+      const seen = byStatus.get(pill.text) ?? new Set<string>();
+      seen.add(pill.background);
+      byStatus.set(pill.text, seen);
+    }
+
+    writeJson("test-results/app-status-pills.json", {
+      ids,
+      pills,
+      colours: [...byStatus].map(([status, colours]) => ({ status, colours: [...colours] })),
+    });
+
+    expect(ids).toHaveLength(PAGE_SIZE);
+    expect(pills).toHaveLength(PAGE_SIZE);
+    expect(pills.map((pill) => pill.text)).toEqual(
+      ids.map((id) => LOSS_RECORDS.find((row) => row.id === id)?.verificationStatus ?? "unknown"),
+    );
+    for (const status of pills.map((pill) => pill.text)) {
+      expect(STATUSES).toContain(status as VerificationStatus);
+    }
+
+    // The colour is a FUNCTION of the status: one colour each, no two statuses
+    // sharing one. Vacuous unless more than one status is on the page.
+    expect(byStatus.size, "only one status on the page; the mapping is untested").toBeGreaterThan(
+      1,
+    );
+    for (const [status, colours] of byStatus) {
+      expect([...colours], `"${status}" was painted more than one colour`).toHaveLength(1);
+    }
+    const distinctColours = new Set([...byStatus.values()].map((set) => [...set][0]));
+    expect(distinctColours.size, "two statuses share a pill colour").toBe(byStatus.size);
+    for (const pill of pills) {
+      expect(pill.background).not.toBe("rgba(0, 0, 0, 0)");
+    }
+  });
+
   test("paginates, and returns to page one when sorting changes", async ({ page }) => {
     await page.goto(`${URL}?candidate=on`);
 
@@ -383,14 +473,13 @@ test.describe("full application", () => {
   });
 
   /**
-   * RTL where the MUI pilot's equivalent view fails, measured the same way.
+   * RTL in the row-action column, measured rather than described.
    *
-   * MUI's `TableCell align="right"` is a PHYSICAL value with no logical equivalent,
-   * so its row-actions column stays pinned to the physical right while the row has
-   * flipped. antd's column `align` takes `"start" | "center" | "end"`, which are
-   * LOGICAL, so the same column follows the direction. Asserted, because "antd's
-   * RTL is native at zero custom lines" is a claim about behaviour and this is the
-   * layout that would expose it.
+   * antd's column `align` takes `"start" | "center" | "end"` — LOGICAL values — so
+   * the column follows the reading direction with no RTL code in the view. Asserted
+   * because "antd's RTL is native at zero custom lines" is a claim about behaviour,
+   * and a row-action column pinned to a physical side is the layout that would
+   * expose it. Both the computed keyword and the geometry are checked.
    */
   test("RTL flips the row-action column with the row", async ({ page }) => {
     await page.goto(`${URL}?candidate=on`);
@@ -434,10 +523,9 @@ test.describe("full application", () => {
       return {
         error: null as string | null,
         /*
-         * Chromium reports antd's alignment as the LOGICAL keyword `end`, not as a
-         * resolved `right`. That is the whole difference from MUI, whose Table only
-         * has the physical `align="right"` and therefore computes to `right` in
-         * Arabic while the row has flipped.
+         * Chromium reports antd's alignment back as the LOGICAL keyword `end`
+         * rather than a resolved `left` or `right`, which is itself the evidence
+         * that the value stayed logical all the way to the computed style.
          */
         actionCellTextAlign: getComputedStyle(actions).textAlign,
         actionCellIsLeftOfFirstCell: cellBox.left < first.getBoundingClientRect().left,
@@ -452,14 +540,14 @@ test.describe("full application", () => {
       ...measurement,
       note:
         "antd column `align` is logical (start/center/end), so the row-action column " +
-        "follows the direction. MUI's Table has only the physical align=right, which " +
-        "is why the same column in apps/delta-mui stays at the physical right in " +
-        "Arabic. Zero custom RTL lines on either side of this comparison.",
+        "follows the reading direction. Zero custom RTL lines in this view: the " +
+        "column definitions carry `align: \"end\"` and nothing else.",
     });
 
     expect(measurement.error).toBeNull();
     expect(measurement.actionCellIsLeftOfFirstCell, "the table row did not flip").toBe(true);
-    // The keyword stays LOGICAL. `right` here would be the MUI failure mode.
+    // The keyword stays LOGICAL: a resolved `right` here would mean antd's `align`
+    // had been compiled down to a physical side somewhere along the way.
     expect(
       measurement.actionCellTextAlign,
       "antd's column align resolved to a physical value; it is no longer logical",
