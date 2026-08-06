@@ -237,29 +237,37 @@ for (const candidate of manifest.candidates) {
 /** Flat list, still needed for the built/total count. */
 const cards = groups.flatMap((group) => group.cards);
 
-/** Renders the metric row shown on a completed card. */
+/**
+ * Renders the one card number that is a ceiling rather than a cost.
+ *
+ * WHAT WAS HERE BEFORE, AND WHY IT WENT. Five metrics: custom CSS lines,
+ * wrappers, tokens applied, axe violations and bundle size. Every one was easy to
+ * generate and at least two actively misled.
+ *
+ * decision-axes.md opens by arguing that volume misleads and that "a reader
+ * looking for a decision will reach for whatever number is largest, which is lines
+ * of code" - and then this page handed that reader ten unframed number panels in
+ * which React Aria's 715 CSS lines look five times worse than Carbon's 300. The
+ * A2 reading is the opposite: React Aria's rules target published state
+ * attributes and it has zero hooks off the library's theming route, where Carbon
+ * has 15-16. A bare "axe violations: 0" was worse still, since A7 exists to say
+ * that zero automated violations is a floor and not a conformance claim.
+ *
+ * `tokensUnreachable` survives because it is the one figure no effort closes:
+ * there is no hook to attach those tokens to. It is shown only when non-zero,
+ * because "0 unreachable" is the unremarkable case and does not need a panel.
+ */
 function metrics(evidence) {
-  if (!evidence) return "";
-
-  const rows = [
-    ["Custom CSS", evidence.customCss?.lines ?? null, "lines"],
-    ["Wrappers", evidence.wrappers?.count ?? null, ""],
-    ["Tokens applied", evidence.theming?.tokensApplied ?? null, ""],
-    ["axe violations", evidence.axe?.violations ?? null, ""],
-    ["Bundle", evidence.bundle?.gzippedKb ?? null, "kB gz"],
-  ];
-
-  const cells = rows
-    .filter(([, value]) => value !== null && value !== undefined)
-    .map(
-      ([label, value, unit]) =>
-        `<div class="metric"><dt>${esc(label)}</dt><dd>${esc(value)}${
-          unit ? ` <span class="unit">${esc(unit)}</span>` : ""
-        }</dd></div>`,
-    )
-    .join("");
-
-  return cells ? `<dl class="metrics">${cells}</dl>` : "";
+  const unreachable = evidence?.theming?.tokensUnreachable;
+  if (!unreachable) return "";
+  return `<p class="ceiling">
+        <strong>${esc(unreachable)}</strong> of ${esc(
+          evidence.theming?.tokensApplied
+            ? unreachable + evidence.theming.tokensApplied
+            : 71,
+        )} UNDRR tokens unreachable
+        <span class="ceiling__note">a ceiling, not a cost: there is no hook to attach them to</span>
+      </p>`;
 }
 
 /**
@@ -437,7 +445,6 @@ const html = `<!doctype html>
       .page { max-width: 76rem; margin: 0 auto; }
       h1 { font-size: 1.75rem; margin: 0 0 0.5rem; }
       .subtitle { color: var(--muted); margin: 0 0 0.5rem; max-width: 60ch; }
-      .progress { color: var(--muted); font-size: 0.875rem; margin: 0 0 2rem; }
       /*
        * Pairing groups: one row per candidate, its two hosts side by side.
        *
@@ -482,6 +489,12 @@ const html = `<!doctype html>
       .question__answer { margin: 0 0 0.5rem; font-size: 0.8125rem; }
       .question__axis { margin: 0; font-size: 0.75rem; }
       .start__more { margin: 1rem 0 0; font-size: 0.8125rem; max-width: 78ch; }
+      .ceiling {
+        margin: 0.25rem 0 0;
+        font-size: 0.75rem;
+        line-height: 1.35;
+      }
+      .ceiling__note { display: block; color: var(--muted); }
       .view--missing { opacity: 0.6; }
       .view__link--missing { font-weight: 600; text-decoration: line-through; }
       .views { list-style: none; margin: 0.5rem 0 0; padding: 0.625rem 0 0; border-top: 1px solid var(--border); }
@@ -531,10 +544,6 @@ const html = `<!doctype html>
         margin-bottom: 0.125rem;
       }
       .card__issue-more { color: var(--muted); }
-      .metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.375rem 0.75rem; margin: 0.5rem 0 0; }
-      .metric dt { font-size: 0.6875rem; color: var(--muted); margin: 0; }
-      .metric dd { margin: 0; font-size: 0.9375rem; font-variant-numeric: tabular-nums; }
-      .unit { font-size: 0.6875rem; color: var(--muted); font-weight: 400; }
       .card__link { margin-top: auto; padding-top: 0.75rem; font-size: 0.875rem; color: var(--accent); }
       .card__link--disabled { color: var(--muted); }
       footer { margin-top: 3rem; color: var(--muted); font-size: 0.8125rem; max-width: 70ch; }
@@ -556,7 +565,6 @@ const html = `<!doctype html>
     <div class="page">
       <h1>${esc(manifest.title)}</h1>
       <p class="subtitle">${esc(manifest.subtitle)}</p>
-      <p class="progress">${built} of ${cards.length} pairings built.</p>
 
       <!--
         Start here, ABOVE the cards.

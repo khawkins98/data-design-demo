@@ -47,7 +47,6 @@
       .page { max-width: 76rem; margin: 0 auto; }
       h1 { font-size: 1.75rem; margin: 0 0 0.5rem; }
       .subtitle { color: var(--muted); margin: 0 0 0.5rem; max-width: 60ch; }
-      .progress { color: var(--muted); font-size: 0.875rem; margin: 0 0 2rem; }
       /*
        * Pairing groups: one row per candidate, its two hosts side by side.
        *
@@ -92,6 +91,12 @@
       .question__answer { margin: 0 0 0.5rem; font-size: 0.8125rem; }
       .question__axis { margin: 0; font-size: 0.75rem; }
       .start__more { margin: 1rem 0 0; font-size: 0.8125rem; max-width: 78ch; }
+      .ceiling {
+        margin: 0.25rem 0 0;
+        font-size: 0.75rem;
+        line-height: 1.35;
+      }
+      .ceiling__note { display: block; color: var(--muted); }
       .view--missing { opacity: 0.6; }
       .view__link--missing { font-weight: 600; text-decoration: line-through; }
       .views { list-style: none; margin: 0.5rem 0 0; padding: 0.625rem 0 0; border-top: 1px solid var(--border); }
@@ -141,10 +146,6 @@
         margin-bottom: 0.125rem;
       }
       .card__issue-more { color: var(--muted); }
-      .metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.375rem 0.75rem; margin: 0.5rem 0 0; }
-      .metric dt { font-size: 0.6875rem; color: var(--muted); margin: 0; }
-      .metric dd { margin: 0; font-size: 0.9375rem; font-variant-numeric: tabular-nums; }
-      .unit { font-size: 0.6875rem; color: var(--muted); font-weight: 400; }
       .card__link { margin-top: auto; padding-top: 0.75rem; font-size: 0.875rem; color: var(--accent); }
       .card__link--disabled { color: var(--muted); }
       footer { margin-top: 3rem; color: var(--muted); font-size: 0.8125rem; max-width: 70ch; }
@@ -166,7 +167,6 @@
     <div class="page">
       <h1>UNDRR data design system evaluation</h1>
       <p class="subtitle">Ten controlled proofs of concept: five candidate UI libraries against two UNDRR host shells.</p>
-      <p class="progress">10 of 10 pairings built.</p>
 
       <!--
         Start here, ABOVE the cards.
@@ -283,7 +283,7 @@
         </header>
         <p class="card__status" data-status="complete">Complete</p>
         <ul class="flags"><li class="flag flag--ok">Leakage: clean</li><li class="flag flag--ok">RTL: clean</li><li class="flag flag--ok">Long labels: clean</li></ul>
-        <dl class="metrics"><div class="metric"><dt>Custom CSS</dt><dd>715 <span class="unit">lines</span></dd></div><div class="metric"><dt>Wrappers</dt><dd>5</dd></div><div class="metric"><dt>Tokens applied</dt><dd>48</dd></div><div class="metric"><dt>axe violations</dt><dd>0</dd></div><div class="metric"><dt>Bundle</dt><dd>238.8 <span class="unit">kB gz</span></dd></div></dl>
+        
         <ul class="views"><li class="view"><a class="view__link" href="./delta-react-aria/app.html">A whole DELTA screen</a> <span class="view__hint">layout, navigation and a full records workflow</span></li><li class="view"><a class="view__link" href="./delta-react-aria/">Component inventory</a> <span class="view__hint">every component on one page - proves capability, not adoption</span></li></ul>
       </article>
 
@@ -294,7 +294,7 @@
         </header>
         <p class="card__status" data-status="complete">Complete</p>
         <ul class="flags"><li class="flag flag--ok">Leakage: clean</li><li class="flag flag--ok">RTL: clean</li><li class="flag flag--ok">Long labels: clean</li></ul>
-        <dl class="metrics"><div class="metric"><dt>Custom CSS</dt><dd>661 <span class="unit">lines</span></dd></div><div class="metric"><dt>Wrappers</dt><dd>3</dd></div><div class="metric"><dt>Tokens applied</dt><dd>47</dd></div><div class="metric"><dt>axe violations</dt><dd>0</dd></div><div class="metric"><dt>Bundle</dt><dd>237.6 <span class="unit">kB gz</span></dd></div></dl>
+        
         <ul class="views"><li class="view"><a class="view__link" href="./mangrove-react-aria/island.html">Inside a real page</a> <span class="view__hint">the candidate owns one region of a live Mangrove page</span></li><li class="view"><a class="view__link" href="./mangrove-react-aria/">Component inventory</a> <span class="view__hint">every component on one page - proves capability, not adoption</span></li></ul>
       </article>
         </div>
@@ -318,7 +318,7 @@
         </header>
         <p class="card__status" data-status="complete">Complete</p>
         <ul class="flags"><li class="flag flag--ok">Leakage: clean</li><li class="flag flag--bad">RTL: issues</li><li class="flag flag--ok">Long labels: clean</li></ul>
-        <dl class="metrics"><div class="metric"><dt>Custom CSS</dt><dd>14 <span class="unit">lines</span></dd></div><div class="metric"><dt>Wrappers</dt><dd>3</dd></div><div class="metric"><dt>Tokens applied</dt><dd>29</dd></div><div class="metric"><dt>axe violations</dt><dd>1</dd></div><div class="metric"><dt>Bundle</dt><dd>387.4 <span class="unit">kB gz</span></dd></div></dl>
+        
         <ul class="views"><li class="view"><a class="view__link" href="./delta-mui/app.html">A whole DELTA screen</a> <span class="view__hint">layout, navigation and a full records workflow</span></li><li class="view"><a class="view__link" href="./delta-mui/">Component inventory</a> <span class="view__hint">every component on one page - proves capability, not adoption</span></li></ul>
       </article>
 
@@ -329,7 +329,7 @@
         </header>
         <p class="card__status" data-status="complete">Complete</p>
         <ul class="flags"><li class="flag flag--ok">Leakage: clean</li><li class="flag flag--bad">RTL: issues</li><li class="flag flag--ok">Long labels: clean</li></ul>
-        <dl class="metrics"><div class="metric"><dt>Custom CSS</dt><dd>27 <span class="unit">lines</span></dd></div><div class="metric"><dt>Wrappers</dt><dd>2</dd></div><div class="metric"><dt>Tokens applied</dt><dd>32</dd></div><div class="metric"><dt>axe violations</dt><dd>1</dd></div><div class="metric"><dt>Bundle</dt><dd>397.6 <span class="unit">kB gz</span></dd></div></dl>
+        
         <ul class="views"><li class="view"><a class="view__link" href="./mangrove-mui/island.html">Inside a real page</a> <span class="view__hint">the candidate owns one region of a live Mangrove page</span></li><li class="view"><a class="view__link" href="./mangrove-mui/">Component inventory</a> <span class="view__hint">every component on one page - proves capability, not adoption</span></li></ul>
       </article>
         </div>
@@ -353,7 +353,10 @@
         </header>
         <p class="card__status" data-status="complete">Complete</p>
         <ul class="flags"><li class="flag flag--ok">Leakage: clean</li><li class="flag flag--ok">RTL: clean</li><li class="flag flag--ok">Long labels: clean</li></ul>
-        <dl class="metrics"><div class="metric"><dt>Custom CSS</dt><dd>300 <span class="unit">lines</span></dd></div><div class="metric"><dt>Wrappers</dt><dd>4</dd></div><div class="metric"><dt>Tokens applied</dt><dd>50</dd></div><div class="metric"><dt>axe violations</dt><dd>3</dd></div><div class="metric"><dt>Bundle</dt><dd>261.5 <span class="unit">kB gz</span></dd></div></dl>
+        <p class="ceiling">
+        <strong>21</strong> of 71 UNDRR tokens unreachable
+        <span class="ceiling__note">a ceiling, not a cost: there is no hook to attach them to</span>
+      </p>
         <ul class="views"><li class="view view--missing"><span class="view__link view__link--missing">A whole DELTA screen</span> <span class="view__hint">not built yet</span></li><li class="view"><a class="view__link" href="./delta-carbon/">Component inventory</a> <span class="view__hint">every component on one page - proves capability, not adoption</span></li></ul>
       </article>
 
@@ -364,7 +367,10 @@
         </header>
         <p class="card__status" data-status="complete">Complete</p>
         <ul class="flags"><li class="flag flag--bad">Leakage: 19 differences</li><li class="flag flag--ok">RTL: clean</li><li class="flag flag--ok">Long labels: clean</li></ul>
-        <dl class="metrics"><div class="metric"><dt>Custom CSS</dt><dd>351 <span class="unit">lines</span></dd></div><div class="metric"><dt>Wrappers</dt><dd>4</dd></div><div class="metric"><dt>Tokens applied</dt><dd>50</dd></div><div class="metric"><dt>axe violations</dt><dd>1</dd></div><div class="metric"><dt>Bundle</dt><dd>207.8 <span class="unit">kB gz</span></dd></div></dl>
+        <p class="ceiling">
+        <strong>22</strong> of 72 UNDRR tokens unreachable
+        <span class="ceiling__note">a ceiling, not a cost: there is no hook to attach them to</span>
+      </p>
         <ul class="views"><li class="view view--missing"><span class="view__link view__link--missing">Inside a real page</span> <span class="view__hint">not built yet</span></li><li class="view"><a class="view__link" href="./mangrove-carbon/">Component inventory</a> <span class="view__hint">every component on one page - proves capability, not adoption</span></li></ul>
       </article>
         </div>
@@ -388,7 +394,10 @@
         </header>
         <p class="card__status" data-status="complete">Complete</p>
         <ul class="flags"><li class="flag flag--ok">Leakage: clean</li><li class="flag flag--ok">RTL: clean</li><li class="flag flag--ok">Long labels: clean</li></ul>
-        <dl class="metrics"><div class="metric"><dt>Custom CSS</dt><dd>72 <span class="unit">lines</span></dd></div><div class="metric"><dt>Wrappers</dt><dd>4</dd></div><div class="metric"><dt>Tokens applied</dt><dd>66</dd></div><div class="metric"><dt>axe violations</dt><dd>0</dd></div><div class="metric"><dt>Bundle</dt><dd>238.8 <span class="unit">kB gz</span></dd></div></dl>
+        <p class="ceiling">
+        <strong>5</strong> of 71 UNDRR tokens unreachable
+        <span class="ceiling__note">a ceiling, not a cost: there is no hook to attach them to</span>
+      </p>
         <ul class="views"><li class="view view--missing"><span class="view__link view__link--missing">A whole DELTA screen</span> <span class="view__hint">not built yet</span></li><li class="view"><a class="view__link" href="./delta-mantine/">Component inventory</a> <span class="view__hint">every component on one page - proves capability, not adoption</span></li></ul>
       </article>
 
@@ -399,7 +408,7 @@
         </header>
         <p class="card__status" data-status="complete">Complete</p>
         <ul class="flags"><li class="flag flag--ok">Leakage: clean</li><li class="flag flag--ok">RTL: clean</li><li class="flag flag--ok">Long labels: clean</li></ul>
-        <dl class="metrics"><div class="metric"><dt>Custom CSS</dt><dd>103 <span class="unit">lines</span></dd></div><div class="metric"><dt>Wrappers</dt><dd>4</dd></div><div class="metric"><dt>Tokens applied</dt><dd>62</dd></div><div class="metric"><dt>axe violations</dt><dd>0</dd></div><div class="metric"><dt>Bundle</dt><dd>270.9 <span class="unit">kB gz</span></dd></div></dl>
+        
         <ul class="views"><li class="view view--missing"><span class="view__link view__link--missing">Inside a real page</span> <span class="view__hint">not built yet</span></li><li class="view"><a class="view__link" href="./mangrove-mantine/">Component inventory</a> <span class="view__hint">every component on one page - proves capability, not adoption</span></li></ul>
       </article>
         </div>
@@ -423,7 +432,7 @@
         </header>
         <p class="card__status" data-status="complete">Complete</p>
         <ul class="flags"><li class="flag flag--ok">Leakage: clean</li><li class="flag flag--ok">RTL: clean</li><li class="flag flag--ok">Long labels: clean</li></ul>
-        <dl class="metrics"><div class="metric"><dt>Custom CSS</dt><dd>46 <span class="unit">lines</span></dd></div><div class="metric"><dt>Wrappers</dt><dd>4</dd></div><div class="metric"><dt>Tokens applied</dt><dd>44</dd></div><div class="metric"><dt>axe violations</dt><dd>1</dd></div><div class="metric"><dt>Bundle</dt><dd>392.3 <span class="unit">kB gz</span></dd></div></dl>
+        
         <ul class="views"><li class="view view--missing"><span class="view__link view__link--missing">A whole DELTA screen</span> <span class="view__hint">not built yet</span></li><li class="view"><a class="view__link" href="./delta-antd/">Component inventory</a> <span class="view__hint">every component on one page - proves capability, not adoption</span></li></ul>
       </article>
 
@@ -434,7 +443,7 @@
         </header>
         <p class="card__status" data-status="complete">Complete</p>
         <ul class="flags"><li class="flag flag--ok">Leakage: clean</li><li class="flag flag--ok">RTL: clean</li><li class="flag flag--ok">Long labels: clean</li></ul>
-        <dl class="metrics"><div class="metric"><dt>Custom CSS</dt><dd>46 <span class="unit">lines</span></dd></div><div class="metric"><dt>Wrappers</dt><dd>4</dd></div><div class="metric"><dt>Tokens applied</dt><dd>44</dd></div><div class="metric"><dt>axe violations</dt><dd>1</dd></div><div class="metric"><dt>Bundle</dt><dd>423.4 <span class="unit">kB gz</span></dd></div></dl>
+        
         <ul class="views"><li class="view view--missing"><span class="view__link view__link--missing">Inside a real page</span> <span class="view__hint">not built yet</span></li><li class="view"><a class="view__link" href="./mangrove-antd/">Component inventory</a> <span class="view__hint">every component on one page - proves capability, not adoption</span></li></ul>
       </article>
         </div>
