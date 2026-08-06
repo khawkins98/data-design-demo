@@ -158,6 +158,15 @@ reproduces. Unrelated to the extraction, but it means committed screenshots are
 not a reliable regression baseline, and any future refactor should verify against
 computed layout instead, as this one did.
 
+**Since confirmed to be broader than one pairing.** Building the realistic
+layouts re-ran the Mangrove suites and churned 17 of `mangrove-react-aria`'s
+committed kitchen-sink PNGs at the byte level while every kitchen-sink assertion
+still passed. The same change churned none on Delta. So the effect is not confined
+to `mangrove-mui` tablet RTL: it tracks the Mangrove host, whose icon webfont is
+the obvious suspect. The churned files were reverted rather than committed, since
+a binary diff that carries no information is worse than no diff. Screenshots
+remain useful as illustrations and unusable as assertions.
+
 **A caveat that must be stated.** The raw divergence between `delta-<x>` and
 `mangrove-<x>` is *not* evidence for this axis, however tempting it looks.
 `delta-mui` and `mangrove-react-aria` were built first; the other six were built

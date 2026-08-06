@@ -1,0 +1,34 @@
+{
+  "labelsMeasured": 4,
+  "maxLabelOffsetPx": 240,
+  "minLabelOffsetPx": 168,
+  "labels": [
+    {
+      "label": "البلد",
+      "inlineStartOffsetPx": 240,
+      "fieldWidthPx": 275,
+      "labelCssLeft": "0px"
+    },
+    {
+      "label": "نوع الخطر",
+      "inlineStartOffsetPx": 211,
+      "fieldWidthPx": 275,
+      "labelCssLeft": "0px"
+    },
+    {
+      "label": "حالة التحقق",
+      "inlineStartOffsetPx": 205,
+      "fieldWidthPx": 275,
+      "labelCssLeft": "0px"
+    },
+    {
+      "label": "مصدر البيانات",
+      "inlineStartOffsetPx": 168,
+      "fieldWidthPx": 275,
+      "labelCssLeft": "0px"
+    }
+  ],
+  "actionCellTextAlign": "right",
+  "actionCellIsLeftOfFirstCell": true,
+  "note": "Label displacement is bounded by the filter card's column width, so smaller than the kitchen sink's 843px worst case. Same unfixable defect. The action column's `align=right` is a physical value with no logical equivalent."
+}

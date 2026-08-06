@@ -1,0 +1,13 @@
+{
+  "viewport": "tablet",
+  "deletedId": "DRR-0005",
+  "observed": {
+    "tag": "button",
+    "label": "Review note: DRR-0181",
+    "className": "demo-iconbutton",
+    "insideTable": true,
+    "isBody": false
+  },
+  "outcome": "unrelated-row-action",
+  "finding": "After a confirmed delete React Aria cannot restore focus to the removed trigger and has no meaningful fallback. Measured outcomes vary by run: focus either lands on an unrelated record's row-action button or falls to <body>. Neither is announced by the library. Asserted as CURRENT behaviour, not desired behaviour."
+}

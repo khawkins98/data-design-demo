@@ -49,6 +49,17 @@ export interface IslandFrameProps {
   readonly children: ReactNode;
   /** Document direction, driven by the demo's locale switcher. */
   readonly dir?: "ltr" | "rtl";
+  /**
+   * Host-level chrome, rendered OUTSIDE the candidate root.
+   *
+   * Exists for the known-issues box, which every demo must render and which must
+   * sit outside the candidate subtree so that no candidate stylesheet can restyle
+   * it. Without this slot a demo has two bad options: render it inside
+   * `data-candidate-root`, where it becomes restylable and pollutes the
+   * `?candidate=off` baseline the leakage assertion requires to be empty, or omit
+   * it and lose the box. Both were tried before this prop existed.
+   */
+  readonly notices?: ReactNode;
 }
 
 /**
@@ -65,7 +76,12 @@ const TOPBAR_ITEMS = [
 /** The UNDRR logo, from the same CDN path the real page frame uses. */
 const LOGO_SRC = "https://assets.undrr.org/static/logos/undrr/undrr-logo-horizontal.svg";
 
-export function IslandFrame({ title, children, dir = "ltr" }: IslandFrameProps): ReactElement {
+export function IslandFrame({
+  title,
+  children,
+  dir = "ltr",
+  notices,
+}: IslandFrameProps): ReactElement {
   return (
     <div className="mg-host mg-island" dir={dir}>
       <header id="header" className="mg-page-header mg-page-header--default">
@@ -134,6 +150,9 @@ export function IslandFrame({ title, children, dir = "ltr" }: IslandFrameProps):
          * would silently cover less than it does in the kitchen sink.
          */}
         <h1 data-canary="heading-1">{title}</h1>
+
+        {/* Host chrome. Outside the candidate root, so it is not restylable. */}
+        {notices}
 
         {/*
          * Host prose ABOVE the candidate. This is the boundary the kitchen sink

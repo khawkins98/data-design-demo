@@ -76,6 +76,20 @@ describe("Delta AppFrame", () => {
     expect(html).toContain("Disaster events");
   });
 
+  it("renders notices outside the candidate root", () => {
+    // The known-issues box must not be restylable by the candidate, and must not
+    // appear inside the subtree the `?candidate=off` baseline requires to be empty.
+    const withNotices = renderToStaticMarkup(
+      <AppFrame title="Disaster events" notices={<div id="notice-box" />}>
+        <p>candidate subtree</p>
+      </AppFrame>,
+    );
+    const notice = withNotices.indexOf('id="notice-box"');
+    const root = withNotices.indexOf("data-candidate-root");
+    expect(notice).toBeGreaterThan(-1);
+    expect(notice).toBeLessThan(root);
+  });
+
   it("applies the requested direction", () => {
     expect(render("rtl")).toContain('dir="rtl"');
     expect(render("ltr")).toContain('dir="ltr"');

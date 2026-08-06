@@ -50,6 +50,17 @@ export interface AppFrameProps {
   readonly children: ReactNode;
   /** Document direction, driven by the demo's locale switcher. */
   readonly dir?: "ltr" | "rtl";
+  /**
+   * Host-level chrome, rendered OUTSIDE the candidate root.
+   *
+   * Exists for the known-issues box, which every demo must render and which must
+   * sit outside the candidate subtree so that no candidate stylesheet can restyle
+   * it. Without this slot a demo has two bad options: render it inside
+   * `data-candidate-root`, where it becomes restylable and pollutes the
+   * `?candidate=off` baseline the leakage assertion requires to be empty, or omit
+   * it and lose the box. Both were tried before this prop existed.
+   */
+  readonly notices?: ReactNode;
 }
 
 /**
@@ -64,7 +75,12 @@ const SIDEBAR_ITEMS = [
   { href: "#settings", label: "Settings" },
 ];
 
-export function AppFrame({ title, children, dir = "ltr" }: AppFrameProps): ReactElement {
+export function AppFrame({
+  title,
+  children,
+  dir = "ltr",
+  notices,
+}: AppFrameProps): ReactElement {
   return (
     <div dir={dir} className="min-h-screen bg-slate-50 text-slate-900">
       {/*
@@ -137,6 +153,9 @@ export function AppFrame({ title, children, dir = "ltr" }: AppFrameProps): React
          * candidate owns everything inside the application region.
          */}
         <main className="mg-container min-w-0 p-6">
+          {/* Host chrome. Outside the candidate root, so it is not restylable. */}
+          {notices}
+
           <p className="mb-4 max-w-prose text-sm text-slate-600" data-frame-canary="frame-prose-before">
             Everything below this line is rendered by the candidate library: the
             page header, filters, table, pagination and dialogs. The toolbar and

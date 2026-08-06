@@ -134,6 +134,20 @@ build: {
 
 Every view must honour `?candidate=off` the same way the kitchen sink does.
 
+### The known-issues box in the new views
+
+`HostShell` demos render `<KnownIssues>` as the first child of the shell, outside
+the candidate wrapper, so no candidate stylesheet can restyle it. The frames take
+it as a **`notices` prop** instead, which they render outside
+`data-candidate-root`:
+
+```tsx
+<IslandFrame title={…} dir={demo.dir} notices={<KnownIssues … />}>
+```
+
+Do not render it inside `children`. That subtree must be empty under
+`?candidate=off`, and anything in it is restylable by the candidate.
+
 ## What a Brief 1 run owns
 
 Everything inside its own directory, and nothing else:
