@@ -33,8 +33,9 @@ import { I18nProvider, Radio, RadioGroup } from "react-aria-components";
 
 import { LOCALES } from "@undrr-eval/fixtures";
 import type { LocaleCode } from "@undrr-eval/fixtures";
-import { IslandFrame } from "@undrr-eval/host-mangrove";
+import { IslandFrame, ViewSwitcher } from "@undrr-eval/host-mangrove";
 import { KnownIssues } from "@undrr-eval/known-issues";
+import { viewLinks } from "@undrr-eval/test-harness/views";
 import { TOKEN_SCOPE_CLASS } from "@undrr-eval/undrr-tokens";
 
 import { DemoContext, labelsFor, useDemo } from "./demo-state.js";
@@ -112,7 +113,21 @@ export function IslandView(): ReactElement {
       title={demo.labels.appTitle}
       dir={demo.dir}
       notices={
-        <KnownIssues candidate="react-aria" host="mangrove" candidateName="Adobe React Aria" />
+        <>
+          {/*
+           * Both boxes are host chrome and reach the page through `notices`, so
+           * they render outside `data-candidate-root` in both candidate states.
+           * `island` is listed but `application` is not: the full-application view
+           * is Delta-only, and a link to an `app.html` this app does not ship would
+           * be a dead end — the exact problem the switcher exists to fix.
+           */}
+          <ViewSwitcher
+            views={viewLinks(["island", "inventory"], "island")}
+            pairingName="Adobe React Aria on Mangrove"
+            otherHost={{ label: "React Aria on Delta", href: "../delta-react-aria/" }}
+          />
+          <KnownIssues candidate="react-aria" host="mangrove" candidateName="Adobe React Aria" />
+        </>
       }
     >
       {candidateEnabled ? (

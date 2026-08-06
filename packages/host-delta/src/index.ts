@@ -21,6 +21,10 @@ export type { HostShellProps } from "./HostShell.js";
 export { AppFrame, DELTA_FRAME_CANARY_IDS } from "./AppFrame.js";
 export type { AppFrameProps } from "./AppFrame.js";
 
+/** Cross-view navigation. Pass through a frame's `notices` slot. */
+export { ViewSwitcher } from "./ViewSwitcher.js";
+export type { ViewSwitcherProps } from "./ViewSwitcher.js";
+
 /** Identifies which host a demo was built against, for evidence.json. */
 export const HOST_NAME = "delta" as const;
 

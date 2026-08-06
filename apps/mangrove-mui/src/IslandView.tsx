@@ -43,7 +43,8 @@ import type { GridColDef, GridPaginationModel } from "@mui/x-data-grid";
 
 import { LOCALES, LOSS_RECORDS, OPTIONS_SMALL } from "@undrr-eval/fixtures";
 import type { LocaleCode, VerificationStatus } from "@undrr-eval/fixtures";
-import { IslandFrame } from "@undrr-eval/host-mangrove";
+import { IslandFrame, ViewSwitcher } from "@undrr-eval/host-mangrove";
+import { viewLinks } from "@undrr-eval/test-harness/views";
 import { KnownIssues } from "@undrr-eval/known-issues";
 import { DemoContext, labelsFor, undrrMuiTheme } from "@undrr-eval/integration-mui";
 import type { DemoContextValue } from "@undrr-eval/integration-mui";
@@ -161,13 +162,26 @@ export function IslandView(): ReactElement {
       title={labels.appTitle}
       dir={demo.dir}
       /*
-       * The frame's `notices` slot renders this OUTSIDE `data-candidate-root`, so
-       * no candidate stylesheet can restyle it and the candidate subtree is
-       * genuinely empty under `?candidate=off`. Passed unconditionally, so the box
-       * is present in the leakage baseline as well as the candidate render and
-       * therefore cannot itself register as a difference.
+       * The frame's `notices` slot renders both of these OUTSIDE
+       * `data-candidate-root`, so no candidate stylesheet can restyle them and the
+       * candidate subtree is genuinely empty under `?candidate=off`. Passed
+       * unconditionally, so they are present in the leakage baseline as well as the
+       * candidate render and therefore cannot themselves register as a difference.
+       *
+       * `"application"` is deliberately absent from `available`: the whole-DELTA-
+       * screen view is a Delta view, and this is the Mangrove host. Listing it here
+       * would produce a dead link to an `app.html` this app does not ship.
        */
-      notices={<KnownIssues candidate="mui" host="mangrove" candidateName="MUI Community" />}
+      notices={
+        <>
+          <ViewSwitcher
+            views={viewLinks(["island", "inventory"], "island")}
+            pairingName="MUI Community on Mangrove"
+            otherHost={{ label: "MUI on Delta", href: "../delta-mui/" }}
+          />
+          <KnownIssues candidate="mui" host="mangrove" candidateName="MUI Community" />
+        </>
+      }
     >
       {candidateEnabled ? (
         <ThemeProvider theme={theme}>

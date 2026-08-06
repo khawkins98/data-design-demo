@@ -118,3 +118,50 @@
   min-width: 0;
   margin: 2rem 0;
 }
+
+/**
+ * View switcher. Host chrome, so it is styled here and not by any candidate.
+ * Deliberately quiet: it is orientation, not content.
+ */
+.mg-viewswitcher {
+  margin: 0 0 1.5rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid #d5d5d5;
+  border-inline-start: 4px solid #004f91;
+  background: #f7f7f7;
+}
+
+.mg-viewswitcher__where {
+  margin: 0 0 0.375rem;
+  font-size: 0.875rem;
+}
+
+.mg-viewswitcher__hint {
+  color: #575757;
+}
+
+.mg-viewswitcher__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.375rem 0.75rem;
+  font-size: 0.8125rem;
+}
+
+.mg-viewswitcher__label {
+  font-weight: 700;
+}
+
+.mg-viewswitcher__current {
+  font-weight: 700;
+}
+
+/* Separates "same candidate, other host" and "all pairings" from the views. */
+.mg-viewswitcher__item--other {
+  margin-inline-start: 0.5rem;
+  padding-inline-start: 0.75rem;
+  border-inline-start: 1px solid #d5d5d5;
+}

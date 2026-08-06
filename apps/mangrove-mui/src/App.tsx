@@ -20,7 +20,8 @@ import { createTheme } from "@mui/material/styles";
 
 import { LOCALES } from "@undrr-eval/fixtures";
 import type { LocaleCode } from "@undrr-eval/fixtures";
-import { HostShell } from "@undrr-eval/host-mangrove";
+import { HostShell, ViewSwitcher } from "@undrr-eval/host-mangrove";
+import { viewLinks } from "@undrr-eval/test-harness/views";
 import { TOKEN_SCOPE_CLASS } from "@undrr-eval/undrr-tokens";
 
 import {
@@ -76,6 +77,19 @@ export function App(): ReactElement {
 
   return (
     <HostShell title={demo.labels.appTitle} dir={demo.dir}>
+      {/*
+        * Cross-view navigation, immediately before the known-issues box and on the
+        * same terms: outside the candidate wrapper, in both candidate states. This
+        * page is the inventory, so it is the one flagged `current`. `"application"`
+        * is not listed — that view belongs to the Delta host, and the link to it
+        * goes through `otherHost` instead.
+        */}
+      <ViewSwitcher
+        views={viewLinks(["island", "inventory"], "inventory")}
+        pairingName="MUI Community on Mangrove"
+        otherHost={{ label: "MUI on Delta", href: "../delta-mui/" }}
+      />
+
       {/*
         * Rendered OUTSIDE the candidate wrapper and in BOTH candidate states.
         * Outside, so no candidate stylesheet restyles the warning box and every

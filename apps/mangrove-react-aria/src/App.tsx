@@ -11,7 +11,8 @@ import { Button, I18nProvider, Radio, RadioGroup } from "react-aria-components";
 
 import { LOCALES } from "@undrr-eval/fixtures";
 import type { LocaleCode } from "@undrr-eval/fixtures";
-import { HostShell } from "@undrr-eval/host-mangrove";
+import { HostShell, ViewSwitcher } from "@undrr-eval/host-mangrove";
+import { viewLinks } from "@undrr-eval/test-harness/views";
 import { TOKEN_SCOPE_CLASS } from "@undrr-eval/undrr-tokens";
 import { KnownIssues } from "@undrr-eval/known-issues";
 
@@ -79,6 +80,22 @@ export function App(): ReactElement {
 
   return (
     <HostShell title={demo.labels.appTitle} dir={demo.dir}>
+      {/*
+        * Host chrome, on the same terms as the known-issues box below: rendered
+        * OUTSIDE the candidate wrapper and in BOTH candidate states, so no
+        * candidate stylesheet restyles it and it cannot itself register as a
+        * leakage difference.
+        *
+        * `island` is listed but `application` is not: the full-application view is
+        * Delta-only, and linking to an `app.html` this app does not ship would be a
+        * dead end — the problem the switcher exists to fix.
+        */}
+      <ViewSwitcher
+        views={viewLinks(["island", "inventory"], "inventory")}
+        pairingName="Adobe React Aria on Mangrove"
+        otherHost={{ label: "React Aria on Delta", href: "../delta-react-aria/" }}
+      />
+
       {/*
         * Rendered OUTSIDE the candidate wrapper and in BOTH candidate states.
         * Outside, so no candidate stylesheet restyles the warning box and every

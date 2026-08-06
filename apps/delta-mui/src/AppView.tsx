@@ -66,7 +66,8 @@ import { createTheme } from "@mui/material/styles";
 
 import { LOCALES, LOSS_RECORDS, OPTIONS_SMALL } from "@undrr-eval/fixtures";
 import type { LocaleCode, LossRecord, VerificationStatus } from "@undrr-eval/fixtures";
-import { AppFrame } from "@undrr-eval/host-delta";
+import { AppFrame, ViewSwitcher } from "@undrr-eval/host-delta";
+import { viewLinks } from "@undrr-eval/test-harness/views";
 import { KnownIssues } from "@undrr-eval/known-issues";
 import { DemoContext, labelsFor, undrrMuiTheme } from "@undrr-eval/integration-mui";
 import type { DemoContextValue } from "@undrr-eval/integration-mui";
@@ -214,13 +215,26 @@ export function AppView(): ReactElement {
       title={labels.appTitle}
       dir={demo.dir}
       /*
-       * The frame's `notices` slot renders this OUTSIDE `data-candidate-root`, so
-       * no candidate stylesheet can restyle it and the candidate subtree is
-       * genuinely empty under `?candidate=off`. Passed unconditionally, so the box
-       * is present in the leakage baseline as well as the candidate render and
-       * therefore cannot itself register as a difference.
+       * The frame's `notices` slot renders both of these OUTSIDE
+       * `data-candidate-root`, so no candidate stylesheet can restyle them and the
+       * candidate subtree is genuinely empty under `?candidate=off`. Passed
+       * unconditionally, so they are present in the leakage baseline as well as the
+       * candidate render and therefore cannot themselves register as a difference.
+       *
+       * `"island"` is deliberately absent from `available`: the embedded-island view
+       * is a Mangrove view, and this is the Delta host. Listing it here would produce
+       * a dead link to an `island.html` this app does not ship.
        */
-      notices={<KnownIssues candidate="mui" host="delta" candidateName="MUI Community" />}
+      notices={
+        <>
+          <ViewSwitcher
+            views={viewLinks(["application", "inventory"], "application")}
+            pairingName="MUI Community on Delta"
+            otherHost={{ label: "MUI on Mangrove", href: "../mangrove-mui/" }}
+          />
+          <KnownIssues candidate="mui" host="delta" candidateName="MUI Community" />
+        </>
+      }
     >
       {candidateEnabled ? (
         <ThemeProvider theme={theme}>

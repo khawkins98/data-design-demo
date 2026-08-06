@@ -103,6 +103,88 @@ test.describe("full application", () => {
     }
   });
 
+  test("view switcher is host chrome, and the candidate cannot restyle it", async ({
+    page,
+  }) => {
+    // Reaches the page through the frame's `notices` slot, so it must sit outside
+    // the candidate root in both states — same contract as the known-issues box.
+    const readStrip = async () =>
+      page.locator('nav[aria-label="Demo views"]').evaluate((el) => {
+        const cs = getComputedStyle(el);
+        return {
+          insideCandidateRoot: el.closest("[data-candidate-root]") !== null,
+          background: cs.backgroundColor,
+          borderInlineStartWidth: cs.borderInlineStartWidth,
+          color: cs.color,
+          fontFamily: cs.fontFamily,
+          fontSize: cs.fontSize,
+          padding: cs.padding,
+        };
+      });
+
+    await page.goto(`${URL}?candidate=off`);
+    const withoutCandidate = await readStrip();
+
+    await page.goto(`${URL}?candidate=on`);
+    const withCandidate = await readStrip();
+
+    expect(withoutCandidate.insideCandidateRoot).toBe(false);
+    expect(withCandidate.insideCandidateRoot).toBe(false);
+
+    // The leakage assertion only watches `[data-canary]` elements, so it would not
+    // notice the candidate restyling this strip. Diffing it across the two loads is
+    // the same method applied to the chrome the switcher adds. Worth doing on this
+    // host in particular: the strip is styled with Tailwind utilities from the same
+    // sheet whose Preflight reset reaches the candidate's subtree.
+    expect(
+      withCandidate,
+      "the candidate's stylesheet changed the host view switcher",
+    ).toEqual(withoutCandidate);
+
+    await expect(page.locator('nav[aria-label="Demo views"] a')).not.toHaveCount(0);
+    await expect(page.locator('nav[aria-label="Demo views"] [aria-current="page"]')).toHaveCount(
+      1,
+    );
+    // The island view is Mangrove-only and must not be offered here.
+    await expect(
+      page.locator('nav[aria-label="Demo views"] a[href="./island.html"]'),
+    ).toHaveCount(0);
+    await expect(
+      page.locator('nav[aria-label="Demo views"] a[href="./index.html"]'),
+    ).toHaveCount(1);
+  });
+
+  test("view switcher mirrors under RTL", async ({ page }) => {
+    // It uses logical properties (`ms-`/`ps-`/`border-s`), which SHOULD mirror on
+    // their own — but the frame sets `dir` on a wrapper rather than on <html>, and
+    // this run already found that a portal escaping that wrapper loses direction.
+    // Verified rather than assumed.
+    await page.goto(`${URL}?candidate=on`);
+
+    const separator = page.locator('nav[aria-label="Demo views"] li').last();
+    const ltr = await separator.evaluate((el) => {
+      const cs = getComputedStyle(el);
+      return { left: cs.borderLeftWidth, right: cs.borderRightWidth };
+    });
+    expect(ltr.left, "LTR: inline-start border should be on the left").not.toBe("0px");
+    expect(ltr.right).toBe("0px");
+
+    await selectLocale(page, "العربية");
+    await expect(page.locator('[dir="rtl"]')).toHaveCount(1);
+
+    const rtl = await separator.evaluate((el) => {
+      const cs = getComputedStyle(el);
+      return {
+        direction: cs.direction,
+        left: cs.borderLeftWidth,
+        right: cs.borderRightWidth,
+      };
+    });
+    expect(rtl.direction).toBe("rtl");
+    expect(rtl.right, "RTL: inline-start border should have moved to the right").not.toBe("0px");
+    expect(rtl.left).toBe("0px");
+  });
+
   test("candidate=off leaves the application region empty", async ({ page }) => {
     await page.goto(`${URL}?candidate=off`);
     await expect(page.locator("[data-candidate-root] *")).toHaveCount(0);
