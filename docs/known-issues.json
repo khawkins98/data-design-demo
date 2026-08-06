@@ -27,7 +27,8 @@
         {
           "id": "mui-rtl-unfixable",
           "title": "RTL is not achievable in the MUI Community tier",
-          "owner": "candidate"
+          "owner": "candidate",
+          "remediability": "out-of-scope"
         }
       ],
       "headline": {
@@ -48,7 +49,8 @@
         {
           "id": "carbon-unreachable-tokens",
           "title": "Carbon cannot express about 30% of the UNDRR design tokens",
-          "owner": "candidate"
+          "owner": "candidate",
+          "remediability": "upstream-only"
         }
       ],
       "headline": {
@@ -68,7 +70,8 @@
         {
           "id": "mantine-modal-close-unnamed",
           "title": "Modal's close button ships with no accessible name",
-          "owner": "candidate"
+          "owner": "candidate",
+          "remediability": "per-site-code"
         }
       ],
       "headline": {
@@ -114,7 +117,8 @@
         {
           "id": "mui-rtl-unfixable",
           "title": "RTL is not achievable in the MUI Community tier",
-          "owner": "candidate"
+          "owner": "candidate",
+          "remediability": "out-of-scope"
         }
       ],
       "headline": {
@@ -135,12 +139,14 @@
         {
           "id": "carbon-unreachable-tokens",
           "title": "Carbon cannot express about 30% of the UNDRR design tokens",
-          "owner": "candidate"
+          "owner": "candidate",
+          "remediability": "upstream-only"
         },
         {
           "id": "carbon-leakage-failure",
           "title": "This pairing fails the style-containment assertion",
-          "owner": "pairing"
+          "owner": "pairing",
+          "remediability": "inherent"
         }
       ],
       "headline": {
@@ -160,7 +166,8 @@
         {
           "id": "mantine-modal-close-unnamed",
           "title": "Modal's close button ships with no accessible name",
-          "owner": "candidate"
+          "owner": "candidate",
+          "remediability": "per-site-code"
         }
       ],
       "headline": {
@@ -181,7 +188,8 @@
         {
           "id": "antd-select-value-hidden-on-mangrove",
           "title": "Select controls do not display their selected value",
-          "owner": "pairing"
+          "owner": "pairing",
+          "remediability": "config"
         }
       ],
       "headline": {

@@ -86,6 +86,25 @@ if (weightTotal !== 100) {
 /** Bands, and the score each contributes before weighting. */
 const BANDS = Object.freeze({ strong: 1, workable: 0.6, weak: 0.3, blocked: 0 });
 
+/**
+ * How a blocker can be escaped, cheapest first.
+ *
+ * NOT folded into the composite, and that is deliberate. Remediability is a fact
+ * about the cost of living with a defect, not about the axis the defect sits on, so
+ * averaging it into a score would double-count severity and blur both. It tiers the
+ * blockers instead, which is what the reader actually needs: whether row 2 of the
+ * ranking joins row 1 or not.
+ */
+const REMEDIABILITY_ORDER = ["config", "per-site-code", "upstream-only", "out-of-scope", "inherent"];
+
+const REMEDIABILITY = Object.freeze({
+  config: "reversible per site by changing a setting",
+  "per-site-code": "fixable in consuming code, repeated per site",
+  "upstream-only": "needs a change in the library",
+  "out-of-scope": "a fix exists but this evaluation's rules forbid it - a policy decision",
+  inherent: "cannot be escaped while using the library as documented",
+});
+
 const CANDIDATE_ORDER = ["react-aria", "mui", "carbon", "mantine", "antd"];
 
 function readJson(path) {
@@ -276,7 +295,11 @@ const rows = appDirs().map((app) => {
    * composite that called that candidate unblocked would be worse than no score.
    */
   for (const b of pairing.scoreableBlockers ?? []) {
-    blockers.push({ key: b.id, text: `${b.title} (owned by ${b.owner})` });
+    blockers.push({
+      key: b.id,
+      text: `${b.title} (owned by ${b.owner})`,
+      remediability: b.remediability,
+    });
   }
 
   return {
@@ -301,9 +324,16 @@ const byCandidate = CANDIDATE_ORDER.map((candidate) => {
   // Dedupe by axis or issue id: one blocked axis appearing on both hosts is one
   // finding about the candidate, not two.
   const seen = new Map();
-  for (const b of pair.flatMap((r) => r.blockers)) if (!seen.has(b.key)) seen.set(b.key, b.text);
-  const blockers = [...seen].map(([key, text]) => `${key}: ${text}`);
-  return { candidate, name: pair[0].name, composite, blockers, pair };
+  for (const b of pair.flatMap((r) => r.blockers)) if (!seen.has(b.key)) seen.set(b.key, b);
+  const blockers = [...seen.values()].map(
+    (b) => `${b.key}: ${b.text}${b.remediability ? ` [escape: ${REMEDIABILITY[b.remediability]}]` : ""}`,
+  );
+  // The cheapest escape route among this candidate's blockers, for the tiering
+  // below. Derived, never asserted in prose - see rule 2 at the top of this file.
+  const escapes = [...seen.values()].map((b) => b.remediability).filter(Boolean);
+  const easiest = REMEDIABILITY_ORDER.find((r) => escapes.includes(r)) ?? null;
+  const hardest = [...REMEDIABILITY_ORDER].reverse().find((r) => escapes.includes(r)) ?? null;
+  return { candidate, name: pair[0].name, composite, blockers, easiest, hardest, pair };
 }).filter(Boolean);
 
 // Comparisons are computed, never written into prose. See rule 2 at the top.
@@ -381,15 +411,22 @@ L.push("`evidence.json`, once as its known-issues entry. Those are two records o
 L.push("fact from two sources, deliberately not merged, because silently collapsing them");
 L.push("would hide a disagreement if the two sources ever stopped matching.");
 L.push("");
-L.push("**Remediability is not scored, and it differs sharply.** Ant Design's is");
-L.push("reversible per site by dropping one setting. Mantine's is fixable per site with a");
-L.push("prop, once the fixtures carry a suitable string. MUI's cannot be fixed inside this");
-L.push("evaluation's constraints at all. Carbon's is inherent to loading its documented");
-L.push("global stylesheet. Those are four very different propositions and this file cannot");
-L.push("tell them apart, because the registry records remediability in prose rather than in");
-L.push("a field. Read the linked entries before treating one blocker as equivalent to");
-L.push("another - and if this distinction is going to carry weight in the decision, the");
-L.push("registry needs a structured field for it rather than a reader's inference.");
+L.push("**Remediability is recorded but not scored.** Each blocker carries how it could be");
+L.push("escaped, taken from the registry rather than inferred. It is kept out of the");
+L.push("composite on purpose: it describes the cost of living with a defect, not the axis");
+L.push("the defect sits on, so averaging it in would double-count severity and blur both.");
+L.push("It is here to answer one question the composite cannot - whether a candidate below");
+L.push("the top of the ranking can be brought up to it.");
+L.push("");
+L.push("| Candidate | Blockers | Cheapest escape | Hardest escape |");
+L.push("| --- | --- | --- | --- |");
+for (const c of ranked.filter((x) => x.blockers.length > 0)) {
+  L.push(
+    `| ${c.name} | ${c.blockers.length} | ${
+      c.easiest ? REMEDIABILITY[c.easiest] : "not recorded"
+    } | ${c.hardest ? REMEDIABILITY[c.hardest] : "not recorded"} |`,
+  );
+}
 L.push("");
 for (const c of ranked.filter((x) => x.blockers.length > 0)) {
   L.push(`**${c.name}**`);

@@ -146,6 +146,21 @@ describe("known issues registry", () => {
     }
   });
 
+  it("states what it would take to escape every blocker and decision", () => {
+    // The scoring layer can rank severity but not cost of escape, and a flat list of
+    // blockers implies four very different propositions are equivalent: a setting, a
+    // prop, an upstream release, a rule this evaluation imposed, and a defect with no
+    // exit at all. Required on anything that could remove a candidate from a
+    // shortlist, so the distinction cannot be lost by omission.
+    const decisive = KNOWN_ISSUES.filter(
+      (issue) => !issue.resolved && (issue.severity === "blocker" || issue.severity === "decision"),
+    );
+    expect(decisive.length, "no blockers or decisions found; this guard would be vacuous").toBeGreaterThan(0);
+    for (const issue of decisive) {
+      expect(issue.remediability, `${issue.id} must state its remediability`).toBeDefined();
+    }
+  });
+
   it("keeps our own bugs out of what can be scored", () => {
     // The scoring layer must only count defects belonging to the thing being
     // chosen. If an "our implementation" or harness finding ever leaks into the

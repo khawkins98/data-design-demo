@@ -53,7 +53,12 @@ for (const host of HOSTS) {
      */
     const scoreableBlockers = openIssuesFor(candidate, host)
       .filter((issue) => issue.severity === "blocker" && SCOREABLE_OWNERS.includes(issue.owner))
-      .map((issue) => ({ id: issue.id, title: issue.title, owner: issue.owner }));
+      .map((issue) => ({
+        id: issue.id,
+        title: issue.title,
+        owner: issue.owner,
+        remediability: issue.remediability ?? null,
+      }));
     const counts = {};
     for (const issue of issues) counts[issue.severity] = (counts[issue.severity] ?? 0) + 1;
     byPairing[`${host}-${candidate}`] = {

@@ -75,6 +75,26 @@ export interface KnownIssue {
    * the scoring layer.
    */
   readonly resolved?: string;
+  /**
+   * What it would take to make this defect go away. Required on blockers and
+   * decisions, asserted by the registry's tests.
+   *
+   * Added because the scoring layer could rank severity but not cost of escape, and
+   * a flat list of blockers implied that four very different propositions were
+   * equivalent. They are not: one is a setting, one is a prop, one needs an upstream
+   * release, one is forbidden by the brief, and one cannot be escaped at all without
+   * abandoning the library's documented setup. That distinction is the most likely
+   * decider of the shortlist, so it belongs in a field rather than in a reader's
+   * inference from prose.
+   *
+   * - `config`          reversible per site by changing a setting we already control.
+   * - `per-site-code`   fixable in consuming code, at a cost repeated per site.
+   * - `upstream-only`   needs a change in the library; nothing consuming code can do.
+   * - `out-of-scope`    a fix exists but this evaluation's rules forbid it, so it is
+   *                     a policy decision for UNDRR rather than an engineering one.
+   * - `inherent`        cannot be escaped while using the library as documented.
+   */
+  readonly remediability?: "config" | "per-site-code" | "upstream-only" | "out-of-scope" | "inherent";
 }
 
 const REPO = "https://github.com/khawkins98/data-design-demo";
@@ -112,6 +132,10 @@ export const KNOWN_ISSUES: readonly KnownIssue[] = Object.freeze([
   {
     id: "mui-rtl-unfixable",
     severity: "blocker",
+    // A fix exists - stylis-plugin-rtl - and constraint 2 forbids it as a
+    // third-party package outside the candidate's own ecosystem. So this is a policy
+    // decision about an Arabic-serving service, not an engineering problem.
+    remediability: "out-of-scope",
     candidates: ["mui"],
     hosts: ["*"],
     owner: "candidate",
@@ -139,6 +163,10 @@ export const KNOWN_ISSUES: readonly KnownIssue[] = Object.freeze([
   {
     id: "antd-select-value-hidden-on-mangrove",
     severity: "blocker",
+    // Dropping antd's `layer` setting reverses it: antd's CSS then out-specifies
+    // Mangrove and the value shows. The cost is that antd stops inheriting the
+    // Mangrove look for free, which is what the layer setting bought.
+    remediability: "config",
     candidates: ["antd"],
     hosts: ["mangrove"],
     owner: "pairing",
@@ -157,6 +185,7 @@ export const KNOWN_ISSUES: readonly KnownIssue[] = Object.freeze([
   {
     id: "antd-layer-loses-to-mangrove",
     severity: "decision",
+    remediability: "config",
     candidates: ["antd"],
     hosts: ["mangrove"],
     owner: "pairing",
@@ -207,6 +236,9 @@ export const KNOWN_ISSUES: readonly KnownIssue[] = Object.freeze([
   {
     id: "carbon-unreachable-tokens",
     severity: "blocker",
+    // No amount of consuming-side effort closes this: there is no hook to attach
+    // those tokens to. Only Carbon can add one.
+    remediability: "upstream-only",
     candidates: ["carbon"],
     hosts: ["*"],
     owner: "candidate",
@@ -240,6 +272,7 @@ export const KNOWN_ISSUES: readonly KnownIssue[] = Object.freeze([
   {
     id: "carbon-telemetry",
     severity: "decision",
+    remediability: "config",
     candidates: ["carbon"],
     hosts: ["*"],
     owner: "candidate",
@@ -251,6 +284,10 @@ export const KNOWN_ISSUES: readonly KnownIssue[] = Object.freeze([
   {
     id: "carbon-leakage-failure",
     severity: "blocker",
+    // Restyling the document is what @carbon/styles is for. Containment is possible
+    // only by abandoning the documented install for a hand-composed Sass entry, which
+    // is a different product with a different upgrade path - so as documented, inherent.
+    remediability: "inherent",
     candidates: ["carbon"],
     hosts: ["mangrove"],
     owner: "pairing",
@@ -321,6 +358,10 @@ export const KNOWN_ISSUES: readonly KnownIssue[] = Object.freeze([
   {
     id: "mantine-modal-close-unnamed",
     severity: "blocker",
+    // closeButtonProps takes an aria-label, so any consuming site can fix it - but
+    // every site must remember to, on every Modal, forever, and the fixtures carry no
+    // "close" string to feed it.
+    remediability: "per-site-code",
     candidates: ["mantine"],
     hosts: ["*"],
     owner: "candidate",

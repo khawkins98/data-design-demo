@@ -59,34 +59,38 @@ Two things to know before reading these as a ranking of severity.
 fact from two sources, deliberately not merged, because silently collapsing them
 would hide a disagreement if the two sources ever stopped matching.
 
-**Remediability is not scored, and it differs sharply.** Ant Design's is
-reversible per site by dropping one setting. Mantine's is fixable per site with a
-prop, once the fixtures carry a suitable string. MUI's cannot be fixed inside this
-evaluation's constraints at all. Carbon's is inherent to loading its documented
-global stylesheet. Those are four very different propositions and this file cannot
-tell them apart, because the registry records remediability in prose rather than in
-a field. Read the linked entries before treating one blocker as equivalent to
-another - and if this distinction is going to carry weight in the decision, the
-registry needs a structured field for it rather than a reader's inference.
+**Remediability is recorded but not scored.** Each blocker carries how it could be
+escaped, taken from the registry rather than inferred. It is kept out of the
+composite on purpose: it describes the cost of living with a defect, not the axis
+the defect sits on, so averaging it in would double-count severity and blur both.
+It is here to answer one question the composite cannot - whether a candidate below
+the top of the ranking can be brought up to it.
+
+| Candidate | Blockers | Cheapest escape | Hardest escape |
+| --- | --- | --- | --- |
+| Ant Design | 1 | reversible per site by changing a setting | reversible per site by changing a setting |
+| Mantine | 1 | fixable in consuming code, repeated per site | fixable in consuming code, repeated per site |
+| MUI (Community only) | 2 | a fix exists but this evaluation's rules forbid it - a policy decision | a fix exists but this evaluation's rules forbid it - a policy decision |
+| IBM Carbon | 3 | needs a change in the library | cannot be escaped while using the library as documented |
 
 **Ant Design**
 
-- antd-select-value-hidden-on-mangrove: Select controls do not display their selected value (owned by pairing)
+- antd-select-value-hidden-on-mangrove: Select controls do not display their selected value (owned by pairing) [escape: reversible per site by changing a setting]
 
 **Mantine**
 
-- mantine-modal-close-unnamed: Modal's close button ships with no accessible name (owned by candidate)
+- mantine-modal-close-unnamed: Modal's close button ships with no accessible name (owned by candidate) [escape: fixable in consuming code, repeated per site]
 
 **MUI (Community only)**
 
 - A6 Right-to-left: Arabic is not correct as shipped: 2 recorded defects, unresolved
-- mui-rtl-unfixable: RTL is not achievable in the MUI Community tier (owned by candidate)
+- mui-rtl-unfixable: RTL is not achievable in the MUI Community tier (owned by candidate) [escape: a fix exists but this evaluation's rules forbid it - a policy decision]
 
 **IBM Carbon**
 
-- carbon-unreachable-tokens: Carbon cannot express about 30% of the UNDRR design tokens (owned by candidate)
+- carbon-unreachable-tokens: Carbon cannot express about 30% of the UNDRR design tokens (owned by candidate) [escape: needs a change in the library]
 - A4 Mangrove compatibility: the candidate restyled 19 computed properties on host markup outside its own subtree
-- carbon-leakage-failure: This pairing fails the style-containment assertion (owned by pairing)
+- carbon-leakage-failure: This pairing fails the style-containment assertion (owned by pairing) [escape: cannot be escaped while using the library as documented]
 
 ## Per pairing, per axis
 
