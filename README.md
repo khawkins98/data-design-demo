@@ -2,8 +2,8 @@
 
 UNDRR's evaluation of data design systems.
 
-Eight controlled proofs of concept: four candidate UI libraries built against
-two UNDRR host shells, each rendering the same kitchen-sink page over the same
+Ten controlled proofs of concept: five candidate UI libraries built against two
+UNDRR host shells, each rendering the same kitchen-sink page over the same
 fixture data, so the results can actually be compared.
 
 This is exploratory work on a personal account. It is not a UNDRR product and
@@ -11,7 +11,7 @@ carries no UNDRR endorsement.
 
 ## What this repository is
 
-A **scaffold** plus, eventually, eight demos.
+A **scaffold** plus ten demos.
 
 The scaffold fixes everything that would otherwise vary between demos — the
 data, the labels, the date, the design tokens, the page frame, the test
@@ -24,6 +24,12 @@ candidate library rather than to eight agents each inventing their own setup.
 | MUI (Community only) | `@mui/material` | MIT |
 | IBM Carbon | `@carbon/react` | Apache-2.0 |
 | Mantine | `@mantine/core` | MIT |
+| Ant Design | `antd` | MIT |
+
+shadcn/ui was considered and deliberately not built. Its distribution model is to
+copy component source into each project, so every site would own a divergent fork
+with no upstream upgrade path. The reasoning is in
+`docs/extraction-results.json`.
 
 Against two hosts: **Delta** (Tailwind 4, from
 [`PreventionWeb/delta`](https://github.com/PreventionWeb/delta)) and **Mangrove**
@@ -56,25 +62,41 @@ scripts/                 generators for fixtures, tokens CSS and the landing pag
 
 ## The output
 
-**All eight pairings are complete.** The comparison is the artefact to read:
+**All ten pairings are complete.** Start with the decision axes, not the matrix:
 
 | | |
 | --- | --- |
-| [Live site](https://khawkins98.github.io/data-design-demo/) | All eight demos, click through from the landing page |
-| [Comparison matrix](https://khawkins98.github.io/data-design-demo/comparison.html) | 8 pairings x 30 requirements, plus metrics, generated from the evidence files |
+| [Decision axes](https://khawkins98.github.io/data-design-demo/axes.html) | **Read this first.** Implementation effort, maintainability across many sites, reproducibility, Mangrove compatibility, theming propagation |
+| [Live site](https://khawkins98.github.io/data-design-demo/) | All ten demos, click through from the landing page |
+| [Comparison matrix](https://khawkins98.github.io/data-design-demo/comparison.html) | 10 pairings x 30 requirements, plus metrics, generated from the evidence files |
 | [Issue #8](https://github.com/khawkins98/data-design-demo/issues/8) | Decisions UNDRR needs to make, which do not show up in a feature comparison |
 | [Issue #4](https://github.com/khawkins98/data-design-demo/issues/4) | Mangrove findings that fell out of building this |
 
 Headline: **zero requirements came back `unsupported` and no run was blocked.**
-Every requirement was reachable in every free tier, so the differences are all in
-cost — 54 to 411 custom lines, 14 to 715 lines of CSS, 207 to 397 kB gzipped, and
-19 to 158 dependencies. The evidence for each is in
-`apps/<host>-<candidate>/EVIDENCE.md`.
+Every requirement was reachable in every free tier, which is exactly why the
+matrix does not decide anything on its own and the axes exist. The differences
+that matter are not volume:
+
+- **Off-route styling.** React Aria carries roughly five times Carbon's stylesheet
+  with **zero** hooks outside the library's documented theming route, against
+  Carbon's 15-16.
+- **Token propagation.** React Aria and Carbon resolve tokens in the browser, so a
+  Mangrove change is a stylesheet swap. MUI, Mantine and Ant Design bake values
+  into each bundle, making it a rebuild of every site.
+- **Theming ceilings.** Carbon leaves 21-22 of 71 UNDRR tokens unreachable. That
+  is a ceiling, not a cost.
+- **Cascade layers.** Ant Design can wrap its CSS in `@layer`, which makes it lose
+  every conflict with Mangrove's unlayered CSS. Its controls then render as
+  Mangrove's, with no repair CSS at all. Whether that is desirable is a decision
+  for UNDRR.
+
+The evidence for each is in `apps/<host>-<candidate>/EVIDENCE.md`.
 
 ## Reading order
 
 | Document | What it settles |
 | --- | --- |
+| `docs/decision-axes.md` | The five axes that bear on the decision, what is measured on each, and where a measurement cannot honestly be made |
 | `docs/requirements.md` | Canonical requirement IDs, how to assign each `status`, the date-range fallback, known host baseline axe violations |
 | `docs/host-derivation.md` | What was taken from Delta and Mangrove, what was simplified, and the findings that came out of doing so |
 | `apps/README.md` | What a Brief 1 run owns and must not touch |
@@ -114,7 +136,7 @@ Only four commands matter day to day:
 | `pnpm site` | Look at the demos. The default. |
 | `pnpm verify` | Before committing: typecheck + unit tests. |
 | `pnpm test` | Unit tests alone. |
-| `pnpm typecheck` | Types alone. |
+| `pnpm typecheck` | Types alone, including every app. |
 
 Occasionally useful:
 
@@ -128,6 +150,10 @@ Occasionally useful:
 The rest (`build:packages`, `build:apps`, `site:assemble`, `site:serve`) are the
 individual steps `pnpm site` chains together. CI calls them separately; you
 normally should not need to.
+
+`axes`, `comparison` and `deps:count` regenerate the decision documents;
+`pnpm site` calls the first two for you. `deps:count` needs running only after a
+dependency changes.
 
 `fixtures:generate`, `tokens:css` and `mangrove2:tokens` regenerate committed
 files and should almost never be run — see *Regenerating fixed inputs* below.
@@ -143,6 +169,7 @@ assembled site falls back to another port if its preferred one is taken.
 | `packages/host-preview` (`pnpm scaffold`) | 5180 | 5181 |
 | `apps/mangrove-react-aria` | 5190 | 5191 |
 | `apps/delta-mui` | 5192 | 5193 |
+| the remaining pairings | 5194-5209 | see each app's README |
 
 ### The `candidate` query parameter
 

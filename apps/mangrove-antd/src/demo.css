@@ -1,0 +1,65 @@
+/**
+ * Candidate CSS for the Ant Design demo on the Mangrove host.
+ *
+ * Deliberately small. antd is themed through `ConfigProvider`'s token object, so
+ * almost all styling lives in `packages/integration-antd/src/theme.ts`. What is
+ * here is the resize grip, which antd has no component for, plus one containment
+ * rule.
+ *
+ * Everything is scoped under `.demo` so nothing can reach the host canaries.
+ */
+
+.demo {
+  /* The host owns the page background; the candidate subtree is transparent. */
+  background: transparent;
+  min-width: 0;
+}
+
+/* ---------------------------------------------------------------------------
+ * The column resize grip. antd 6.5.3 has no column sizing of any kind, so both
+ * the behaviour (use-column-resize.ts) and the affordance are ours. See
+ * docs/requirements.md: substituting react-resizable, which antd's own docs
+ * suggest, is not allowed.
+ * ------------------------------------------------------------------------- */
+.demo .demo-col-resizer {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: 0;
+  inline-size: 8px;
+  cursor: col-resize;
+  touch-action: none;
+  /* Invisible until interacted with, like React Aria's native ColumnResizer. */
+  background: transparent;
+}
+
+.demo .demo-col-resizer:hover,
+.demo .demo-col-resizer:focus-visible {
+  background: var(--undrr-color-accent);
+  outline: none;
+}
+
+.demo .demo-col-resizer:focus-visible {
+  /* Keyboard resizing must be visibly focusable: the grip is a WCAG 2.1.1
+     affordance, not decoration. */
+  box-shadow: 0 0 0 2px var(--undrr-color-focus);
+}
+
+/* ---------------------------------------------------------------------------
+ * Section 9's two-column layout.
+ *
+ * Base rule first, media query after. That order is deliberate: an earlier run
+ * put an equally-specific base rule BELOW its `@media` block, which silently
+ * won at every viewport and cost 261px of horizontal overflow on mobile. Media
+ * queries add no specificity, so source order is the only thing deciding.
+ * ------------------------------------------------------------------------- */
+.demo .demo-sbs {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--undrr-space-5);
+}
+
+@media (min-width: 48rem) {
+  .demo .demo-sbs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

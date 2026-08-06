@@ -22,6 +22,8 @@ needed working around. Neither is a time estimate; see the axis definition.
 | mangrove-carbon | 19 | 10 | 1 | **11** | 8 | 4 (71 ln) | 11 |
 | delta-mantine | 20 | 7 | 3 | **10** | 11 | 4 (179 ln) | 10 |
 | mangrove-mantine | 19 | 10 | 1 | **11** | 9 | 4 (176 ln) | 9 |
+| delta-antd | 28 | 1 | 1 | **2** | 7 | 4 (128 ln) | 7 |
+| mangrove-antd | 28 | 1 | 1 | **2** | 7 | 4 (128 ln) | 9 |
 
 The friction log is the honest proxy for time: implementation time goes on dead
 ends, not on typing. Each entry below is a place the documented approach did not
@@ -113,6 +115,26 @@ suffice, recorded by the run that hit it.
 - MantineProvider mutates document.documentElement, setting data-mantine-color-scheme="light" through its default getRootElement; DirectionProvider.setDirection() sets dir there too.
 - forceColorScheme="light" is set because the token set has no dark palette and the host is light-only; without it Mantine reads localStorage and could render a dark subtree inside a light host between runs.
 
+**`delta-antd`** - 7 entries
+
+- antd/dist/reset.css IS NOT IMPORTED.
+- StyleProvider layer is enabled, which wraps every antd rule in a CSS @layer.
+- ConfigProvider getPopupContainer mounts overlays inside the candidate subtree.
+- FINDING, not a preference: antd derives its secondary, description, placeholder and label greys from colorTextBase by lowering opacity, and that derivation produced FOUR axe colour-contrast failures from a palette whose own secondary text p...
+- Menu.itemSelectedColor and itemSelectedBg pinned for the same reason: the derived selected-item colour did not reach 4.5:1 against antd's own selected background.
+- Tag colours come from the UNDRR tokens rather than antd's green/gold/red presets, which failed contrast as filled tags and would have been antd's hues rather than UNDRR's in any case.
+- Form.Item label does NOT associate the label with its control unless the item also has a name, because that is what antd uses to generate the id it points for at.
+
+**`mangrove-antd`** - 7 entries
+
+- antd/dist/reset.css IS NOT IMPORTED.
+- StyleProvider layer is enabled, which wraps every antd rule in a CSS @layer.
+- ConfigProvider getPopupContainer mounts overlays inside the candidate subtree.
+- FINDING, not a preference: antd derives its secondary, description, placeholder and label greys from colorTextBase by lowering opacity, and that derivation produced FOUR axe colour-contrast failures from a palette whose own secondary text p...
+- Menu.itemSelectedColor and itemSelectedBg pinned for the same reason: the derived selected-item colour did not reach 4.5:1 against antd's own selected background.
+- Tag colours come from the UNDRR tokens rather than antd's green/gold/red presets, which failed contrast as filled tags and would have been antd's hues rather than UNDRR's in any case.
+- Form.Item label does NOT associate the label with its control unless the item also has a name, because that is what antd uses to generate the id it points for at.
+
 </details>
 
 ## A2 - Maintainability at scale
@@ -134,6 +156,8 @@ theming mechanism, which is what accumulates across sites and across upgrades.
 | mangrove-carbon | 0 | 0 | **15** | 0 | 48 |
 | delta-mantine | 2 | 3 | **0** | 0 | 14 |
 | mangrove-mantine | 1 | 4 | **0** | 0 | 18 |
+| delta-antd | 0 | 0 | **0** | 0 | 6 |
+| mangrove-antd | 0 | 0 | **0** | 0 | 6 |
 
 Checking the documentation moved two libraries here, and both moves were away from
 my first reading. Mantine's `.mantine-{Component}-{element}` classes are a
@@ -169,6 +193,7 @@ host apps rewired onto the package; everything else is analysis and says so.
 | mui | **measured** | **packaged** | 809 ln | 277 ln | 74% |
 | carbon | analysed | **unknown - confounded** | - | - | - |
 | mantine | analysed | **unknown - confounded** | - | - | - |
+| antd | **measured** | **packaged** | 868 ln | 248 ln | 78% |
 | shadcn | not-run | **fork-per-site** | - | - | - |
 
 **react-aria** - 5 of 13 files are already code-identical (517 code lines), and the styling is CSS custom properties read from the shared tokens, which is host-independent by construction and needs no rebuild to retarget. Not extracted, so no measured figure is offered.
@@ -209,6 +234,20 @@ What resists extraction:
 - 0 of 17 files are code-identical, for the same authorship reason as Carbon
 - three helper modules (table-model, table-behaviour, use-column-resize) exist on only one host
 
+**antd** - Built shared-first, which is a change of method after the MUI extraction and carries an honest caveat: building it this way could flatter the result. Any host-specific need was pushed OUT to the consuming app and counted there rather than absorbed into the package. The striking result is that the per-site residue contains NO host-repair CSS on either host, where mangrove-mui needed 27 lines. That is not because antd is tidier: it is because StyleProvider layer makes antd lose every conflict with unlayered host CSS, so on Mangrove there is nothing to repair because the host simply wins. Cheap per-site cost and loss of control over appearance are the same fact viewed from two sides.
+
+What resists extraction:
+
+- main.tsx - stylesheet imports and their order
+- App.tsx - the host's HostShell plus the ConfigProvider and StyleProvider wiring
+- demo.css - the resize grip and section 9's grid. ZERO lines of host repair on EITHER host, which is the finding
+- SectionSideBySide.tsx - renders host markup beside candidate markup, so host-specific by definition
+
+Verified by:
+
+- Built shared-first rather than extracted later: packages/integration-antd held the host-independent part from the start and both apps consumed it, so the arrangement a multi-site deployment would use was the arrangement tested.
+- Both pairings pass 39 e2e assertions each, with 0 critical axe violations and a clean leakage assertion.
+
 **shadcn** - This is a property of how shadcn/ui is distributed rather than a measurement, and it is the reason it was not built as a pairing. Recorded here so the axis is not silently blank.
 
 What resists extraction:
@@ -228,6 +267,8 @@ What resists extraction:
 | mangrove-carbon | **FAILED** (19 diffs) | not probed | clean | 0 / 1 |
 | delta-mantine | clean | not probed | clean | 0 / 0 |
 | mangrove-mantine | clean | not probed | clean | 0 / 0 |
+| delta-antd | clean | **no** - global stylesheet restyles the host | clean | 0 / 1 |
+| mangrove-antd | clean | **no** - global stylesheet restyles the host | clean | 0 / 1 |
 
 ## A5 - Theming fidelity and propagation
 
@@ -245,19 +286,30 @@ swap reaches every site at once; a rebuild is per site, forever.
 | mangrove-carbon | 50 | **22** | **stylesheet-swap** | 157 |
 | delta-mantine | 66 | **5** | **mostly-rebuild** | 6 |
 | mangrove-mantine | 62 | 0 | **mostly-rebuild** | 6 |
+| delta-antd | 44 | 0 | **mostly-rebuild** | 3 |
+| mangrove-antd | 44 | 0 | **mostly-rebuild** | 3 |
 
 ## Supporting figures
 
 Reported because they are asked for, not because they decide anything.
 
-| Pairing | custom CSS lines | bundle kB gz | dependencies | build s |
-| --- | --- | --- | --- | --- |
-| delta-react-aria | 715 | 238.8 | 19 | 2 |
-| mangrove-react-aria | 661 | 237.6 | 20 | 1.2 |
-| delta-mui | 14 | 387.4 | 142 | 2.4 |
-| mangrove-mui | 27 | 397.6 | 158 | 1.7 |
-| delta-carbon | 300 | 261.5 | 145 | 2.8 |
-| mangrove-carbon | 351 | 207.8 | 146 | 4.7 |
-| delta-mantine | 72 | 238.8 | 112 | 2.6 |
-| mangrove-mantine | 103 | 270.9 | 113 | 3.58 |
+The two dependency columns disagree, and the disagreement is the point. `prod pkgs`
+is the production tree measured for every app by one method (`pnpm deps:count`).
+`as recorded` is whatever each run put in its own `evidence.json`. Those figures
+were each measured differently and they reorder the candidates - Mantine was
+recorded at 112 where a production count gives 27 - so only the first column is
+safe to compare across rows.
+
+| Pairing | custom CSS lines | bundle kB gz | prod pkgs | as recorded | licences | build s |
+| --- | --- | --- | --- | --- | --- | --- |
+| delta-react-aria | 715 | 238.8 | **16** | 19 | 0BSD 1, Apache-2.0 8, MIT 7 | 2 |
+| mangrove-react-aria | 661 | 237.6 | **17** | 20 | 0BSD 1, Apache-2.0 9, MIT 7 | 1.2 |
+| delta-mui | 14 | 387.4 | **92** | 142 | BSD-3-Clause 3, ISC 2, MIT 87 | 2.4 |
+| mangrove-mui | 27 | 397.6 | **93** | 158 | Apache-2.0 1, BSD-3-Clause 3, ISC 2, MIT 87 | 1.7 |
+| delta-carbon | 300 | 261.5 | **78** | 145 | 0BSD 1, Apache-2.0 16, BSD-3-Clause 1, MIT 51, OFL-1.1 9 | 2.8 |
+| mangrove-carbon | 351 | 207.8 | **79** | 146 | 0BSD 1, Apache-2.0 17, BSD-3-Clause 1, MIT 51, OFL-1.1 9 | 4.7 |
+| delta-mantine | 72 | 238.8 | **27** | 112 | (MIT OR CC0-1.0) 1, 0BSD 1, MIT 25 | 2.6 |
+| mangrove-mantine | 103 | 270.9 | **28** | 113 | (MIT OR CC0-1.0) 1, 0BSD 1, Apache-2.0 1, MIT 25 | 3.58 |
+| delta-antd | 46 | 392.3 | **68** | 68 | MIT 68 | 1.5 |
+| mangrove-antd | 46 | 423.4 | **69** | 69 | Apache-2.0 1, MIT 68 | 1.5 |
 

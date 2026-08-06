@@ -1,0 +1,266 @@
+{
+  "candidate": "Ant Design",
+  "host": "delta",
+  "versions": {
+    "library": "antd@6.5.3, @ant-design/cssinjs@2.1.2, dayjs@1.11.21",
+    "react": "19.2.8",
+    "node": "22 (CI), 24.18.0 (local run)"
+  },
+  "requirements": [
+    {
+      "id": "buttons",
+      "status": "native",
+      "notes": "Button with type=primary, default, danger and disabled. antd does not uppercase labels, so unlike MUI no textTransform override was needed for the German and Arabic fixtures.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "links",
+      "status": "native",
+      "notes": "Typography.Link. Underline is not applied by default, which is a WCAG 1.4.1 consideration for inline links but is the candidate's choice rather than a host conflict on this host.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "text-input",
+      "status": "native",
+      "notes": "Input inside Form.Item. Height comes from the controlHeight seed token, so one number drives every control.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "validation-states",
+      "status": "native",
+      "notes": "Form.Item validateStatus plus help. antd is the only candidate in this evaluation with a real form-level error channel, so server-rejected is a library affordance rather than component state we invented: see form-states.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "disabled-states",
+      "status": "native",
+      "notes": "disabled on Button and Input. Contrast of the disabled text is antd's derived colorTextDisabled and passed axe.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "select-small",
+      "status": "native",
+      "notes": "Select with options. 8 items.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "select-medium",
+      "status": "native",
+      "notes": "Same component, 40 items. listHeight caps the dropdown.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "select-large",
+      "status": "native",
+      "notes": "Same component, 400 items. antd virtualises its option list BY DEFAULT, so unlike the MUI run there is no filterOptions limiting and unlike React Aria there is no virtualisation to add.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "multiselect",
+      "status": "native",
+      "notes": "mode=\"multiple\" on the same Select. A prop, not a composition, and it renders removable tags.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "combobox-searchable",
+      "status": "native",
+      "notes": "showSearch on the same Select. TRAP: optionFilterProp=\"label\" is required, because antd filters on value by default and the fixture values are slugs while the labels carry the translated text. Without it a searchable select over these fixtures silently matches almost nothing.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "date-picker",
+      "status": "native",
+      "notes": "DatePicker on dayjs, fed only from TODAY_ISO.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "datetime-range-picker",
+      "status": "native",
+      "notes": "THE CLEAREST DIFFERENCE IN THE EVALUATION. DatePicker.RangePicker with showTime is one component in the free package, verified against antd 6.5.3's own types. MUI needed two pickers plus our own minDateTime cross-reference because the real range picker is behind @mui/x-date-pickers-pro; React Aria and Carbon composed it too. The ordering guarantee here belongs to the component, so there is no application code to maintain. Asserted in e2e by counting .ant-picker-range, not inputs: a RangePicker renders two inputs and an input count would read identically to the composed version.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "modal",
+      "status": "native",
+      "notes": "Modal with focus trap and Escape. Rendered inside the candidate subtree via ConfigProvider getPopupContainer rather than at document.body, so the UNDRR custom properties resolve.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "tooltip",
+      "status": "native",
+      "notes": "Tooltip. Same container treatment as the modal.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "popover",
+      "status": "native",
+      "notes": "Popover with trigger=\"click\". One getPopupContainer on the provider covers all three overlay types, where the React Aria and Mantine runs needed a token-scope class passed to each overlay individually.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "accordion",
+      "status": "native",
+      "notes": "Collapse with accordion, driven by the items prop.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "cards",
+      "status": "native",
+      "notes": "Card variant=\"outlined\". Closest of the five candidates to what both hosts already draw, so no elevation or radius override was needed - contrast MUI, whose Card required elevation={0} plus a border on both hosts.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "left-nav",
+      "status": "native",
+      "notes": "Menu mode=\"inline\". antd's most opinionated component here: it brings its own selected-item highlight, indent scale and hover transition. Those are theme tokens rather than CSS overrides, so they are reachable, but the derived selected-item colour failed contrast and had to be pinned - see theming.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "table-render",
+      "status": "native",
+      "notes": "Table over all 250 fixture rows. Numbers and dates are formatted with Intl against the fixture locale rather than by antd.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "table-sort",
+      "status": "native",
+      "notes": "sorter per column, with defaultSortOrder on eventDate.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "table-multiselect",
+      "status": "native",
+      "notes": "rowSelection, and the select-all header checkbox is present BY DEFAULT - hideSelectAll exists to remove it. Verified in the DOM rather than assumed, because the React Aria run recorded this as native while rendering zero checkboxes and I published that before it was caught.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "table-filter",
+      "status": "native",
+      "notes": "filters plus onFilter on the hazard column, with filterSearch for the value list.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "table-paginate",
+      "status": "native",
+      "notes": "pagination with showSizeChanger and pageSizeOptions. showTotal is set so the evidence run can assert the 250-row total.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "table-column-resize-or-reorder",
+      "status": "custom",
+      "notes": "NOT unsupported, but antd has no column sizing of any kind: there is no resizable on ColumnType and nothing in @rc-component/table provides it - the resize matches in that package are ResizeObserver for sticky headers and cell measurement. antd's own documentation reaches for react-resizable, and docs/requirements.md forbids substituting a third-party package. So use-column-resize.ts (95 lines) plus a grip rendered through the documented components.header.cell extension point is ours. Keyboard operation is included deliberately: a pointer-only grip would be a WCAG 2.1.1 failure presented as a met requirement, and React Aria's native equivalent is keyboard-operable. This is the same gap Mantine had.",
+      "customLinesOfCode": 95
+    },
+    {
+      "id": "table-states",
+      "status": "native",
+      "notes": "loading on Table renders its own overlay; empty comes from locale.emptyText. Note antd keeps previous rows visible under a dimming overlay while loading rather than clearing them, so the fixture contract rather than antd decides what a loading table contains.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "form-states",
+      "status": "native",
+      "notes": "Alert for error and success, Skeleton for loading. server-rejected is driven from Form onFinish into a field-level validateStatus - a real library channel, unlike MUI, React Aria, Carbon and Mantine, all of which had to model it as component state.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "locale-switcher",
+      "status": "native",
+      "notes": "Segmented drives the fixture locale; ConfigProvider takes antd's own ar_EG, fr_FR, de_DE and en_GB packs and dayjs.locale() drives the pickers. TRAP for tests: Segmented renders a visually-hidden radio inside a label, so clicking the radio times out even though the role is exposed correctly.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "rtl",
+      "status": "native",
+      "notes": "RECORDED AS NATIVE, where every other candidate recorded `composed`. ConfigProvider direction=\"rtl\" is a single documented prop and antd flips its own components from it - no build plugin, no per-component work, no logical-property rewriting of ours. Asserted: .ant-form-rtl, .ant-input-rtl, .ant-table-rtl and .ant-btn-rtl all present. This is the requirement MUI Community cannot meet at all: it needs stylis-plugin-rtl, which constraint 2 forbids, and its floating labels stay pinned to the physical left by up to 870px.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "long-labels",
+      "status": "native",
+      "notes": "0px horizontal overflow in German at all three viewports. scroll={{x: \"max-content\"}} on the table keeps the 250-row grid from propagating its intrinsic width up to the document.",
+      "customLinesOfCode": 0
+    },
+    {
+      "id": "side-by-side",
+      "status": "composed",
+      "notes": "Host markup in Tailwind utilities beside antd themed to the same tokens. The gap is narrower than the MUI run's because antd's Card and Table defaults are already flat and dense. Composed rather than native, matching the other runs: the section is assembled from several components rather than provided by one.",
+      "customLinesOfCode": 0
+    }
+  ],
+  "customCss": {
+    "lines": 46,
+    "selectors": 6,
+    "overridesLibraryInternals": false,
+    "notes": "No selector reaches an antd class name. The stylesheet is the resize grip antd has no component for, the subtree background reset, and section 9's grid."
+  },
+  "wrappers": {
+    "count": 4,
+    "totalLines": 128,
+    "notes": "useColumnResize, the resizable header cell, and the three Select variants in section 2. None of them wrap an antd component to change its appearance; they add behaviour antd does not have or bind props it does not default well."
+  },
+  "theming": {
+    "tokensApplied": 44,
+    "tokensUnreachable": 0,
+    "method": "A ConfigProvider theme object of SEED tokens, from which antd derives roughly 100 alias tokens. That is why 71 UNDRR tokens map onto far fewer antd inputs without loss: setting colorPrimary produces the hover, active, border and background variants that MUI and Mantine each need told separately. Like MUI's createTheme this is a JavaScript object resolved at bundle time, so a token change means rebuilding every consuming site - antd 6 does have a cssVar mode that would make it live, but enabling it emits antd's own custom properties on a :root-level selector and would put antd's palette in the same global scope as the host, so it was deliberately left off and the trade recorded.",
+    "escapeHatchesUsed": [
+      "antd/dist/reset.css IS NOT IMPORTED. It writes to html, body and *, and MEASURED it changes 40 watched properties across 14 of 14 host canaries, rewriting heading fonts, weights and margins on the host - see leakage.globalStylesheetProbe. An earlier draft of this file claimed antd 'needs the reset less' than MUI's CssBaseline or Carbon's prebuilt stylesheet; that was asserted before it was measured and is only half right. What IS supported: antd renders correctly WITHOUT the reset, because @ant-design/cssinjs emits self-contained component styles - all 39 e2e assertions pass and axe reports zero critical violations with it omitted. What is NOT supported is any claim that the reset is gentler than the others: it damages every canary on Delta. It is smaller than Carbon's (79 differences) but not harmless.",
+      "StyleProvider layer is enabled, which wraps every antd rule in a CSS @layer. This is antd's own containment mechanism and the only first-class one among the five candidates. It has a consequence the other hosts make visible - see the leakage and hostRepair notes.",
+      "ConfigProvider getPopupContainer mounts overlays inside the candidate subtree. Without it antd portals to document.body and every var(--undrr-*) in an overlay resolves to nothing, because the tokens are scoped to .undrr-tokens rather than :root.",
+      "FINDING, not a preference: antd derives its secondary, description, placeholder and label greys from colorTextBase by lowering opacity, and that derivation produced FOUR axe colour-contrast failures from a palette whose own secondary text passes at 7.3:1. colorTextDescription, colorTextPlaceholder, colorTextHeading and colorTextLabel had to be pinned back to the token values by hand. colorTextSecondary and colorTextTertiary are not in antd's alias interface at all and cannot be set by name. So 'set the seeds and everything follows' is true for hue and false for contrast.",
+      "Menu.itemSelectedColor and itemSelectedBg pinned for the same reason: the derived selected-item colour did not reach 4.5:1 against antd's own selected background.",
+      "Tag colours come from the UNDRR tokens rather than antd's green/gold/red presets, which failed contrast as filled tags and would have been antd's hues rather than UNDRR's in any case.",
+      "Form.Item label does NOT associate the label with its control unless the item also has a name, because that is what antd uses to generate the id it points for at. Rendering fixture states means there is no name to give, so every field needs an explicit htmlFor plus a matching id. Without it axe reports a CRITICAL label violation on every input, which is what the first run of section 1 did."
+    ]
+  },
+  "leakage": {
+    "assertionPassed": true,
+    "differences": [],
+    "notes": "Clean across all 14 canaries and 27 watched properties. antd's @layer containment makes this stronger than a pass alone suggests: unlayered CSS beats layered CSS regardless of specificity, so antd cannot win a conflict against the host even where its selectors are more specific. Note the KNOWN LIMITATION in packages/test-harness/src/leakage.ts still applies - statically imported stylesheets are invisible to this check - but antd ships no static stylesheet here at all, since reset.css is omitted and everything else is runtime-injected.",
+    "globalStylesheetProbe": {
+      "stylesheet": "antd/dist/reset.css",
+      "bytes": 3587,
+      "differenceCount": 40,
+      "canariesAffected": 14,
+      "canariesChecked": 14,
+      "verdict": "the documented global reset is NOT loadable as-is",
+      "measuredBy": "scripts/probe-global-reset.mjs; raw result in test-results/global-reset-probe.json",
+      "notes": "Injecting antd's documented reset changes 40 watched computed properties across 14 of 14 host canaries - it rewrites heading font-family, font-weight and margins on the HOST. That is why it is omitted. The two hosts differ (40 differences on 14 canaries for Delta against 9 on 3 for Mangrove) because Mangrove's own element rules already out-specify most of the reset. For scale: Carbon's prebuilt stylesheet measured 79 differences across all 14."
+    }
+  },
+  "hostRepair": {
+    "lines": 0,
+    "notes": "ZERO host-repair CSS was needed on this host, and the reason is worth stating: Tailwind 4 compiles its Preflight into @layer base, so both the host and antd are layered and antd's later layer wins normally. Measured: antd's input keeps its own 1px #c8d2da border, 40px controlHeight and 4px radius, and the primary button renders rgb(47,111,143), which is the UNDRR accent token. Contrast the mangrove-antd run, where the same @layer setting produces the opposite outcome."
+  },
+  "axe": {
+    "violations": 1,
+    "critical": 0,
+    "serious": 1,
+    "incomplete": 1,
+    "notes": "The one remaining violation is antd's, not ours: aria-hidden-focus on .ant-table-measure-row. rc-table renders that row with aria-hidden=\"true\" whenever scroll.x is set, and rowSelection puts a focusable checkbox inside it - verified in the DOM: aria-hidden=\"true\", 2 focusable descendants. rowSelection plus a horizontally scrolling table is an ordinary combination, so this will affect any real UNDRR table. Two CRITICAL violations were found and fixed first, and both were ours: a missing label association on every Form.Item, and a focusable role=\"separator\" without aria-valuenow. 4 violations went to 1."
+  },
+  "rtl": {
+    "status": "clean",
+    "issues": []
+  },
+  "longLabels": {
+    "status": "clean",
+    "issues": []
+  },
+  "bundle": {
+    "gzippedKb": 392.3,
+    "dependencyCount": 68,
+    "notes": "388.4 kB gz JS plus 3.9 kB gz CSS. dependencyCount is the production tree measured by scripts/count-dependencies.mjs, which counts all ten apps by one method - the figures recorded by earlier runs are not comparable with each other and reorder the candidates (Mantine was recorded at 112 where a production count gives 27). All 68 packages are MIT: no font licences, and nothing equivalent to the IBM telemetry found in 21 Carbon and Plex packages."
+  },
+  "buildTimeSeconds": 1.5,
+  "blockers": [],
+  "humanReviewRequired": [
+    "THE CENTRAL QUESTION for this candidate, and it is a design decision rather than a defect. StyleProvider layer makes antd lose every conflict with unlayered host CSS. On Delta that is invisible, because Tailwind 4 is itself layered. On Mangrove it means antd's inputs render as MANGROVE's inputs - 2px #1a1a1a, 46px, square, Roboto - with zero host-repair CSS, where MUI needed 27 lines to fight the same rules. If UNDRR wants the Mangrove look and feel to win by default, this is the best mechanism found anywhere in this evaluation. If UNDRR wants the token mapping to be authoritative, it is a problem. See mangrove-antd.",
+    "antd is themed at bundle time, so a Mangrove token change requires rebuilding every consuming site. cssVar mode would fix that but breaks containment as configured here. Whether that trade can be reopened depends on whether :root-level antd custom properties are acceptable once Mangrove 2.0 ships its own.",
+    "The aria-hidden-focus defect on .ant-table-measure-row is upstream and unfixable through the public API without giving up scroll.x or row selection. It should be reported to antd.",
+    "antd's derived greys failed contrast in four places. They were pinned, but the same derivation will apply to any component whose colour is not explicitly set, so a real deployment needs an audit rather than trusting the seed tokens.",
+    "Typography.Link does not underline by default, which is a WCAG 1.4.1 question for inline links in body text. Not fixed here because the same question applies to Mangrove's own link styling and the two should be settled together.",
+    "Column resize is ours, so it is ours to maintain: 95 lines including RTL direction handling and keyboard support. Mantine has the same gap. React Aria, MUI and Carbon do not.",
+    "demo-state.ts is byte-identical to the copy in integration-mui. It is candidate-independent as well as host-independent and belongs in the scaffold, but packages/ is import-only for demo runs so it was left duplicated rather than churning six other apps."
+  ]
+}

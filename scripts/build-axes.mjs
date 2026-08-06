@@ -209,6 +209,19 @@ function extraction() {
 
 const extractionResults = extraction();
 
+/**
+ * Production dependency counts measured by ONE method for all apps.
+ *
+ * The per-run `bundle.dependencyCount` values are not comparable with each
+ * other: each run measured however it chose, and the disagreement reorders the
+ * candidates. Mantine recorded 112-113 where a production-only count gives
+ * 27-28. Both are reported, because a metric that changes the ranking depending
+ * on who measured it should be shown disagreeing rather than quietly replaced.
+ */
+const dependencyCounts = existsSync(join(DOCS, "dependency-counts.json"))
+  ? readJson(join(DOCS, "dependency-counts.json")).apps
+  : {};
+
 const rows = appDirs().map((app) => {
   const evidence = readJson(join(APPS, app, "evidence.json"));
   const hooks = stylingHooks(ownStylesheets(app));
@@ -500,15 +513,42 @@ lines.push("");
 lines.push("Reported because they are asked for, not because they decide anything.");
 lines.push("");
 lines.push(
+  "The two dependency columns disagree, and the disagreement is the point. `prod pkgs`",
+);
+lines.push(
+  "is the production tree measured for every app by one method (`pnpm deps:count`).",
+);
+lines.push(
+  "`as recorded` is whatever each run put in its own `evidence.json`. Those figures",
+);
+lines.push(
+  "were each measured differently and they reorder the candidates - Mantine was",
+);
+lines.push(
+  "recorded at 112 where a production count gives 27 - so only the first column is",
+);
+lines.push("safe to compare across rows.");
+lines.push("");
+lines.push(
   table(
-    ["Pairing", "custom CSS lines", "bundle kB gz", "dependencies", "build s"],
-    rows.map((r) => [
-      r.app,
-      r.cssLines ?? "?",
-      r.bundle.gzippedKb ?? "?",
-      r.bundle.dependencyCount ?? "?",
-      readJson(join(APPS, r.app, "evidence.json")).buildTimeSeconds ?? "?",
-    ]),
+    ["Pairing", "custom CSS lines", "bundle kB gz", "prod pkgs", "as recorded", "licences", "build s"],
+    rows.map((r) => {
+      const deps = dependencyCounts[r.app];
+      const licences = deps?.licences
+        ? Object.entries(deps.licences)
+            .map(([name, count]) => `${name} ${count}`)
+            .join(", ")
+        : "?";
+      return [
+        r.app,
+        r.cssLines ?? "?",
+        r.bundle.gzippedKb ?? "?",
+        deps ? `**${deps.productionPackages}**` : "?",
+        r.bundle.dependencyCount ?? "?",
+        licences,
+        readJson(join(APPS, r.app, "evidence.json")).buildTimeSeconds ?? "?",
+      ];
+    }),
   ),
 );
 lines.push("");

@@ -1,0 +1,32 @@
+{
+  "section": "candidate-subtree",
+  "url": "http://localhost:5207/?candidate=on",
+  "tags": [
+    "wcag2a",
+    "wcag2aa",
+    "wcag21a",
+    "wcag21aa",
+    "wcag22aa"
+  ],
+  "violations": [
+    {
+      "id": "aria-hidden-focus",
+      "impact": "serious",
+      "help": "ARIA hidden element must not be focusable or contain focusable elements",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/aria-hidden-focus?application=playwright",
+      "nodes": [
+        ".ant-table-measure-row"
+      ]
+    }
+  ],
+  "counts": {
+    "violations": 1,
+    "serious": 1,
+    "critical": 0,
+    "incomplete": 2
+  },
+  "incompleteRuleIds": [
+    "aria-prohibited-attr",
+    "color-contrast"
+  ]
+}

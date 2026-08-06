@@ -6,7 +6,7 @@
 
 # Candidate comparison
 
-8 of 8 pairings have reported. Every figure below comes
+10 of 10 pairings have reported. Every figure below comes
 from a run's own `evidence.json`; nothing here is entered by hand.
 
 Read this alongside each run's `EVIDENCE.md`, which carries the reasoning the
@@ -14,21 +14,21 @@ numbers cannot.
 
 ## Headline
 
-| | Adobe React Aria<br>Delta | MUI<br>Delta | IBM Carbon<br>Delta | Mantine<br>Delta | Adobe React Aria<br>Mangrove | MUI<br>Mangrove | IBM Carbon<br>Mangrove | Mantine<br>Mangrove |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| **Native** | 20 | 26 | 19 | 20 | 21 | 26 | 19 | 19 |
-| **Composed** | 8 | 4 | 10 | 7 | 7 | 4 | 10 | 10 |
-| **Custom** | 2 | 0 | 1 | 3 | 2 | 0 | 1 | 1 |
-| **Unsupported** | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| Custom lines of code | 128 | 54 | 171 | 411 | 122 | 54 | 171 | 293 |
-| Custom CSS lines | 715 | 14 | 300 | 72 | 661 | 27 | 351 | 103 |
-| CSS selectors | 156 | 3 | 34 | 17 | 120 | 7 | 48 | 44 |
-| Wrappers | 5 | 3 | 4 | 4 | 3 | 2 | 4 | 4 |
-| Tokens applied | 48 | 29 | 50 | 66 | 47 | 32 | 50 | 62 |
-| Tokens unreachable | 0 | 0 | 21 | 5 | 0 | 0 | 22 | 0 |
-| Bundle (kB gzipped) | 238.8 | 387.4 | 261.5 | 238.8 | 237.6 | 397.6 | 207.8 | 270.9 |
-| Dependencies | 19 | 142 | 145 | 112 | 20 | 158 | 146 | 113 |
-| Build time (s) | 2 | 2.4 | 2.8 | 2.6 | 1.2 | 1.7 | 4.7 | 3.58 |
+| | Adobe React Aria<br>Delta | MUI<br>Delta | IBM Carbon<br>Delta | Mantine<br>Delta | Ant Design<br>Delta | Adobe React Aria<br>Mangrove | MUI<br>Mangrove | IBM Carbon<br>Mangrove | Mantine<br>Mangrove | Ant Design<br>Mangrove |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| **Native** | 20 | 26 | 19 | 20 | 28 | 21 | 26 | 19 | 19 | 28 |
+| **Composed** | 8 | 4 | 10 | 7 | 1 | 7 | 4 | 10 | 10 | 1 |
+| **Custom** | 2 | 0 | 1 | 3 | 1 | 2 | 0 | 1 | 1 | 1 |
+| **Unsupported** | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| Custom lines of code | 128 | 54 | 171 | 411 | 95 | 122 | 54 | 171 | 293 | 95 |
+| Custom CSS lines | 715 | 14 | 300 | 72 | 46 | 661 | 27 | 351 | 103 | 46 |
+| CSS selectors | 156 | 3 | 34 | 17 | 6 | 120 | 7 | 48 | 44 | 6 |
+| Wrappers | 5 | 3 | 4 | 4 | 4 | 3 | 2 | 4 | 4 | 4 |
+| Tokens applied | 48 | 29 | 50 | 66 | 44 | 47 | 32 | 50 | 62 | 44 |
+| Tokens unreachable | 0 | 0 | 21 | 5 | 0 | 0 | 0 | 22 | 0 | 0 |
+| Bundle (kB gzipped) | 238.8 | 387.4 | 261.5 | 238.8 | 392.3 | 237.6 | 397.6 | 207.8 | 270.9 | 423.4 |
+| Dependencies | 19 | 142 | 145 | 112 | 68 | 20 | 158 | 146 | 113 | 69 |
+| Build time (s) | 2 | 2.4 | 2.8 | 2.6 | 1.5 | 1.2 | 1.7 | 4.7 | 3.58 | 1.5 |
 
 ## Conformance signals
 
@@ -36,53 +36,53 @@ Leakage is the load-bearing one: it says whether the candidate stayed inside
 its own subtree and left the host's own elements alone. axe counts are scoped
 to the candidate subtree, so host baseline violations are excluded.
 
-| | Adobe React Aria<br>Delta | MUI<br>Delta | IBM Carbon<br>Delta | Mantine<br>Delta | Adobe React Aria<br>Mangrove | MUI<br>Mangrove | IBM Carbon<br>Mangrove | Mantine<br>Mangrove |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Leakage | clean | clean | clean | clean | clean | clean | **FAILED** | clean |
-| axe violations | 0 | 1 | 3 | 0 | 0 | 1 | 1 | 0 |
-| axe critical | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 |
-| axe serious | 0 | 1 | 2 | 0 | 0 | 1 | 1 | 0 |
-| axe incomplete | 1 | 4 | 2 | 1 | 1 | 4 | 2 | 0 |
-| RTL | clean | issues | clean | clean | clean | issues | clean | clean |
-| Long labels | clean | clean | clean | clean | clean | clean | clean | clean |
-| Blockers | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| | Adobe React Aria<br>Delta | MUI<br>Delta | IBM Carbon<br>Delta | Mantine<br>Delta | Ant Design<br>Delta | Adobe React Aria<br>Mangrove | MUI<br>Mangrove | IBM Carbon<br>Mangrove | Mantine<br>Mangrove | Ant Design<br>Mangrove |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Leakage | clean | clean | clean | clean | clean | clean | clean | **FAILED** | clean | clean |
+| axe violations | 0 | 1 | 3 | 0 | 1 | 0 | 1 | 1 | 0 | 1 |
+| axe critical | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| axe serious | 0 | 1 | 2 | 0 | 1 | 0 | 1 | 1 | 0 | 1 |
+| axe incomplete | 1 | 4 | 2 | 1 | 1 | 1 | 4 | 2 | 0 | 1 |
+| RTL | clean | issues | clean | clean | clean | clean | issues | clean | clean | clean |
+| Long labels | clean | clean | clean | clean | clean | clean | clean | clean | clean | clean |
+| Blockers | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 
 ## Requirement matrix
 
 `N` native · `C` composed · `X` custom · **`U`** unsupported · `·` not started
 
-| | Adobe React Aria<br>Delta | MUI<br>Delta | IBM Carbon<br>Delta | Mantine<br>Delta | Adobe React Aria<br>Mangrove | MUI<br>Mangrove | IBM Carbon<br>Mangrove | Mantine<br>Mangrove |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `buttons` | N | N | N | N | N | N | N | N |
-| `links` | N | N | N | N | N | N | N | N |
-| `text-input` | N | N | N | N | N | N | N | N |
-| `validation-states` | N | C | C | C | N | C | C | C |
-| `disabled-states` | N | N | N | N | N | N | N | N |
-| `select-small` | N | N | N | N | N | N | N | N |
-| `select-medium` | N | N | N | N | N | N | N | N |
-| `select-large` | N | N | N | N | N | N | N | N |
-| `multiselect` | C | N | C | N | C | N | C | N |
-| `combobox-searchable` | N | N | C | N | N | N | N | N |
-| `date-picker` | N | N | N | N | N | N | N | N |
-| `datetime-range-picker` | N | C | C | N | N | C | C | N |
-| `modal` | N | N | N | N | N | N | N | N |
-| `tooltip` | N | N | N | N | N | N | N | N |
-| `popover` | N | N | N | N | N | N | C | N |
-| `accordion` | N | N | N | N | N | N | N | N |
-| `cards` | X | N | N | N | X | N | N | N |
-| `left-nav` | N | N | C | N | N | N | N | N |
-| `table-render` | N | N | C | C | N | N | N | C |
-| `table-sort` | C | N | N | X | C | N | N | C |
-| `table-multiselect` | C | N | N | X | C | N | N | C |
-| `table-filter` | C | N | N | C | C | N | N | C |
-| `table-paginate` | X | N | C | C | X | N | C | C |
-| `table-column-resize-or-reorder` | N | N | X | X | N | N | X | X |
-| `table-states` | C | N | C | C | C | N | C | C |
-| `form-states` | C | N | N | N | C | N | C | C |
-| `locale-switcher` | N | N | N | N | N | N | N | N |
-| `rtl` | N | C | N | C | N | C | C | C |
-| `long-labels` | C | N | C | N | N | N | C | N |
-| `side-by-side` | C | C | C | C | C | C | C | C |
+| | Adobe React Aria<br>Delta | MUI<br>Delta | IBM Carbon<br>Delta | Mantine<br>Delta | Ant Design<br>Delta | Adobe React Aria<br>Mangrove | MUI<br>Mangrove | IBM Carbon<br>Mangrove | Mantine<br>Mangrove | Ant Design<br>Mangrove |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `buttons` | N | N | N | N | N | N | N | N | N | N |
+| `links` | N | N | N | N | N | N | N | N | N | N |
+| `text-input` | N | N | N | N | N | N | N | N | N | N |
+| `validation-states` | N | C | C | C | N | N | C | C | C | N |
+| `disabled-states` | N | N | N | N | N | N | N | N | N | N |
+| `select-small` | N | N | N | N | N | N | N | N | N | N |
+| `select-medium` | N | N | N | N | N | N | N | N | N | N |
+| `select-large` | N | N | N | N | N | N | N | N | N | N |
+| `multiselect` | C | N | C | N | N | C | N | C | N | N |
+| `combobox-searchable` | N | N | C | N | N | N | N | N | N | N |
+| `date-picker` | N | N | N | N | N | N | N | N | N | N |
+| `datetime-range-picker` | N | C | C | N | N | N | C | C | N | N |
+| `modal` | N | N | N | N | N | N | N | N | N | N |
+| `tooltip` | N | N | N | N | N | N | N | N | N | N |
+| `popover` | N | N | N | N | N | N | N | C | N | N |
+| `accordion` | N | N | N | N | N | N | N | N | N | N |
+| `cards` | X | N | N | N | N | X | N | N | N | N |
+| `left-nav` | N | N | C | N | N | N | N | N | N | N |
+| `table-render` | N | N | C | C | N | N | N | N | C | N |
+| `table-sort` | C | N | N | X | N | C | N | N | C | N |
+| `table-multiselect` | C | N | N | X | N | C | N | N | C | N |
+| `table-filter` | C | N | N | C | N | C | N | N | C | N |
+| `table-paginate` | X | N | C | C | N | X | N | C | C | N |
+| `table-column-resize-or-reorder` | N | N | X | X | X | N | N | X | X | X |
+| `table-states` | C | N | C | C | N | C | N | C | C | N |
+| `form-states` | C | N | N | N | N | C | N | C | C | N |
+| `locale-switcher` | N | N | N | N | N | N | N | N | N | N |
+| `rtl` | N | C | N | C | N | N | C | C | C | N |
+| `long-labels` | C | N | C | N | N | N | N | C | N | N |
+| `side-by-side` | C | C | C | C | C | C | C | C | C | C |
 
 ## Unsupported requirements
 
@@ -143,6 +143,16 @@ as needing a person, and they do not appear in any count above.
 - tokensApplied: 66 means "reachable", not "consumed by the library". Twelve are spacing steps declared as extra theme.spacing keys; they emit --mantine-spacing-* variables but Mantine's own components only consume xs–xl.
 - EmptyState and DataList are new in Mantine 9 and their API stability over time is unknown. EmptyState's variant accepts only `filled` and `light`.
 
+### delta-antd
+
+- THE CENTRAL QUESTION for this candidate, and it is a design decision rather than a defect. StyleProvider layer makes antd lose every conflict with unlayered host CSS. On Delta that is invisible, because Tailwind 4 is itself layered. On Mangrove it means antd's inputs render as MANGROVE's inputs - 2px #1a1a1a, 46px, square, Roboto - with zero host-repair CSS, where MUI needed 27 lines to fight the same rules. If UNDRR wants the Mangrove look and feel to win by default, this is the best mechanism found anywhere in this evaluation. If UNDRR wants the token mapping to be authoritative, it is a problem. See mangrove-antd.
+- antd is themed at bundle time, so a Mangrove token change requires rebuilding every consuming site. cssVar mode would fix that but breaks containment as configured here. Whether that trade can be reopened depends on whether :root-level antd custom properties are acceptable once Mangrove 2.0 ships its own.
+- The aria-hidden-focus defect on .ant-table-measure-row is upstream and unfixable through the public API without giving up scroll.x or row selection. It should be reported to antd.
+- antd's derived greys failed contrast in four places. They were pinned, but the same derivation will apply to any component whose colour is not explicitly set, so a real deployment needs an audit rather than trusting the seed tokens.
+- Typography.Link does not underline by default, which is a WCAG 1.4.1 question for inline links in body text. Not fixed here because the same question applies to Mangrove's own link styling and the two should be settled together.
+- Column resize is ours, so it is ours to maintain: 95 lines including RTL direction handling and keyboard support. Mantine has the same gap. React Aria, MUI and Carbon do not.
+- demo-state.ts is byte-identical to the copy in integration-mui. It is candidate-independent as well as host-independent and belongs in the scaffold, but packages/ is import-only for demo runs so it was left duplicated rather than churning six other apps.
+
 ### mangrove-react-aria
 
 - React Aria renders visually hidden controls that still affect document layout, in two places: ColumnResizer's hidden range input escapes any ancestor overflow unless a positioned ancestor exists, and Select's hidden native <select> stays in layout at its longest-option width. Both silently scroll the page sideways. Worth reporting upstream: a visually hidden control should not be able to change layout.
@@ -191,3 +201,15 @@ as needing a person, and they do not appear in any count above.
 - Keyboard and screen-reader testing by a human, particularly the native date-time range popover: it contains a calendar and two separate TimePickers, and axe cannot say whether moving between them is coherent.
 - Mantine's Anchor defaults to underline="hover", which reproduces the host's own link-in-text-block WCAG 1.4.1 failure. It was overridden here, but it is a library default worth a local lint rule, since the two systems make the same wrong choice independently.
 - The Mangrove nav accent bar is not reachable through NavLink's props or CSS variables. Either accept Mantine's tinted-background active state as the new convention, or accept custom CSS reaching into NavLink internals on every consuming page. Not faked here so the gap stays visible in the section 9 screenshots.
+
+### mangrove-antd
+
+- THE CENTRAL QUESTION, and it is a design decision rather than a defect. On this host antd's controls render as MANGROVE's controls, because antd's styles are layered and Mangrove's are not. It cost zero lines of repair CSS, where mangrove-mui needed 27 lines to achieve the opposite. If UNDRR wants Mangrove's look and feel to win by default across many sites, this is the best mechanism found anywhere in this evaluation - it is a single prop, it needs no per-component work, and it cannot drift. If UNDRR wants the UNDRR token mapping to be authoritative over the host, it is a problem, because controlHeight and borderRadius do not reach any control Mangrove styles by element. The choice is reversible per-site by dropping `layer`, which is why it belongs to UNDRR rather than to this evaluation.
+- Because the host wins, the two antd pairings do NOT look alike, and that is expected rather than a bug. Compare apps/delta-antd/screenshots with apps/mangrove-antd/screenshots at the same viewport to see what `layer` does. Any conclusion drawn from one host's screenshots does not transfer to the other.
+- If Mangrove 2.0 adopts cascade layers, this behaviour inverts and antd would start winning conflicts against the host. That should be checked against the 2.0 branch before either decision is locked in. Tracked in issue #4.
+- antd is themed at bundle time, so a Mangrove token change requires rebuilding every consuming site. cssVar mode would fix that but breaks containment as configured here. Whether that trade can be reopened depends on whether :root-level antd custom properties are acceptable once Mangrove 2.0 ships its own.
+- The aria-hidden-focus defect on .ant-table-measure-row is upstream and unfixable through the public API without giving up scroll.x or row selection. It should be reported to antd.
+- antd's derived greys failed contrast in four places. They were pinned, but the same derivation will apply to any component whose colour is not explicitly set, so a real deployment needs an audit rather than trusting the seed tokens.
+- Typography.Link does not underline by default, which is a WCAG 1.4.1 question for inline links in body text. Not fixed here because the same question applies to Mangrove's own link styling and the two should be settled together.
+- Column resize is ours, so it is ours to maintain: 95 lines including RTL direction handling and keyboard support. Mantine has the same gap. React Aria, MUI and Carbon do not.
+- demo-state.ts is byte-identical to the copy in integration-mui. It is candidate-independent as well as host-independent and belongs in the scaffold, but packages/ is import-only for demo runs so it was left duplicated rather than churning six other apps.

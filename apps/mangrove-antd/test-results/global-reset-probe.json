@@ -1,0 +1,57 @@
+{
+ "resetCssBytes": 3587,
+ "canariesChecked": 14,
+ "watchedProperties": 27,
+ "differenceCount": 9,
+ "canariesAffected": 3,
+ "sample": [
+  {
+   "canary": "heading-1",
+   "property": "font-weight",
+   "before": "700",
+   "after": "500"
+  },
+  {
+   "canary": "heading-1",
+   "property": "margin-top",
+   "before": "10px",
+   "after": "0px"
+  },
+  {
+   "canary": "heading-1",
+   "property": "margin-bottom",
+   "before": "10px",
+   "after": "16px"
+  },
+  {
+   "canary": "heading-2",
+   "property": "font-weight",
+   "before": "700",
+   "after": "500"
+  },
+  {
+   "canary": "heading-2",
+   "property": "margin-top",
+   "before": "10px",
+   "after": "0px"
+  },
+  {
+   "canary": "heading-2",
+   "property": "margin-bottom",
+   "before": "10px",
+   "after": "11.5px"
+  },
+  {
+   "canary": "heading-3",
+   "property": "font-weight",
+   "before": "600",
+   "after": "500"
+  },
+  {
+   "canary": "heading-3",
+   "property": "margin-top",
+   "before": "10px",
+   "after": "0px"
+  }
+ ]
+}
