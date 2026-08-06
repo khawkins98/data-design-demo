@@ -291,19 +291,21 @@
 
 <h2>A4 - Mangrove compatibility</h2>
 
+<p>RTL and accessibility used to be two columns here. They are now A6 and A7: both are estate-wide obligations rather than symptoms of host coexistence, and both were too consequential to leave as columns in someone else's table.</p>
+
 <div class="scroll"><table><thead>
-<tr><th>Pairing</th><th>leakage</th><th>documented setup loadable as-is</th><th>RTL</th><th>axe critical/serious</th></tr>
+<tr><th>Pairing</th><th>leakage</th><th>documented setup loadable as-is</th></tr>
 </thead><tbody>
-<tr><td>delta-react-aria</td><td>clean</td><td>not probed</td><td>clean</td><td>0 / 0</td></tr>
-<tr><td>mangrove-react-aria</td><td>clean</td><td>not probed</td><td>clean</td><td>0 / 0</td></tr>
-<tr><td>delta-mui</td><td>clean</td><td>not probed</td><td><strong>issues</strong></td><td>0 / 1</td></tr>
-<tr><td>mangrove-mui</td><td>clean</td><td>not probed</td><td><strong>issues</strong></td><td>0 / 1</td></tr>
-<tr><td>delta-carbon</td><td>clean</td><td><strong>no</strong> - global stylesheet restyles the host</td><td>clean</td><td>1 / 2</td></tr>
-<tr><td>mangrove-carbon</td><td><strong>FAILED</strong> (19 diffs)</td><td>not probed</td><td>clean</td><td>0 / 1</td></tr>
-<tr><td>delta-mantine</td><td>clean</td><td>not probed</td><td>clean</td><td>0 / 0</td></tr>
-<tr><td>mangrove-mantine</td><td>clean</td><td>not probed</td><td>clean</td><td>0 / 0</td></tr>
-<tr><td>delta-antd</td><td>clean</td><td><strong>no</strong> - global stylesheet restyles the host</td><td>clean</td><td>0 / 1</td></tr>
-<tr><td>mangrove-antd</td><td>clean</td><td><strong>no</strong> - global stylesheet restyles the host</td><td>clean</td><td>0 / 1</td></tr>
+<tr><td>delta-react-aria</td><td>clean</td><td>not probed</td></tr>
+<tr><td>mangrove-react-aria</td><td>clean</td><td>not probed</td></tr>
+<tr><td>delta-mui</td><td>clean</td><td>not probed</td></tr>
+<tr><td>mangrove-mui</td><td>clean</td><td>not probed</td></tr>
+<tr><td>delta-carbon</td><td>clean</td><td><strong>no</strong> - global stylesheet restyles the host</td></tr>
+<tr><td>mangrove-carbon</td><td><strong>FAILED</strong> (19 diffs)</td><td>not probed</td></tr>
+<tr><td>delta-mantine</td><td>clean</td><td>not probed</td></tr>
+<tr><td>mangrove-mantine</td><td>clean</td><td>not probed</td></tr>
+<tr><td>delta-antd</td><td>clean</td><td><strong>no</strong> - global stylesheet restyles the host</td></tr>
+<tr><td>mangrove-antd</td><td>clean</td><td><strong>no</strong> - global stylesheet restyles the host</td></tr>
 </tbody></table></div>
 
 <h2>A5 - Theming fidelity and propagation</h2>
@@ -313,17 +315,86 @@
 <div class="scroll"><table><thead>
 <tr><th>Pairing</th><th>tokens applied</th><th>unreachable</th><th>propagation</th><th>live var() refs in shipped CSS</th></tr>
 </thead><tbody>
-<tr><td>delta-react-aria</td><td>48</td><td>0</td><td><strong>stylesheet-swap</strong></td><td>295</td></tr>
-<tr><td>mangrove-react-aria</td><td>47</td><td>0</td><td><strong>stylesheet-swap</strong></td><td>264</td></tr>
-<tr><td>delta-mui</td><td>29</td><td>0</td><td><strong>mostly-rebuild</strong></td><td>38</td></tr>
-<tr><td>mangrove-mui</td><td>32</td><td>0</td><td><strong>mostly-rebuild</strong></td><td>38</td></tr>
-<tr><td>delta-carbon</td><td>50</td><td><strong>21</strong></td><td><strong>stylesheet-swap</strong></td><td>228</td></tr>
-<tr><td>mangrove-carbon</td><td>50</td><td><strong>22</strong></td><td><strong>stylesheet-swap</strong></td><td>195</td></tr>
-<tr><td>delta-mantine</td><td>66</td><td><strong>5</strong></td><td><strong>mostly-rebuild</strong></td><td>44</td></tr>
-<tr><td>mangrove-mantine</td><td>62</td><td>0</td><td><strong>mostly-rebuild</strong></td><td>44</td></tr>
-<tr><td>delta-antd</td><td>44</td><td>0</td><td><strong>mostly-rebuild</strong></td><td>41</td></tr>
-<tr><td>mangrove-antd</td><td>44</td><td>0</td><td><strong>mostly-rebuild</strong></td><td>41</td></tr>
+<tr><td>delta-react-aria</td><td>48</td><td>0</td><td><strong>unknown</strong></td><td>not built</td></tr>
+<tr><td>mangrove-react-aria</td><td>47</td><td>0</td><td><strong>unknown</strong></td><td>not built</td></tr>
+<tr><td>delta-mui</td><td>29</td><td>0</td><td><strong>unknown</strong></td><td>not built</td></tr>
+<tr><td>mangrove-mui</td><td>32</td><td>0</td><td><strong>unknown</strong></td><td>not built</td></tr>
+<tr><td>delta-carbon</td><td>50</td><td><strong>21</strong></td><td><strong>unknown</strong></td><td>not built</td></tr>
+<tr><td>mangrove-carbon</td><td>50</td><td><strong>22</strong></td><td><strong>unknown</strong></td><td>not built</td></tr>
+<tr><td>delta-mantine</td><td>66</td><td><strong>5</strong></td><td><strong>unknown</strong></td><td>not built</td></tr>
+<tr><td>mangrove-mantine</td><td>62</td><td>0</td><td><strong>unknown</strong></td><td>not built</td></tr>
+<tr><td>delta-antd</td><td>44</td><td>0</td><td><strong>unknown</strong></td><td>not built</td></tr>
+<tr><td>mangrove-antd</td><td>44</td><td>0</td><td><strong>unknown</strong></td><td>not built</td></tr>
 </tbody></table></div>
+
+<h2>A6 - Right-to-left</h2>
+
+<p>Read <code>status</code> against <code>setup</code>. <code>clean</code> at <code>native</code>/0 lines means a <code>dir</code> attribute sufficed. <code>clean</code> at <code>composed</code>/18 lines means the library needed configuring and mitigating first. Both print as clean; they are not the same purchase.</p>
+
+<div class="scroll"><table><thead>
+<tr><th>Pairing</th><th>status</th><th>setup</th><th>custom lines</th><th>recorded issues</th></tr>
+</thead><tbody>
+<tr><td>delta-react-aria</td><td>clean</td><td>native</td><td>0</td><td>0</td></tr>
+<tr><td>mangrove-react-aria</td><td>clean</td><td>native</td><td>0</td><td>0</td></tr>
+<tr><td>delta-mui</td><td><strong>issues</strong></td><td>composed</td><td>6</td><td>2</td></tr>
+<tr><td>mangrove-mui</td><td><strong>issues</strong></td><td>composed</td><td>6</td><td>1</td></tr>
+<tr><td>delta-carbon</td><td>clean</td><td>native</td><td>0</td><td>1</td></tr>
+<tr><td>mangrove-carbon</td><td>clean</td><td>composed</td><td>6</td><td>2</td></tr>
+<tr><td>delta-mantine</td><td>clean</td><td>composed</td><td>18</td><td>2</td></tr>
+<tr><td>mangrove-mantine</td><td>clean</td><td>composed</td><td>10</td><td>0</td></tr>
+<tr><td>delta-antd</td><td>clean</td><td>native</td><td>0</td><td>0</td></tr>
+<tr><td>mangrove-antd</td><td>clean</td><td>native</td><td>0</td><td>0</td></tr>
+</tbody></table></div>
+
+<p>A candidate whose two hosts disagree implicates the host; one whose two hosts agree implicates the candidate. Every recorded issue is reproduced verbatim below, because ownership - candidate, third-party dependency, or mitigated - decides what it means, and that is judgement rather than a number.</p>
+
+<details><summary>Recorded RTL issues, per pairing</summary>
+
+<p><strong><code>delta-mui</code></strong> - 2 recorded</p>
+
+<li>MUI's outlined floating labels do not flip in RTL. <code>direction: "rtl"</code> on the theme does not change the physical offsets emotion has already emitted: <code>.MuiInputLabel-outlined</code> uses <code>left: 0</code>, so wherever a FormControl is wider than its input the label detaches from its field. Measured at 1440x900 in Arabic: 4 fields displaced by more than 100px, the worst a visible 218px-wide input whose label sits 854px away. Visible in screenshots/desktop/rtl/01-forms.png, bottom form.</li>
+<li>MUI's documented remedy is <code>stylis-plugin-rtl</code>, a third-party package that Brief 1 constraint 2 forbids. So this is not fixable within the rules, and it is a genuine RTL limitation of MUI Community for a service that must serve Arabic.</li>
+
+<p><strong><code>mangrove-mui</code></strong> - 1 recorded</p>
+
+<li>MuiInputLabel-outlined is positioned with a physical <code>left: 0</code> that theme direction does not flip. A TextField whose FormControl is wider than its input renders its floating label at the physical left edge: measured label x=51, input x=921, gap 870px, at all three viewports. Fix requires stylis-plugin-rtl, which constraint 2 forbids. The e2e assertion is left failing.</li>
+
+<p><strong><code>delta-carbon</code></strong> - 1 recorded</p>
+
+<li>flatpickr's calendar is a third-party non-React widget and is not mirrored: its previous/next month arrows keep their LTR positions in Arabic. Carbon's own components all flip correctly because they are authored in logical properties.</li>
+
+<p><strong><code>mangrove-carbon</code></strong> - 2 recorded</p>
+
+<li>Carbon's own internals mirror correctly at all three viewports; no direction-aware CSS was written except one padding-inline-start.</li>
+<li>The flatpickr calendar inside DatePicker keeps English month and weekday names in Arabic, because Carbon's <code>locale</code> prop was left at "en". Carbon does bundle flatpickr l10ns, so this is a wiring gap rather than a missing capability, but it is not automatic the way React Aria's I18nProvider is.</li>
+
+<p><strong><code>delta-mantine</code></strong> - 2 recorded</p>
+
+<li>Clean as shipped, but only after two mitigations. Mantine's Portal drops <code>dir</code> and freezes its container's props at mount, so portalled overlays initially rendered LTR inside the RTL page and stayed LTR across locale changes. See theming.escapeHatchesUsed.</li>
+<li>In Arabic the range picker's formatted value renders with its endpoints visually reversed (<code>23:59 15/06/2026 – 00:00 01/05/2026</code>). Bidi reordering of an LTR-formatted string in an RTL context, not a wrong value; needs a bidi-isolation decision from the design system.</li>
+
+</details>
+
+<h2>A7 - Accessibility conformance</h2>
+
+<p><code>incomplete</code> is not a pass: it counts checks axe declined to decide, each of which is work a human still owes. Nine of the ten runs ran axe unscoped, so these counts are sound at the level of *zero versus some* and unsound at the level of exact numbers.</p>
+
+<div class="scroll"><table><thead>
+<tr><th>Pairing</th><th>critical</th><th>serious</th><th>incomplete</th><th>scope</th></tr>
+</thead><tbody>
+<tr><td>delta-react-aria</td><td>0</td><td>0</td><td>1</td><td>whole page, unscoped</td></tr>
+<tr><td>mangrove-react-aria</td><td>0</td><td>0</td><td>1</td><td>whole page, unscoped</td></tr>
+<tr><td>delta-mui</td><td>0</td><td>1</td><td>4</td><td>whole page, unscoped</td></tr>
+<tr><td>mangrove-mui</td><td>0</td><td>1</td><td>4</td><td>candidate subtree</td></tr>
+<tr><td>delta-carbon</td><td><strong>1</strong></td><td>2</td><td>2</td><td>whole page, unscoped</td></tr>
+<tr><td>mangrove-carbon</td><td>0</td><td>1</td><td>2</td><td>whole page, unscoped</td></tr>
+<tr><td>delta-mantine</td><td>0</td><td>0</td><td>1</td><td>whole page, unscoped</td></tr>
+<tr><td>mangrove-mantine</td><td>0</td><td>0</td><td>0</td><td>whole page, unscoped</td></tr>
+<tr><td>delta-antd</td><td>0</td><td>1</td><td>1</td><td>whole page, unscoped</td></tr>
+<tr><td>mangrove-antd</td><td>0</td><td>1</td><td>1</td><td>whole page, unscoped</td></tr>
+</tbody></table></div>
+
+<p><strong>Zero automated violations is a floor, not a conformance claim.</strong> No screen-reader pass, no human keyboard-only walkthrough and no plain-language review was run on any pairing. Automated tooling reaches a minority of WCAG criteria, so a row of zeroes means the automated subset passed - not that the pairing is accessible. See <a href="./decision-axes.md">decision-axes.md</a> for what ownership does to these numbers.</p>
 
 <h2>Supporting figures</h2>
 

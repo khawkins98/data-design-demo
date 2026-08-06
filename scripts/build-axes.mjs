@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Scores every pairing on the five decision axes and writes docs/axes.md
+ * Scores every pairing on the seven decision axes and writes docs/axes.md
  * and docs/axes.html.
  *
  * See docs/decision-axes.md for what each axis means and why lines of code is
@@ -250,6 +250,12 @@ const rows = appDirs().map((app) => {
     leakageDiffs: (evidence.leakage?.differences ?? []).length,
     globalProbe: evidence.leakage?.globalStylesheetProbe ?? null,
     rtl: evidence.rtl?.status ?? null,
+    rtlIssues: evidence.rtl?.issues ?? [],
+    // A6: `clean` spans "a dir attribute sufficed" and "clean after 18 lines of
+    // mitigation". The status field alone hides that, so carry the setup cost.
+    rtlRequirement: (evidence.requirements ?? []).find(
+      (r) => (typeof r === "string" ? r : r.id) === "rtl",
+    ) ?? null,
     axe: evidence.axe ?? {},
     bundle: evidence.bundle ?? {},
     extraction: extractionResults?.[candidate] ?? null,
@@ -471,14 +477,20 @@ lines.push("");
 lines.push("## A4 - Mangrove compatibility");
 lines.push("");
 lines.push(
+  "RTL and accessibility used to be two columns here. They are now A6 and A7: both are",
+);
+lines.push(
+  "estate-wide obligations rather than symptoms of host coexistence, and both were too",
+);
+lines.push("consequential to leave as columns in someone else's table.");
+lines.push("");
+lines.push(
   table(
-    ["Pairing", "leakage", "documented setup loadable as-is", "RTL", "axe critical/serious"],
+    ["Pairing", "leakage", "documented setup loadable as-is"],
     rows.map((r) => [
       r.app,
       r.leakagePassed ? "clean" : `**FAILED** (${r.leakageDiffs} diffs)`,
       r.globalProbe ? "**no** - global stylesheet restyles the host" : "not probed",
-      r.rtl === "clean" ? "clean" : `**${r.rtl}**`,
-      `${r.axe.critical ?? "?"} / ${r.axe.serious ?? "?"}`,
     ]),
   ),
 );
@@ -506,6 +518,93 @@ lines.push(
     ]),
   ),
 );
+lines.push("");
+
+lines.push("## A6 - Right-to-left");
+lines.push("");
+lines.push(
+  "Read `status` against `setup`. `clean` at `native`/0 lines means a `dir` attribute",
+);
+lines.push(
+  "sufficed. `clean` at `composed`/18 lines means the library needed configuring and",
+);
+lines.push(
+  "mitigating first. Both print as clean; they are not the same purchase.",
+);
+lines.push("");
+lines.push(
+  table(
+    ["Pairing", "status", "setup", "custom lines", "recorded issues"],
+    rows.map((r) => [
+      r.app,
+      r.rtl === "clean" ? "clean" : `**${r.rtl}**`,
+      r.rtlRequirement?.status ?? "?",
+      r.rtlRequirement?.customLinesOfCode ?? "?",
+      r.rtlIssues.length,
+    ]),
+  ),
+);
+lines.push("");
+lines.push(
+  "A candidate whose two hosts disagree implicates the host; one whose two hosts agree",
+);
+lines.push(
+  "implicates the candidate. Every recorded issue is reproduced verbatim below, because",
+);
+lines.push(
+  "ownership - candidate, third-party dependency, or mitigated - decides what it means,",
+);
+lines.push("and that is judgement rather than a number.");
+lines.push("");
+lines.push("<details><summary>Recorded RTL issues, per pairing</summary>");
+lines.push("");
+for (const r of rows.filter((x) => x.rtlIssues.length > 0)) {
+  lines.push(`**\`${r.app}\`** - ${r.rtlIssues.length} recorded`);
+  lines.push("");
+  for (const issue of r.rtlIssues) lines.push(`- ${issue}`);
+  lines.push("");
+}
+lines.push("</details>");
+lines.push("");
+
+lines.push("## A7 - Accessibility conformance");
+lines.push("");
+lines.push(
+  "`incomplete` is not a pass: it counts checks axe declined to decide, each of which is",
+);
+lines.push(
+  "work a human still owes. Nine of the ten runs ran axe unscoped, so these counts are",
+);
+lines.push(
+  "sound at the level of *zero versus some* and unsound at the level of exact numbers.",
+);
+lines.push("");
+lines.push(
+  table(
+    ["Pairing", "critical", "serious", "incomplete", "scope"],
+    rows.map((r) => [
+      r.app,
+      r.axe.critical ? `**${r.axe.critical}**` : (r.axe.critical ?? "?"),
+      r.axe.serious ?? "?",
+      r.axe.incomplete ?? "?",
+      r.axe.scope ? "candidate subtree" : "whole page, unscoped",
+    ]),
+  ),
+);
+lines.push("");
+lines.push(
+  "**Zero automated violations is a floor, not a conformance claim.** No screen-reader",
+);
+lines.push(
+  "pass, no human keyboard-only walkthrough and no plain-language review was run on any",
+);
+lines.push(
+  "pairing. Automated tooling reaches a minority of WCAG criteria, so a row of zeroes",
+);
+lines.push(
+  "means the automated subset passed - not that the pairing is accessible. See",
+);
+lines.push("[decision-axes.md](./decision-axes.md) for what ownership does to these numbers.");
 lines.push("");
 
 lines.push("## Supporting figures");
