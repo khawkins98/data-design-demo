@@ -97,7 +97,7 @@ const QUESTIONS = [
     axis: "A7",
     axisName: "Accessibility conformance",
     answer:
-      "React Aria and Mantine reach zero automated violations; Carbon has the only critical. But zero is a floor, not a conformance claim - no screen-reader or human keyboard pass was run on any pairing.",
+      "Zero is a floor, not a conformance claim: no screen-reader or human keyboard pass was run on any pairing. And the floor is lower than the kitchen sinks suggested - the realistic layouts found a critical unnamed-button defect in Mantine's Modal that every scoped axe run in this repository was blind to, because portalled overlays render outside the scanned subtree.",
   },
 ];
 

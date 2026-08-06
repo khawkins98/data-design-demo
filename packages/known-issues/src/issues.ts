@@ -229,6 +229,20 @@ export const KNOWN_ISSUES: readonly KnownIssue[] = Object.freeze([
     links: [{ label: "the requirement", href: "../requirements.md" }],
   },
   {
+    id: "mantine-modal-close-unnamed",
+    severity: "blocker",
+    candidates: ["mantine"],
+    hosts: ["*"],
+    owner: "candidate",
+    title: "Modal's close button ships with no accessible name",
+    detail:
+      "Mantine's Modal renders `.mantine-Modal-close` with no accessible name, which axe reports as a CRITICAL button-name violation. The same family of defect affects Pagination's four edge controls. It is fixable per site with closeButtonProps, but the fixtures carry no 'close' string and reusing the cancel label produces two identically named dismiss controls in one dialog, so the realistic layouts ship withCloseButton={false} instead - Escape still closes. Found only by the full-application view: the kitchen sink has the identical defect and cannot see it, because its modal portals outside [data-candidate-root] and its axe run is scoped to that subtree. Every scoped scan in this repository has the same blind spot.",
+    links: [
+      { label: "axis A7", href: "../axes.html" },
+      { label: "evidence", href: `${BLOB}/apps/delta-mantine/EVIDENCE.md` },
+    ],
+  },
+  {
     id: "mantine-build-time-theme",
     severity: "caveat",
     candidates: ["mantine"],

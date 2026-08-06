@@ -239,7 +239,7 @@
           <div class="question">
             <h3 class="question__title">Accessibility</h3>
             <p class="question__asks">Does it meet UNDRR's obligations in practice?</p>
-            <p class="question__answer">React Aria and Mantine reach zero automated violations; Carbon has the only critical. But zero is a floor, not a conformance claim - no screen-reader or human keyboard pass was run on any pairing.</p>
+            <p class="question__answer">Zero is a floor, not a conformance claim: no screen-reader or human keyboard pass was run on any pairing. And the floor is lower than the kitchen sinks suggested - the realistic layouts found a critical unnamed-button defect in Mantine's Modal that every scoped axe run in this repository was blind to, because portalled overlays render outside the scanned subtree.</p>
             <p class="question__axis">
               <a href="./axes.html">A7 Accessibility conformance</a>
             </p>
@@ -357,7 +357,7 @@
         <strong>21</strong> of 71 UNDRR tokens unreachable
         <span class="ceiling__note">a ceiling, not a cost: there is no hook to attach them to</span>
       </p>
-        <ul class="views"><li class="view view--missing"><span class="view__link view__link--missing">A whole DELTA screen</span> <span class="view__hint">not built yet</span></li><li class="view"><a class="view__link" href="./delta-carbon/">Component inventory</a> <span class="view__hint">every component on one page - proves capability, not adoption</span></li></ul>
+        <ul class="views"><li class="view"><a class="view__link" href="./delta-carbon/app.html">A whole DELTA screen</a> <span class="view__hint">layout, navigation and a full records workflow</span></li><li class="view"><a class="view__link" href="./delta-carbon/">Component inventory</a> <span class="view__hint">every component on one page - proves capability, not adoption</span></li></ul>
       </article>
 
       <article class="card card--complete">
@@ -371,7 +371,7 @@
         <strong>22</strong> of 72 UNDRR tokens unreachable
         <span class="ceiling__note">a ceiling, not a cost: there is no hook to attach them to</span>
       </p>
-        <ul class="views"><li class="view view--missing"><span class="view__link view__link--missing">Inside a real page</span> <span class="view__hint">not built yet</span></li><li class="view"><a class="view__link" href="./mangrove-carbon/">Component inventory</a> <span class="view__hint">every component on one page - proves capability, not adoption</span></li></ul>
+        <ul class="views"><li class="view"><a class="view__link" href="./mangrove-carbon/island.html">Inside a real page</a> <span class="view__hint">the candidate owns one region of a live Mangrove page</span></li><li class="view"><a class="view__link" href="./mangrove-carbon/">Component inventory</a> <span class="view__hint">every component on one page - proves capability, not adoption</span></li></ul>
       </article>
         </div>
       </section>
@@ -380,9 +380,9 @@
         <div class="pairing__meta">
           <h2 class="pairing__title" id="pairing-mantine">Mantine</h2>
           <p class="pairing__licence">@mantine/core<br />MIT</p>
-          <p class="card__issue card__issue--caveat">
-      <span class="card__issue-badge">Caveat</span>
-      Column resizing does not exist in the library and is implemented here <span class="card__issue-more">and 2 more</span>
+          <p class="card__issue card__issue--blocker">
+      <span class="card__issue-badge">Blocker</span>
+      Modal's close button ships with no accessible name <span class="card__issue-more">and 3 more</span>
     </p>
         </div>
         <div class="pairing__hosts">
@@ -398,7 +398,7 @@
         <strong>5</strong> of 71 UNDRR tokens unreachable
         <span class="ceiling__note">a ceiling, not a cost: there is no hook to attach them to</span>
       </p>
-        <ul class="views"><li class="view view--missing"><span class="view__link view__link--missing">A whole DELTA screen</span> <span class="view__hint">not built yet</span></li><li class="view"><a class="view__link" href="./delta-mantine/">Component inventory</a> <span class="view__hint">every component on one page - proves capability, not adoption</span></li></ul>
+        <ul class="views"><li class="view"><a class="view__link" href="./delta-mantine/app.html">A whole DELTA screen</a> <span class="view__hint">layout, navigation and a full records workflow</span></li><li class="view"><a class="view__link" href="./delta-mantine/">Component inventory</a> <span class="view__hint">every component on one page - proves capability, not adoption</span></li></ul>
       </article>
 
       <article class="card card--complete">
@@ -409,7 +409,7 @@
         <p class="card__status" data-status="complete">Complete</p>
         <ul class="flags"><li class="flag flag--ok">Leakage: clean</li><li class="flag flag--ok">RTL: clean</li><li class="flag flag--ok">Long labels: clean</li></ul>
         
-        <ul class="views"><li class="view view--missing"><span class="view__link view__link--missing">Inside a real page</span> <span class="view__hint">not built yet</span></li><li class="view"><a class="view__link" href="./mangrove-mantine/">Component inventory</a> <span class="view__hint">every component on one page - proves capability, not adoption</span></li></ul>
+        <ul class="views"><li class="view"><a class="view__link" href="./mangrove-mantine/island.html">Inside a real page</a> <span class="view__hint">the candidate owns one region of a live Mangrove page</span></li><li class="view"><a class="view__link" href="./mangrove-mantine/">Component inventory</a> <span class="view__hint">every component on one page - proves capability, not adoption</span></li></ul>
       </article>
         </div>
       </section>
@@ -433,7 +433,7 @@
         <p class="card__status" data-status="complete">Complete</p>
         <ul class="flags"><li class="flag flag--ok">Leakage: clean</li><li class="flag flag--ok">RTL: clean</li><li class="flag flag--ok">Long labels: clean</li></ul>
         
-        <ul class="views"><li class="view view--missing"><span class="view__link view__link--missing">A whole DELTA screen</span> <span class="view__hint">not built yet</span></li><li class="view"><a class="view__link" href="./delta-antd/">Component inventory</a> <span class="view__hint">every component on one page - proves capability, not adoption</span></li></ul>
+        <ul class="views"><li class="view"><a class="view__link" href="./delta-antd/app.html">A whole DELTA screen</a> <span class="view__hint">layout, navigation and a full records workflow</span></li><li class="view"><a class="view__link" href="./delta-antd/">Component inventory</a> <span class="view__hint">every component on one page - proves capability, not adoption</span></li></ul>
       </article>
 
       <article class="card card--complete">
@@ -444,7 +444,7 @@
         <p class="card__status" data-status="complete">Complete</p>
         <ul class="flags"><li class="flag flag--ok">Leakage: clean</li><li class="flag flag--ok">RTL: clean</li><li class="flag flag--ok">Long labels: clean</li></ul>
         
-        <ul class="views"><li class="view view--missing"><span class="view__link view__link--missing">Inside a real page</span> <span class="view__hint">not built yet</span></li><li class="view"><a class="view__link" href="./mangrove-antd/">Component inventory</a> <span class="view__hint">every component on one page - proves capability, not adoption</span></li></ul>
+        <ul class="views"><li class="view"><a class="view__link" href="./mangrove-antd/island.html">Inside a real page</a> <span class="view__hint">the candidate owns one region of a live Mangrove page</span></li><li class="view"><a class="view__link" href="./mangrove-antd/">Component inventory</a> <span class="view__hint">every component on one page - proves capability, not adoption</span></li></ul>
       </article>
         </div>
       </section>

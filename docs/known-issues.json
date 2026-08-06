@@ -1,6 +1,6 @@
 {
   "$comment": "GENERATED from packages/known-issues/src/issues.ts by scripts/build-known-issues-json.mjs. Do not edit: add issues to the TypeScript registry, which the demo pages also import.",
-  "issueCount": 19,
+  "issueCount": 20,
   "pairings": {
     "delta-react-aria": {
       "total": 3,
@@ -39,14 +39,15 @@
       }
     },
     "delta-mantine": {
-      "total": 3,
+      "total": 4,
       "counts": {
+        "blocker": 1,
         "caveat": 2,
         "info": 1
       },
       "headline": {
-        "severity": "caveat",
-        "title": "Column resizing does not exist in the library and is implemented here"
+        "severity": "blocker",
+        "title": "Modal's close button ships with no accessible name"
       }
     },
     "delta-antd": {
@@ -97,14 +98,15 @@
       }
     },
     "mangrove-mantine": {
-      "total": 5,
+      "total": 6,
       "counts": {
+        "blocker": 1,
         "caveat": 2,
         "info": 3
       },
       "headline": {
-        "severity": "caveat",
-        "title": "Column resizing does not exist in the library and is implemented here"
+        "severity": "blocker",
+        "title": "Modal's close button ships with no accessible name"
       }
     },
     "mangrove-antd": {
