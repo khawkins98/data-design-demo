@@ -124,7 +124,7 @@ for (const candidate of manifest.candidates) {
     if (evidence) {
       const blockers = Array.isArray(evidence.blockers) ? evidence.blockers : [];
       status = blockers.length > 0 ? "blocked" : "complete";
-      statusLabel = blockers.length > 0 ? `Blocked (${blockers.length})` : "Complete";
+      statusLabel = blockers.length > 0 ? `Warnings (${blockers.length})` : "Complete";
     }
 
     groupCards.push({
@@ -173,7 +173,7 @@ function knownIssueNote(appDir, candidateId) {
   }</a>`;
   return `<p class="card__issue card__issue--${esc(severity)}">
       <span class="card__issue-badge">${esc(
-        severity === "decision" ? "Decision needed" : severity === "blocker" ? "Blocker" : "Caveat",
+        severity === "decision" ? "Decision needed" : severity === "blocker" ? "Warning" : "Caveat",
       )}</span>
       ${esc(title)}${more}
     </p>`;
@@ -590,7 +590,7 @@ ${questionsHtml}
 
         <p class="start__more">
           <a href="./scores.html"><strong>Weighted scores</strong></a>
-          — all five ranked, with blockers shown beside the score &middot;
+          — all five ranked, with warnings shown beside the score &middot;
           <a href="./axes.html"><strong>Decision axes</strong></a>
           — what is measured on each &middot;
           <a href="${DOCS_BLOB}/undrr-questions.md">the six questions in full</a>

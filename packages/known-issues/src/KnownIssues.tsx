@@ -29,7 +29,7 @@ import { openIssuesFor } from "./issues.js";
 import type { IssueSeverity, KnownIssue } from "./issues.js";
 
 const SEVERITY_LABEL: Record<IssueSeverity, string> = {
-  blocker: "Blocker",
+  blocker: "Warning",
   decision: "Decision needed",
   caveat: "Caveat",
   info: "Context",

@@ -186,8 +186,8 @@ if (ranked[0].blockers.length === 0) {
   L.push(
     `Composite ${ranked[0].composite} vs ${ranked[1].composite} for ${ranked[1].name}` +
       (clean.length === 1
-        ? `; only unblocked candidate of ${ranked.length}.`
-        : `; one of ${clean.length}/${ranked.length} unblocked candidates.`) +
+        ? `; only candidate without warnings of ${ranked.length}.`
+        : `; one of ${clean.length}/${ranked.length} candidates without warnings.`) +
       " Arabic works from a `dir` attribute alone. Stays inside its own subtree on both hosts.",
   );
   if (ranked[0].candidate === "react-aria") {
@@ -198,7 +198,7 @@ if (ranked[0].blockers.length === 0) {
 } else {
   L.push(
     `It leads on the composite at ${ranked[0].composite}, but carries ` +
-      `${ranked[0].blockers.length} blocking defect - recommendation conditional. See Blockers.`,
+      `${ranked[0].blockers.length} warning - recommendation conditional. See Warnings.`,
   );
 }
 L.push("");
@@ -226,11 +226,11 @@ L.push("");
 L.push("## Ranking");
 L.push("");
 L.push(
-  "Composite is the weighted mean of the two hosts. **Blockers are listed beside the " +
+  "Composite is the weighted mean of the two hosts. **Warnings are listed beside the " +
     "score, never folded into it.**",
 );
 L.push("");
-L.push("| # | Candidate | Composite | Library-owned blockers |");
+L.push("| # | Candidate | Composite | Library-owned warnings |");
 L.push("| --- | --- | --- | --- |");
 ranked.forEach((c, i) => {
   L.push(
@@ -243,7 +243,7 @@ L.push("");
 
 if (clean.length > 0) {
   L.push(
-    `**${clean.length} of ${ranked.length} candidates carry no blocker at all:** ` +
+    `**${clean.length} of ${ranked.length} candidates carry no warning at all:** ` +
       `${clean.map((c) => c.name).join(", ")}.`,
   );
   L.push("");
@@ -254,7 +254,7 @@ if (clean.length > 0) {
   const stuck = blocked.filter((c) => !escapable.includes(c));
 
   L.push(
-    `**${ranked[0].name}** ranks first on the composite and carries no blocker, so it is` +
+    `**${ranked[0].name}** ranks first on the composite and carries no warning, so it is` +
       ` the recommendation.`,
   );
   if (clean.length > 1) {
@@ -262,7 +262,7 @@ if (clean.length > 0) {
     L.push("");
     L.push(
       `${others.map((c) => `**${c.name}** (${c.composite})`).join(", ")} ` +
-        `${others.length === 1 ? "also carries" : "also carry"} no blocker - viable ` +
+        `${others.length === 1 ? "also carries" : "also carry"} no warning - viable ` +
         `${others.length === 1 ? "second choice" : "choices"} without a waiver.`,
     );
   }
@@ -270,7 +270,7 @@ if (clean.length > 0) {
     L.push("");
     L.push(
       `${escapable.map((c) => c.name).join(" and ")} ` +
-        `${escapable.length === 1 ? "carries a blocker that can be escaped" : "carry blockers that can be escaped"}` +
+        `${escapable.length === 1 ? "carries a warning that can be escaped" : "carry warnings that can be escaped"}` +
         ` in configuration or consuming code: see the escape-cost table below.`,
     );
   }
@@ -278,25 +278,25 @@ if (clean.length > 0) {
     L.push("");
     L.push(
       `${stuck.map((c) => c.name).join(" and ")} ` +
-        `${stuck.length === 1 ? "cannot escape its blockers" : "cannot escape theirs"} ` +
+        `${stuck.length === 1 ? "cannot escape its warnings" : "cannot escape theirs"} ` +
         `without a library change or a UNDRR policy decision.`,
     );
   }
 } else {
   L.push("**Every candidate carries at least one blocking axis.** No shortlist is defensible");
-  L.push("from this evidence without a policy decision about which blocker UNDRR will accept.");
+  L.push("from this evidence without a policy decision about which warning UNDRR will accept.");
 }
 L.push("");
 
-L.push("## Blockers, in full");
+L.push("## Warnings, in full");
 L.push("");
-L.push("Blocked = axis not satisfied at all, by the library rather than our code.");
+L.push("Warning = axis not satisfied as shipped, typically overcomable with extra maintenance work.");
 L.push("");
 L.push("**A finding can appear twice** - once from `evidence.json`, once from the known-issues registry. Two records of one fact, kept separate to surface disagreements.");
 L.push("");
 L.push("**Remediability is recorded but not scored.** It answers whether a candidate below the top can be brought up to it.");
 L.push("");
-L.push("| Candidate | Blockers | Cheapest escape | Hardest escape |");
+L.push("| Candidate | Warnings | Cheapest escape | Hardest escape |");
 L.push("| --- | --- | --- | --- |");
 for (const c of ranked.filter((x) => x.blockers.length > 0)) {
   L.push(
@@ -340,7 +340,8 @@ for (let i = 0; i < rows.length; i++) {
   L.push(`### \`${row.app}\` - composite ${row.composite} / 100`);
   L.push("");
   if (row.headline) {
-    L.push(`Worst open issue: **${row.headline.severity}** - ${row.headline.title}`);
+    const sevLabel = row.headline.severity === "blocker" ? "warning" : row.headline.severity;
+    L.push(`Worst open issue: **${sevLabel}** - ${row.headline.title}`);
     L.push("");
   }
   L.push(`${row.openIssues} open findings. ${row.resolvedOurs} fixed in our code and excluded from score.`);
@@ -434,7 +435,7 @@ function toHtml(markdown) {
     if (line.startsWith("### ")) out.push(`<h3>${inline(line.slice(4))}</h3>`);
     else if (line.startsWith("## ")) {
       const text = line.slice(3);
-      const id = /^Blockers/.test(text) ? ' id="blockers"' : "";
+      const id = /^Warnings/.test(text) ? ' id="warnings"' : "";
       out.push(`<h2${id}>${inline(text)}</h2>`);
     }
     else if (line.startsWith("# ")) out.push(`<h1>${inline(line.slice(2))}</h1>`);
@@ -479,7 +480,7 @@ function buildOverviewHtml() {
     const blockerBadge =
       c.blockers.length === 0
         ? '<span class="ov-ok">none</span>'
-        : `<a href="#blockers" class="ov-bad">${c.blockers.length}</a>`;
+        : `<a href="#warnings" class="ov-bad">${c.blockers.length}</a>`;
 
     const demoLinks = [
       deltaDemo ? `<a href="${deltaDemo}">Delta</a>` : null,
@@ -508,7 +509,7 @@ function buildOverviewHtml() {
     `<span class="ov-k ov-key">weak</span> ` +
     `<span class="ov-b ov-key">blocked</span></p>\n` +
     `<div class="scroll"><table class="ov-table"><thead>\n` +
-    `<tr><th>Candidate</th><th>Score</th><th>Blockers</th>` +
+    `<tr><th>Candidate</th><th>Score</th><th>Warnings</th>` +
     axisShort.map((a, i) => `<th class="ov-ax"><a href="./axes.html#${a.toLowerCase()}" title="${esc(axisLabel[i])}">${a}<span class="ov-ax-hint">${axisHint[i]}</span></a></th>`).join("") +
     `<th>Demos</th></tr>\n` +
     `</thead><tbody>\n` +
@@ -656,7 +657,7 @@ ${buildOverviewHtml()}
       <div class="verdict">
         <strong>Recommendation: adopt ${esc(ranked[0].name)}.</strong>
         Composite ${ranked[0].composite} vs ${ranked[1].composite} for ${esc(ranked[1].name)};
-        ${clean.length === 1 ? `only unblocked candidate of ${ranked.length}` : `one of ${clean.length}/${ranked.length} unblocked candidates`}.
+        ${clean.length === 1 ? `only candidate without warnings out of ${ranked.length}` : `one of ${clean.length}/${ranked.length} candidates without warnings`}.
         Arabic works from a <code>dir</code> attribute alone. Stays inside its own subtree on both hosts.
         ${ranked[0].candidate === "react-aria" ? '<br /><strong>The cost.</strong> React Aria ships behaviour, not appearance. Adopting it means UNDRR owns the visual layer permanently. <strong>Read this as &ldquo;fund a design system&rdquo;, not &ldquo;save work&rdquo;.</strong>' : ""}
       </div>
@@ -678,7 +679,7 @@ ${buildQuestionsHtml()}
 ${buildGlossaryHtml()}
 
       <details>
-        <summary>Scoring detail: weights, ranking, blockers and per-pairing breakdowns</summary>
+        <summary>Scoring detail: weights, ranking, warnings and per-pairing breakdowns</summary>
 ${collapseLatePairings(toHtml(md))}
       </details>
 
@@ -706,5 +707,5 @@ ${collapseLatePairings(toHtml(md))}
 writeFileSync(join(DOCS, "scores.html"), html, "utf8");
 
 process.stdout.write(
-  `wrote docs/scores.md and docs/scores.html (${rows.length} pairings, ${clean.length}/${ranked.length} candidates unblocked)\n`,
+  `wrote docs/scores.md and docs/scores.html (${rows.length} pairings, ${clean.length}/${ranked.length} candidates without warnings)\n`,
 );

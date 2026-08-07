@@ -14,7 +14,7 @@ defines what was measured. Each app's `EVIDENCE.md` has the raw findings.
 
 **Adopt Adobe React Aria.**
 
-Composite 84 vs 69 for MUI (Community only); one of 2/5 unblocked candidates. Arabic works from a `dir` attribute alone. Stays inside its own subtree on both hosts.
+Composite 84 vs 69 for MUI (Community only); one of 2/5 candidates without warnings. Arabic works from a `dir` attribute alone. Stays inside its own subtree on both hosts.
 
 **The cost.** React Aria ships behaviour, not appearance. Adopting it means UNDRR
 owns the visual layer permanently. **Read this as "fund a design system", not "save work".**
@@ -44,9 +44,9 @@ A6 at 18 is the weight that removes MUI from contention; at 12 the ranking would
 
 ## Ranking
 
-Composite is the weighted mean of the two hosts. **Blockers are listed beside the score, never folded into it.**
+Composite is the weighted mean of the two hosts. **Warnings are listed beside the score, never folded into it.**
 
-| # | Candidate | Composite | Library-owned blockers |
+| # | Candidate | Composite | Library-owned warnings |
 | --- | --- | --- | --- |
 | 1 | Adobe React Aria | **84** / 100 | none |
 | 2 | MUI (Community only) | **69** / 100 | none |
@@ -54,25 +54,25 @@ Composite is the weighted mean of the two hosts. **Blockers are listed beside th
 | 4 | Mantine | **65** / 100 | **1** - see below |
 | 5 | IBM Carbon | **46** / 100 | **3** - see below |
 
-**2 of 5 candidates carry no blocker at all:** Adobe React Aria, MUI (Community only).
+**2 of 5 candidates carry no warning at all:** Adobe React Aria, MUI (Community only).
 
-**Adobe React Aria** ranks first on the composite and carries no blocker, so it is the recommendation.
+**Adobe React Aria** ranks first on the composite and carries no warning, so it is the recommendation.
 
-**MUI (Community only)** (69) also carries no blocker - viable second choice without a waiver.
+**MUI (Community only)** (69) also carries no warning - viable second choice without a waiver.
 
-Ant Design and Mantine carry blockers that can be escaped in configuration or consuming code: see the escape-cost table below.
+Ant Design and Mantine carry warnings that can be escaped in configuration or consuming code: see the escape-cost table below.
 
-IBM Carbon cannot escape its blockers without a library change or a UNDRR policy decision.
+IBM Carbon cannot escape its warnings without a library change or a UNDRR policy decision.
 
-## Blockers, in full
+## Warnings, in full
 
-Blocked = axis not satisfied at all, by the library rather than our code.
+Warning = axis not satisfied as shipped, typically overcomable with extra maintenance work.
 
 **A finding can appear twice** - once from `evidence.json`, once from the known-issues registry. Two records of one fact, kept separate to surface disagreements.
 
 **Remediability is recorded but not scored.** It answers whether a candidate below the top can be brought up to it.
 
-| Candidate | Blockers | Cheapest escape | Hardest escape |
+| Candidate | Warnings | Cheapest escape | Hardest escape |
 | --- | --- | --- | --- |
 | Ant Design | 1 | reversible per site by changing a setting | reversible per site by changing a setting |
 | Mantine | 1 | fixable in consuming code, repeated per site | fixable in consuming code, repeated per site |
@@ -176,7 +176,7 @@ Worst open issue: **caveat** - MUI needs a third setup step for RTL, and fails s
 
 ### `delta-carbon` - composite 49 / 100
 
-Worst open issue: **blocker** - Carbon cannot express about 30% of the UNDRR design tokens
+Worst open issue: **warning** - Carbon cannot express about 30% of the UNDRR design tokens
 
 9 open findings. 7 fixed in our code and excluded from score.
 
@@ -192,7 +192,7 @@ Worst open issue: **blocker** - Carbon cannot express about 30% of the UNDRR des
 
 ### `mangrove-carbon` - composite 43 / 100
 
-Worst open issue: **blocker** - Carbon cannot express about 30% of the UNDRR design tokens
+Worst open issue: **warning** - Carbon cannot express about 30% of the UNDRR design tokens
 
 11 open findings. 7 fixed in our code and excluded from score.
 
@@ -208,7 +208,7 @@ Worst open issue: **blocker** - Carbon cannot express about 30% of the UNDRR des
 
 ### `delta-mantine` - composite 60 / 100
 
-Worst open issue: **blocker** - Modal's close button ships with no accessible name
+Worst open issue: **warning** - Modal's close button ships with no accessible name
 
 9 open findings. 7 fixed in our code and excluded from score.
 
@@ -224,7 +224,7 @@ Worst open issue: **blocker** - Modal's close button ships with no accessible na
 
 ### `mangrove-mantine` - composite 70 / 100
 
-Worst open issue: **blocker** - Modal's close button ships with no accessible name
+Worst open issue: **warning** - Modal's close button ships with no accessible name
 
 9 open findings. 7 fixed in our code and excluded from score.
 
@@ -256,7 +256,7 @@ Worst open issue: **caveat** - The data table has an upstream accessibility defe
 
 ### `mangrove-antd` - composite 68 / 100
 
-Worst open issue: **blocker** - Select controls do not display their selected value
+Worst open issue: **warning** - Select controls do not display their selected value
 
 13 open findings. 4 fixed in our code and excluded from score.
 
