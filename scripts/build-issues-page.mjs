@@ -35,6 +35,7 @@
 import { existsSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { siteNavHtml, siteNavCss } from "./lib/site-nav.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, "..");
@@ -365,10 +366,12 @@ const html = `<!doctype html>
         .cell-title { width:auto; }
         .detail > td { padding-inline-start:1rem; }
       }
+${siteNavCss}
     </style>
   </head>
   <body>
     <div class="page">
+${siteNavHtml("issues")}
       <h1>Known issues register</h1>
       <p class="lead">
         Every finding this evaluation recorded, in full, generated from the same

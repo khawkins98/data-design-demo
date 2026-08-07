@@ -12,6 +12,7 @@ import { fileURLToPath } from "node:url";
 
 import { axisPreamble } from "./lib/undrr-questions.mjs";
 import { scoreA1, scoreA2, scoreA3, scoreA4, scoreA5, scoreA6, scoreA7 } from "./lib/score-axis.mjs";
+import { siteNavHtml, siteNavCss } from "./lib/site-nav.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, "..");
@@ -810,11 +811,12 @@ const html = `<!doctype html>
         .ax-k { background: #3a2508; color: #e0a86a; }
         .ax-b { background: #3a1215; color: #e08a92; }
       }
+${siteNavCss}
     </style>
   </head>
   <body>
     <main>
-      <nav><a href="./">Back to the ranking</a> &middot; <a href="./comparison.html">Requirement matrix</a></nav>
+${siteNavHtml("axes")}
 ${injectBandSummaries(toHtml(md))}
     </main>
   </body>

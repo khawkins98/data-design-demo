@@ -18,6 +18,7 @@ import { fileURLToPath } from "node:url";
 
 import { UNDRR_QUESTIONS } from "./lib/undrr-questions.mjs";
 import { BANDS, scoreA1, scoreA2, scoreA3, scoreA4, scoreA5, scoreA6, scoreA7 } from "./lib/score-axis.mjs";
+import { siteNavHtml, siteNavCss } from "./lib/site-nav.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, "..");
@@ -483,8 +484,15 @@ function buildOverviewHtml() {
         : `<a href="#warnings" class="ov-bad">${c.blockers.length}</a>`;
 
     const demoLinks = [
-      deltaDemo ? `<a href="${deltaDemo}">Delta</a>` : null,
-      mangroveDemo ? `<a href="${mangroveDemo}">Mangrove</a>` : null,
+      deltaDemo ? `<a href="${deltaDemo}" class="ov-cta">Delta</a>` : null,
+      mangroveDemo ? `<a href="${mangroveDemo}" class="ov-cta">Mangrove</a>` : null,
+    ]
+      .filter(Boolean)
+      .join(" ");
+
+    const inventoryLinks = [
+      deltaApp ? `<a href="./${deltaApp}/" class="ov-cta ov-cta-sec">Delta</a>` : null,
+      mangroveApp ? `<a href="./${mangroveApp}/" class="ov-cta ov-cta-sec">Mangrove</a>` : null,
     ]
       .filter(Boolean)
       .join(" ");
@@ -496,6 +504,7 @@ function buildOverviewHtml() {
       `<td class="ov-blockers">${blockerBadge}</td>` +
       axisCells +
       `<td class="ov-demos">${demoLinks}</td>` +
+      `<td class="ov-demos">${inventoryLinks}</td>` +
       `</tr>`
     );
   });
@@ -511,7 +520,7 @@ function buildOverviewHtml() {
     `<div class="scroll"><table class="ov-table"><thead>\n` +
     `<tr><th>Candidate</th><th>Score</th><th>Warnings</th>` +
     axisShort.map((a, i) => `<th class="ov-ax"><a href="./axes.html#${a.toLowerCase()}" title="${esc(axisLabel[i])}">${a}<span class="ov-ax-hint">${axisHint[i]}</span></a></th>`).join("") +
-    `<th>Demos</th></tr>\n` +
+    `<th>Demos</th><th>Inventory</th></tr>\n` +
     `</thead><tbody>\n` +
     gridRows.join("\n") +
     `\n</tbody></table></div>\n` +
@@ -615,7 +624,11 @@ const html = `<!doctype html>
       .ov-table td a { color:inherit; text-decoration:none; display:block; }
       .ov-ax-hint { display:block; font-size:0.5625rem; font-weight:400; color:var(--muted); line-height:1.2; }
       .ov-demos { font-size:0.75rem; }
-      .ov-demos a + a { margin-inline-start:0.5rem; }
+      .ov-demos a + a { margin-inline-start:0.25rem; }
+      .ov-cta { display:inline-block; padding:0.2rem 0.5rem; border:1px solid var(--accent); border-radius:4px; text-decoration:none; font-weight:600; color:var(--accent); transition:background 0.15s, color 0.15s; }
+      .ov-cta:hover { background:var(--accent); color:#fff; }
+      .ov-cta-sec { border-color:var(--border); color:var(--muted); }
+      .ov-cta-sec:hover { background:var(--muted); color:#fff; border-color:var(--muted); }
       .ov-s { background:#d4edda; color:#155724; }
       .ov-w { background:#fff3cd; color:#856404; }
       .ov-k { background:#ffe0b2; color:#7a4100; }
@@ -645,10 +658,12 @@ const html = `<!doctype html>
       .glossary__list dd { margin:0.125rem 0 0; color:var(--muted); }
       .nav-links { font-size:0.8125rem; max-width:78ch; margin:1rem 0 0; }
       footer { margin-top:3rem; color:var(--muted); font-size:0.8125rem; max-width:70ch; }
+${siteNavCss}
     </style>
   </head>
   <body>
     <div class="page">
+${siteNavHtml("scores")}
       <h1>UNDRR data design system evaluation</h1>
       <p class="subtitle">Five candidate UI libraries, two UNDRR host shells, ten controlled proofs of concept.</p>
 
@@ -662,19 +677,7 @@ ${buildOverviewHtml()}
         ${ranked[0].candidate === "react-aria" ? '<br /><strong>The cost.</strong> React Aria ships behaviour, not appearance. Adopting it means UNDRR owns the visual layer permanently. <strong>Read this as &ldquo;fund a design system&rdquo;, not &ldquo;save work&rdquo;.</strong>' : ""}
       </div>
 
-      <div class="questions">
-        <h2 style="margin-top:0">The six questions this answers</h2>
-        <p style="max-width:72ch">All five candidates meet all 300 requirements, so the requirement matrix does not discriminate. These six questions do.</p>
-${buildQuestionsHtml()}
-      </div>
 
-      <p class="nav-links">
-        <a href="./axes.html"><strong>Decision axes</strong></a> &mdash; what is measured on each &middot;
-        <a href="./issues.html"><strong>All findings</strong></a> &middot;
-        <a href="./comparison.html">Requirement matrix</a> &mdash; the 300 assessments &middot;
-        <a href="${DOCS_BLOB}/architecture-options.md"><strong>Architecture options</strong></a> &mdash; what each candidate does to Mangrove &middot;
-        <a href="${DOCS_BLOB}/undrr-questions.md">the six questions in full</a>
-      </p>
 
 ${buildGlossaryHtml()}
 
