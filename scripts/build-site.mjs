@@ -17,7 +17,7 @@
  */
 
 import { execFileSync } from "node:child_process";
-import { cpSync, existsSync, mkdirSync, readdirSync, rmSync, statSync } from "node:fs";
+import { copyFileSync, cpSync, existsSync, mkdirSync, readdirSync, rmSync, statSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -63,12 +63,22 @@ execFileSync("node", [join(HERE, "build-comparison.mjs")], { cwd: ROOT, stdio: "
 // it rather than guessing.
 execFileSync("node", [join(HERE, "build-axes.mjs")], { cwd: ROOT, stdio: "inherit" });
 
+// Scores page doubles as the landing page since it carries the overview grid,
+// recommendation, and the six framing questions.
+execFileSync(
+  "node",
+  ["--experimental-strip-types", join(HERE, "build-scores.mjs")],
+  { cwd: ROOT, stdio: "inherit" },
+);
+
 rmSync(SITE, { recursive: true, force: true });
 mkdirSync(SITE, { recursive: true });
 
-// Landing page and its assets. docs/ also carries the markdown reference
-// documents, which are harmless to publish and useful to link to.
+// docs/ carries the generated pages and markdown reference documents.
 cpSync(DOCS, SITE, { recursive: true });
+
+// scores.html is the landing page.
+copyFileSync(join(SITE, "scores.html"), join(SITE, "index.html"));
 
 const built = [];
 const missing = [];
