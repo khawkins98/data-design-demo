@@ -89,6 +89,47 @@ export type LabelKey =
   | "actionFilter"
   | "actionClearFilters"
   | "actionExport"
+  /*
+   * The multi-step wizard, from DELTA's own add-disaster-event flow.
+   *
+   * Shared rather than written per demo for the reason every other label is: five
+   * libraries rendering five different step names would make the screenshots
+   * incomparable, and the comparison is the product.
+   */
+  | "actionBack"
+  | "actionNext"
+  | "actionSaveDraft"
+  | "wizardTitle"
+  | "wizardProgressLabel"
+  | "stepEventBasics"
+  | "stepLinkedEvents"
+  | "stepAdditionalDetails"
+  | "stepReview"
+  | "stepRequired"
+  | "stepOptional"
+  /*
+   * The review step's field names.
+   *
+   * These are LABELS and so they translate, unlike the values beside them - the
+   * country names, data sources and UUIDs in the record fixtures are English in
+   * every locale because they are data. The first draft of the review fixture had
+   * the field names as literal English strings, which put "NAME (LOCAL)" and
+   * "GLIDE NUMBER" inside an otherwise fully Arabic page, and quietly weakened the
+   * RTL evidence: English text does not test Arabic wrapping.
+   */
+  | "groupHazardDetails"
+  | "groupLocation"
+  | "fieldNameLocal"
+  | "fieldNameEnglish"
+  | "fieldNationalId"
+  | "fieldGlideNumber"
+  | "fieldEventUuid"
+  | "fieldOriginator"
+  | "fieldStart"
+  | "fieldEnd"
+  | "fieldGeographicLevels"
+  | "fieldSpatialFootprint"
+  | "valueNoSpatialData"
   | "fieldCountry"
   | "fieldHazard"
   | "fieldEventDate"

@@ -79,3 +79,31 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+
+/* ---------------------------------------------------------------------------
+ * The step wizard's live region.
+ *
+ * THE ONE RULE THE WIZARD NEEDS. `views/EventWizard.tsx` renders antd's `Steps`,
+ * `Card`, `Descriptions`, `Space` and `Button` and writes no CSS for any of them —
+ * the stepper's circles, rails, marker-above-label arrangement, responsive
+ * collapse and RTL mirroring are all antd's. What antd does not ship is a
+ * visually-hidden helper, and `Steps` emits no live region, so the announcement
+ * paragraph and the four lines that hide it are ours. Compare
+ * `apps/delta-react-aria/src/views/views.css`, where the same component costs
+ * roughly 200 lines because React Aria has no stepper at all.
+ *
+ * `clip-path` plus a 1px box rather than `display: none` or `width: 0`: a hidden
+ * or zero-sized element is not announced by any screen reader, which would make
+ * the live region decorative.
+ * ------------------------------------------------------------------------- */
+.demo .demo-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}

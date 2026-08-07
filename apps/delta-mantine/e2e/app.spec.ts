@@ -31,7 +31,7 @@ import { dirname } from "node:path";
 import { expect, test } from "@playwright/test";
 import type { Page } from "@playwright/test";
 
-import { LABELS, LOSS_RECORDS } from "@undrr-eval/fixtures";
+import { LABELS, LOSS_RECORDS, NO_VALUE } from "@undrr-eval/fixtures";
 import type { LocaleCode, VerificationStatus } from "@undrr-eval/fixtures";
 import { CANARY_IDS, captureScreens, checkLeakage, runAxe } from "@undrr-eval/test-harness";
 import { DELTA_FRAME_CANARY_IDS } from "@undrr-eval/test-harness/frame-canaries";
@@ -704,6 +704,214 @@ test.describe("full application", () => {
     // The geometry is the assertion that matters: in RTL the row's logical end is
     // its physical LEFT, and the action cell is there.
     expect(measurement.actionCellIsLeftOfFirstCell).toBe(true);
+  });
+
+  /* ------------------------------------------------------- the step wizard */
+
+  /*
+   * MANTINE SHIPS `Stepper`, so unlike the React Aria pilot these assertions test a
+   * LIBRARY CONTRACT rather than markup this repository wrote. That changes what is
+   * worth asserting: not "did our stepper stay correct" but "what does Mantine's
+   * stepper actually put in the DOM, and where did we have to fill in".
+   *
+   * The answer, measured below rather than read off the docs: Mantine carries the
+   * current and completed state on `data-progress` / `data-completed` — style
+   * hooks, invisible to assistive technology — and emits NO `aria-current` and no
+   * disabled state of any kind. Both halves are asserted separately, so the day
+   * Mantine adds the ARIA the tests will say which attribute changed owner.
+   */
+  const WIZARD = '[data-testid="wizard"]';
+  const STEPS = `${WIZARD} .mantine-Stepper-step`;
+
+  /** The wizard's own action row. The records pagination also has a "Next". */
+  function wizardButton(page: Page, name: string) {
+    return page.locator('[data-testid="wizard-actions"]').getByRole("button", { name, exact: true });
+  }
+
+  test("the wizard renders four Mantine steps and marks exactly one current", async ({ page }) => {
+    await page.goto(`${URL}?candidate=on`);
+
+    await expect(page.locator(STEPS)).toHaveCount(4);
+    // Three connectors for four steps: Mantine's own, and the reason no line ever
+    // trails off the end of the row.
+    await expect(page.locator(`${WIZARD} .mantine-Stepper-separator`)).toHaveCount(3);
+
+    /*
+     * WHAT MANTINE EMITS FOR "CURRENT": `data-progress`, a data attribute, and
+     * nothing else. Asserted first and on its own so the finding is recorded as a
+     * fact about the library.
+     */
+    const mantineCurrent = page.locator(`${STEPS}[data-progress="true"]`);
+    await expect(mantineCurrent).toHaveCount(1);
+    await expect(mantineCurrent).toContainText("Event basics");
+
+    /*
+     * WHAT THE ACCESSIBILITY TREE GETS IS OURS. `aria-current="step"` is set by
+     * `views/EventWizard.tsx`; Mantine's `Stepper.Step` sets no ARIA state at all,
+     * so without those three lines the current step would be indistinguishable
+     * from the other three to a screen-reader user while the sighted user sees a
+     * filled circle. Same class of gap as this pairing's `Modal` close button and
+     * `Pagination` edge controls.
+     */
+    const ariaCurrent = page.locator(`${STEPS}[aria-current="step"]`);
+    await expect(ariaCurrent).toHaveCount(1);
+    await expect(ariaCurrent).toContainText("Event basics");
+
+    /*
+     * STEPS AHEAD ARE NOT REACHABLE, and Mantine's signal for that is `tabindex="-1"`
+     * plus the ABSENCE of its own `data-allow-click`. It ships no `disabled` and no
+     * `aria-disabled` — so out of the box the step leaves the tab order but still
+     * reads as a live button in a screen reader's browse mode. The `aria-disabled`
+     * asserted last is ours, for the same reason as `aria-current`.
+     *
+     * Recorded as the better half of the trade, though: native `disabled` — which
+     * is what React Aria's `isDisabled` emits in the pilot — removes the step from
+     * the tree's actionable set entirely, so a keyboard user cannot read ahead.
+     * Mantine's steps stay readable; they just had to be told they were inert.
+     */
+    await expect(page.locator(`${STEPS}[tabindex="-1"]`)).toHaveCount(3);
+    await expect(page.locator(`${STEPS}[data-allow-click="true"]`)).toHaveCount(1);
+    await expect(page.locator(`${STEPS}[disabled]`)).toHaveCount(0);
+    await expect(page.locator(`${STEPS}[aria-disabled="true"]`)).toHaveCount(3);
+
+    /*
+     * And the step really is inert, not merely styled that way.
+     *
+     * `force: true` IS THE POINT OF THIS LINE, not a workaround. Playwright's own
+     * actionability check refuses an ordinary click here — "element is not enabled" —
+     * because it reads `aria-disabled`, which is the attribute we added. So the
+     * unforced failure is itself the evidence that the ARIA landed; forcing past it
+     * then proves Mantine's `allowNextStepsSelect` drops the effect of the handler
+     * rather than the handler, and the step does not advance.
+     */
+    await page.locator('[data-testid="wizard-step-review"]').click({ force: true });
+    await expect(page.locator(`${STEPS}[data-progress="true"]`)).toContainText("Event basics");
+
+    // The steps row is a bare div in Mantine. `role="group"` and its name come from
+    // `attributes={{ steps: … }}` — Mantine's own styles API, no wrapper of ours.
+    await expect(page.locator(`${WIZARD} [role="group"]`)).toHaveAttribute(
+      "aria-label",
+      LABELS.en.wizardProgressLabel,
+    );
+  });
+
+  test("advancing the wizard moves the current step and unlocks the ones behind", async ({
+    page,
+  }) => {
+    await page.goto(`${URL}?candidate=on`);
+
+    await wizardButton(page, LABELS.en.actionNext).click();
+    await expect(page.locator(`${STEPS}[data-progress="true"]`)).toContainText("Linked events");
+    await expect(page.locator(`${STEPS}[data-completed="true"]`)).toHaveCount(1);
+    await expect(page.locator(`${STEPS}[aria-disabled="true"]`)).toHaveCount(2);
+
+    /*
+     * Back returns, and step 2 does NOT un-complete. This is the assertion that
+     * pays for `allowStepSelect` in `EventWizard.tsx`: Mantine derives step state
+     * from `active` alone, so on its own defaults stepping back from 2 to 1 would
+     * re-lock step 2 that the user has already reached. The furthest-reached index
+     * is ours; the enforcement is Mantine's.
+     */
+    await wizardButton(page, LABELS.en.actionBack).click();
+    await expect(page.locator(`${STEPS}[data-progress="true"]`)).toContainText("Event basics");
+    await expect(page.locator(`${STEPS}[aria-disabled="true"]`)).toHaveCount(2);
+    await expect(page.locator('[data-testid="wizard-step-linked"]')).toHaveAttribute(
+      "data-allow-click",
+      "true",
+    );
+  });
+
+  test("the last step reviews the submission and offers Save, not a dead Next", async ({
+    page,
+  }) => {
+    await page.goto(`${URL}?candidate=on`);
+    for (let i = 0; i < 3; i += 1) await wizardButton(page, LABELS.en.actionNext).click();
+
+    await expect(page.locator(`${STEPS}[data-progress="true"]`)).toContainText("Review and save");
+
+    // Three review cards, and the four em-dashed empty values are still empty.
+    await expect(page.locator('[data-testid="wizard-review-card"]')).toHaveCount(3);
+    await expect(
+      page.locator('[data-testid="wizard-review-value"]').filter({ hasText: NO_VALUE }),
+    ).toHaveCount(4);
+
+    await expect(wizardButton(page, LABELS.en.actionSave)).toBeEnabled();
+    await expect(page.locator('[data-testid="wizard-actions"]')).not.toContainText(
+      LABELS.en.actionNext,
+    );
+
+    /*
+     * THREE COMPLETED CHECKS, AND THIS ASSERTION HAS TO WAIT FOR THEM. Mantine
+     * animates the number-to-check swap through `Transition` with a 200ms "pop", so
+     * a screenshot or a count taken on the same tick as the click catches an empty
+     * accent circle where the tick will be. It looks exactly like a missing icon and
+     * it is not one — measured by re-reading after the transition, where all three
+     * are present. Same trap the delete-dialog axe run records for the modal fade.
+     */
+    const checks = page.locator(`${WIZARD} .mantine-Stepper-stepCompletedIcon`);
+    await expect(checks).toHaveCount(3);
+    await expect(checks.first()).toHaveCSS("opacity", "1");
+  });
+
+  test("the wizard is reachable and operable by keyboard alone", async ({ page }) => {
+    await page.goto(`${URL}?candidate=on`);
+
+    // Advance from the action row with the keyboard. A stepper that only advances on
+    // a click is a stepper half the users cannot use.
+    await wizardButton(page, LABELS.en.actionNext).focus();
+    await page.keyboard.press("Enter");
+    await expect(page.locator(`${STEPS}[data-progress="true"]`)).toContainText("Linked events");
+
+    // A completed step is back in the tab order — `tabindex="0"`, Mantine's own —
+    // and Enter on it returns there.
+    await expect(page.locator('[data-testid="wizard-step-basics"]')).toHaveAttribute(
+      "tabindex",
+      "0",
+    );
+    await page.locator('[data-testid="wizard-step-basics"]').focus();
+    await page.keyboard.press("Enter");
+    await expect(page.locator(`${STEPS}[data-progress="true"]`)).toContainText("Event basics");
+  });
+
+  test("the stepper mirrors in Arabic, with no RTL mitigation of ours", async ({ page }) => {
+    await page.goto(`${URL}?candidate=on`);
+    await selectLocale(page, "العربية");
+
+    /*
+     * STEP 1 SITS TO THE PHYSICAL RIGHT OF STEP 4, and this is free. Mantine's
+     * `steps` row is `flex-direction: row`, which follows the frame's `dir`, and its
+     * separator spacing is `margin-inline` rather than `margin-left`. So unlike this
+     * pairing's portalled overlays — which needed `overlay-class.ts` and an effect
+     * because `Portal` forwards no `dir` — the stepper needed nothing. Measured, not
+     * assumed: 1106px against 41px at 1280 wide.
+     */
+    const first = await page.locator(STEPS).first().boundingBox();
+    const last = await page.locator(STEPS).last().boundingBox();
+    expect(first?.x ?? 0, "Arabic: step 1 should sit right of step 4").toBeGreaterThan(last?.x ?? 0);
+
+    // The labels are Arabic, including the review cards' field names: they are
+    // chrome, so they translate, unlike the record values beside them.
+    await expect(page.locator(STEPS).first()).toContainText(LABELS.ar.stepEventBasics);
+    await expect(page.locator(STEPS).first()).toContainText(LABELS.ar.stepRequired);
+  });
+
+  test("German step labels are not clipped", async ({ page }) => {
+    await page.goto(`${URL}?candidate=on`);
+    await selectLocale(page, "Deutsch");
+
+    /*
+     * "Zusätzliche Einzelheiten" beside a 42px circle is the case that breaks a
+     * fixed-width stepper. Clipped text reports a scrollWidth wider than its box, so
+     * this is measured rather than eyeballed. Mantine's `wrap` (default true) drops
+     * the steps onto four rows at 390px wide instead of clipping or overflowing,
+     * which is why `long labels do not overflow the viewport` above still passes.
+     */
+    const clipped = await page
+      .locator(`${WIZARD} .mantine-Stepper-stepLabel`)
+      .evaluateAll((els) =>
+        els.filter((el) => el.scrollWidth > el.clientWidth + 1).map((el) => el.textContent),
+      );
+    expect(clipped, "step labels are clipped in German").toEqual([]);
   });
 
   test("axe on the candidate region and the whole page", async ({ page }, testInfo) => {

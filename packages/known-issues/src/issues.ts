@@ -389,6 +389,131 @@ export const KNOWN_ISSUES: readonly KnownIssue[] = Object.freeze([
     links: [{ label: "axis A5", href: "../axes.html" }],
   },
 
+  /* ------------------------------------------------------- the step wizard -- */
+  /*
+   * These six come from one screen built five times: DELTA's add-disaster-event
+   * wizard, which the incumbent PrimeReact renders with its own `Stepper`. It is
+   * the only requirement in this evaluation that the candidates do NOT all satisfy
+   * the same way, which is why it was worth building - comparison.md's 300
+   * assessments found every candidate covers every component and so discriminated
+   * between nothing.
+   *
+   * The result is the reverse of the expected one. Four candidates ship a stepper
+   * and NONE of them marks the current step in the accessibility tree, so all five
+   * demos - including the four with a real component to use - hand-write
+   * `aria-current="step"`. What a shipped stepper saves is the CSS, not the
+   * semantics. Recorded per candidate rather than as one entry because the failures
+   * are not the same failure: three omit the state, and MUI asserts a wrong one.
+   */
+  {
+    id: "stepper-omits-aria-current",
+    severity: "caveat",
+    // One attribute per library, so cheap - but it is per site, forever, and it
+    // has to be known about first. Nothing in any of the four APIs suggests it.
+    remediability: "per-site-code",
+    candidates: ["antd", "carbon", "mantine", "mui"],
+    hosts: ["*"],
+    owner: "candidate",
+    title: "No candidate's stepper marks the current step for a screen reader",
+    detail:
+      "Measured in all four: `aria-current=\"step\"` is emitted by none of them and offered as a prop by none of them. antd marks the current step with a CSS class only; Mantine with `data-progress=\"true\"`; MUI with `aria-selected` (see its own entry); Carbon with a visually hidden English span reading \"Current\" that folds the state into the accessible name - \"Event basics Required Current\" - and stays English in all four locales unless every step is given `translateWithId`. Each demo adds the attribute by hand. None of the four ships a live region either, so the progress announcement is hand-written five times out of five.",
+    links: [
+      { label: "the wizard", href: `${BLOB}/apps/delta-antd/src/views/EventWizard.tsx` },
+      { label: "axis A7", href: "../axes.html" },
+    ],
+  },
+  {
+    id: "mui-stepper-announces-a-tablist",
+    severity: "caveat",
+    /*
+     * `inherent`, and the split matters. The wrong ARIA is escapable in per-site
+     * code - five attributes overridden - but only because both components spread
+     * `...other` AFTER their own `role`, which is an accident of implementation and
+     * not a documented extension point. What cannot be escaped at all is the roving
+     * tab index: the same child-sniffing flag installs it, there is no opt-out prop,
+     * and it is not reachable from application code. So after the fix the indicator
+     * still has tab-set keyboard behaviour while no longer claiming to be a tab set.
+     */
+    remediability: "inherent",
+    candidates: ["mui"],
+    hosts: ["*"],
+    owner: "candidate",
+    title: "MUI announces an ordered wizard as a tab list",
+    detail:
+      "`Stepper` sniffs its children, finds `StepButton` and silently switches into tab-list mode: `role=\"tablist\"` plus `aria-orientation` on the root, and `role=\"tab\"` + `aria-selected` + `aria-posinset`/`aria-setsize` on every step. There is no opt-out prop. A tab set tells a screen-reader user the panels are peers they may visit in any order, which is the opposite of a wizard that gates later steps - and it is the one thing about a stepper that ARIA has a documented answer for. Correcting the role also makes MUI's hard-coded `aria-orientation` a CRITICAL axe violation, `aria-allowed-attr`, because it is invalid on `role=\"group\"`; axe found it. Six attributes are overridden by hand and the roving tab index cannot be removed.",
+    links: [
+      { label: "the wizard", href: `${BLOB}/apps/delta-mui/src/views/EventWizard.tsx` },
+      { label: "axis A7", href: "../axes.html" },
+    ],
+  },
+  {
+    id: "mui-stepper-connector-physical-css",
+    severity: "caveat",
+    remediability: "per-site-code",
+    candidates: ["mui"],
+    hosts: ["*"],
+    owner: "candidate",
+    title: "MUI's step connector is positioned with physical CSS and breaks in Arabic",
+    detail:
+      "`StepConnector` centres itself on the step's physical left edge - `left: calc(-50% + 20px); right: calc(50% + 20px)` - and `left`/`right` do not swap under `dir=\"rtl\"`. Measured at 1280px in Arabic: no connector at all between steps 1 and 2, and step 4's connector centred at x=37 with 94px hanging off the left edge of the page. No prop, variant or theme switch changes it; the fix restates the same geometry with `inset-inline-*`. This is MUI's second physical-CSS RTL defect on this estate, after the outlined label.",
+    links: [
+      { label: "the wizard", href: `${BLOB}/apps/delta-mui/src/views/EventWizard.tsx` },
+      { label: "axis A6", href: "../axes.html" },
+    ],
+  },
+  {
+    id: "carbon-stepper-truncates-step-names",
+    severity: "caveat",
+    remediability: "per-site-code",
+    candidates: ["carbon"],
+    hosts: ["*"],
+    owner: "candidate",
+    title: "Carbon truncates step names by design, and German hits it",
+    detail:
+      "`.cds--progress-label` ships `white-space: nowrap` with `text-overflow: ellipsis`, so German's \"Zusätzliche Einzelheiten\" renders as \"Zusätzliche Ein…\" at every viewport. Carbon's intended remedy is `overflowTooltipProps` - hover to read the step's name - which a touch user cannot reach. Carbon's own VERTICAL variant sets `white-space: initial` on the same element, so wrapping is a shape it supports, just not on the axis DELTA's design uses. Two further hatches were needed on the same component: `secondaryLabel` is `position: absolute` horizontally so the REQUIRED/OPTIONAL line reserves no height and overlaps a wrapped label, and the indicator has no media queries at all with a 7rem per-step minimum, so four steps demand 512px and scroll the document at 390px.",
+    links: [
+      { label: "evidence", href: `${BLOB}/apps/delta-carbon/evidence.json` },
+      { label: "axis A2", href: "../axes.html" },
+    ],
+  },
+  {
+    id: "antd-disabled-step-leaves-the-tree",
+    severity: "caveat",
+    remediability: "per-site-code",
+    candidates: ["antd"],
+    hosts: ["*"],
+    owner: "candidate",
+    title: "An unreachable antd step disappears from the accessibility tree",
+    detail:
+      "antd gives a step its `role=\"button\"` and tabindex only when it is clickable, so `disabled: true` removes both and leaves nothing behind. Measured with an accessibility snapshot: steps 2, 3 and 4 collapsed out of the list and into a single unstructured text run - \"2 Linked events Optional 3 Additional details Optional 4 Review and save Required\" - so a screen-reader user could not tell how many steps remained or where one ended. Reinstating them needs `role` and `aria-disabled` passed through, which works only because the internal Step component spreads leftover item props onto the DOM node; antd's own `StepItem` type declares no ARIA props at all. Separately, `CheckOutlined` ships `role=\"img\" aria-label=\"check\"`, so a completed step announces the English word \"check\" in every locale until the marker is hidden.",
+    links: [
+      { label: "the wizard", href: `${BLOB}/apps/delta-antd/src/views/EventWizard.tsx` },
+      { label: "axis A7", href: "../axes.html" },
+    ],
+  },
+  {
+    id: "react-aria-ships-no-stepper",
+    severity: "caveat",
+    /*
+     * `inherent` and NOT a bug. React Aria ships behaviour, not appearance, so a
+     * missing component is the library working as designed. It is recorded because
+     * the registry would otherwise flatter React Aria by silence: the other four
+     * carry stepper findings and the one that ships no stepper at all would show
+     * none. The cost is real and it is the cost this recommendation turns on.
+     */
+    remediability: "inherent",
+    candidates: ["react-aria"],
+    hosts: ["*"],
+    owner: "candidate",
+    title: "React Aria ships no stepper, so the whole component is UNDRR's",
+    detail:
+      "React Aria Components has `Tabs`, `Breadcrumbs`, `ProgressBar` and `Disclosure`, and none of them is a step indicator; PrimeReact, the incumbent being replaced, has `Stepper`. Everything but the buttons is hand-written here: the markup, the states, the connector, the number-to-check swap, the wrapping and the announcement - 26 CSS rules over 221 lines for one component on one screen, against zero rules for Mantine and one for antd. `Tabs` is the tempting shortcut and is wrong, because it tells a screen-reader user the steps are peers they may visit in any order. The offsetting result is that the hand-built version is the only one of the five that got its semantics right by construction, since nothing had to be overridden.",
+    links: [
+      { label: "the wizard", href: `${BLOB}/apps/delta-react-aria/src/views/EventWizard.tsx` },
+      { label: "architecture options", href: `${BLOB}/docs/architecture-options.md` },
+    ],
+  },
+
   /* ---------------------------------------------- host-wide, any candidate -- */
   {
     id: "mangrove-no-runtime-tokens",

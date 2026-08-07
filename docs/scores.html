@@ -26,7 +26,7 @@
     <div class="page">
 <h1>Weighted scores</h1>
 
-<p>GENERATED FILE - regenerate with <code>pnpm scores</code>. Axis definitions are in <a href="./decision-axes.md">decision-axes.md</a>; the questions these serve are in <a href="./undrr-questions.md">undrr-questions.md</a>.</p>
+<p>GENERATED FILE - regenerate with <code>pnpm scores</code>. Axis definitions are in <a href="https://github.com/khawkins98/data-design-demo/blob/main/docs/decision-axes.md">decision-axes.md</a>; the questions these serve are in <a href="https://github.com/khawkins98/data-design-demo/blob/main/docs/undrr-questions.md">undrr-questions.md</a>.</p>
 
 <p>Every value here is derived from <code>evidence.json</code>, the known-issues registry and <code>extraction-results.json</code>. Nothing is typed by hand, and only defects owned by the library or the pairing can affect a score - never a host defect, which is the same for all five, and never one of ours.</p>
 
@@ -37,6 +37,8 @@
 <p>It leads on the composite at 84 against 68 for Ant Design, and it is the only candidate of 5 carrying no blocking defect. Arabic works from a <code>dir</code> attribute alone. It stays inside its own subtree on both hosts.</p>
 
 <p><strong>The cost, which the composite does not charge it for.</strong> React Aria ships behaviour, not appearance. Adopting it means UNDRR builds and then owns the visual layer permanently - this evaluation's own demo carries 121 to 133 hand-written CSS rules for one page. Three of the seven axes reward exactly the property that creates that cost: a library with no opinions cannot conflict with Mangrove, cannot bake in wrong colours and cannot mistheme. **Read the recommendation as "adopt this and fund a design system", not as "adopt this and save work".**</p>
+
+<p><strong>Read this alongside the architecture it implies.</strong> A library that ships fewer components is also one whose gaps get filled in Mangrove rather than per-site, which turns a missing stepper into shared tooling instead of local work - and that is the strongest case for this recommendation, stronger than the composite. It is also the case that carries the staffing bill. Both are set out in <a href="https://github.com/khawkins98/data-design-demo/blob/main/docs/architecture-options.md">architecture-options.md</a>, which argues a position and changes no score.</p>
 
 <p><strong>Two things must happen before this is signed off, and neither is a technical task.</strong></p>
 
@@ -216,8 +218,8 @@
 <div class="scroll"><table><thead>
 <tr><th>Axis</th><th>Band</th><th>Weight</th><th>Why</th></tr>
 </thead><tbody>
-<tr><td>A1 Implementation effort</td><td><strong>weak</strong></td><td>8</td><td>11 of 30 requirements needed more than a documented component; 12 documented approaches failed and needed working around</td></tr>
-<tr><td>A2 Maintainability at scale</td><td><strong>weak</strong></td><td>16</td><td>12 escape hatches off the documented theming route; 0 scoreable maintenance findings</td></tr>
+<tr><td>A1 Implementation effort</td><td><strong>weak</strong></td><td>8</td><td>11 of 30 requirements needed more than a documented component; 14 documented approaches failed and needed working around</td></tr>
+<tr><td>A2 Maintainability at scale</td><td><strong>weak</strong></td><td>16</td><td>14 escape hatches off the documented theming route; 0 scoreable maintenance findings</td></tr>
 <tr><td>A3 Reproducibility across sites</td><td><strong>workable</strong></td><td>16</td><td>extraction outcome recorded as analysed</td></tr>
 <tr><td>A4 Mangrove compatibility</td><td><strong>workable</strong></td><td>14</td><td>clean only because the documented global stylesheet was not loaded as documented</td></tr>
 <tr><td>A5 Theming fidelity</td><td><strong>weak</strong></td><td>14</td><td>21 of 71 UNDRR tokens cannot be attached at all - a ceiling, not a cost</td></tr>

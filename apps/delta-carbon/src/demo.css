@@ -426,6 +426,93 @@
 }
 
 /* ------------------------------------------------------------------ *
+ * The step wizard. Layout only — the stepper itself is Carbon's
+ * ProgressIndicator and none of its own rules are touched here. The
+ * two rules that DO reach into `.cds--progress-*` are escape hatches
+ * 8 and 9 at the bottom of this file.
+ * ------------------------------------------------------------------ */
+
+.demo__wizard {
+  margin-block-start: var(--undrr-space-6);
+  min-width: 0;
+}
+
+.demo__wizard-title {
+  margin: 0 0 var(--undrr-space-4);
+  font-size: var(--undrr-font-size-lg);
+  font-weight: var(--undrr-font-weight-bold);
+  color: var(--undrr-color-text-primary);
+}
+
+/* Carbon's ProgressIndicator has a hard per-step minimum (7rem, 8rem under
+   `spaceEqually`) and its partial contains no media queries at all, so four steps
+   demand 512px. Without this the stepper scrolls the DOCUMENT at 390px and the
+   existing long-label test fails. Same treatment `.demo__table-scroll` gives the
+   records table, and for the same reason. */
+.demo__stepper-scroll {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.demo__wizard-panel {
+  margin-block-start: var(--undrr-space-5);
+  padding-block-start: var(--undrr-space-4);
+  border-block-start: 1px solid var(--undrr-color-border);
+}
+
+.demo__wizard-panel-title {
+  margin: 0 0 var(--undrr-space-3);
+  font-size: var(--undrr-font-size-base);
+  font-weight: var(--undrr-font-weight-bold);
+  color: var(--undrr-color-text-primary);
+}
+
+.demo__wizard-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--undrr-space-3);
+  align-items: center;
+  margin-block-start: var(--undrr-space-5);
+}
+
+.demo__review {
+  display: grid;
+  gap: var(--undrr-space-4);
+}
+
+/* A Tile inside a Tile: Carbon's Tile has no nesting variant and no elevation
+   token, so the inner card reads as flat against the wizard's own surface. The
+   border is the only thing separating them. */
+.demo__review-card {
+  border: 1px solid var(--undrr-color-border);
+}
+
+.demo__review-title {
+  margin: 0 0 var(--undrr-space-3);
+  font-size: var(--undrr-font-size-base);
+  font-weight: var(--undrr-font-weight-bold);
+  color: var(--undrr-color-text-primary);
+}
+
+/* StructuredList gives no distinction between a field name and its value — both
+   cells are `role="cell"` and both inherit the same type style — so the label/value
+   contrast is ours. See the note in views/EventWizard.tsx: there is no
+   `role="rowheader"` option on `StructuredListCell`. */
+.demo .demo__review-label {
+  inline-size: 40%;
+  font-size: var(--undrr-font-size-xs);
+  font-weight: var(--undrr-font-weight-bold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--undrr-color-text-secondary);
+}
+
+.demo .demo__review-value {
+  color: var(--undrr-color-text-primary);
+  overflow-wrap: anywhere;
+}
+
+/* ------------------------------------------------------------------ *
  * ESCAPE HATCHES: rules that reach into `.cds--` class names.
  * Each one is a token Carbon's theme API cannot express. Counted in
  * evidence.json as customCss.overridesLibraryInternals.
@@ -540,4 +627,57 @@
   text-transform: uppercase;
   color: var(--undrr-color-text-secondary);
   margin-block-end: var(--undrr-space-2);
+}
+
+/* 8. The stepper's step label TRUNCATES BY DESIGN. Carbon authors
+      `.cds--progress-label` with `white-space: nowrap`, `overflow: hidden` and
+      `text-overflow: ellipsis`, plus `max-inline-size: 5.5rem` (100% under
+      `spaceEqually`). German's "Zusätzliche Einzelheiten" therefore renders as
+      "Zusätzliche Ein…" at every viewport — measured with scrollWidth vs
+      clientWidth in e2e/app.spec.ts, which is why that test exists.
+
+      Carbon's intended remedy is `overflowTooltipProps`, i.e. put the full name in
+      a tooltip. That is the wrong trade for a step name: a step whose label is
+      clipped is a step the reader cannot identify without hovering, and a tooltip
+      is not available to a touch user at all. Carbon's own VERTICAL variant sets
+      `white-space: initial` on the same element, so wrapping is a shape Carbon
+      supports — just not on the horizontal axis the design file uses. Three
+      declarations, no `!important`. */
+.demo .cds--progress-label {
+  overflow: visible;
+  max-inline-size: 100%;
+  text-overflow: clip;
+  white-space: normal;
+  /* `anywhere`, not `break-word`. German's step names are single compounds —
+     "Ereignisgrunddaten" is 18 characters with no break opportunity in it — and at
+     390px a step column is Carbon's 8rem minimum, or 128px. `normal` wrapping has
+     nowhere to break, so the word still overflowed and the clipping measurement in
+     e2e/app.spec.ts still failed at the mobile viewport. `anywhere` also lets the
+     word contribute its broken min-content width, which is what stops the step from
+     widening the row. */
+  overflow-wrap: anywhere;
+}
+
+/* 9. `secondaryLabel` — the REQUIRED / OPTIONAL line — is `position: absolute`
+      with `margin-block-start: 28px` in the horizontal variant, so it is OUT of
+      flow: it does not reserve height, and once rule 8 lets the label wrap onto a
+      second line the two overlap. Carbon already makes it static for the vertical
+      variant (progress-indicator.scss:348-352); this applies the same rule
+      horizontally. Without it the sublabel is unreadable in German and Arabic. */
+.demo .cds--progress-optional {
+  position: static;
+  display: block;
+  margin: var(--undrr-space-1) 0 0;
+  inline-size: 100%;
+}
+
+/* 9b. Carbon's step button is `text-align: start` with the icon and the text block
+       as flex siblings, and the icon carries `margin-block-start: 10px` to line up
+       with a single-line label. With wrapping labels the button needs room below
+       the text for the sublabel, which rule 9 now puts in flow. `align-items:
+       flex-start` keeps the icon on the first line rather than centring it against
+       a two-line block. */
+.demo .cds--progress-step-button {
+  align-items: flex-start;
+  padding-inline-end: var(--undrr-space-3);
 }

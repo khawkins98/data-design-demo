@@ -398,6 +398,20 @@ if (ranked[0].blockers.length === 0) {
   );
 }
 L.push("");
+/*
+ * The reuse argument is deliberately a POINTER, not prose repeated here. It is a
+ * judgement about UNDRR's estate rather than anything derived from evidence.json,
+ * and this file is generated - so stating it here would put an unsourced claim
+ * inside a document whose whole promise is that nothing in it is typed by hand.
+ */
+L.push("**Read this alongside the architecture it implies.**");
+L.push("A library that ships fewer components is also one whose gaps get filled in Mangrove");
+L.push("rather than per-site, which turns a missing stepper into shared tooling instead of");
+L.push("local work - and that is the strongest case for this recommendation, stronger than the");
+L.push("composite. It is also the case that carries the staffing bill. Both are set out in");
+L.push("[architecture-options.md](./architecture-options.md), which argues a position and");
+L.push("changes no score.");
+L.push("");
 L.push("**Two things must happen before this is signed off, and neither is a technical task.**");
 L.push("");
 L.push("1. A human accessibility pass. Every A7 band on this page rests on automated scanning.");
@@ -552,12 +566,26 @@ function esc(v) {
   return String(v).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
+/**
+ * Hand-written docs, for the HTML build only.
+ *
+ * A relative `./foo.md` is right in scores.md, which is read on GitHub, and broken
+ * in scores.html: GitHub Pages serves a raw .md as `text/plain`, so the link lands
+ * a decision-maker in unrendered markdown. Mermaid makes it worse than ugly -
+ * architecture-options.md's three diagrams would arrive as fenced code. So the two
+ * outputs get different hrefs for the same source line, and only the HTML side is
+ * rewritten. Generated siblings - scores.html, axes.html - keep their in-site
+ * relative links and must not match this.
+ */
+const DOCS_BLOB = "https://github.com/khawkins98/data-design-demo/blob/main/docs";
+
 /** `code`, **bold** and [links](x), the only inline markup this file emits. */
 function inline(text) {
   return esc(text)
     .replace(/`([^`]+)`/g, "<code>$1</code>")
     .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
-    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
+    .replace(/href="\.\/([^"]+\.md)"/g, `href="${DOCS_BLOB}/$1"`);
 }
 
 /**

@@ -66,6 +66,8 @@ import { DemoContext, labelsFor, undrrAntdTheme } from "@undrr-eval/integration-
 import type { DemoContextValue } from "@undrr-eval/integration-antd";
 import { TOKEN_SCOPE_CLASS, color } from "@undrr-eval/undrr-tokens";
 
+import { EventWizard } from "./views/EventWizard.js";
+
 /** The leakage contract: `?candidate=off` renders the frame with no candidate. */
 const params = new URLSearchParams(window.location.search);
 const candidateEnabled = params.get("candidate") !== "off";
@@ -541,6 +543,16 @@ export function AppView(): ReactElement {
                   }}
                   locale={{ emptyText: labels.stateEmpty }}
                 />
+
+                {/* ------------------------------------------- step wizard -- */}
+                {/*
+                  * The add-event wizard, on antd's own `Steps`. Placed after the
+                  * records screen and before the delete Modal, mirroring the React
+                  * Aria pilot so the two screens can be screenshot-compared at the
+                  * same scroll position. What antd supplies and what it does not is
+                  * recorded in `views/EventWizard.tsx` rather than here.
+                  */}
+                <EventWizard />
 
                 {/* ------------------------------------------- modal flow -- */}
                 <Modal

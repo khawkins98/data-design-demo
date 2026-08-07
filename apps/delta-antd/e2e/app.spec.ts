@@ -1111,4 +1111,222 @@ test.describe("full application", () => {
       `document scrolls horizontally by ${overflow}px in German at ${testInfo.project.name}`,
     ).toBeLessThanOrEqual(1);
   });
+
+  /* ------------------------------------------------------- the step wizard */
+
+  /*
+   * The wizard is the one part of this view where the candidates genuinely differ.
+   * PrimeReact — the incumbent — ships `Stepper` and DELTA's add-event screen uses
+   * it, so a step indicator is existing functionality rather than a flourish. React
+   * Aria ships nothing of the kind and the pilot had to build the whole component;
+   * antd ships `Steps`, so what these assertions measure is what is LEFT OVER after
+   * the library has done its part.
+   *
+   * Every assertion below that reads an ARIA attribute is reading something
+   * `views/EventWizard.tsx` had to put there. antd's `Steps` emits ONLY classes for
+   * step state — `.ant-steps-item-active` / `-process` / `-finish` / `-wait` /
+   * `-disabled` — and nothing at all in the accessibility tree. Both are asserted:
+   * the class, so a regression in antd's own state machine is caught, and the
+   * attribute, so a regression in the semantics we added is caught too.
+   */
+  const WIZARD = `${ROOT} .demo-wizard`;
+  const STEP_ITEMS = `${WIZARD} .ant-steps-item`;
+
+  /**
+   * The wizard's own action row.
+   *
+   * MUST be scoped: the records table's pagination on the same page carries a Next
+   * control as well, so an unscoped `getByRole("button", { name: "Next" })` is a
+   * strict-mode violation rather than a wrong answer. The step items are also
+   * `role="button"` and their names contain the step titles, which is the second
+   * reason to scope.
+   *
+   * `exact` because "Save" is a PREFIX of "Save as draft": the fixtures give both
+   * `actionSave` and `actionSaveDraft` and both live in this row, so a substring
+   * match on the last step resolves to two buttons.
+   */
+  function wizardButton(page: Page, name: string, exact = false) {
+    return page.locator(`${WIZARD} .demo-wizard__actions`).getByRole("button", { name, exact });
+  }
+
+  test("the wizard renders four steps and marks exactly one current", async ({ page }) => {
+    await page.goto(`${URL}?candidate=on`);
+
+    await expect(page.locator(STEP_ITEMS)).toHaveCount(4);
+
+    /*
+     * WHAT ANTD EMITS FOR THE CURRENT STEP: a class, and only a class. There is no
+     * `aria-current`, no `aria-selected` and no `aria-disabled` anywhere in
+     * `@rc-component/steps`' `Step.js` — the current item gets
+     * `.ant-steps-item-active .ant-steps-item-process` and a disabled item gets
+     * `.ant-steps-item-disabled` with NO ROLE AT ALL, which collapsed three of the
+     * four steps into one unstructured text run in `ariaSnapshot()`. Asserted here
+     * separately from the ARIA attributes so the two cannot be confused:
+     * `.ant-steps-item-active` is antd's contract, `[aria-current]` is ours.
+     */
+    await expect(page.locator(`${STEP_ITEMS}.ant-steps-item-active`)).toHaveCount(1);
+
+    const current = page.locator(`${STEP_ITEMS}[aria-current="step"]`);
+    await expect(current).toHaveCount(1);
+    await expect(current).toContainText("Event basics");
+    // Same element, so the visible state and the announced state agree.
+    await expect(current).toHaveClass(/ant-steps-item-active/);
+
+    // Steps ahead of the furthest reached SAY they are unreachable and are not
+    // focusable: antd drops the click handler, the role and the tab stop together,
+    // so `role="button"` + `aria-disabled` are re-added by the component.
+    const locked = page.locator(`${STEP_ITEMS}[aria-disabled="true"]`);
+    await expect(locked).toHaveCount(3);
+    await expect(locked.first()).not.toHaveAttribute("tabindex", "0");
+  });
+
+  test("steps ahead of the furthest reached are not reachable", async ({ page }) => {
+    await page.goto(`${URL}?candidate=on`);
+
+    /*
+     * Clicking a locked step does nothing. `force: true` deliberately: the point is
+     * that there is no handler to run, not that Playwright refused to aim at it, and
+     * an actionability check that skipped the click would prove nothing either way.
+     */
+    await page.locator(STEP_ITEMS).nth(2).click({ force: true });
+    await expect(page.locator(`${STEP_ITEMS}[aria-current="step"]`)).toContainText("Event basics");
+
+    // And the whole indicator contributes exactly one tab stop while three steps
+    // are locked: the current step. Measured, because "not focusable" is the claim.
+    const tabbable = await page
+      .locator(STEP_ITEMS)
+      .evaluateAll((els) => els.filter((el) => el.getAttribute("tabindex") === "0").length);
+    expect(tabbable, "locked steps should contribute no tab stops").toBe(1);
+  });
+
+  test("Next advances the wizard and Back returns without un-completing", async ({ page }) => {
+    await page.goto(`${URL}?candidate=on`);
+
+    await wizardButton(page, "Next").click();
+    await expect(page.locator(`${STEP_ITEMS}[aria-current="step"]`)).toContainText("Linked events");
+    // Step 1 now reads as finished — the tick, not the number — and is reachable
+    // again. This is the design file's state: steps 1-3 checked while step 4 is
+    // active.
+    await expect(page.locator(`${STEP_ITEMS}.ant-steps-item-finish`)).toHaveCount(1);
+    await expect(page.locator(`${STEP_ITEMS}[aria-disabled="true"]`)).toHaveCount(2);
+
+    await wizardButton(page, "Back").click();
+    await expect(page.locator(`${STEP_ITEMS}[aria-current="step"]`)).toContainText("Event basics");
+    /*
+     * THE POINT OF THIS ASSERTION. antd derives `finish`/`process`/`wait` from
+     * `current` alone, so stepping back would mark step 2 `wait` again and re-lock
+     * it. `EventWizard.tsx` sets `status` explicitly from a separate `furthest`
+     * counter to stop that; without it this count would be 3, not 2.
+     */
+    await expect(page.locator(`${STEP_ITEMS}[aria-disabled="true"]`)).toHaveCount(2);
+  });
+
+  test("the last step reviews the submission and offers Save, not a dead Next", async ({
+    page,
+  }) => {
+    await page.goto(`${URL}?candidate=on`);
+    for (let i = 0; i < 3; i += 1) await wizardButton(page, "Next").click();
+
+    await expect(page.locator(`${STEP_ITEMS}[aria-current="step"]`)).toContainText(
+      "Review and save",
+    );
+
+    // Three review groups, as `Card` + `Descriptions`.
+    await expect(page.locator(`${WIZARD} .demo-review__card`)).toHaveCount(3);
+    /*
+     * The four em-dashed values are still empty. They are the fixture's way of
+     * showing a part-completed submission, so this is the assertion that keeps
+     * asking how antd renders an absent value rather than how it renders text.
+     */
+    await expect(
+      page.locator(`${WIZARD} .ant-descriptions-item-content`).filter({ hasText: "—" }),
+    ).toHaveCount(4);
+
+    await expect(wizardButton(page, "Save", true)).toBeEnabled();
+    await expect(page.locator(`${WIZARD} .demo-wizard__actions`)).not.toContainText("Next");
+  });
+
+  test("the wizard is operable by keyboard alone", async ({ page }) => {
+    await page.goto(`${URL}?candidate=on`);
+
+    await wizardButton(page, "Next").focus();
+    await page.keyboard.press("Enter");
+    await expect(page.locator(`${STEP_ITEMS}[aria-current="step"]`)).toContainText("Linked events");
+
+    /*
+     * And a completed step can be returned to from the indicator itself. antd's step
+     * items are divs with `role="button"`, so Enter and Space are handled by
+     * `Step.js`'s own `onKeyDown` rather than by the browser — worth asserting for
+     * that reason: a native button would work whatever the library did.
+     */
+    await page.locator(STEP_ITEMS).first().focus();
+    await page.keyboard.press("Enter");
+    await expect(page.locator(`${STEP_ITEMS}[aria-current="step"]`)).toContainText("Event basics");
+
+    await page.locator(STEP_ITEMS).nth(1).focus();
+    await page.keyboard.press(" ");
+    await expect(page.locator(`${STEP_ITEMS}[aria-current="step"]`)).toContainText("Linked events");
+  });
+
+  test("the stepper mirrors in Arabic", async ({ page }, testInfo) => {
+    await page.goto(`${URL}?candidate=on`);
+    await selectLocale(page, "العربية");
+
+    const steps = page.locator(STEP_ITEMS);
+    await expect(page.locator(`${WIZARD} .ant-steps-rtl`)).toHaveCount(1);
+
+    /*
+     * THE ORIENTATION HAS TO BE READ BEFORE THE GEOMETRY, and that is antd doing
+     * something for us rather than a test workaround. `responsive` is on by default,
+     * so below antd's `xs` breakpoint (576px) `Steps` flips to a VERTICAL
+     * orientation — which the 390px `mobile` project is. Four steps then stack, so
+     * every item shares an x and "step 1 is right of step 4" is not the question to
+     * ask. The React Aria pilot has no equivalent behaviour and keeps four columns
+     * at 390px.
+     */
+    const isVertical = (await page.locator(`${WIZARD} .ant-steps-vertical`).count()) === 1;
+
+    if (isVertical) {
+      // Mirrored the other way: the marker sits at the logical end, i.e. to the
+      // RIGHT of the step title. Measured on the first step.
+      const first = steps.first();
+      const icon = await first.locator(".ant-steps-item-icon").boundingBox();
+      const title = await first.locator(".ant-steps-item-title").boundingBox();
+      expect(
+        icon?.x ?? 0,
+        `Arabic, vertical stepper at ${testInfo.project.name}: the marker should sit ` +
+          "right of the step title",
+      ).toBeGreaterThan(title?.x ?? 0);
+    } else {
+      const first = await steps.first().boundingBox();
+      const last = await steps.last().boundingBox();
+      expect(
+        first?.x ?? 0,
+        `Arabic at ${testInfo.project.name}: step 1 should sit right of step 4`,
+      ).toBeGreaterThan(last?.x ?? 0);
+    }
+
+    // The step labels are Arabic too: they are chrome, so they translate.
+    await expect(steps.first()).toContainText("أساسيات الحدث");
+  });
+
+  test("German step labels wrap rather than clip", async ({ page }) => {
+    await page.goto(`${URL}?candidate=on`);
+    await selectLocale(page, "Deutsch");
+
+    /*
+     * "Zusätzliche Einzelheiten" in a quarter of the row width is the case that
+     * breaks a fixed-width stepper. antd's `ellipsis` prop is OFF by default and its
+     * titles carry `word-break: break-word`, so they wrap — asserted rather than
+     * assumed, because turning `ellipsis` on (or a host rule adding
+     * `white-space: nowrap`) would clip a step name silently and a clipped step name
+     * is a step the reader cannot identify.
+     */
+    const clipped = await page
+      .locator(`${WIZARD} .ant-steps-item-title`)
+      .evaluateAll((els) =>
+        els.filter((el) => el.scrollWidth > el.clientWidth + 1).map((el) => el.textContent),
+      );
+    expect(clipped, "German step labels are clipped").toEqual([]);
+  });
 });

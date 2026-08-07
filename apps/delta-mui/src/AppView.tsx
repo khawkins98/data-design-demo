@@ -76,6 +76,8 @@ import { DemoContext, labelsFor, undrrMuiTheme } from "@undrr-eval/integration-m
 import type { DemoContextValue } from "@undrr-eval/integration-mui";
 import { TOKEN_SCOPE_CLASS } from "@undrr-eval/undrr-tokens";
 
+import { EventWizard } from "./views/EventWizard.js";
+
 /** The leakage contract: `?candidate=off` renders the frame with no candidate. */
 const params = new URLSearchParams(window.location.search);
 const candidateEnabled = params.get("candidate") !== "off";
@@ -611,6 +613,17 @@ export function AppView(): ReactElement {
                    */
                 />
               </TableContainer>
+
+              {/* ------------------------------------------ step wizard -- */}
+              {/*
+                * Placed after the records screen and before the delete dialog, the
+                * same position the React Aria pilot uses, so screenshots of the two
+                * pairings line up. This is the one component on the screen the
+                * incumbent (PrimeReact) shipped and the candidates do not all ship
+                * — see views/EventWizard.tsx for what MUI gave and what it got
+                * wrong.
+                */}
+              <EventWizard />
 
               {/* ------------------------------------------- modal flow -- */}
               <Dialog

@@ -120,10 +120,23 @@
 @use "@carbon/styles/scss/components/pagination";
 @use "@carbon/styles/scss/components/popover";
 @use "@carbon/styles/scss/components/progress-bar";
+// The stepper. Carbon calls it a progress indicator; it is the same pattern.
+//
+// A NOTE ON THE VISUALLY-HIDDEN CLASS, because this partial is the third place in
+// this file where a hidden-text pattern lives in CSS rather than markup.
+// `ProgressStep` renders its state as `<span class="cds--assistive-text">Current
+// </span>`, and that class is declared ONLY in `scss/utilities/visually-hidden` —
+// which is NOT in this list. It lands anyway, because `components/button` happens
+// to `@use` it. So the word "Current" is hidden by luck of the composition order,
+// exactly the way `data-table/sort` was NOT and printed its sort instructions on
+// screen. Verified in the built CSS rather than assumed.
+@use "@carbon/styles/scss/components/progress-indicator";
 @use "@carbon/styles/scss/components/search";
 @use "@carbon/styles/scss/components/select";
 @use "@carbon/styles/scss/components/skeleton-styles";
 @use "@carbon/styles/scss/components/stack";
+// Carbon's nearest thing to a label/value list, used by the wizard's review cards.
+@use "@carbon/styles/scss/components/structured-list";
 @use "@carbon/styles/scss/components/tag";
 @use "@carbon/styles/scss/components/text-area";
 @use "@carbon/styles/scss/components/text-input";

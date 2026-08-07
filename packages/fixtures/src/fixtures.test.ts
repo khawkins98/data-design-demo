@@ -13,11 +13,14 @@ import {
   LOCALES,
   LONG_LABEL_KEYS,
   LOSS_RECORDS,
+  NO_VALUE,
   OPTIONS_LARGE,
   OPTIONS_MEDIUM,
   OPTIONS_SMALL,
+  REVIEW_GROUPS,
   TODAY_ISO,
   VALIDATION_CASES,
+  WIZARD_STEPS,
   today,
 } from "./index.js";
 import type { LabelKey, LocaleCode } from "./types.js";
@@ -94,6 +97,70 @@ describe("loss records", () => {
         expect(record.reviewNote, record.id).toBeNull();
       } else {
         expect(record.reviewNote, record.id).not.toBeNull();
+      }
+    }
+  });
+});
+
+describe("wizard steps", () => {
+  it("names four steps, in the design file's order, with distinct ids", () => {
+    expect(WIZARD_STEPS.map((s) => s.id)).toEqual(["basics", "linked", "details", "review"]);
+  });
+
+  it("resolves every step label and sublabel in every locale", () => {
+    // A stepper rendering "undefined" under step 3 in Arabic is the failure this
+    // catches, and it is the kind that survives an English-only screenshot.
+    for (const locale of LOCALES) {
+      for (const step of WIZARD_STEPS) {
+        expect(LABELS[locale.code][step.labelKey], `${locale.code}.${step.id}`).toBeTruthy();
+        expect(
+          LABELS[locale.code][step.optionalityKey],
+          `${locale.code}.${step.id}.optionality`,
+        ).toBeTruthy();
+      }
+    }
+  });
+
+  it("marks the first and last steps required, per the design file", () => {
+    expect(WIZARD_STEPS.map((s) => s.optionalityKey)).toEqual([
+      "stepRequired",
+      "stepOptional",
+      "stepOptional",
+      "stepRequired",
+    ]);
+  });
+
+  it("keeps empty values in the review fixture", () => {
+    /*
+     * Load-bearing. The design file shows four em-dashed values on the review
+     * step, and a fixture that quietly filled them in would stop asking how each
+     * library renders an absent value - which is most of what a review screen does.
+     */
+    const values = REVIEW_GROUPS.flatMap((g) => g.rows.map((r) => r.value));
+    expect(values.filter((v) => v === NO_VALUE).length).toBeGreaterThanOrEqual(4);
+  });
+
+  it("resolves every review label in every locale, and every row has one value", () => {
+    /*
+     * The review labels are keys so they translate; the values are literals because
+     * they are data. This pins both halves: a key that resolves to undefined would
+     * render the string "undefined" as a field name, and a row with both a literal
+     * and a key - or neither - would render ambiguously in five different ways
+     * across five demos.
+     */
+    for (const locale of LOCALES) {
+      for (const group of REVIEW_GROUPS) {
+        expect(LABELS[locale.code][group.titleKey], `${locale.code}.${group.id}`).toBeTruthy();
+        for (const row of group.rows) {
+          expect(LABELS[locale.code][row.labelKey], `${locale.code}.${row.labelKey}`).toBeTruthy();
+          expect(
+            (row.value === undefined) !== (row.valueKey === undefined),
+            `${group.id}.${row.labelKey} must set exactly one of value / valueKey`,
+          ).toBe(true);
+          if (row.valueKey) {
+            expect(LABELS[locale.code][row.valueKey], `${locale.code}.${row.valueKey}`).toBeTruthy();
+          }
+        }
       }
     }
   });

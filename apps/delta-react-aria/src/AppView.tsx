@@ -58,6 +58,7 @@ import { TOKEN_SCOPE_CLASS } from "@undrr-eval/undrr-tokens";
 import { DemoContext, labelsFor, useDemo } from "./demo-state.js";
 import type { DemoContextValue } from "./demo-state.js";
 import { MODAL_OVERLAY_CLASS } from "./overlay-class.js";
+import { EventWizard } from "./views/EventWizard.js";
 import { RecordsFilters } from "./views/RecordsFilters.js";
 import { RecordsPagination } from "./views/RecordsPagination.js";
 import { RecordsTable } from "./views/RecordsTable.js";
@@ -214,12 +215,29 @@ function RecordsScreen(): ReactElement {
         message reporting nothing. Dropping the classes while keeping the node
         leaves an empty `<p>` with no box, and the announcement path untouched.
       */}
+      {/*
+        `data-toast-status` exists for the test, and it is an attribute rather than
+        a class on purpose: the property under test is that this element carries NO
+        class while it is empty, so a class-based hook would defeat the assertion.
+        It is needed because the step wizard below adds a second `role="status"` to
+        this view - correctly, since a progress announcement and an action toast are
+        different messages - and the spec used to locate this one as the only one.
+      */}
       <p
         className={lastAction === null ? undefined : "demo-status demo-status--success"}
+        data-toast-status=""
         role="status"
       >
         {lastAction}
       </p>
+
+      {/*
+        The second DELTA screen this view carries, and the one that asks the harder
+        question. A records list is a table, and every candidate has a table. A
+        stepped submission flow is a component PrimeReact ships and DELTA already
+        uses, so it measures whether a replacement keeps parity or costs a rebuild.
+      */}
+      <EventWizard />
 
       <DeleteDialog
         record={pendingDelete}

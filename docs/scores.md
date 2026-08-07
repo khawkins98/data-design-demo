@@ -23,6 +23,14 @@ a library with no opinions cannot conflict with Mangrove, cannot bake in wrong c
 and cannot mistheme. **Read the recommendation as "adopt this and fund a design
 system", not as "adopt this and save work".**
 
+**Read this alongside the architecture it implies.**
+A library that ships fewer components is also one whose gaps get filled in Mangrove
+rather than per-site, which turns a missing stepper into shared tooling instead of
+local work - and that is the strongest case for this recommendation, stronger than the
+composite. It is also the case that carries the staffing bill. Both are set out in
+[architecture-options.md](./architecture-options.md), which argues a position and
+changes no score.
+
 **Two things must happen before this is signed off, and neither is a technical task.**
 
 1. A human accessibility pass. Every A7 band on this page rests on automated scanning.
@@ -199,8 +207,8 @@ Worst open issue: **blocker** - Carbon cannot express about 30% of the UNDRR des
 
 | Axis | Band | Weight | Why |
 | --- | --- | --- | --- |
-| A1 Implementation effort | **weak** | 8 | 11 of 30 requirements needed more than a documented component; 12 documented approaches failed and needed working around |
-| A2 Maintainability at scale | **weak** | 16 | 12 escape hatches off the documented theming route; 0 scoreable maintenance findings |
+| A1 Implementation effort | **weak** | 8 | 11 of 30 requirements needed more than a documented component; 14 documented approaches failed and needed working around |
+| A2 Maintainability at scale | **weak** | 16 | 14 escape hatches off the documented theming route; 0 scoreable maintenance findings |
 | A3 Reproducibility across sites | **workable** | 16 | extraction outcome recorded as analysed |
 | A4 Mangrove compatibility | **workable** | 14 | clean only because the documented global stylesheet was not loaded as documented |
 | A5 Theming fidelity | **weak** | 14 | 21 of 71 UNDRR tokens cannot be attached at all - a ceiling, not a cost |

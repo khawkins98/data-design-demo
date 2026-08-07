@@ -406,7 +406,7 @@ test.describe("full application", () => {
     // announcement is lost, so this asserts the BOX is empty, not the node.
     // Located structurally, not by class: when there is no message the element
     // deliberately carries no class at all, which is the fix.
-    const region = page.locator('[data-candidate-root] p[role="status"]');
+    const region = page.locator('[data-candidate-root] p[data-toast-status][role="status"]');
     await expect(region).toHaveCount(1);
 
     const before = await region.evaluate((el) => {
@@ -510,10 +510,18 @@ test.describe("full application", () => {
     const status = page.locator(".demo-pagination__status");
     await expect(status).toHaveText("1–10 / 250");
 
-    const previous = page.getByRole("button", { name: "Previous" });
+    /*
+     * Scoped to the pagination landmark. These were page-wide until the step
+     * wizard was added below the table, which brought a second "Next" onto the
+     * page and made the unscoped locator a strict-mode violation. Scoping is the
+     * right fix rather than the narrower one: "the page has exactly one Next"
+     * was never what this test meant to assert.
+     */
+    const pagination = page.getByLabel("Pagination");
+    const previous = pagination.getByRole("button", { name: "Previous" });
     await expect(previous).toBeDisabled();
 
-    await page.getByRole("button", { name: "Next" }).click();
+    await pagination.getByRole("button", { name: "Next" }).click();
     await expect(status).toHaveText("11–20 / 250");
     await expect(previous).toBeEnabled();
 
@@ -868,5 +876,143 @@ test.describe("full application", () => {
       `document scrolls horizontally by ${overflow}px in German at ` +
         `${testInfo.project.name}. Not weakened to pass: recorded in evidence.json.`,
     ).toBeLessThanOrEqual(1);
+  });
+
+  /* ------------------------------------------------------- the step wizard */
+
+  /*
+   * The wizard is the part of this view that PrimeReact would have given DELTA for
+   * free, so it is the part worth asserting hardest. React Aria ships no stepper:
+   * the markup, the states and the semantics below are all hand-written, which
+   * means there is no library contract keeping them right and only these
+   * assertions stand between a regression and a screenshot that still looks fine.
+   */
+  const WIZARD = ".demo-wizard";
+  const STEP_BUTTONS = `${WIZARD} .demo-stepper__button`;
+
+  /** The wizard's own Next, not the pagination's — both are named "Next". */
+  /*
+   * `exact` is not optional decoration: "Save" is a substring of "Save as draft",
+   * so the default substring match resolves to both buttons and every assertion on
+   * it fails as a strict-mode violation rather than as the thing being tested.
+   */
+  function wizardButton(page: Page, name: string, exact = false) {
+    return page
+      .locator(`${WIZARD} .demo-wizard__actions`)
+      .getByRole("button", { name, exact });
+  }
+
+  test("the wizard states which step is current, in the accessibility tree", async ({ page }) => {
+    await page.goto(`${URL}?candidate=on`);
+
+    await expect(page.locator(STEP_BUTTONS)).toHaveCount(4);
+    // Exactly one current step, and it is the one the indicator shows as current.
+    const current = page.locator(`${STEP_BUTTONS}[aria-current="step"]`);
+    await expect(current).toHaveCount(1);
+    await expect(current).toContainText("Event basics");
+
+    /*
+     * Steps ahead are unreachable and SAY so — but via the NATIVE `disabled`
+     * attribute, because that is what React Aria's `Button` emits for `isDisabled`.
+     * Asserted as `[disabled]` after the first draft of this test looked for
+     * `aria-disabled="true"` and found none: the assertion was wrong, not the
+     * component.
+     *
+     * WORTH KNOWING RATHER THAN JUST PASSING. `disabled` removes the element from
+     * the tab order entirely, so a keyboard or screen-reader user cannot move
+     * through the indicator to see what is coming; `aria-disabled` would leave the
+     * steps readable while still inert. React Aria's Button has no prop for that, so
+     * getting it would mean dropping `isDisabled` and hand-rolling the inertness —
+     * more of the hand-rolling this component already is. Recorded in the register.
+     */
+    await expect(page.locator(`${STEP_BUTTONS}[disabled]`)).toHaveCount(3);
+  });
+
+  test("advancing the wizard moves the current step and unlocks the ones behind", async ({
+    page,
+  }) => {
+    await page.goto(`${URL}?candidate=on`);
+
+    await wizardButton(page, "Next").click();
+    await expect(page.locator(`${STEP_BUTTONS}[aria-current="step"]`)).toContainText(
+      "Linked events",
+    );
+    // Step 1 is now complete, so it is reachable again: this is the behaviour the
+    // design file shows, steps 1-3 checked while step 4 is active.
+    await expect(page.locator(`${WIZARD} [data-state="complete"]`)).toHaveCount(1);
+    await expect(page.locator(`${STEP_BUTTONS}[disabled]`)).toHaveCount(2);
+
+    // Back returns, and the completed marker does not un-complete.
+    await wizardButton(page, "Back").click();
+    await expect(page.locator(`${STEP_BUTTONS}[aria-current="step"]`)).toContainText(
+      "Event basics",
+    );
+    await expect(page.locator(`${STEP_BUTTONS}[disabled]`)).toHaveCount(2);
+  });
+
+  test("the last step reviews the submission and offers Save, not a dead Next", async ({
+    page,
+  }) => {
+    await page.goto(`${URL}?candidate=on`);
+    for (let i = 0; i < 3; i += 1) await wizardButton(page, "Next").click();
+
+    await expect(page.locator(`${STEP_BUTTONS}[aria-current="step"]`)).toContainText(
+      "Review and save",
+    );
+    // Three review cards, and the em-dashed empty values are still empty.
+    await expect(page.locator(`${WIZARD} .demo-review__card`)).toHaveCount(3);
+    await expect(page.locator(`${WIZARD} .demo-review__value`).filter({ hasText: "—" })).toHaveCount(
+      4,
+    );
+    await expect(wizardButton(page, "Save", true)).toBeEnabled();
+    await expect(page.locator(`${WIZARD} .demo-wizard__actions`)).not.toContainText("Next");
+  });
+
+  test("the wizard is reachable and operable by keyboard alone", async ({ page }) => {
+    await page.goto(`${URL}?candidate=on`);
+
+    // Focus the wizard's Next through the keyboard, then advance with the keyboard.
+    // A stepper whose steps are only clickable is a stepper half the users cannot use.
+    await wizardButton(page, "Next").focus();
+    await page.keyboard.press("Enter");
+    await expect(page.locator(`${STEP_BUTTONS}[aria-current="step"]`)).toContainText(
+      "Linked events",
+    );
+
+    // And a completed step can be returned to from the indicator itself.
+    await page.locator(`${STEP_BUTTONS}`).first().focus();
+    await page.keyboard.press("Enter");
+    await expect(page.locator(`${STEP_BUTTONS}[aria-current="step"]`)).toContainText(
+      "Event basics",
+    );
+  });
+
+  test("the stepper mirrors, and its connectors stay logical, in Arabic", async ({ page }) => {
+    await page.goto(`${URL}?candidate=on`);
+    await selectLocale(page, "العربية");
+
+    const steps = page.locator(`${WIZARD} .demo-stepper__item`);
+    const first = await steps.first().boundingBox();
+    const last = await steps.last().boundingBox();
+    expect(first?.x ?? 0, "Arabic: step 1 should sit right of step 4").toBeGreaterThan(
+      last?.x ?? 0,
+    );
+
+    // The labels are Arabic too, including the review card field names: they are
+    // chrome, so they translate, unlike the record values beside them.
+    await expect(page.locator(`${STEP_BUTTONS}`).first()).toContainText("أساسيات الحدث");
+  });
+
+  test("German step labels wrap rather than clip", async ({ page }) => {
+    await page.goto(`${URL}?candidate=on`);
+    await selectLocale(page, "Deutsch");
+
+    // "Zusätzliche Einzelheiten" under a 2.25rem circle is the case that breaks a
+    // fixed-width stepper. Measured rather than eyeballed: clipped text reports a
+    // scrollWidth wider than its box.
+    const clipped = await page.locator(`${WIZARD} .demo-stepper__label`).evaluateAll((els) =>
+      els.filter((el) => el.scrollWidth > el.clientWidth + 1).map((el) => el.textContent),
+    );
+    expect(clipped, "step labels are clipped in German").toEqual([]);
   });
 });

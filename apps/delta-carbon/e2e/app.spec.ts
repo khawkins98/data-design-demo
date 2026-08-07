@@ -820,4 +820,261 @@ test.describe("full application", () => {
       `document scrolls horizontally by ${overflow}px in German at ${testInfo.project.name}`,
     ).toBeLessThanOrEqual(1);
   });
+
+  /* ------------------------------------------------------- the step wizard */
+
+  /*
+   * The wizard is the one requirement in this evaluation that DISCRIMINATES between
+   * the candidates. Every library ships buttons, inputs and tables, which is why the
+   * component inventory came back with zero unsupported requirements; PrimeReact —
+   * the incumbent being replaced — ships `Stepper`, and DELTA's add-event screen uses
+   * it. Carbon ships the pattern as `ProgressIndicator`, so most of what follows
+   * asserts a LIBRARY contract rather than hand-written markup, which is exactly the
+   * difference this spec exists to record against the React Aria run.
+   *
+   * These locators are Carbon's own class names on purpose. Asserting
+   * `.cds--progress-step--current` rather than a `data-state` of ours is what makes
+   * the result a statement about Carbon.
+   */
+  const WIZARD = ".demo__wizard";
+  const STEP_BUTTONS = `${WIZARD} .cds--progress-step-button`;
+
+  /**
+   * The wizard's own action, not the pagination's.
+   *
+   * BOTH are named "Next": Carbon's `Pagination` renders a "Next page" button and
+   * the wizard renders "Next", and an unscoped `getByRole("button", { name: "Next" })`
+   * is a strict-mode violation rather than a helpful failure. Scoped to the wizard's
+   * action row, and `exact` so that "Save" does not also match "Save as draft".
+   */
+  function wizardButton(page: Page, name: string) {
+    return page
+      .locator(`${WIZARD} .demo__wizard-actions`)
+      .getByRole("button", { name, exact: true });
+  }
+
+  test("Carbon's ProgressIndicator states the current step, but not with aria-current", async ({
+    page,
+  }) => {
+    await page.goto(`${URL}?candidate=on`);
+
+    await expect(page.locator(STEP_BUTTONS)).toHaveCount(4);
+
+    /*
+     * WHAT CARBON EMITS FOR "CURRENT", and this is the finding rather than the
+     * assertion. Read out of the rendered DOM, not out of the docs:
+     *
+     *   <li class="cds--progress-step cds--progress-step--current">
+     *     <button ... aria-disabled="false" tabindex="0" title="Event basics">
+     *       <svg …/>
+     *       <div class="cds--progress-text">
+     *         <span class="cds--progress-label">Event basics</span>
+     *         <span class="cds--progress-optional">Required</span>
+     *       </div>
+     *       <span class="cds--assistive-text">Current</span>
+     *       <span class="cds--progress-line"></span>
+     *     </button>
+     *   </li>
+     *
+     * There is NO `aria-current`. The state reaches the accessibility tree only as
+     * visually hidden text inside the button, which makes the button's accessible
+     * name "Event basics Required Current" — the state is folded into the name
+     * rather than exposed as state, and it is English unless every step is given a
+     * `translateWithId`. `LabelSet` has no word for Current/Complete/Incomplete, so
+     * the English stays; recorded as a fixture gap, the same call AppView.tsx makes
+     * for Carbon's Pagination chrome.
+     */
+    await expect(page.locator(`${WIZARD} .cds--progress-step--current`)).toHaveCount(1);
+    const hidden = page.locator(`${WIZARD} .cds--progress-step--current .cds--assistive-text`);
+    await expect(hidden).toHaveText("Current");
+
+    /*
+     * AND IT IS HIDDEN BY A CASCADE ACCIDENT, which is the second half of the
+     * finding. `.cds--assistive-text` is declared in
+     * `@carbon/styles/scss/utilities/visually-hidden`, which `src/carbon.scss` does
+     * NOT list — it lands only because `components/button` happens to `@use` it. Then
+     * `components/tooltip` redeclares the SAME selector later in the cascade with
+     * `display: flex; opacity: 0`, so what actually hides this span is the 1px box
+     * and `clip: rect(0,0,0,0)` surviving from the first rule.
+     *
+     * Measured as a box rather than with `not.toBeVisible()`, which FAILED here and
+     * was right to: Playwright ignores `opacity` and a 1×1 clipped element counts as
+     * visible to it. The word is not readable on screen — it is 1px wide and fully
+     * clipped — and the assertion now says that instead of claiming more.
+     *
+     * The lesson is the one `carbon.scss` already records twice: a visually-hidden
+     * pattern implemented in CSS rather than markup FAILS OPEN. Drop the wrong
+     * partial and "Current" prints next to every step label, exactly as
+     * `data-table/sort` printed its sort instructions.
+     */
+    const box = await hidden.boundingBox();
+    expect(box?.width ?? 99, "Carbon's hidden step-state text is not clipped").toBeLessThanOrEqual(
+      1,
+    );
+
+    /*
+     * `aria-current="step"` is OURS — one attribute passed through ProgressStep's
+     * `...rest`, see views/EventWizard.tsx item 1. Asserted here so the two demos'
+     * wizards make the same guarantee, and asserted separately from Carbon's own
+     * signal above so the record does not credit Carbon with it.
+     */
+    const current = page.locator(`${STEP_BUTTONS}[aria-current="step"]`);
+    await expect(current).toHaveCount(1);
+    await expect(current).toContainText("Event basics");
+
+    /*
+     * Steps ahead are unreachable, and Carbon says so THREE ways at once: the native
+     * `disabled` attribute, `aria-disabled="true"`, and `tabindex="-1"`. Belt and
+     * braces beyond what React Aria's Button emits (native `disabled` only).
+     *
+     * WORTH KNOWING RATHER THAN JUST PASSING. `disabled` plus `tabindex="-1"` takes
+     * the steps out of the tab order entirely, so a keyboard or screen-reader user
+     * cannot walk the indicator to see what is coming. `aria-disabled` alone would
+     * have left them readable and inert, and Carbon emits both — so the stricter of
+     * the two wins and the softer behaviour is not reachable through the prop.
+     */
+    await expect(page.locator(`${STEP_BUTTONS}[aria-disabled="true"]`)).toHaveCount(3);
+    await expect(page.locator(`${STEP_BUTTONS}[disabled]`)).toHaveCount(3);
+    await expect(page.locator(`${STEP_BUTTONS}[tabindex="-1"]`)).toHaveCount(3);
+  });
+
+  test("advancing the wizard moves the current step and unlocks the ones behind", async ({
+    page,
+  }) => {
+    await page.goto(`${URL}?candidate=on`);
+
+    await wizardButton(page, "Next").click();
+    await expect(page.locator(`${STEP_BUTTONS}[aria-current="step"]`)).toContainText(
+      "Linked events",
+    );
+    // Step 1 is complete and reachable again: the behaviour the design file shows,
+    // steps 1-3 checked while step 4 is active. Carbon's own `--complete` class.
+    await expect(page.locator(`${WIZARD} .cds--progress-step--complete`)).toHaveCount(1);
+    await expect(page.locator(`${STEP_BUTTONS}[disabled]`)).toHaveCount(2);
+
+    /*
+     * Back returns, and the step behind does not un-complete.
+     *
+     * THIS ASSERTION CAUGHT A REAL CARBON BEHAVIOUR, which is why the component
+     * passes `complete={index !== current && index < furthest}`. `ProgressIndicator`
+     * resolves the current step as `current: !child.props.complete`, so a step that
+     * is both current AND already-visited renders complete and the indicator shows
+     * NOTHING as current. Carbon's precedence is complete-over-current; a wizard's is
+     * the reverse. Without the guard the next line finds zero current steps.
+     */
+    await wizardButton(page, "Back").click();
+    await expect(page.locator(`${STEP_BUTTONS}[aria-current="step"]`)).toContainText(
+      "Event basics",
+    );
+    await expect(page.locator(`${WIZARD} .cds--progress-step--current`)).toHaveCount(1);
+    await expect(page.locator(`${STEP_BUTTONS}[disabled]`)).toHaveCount(2);
+  });
+
+  test("the last step reviews the submission and offers Save, not a dead Next", async ({
+    page,
+  }) => {
+    await page.goto(`${URL}?candidate=on`);
+    for (let i = 0; i < 3; i += 1) await wizardButton(page, "Next").click();
+
+    await expect(page.locator(`${STEP_BUTTONS}[aria-current="step"]`)).toContainText(
+      "Review and save",
+    );
+
+    // Three review cards, each a Carbon `Tile` wrapping a `StructuredList`.
+    await expect(page.locator(`${WIZARD} .demo__review-card`)).toHaveCount(3);
+    await expect(page.locator(`${WIZARD} .cds--structured-list`)).toHaveCount(3);
+
+    /*
+     * The four em-dashed values are still empty. The fixture puts them there on
+     * purpose — a review screen's job is showing which fields are unfilled — so a
+     * count of four is the assertion that nothing substituted a placeholder.
+     */
+    await expect(
+      page.locator(`${WIZARD} .demo__review-value`).filter({ hasText: "—" }),
+    ).toHaveCount(4);
+
+    await expect(wizardButton(page, "Save")).toBeEnabled();
+    await expect(page.locator(`${WIZARD} .demo__wizard-actions`)).not.toContainText("Next");
+  });
+
+  test("the wizard is reachable and operable by keyboard alone", async ({ page }) => {
+    await page.goto(`${URL}?candidate=on`);
+
+    // A stepper whose steps are only clickable is a stepper half the users cannot
+    // use. Carbon's ProgressStep binds Enter and Space itself, which is one of the
+    // things React Aria had to have hand-written.
+    await wizardButton(page, "Next").focus();
+    await page.keyboard.press("Enter");
+    await expect(page.locator(`${STEP_BUTTONS}[aria-current="step"]`)).toContainText(
+      "Linked events",
+    );
+
+    await page.locator(STEP_BUTTONS).first().focus();
+    await page.keyboard.press("Enter");
+    await expect(page.locator(`${STEP_BUTTONS}[aria-current="step"]`)).toContainText(
+      "Event basics",
+    );
+  });
+
+  test("the stepper mirrors in Arabic", async ({ page }) => {
+    await page.goto(`${URL}?candidate=on`);
+    await selectLocale(page, "ar");
+
+    /*
+     * Carbon's progress-indicator partial is authored with logical properties
+     * throughout — `inset-inline-start` on the connector line, `margin-inline-end` on
+     * the icon — so the whole indicator mirrors with no rule of ours. Contrast the
+     * flatpickr calendar this same view measures, which is authored with physical
+     * `left`/`right` and stays LTR inside a mirrored page.
+     */
+    const steps = page.locator(`${WIZARD} .cds--progress-step`);
+    const first = await steps.first().boundingBox();
+    const last = await steps.last().boundingBox();
+    expect(first?.x ?? 0, "Arabic: step 1 should sit right of step 4").toBeGreaterThan(
+      last?.x ?? 0,
+    );
+
+    // The step names are chrome, so they translate — unlike the record values in the
+    // table beside them.
+    await expect(page.locator(STEP_BUTTONS).first()).toContainText("أساسيات الحدث");
+  });
+
+  test("German step labels wrap rather than clip", async ({ page }) => {
+    await page.goto(`${URL}?candidate=on`);
+    await selectLocale(page, "de");
+
+    /*
+     * CARBON TRUNCATES STEP LABELS BY DESIGN: `.cds--progress-label` ships
+     * `white-space: nowrap`, `overflow: hidden` and `text-overflow: ellipsis`, so
+     * "Zusätzliche Einzelheiten" renders as "Zusätzliche Ein…" at every viewport
+     * until overridden. Carbon's intended remedy is `overflowTooltipProps` — put the
+     * full name in a tooltip — which is no use to a touch user and makes a step name
+     * hover-only. Escape hatches 8 and 9 in demo.css let it wrap instead, and this
+     * measurement is what keeps them honest: clipped text reports a scrollWidth wider
+     * than its box.
+     */
+    const clipped = await page.locator(`${WIZARD} .cds--progress-label`).evaluateAll((els) =>
+      els.filter((el) => el.scrollWidth > el.clientWidth + 1).map((el) => el.textContent),
+    );
+    expect(clipped, "step labels are clipped in German").toEqual([]);
+
+    // And the REQUIRED/OPTIONAL sublabel is still legible beneath them. Carbon gives
+    // `secondaryLabel` `position: absolute` in the horizontal variant, so once the
+    // label wraps the two overlap unless it is put back in flow — escape hatch 9.
+    const overlaps = await page
+      .locator(`${WIZARD} .cds--progress-step`)
+      .evaluateAll((steps) =>
+        steps
+          .map((step) => {
+            const label = step.querySelector(".cds--progress-label");
+            const optional = step.querySelector(".cds--progress-optional");
+            if (!label || !optional) return null;
+            const a = label.getBoundingClientRect();
+            const b = optional.getBoundingClientRect();
+            return b.top < a.bottom - 1 ? (optional.textContent ?? "") : null;
+          })
+          .filter((entry) => entry !== null),
+      );
+    expect(overlaps, "the REQUIRED/OPTIONAL sublabel overlaps the step label").toEqual([]);
+  });
 });

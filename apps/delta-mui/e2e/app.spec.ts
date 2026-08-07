@@ -809,4 +809,195 @@ test.describe("full application", () => {
       `document scrolls horizontally by ${overflow}px in German at ${testInfo.project.name}`,
     ).toBeLessThanOrEqual(1);
   });
+
+  /* ------------------------------------------------------- the step wizard */
+
+  /*
+   * The wizard is the one component on this screen that PrimeReact — the incumbent
+   * being replaced — shipped, so it is the part worth asserting hardest. MUI ships
+   * a stepper, which means most of what follows checks a LIBRARY contract rather
+   * than hand-written markup; the exception is the ARIA, which
+   * `views/EventWizard.tsx` overrides because MUI announces a linear wizard as a
+   * tab list. Those overrides depend on MUI's prop-spread order and nothing in the
+   * public API guarantees them, so the assertions here are the only thing that
+   * would catch a minor-version release putting `role="tab"` back.
+   *
+   * Same assertions as the React Aria pilot, adapted to MUI's DOM: MUI's own
+   * `.MuiStepButton-root` / `.MuiStepLabel-label` classes where the pilot used its
+   * hand-written ones, and `data-testid` only where MUI emits no stable hook.
+   */
+  const WIZARD = '[data-testid="wizard"]';
+  const STEP_BUTTONS = `${WIZARD} .MuiStepButton-root`;
+
+  /**
+   * The wizard's own Next, not the table pagination's — both are named "Next", and
+   * an unscoped `getByRole("button", { name: "Next" })` is a strict-mode violation
+   * on this page. `exact` as well: "Save" would otherwise also match "Save as
+   * draft" in the same action row.
+   */
+  function wizardButton(page: Page, name: string) {
+    return page
+      .locator(`${WIZARD} [data-testid="wizard-actions"]`)
+      .getByRole("button", { name, exact: true });
+  }
+
+  test("the wizard states which step is current, in the accessibility tree", async ({ page }) => {
+    await page.goto(`${URL}?candidate=on`);
+
+    await expect(page.locator(STEP_BUTTONS)).toHaveCount(4);
+
+    /*
+     * Exactly one current step, via `aria-current="step"`. MUI emits this NOWHERE
+     * and has no prop for it: what it emits instead is `aria-selected` on a
+     * `role="tab"` inside a `role="tablist"`, which is why this assertion is against
+     * an attribute the app had to add by hand.
+     */
+    const current = page.locator(`${STEP_BUTTONS}[aria-current="step"]`);
+    await expect(current).toHaveCount(1);
+    await expect(current).toContainText("Event basics");
+
+    // The tab-set semantics are gone, in both directions.
+    await expect(page.locator(`${WIZARD} [role="tablist"]`)).toHaveCount(0);
+    await expect(page.locator(`${STEP_BUTTONS}[role="tab"]`)).toHaveCount(0);
+    await expect(page.locator(`${STEP_BUTTONS}[aria-selected]`)).toHaveCount(0);
+
+    /*
+     * Steps ahead are unreachable and SAY so, via the native `disabled` attribute —
+     * which is what `Step`'s `disabled` prop produces, since `StepButton` is a
+     * `ButtonBase`. Identical to the React Aria pilot, and identically blunt:
+     * `disabled` removes the step from the tab order entirely, so a keyboard user
+     * cannot read ahead through the indicator. Neither library offers the
+     * `aria-disabled` alternative.
+     */
+    await expect(page.locator(`${STEP_BUTTONS}[disabled]`)).toHaveCount(3);
+
+    // The REQUIRED/OPTIONAL sublabel from the design file, in StepLabel's own
+    // `optional` slot rather than smuggled into the label text.
+    const optionality = page.locator(`${WIZARD} [data-testid="wizard-step-optionality"]`);
+    await expect(optionality).toHaveCount(4);
+    await expect(optionality.first()).toHaveText("Required");
+    await expect(optionality.nth(1)).toHaveText("Optional");
+  });
+
+  test("advancing the wizard moves the current step and unlocks the ones behind", async ({
+    page,
+  }) => {
+    await page.goto(`${URL}?candidate=on`);
+
+    await wizardButton(page, "Next").click();
+    await expect(page.locator(`${STEP_BUTTONS}[aria-current="step"]`)).toContainText(
+      "Linked events",
+    );
+    // Step 1 is now complete, so it is reachable again: the behaviour the design
+    // file shows, steps 1-3 checked while step 4 is active. The tick is MUI's
+    // `StepIcon`, which swaps the number for a check on `completed` — one of the
+    // pieces the React Aria pilot draws itself.
+    await expect(page.locator(`${WIZARD} .MuiStepLabel-label.Mui-completed`)).toHaveCount(1);
+    await expect(page.locator(`${STEP_BUTTONS}[disabled]`)).toHaveCount(2);
+
+    // Back returns, and the completed step does not un-complete.
+    await wizardButton(page, "Back").click();
+    await expect(page.locator(`${STEP_BUTTONS}[aria-current="step"]`)).toContainText(
+      "Event basics",
+    );
+    await expect(page.locator(`${STEP_BUTTONS}[disabled]`)).toHaveCount(2);
+  });
+
+  test("the last step reviews the submission and offers Save, not a dead Next", async ({
+    page,
+  }) => {
+    await page.goto(`${URL}?candidate=on`);
+    for (let i = 0; i < 3; i += 1) await wizardButton(page, "Next").click();
+
+    await expect(page.locator(`${STEP_BUTTONS}[aria-current="step"]`)).toContainText(
+      "Review and save",
+    );
+    // Three review cards, and the em-dashed empty values are still empty.
+    await expect(page.locator(`${WIZARD} [data-testid="wizard-review-card"]`)).toHaveCount(3);
+    await expect(
+      page.locator(`${WIZARD} [data-testid="wizard-review-value"]`).filter({ hasText: "—" }),
+    ).toHaveCount(4);
+    await expect(wizardButton(page, "Save")).toBeEnabled();
+    await expect(page.locator(`${WIZARD} [data-testid="wizard-actions"]`)).not.toContainText(
+      "Next",
+    );
+  });
+
+  test("the wizard is reachable and operable by keyboard alone", async ({ page }) => {
+    await page.goto(`${URL}?candidate=on`);
+
+    // Advance from the keyboard. A stepper whose steps are only clickable is a
+    // stepper half the users cannot use.
+    await wizardButton(page, "Next").focus();
+    await page.keyboard.press("Enter");
+    await expect(page.locator(`${STEP_BUTTONS}[aria-current="step"]`)).toContainText(
+      "Linked events",
+    );
+
+    // And a completed step can be returned to from the indicator itself.
+    await page.locator(STEP_BUTTONS).first().focus();
+    await page.keyboard.press("Enter");
+    await expect(page.locator(`${STEP_BUTTONS}[aria-current="step"]`)).toContainText(
+      "Event basics",
+    );
+
+    /*
+     * MUI installs a roving tab index on the indicator whenever a `StepButton` is
+     * among the children, and there is no prop to turn it off. Asserted rather than
+     * merely noted: ArrowRight moves focus between steps, which is tab-set keyboard
+     * behaviour on markup that no longer claims to be a tab set. Recorded as a
+     * finding in EventWizard.tsx — MUI will not let the two be separated.
+     */
+    await page.locator(STEP_BUTTONS).first().focus();
+    await page.keyboard.press("ArrowRight");
+    await expect(page.locator(STEP_BUTTONS).nth(1)).toBeFocused();
+  });
+
+  test("the stepper mirrors, and its connectors stay logical, in Arabic", async ({ page }) => {
+    await page.goto(`${URL}?candidate=on`);
+    await selectLocale(page, "العربية");
+
+    const steps = page.locator(`${WIZARD} .MuiStep-root`);
+    const first = await steps.first().boundingBox();
+    const last = await steps.last().boundingBox();
+    expect(first?.x ?? 0, "Arabic: step 1 should sit right of step 4").toBeGreaterThan(
+      last?.x ?? 0,
+    );
+
+    // The labels are Arabic too, including the review card field names: they are
+    // chrome, so they translate, unlike the record values beside them.
+    await expect(page.locator(STEP_BUTTONS).first()).toContainText("أساسيات الحدث");
+
+    /*
+     * The connector is `StepConnector`, MUI's own, and it survives the flip because
+     * its offsets are symmetric (`left: calc(-50% + 20px)` / `right: calc(50% +
+     * 20px)`, StepConnector.js:71-72) rather than because they are logical. Measured
+     * here instead of assumed: the line between steps 1 and 2 must sit between their
+     * two markers whichever way the row runs.
+     */
+    const connector = page.locator(`${WIZARD} .MuiStepConnector-root`).first();
+    const line = await connector.boundingBox();
+    const stepOne = await steps.first().boundingBox();
+    const stepTwo = await steps.nth(1).boundingBox();
+    const lineCentre = (line?.x ?? 0) + (line?.width ?? 0) / 2;
+    expect(lineCentre, "Arabic: connector 1-2 sits between steps 2 and 1").toBeGreaterThan(
+      (stepTwo?.x ?? 0) + (stepTwo?.width ?? 0) / 2,
+    );
+    expect(lineCentre).toBeLessThan((stepOne?.x ?? 0) + (stepOne?.width ?? 0) / 2);
+  });
+
+  test("German step labels wrap rather than clip", async ({ page }) => {
+    await page.goto(`${URL}?candidate=on`);
+    await selectLocale(page, "Deutsch");
+
+    // "Zusätzliche Einzelheiten" under a 24px circle is the case that breaks a
+    // fixed-width stepper. Measured rather than eyeballed: clipped text reports a
+    // scrollWidth wider than its box.
+    const clipped = await page
+      .locator(`${WIZARD} .MuiStepLabel-label`)
+      .evaluateAll((els) =>
+        els.filter((el) => el.scrollWidth > el.clientWidth + 1).map((el) => el.textContent),
+      );
+    expect(clipped, "step labels are clipped in German").toEqual([]);
+  });
 });

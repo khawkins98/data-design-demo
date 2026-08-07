@@ -70,6 +70,7 @@ import { useComboboxPortalProps, usePortalProps } from "./overlay-class.js";
 import { sortRecords } from "./table-model.js";
 import type { SortState, SortableKey } from "./table-model.js";
 import { undrrCssVariablesResolver, undrrMantineTheme } from "./theme.js";
+import { EventWizard } from "./views/EventWizard.js";
 
 /** "All", as a Select value: Mantine's Select cannot hold an empty-string value. */
 const ALL = "all";
@@ -583,6 +584,17 @@ function RecordsScreen({
           })}
         />
       </Group>
+
+      {/* ------------------------------------------------------ step wizard -- */}
+      {/*
+        The second DELTA screen this view carries, and the one that discriminates.
+        A records list is a table and every candidate ships a table; a stepped
+        submission flow is a component PrimeReact ships and DELTA already uses, so
+        it measures whether a replacement keeps parity or costs a rebuild. Mantine
+        ships `Stepper`; see `views/EventWizard.tsx` for what it covers and the
+        four things it leaves to us.
+      */}
+      <EventWizard />
 
       {/* -------------------------------------------------------- modal flow -- */}
       <Modal

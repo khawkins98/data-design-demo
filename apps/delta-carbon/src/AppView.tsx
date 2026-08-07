@@ -86,6 +86,7 @@ import { asProps } from "./carbon-props.js";
 import { DemoContext, calendarDateToIso, formattersFor, labelsFor } from "./demo-state.js";
 import type { DemoContextValue } from "./demo-state.js";
 import { useOverlayHost } from "./overlay-scope.js";
+import { EventWizard } from "./views/EventWizard.js";
 
 /** The leakage contract: `?candidate=off` renders the frame with no candidate. */
 const params = new URLSearchParams(window.location.search);
@@ -736,6 +737,20 @@ export function AppView(): ReactElement {
                 );
               }}
             </DataTable>
+
+            {/* ------------------------------------- the step wizard -- */}
+            {/*
+              * DELTA's add-event flow, after the records screen and before the
+              * delete dialog — the same position the React Aria pilot puts it in,
+              * so the two runs' screenshots line up.
+              *
+              * This is the one requirement in the whole evaluation that
+              * discriminates between the candidates: every library ships buttons and
+              * tables, and PrimeReact (the incumbent) ships `Stepper`. Carbon ships
+              * the pattern as `ProgressIndicator`. See views/EventWizard.tsx for
+              * what that covers and the five things it does not.
+              */}
+            <EventWizard />
 
             {/* ------------------------------------------ modal flow -- */}
             {/*

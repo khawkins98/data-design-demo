@@ -782,6 +782,13 @@ ${questionsHtml}
           -->
           <a href="${DOCS_BLOB}/undrr-questions.md">the six questions in full</a>
           &middot;
+          <!--
+            Also GitHub rather than in-site, and for a second reason beyond raw-.md:
+            the three diagrams are Mermaid, which GitHub renders and Pages does not.
+          -->
+          <a href="${DOCS_BLOB}/architecture-options.md"><strong>Architecture
+          options</strong></a> — what adopting each candidate does to Mangrove, and
+          why the reuse argument is a stronger case than the composite &middot;
           <a href="./comparison.html">requirement matrix</a> — the 300 assessments
           confirming all five cover DELTA's components. It is the audit trail, not
           the decision.

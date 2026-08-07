@@ -61,7 +61,7 @@
 
       <section class="candidate" id="react-aria">
         <h2 class="candidate__name">Adobe React Aria</h2>
-        <p class="candidate__count">10 open &middot; 6 found in our own code and fixed</p>
+        <p class="candidate__count">11 open &middot; 6 found in our own code and fixed</p>
         <h3 class="candidate__group">Open</h3>
 
         <article class="issue issue--caveat" id="react-aria-css-cost">
@@ -134,6 +134,24 @@
           
           <p class="issue__links"><a href="https://github.com/khawkins98/data-design-demo/issues/4">Mangrove tracker</a></p>
           <p class="issue__id"><code>react-aria-hidden-bug</code></p>
+        </article>
+
+        <article class="issue issue--caveat" id="react-aria-ships-no-stepper">
+          <h4 class="issue__title">
+            <span class="issue__badge">Caveat</span>
+            React Aria ships no stepper, so the whole component is UNDRR's
+            
+          </h4>
+          <p class="issue__meta">
+            Belongs to <strong>the library</strong>
+            &middot; affects both hosts
+            &middot; counts towards the score
+            &middot; escape: cannot be escaped while using the library as documented
+          </p>
+          <p class="issue__detail">React Aria Components has <code>Tabs</code>, <code>Breadcrumbs</code>, <code>ProgressBar</code> and <code>Disclosure</code>, and none of them is a step indicator; PrimeReact, the incumbent being replaced, has <code>Stepper</code>. Everything but the buttons is hand-written here: the markup, the states, the connector, the number-to-check swap, the wrapping and the announcement - 26 CSS rules over 221 lines for one component on one screen, against zero rules for Mantine and one for antd. <code>Tabs</code> is the tempting shortcut and is wrong, because it tells a screen-reader user the steps are peers they may visit in any order. The offsetting result is that the hand-built version is the only one of the five that got its semantics right by construction, since nothing had to be overridden.</p>
+          
+          <p class="issue__links"><a href="https://github.com/khawkins98/data-design-demo/blob/main/apps/delta-react-aria/src/views/EventWizard.tsx">the wizard</a> &middot; <a href="https://github.com/khawkins98/data-design-demo/blob/main/docs/architecture-options.md">architecture options</a></p>
+          <p class="issue__id"><code>react-aria-ships-no-stepper</code></p>
         </article>
 
         <article class="issue issue--caveat" id="long-labels-clean-is-not-reproducible">
@@ -356,7 +374,7 @@
 
       <section class="candidate" id="mui">
         <h2 class="candidate__name">MUI (Community only)</h2>
-        <p class="candidate__count">6 open &middot; 5 found in our own code and fixed</p>
+        <p class="candidate__count">9 open &middot; 5 found in our own code and fixed</p>
         <h3 class="candidate__group">Open</h3>
 
         <article class="issue issue--blocker" id="mui-rtl-unfixable">
@@ -393,6 +411,60 @@
           
           <p class="issue__links"><a href="../axes.html">axis A5</a></p>
           <p class="issue__id"><code>mui-build-time-theme</code></p>
+        </article>
+
+        <article class="issue issue--caveat" id="stepper-omits-aria-current">
+          <h4 class="issue__title">
+            <span class="issue__badge">Caveat</span>
+            No candidate's stepper marks the current step for a screen reader
+            
+          </h4>
+          <p class="issue__meta">
+            Belongs to <strong>the library</strong>
+            &middot; affects both hosts
+            &middot; counts towards the score
+            &middot; escape: fixable in consuming code, repeated per site
+          </p>
+          <p class="issue__detail">Measured in all four: <code>aria-current=&quot;step&quot;</code> is emitted by none of them and offered as a prop by none of them. antd marks the current step with a CSS class only; Mantine with <code>data-progress=&quot;true&quot;</code>; MUI with <code>aria-selected</code> (see its own entry); Carbon with a visually hidden English span reading &quot;Current&quot; that folds the state into the accessible name - &quot;Event basics Required Current&quot; - and stays English in all four locales unless every step is given <code>translateWithId</code>. Each demo adds the attribute by hand. None of the four ships a live region either, so the progress announcement is hand-written five times out of five.</p>
+          
+          <p class="issue__links"><a href="https://github.com/khawkins98/data-design-demo/blob/main/apps/delta-antd/src/views/EventWizard.tsx">the wizard</a> &middot; <a href="../axes.html">axis A7</a></p>
+          <p class="issue__id"><code>stepper-omits-aria-current</code></p>
+        </article>
+
+        <article class="issue issue--caveat" id="mui-stepper-announces-a-tablist">
+          <h4 class="issue__title">
+            <span class="issue__badge">Caveat</span>
+            MUI announces an ordered wizard as a tab list
+            
+          </h4>
+          <p class="issue__meta">
+            Belongs to <strong>the library</strong>
+            &middot; affects both hosts
+            &middot; counts towards the score
+            &middot; escape: cannot be escaped while using the library as documented
+          </p>
+          <p class="issue__detail"><code>Stepper</code> sniffs its children, finds <code>StepButton</code> and silently switches into tab-list mode: <code>role=&quot;tablist&quot;</code> plus <code>aria-orientation</code> on the root, and <code>role=&quot;tab&quot;</code> + <code>aria-selected</code> + <code>aria-posinset</code>/<code>aria-setsize</code> on every step. There is no opt-out prop. A tab set tells a screen-reader user the panels are peers they may visit in any order, which is the opposite of a wizard that gates later steps - and it is the one thing about a stepper that ARIA has a documented answer for. Correcting the role also makes MUI's hard-coded <code>aria-orientation</code> a CRITICAL axe violation, <code>aria-allowed-attr</code>, because it is invalid on <code>role=&quot;group&quot;</code>; axe found it. Six attributes are overridden by hand and the roving tab index cannot be removed.</p>
+          
+          <p class="issue__links"><a href="https://github.com/khawkins98/data-design-demo/blob/main/apps/delta-mui/src/views/EventWizard.tsx">the wizard</a> &middot; <a href="../axes.html">axis A7</a></p>
+          <p class="issue__id"><code>mui-stepper-announces-a-tablist</code></p>
+        </article>
+
+        <article class="issue issue--caveat" id="mui-stepper-connector-physical-css">
+          <h4 class="issue__title">
+            <span class="issue__badge">Caveat</span>
+            MUI's step connector is positioned with physical CSS and breaks in Arabic
+            
+          </h4>
+          <p class="issue__meta">
+            Belongs to <strong>the library</strong>
+            &middot; affects both hosts
+            &middot; counts towards the score
+            &middot; escape: fixable in consuming code, repeated per site
+          </p>
+          <p class="issue__detail"><code>StepConnector</code> centres itself on the step's physical left edge - <code>left: calc(-50% + 20px); right: calc(50% + 20px)</code> - and <code>left</code>/<code>right</code> do not swap under <code>dir=&quot;rtl&quot;</code>. Measured at 1280px in Arabic: no connector at all between steps 1 and 2, and step 4's connector centred at x=37 with 94px hanging off the left edge of the page. No prop, variant or theme switch changes it; the fix restates the same geometry with <code>inset-inline-*</code>. This is MUI's second physical-CSS RTL defect on this estate, after the outlined label.</p>
+          
+          <p class="issue__links"><a href="https://github.com/khawkins98/data-design-demo/blob/main/apps/delta-mui/src/views/EventWizard.tsx">the wizard</a> &middot; <a href="../axes.html">axis A6</a></p>
+          <p class="issue__id"><code>mui-stepper-connector-physical-css</code></p>
         </article>
 
         <article class="issue issue--caveat" id="delta-host-has-no-mangrove-stylesheet">
@@ -561,7 +633,7 @@
 
       <section class="candidate" id="carbon">
         <h2 class="candidate__name">IBM Carbon</h2>
-        <p class="candidate__count">9 open &middot; 7 found in our own code and fixed</p>
+        <p class="candidate__count">11 open &middot; 7 found in our own code and fixed</p>
         <h3 class="candidate__group">Open</h3>
 
         <article class="issue issue--blocker" id="carbon-unreachable-tokens">
@@ -652,6 +724,42 @@
           
           <p class="issue__links"><a href="https://github.com/khawkins98/data-design-demo/blob/main/apps/delta-carbon/EVIDENCE.md">evidence</a></p>
           <p class="issue__id"><code>carbon-global-stylesheet</code></p>
+        </article>
+
+        <article class="issue issue--caveat" id="stepper-omits-aria-current">
+          <h4 class="issue__title">
+            <span class="issue__badge">Caveat</span>
+            No candidate's stepper marks the current step for a screen reader
+            
+          </h4>
+          <p class="issue__meta">
+            Belongs to <strong>the library</strong>
+            &middot; affects both hosts
+            &middot; counts towards the score
+            &middot; escape: fixable in consuming code, repeated per site
+          </p>
+          <p class="issue__detail">Measured in all four: <code>aria-current=&quot;step&quot;</code> is emitted by none of them and offered as a prop by none of them. antd marks the current step with a CSS class only; Mantine with <code>data-progress=&quot;true&quot;</code>; MUI with <code>aria-selected</code> (see its own entry); Carbon with a visually hidden English span reading &quot;Current&quot; that folds the state into the accessible name - &quot;Event basics Required Current&quot; - and stays English in all four locales unless every step is given <code>translateWithId</code>. Each demo adds the attribute by hand. None of the four ships a live region either, so the progress announcement is hand-written five times out of five.</p>
+          
+          <p class="issue__links"><a href="https://github.com/khawkins98/data-design-demo/blob/main/apps/delta-antd/src/views/EventWizard.tsx">the wizard</a> &middot; <a href="../axes.html">axis A7</a></p>
+          <p class="issue__id"><code>stepper-omits-aria-current</code></p>
+        </article>
+
+        <article class="issue issue--caveat" id="carbon-stepper-truncates-step-names">
+          <h4 class="issue__title">
+            <span class="issue__badge">Caveat</span>
+            Carbon truncates step names by design, and German hits it
+            
+          </h4>
+          <p class="issue__meta">
+            Belongs to <strong>the library</strong>
+            &middot; affects both hosts
+            &middot; counts towards the score
+            &middot; escape: fixable in consuming code, repeated per site
+          </p>
+          <p class="issue__detail"><code>.cds--progress-label</code> ships <code>white-space: nowrap</code> with <code>text-overflow: ellipsis</code>, so German's &quot;Zusätzliche Einzelheiten&quot; renders as &quot;Zusätzliche Ein…&quot; at every viewport. Carbon's intended remedy is <code>overflowTooltipProps</code> - hover to read the step's name - which a touch user cannot reach. Carbon's own VERTICAL variant sets <code>white-space: initial</code> on the same element, so wrapping is a shape it supports, just not on the axis DELTA's design uses. Two further hatches were needed on the same component: <code>secondaryLabel</code> is <code>position: absolute</code> horizontally so the REQUIRED/OPTIONAL line reserves no height and overlaps a wrapped label, and the indicator has no media queries at all with a 7rem per-step minimum, so four steps demand 512px and scroll the document at 390px.</p>
+          
+          <p class="issue__links"><a href="https://github.com/khawkins98/data-design-demo/blob/main/apps/delta-carbon/evidence.json">evidence</a> &middot; <a href="../axes.html">axis A2</a></p>
+          <p class="issue__id"><code>carbon-stepper-truncates-step-names</code></p>
         </article>
 
         <article class="issue issue--caveat" id="delta-host-has-no-mangrove-stylesheet">
@@ -856,7 +964,7 @@
 
       <section class="candidate" id="mantine">
         <h2 class="candidate__name">Mantine</h2>
-        <p class="candidate__count">7 open &middot; 7 found in our own code and fixed</p>
+        <p class="candidate__count">8 open &middot; 7 found in our own code and fixed</p>
         <h3 class="candidate__group">Open</h3>
 
         <article class="issue issue--blocker" id="mantine-modal-close-unnamed">
@@ -911,6 +1019,24 @@
           
           <p class="issue__links"><a href="../axes.html">axis A5</a></p>
           <p class="issue__id"><code>mantine-build-time-theme</code></p>
+        </article>
+
+        <article class="issue issue--caveat" id="stepper-omits-aria-current">
+          <h4 class="issue__title">
+            <span class="issue__badge">Caveat</span>
+            No candidate's stepper marks the current step for a screen reader
+            
+          </h4>
+          <p class="issue__meta">
+            Belongs to <strong>the library</strong>
+            &middot; affects both hosts
+            &middot; counts towards the score
+            &middot; escape: fixable in consuming code, repeated per site
+          </p>
+          <p class="issue__detail">Measured in all four: <code>aria-current=&quot;step&quot;</code> is emitted by none of them and offered as a prop by none of them. antd marks the current step with a CSS class only; Mantine with <code>data-progress=&quot;true&quot;</code>; MUI with <code>aria-selected</code> (see its own entry); Carbon with a visually hidden English span reading &quot;Current&quot; that folds the state into the accessible name - &quot;Event basics Required Current&quot; - and stays English in all four locales unless every step is given <code>translateWithId</code>. Each demo adds the attribute by hand. None of the four ships a live region either, so the progress announcement is hand-written five times out of five.</p>
+          
+          <p class="issue__links"><a href="https://github.com/khawkins98/data-design-demo/blob/main/apps/delta-antd/src/views/EventWizard.tsx">the wizard</a> &middot; <a href="../axes.html">axis A7</a></p>
+          <p class="issue__id"><code>stepper-omits-aria-current</code></p>
         </article>
 
         <article class="issue issue--caveat" id="delta-host-has-no-mangrove-stylesheet">
@@ -1115,7 +1241,7 @@
 
       <section class="candidate" id="antd">
         <h2 class="candidate__name">Ant Design</h2>
-        <p class="candidate__count">10 open &middot; 4 found in our own code and fixed</p>
+        <p class="candidate__count">12 open &middot; 4 found in our own code and fixed</p>
         <h3 class="candidate__group">Open</h3>
 
         <article class="issue issue--blocker" id="antd-select-value-hidden-on-mangrove">
@@ -1224,6 +1350,42 @@
           
           <p class="issue__links"><a href="../requirements.md">the requirement</a></p>
           <p class="issue__id"><code>mantine-no-column-sizing</code></p>
+        </article>
+
+        <article class="issue issue--caveat" id="stepper-omits-aria-current">
+          <h4 class="issue__title">
+            <span class="issue__badge">Caveat</span>
+            No candidate's stepper marks the current step for a screen reader
+            
+          </h4>
+          <p class="issue__meta">
+            Belongs to <strong>the library</strong>
+            &middot; affects both hosts
+            &middot; counts towards the score
+            &middot; escape: fixable in consuming code, repeated per site
+          </p>
+          <p class="issue__detail">Measured in all four: <code>aria-current=&quot;step&quot;</code> is emitted by none of them and offered as a prop by none of them. antd marks the current step with a CSS class only; Mantine with <code>data-progress=&quot;true&quot;</code>; MUI with <code>aria-selected</code> (see its own entry); Carbon with a visually hidden English span reading &quot;Current&quot; that folds the state into the accessible name - &quot;Event basics Required Current&quot; - and stays English in all four locales unless every step is given <code>translateWithId</code>. Each demo adds the attribute by hand. None of the four ships a live region either, so the progress announcement is hand-written five times out of five.</p>
+          
+          <p class="issue__links"><a href="https://github.com/khawkins98/data-design-demo/blob/main/apps/delta-antd/src/views/EventWizard.tsx">the wizard</a> &middot; <a href="../axes.html">axis A7</a></p>
+          <p class="issue__id"><code>stepper-omits-aria-current</code></p>
+        </article>
+
+        <article class="issue issue--caveat" id="antd-disabled-step-leaves-the-tree">
+          <h4 class="issue__title">
+            <span class="issue__badge">Caveat</span>
+            An unreachable antd step disappears from the accessibility tree
+            
+          </h4>
+          <p class="issue__meta">
+            Belongs to <strong>the library</strong>
+            &middot; affects both hosts
+            &middot; counts towards the score
+            &middot; escape: fixable in consuming code, repeated per site
+          </p>
+          <p class="issue__detail">antd gives a step its <code>role=&quot;button&quot;</code> and tabindex only when it is clickable, so <code>disabled: true</code> removes both and leaves nothing behind. Measured with an accessibility snapshot: steps 2, 3 and 4 collapsed out of the list and into a single unstructured text run - &quot;2 Linked events Optional 3 Additional details Optional 4 Review and save Required&quot; - so a screen-reader user could not tell how many steps remained or where one ended. Reinstating them needs <code>role</code> and <code>aria-disabled</code> passed through, which works only because the internal Step component spreads leftover item props onto the DOM node; antd's own <code>StepItem</code> type declares no ARIA props at all. Separately, <code>CheckOutlined</code> ships <code>role=&quot;img&quot; aria-label=&quot;check&quot;</code>, so a completed step announces the English word &quot;check&quot; in every locale until the marker is hidden.</p>
+          
+          <p class="issue__links"><a href="https://github.com/khawkins98/data-design-demo/blob/main/apps/delta-antd/src/views/EventWizard.tsx">the wizard</a> &middot; <a href="../axes.html">axis A7</a></p>
+          <p class="issue__id"><code>antd-disabled-step-leaves-the-tree</code></p>
         </article>
 
         <article class="issue issue--caveat" id="delta-host-has-no-mangrove-stylesheet">
