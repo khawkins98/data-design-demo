@@ -280,9 +280,12 @@ for (const r of rows.filter((x) => x.escapeHatchText.length > 0)) {
   lines.push(`**\`${r.app}\`** - ${r.escapeHatches} entries`);
   lines.push("");
   for (const h of r.escapeHatchText) {
-    // These are long prose notes; keep the first sentence, which states the trap.
     const first = String(h).split(/(?<=\.)\s+/)[0];
-    lines.push(`- ${first.length > 240 ? `${first.slice(0, 240)}...` : first}`);
+    // Normalize ALL-CAPS sentences to sentence case.
+    const normalized = first.replace(/^([A-Z][A-Z\s,'-]{8,}\.?)/, (m) =>
+      m.charAt(0) + m.slice(1).toLowerCase(),
+    );
+    lines.push(`- ${normalized.length > 240 ? `${normalized.slice(0, 240)}...` : normalized}`);
   }
   lines.push("");
 }

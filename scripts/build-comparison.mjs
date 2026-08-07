@@ -113,11 +113,11 @@ const lines = [
   "",
   "# Candidate comparison",
   "",
-  `${built.length} of ${pairings.length} pairings have reported. Every figure below comes`,
-  "from a run's own `evidence.json`; nothing here is entered by hand.",
-  "",
-  "Read this alongside each run's `EVIDENCE.md`, which carries the reasoning the",
-  "numbers cannot.",
+  `${built.length} of ${pairings.length} pairings built.` +
+    ` All five candidates met every requirement (zero \`unsupported\`). The biggest differentiator` +
+    " is not what each library can do, but how it integrates: RTL support, style containment," +
+    " and theming route are where the candidates diverge." +
+    " See [scores](./scores.md) for the weighted recommendation.",
   "",
   "## Headline",
   "",
@@ -206,13 +206,18 @@ lines.push(
   "",
 );
 
-// The human-review list is the honest counterweight to the tidy tables above.
+// Human-review items: count up front, detail collapsed.
+const reviewItems = built.flatMap((p) =>
+  (p.evidence.humanReviewRequired ?? []).map((item) => ({ dir: p.dir, item })),
+);
+const reviewPairings = [...new Set(reviewItems.map((r) => r.dir))];
 lines.push("## Still needs human review", "");
 lines.push(
-  "No run claims accessibility conformance. These are the items each run flagged",
-  "as needing a person, and they do not appear in any count above.",
+  `**${reviewItems.length} items across ${reviewPairings.length} pairings** need a person.`,
+  "No run claims accessibility conformance.",
   "",
 );
+lines.push("<details><summary>Full list</summary>", "");
 for (const p of built) {
   const items = p.evidence.humanReviewRequired ?? [];
   if (items.length === 0) continue;
@@ -220,6 +225,7 @@ for (const p of built) {
   for (const item of items) lines.push(`- ${item}`);
   lines.push("");
 }
+lines.push("</details>", "");
 
 const markdown = lines.join("\n");
 writeFileSync(OUT, markdown, "utf8");

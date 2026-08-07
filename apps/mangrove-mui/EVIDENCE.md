@@ -16,20 +16,10 @@ and fixtures; `src/theme.ts` identical. The comparison isolates host cost.
 
 ## Mangrove restyles MUI's inputs
 
-Mangrove's compiled stylesheet contains:
-
-```css
-input[type=date], input[type=email], input[type=number], input[type=password],
-input[type=search], input[type=tel], input[type=text], textarea {
-  appearance: none; background-color: #fff; border: 2px solid #1a1a1a;
-  border-radius: 0; box-sizing: border-box; display: block;
-  font-family: Roboto, sans-serif; font-size: 1rem; height: 46px;
-  padding: .390625rem; width: 100%;
-}
-```
-
-Element + attribute specificity **(0,1,1)** beats MUI's `.MuiOutlinedInput-input`
-**(0,1,0)**. Measured on a section-1 TextField with the repair removed at runtime:
+Mangrove's `input[type=text]` (and siblings) rule has specificity **(0,1,1)**,
+beating MUI's `.MuiOutlinedInput-input` **(0,1,0)**. It forces `border: 2px
+solid #1a1a1a`, `height: 46px`, `background-color: #fff`, and `font-family:
+Roboto`. Measured with the repair removed at runtime:
 
 | Property | Unrepaired | Repaired |
 | --- | --- | --- |
@@ -39,27 +29,16 @@ Element + attribute specificity **(0,1,1)** beats MUI's `.MuiOutlinedInput-input
 | `font-family` | `Roboto, sans-serif` | the token stack |
 
 Repaired with 10 lines under `.demo .MuiOutlinedInput-input` -- (0,2,0), no
-`!important` needed. Root cause: `CssBaseline` was declined (writes to `html`,
-`body`, `*`); on Delta omitting it cost nothing, on Mangrove it costs this.
-**Containment and correct rendering are in tension.**
+`!important`. Root cause: `CssBaseline` was declined (writes to `html`, `body`,
+`*`); on Delta omitting it cost nothing, on Mangrove it costs this.
 
 ---
 
 ## Three anticipated host problems that did not happen
 
-All three measured inert against MUI 9.10.1. Defensive rules deleted rather than
-left to pad the CSS count.
-
-**`[hidden]` specificity bug did not bite.** MUI never uses `hidden`; helper
-inputs use `aria-hidden="true"` collapsed to 1px with **no `type` attribute**,
-so Mangrove's `[hidden] { display: none }` never matches. 0 `[hidden]` elements
-in the candidate subtree. The host bug should still be fixed.
-
-**`ul` rule did not reach MUI's lists.** Measured `padding-left: 0px` and
-`list-style-type: none` -- MUI's own List styles win.
-
-**`legend` rule never matches MUI's notch legend.** Host rule is a descendant
-selector, not bare `legend`. Metrics identical with and without a reset.
+All three inert against MUI 9.10.1. `[hidden]`: MUI never uses `hidden` (0
+matches in candidate subtree). `ul`: MUI's List styles win. `legend`: host rule
+is a descendant selector, not bare `legend`; metrics identical either way.
 
 ---
 
@@ -87,23 +66,11 @@ Candidate defect, not host: identical geometry in
 
 ## The date-time range: what composition cost
 
-MUI's range pickers exist only in `@mui/x-date-pickers-pro` (licensed tier).
-The community package ships **zero** `Range*` components. Composed from two
-`DateTimePicker`s with `ampm={false}`, minute views, `minDateTime`/`maxDateTime`
-wired between them, span derived in application code. **31 custom lines.**
-
-What a native range picker would have given:
-
-- **One calendar showing both endpoints** with highlighted intervening days
-- **Drag-to-select** across a range
-- **One popover and one focus trap** instead of two
-- **A single accessible name for the range** -- screen-reader users get two unrelated fields (the most substantive loss)
-- **The derived span for free** -- the duration line is our code
-
-`minDateTime`/`maxDateTime` wiring prevents inversion through the picker UI, but
-typed input still needs the explicit check (recorded in `humanReviewRequired`).
-
-**Verdict:** `composed`. Usable, meaningfully worse than native, gap mostly borne by screen-reader users.
+Range pickers are `@mui/x-date-pickers-pro` only (licensed tier). Composed from
+two `DateTimePicker`s with `minDateTime`/`maxDateTime` wired between them.
+**31 custom lines.** Losses: two calendars instead of one, two focus traps, no
+single accessible name (screen-reader users get two unrelated fields). Typed
+input can still invert the range (recorded in `humanReviewRequired`).
 
 ---
 
@@ -116,19 +83,16 @@ MUI portals to `document.body`, outside `.undrr-tokens`.
 | `.MuiPopover-paper` background | `rgb(255, 255, 255)` |
 | `--undrr-color-surface` visible in the portal | `""` (empty) |
 
-Overlays render correctly because MUI's theme resolves token values at build
-time and emotion emits literal colours. The same build-time inlining makes
-MUI's theme a **copy** of the tokens, not a live reference.
+Renders correctly because MUI resolves tokens at build time; emotion emits
+literal colours. Same inlining makes the theme a **copy**, not a live reference.
 
 ---
 
 ## Matching the host: further away than on Delta
 
-MUI themed to UNDRR tokens does not read as Mangrove: different radius, table
-density, button weight, blue. `variant="outlined"` and `elevation={0}` get Card
-flat, but the remaining gap is palette and type scale. **Mangrove 1.8.1
+Different radius, table density, button weight, blue. **Mangrove 1.8.1
 publishes no CSS custom properties** -- matching requires transcribing Sass
-values by hand. Mangrove 2.0 preview tokens were **not** used.
+values by hand.
 
 ---
 
@@ -139,8 +103,7 @@ and column resizing -- all props. **Zero custom lines across all six table
 requirements.** `mangrove-react-aria` needed 70 lines and a scratch-built
 pagination control.
 
-**Multiselect.** `multiple` on `Autocomplete`, chips included. React Aria has no
-multiselect component.
+**Multiselect.** `multiple` on `Autocomplete`, chips included.
 
 **States.** `Alert` with correct ARIA roles, `LinearProgress`, DataGrid's
 `loading` prop and `localeText.noRowsLabel`.
@@ -160,10 +123,9 @@ Aria on this host.
 **Bundle: 397.6 kB gzipped JS, 158 dependencies** (`mangrove-react-aria`:
 237.6 kB, 20 deps).
 
-**Theming is a build-time copy, not a live reference.** See the portals section.
+**Theming is a build-time copy, not a live reference.**
 
-**`cssVariables: true` was rejected** -- it would emit `--mui-*` properties at
-`:root`, putting MUI's palette in the host's global scope.
+**`cssVariables: true` rejected** -- emits `--mui-*` at `:root`.
 
 **RTL costs more than React Aria and does not finish the job.** See the failing
 test.
@@ -176,31 +138,26 @@ test.
 
 ## Accessibility
 
-No conformance claimed. Scoped to candidate subtree: **1 serious, 0 critical,
-4 incomplete.** Whole-page counts match (host baseline: 0 violations).
+Scoped to candidate subtree: **1 serious, 0 critical, 4 incomplete.** Host
+baseline: 0 violations.
 
-Violation: `color-contrast` on disabled field helper text.
-`--undrr-color-text-disabled` (`#8b9aa5`) is ~2.8:1 on white. Disabled
-*controls* are exempt from WCAG 1.4.3; helper text is not. Tokens are
-import-only and could not be fixed here.
+Violation: `color-contrast` on disabled helper text. `#8b9aa5` is ~2.8:1 on
+white. Disabled *controls* are exempt from WCAG 1.4.3; helper text is not.
 
-Whole page adds `link-in-text-block` -- **Mangrove host baseline** (bare `a`
-with `text-decoration: none`), excluded from scoped numbers.
-
-Per-section: section 1 carries the violation; 2, 3, 4, 6, 7 report incompletes;
-5 and 9 are clean. The RTL label defect (870px gap) is also an accessibility
-problem axe does not catch.
+Whole page adds `link-in-text-block` -- **Mangrove host baseline** (bare `a`,
+`text-decoration: none`), excluded from scoped numbers. Section 1 carries the
+violation; 2, 3, 4, 6, 7 report incompletes; 5 and 9 clean. The RTL label
+defect (870px gap) is also an accessibility problem axe does not catch.
 
 ---
 
 ## Determinism
 
-All dates from fixtures' ISO strings, formatted with `timeZone: "UTC"`. No
-`new Date()` without arguments.
+All dates from fixtures' ISO strings, formatted with `timeZone: "UTC"`.
 
 ---
 
 ## Shared packages
 
-Not modified. The token palette's `textDisabled` value cannot pass contrast when
-a library applies it to non-control text -- a token-design question for UNDRR.
+Not modified. `textDisabled` cannot pass contrast when applied to non-control
+text -- a token-design question for UNDRR.

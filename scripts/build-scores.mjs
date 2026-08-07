@@ -280,13 +280,17 @@ const clean = ranked.filter((c) => c.blockers.length === 0);
 const L = [];
 L.push("# Weighted scores");
 L.push("");
-L.push("GENERATED FILE - regenerate with `pnpm scores`. See");
-L.push("[decision-axes.md](./decision-axes.md) and [undrr-questions.md](./undrr-questions.md).");
+L.push("GENERATED FILE - regenerate with `pnpm scores`.");
 L.push("");
-L.push("All values derived from `evidence.json`, the known-issues registry and");
-L.push("`extraction-results.json`. Only library-owned defects affect scores.");
+L.push("**Reading order.** Start here for the recommendation. [decision-axes.md](./decision-axes.md)");
+L.push("defines what was measured. Each app's `EVIDENCE.md` has the raw findings.");
 L.push("");
-L.push("## What this says to do");
+L.push("## Decisions needed");
+L.push("");
+L.push("1. **Human accessibility pass.** A7 bands rest on automated scanning only - no conformance claim without screen-reader and keyboard testing.");
+L.push("2. **MUI exclusion ruling.** Its Arabic defect has a fix this evaluation's rules forbid. Relaxing that rule returns MUI to contention.");
+L.push("");
+L.push("## Recommendation");
 L.push("");
 L.push(`**Adopt ${ranked[0].name}.**`);
 L.push("");
@@ -298,35 +302,19 @@ if (ranked[0].blockers.length === 0) {
         : `; one of ${clean.length}/${ranked.length} unblocked candidates.`) +
       " Arabic works from a `dir` attribute alone. Stays inside its own subtree on both hosts.",
   );
-  L.push("");
-  // Only emitted when React Aria is the winner, since the paragraph is specific to it.
   if (ranked[0].candidate === "react-aria") {
+  L.push("");
   L.push("**The cost.** React Aria ships behaviour, not appearance. Adopting it means UNDRR");
-  L.push("owns the visual layer permanently - the demos carry 155-213 hand-written CSS rules.");
-  L.push("Three of seven axes reward the property that creates that cost: no opinions means no");
-  L.push("Mangrove conflicts, no wrong colours, no mistheming.");
-  // Inline bold must stay on one pushed line or the HTML converter emits literal asterisks.
-  L.push(
-    '**Read the recommendation as "adopt this and fund a design system", not as ' +
-      '"adopt this and save work".**',
-  );
+  L.push('owns the visual layer permanently. **Read this as "fund a design system", not "save work".**');
   }
 } else {
   L.push(
     `It leads on the composite at ${ranked[0].composite}, but carries ` +
-      `${ranked[0].blockers.length} blocking defect - so this is a recommendation with a ` +
-      "condition attached, not a clean one. See Blockers.",
+      `${ranked[0].blockers.length} blocking defect - recommendation conditional. See Blockers.`,
   );
 }
 L.push("");
-L.push("**Read this alongside [architecture-options.md](./architecture-options.md).**");
-L.push("Fewer built-in components means gaps filled in Mangrove, not per-site - that is the");
-L.push("strongest case for this recommendation, and the one that carries the staffing bill.");
-L.push("");
-L.push("**Before sign-off:**");
-L.push("");
-L.push("1. A human accessibility pass. A7 bands rest on automated scanning only - no conformance claim can be made without screen-reader and keyboard testing.");
-L.push("2. A decision on MUI's exclusion. Its Arabic defect has a fix this evaluation's rules forbid. Relaxing that rule returns MUI to contention.");
+L.push("See also [architecture-options.md](./architecture-options.md) for the staffing implications.");
 L.push("");
 
 L.push("## Weights");
@@ -437,21 +425,37 @@ for (const c of ranked.filter((x) => x.blockers.length > 0)) {
   L.push("");
 }
 
+L.push("## Glossary");
+L.push("");
+L.push("| Term | Meaning |");
+L.push("| --- | --- |");
+L.push("| **strong** | Full weight. Axis fully satisfied. |");
+L.push("| **workable** | 60% weight. Satisfied with caveats or extra effort. |");
+L.push("| **weak** | 30% weight. Significant gaps. |");
+L.push("| **blocked** | 0% weight. Axis not satisfied at all. |");
+L.push("| canary | A host UI element watched for unintended style changes (leakage). |");
+L.push("| escape hatch | A workaround used when the library's documented approach failed. |");
+L.push("| composed | Requirement met by assembling multiple components (vs a single `native` one). |");
+L.push("| leakage | A candidate's styles bleeding onto host markup outside its own subtree. |");
+L.push("| portalled overlay | UI (dialogs, tooltips) rendered outside the component's DOM tree via `createPortal`. |");
+L.push("");
+
 L.push("## Per pairing, per axis");
 L.push("");
-L.push("Each cell carries the fact that assigned the band. `strong` scores full weight,");
-L.push("`workable` 60%, `weak` 30%, `blocked` nothing.");
+L.push("Each cell carries the fact that assigned the band.");
 L.push("");
-for (const row of rows) {
+
+// Emit top 2 inline, rest inside <details> (markdown doesn't support details, so this
+// only takes effect in the HTML build — the .md file gets all of them flat).
+for (let i = 0; i < rows.length; i++) {
+  const row = rows[i];
   L.push(`### \`${row.app}\` - composite ${row.composite} / 100`);
   L.push("");
   if (row.headline) {
     L.push(`Worst open issue: **${row.headline.severity}** - ${row.headline.title}`);
     L.push("");
   }
-  L.push(
-    `${row.openIssues} open findings. ${row.resolvedOurs} defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.`,
-  );
+  L.push(`${row.openIssues} open findings. ${row.resolvedOurs} fixed in our code and excluded from score.`);
   L.push("");
   L.push("| Axis | Band | Weight | Why |");
   L.push("| --- | --- | --- | --- |");
@@ -551,6 +555,29 @@ function toHtml(markdown) {
   return out.join("\n").replace(/<\/p>\n<p>/g, " ");
 }
 
+// Post-process HTML: wrap per-pairing sections 3+ in <details>.
+// The first 2 (top candidate + runner-up on each host = 4 h3s) stay open.
+function collapseLatePairings(bodyHtml) {
+  const h3Pattern = /<h3>/g;
+  let match;
+  const positions = [];
+  while ((match = h3Pattern.exec(bodyHtml)) !== null) positions.push(match.index);
+  // "Per pairing" h3s start after the glossary/blocker h3s. Find the ones matching app names.
+  const pairingH3s = positions.filter((pos) => {
+    const snippet = bodyHtml.slice(pos, pos + 80);
+    return /delta-|mangrove-/.test(snippet);
+  });
+  if (pairingH3s.length <= 4) return bodyHtml;
+  const splitAt = pairingH3s[4]; // After 4 (2 pairings x 2 hosts)
+  const before = bodyHtml.slice(0, splitAt);
+  const after = bodyHtml.slice(splitAt);
+  return (
+    before +
+    `<details><summary>Remaining ${pairingH3s.length - 4} pairings</summary>\n` +
+    after.replace(/<h2>What this cannot tell you<\/h2>/, "</details>\n<h2>What this cannot tell you</h2>")
+  );
+}
+
 const html = `<!doctype html>
 <!-- GENERATED FILE - produced by scripts/build-scores.mjs. Regenerate: pnpm scores -->
 <html lang="en">
@@ -573,11 +600,14 @@ const html = `<!doctype html>
       a { color:var(--accent); }
       p,li { max-width:80ch; }
       strong { color:var(--text); }
+      details { margin:1rem 0; }
+      summary { cursor:pointer; font-weight:600; padding:0.5rem 0; }
+      summary:hover { color:var(--accent); }
     </style>
   </head>
   <body>
     <div class="page">
-${toHtml(md)}
+${collapseLatePairings(toHtml(md))}
       <p><a href="./issues.html">every finding in full</a> &middot;
          <a href="./axes.html">decision axes</a> &middot;
          <a href="./">all pairings</a></p>

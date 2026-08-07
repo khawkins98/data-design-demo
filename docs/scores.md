@@ -1,31 +1,25 @@
 # Weighted scores
 
-GENERATED FILE - regenerate with `pnpm scores`. See
-[decision-axes.md](./decision-axes.md) and [undrr-questions.md](./undrr-questions.md).
+GENERATED FILE - regenerate with `pnpm scores`.
 
-All values derived from `evidence.json`, the known-issues registry and
-`extraction-results.json`. Only library-owned defects affect scores.
+**Reading order.** Start here for the recommendation. [decision-axes.md](./decision-axes.md)
+defines what was measured. Each app's `EVIDENCE.md` has the raw findings.
 
-## What this says to do
+## Decisions needed
+
+1. **Human accessibility pass.** A7 bands rest on automated scanning only - no conformance claim without screen-reader and keyboard testing.
+2. **MUI exclusion ruling.** Its Arabic defect has a fix this evaluation's rules forbid. Relaxing that rule returns MUI to contention.
+
+## Recommendation
 
 **Adopt Adobe React Aria.**
 
 Composite 84 vs 69 for MUI (Community only); one of 2/5 unblocked candidates. Arabic works from a `dir` attribute alone. Stays inside its own subtree on both hosts.
 
 **The cost.** React Aria ships behaviour, not appearance. Adopting it means UNDRR
-owns the visual layer permanently - the demos carry 155-213 hand-written CSS rules.
-Three of seven axes reward the property that creates that cost: no opinions means no
-Mangrove conflicts, no wrong colours, no mistheming.
-**Read the recommendation as "adopt this and fund a design system", not as "adopt this and save work".**
+owns the visual layer permanently. **Read this as "fund a design system", not "save work".**
 
-**Read this alongside [architecture-options.md](./architecture-options.md).**
-Fewer built-in components means gaps filled in Mangrove, not per-site - that is the
-strongest case for this recommendation, and the one that carries the staffing bill.
-
-**Before sign-off:**
-
-1. A human accessibility pass. A7 bands rest on automated scanning only - no conformance claim can be made without screen-reader and keyboard testing.
-2. A decision on MUI's exclusion. Its Arabic defect has a fix this evaluation's rules forbid. Relaxing that rule returns MUI to contention.
+See also [architecture-options.md](./architecture-options.md) for the staffing implications.
 
 ## Weights
 
@@ -98,16 +92,29 @@ Blocked = axis not satisfied at all, by the library rather than our code.
 - A4 Mangrove compatibility: the candidate restyled 19 computed properties on host markup outside its own subtree
 - carbon-leakage-failure: This pairing fails the style-containment assertion (owned by pairing) [escape: cannot be escaped while using the library as documented]
 
+## Glossary
+
+| Term | Meaning |
+| --- | --- |
+| **strong** | Full weight. Axis fully satisfied. |
+| **workable** | 60% weight. Satisfied with caveats or extra effort. |
+| **weak** | 30% weight. Significant gaps. |
+| **blocked** | 0% weight. Axis not satisfied at all. |
+| canary | A host UI element watched for unintended style changes (leakage). |
+| escape hatch | A workaround used when the library's documented approach failed. |
+| composed | Requirement met by assembling multiple components (vs a single `native` one). |
+| leakage | A candidate's styles bleeding onto host markup outside its own subtree. |
+| portalled overlay | UI (dialogs, tooltips) rendered outside the component's DOM tree via `createPortal`. |
+
 ## Per pairing, per axis
 
-Each cell carries the fact that assigned the band. `strong` scores full weight,
-`workable` 60%, `weak` 30%, `blocked` nothing.
+Each cell carries the fact that assigned the band.
 
 ### `delta-react-aria` - composite 84 / 100
 
 Worst open issue: **caveat** - React Aria is unstyled, so these pairings carry 155 to 213 CSS rules
 
-8 open findings. 7 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.
+8 open findings. 7 fixed in our code and excluded from score.
 
 | Axis | Band | Weight | Why |
 | --- | --- | --- | --- |
@@ -123,7 +130,7 @@ Worst open issue: **caveat** - React Aria is unstyled, so these pairings carry 1
 
 Worst open issue: **caveat** - React Aria is unstyled, so these pairings carry 155 to 213 CSS rules
 
-10 open findings. 7 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.
+10 open findings. 7 fixed in our code and excluded from score.
 
 | Axis | Band | Weight | Why |
 | --- | --- | --- | --- |
@@ -139,7 +146,7 @@ Worst open issue: **caveat** - React Aria is unstyled, so these pairings carry 1
 
 Worst open issue: **caveat** - MUI needs a third setup step for RTL, and fails silently without it
 
-7 open findings. 7 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.
+7 open findings. 7 fixed in our code and excluded from score.
 
 | Axis | Band | Weight | Why |
 | --- | --- | --- | --- |
@@ -155,7 +162,7 @@ Worst open issue: **caveat** - MUI needs a third setup step for RTL, and fails s
 
 Worst open issue: **caveat** - MUI needs a third setup step for RTL, and fails silently without it
 
-8 open findings. 7 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.
+8 open findings. 7 fixed in our code and excluded from score.
 
 | Axis | Band | Weight | Why |
 | --- | --- | --- | --- |
@@ -171,7 +178,7 @@ Worst open issue: **caveat** - MUI needs a third setup step for RTL, and fails s
 
 Worst open issue: **blocker** - Carbon cannot express about 30% of the UNDRR design tokens
 
-9 open findings. 7 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.
+9 open findings. 7 fixed in our code and excluded from score.
 
 | Axis | Band | Weight | Why |
 | --- | --- | --- | --- |
@@ -187,7 +194,7 @@ Worst open issue: **blocker** - Carbon cannot express about 30% of the UNDRR des
 
 Worst open issue: **blocker** - Carbon cannot express about 30% of the UNDRR design tokens
 
-11 open findings. 7 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.
+11 open findings. 7 fixed in our code and excluded from score.
 
 | Axis | Band | Weight | Why |
 | --- | --- | --- | --- |
@@ -203,7 +210,7 @@ Worst open issue: **blocker** - Carbon cannot express about 30% of the UNDRR des
 
 Worst open issue: **blocker** - Modal's close button ships with no accessible name
 
-9 open findings. 7 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.
+9 open findings. 7 fixed in our code and excluded from score.
 
 | Axis | Band | Weight | Why |
 | --- | --- | --- | --- |
@@ -219,7 +226,7 @@ Worst open issue: **blocker** - Modal's close button ships with no accessible na
 
 Worst open issue: **blocker** - Modal's close button ships with no accessible name
 
-9 open findings. 7 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.
+9 open findings. 7 fixed in our code and excluded from score.
 
 | Axis | Band | Weight | Why |
 | --- | --- | --- | --- |
@@ -235,7 +242,7 @@ Worst open issue: **blocker** - Modal's close button ships with no accessible na
 
 Worst open issue: **caveat** - The data table has an upstream accessibility defect
 
-10 open findings. 4 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.
+10 open findings. 4 fixed in our code and excluded from score.
 
 | Axis | Band | Weight | Why |
 | --- | --- | --- | --- |
@@ -251,7 +258,7 @@ Worst open issue: **caveat** - The data table has an upstream accessibility defe
 
 Worst open issue: **blocker** - Select controls do not display their selected value
 
-13 open findings. 4 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.
+13 open findings. 4 fixed in our code and excluded from score.
 
 | Axis | Band | Weight | Why |
 | --- | --- | --- | --- |

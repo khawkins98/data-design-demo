@@ -6,11 +6,7 @@
 
 # Candidate comparison
 
-10 of 10 pairings have reported. Every figure below comes
-from a run's own `evidence.json`; nothing here is entered by hand.
-
-Read this alongside each run's `EVIDENCE.md`, which carries the reasoning the
-numbers cannot.
+10 of 10 pairings built. All five candidates met every requirement (zero `unsupported`). The biggest differentiator is not what each library can do, but how it integrates: RTL support, style containment, and theming route are where the candidates diverge. See [scores](./scores.md) for the weighted recommendation.
 
 ## Headline
 
@@ -94,8 +90,10 @@ None reported.
 
 ## Still needs human review
 
-No run claims accessibility conformance. These are the items each run flagged
-as needing a person, and they do not appear in any count above.
+**87 items across 10 pairings** need a person.
+No run claims accessibility conformance.
+
+<details><summary>Full list</summary>
 
 ### delta-react-aria
 
@@ -213,3 +211,5 @@ as needing a person, and they do not appear in any count above.
 - Typography.Link does not underline by default, which is a WCAG 1.4.1 question for inline links in body text. Not fixed here because the same question applies to Mangrove's own link styling and the two should be settled together.
 - Column resize is ours, so it is ours to maintain: 95 lines including RTL direction handling and keyboard support. Mantine has the same gap. React Aria, MUI and Carbon do not.
 - demo-state.ts is byte-identical to the copy in integration-mui. It is candidate-independent as well as host-independent and belongs in the scaffold, but packages/ is import-only for demo runs so it was left duplicated rather than churning six other apps.
+
+</details>

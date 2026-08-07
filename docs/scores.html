@@ -20,29 +20,32 @@
       a { color:var(--accent); }
       p,li { max-width:80ch; }
       strong { color:var(--text); }
+      details { margin:1rem 0; }
+      summary { cursor:pointer; font-weight:600; padding:0.5rem 0; }
+      summary:hover { color:var(--accent); }
     </style>
   </head>
   <body>
     <div class="page">
 <h1>Weighted scores</h1>
 
-<p>GENERATED FILE - regenerate with <code>pnpm scores</code>. See <a href="https://github.com/khawkins98/data-design-demo/blob/main/docs/decision-axes.md">decision-axes.md</a> and <a href="https://github.com/khawkins98/data-design-demo/blob/main/docs/undrr-questions.md">undrr-questions.md</a>.</p>
+<p>GENERATED FILE - regenerate with <code>pnpm scores</code>.</p>
 
-<p>All values derived from <code>evidence.json</code>, the known-issues registry and <code>extraction-results.json</code>. Only library-owned defects affect scores.</p>
+<p><strong>Reading order.</strong> Start here for the recommendation. <a href="https://github.com/khawkins98/data-design-demo/blob/main/docs/decision-axes.md">decision-axes.md</a> defines what was measured. Each app's <code>EVIDENCE.md</code> has the raw findings.</p>
 
-<h2>What this says to do</h2>
+<h2>Decisions needed</h2>
+
+<p>1. <strong>Human accessibility pass.</strong> A7 bands rest on automated scanning only - no conformance claim without screen-reader and keyboard testing. 2. <strong>MUI exclusion ruling.</strong> Its Arabic defect has a fix this evaluation's rules forbid. Relaxing that rule returns MUI to contention.</p>
+
+<h2>Recommendation</h2>
 
 <p><strong>Adopt Adobe React Aria.</strong></p>
 
 <p>Composite 84 vs 69 for MUI (Community only); one of 2/5 unblocked candidates. Arabic works from a <code>dir</code> attribute alone. Stays inside its own subtree on both hosts.</p>
 
-<p><strong>The cost.</strong> React Aria ships behaviour, not appearance. Adopting it means UNDRR owns the visual layer permanently - the demos carry 155-213 hand-written CSS rules. Three of seven axes reward the property that creates that cost: no opinions means no Mangrove conflicts, no wrong colours, no mistheming. <strong>Read the recommendation as "adopt this and fund a design system", not as "adopt this and save work".</strong></p>
+<p><strong>The cost.</strong> React Aria ships behaviour, not appearance. Adopting it means UNDRR owns the visual layer permanently. <strong>Read this as "fund a design system", not "save work".</strong></p>
 
-<p><strong>Read this alongside <a href="https://github.com/khawkins98/data-design-demo/blob/main/docs/architecture-options.md">architecture-options.md</a>.</strong> Fewer built-in components means gaps filled in Mangrove, not per-site - that is the strongest case for this recommendation, and the one that carries the staffing bill.</p>
-
-<p><strong>Before sign-off:</strong></p>
-
-<p>1. A human accessibility pass. A7 bands rest on automated scanning only - no conformance claim can be made without screen-reader and keyboard testing. 2. A decision on MUI's exclusion. Its Arabic defect has a fix this evaluation's rules forbid. Relaxing that rule returns MUI to contention.</p>
+<p>See also <a href="https://github.com/khawkins98/data-design-demo/blob/main/docs/architecture-options.md">architecture-options.md</a> for the staffing implications.</p>
 
 <h2>Weights</h2>
 
@@ -129,15 +132,31 @@
 <li>carbon-leakage-failure: This pairing fails the style-containment assertion (owned by pairing) [escape: cannot be escaped while using the library as documented]</li>
 
 </ul>
+<h2>Glossary</h2>
+
+<div class="scroll"><table><thead>
+<tr><th>Term</th><th>Meaning</th></tr>
+</thead><tbody>
+<tr><td><strong>strong</strong></td><td>Full weight. Axis fully satisfied.</td></tr>
+<tr><td><strong>workable</strong></td><td>60% weight. Satisfied with caveats or extra effort.</td></tr>
+<tr><td><strong>weak</strong></td><td>30% weight. Significant gaps.</td></tr>
+<tr><td><strong>blocked</strong></td><td>0% weight. Axis not satisfied at all.</td></tr>
+<tr><td>canary</td><td>A host UI element watched for unintended style changes (leakage).</td></tr>
+<tr><td>escape hatch</td><td>A workaround used when the library's documented approach failed.</td></tr>
+<tr><td>composed</td><td>Requirement met by assembling multiple components (vs a single <code>native</code> one).</td></tr>
+<tr><td>leakage</td><td>A candidate's styles bleeding onto host markup outside its own subtree.</td></tr>
+<tr><td>portalled overlay</td><td>UI (dialogs, tooltips) rendered outside the component's DOM tree via <code>createPortal</code>.</td></tr>
+</tbody></table></div>
+
 <h2>Per pairing, per axis</h2>
 
-<p>Each cell carries the fact that assigned the band. <code>strong</code> scores full weight, <code>workable</code> 60%, <code>weak</code> 30%, <code>blocked</code> nothing.</p>
+<p>Each cell carries the fact that assigned the band.</p>
 
 <h3><code>delta-react-aria</code> - composite 84 / 100</h3>
 
 <p>Worst open issue: <strong>caveat</strong> - React Aria is unstyled, so these pairings carry 155 to 213 CSS rules</p>
 
-<p>8 open findings. 7 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.</p>
+<p>8 open findings. 7 fixed in our code and excluded from score.</p>
 
 <div class="scroll"><table><thead>
 <tr><th>Axis</th><th>Band</th><th>Weight</th><th>Why</th></tr>
@@ -155,7 +174,7 @@
 
 <p>Worst open issue: <strong>caveat</strong> - React Aria is unstyled, so these pairings carry 155 to 213 CSS rules</p>
 
-<p>10 open findings. 7 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.</p>
+<p>10 open findings. 7 fixed in our code and excluded from score.</p>
 
 <div class="scroll"><table><thead>
 <tr><th>Axis</th><th>Band</th><th>Weight</th><th>Why</th></tr>
@@ -173,7 +192,7 @@
 
 <p>Worst open issue: <strong>caveat</strong> - MUI needs a third setup step for RTL, and fails silently without it</p>
 
-<p>7 open findings. 7 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.</p>
+<p>7 open findings. 7 fixed in our code and excluded from score.</p>
 
 <div class="scroll"><table><thead>
 <tr><th>Axis</th><th>Band</th><th>Weight</th><th>Why</th></tr>
@@ -191,7 +210,7 @@
 
 <p>Worst open issue: <strong>caveat</strong> - MUI needs a third setup step for RTL, and fails silently without it</p>
 
-<p>8 open findings. 7 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.</p>
+<p>8 open findings. 7 fixed in our code and excluded from score.</p>
 
 <div class="scroll"><table><thead>
 <tr><th>Axis</th><th>Band</th><th>Weight</th><th>Why</th></tr>
@@ -205,11 +224,12 @@
 <tr><td>A7 Accessibility conformance</td><td><strong>workable</strong></td><td>14</td><td>1 serious automated violations; 4 checks axe declined to decide, each still owed a human</td></tr>
 </tbody></table></div>
 
+<details><summary>Remaining 6 pairings</summary>
 <h3><code>delta-carbon</code> - composite 49 / 100</h3>
 
 <p>Worst open issue: <strong>blocker</strong> - Carbon cannot express about 30% of the UNDRR design tokens</p>
 
-<p>9 open findings. 7 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.</p>
+<p>9 open findings. 7 fixed in our code and excluded from score.</p>
 
 <div class="scroll"><table><thead>
 <tr><th>Axis</th><th>Band</th><th>Weight</th><th>Why</th></tr>
@@ -227,7 +247,7 @@
 
 <p>Worst open issue: <strong>blocker</strong> - Carbon cannot express about 30% of the UNDRR design tokens</p>
 
-<p>11 open findings. 7 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.</p>
+<p>11 open findings. 7 fixed in our code and excluded from score.</p>
 
 <div class="scroll"><table><thead>
 <tr><th>Axis</th><th>Band</th><th>Weight</th><th>Why</th></tr>
@@ -245,7 +265,7 @@
 
 <p>Worst open issue: <strong>blocker</strong> - Modal's close button ships with no accessible name</p>
 
-<p>9 open findings. 7 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.</p>
+<p>9 open findings. 7 fixed in our code and excluded from score.</p>
 
 <div class="scroll"><table><thead>
 <tr><th>Axis</th><th>Band</th><th>Weight</th><th>Why</th></tr>
@@ -263,7 +283,7 @@
 
 <p>Worst open issue: <strong>blocker</strong> - Modal's close button ships with no accessible name</p>
 
-<p>9 open findings. 7 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.</p>
+<p>9 open findings. 7 fixed in our code and excluded from score.</p>
 
 <div class="scroll"><table><thead>
 <tr><th>Axis</th><th>Band</th><th>Weight</th><th>Why</th></tr>
@@ -281,7 +301,7 @@
 
 <p>Worst open issue: <strong>caveat</strong> - The data table has an upstream accessibility defect</p>
 
-<p>10 open findings. 4 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.</p>
+<p>10 open findings. 4 fixed in our code and excluded from score.</p>
 
 <div class="scroll"><table><thead>
 <tr><th>Axis</th><th>Band</th><th>Weight</th><th>Why</th></tr>
@@ -299,7 +319,7 @@
 
 <p>Worst open issue: <strong>blocker</strong> - Select controls do not display their selected value</p>
 
-<p>13 open findings. 4 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.</p>
+<p>13 open findings. 4 fixed in our code and excluded from score.</p>
 
 <div class="scroll"><table><thead>
 <tr><th>Axis</th><th>Band</th><th>Weight</th><th>Why</th></tr>
@@ -313,6 +333,7 @@
 <tr><td>A7 Accessibility conformance</td><td><strong>workable</strong></td><td>14</td><td>1 serious automated violations; 1 checks axe declined to decide, each still owed a human</td></tr>
 </tbody></table></div>
 
+</details>
 <h2>What this cannot tell you</h2>
 
 <ul>

@@ -140,15 +140,15 @@
 <li>TRAP 2, the same shape one level down: components/data-table/_index.scss includes only the CORE table mixin.</li>
 <li>A 20-line Vite plugin in vite.config.ts rewrites the one <code>:root</code> rule Carbon's layer module emits onto the token scope class, so the shipped stylesheet contains zero selectors that can match host markup.</li>
 <li>Twenty-two CSS selectors reach into .cds-- class names, each for a token Carbon's theme cannot express or a behaviour it hard-codes: corner radius (Carbon has no radius token and is square by design), list-box menu max-height, table-header ...</li>
-<li>THREE OF THOSE TWENTY-TWO ARE THE STEP WIZARD'S, and they are behaviour rather than tokens.</li>
-<li>THE PROGRESS INDICATOR HAS NO RESPONSIVE BEHAVIOUR AT ALL.</li>
+<li>Three of those twenty-two are the step wizard's, and they are behaviour rather than tokens.</li>
+<li>The progress indicator has no responsive behaviour at all.</li>
 <li>Carbon's published TypeScript types do not compile under exactOptionalPropertyTypes: true.</li>
 <li>@carbon/styles/scss/fonts is NOT loaded.</li>
-<li>PORTALS ARE MOSTLY A NON-ISSUE HERE, and that is a finding rather than luck avoided.</li>
-<li>SPACING IS UNREACHABLE AT ANY LAYER.</li>
-<li>Z-INDEX IS UNREACHABLE, AND CARBON WINS EVERY COLLISION.</li>
-<li>FONT FAMILY IS UNREACHABLE THROUGH THE SUPPORTED API.</li>
-<li>TYPE SCALE IS FULLY REACHABLE, unusually.</li>
+<li>Portals are mostly a non-issue here, and that is a finding rather than luck avoided.</li>
+<li>Spacing is unreachable at any layer.</li>
+<li>Z-index is unreachable, and carbon wins every collision.</li>
+<li>Font family is unreachable through the supported api.</li>
+<li>Type scale is fully reachable, unusually.</li>
 
 </ul>
 <p><strong><code>mangrove-carbon</code></strong> - 8 entries</p>
@@ -160,8 +160,8 @@
 <li>Three rules reach into Carbon-rendered class names to make SideNav sit inline instead of position: fixed at 100vh (.cds--side-nav, .cds--side-nav__navigation), and two more cap the width of .cds--data-table-container and .cds--data-table-co...</li>
 <li>One rule adds flex-wrap to .cds--radio-button-group, which Carbon does not wrap and which therefore overflows a 390px viewport with four locale labels.</li>
 <li>aria-describedby is passed by hand to the three invalid TextInputs to work around Carbon's aria-errormessage target having no role=alert.</li>
-<li>NO WORKAROUND WAS NEEDED for the Mangrove [hidden] specificity defect, and the rule that was there has been deleted.</li>
-<li>NO ESCAPE HATCH WAS NEEDED for portalled overlays, which is the opposite of the React Aria result.</li>
+<li>No workaround was needed for the Mangrove [hidden] specificity defect, and the rule that was there has been deleted.</li>
+<li>No escape hatch was needed for portalled overlays, which is the opposite of the React Aria result.</li>
 
 </ul>
 <p><strong><code>delta-mantine</code></strong> - 11 entries</p>
@@ -184,11 +184,11 @@
 
 <ul>
 <li>@mantine/core/styles.css was NOT imported.</li>
-<li>THE PER-COMPONENT IMPORT ORDER IS LOAD-BEARING AND UNDOCUMENTED.</li>
-<li>MANTINE REQUIRES TEN SHADES PER COLOUR and theme.primaryColor must be a KEY of theme.colors -- a hex string is rejected by validateMantineTheme.</li>
-<li>NO FOCUS COLOUR IN THE THEME.</li>
-<li>NO Z-INDEX SCALE IN THE THEME.</li>
-<li>HOST-INTO-CANDIDATE COLLISION REPAIR: 2 rules, 4 selectors, reaching into library-generated class names (.mantine-PillsInputField-field, .mantine-TimePicker-field) at (0,3,1).</li>
+<li>The per-component import order is load-bearing and undocumented.</li>
+<li>Mantine requires ten shades per colour and theme.primaryColor must be a KEY of theme.colors -- a hex string is rejected by validateMantineTheme.</li>
+<li>No focus colour in the theme.</li>
+<li>No z-index scale in the theme.</li>
+<li>Host-into-candidate collision repair: 2 rules, 4 selectors, reaching into library-generated class names (.mantine-PillsInputField-field, .mantine-TimePicker-field) at (0,3,1).</li>
 <li>Mantine's CSS is loaded by an AWAITED DYNAMIC IMPORT inside the candidate=on branch of main.tsx, not a static import.</li>
 <li>MantineProvider mutates document.documentElement, setting data-mantine-color-scheme="light" through its default getRootElement; DirectionProvider.setDirection() sets dir there too.</li>
 <li>forceColorScheme="light" is set because the token set has no dark palette and the host is light-only; without it Mantine reads localStorage and could render a dark subtree inside a light host between runs.</li>
@@ -200,7 +200,7 @@
 <li>antd/dist/reset.css IS NOT IMPORTED.</li>
 <li>StyleProvider layer is enabled, which wraps every antd rule in a CSS @layer.</li>
 <li>ConfigProvider getPopupContainer mounts overlays inside the candidate subtree.</li>
-<li>FINDING, not a preference: antd derives its secondary, description, placeholder and label greys from colorTextBase by lowering opacity, and that derivation produced FOUR axe colour-contrast failures from a palette whose own secondary text p...</li>
+<li>Finding, not a preference: antd derives its secondary, description, placeholder and label greys from colorTextBase by lowering opacity, and that derivation produced FOUR axe colour-contrast failures from a palette whose own secondary text p...</li>
 <li>Menu.itemSelectedColor and itemSelectedBg pinned for the same reason: the derived selected-item colour did not reach 4.5:1 against antd's own selected background.</li>
 <li>Tag colours come from the UNDRR tokens rather than antd's green/gold/red presets, which failed contrast as filled tags and would have been antd's hues rather than UNDRR's in any case.</li>
 <li>Form.Item label does NOT associate the label with its control unless the item also has a name, because that is what antd uses to generate the id it points for at.</li>
@@ -212,7 +212,7 @@
 <li>antd/dist/reset.css IS NOT IMPORTED.</li>
 <li>StyleProvider layer is enabled, which wraps every antd rule in a CSS @layer.</li>
 <li>ConfigProvider getPopupContainer mounts overlays inside the candidate subtree.</li>
-<li>FINDING, not a preference: antd derives its secondary, description, placeholder and label greys from colorTextBase by lowering opacity, and that derivation produced FOUR axe colour-contrast failures from a palette whose own secondary text p...</li>
+<li>Finding, not a preference: antd derives its secondary, description, placeholder and label greys from colorTextBase by lowering opacity, and that derivation produced FOUR axe colour-contrast failures from a palette whose own secondary text p...</li>
 <li>Menu.itemSelectedColor and itemSelectedBg pinned for the same reason: the derived selected-item colour did not reach 4.5:1 against antd's own selected background.</li>
 <li>Tag colours come from the UNDRR tokens rather than antd's green/gold/red presets, which failed contrast as filled tags and would have been antd's hues rather than UNDRR's in any case.</li>
 <li>Form.Item label does NOT associate the label with its control unless the item also has a name, because that is what antd uses to generate the id it points for at.</li>
