@@ -13,7 +13,7 @@ same for all five, and never one of ours.
 
 **Adopt Adobe React Aria.**
 
-It leads on the composite at 84 against 68 for Ant Design, and it is the only candidate of 5 carrying no blocking defect. Arabic works from a `dir` attribute alone. It stays inside its own subtree on both hosts.
+It leads on the composite at 84 against 69 for MUI (Community only), and it is the only candidate of 5 carrying no blocking defect. Arabic works from a `dir` attribute alone. It stays inside its own subtree on both hosts.
 
 **The cost, which the composite does not charge it for.** React Aria ships behaviour,
 not appearance. Adopting it means UNDRR builds and then owns the visual layer
@@ -73,17 +73,20 @@ to hide anything.
 | # | Candidate | Composite | Library-owned blockers |
 | --- | --- | --- | --- |
 | 1 | Adobe React Aria | **84** / 100 | none |
-| 2 | Ant Design | **68** / 100 | **1** - see below |
-| 3 | Mantine | **65** / 100 | **1** - see below |
-| 4 | MUI (Community only) | **58** / 100 | **2** - see below |
+| 2 | MUI (Community only) | **69** / 100 | none |
+| 3 | Ant Design | **68** / 100 | **1** - see below |
+| 4 | Mantine | **65** / 100 | **1** - see below |
 | 5 | IBM Carbon | **46** / 100 | **3** - see below |
 
-**1 of 5 candidates carry no blocker at all:** Adobe React Aria.
+**2 of 5 candidates carry no blocker at all:** Adobe React Aria, MUI (Community only).
 
-That is the recommendation. The next two - Ant Design and Mantine - are the credible fallbacks, because their blockers can be escaped: see
-the escape-cost table below. The bottom two cannot, or only by a decision that is
-UNDRR's rather than an engineer's. So the shortlist worth deeper work is the top three,
-and the recommendation within it is the first.
+**Adobe React Aria** ranks first on the composite and carries no blocker, so it is the recommendation.
+
+**MUI (Community only)** (69) also carries no blocker, which makes it a viable second choice on this evidence rather than a fallback requiring a waiver.
+
+Ant Design and Mantine carry blockers that can be escaped in configuration or consuming code: see the escape-cost table below.
+
+IBM Carbon cannot escape its blockers without a change in the library or a decision that is UNDRR's rather than an engineer's.
 
 ## Blockers, in full
 
@@ -108,7 +111,6 @@ the top of the ranking can be brought up to it.
 | --- | --- | --- | --- |
 | Ant Design | 1 | reversible per site by changing a setting | reversible per site by changing a setting |
 | Mantine | 1 | fixable in consuming code, repeated per site | fixable in consuming code, repeated per site |
-| MUI (Community only) | 2 | a fix exists but this evaluation's rules forbid it - a policy decision | a fix exists but this evaluation's rules forbid it - a policy decision |
 | IBM Carbon | 3 | needs a change in the library | cannot be escaped while using the library as documented |
 
 **Ant Design**
@@ -118,11 +120,6 @@ the top of the ranking can be brought up to it.
 **Mantine**
 
 - mantine-modal-close-unnamed: Modal's close button ships with no accessible name (owned by candidate) [escape: fixable in consuming code, repeated per site]
-
-**MUI (Community only)**
-
-- A6 Right-to-left: Arabic is not correct as shipped: 2 recorded defects, unresolved
-- mui-rtl-unfixable: RTL is not achievable in the MUI Community tier (owned by candidate) [escape: a fix exists but this evaluation's rules forbid it - a policy decision]
 
 **IBM Carbon**
 
@@ -167,11 +164,11 @@ Worst open issue: **caveat** - React Aria is unstyled, so this page carries 121 
 | A6 Right-to-left | strong | 18 | Arabic worked from a dir attribute alone, at zero custom lines |
 | A7 Accessibility conformance | strong | 14 | no critical or serious automated violations; 1 checks axe declined to decide, each still owed a human |
 
-### `delta-mui` - composite 60 / 100
+### `delta-mui` - composite 71 / 100
 
-Worst open issue: **blocker** - RTL is not achievable in the MUI Community tier
+Worst open issue: **caveat** - MUI needs a third setup step for RTL, and fails silently without it
 
-7 open findings. 5 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.
+6 open findings. 7 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.
 
 | Axis | Band | Weight | Why |
 | --- | --- | --- | --- |
@@ -180,14 +177,14 @@ Worst open issue: **blocker** - RTL is not achievable in the MUI Community tier
 | A3 Reproducibility across sites | **workable** | 16 | extraction outcome recorded as measured |
 | A4 Mangrove compatibility | strong | 14 | no host canary changed when the candidate mounted |
 | A5 Theming fidelity | strong | 14 | all 29 reachable tokens applied |
-| A6 Right-to-left | **blocked** | 18 | Arabic is not correct as shipped: 2 recorded defects, unresolved |
+| A6 Right-to-left | **workable** | 18 | clean, but only after 29 custom lines and 0 recorded mitigations |
 | A7 Accessibility conformance | **workable** | 14 | 1 serious automated violations; 4 checks axe declined to decide, each still owed a human |
 
-### `mangrove-mui` - composite 56 / 100
+### `mangrove-mui` - composite 66 / 100
 
-Worst open issue: **blocker** - RTL is not achievable in the MUI Community tier
+Worst open issue: **caveat** - MUI needs a third setup step for RTL, and fails silently without it
 
-8 open findings. 5 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.
+7 open findings. 7 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.
 
 | Axis | Band | Weight | Why |
 | --- | --- | --- | --- |
@@ -196,7 +193,7 @@ Worst open issue: **blocker** - RTL is not achievable in the MUI Community tier
 | A3 Reproducibility across sites | **workable** | 16 | extraction outcome recorded as measured |
 | A4 Mangrove compatibility | strong | 14 | no host canary changed when the candidate mounted |
 | A5 Theming fidelity | strong | 14 | all 32 reachable tokens applied |
-| A6 Right-to-left | **blocked** | 18 | Arabic is not correct as shipped: 1 recorded defect, unresolved |
+| A6 Right-to-left | **workable** | 18 | clean, but only after 29 custom lines and 0 recorded mitigations |
 | A7 Accessibility conformance | **workable** | 14 | 1 serious automated violations; 4 checks axe declined to decide, each still owed a human |
 
 ### `delta-carbon` - composite 49 / 100

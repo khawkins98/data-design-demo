@@ -103,7 +103,6 @@ import {
   StepLabel,
   Stepper,
   Typography,
-  stepConnectorClasses,
 } from "@mui/material";
 
 import { REVIEW_GROUPS, WIZARD_STEPS } from "@undrr-eval/fixtures";
@@ -238,37 +237,25 @@ export function EventWizard(): ReactElement {
          */
         aria-orientation={undefined}
         aria-label={labels.wizardProgressLabel}
-        sx={{
-          /*
-           * MUI'S CONNECTOR IS POSITIONED WITH PHYSICAL CSS AND IS WRONG IN ARABIC.
-           * THIS RULE IS THE FIX AND THE FINDING.
-           *
-           * In horizontal + `alternativeLabel` mode `StepConnector` is absolutely
-           * positioned with `left: calc(-50% + 20px); right: calc(50% + 20px)`
-           * (StepConnector.js:70-72) — a box half a step wide, centred on the step's
-           * PHYSICAL left edge, which in LTR is the boundary with the previous step.
-           * `left`/`right` do not swap under `dir="rtl"`, so in Arabic every
-           * connector stays centred on the physical left edge, which is now the
-           * boundary with the NEXT step. Measured at 1280px in Arabic before this
-           * rule: the gap between steps 1 and 2 had no line at all, and step 4's
-           * connector was centred at x=37 — half of it, 94px, hanging off the left
-           * edge of the page.
-           *
-           * The fix is to state the same geometry logically. Identical output in
-           * LTR (`inset-inline-start` maps to `left`), correct in RTL, and it has to
-           * be written by hand: there is no prop, no `direction`-aware variant and
-           * no theme switch for it, and the rest of this pairing gets its mirroring
-           * from `dir` alone with no RTL plugin. `left`/`right: auto` first because
-           * physical and logical inset map to the same property and the later
-           * declaration must win.
-           */
-          [`& .${stepConnectorClasses.alternativeLabel}`]: {
-            left: "auto",
-            right: "auto",
-            insetInlineStart: "calc(-50% + 20px)",
-            insetInlineEnd: "calc(50% + 20px)",
-          },
-        }}
+        /*
+         * NO CONNECTOR REPAIR HERE ANY MORE, AND THE REASON IS THE FINDING.
+         *
+         * In horizontal + `alternativeLabel` mode `StepConnector` is absolutely
+         * positioned with `left: calc(-50% + 20px); right: calc(50% + 20px)`
+         * (StepConnector.js:70-72) - a box half a step wide, centred on the step's
+         * PHYSICAL left edge. This file used to restate that geometry with
+         * `inset-inline-*`, because without it Arabic rendered no line at all
+         * between steps 1 and 2 and hung 94px of step 4's connector off the page.
+         *
+         * That repair is gone because it is no longer needed: the emotion RTL cache
+         * in src/direction.tsx - MUI's own documented step 3, which this evaluation
+         * had omitted - flips the physical declaration at the source. MEASURED with
+         * the repair removed, at 1280px: three connectors at x=811/509/208 in
+         * Arabic and x=208/509/811 in English, a perfect mirror, none off-page.
+         *
+         * So this was never a MUI defect. It was the visible half of our own
+         * incomplete RTL setup, and it is recorded that way in the registry.
+         */
       >
         {WIZARD_STEPS.map((entry, index) => (
           <Step

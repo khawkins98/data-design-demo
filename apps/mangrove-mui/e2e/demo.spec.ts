@@ -218,24 +218,37 @@ test.describe("kitchen sink", () => {
   });
 
   /**
-   * THIS TEST FAILS, DELIBERATELY, AND IS LEFT FAILING.
+   * THIS TEST USED TO FAIL DELIBERATELY, AND THE FAILURE WAS OURS, NOT MUI'S.
    *
-   * `direction: "rtl"` on the MUI theme flips layout and component internals, but
-   * it does NOT flip the physical CSS offsets emotion has already emitted.
-   * `MuiInputLabel-outlined` is positioned with `left: 0` plus
-   * `transform: translate(14px, -9px)`. MUI's documented fix is a stylis RTL
-   * plugin in the emotion cache (`stylis-plugin-rtl`), a third-party package
-   * outside the candidate's own ecosystem, which Brief 1 constraint 2 forbids
-   * adding.
+   * What it recorded: `MuiInputLabel-outlined` is positioned with a physical
+   * `left: 0` plus `transform: translate(14px, -9px)`, so in Arabic the floating
+   * label stayed pinned to the physical LEFT edge of a FormControl whose input had
+   * moved to the logical start on the right. Measured at 1280px: FormControl 926px
+   * wide at x=37, input at x=761, label at x=51 — 710px from the field it names.
+   * It was recorded as a blocker: "RTL is not achievable in the MUI Community
+   * tier", escapable only by a package the evaluation's rules forbid.
    *
-   * Visible consequence: any TextField whose FormControl is wider than its input
-   * — here the `server-rejected` form field — renders its floating label pinned to
-   * the physical LEFT edge of the FormControl while the input sits at the logical
-   * start on the right. Measured: FormControl 1086px wide at x=37, input at
-   * x=920, label at x=51. The label is 869px away from the field it names.
+   * WHY THAT WAS WRONG. MUI's RTL guide has THREE steps - `dir`, a theme with
+   * `direction`, and an emotion cache carrying an RTL stylis plugin. This
+   * evaluation did the first two. Step 3 is the one that flips emitted CSS, so
+   * without it every physical offset MUI writes stays physical. The blocker
+   * described the consequence of our omission and attributed it to the library.
    *
-   * Reproduced identically in apps/delta-mui, so this is the CANDIDATE, not the
-   * Mangrove host. The delta-mui run recorded `rtl: clean` and missed it.
+   * The rule was not the obstacle either. The forbidden package is the
+   * `styled-components` community `stylis-plugin-rtl`, last published in 2021.
+   * MUI now ships its own - `@mui/stylis-plugin-rtl`, in the `mui/material-ui`
+   * monorepo, MIT, released in lockstep with `@mui/material` - which is
+   * first-party and in the Community tier. See apps/mangrove-mui/src/direction.tsx.
+   *
+   * WHAT THE ASSERTION NOW MEASURES, AND WHY IT CHANGED SHAPE. The old one
+   * compared `label.x` to `input.x` - physical LEFT edges - which is only the
+   * right question in a left-to-right layout. Once the layout mirrors correctly
+   * the label's left edge is SUPPOSED to be far from the input's left edge; the
+   * old metric would have gone on failing against a correct render. So this
+   * compares LOGICAL START edges: right edges under `rtl`, left edges under `ltr`.
+   * That is a stricter test of the thing actually claimed, not a loosened one -
+   * it would still catch the original defect, which put the label 710px from the
+   * logical start.
    */
   test("RTL flips MUI's floating labels", async ({ page }) => {
     await page.goto("/?candidate=on");
@@ -246,25 +259,34 @@ test.describe("kitchen sink", () => {
       const label = control?.querySelector("label");
       const input = control?.querySelector(".MuiInputBase-root");
       if (!control || !label || !input) throw new Error("field not found");
+      const rtl = getComputedStyle(label).direction === "rtl";
       const l = label.getBoundingClientRect();
       const i = input.getBoundingClientRect();
+      // The logical start edge: the right edge in RTL, the left edge in LTR.
+      const labelStart = rtl ? l.right : l.x;
+      const inputStart = rtl ? i.right : i.x;
       return {
+        direction: rtl ? "rtl" : "ltr",
         labelLeft: Math.round(l.x),
         inputLeft: Math.round(i.x),
-        gapPx: Math.round(Math.abs(l.x - i.x)),
+        labelStart: Math.round(labelStart),
+        inputStart: Math.round(inputStart),
+        startGapPx: Math.round(Math.abs(labelStart - inputStart)),
         labelCssLeft: getComputedStyle(label).left,
+        labelCssRight: getComputedStyle(label).right,
       };
     });
 
     writeJson("test-results/rtl-label-offset.json", measurement);
 
-    // In RTL the label should sit at the input's own left edge, within the 14px
-    // MUI reserves for the notch. It does not, because `left: 0` was never
-    // flipped to `right: 0`.
+    expect(measurement.direction, "the label must inherit RTL in Arabic").toBe("rtl");
+
+    // 16px, because MUI reserves 14px for the outline notch and the label is
+    // scaled to 0.75 when shrunk. Before step 3 was wired this measured 710.
     expect(
-      measurement.gapPx,
-      "MUI's floating label is positioned with a physical `left` that RTL does not " +
-        "flip; the documented fix is stylis-plugin-rtl, which constraint 2 forbids",
+      measurement.startGapPx,
+      "MUI's floating label must sit at the field's logical start; a physical " +
+        "`left` that RTL never flipped is what put it 710px away",
     ).toBeLessThanOrEqual(16);
   });
 

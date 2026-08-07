@@ -1,6 +1,10 @@
 {
-  "labelLeft": 51,
+  "direction": "rtl",
+  "labelLeft": 1060,
   "inputLeft": 921,
-  "gapPx": 870,
-  "labelCssLeft": "0px"
+  "labelStart": 1129,
+  "inputStart": 1123,
+  "startGapPx": 6,
+  "labelCssLeft": "993.344px",
+  "labelCssRight": "0px"
 }

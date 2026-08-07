@@ -34,7 +34,7 @@
 
 <p><strong>Adopt Adobe React Aria.</strong></p>
 
-<p>It leads on the composite at 84 against 68 for Ant Design, and it is the only candidate of 5 carrying no blocking defect. Arabic works from a <code>dir</code> attribute alone. It stays inside its own subtree on both hosts.</p>
+<p>It leads on the composite at 84 against 69 for MUI (Community only), and it is the only candidate of 5 carrying no blocking defect. Arabic works from a <code>dir</code> attribute alone. It stays inside its own subtree on both hosts.</p>
 
 <p><strong>The cost, which the composite does not charge it for.</strong> React Aria ships behaviour, not appearance. Adopting it means UNDRR builds and then owns the visual layer permanently - this evaluation's own demo carries 121 to 133 hand-written CSS rules for one page. Three of the seven axes reward exactly the property that creates that cost: a library with no opinions cannot conflict with Mangrove, cannot bake in wrong colours and cannot mistheme. **Read the recommendation as "adopt this and fund a design system", not as "adopt this and save work".**</p>
 
@@ -77,15 +77,21 @@
 <tr><th>#</th><th>Candidate</th><th>Composite</th><th>Library-owned blockers</th></tr>
 </thead><tbody>
 <tr><td>1</td><td>Adobe React Aria</td><td><strong>84</strong> / 100</td><td>none</td></tr>
-<tr><td>2</td><td>Ant Design</td><td><strong>68</strong> / 100</td><td><strong>1</strong> - see below</td></tr>
-<tr><td>3</td><td>Mantine</td><td><strong>65</strong> / 100</td><td><strong>1</strong> - see below</td></tr>
-<tr><td>4</td><td>MUI (Community only)</td><td><strong>58</strong> / 100</td><td><strong>2</strong> - see below</td></tr>
+<tr><td>2</td><td>MUI (Community only)</td><td><strong>69</strong> / 100</td><td>none</td></tr>
+<tr><td>3</td><td>Ant Design</td><td><strong>68</strong> / 100</td><td><strong>1</strong> - see below</td></tr>
+<tr><td>4</td><td>Mantine</td><td><strong>65</strong> / 100</td><td><strong>1</strong> - see below</td></tr>
 <tr><td>5</td><td>IBM Carbon</td><td><strong>46</strong> / 100</td><td><strong>3</strong> - see below</td></tr>
 </tbody></table></div>
 
-<p><strong>1 of 5 candidates carry no blocker at all:</strong> Adobe React Aria.</p>
+<p><strong>2 of 5 candidates carry no blocker at all:</strong> Adobe React Aria, MUI (Community only).</p>
 
-<p>That is the recommendation. The next two - Ant Design and Mantine - are the credible fallbacks, because their blockers can be escaped: see the escape-cost table below. The bottom two cannot, or only by a decision that is UNDRR's rather than an engineer's. So the shortlist worth deeper work is the top three, and the recommendation within it is the first.</p>
+<p><strong>Adobe React Aria</strong> ranks first on the composite and carries no blocker, so it is the recommendation.</p>
+
+<p><strong>MUI (Community only)</strong> (69) also carries no blocker, which makes it a viable second choice on this evidence rather than a fallback requiring a waiver.</p>
+
+<p>Ant Design and Mantine carry blockers that can be escaped in configuration or consuming code: see the escape-cost table below.</p>
+
+<p>IBM Carbon cannot escape its blockers without a change in the library or a decision that is UNDRR's rather than an engineer's.</p>
 
 <h2>Blockers, in full</h2>
 
@@ -102,7 +108,6 @@
 </thead><tbody>
 <tr><td>Ant Design</td><td>1</td><td>reversible per site by changing a setting</td><td>reversible per site by changing a setting</td></tr>
 <tr><td>Mantine</td><td>1</td><td>fixable in consuming code, repeated per site</td><td>fixable in consuming code, repeated per site</td></tr>
-<tr><td>MUI (Community only)</td><td>2</td><td>a fix exists but this evaluation's rules forbid it - a policy decision</td><td>a fix exists but this evaluation's rules forbid it - a policy decision</td></tr>
 <tr><td>IBM Carbon</td><td>3</td><td>needs a change in the library</td><td>cannot be escaped while using the library as documented</td></tr>
 </tbody></table></div>
 
@@ -116,13 +121,6 @@
 
 <ul>
 <li>mantine-modal-close-unnamed: Modal's close button ships with no accessible name (owned by candidate) [escape: fixable in consuming code, repeated per site]</li>
-
-</ul>
-<p><strong>MUI (Community only)</strong></p>
-
-<ul>
-<li>A6 Right-to-left: Arabic is not correct as shipped: 2 recorded defects, unresolved</li>
-<li>mui-rtl-unfixable: RTL is not achievable in the MUI Community tier (owned by candidate) [escape: a fix exists but this evaluation's rules forbid it - a policy decision]</li>
 
 </ul>
 <p><strong>IBM Carbon</strong></p>
@@ -173,11 +171,11 @@
 <tr><td>A7 Accessibility conformance</td><td>strong</td><td>14</td><td>no critical or serious automated violations; 1 checks axe declined to decide, each still owed a human</td></tr>
 </tbody></table></div>
 
-<h3><code>delta-mui</code> - composite 60 / 100</h3>
+<h3><code>delta-mui</code> - composite 71 / 100</h3>
 
-<p>Worst open issue: <strong>blocker</strong> - RTL is not achievable in the MUI Community tier</p>
+<p>Worst open issue: <strong>caveat</strong> - MUI needs a third setup step for RTL, and fails silently without it</p>
 
-<p>7 open findings. 5 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.</p>
+<p>6 open findings. 7 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.</p>
 
 <div class="scroll"><table><thead>
 <tr><th>Axis</th><th>Band</th><th>Weight</th><th>Why</th></tr>
@@ -187,15 +185,15 @@
 <tr><td>A3 Reproducibility across sites</td><td><strong>workable</strong></td><td>16</td><td>extraction outcome recorded as measured</td></tr>
 <tr><td>A4 Mangrove compatibility</td><td>strong</td><td>14</td><td>no host canary changed when the candidate mounted</td></tr>
 <tr><td>A5 Theming fidelity</td><td>strong</td><td>14</td><td>all 29 reachable tokens applied</td></tr>
-<tr><td>A6 Right-to-left</td><td><strong>blocked</strong></td><td>18</td><td>Arabic is not correct as shipped: 2 recorded defects, unresolved</td></tr>
+<tr><td>A6 Right-to-left</td><td><strong>workable</strong></td><td>18</td><td>clean, but only after 29 custom lines and 0 recorded mitigations</td></tr>
 <tr><td>A7 Accessibility conformance</td><td><strong>workable</strong></td><td>14</td><td>1 serious automated violations; 4 checks axe declined to decide, each still owed a human</td></tr>
 </tbody></table></div>
 
-<h3><code>mangrove-mui</code> - composite 56 / 100</h3>
+<h3><code>mangrove-mui</code> - composite 66 / 100</h3>
 
-<p>Worst open issue: <strong>blocker</strong> - RTL is not achievable in the MUI Community tier</p>
+<p>Worst open issue: <strong>caveat</strong> - MUI needs a third setup step for RTL, and fails silently without it</p>
 
-<p>8 open findings. 5 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.</p>
+<p>7 open findings. 7 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.</p>
 
 <div class="scroll"><table><thead>
 <tr><th>Axis</th><th>Band</th><th>Weight</th><th>Why</th></tr>
@@ -205,7 +203,7 @@
 <tr><td>A3 Reproducibility across sites</td><td><strong>workable</strong></td><td>16</td><td>extraction outcome recorded as measured</td></tr>
 <tr><td>A4 Mangrove compatibility</td><td>strong</td><td>14</td><td>no host canary changed when the candidate mounted</td></tr>
 <tr><td>A5 Theming fidelity</td><td>strong</td><td>14</td><td>all 32 reachable tokens applied</td></tr>
-<tr><td>A6 Right-to-left</td><td><strong>blocked</strong></td><td>18</td><td>Arabic is not correct as shipped: 1 recorded defect, unresolved</td></tr>
+<tr><td>A6 Right-to-left</td><td><strong>workable</strong></td><td>18</td><td>clean, but only after 29 custom lines and 0 recorded mitigations</td></tr>
 <tr><td>A7 Accessibility conformance</td><td><strong>workable</strong></td><td>14</td><td>1 serious automated violations; 4 checks axe declined to decide, each still owed a human</td></tr>
 </tbody></table></div>
 

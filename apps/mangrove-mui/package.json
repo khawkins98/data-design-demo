@@ -12,9 +12,11 @@
     "test:e2e": "playwright test"
   },
   "dependencies": {
+    "@emotion/cache": "^11.14.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@mui/material": "^9.3.0",
+    "@mui/stylis-plugin-rtl": "^9.3.0",
     "@mui/x-data-grid": "^9.10.1",
     "@mui/x-date-pickers": "^9.10.1",
     "@undrr-eval/fixtures": "workspace:*",
@@ -26,10 +28,12 @@
     "@undrr/undrr-mangrove": "1.8.1",
     "date-fns": "^4.4.0",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "stylis": "^4.4.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.58.2",
+    "@types/stylis": "^4.2.7",
     "@vitejs/plugin-react": "^4.3.4",
     "vite": "^6.0.7"
   }

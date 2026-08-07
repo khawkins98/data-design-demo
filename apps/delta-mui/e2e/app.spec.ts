@@ -464,14 +464,17 @@ test.describe("full application", () => {
    * ONE RTL defect and one RTL guard, measured in this layout. They were previously
    * asserted side by side as two defects, which was wrong about the second one.
    *
-   * 1. THE DEFECT (`mui-rtl-unfixable`), asserted as still present:
+   * 1. THE FORMER DEFECT (`mui-rtl-unfixable`), now asserted as CORRECT:
    *    `MuiInputLabel-outlined` uses a physical `left: 0` plus
-   *    `transformOrigin: 'top left'` inside MUI's own stylesheet, which theme
-   *    direction does not flip and no app-level prop reaches. Bounded here by the
-   *    filter card's ~235px grid columns rather than by the content column, so
-   *    smaller than the kitchen sink's 843px worst case and exactly as wrong. The
-   *    day MUI fixes it this fails, and the evidence gets revisited rather than
-   *    going stale.
+   *    `transformOrigin: 'top left'`, which theme direction does not flip and no
+   *    app-level prop reaches — so with only steps 1 and 2 of MUI's three-step RTL
+   *    setup the label sat at the wrong end of every field. It was recorded as
+   *    unfixable within the rules. That was our error: step 3 is an emotion cache
+   *    carrying `@mui/stylis-plugin-rtl`, which is MUI's OWN package, in the
+   *    Community tier, so no rule ever forbade it. Wired in src/direction.tsx.
+   *    This assertion was written as `toBeGreaterThan(16)` precisely so that
+   *    fixing the defect would fail it and force the evidence to be revisited;
+   *    that is what happened, and it now asserts the corrected state.
    * 2. THE GUARD, asserted as CORRECT: the row-actions column aligns to the row's
    *    logical end. `TableCell`'s `align` prop is physical-only, and passing
    *    `align="right"` used to pin the actions to the physical right in Arabic —
@@ -480,7 +483,7 @@ test.describe("full application", () => {
    *    behaviour: a regression to `align="right"` fails here rather than quietly
    *    reappearing as a finding.
    */
-  test("RTL leaves physical offsets unflipped", async ({ page }) => {
+  test("RTL flips physical offsets, and table alignment is logical", async ({ page }) => {
     await page.goto(`${URL}?candidate=on`);
     await selectLocale(page, "العربية");
 
@@ -582,7 +585,7 @@ test.describe("full application", () => {
       ...measurement,
       note:
         "Label displacement is bounded by the filter card's column width, so smaller " +
-        "than the kitchen sink's 843px worst case. Same unfixable defect, inside MUI's " +
+        "than the kitchen sink's 843px worst case. Was an unfixable defect until MUI's own RTL plugin was wired; see src/direction.tsx. Inside MUI's " +
         "own InputLabel stylesheet. Table alignment is a SEPARATE mechanism and is no " +
         "longer a finding: `sx={{ textAlign: 'end' }}` on TableCell is logical and " +
         "flips with the row, which `numericCellGaps` measures.",
@@ -593,9 +596,9 @@ test.describe("full application", () => {
     );
     expect(
       Math.max(...offsets),
-      "MUI's RTL floating-label defect appears to be fixed; re-measure and update " +
-        "the known-issues registry (mui-rtl-unfixable)",
-    ).toBeGreaterThan(16);
+      "a floating label is not at its field's logical start; check that the emotion " +
+        "RTL cache in src/direction.tsx still wraps this view",
+    ).toBeLessThanOrEqual(16);
     // The row flips — the actions cell is physically LEFT of the country cell in
     // RTL — and the cell's own content alignment now follows it.
     expect(

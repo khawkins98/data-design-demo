@@ -58,6 +58,8 @@ import { DemoContext, labelsFor, undrrMuiTheme } from "@undrr-eval/integration-m
 import type { DemoContextValue } from "@undrr-eval/integration-mui";
 import { TOKEN_SCOPE_CLASS } from "@undrr-eval/undrr-tokens";
 
+import { DirectionProvider } from "./direction.js";
+
 /** The leakage contract: `?candidate=off` renders the frame with no candidate. */
 const params = new URLSearchParams(window.location.search);
 const candidateEnabled = params.get("candidate") !== "off";
@@ -226,6 +228,8 @@ export function IslandView(): ReactElement {
       notices={<KnownIssues candidate="mui" host="mangrove" candidateName="MUI Community" />}
     >
       {candidateEnabled ? (
+        /* MUI's documented RTL step 3; see direction.tsx. */
+        <DirectionProvider dir={demo.dir}>
         <ThemeProvider theme={theme}>
           <ScopedCssBaseline className={`${TOKEN_SCOPE_CLASS} demo`}>
             <DemoContext.Provider value={demo}>
@@ -382,6 +386,7 @@ export function IslandView(): ReactElement {
             </DemoContext.Provider>
           </ScopedCssBaseline>
         </ThemeProvider>
+        </DirectionProvider>
       ) : null}
     </IslandFrame>
   );

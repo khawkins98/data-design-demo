@@ -1,31 +1,31 @@
 {
   "labelsMeasured": 4,
-  "maxLabelOffsetPx": 300,
-  "minLabelOffsetPx": 228,
+  "maxLabelOffsetPx": -14,
+  "minLabelOffsetPx": -14,
   "labels": [
     {
       "label": "البلد",
-      "inlineStartOffsetPx": 300,
+      "inlineStartOffsetPx": -14,
       "fieldWidthPx": 335,
-      "labelCssLeft": "0px"
+      "labelCssLeft": "307.766px"
     },
     {
       "label": "نوع الخطر",
-      "inlineStartOffsetPx": 271,
+      "inlineStartOffsetPx": -14,
       "fieldWidthPx": 335,
-      "labelCssLeft": "0px"
+      "labelCssLeft": "268.828px"
     },
     {
       "label": "حالة التحقق",
-      "inlineStartOffsetPx": 265,
+      "inlineStartOffsetPx": -14,
       "fieldWidthPx": 335,
-      "labelCssLeft": "0px"
+      "labelCssLeft": "260.359px"
     },
     {
       "label": "مصدر البيانات",
-      "inlineStartOffsetPx": 228,
+      "inlineStartOffsetPx": -14,
       "fieldWidthPx": 335,
-      "labelCssLeft": "0px"
+      "labelCssLeft": "241.844px"
     }
   ],
   "actionCellTextAlign": "end",
@@ -40,5 +40,5 @@
     "startGapPx": 16,
     "endGapPx": 154
   },
-  "note": "Label displacement is bounded by the filter card's column width, so smaller than the kitchen sink's 843px worst case. Same unfixable defect, inside MUI's own InputLabel stylesheet. Table alignment is a SEPARATE mechanism and is no longer a finding: `sx={{ textAlign: 'end' }}` on TableCell is logical and flips with the row, which `numericCellGaps` measures."
+  "note": "Label displacement is bounded by the filter card's column width, so smaller than the kitchen sink's 843px worst case. Was an unfixable defect until MUI's own RTL plugin was wired; see src/direction.tsx. Inside MUI's own InputLabel stylesheet. Table alignment is a SEPARATE mechanism and is no longer a finding: `sx={{ textAlign: 'end' }}` on TableCell is logical and flips with the row, which `numericCellGaps` measures."
 }

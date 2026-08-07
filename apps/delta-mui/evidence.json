@@ -172,8 +172,8 @@
     {
       "id": "rtl",
       "status": "composed",
-      "notes": "Needs direction on the MUI theme, not just a dir attribute, so the theme is rebuilt per locale with createTheme(base, { direction }); adapterLocale must also be threaded into LocalizationProvider. React Aria needed only I18nProvider. INCOMPLETE: this flips layout direction but NOT emotion's already-emitted physical offsets, so outlined floating labels detach from their fields. See rtl.issues.",
-      "customLinesOfCode": 6
+      "notes": "THREE steps, not the two this evaluation first did. (1) dir, (2) direction on the theme itself so the theme is rebuilt per locale with createTheme(base, { direction }), and (3) an emotion CacheProvider carrying @mui/stylis-plugin-rtl, which is the step that flips the CSS MUI emits. adapterLocale must also be threaded into LocalizationProvider. React Aria needed only I18nProvider and zero custom lines. Steps 1 and 2 alone LOOK right - components that read theme.direction in JS flip - while every physical offset stays put, which is how this run previously recorded a blocker that was its own omission. 23 lines for the provider plus 6 for the theme rebuild, and 2 dependencies.",
+      "customLinesOfCode": 29
     },
     {
       "id": "long-labels",
@@ -220,11 +220,8 @@
     "incomplete": 4
   },
   "rtl": {
-    "status": "issues",
-    "issues": [
-      "MUI's outlined floating labels do not flip in RTL. `direction: \"rtl\"` on the theme does not change the physical offsets emotion has already emitted: `.MuiInputLabel-outlined` uses `left: 0`, so wherever a FormControl is wider than its input the label detaches from its field. Measured at 1440x900 in Arabic: 4 fields displaced by more than 100px, the worst a visible 218px-wide input whose label sits 854px away. Visible in screenshots/desktop/rtl/01-forms.png, bottom form.",
-      "MUI's documented remedy is `stylis-plugin-rtl`, a third-party package that Brief 1 constraint 2 forbids. So this is not fixable within the rules, and it is a genuine RTL limitation of MUI Community for a service that must serve Arabic."
-    ]
+    "status": "clean",
+    "issues": []
   },
   "longLabels": {
     "status": "clean",

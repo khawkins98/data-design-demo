@@ -131,20 +131,56 @@ export const KNOWN_ISSUES: readonly KnownIssue[] = Object.freeze([
   /* ---------------------------------------------------------------- MUI --- */
   {
     id: "mui-rtl-unfixable",
-    severity: "blocker",
-    // A fix exists - stylis-plugin-rtl - and constraint 2 forbids it as a
-    // third-party package outside the candidate's own ecosystem. So this is a policy
-    // decision about an Arabic-serving service, not an engineering problem.
-    remediability: "out-of-scope",
+    /*
+     * WAS A BLOCKER AGAINST MUI, AND SHOULD NEVER HAVE BEEN. Reclassified to our own
+     * implementation, which is what the `owner` field is for: a defect only counts
+     * against a candidate if the candidate caused it. This one was caused by us
+     * doing two thirds of MUI's documented RTL setup.
+     *
+     * The reclassification is deliberately visible rather than a quiet deletion,
+     * because it changes MUI's standing on a shortlist. It removes one of MUI's two
+     * blockers.
+     */
+    severity: "caveat",
+    remediability: "per-site-code",
+    candidates: ["mui"],
+    hosts: ["*"],
+    owner: "our implementation",
+    title: "We recorded MUI as incapable of RTL after doing two thirds of its setup",
+    detail:
+      "MUI's RTL guide has three steps: `dir`, a theme with `direction: \"rtl\"`, and an emotion cache carrying an RTL stylis plugin. This evaluation did the first two, measured the result and recorded a BLOCKER - \"RTL is not achievable in the MUI Community tier\" - with the outlined floating label sitting 710px from the field it names at 1280px. Steps 1 and 2 only flip components that read `theme.direction` in their own code; step 3 is what flips the emitted CSS, so without it every physical `left`/`right` MUI writes stays physical. The blocker also said the fix was forbidden by the rule against packages outside the candidate's ecosystem - true of the `styled-components` community `stylis-plugin-rtl`, last published 2021, but not of `@mui/stylis-plugin-rtl`, which lives in the `mui/material-ui` monorepo, is MIT, is released in lockstep with `@mui/material` and is in the Community tier. So the rule never applied. This is the second time an RTL defect of ours was written down as MUI's; see [[ours-rtl-defect-attributed-to-the-library]].",
+    resolved:
+      "An emotion `CacheProvider` carrying `@mui/stylis-plugin-rtl` wraps the candidate subtree in all four MUI views (src/direction.tsx). Measured after: the label sits 15px from its field's logical start, inside the 14px MUI reserves for the notch. Both MUI apps now pass their full suites - the two deliberately-failing RTL assertions were written to fail the day the defect was fixed, and both did. The cost is two dependencies and one provider; it is not per-component work.",
+    links: [
+      { label: "the provider", href: `${BLOB}/apps/delta-mui/src/direction.tsx` },
+      {
+        label: "MUI's RTL guide",
+        href: "https://mui.com/material-ui/customization/right-to-left/",
+      },
+      { label: "axis A6", href: "../axes.html" },
+    ],
+  },
+  {
+    id: "mui-rtl-needs-a-third-setup-step",
+    /*
+     * What survives against MUI once the blocker above is withdrawn, and it is
+     * genuinely MUI's: a setup cost, and a failure mode that is silent.
+     */
+    severity: "caveat",
+    remediability: "config",
     candidates: ["mui"],
     hosts: ["*"],
     owner: "candidate",
-    title: "RTL is not achievable in the MUI Community tier",
+    title: "MUI needs a third setup step for RTL, and fails silently without it",
     detail:
-      "MUI positions its outlined floating label with a physical `left` that theme direction does not flip. Measured in Arabic: the label sits 870px from the field it names, at all three viewports. The documented fix is stylis-plugin-rtl, a package outside the candidate's own ecosystem, which this evaluation's rules forbid. Arabic is one of UNDRR's four locales, so this is not cosmetic.",
+      "Alone among the five candidates, MUI cannot mirror from a `dir` attribute. It needs `dir`, a theme rebuilt with `direction`, AND an emotion cache carrying `@mui/stylis-plugin-rtl` - two extra dependencies and a provider at the root of every tree that renders MUI. The cost is small and one-off. The risk is not: with only the first two steps the components that read `theme.direction` in JavaScript flip correctly, so the page LOOKS mirrored, while every physical offset in MUI's emitted CSS stays put. This evaluation was fooled by exactly that for weeks and recorded a blocker over it. React Aria, Mantine, Ant Design and Carbon all mirror from `dir` alone.",
     links: [
-      { label: "measurement", href: `${BLOB}/apps/mangrove-mui/test-results/rtl-label-offset.json` },
-      { label: "evidence", href: `${BLOB}/apps/mangrove-mui/EVIDENCE.md` },
+      {
+        label: "MUI's RTL guide",
+        href: "https://mui.com/material-ui/customization/right-to-left/",
+      },
+      { label: "the provider", href: `${BLOB}/apps/delta-mui/src/direction.tsx` },
+      { label: "axis A6", href: "../axes.html" },
     ],
   },
   {
@@ -461,15 +497,20 @@ export const KNOWN_ISSUES: readonly KnownIssue[] = Object.freeze([
   {
     id: "mui-stepper-connector-physical-css",
     severity: "caveat",
-    remediability: "per-site-code",
+    remediability: "config",
     candidates: ["mui"],
     hosts: ["*"],
-    owner: "candidate",
-    title: "MUI's step connector is positioned with physical CSS and breaks in Arabic",
+    // Same root cause as [[mui-rtl-unfixable]], and it moves with it: this was the
+    // second symptom of our own incomplete RTL setup, not a second MUI defect.
+    owner: "our implementation",
+    title: "MUI's step connector was recorded as broken in Arabic; it was our RTL setup",
     detail:
-      "`StepConnector` centres itself on the step's physical left edge - `left: calc(-50% + 20px); right: calc(50% + 20px)` - and `left`/`right` do not swap under `dir=\"rtl\"`. Measured at 1280px in Arabic: no connector at all between steps 1 and 2, and step 4's connector centred at x=37 with 94px hanging off the left edge of the page. No prop, variant or theme switch changes it; the fix restates the same geometry with `inset-inline-*`. This is MUI's second physical-CSS RTL defect on this estate, after the outlined label.",
+      "`StepConnector` centres itself on the step's physical left edge - `left: calc(-50% + 20px); right: calc(50% + 20px)`. With MUI's RTL plugin missing, `left`/`right` never swapped: measured at 1280px in Arabic, no connector at all between steps 1 and 2 and step 4's connector centred at x=37 with 94px hanging off the page. This was recorded as \"MUI's second physical-CSS RTL defect\", and the wizard carried a hand-written `inset-inline-*` repair for it.",
+    resolved:
+      "Wiring MUI's documented RTL step 3 fixed it at the source, and the hand-written repair was deleted after measuring that it changed nothing. With no repair present: three connectors at x=811/509/208 in Arabic and x=208/509/811 in English at 1280px - a perfect mirror, none off-page. The wizard's `sx` repair count drops from 2 to 1.",
     links: [
       { label: "the wizard", href: `${BLOB}/apps/delta-mui/src/views/EventWizard.tsx` },
+      { label: "the provider", href: `${BLOB}/apps/delta-mui/src/direction.tsx` },
       { label: "axis A6", href: "../axes.html" },
     ],
   },

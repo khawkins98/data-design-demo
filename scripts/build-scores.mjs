@@ -466,15 +466,54 @@ if (clean.length > 0) {
       `${clean.map((c) => c.name).join(", ")}.`,
   );
   L.push("");
-  L.push(
-    `That is the recommendation. The next two - ${ranked
-      .slice(1, 3)
-      .map((c) => c.name)
-      .join(" and ")} - are the credible fallbacks, because their blockers can be escaped: see`,
+  /*
+   * DERIVED, NOT HARD-CODED, and it used to be neither. This paragraph said "the
+   * next two are the credible fallbacks, because their blockers can be escaped"
+   * and "the bottom two cannot" - sentences that silently assumed exactly one
+   * clean candidate and a fixed 1/2/2 split. When MUI's RTL blocker was withdrawn
+   * the page began recommending a candidate as a fallback "because its blockers
+   * can be escaped" while also reporting that it had none. Prose that hard-codes
+   * a shape the data can change is a liability in a generated document, so the
+   * shape now comes from the data.
+   */
+  const blocked = ranked.filter((c) => c.blockers.length > 0);
+  const escapable = blocked.filter(
+    (c) => c.easiest === "config" || c.easiest === "per-site-code",
   );
-  L.push("the escape-cost table below. The bottom two cannot, or only by a decision that is");
-  L.push("UNDRR's rather than an engineer's. So the shortlist worth deeper work is the top three,");
-  L.push("and the recommendation within it is the first.");
+  const stuck = blocked.filter((c) => !escapable.includes(c));
+
+  L.push(
+    `**${ranked[0].name}** ranks first on the composite and carries no blocker, so it is` +
+      ` the recommendation.`,
+  );
+  if (clean.length > 1) {
+    const others = clean.slice(1);
+    L.push("");
+    L.push(
+      `${others.map((c) => `**${c.name}** (${c.composite})`).join(", ")} ` +
+        `${others.length === 1 ? "also carries" : "also carry"} no blocker, which makes ` +
+        `${others.length === 1 ? "it a" : "them"} viable ` +
+        `${others.length === 1 ? "second choice" : "choices"} on this evidence rather than ` +
+        `a fallback requiring a waiver.`,
+    );
+  }
+  if (escapable.length > 0) {
+    L.push("");
+    L.push(
+      `${escapable.map((c) => c.name).join(" and ")} ` +
+        `${escapable.length === 1 ? "carries a blocker that can be escaped" : "carry blockers that can be escaped"}` +
+        ` in configuration or consuming code: see the escape-cost table below.`,
+    );
+  }
+  if (stuck.length > 0) {
+    L.push("");
+    L.push(
+      `${stuck.map((c) => c.name).join(" and ")} ` +
+        `${stuck.length === 1 ? "cannot escape its blockers" : "cannot escape theirs"} ` +
+        `without a change in the library or a decision that is UNDRR's rather than an` +
+        ` engineer's.`,
+    );
+  }
 } else {
   L.push("**Every candidate carries at least one blocking axis.** No shortlist is defensible");
   L.push("from this evidence without a policy decision about which blocker UNDRR will accept.");

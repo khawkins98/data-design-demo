@@ -1,32 +1,32 @@
 {
   "labelsMeasured": 4,
-  "maxOffsetPx": 315,
-  "minOffsetPx": 242,
+  "maxOffsetPx": -6,
+  "minOffsetPx": -6,
   "fields": [
     {
       "label": "البلد",
-      "inlineStartOffsetPx": 315,
+      "inlineStartOffsetPx": -6,
       "fieldWidthPx": 349,
-      "labelCssLeft": "0px"
+      "labelCssLeft": "322.266px"
     },
     {
       "label": "نوع الخطر",
-      "inlineStartOffsetPx": 286,
+      "inlineStartOffsetPx": -6,
       "fieldWidthPx": 349,
-      "labelCssLeft": "0px"
+      "labelCssLeft": "283.328px"
     },
     {
       "label": "حالة التحقق",
-      "inlineStartOffsetPx": 279,
+      "inlineStartOffsetPx": -6,
       "fieldWidthPx": 349,
-      "labelCssLeft": "0px"
+      "labelCssLeft": "274.875px"
     },
     {
       "label": "مصدر البيانات",
-      "inlineStartOffsetPx": 242,
+      "inlineStartOffsetPx": -6,
       "fieldWidthPx": 349,
-      "labelCssLeft": "0px"
+      "labelCssLeft": "256.344px"
     }
   ],
-  "note": "Bounded by the filter grid's column width rather than the content column width, so smaller than the kitchen sink's 843px worst case. Same defect."
+  "note": "Every label must sit within 16px of its field's logical start - the 14px MUI reserves for the outline notch. Before @mui/stylis-plugin-rtl was wired, these offsets were bounded only by the filter grid's column width."
 }

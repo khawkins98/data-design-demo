@@ -41,6 +41,7 @@ import {
 import type { DemoContextValue } from "@undrr-eval/integration-mui";
 import { KnownIssues } from "@undrr-eval/known-issues";
 
+import { DirectionProvider } from "./direction.js";
 import { SectionSideBySide } from "./sections/SectionSideBySide.js";
 
 const params = new URLSearchParams(window.location.search);
@@ -112,6 +113,8 @@ export function App(): ReactElement {
       <KnownIssues candidate="mui" host="mangrove" candidateName="MUI Community" />
 
       {candidateEnabled ? (
+        /* MUI's documented RTL step 3; see direction.tsx. */
+        <DirectionProvider dir={demo.dir}>
         <ThemeProvider theme={theme}>
           {/* Scoped, not global: see the note in main.tsx. */}
           <ScopedCssBaseline className={`${TOKEN_SCOPE_CLASS} demo`}>
@@ -184,6 +187,7 @@ export function App(): ReactElement {
             </LocalizationProvider>
           </ScopedCssBaseline>
         </ThemeProvider>
+        </DirectionProvider>
       ) : null}
     </HostShell>
   );

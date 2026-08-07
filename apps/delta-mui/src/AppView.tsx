@@ -76,6 +76,7 @@ import { DemoContext, labelsFor, undrrMuiTheme } from "@undrr-eval/integration-m
 import type { DemoContextValue } from "@undrr-eval/integration-mui";
 import { TOKEN_SCOPE_CLASS } from "@undrr-eval/undrr-tokens";
 
+import { DirectionProvider } from "./direction.js";
 import { EventWizard } from "./views/EventWizard.js";
 
 /** The leakage contract: `?candidate=off` renders the frame with no candidate. */
@@ -282,6 +283,8 @@ export function AppView(): ReactElement {
       notices={<KnownIssues candidate="mui" host="delta" candidateName="MUI Community" />}
     >
       {candidateEnabled ? (
+        /* MUI's documented RTL step 3; see direction.tsx. */
+        <DirectionProvider dir={demo.dir}>
         <ThemeProvider theme={theme}>
           <ScopedCssBaseline className={`${TOKEN_SCOPE_CLASS} demo`}>
             <DemoContext.Provider value={demo}>
@@ -676,6 +679,7 @@ export function AppView(): ReactElement {
             </DemoContext.Provider>
           </ScopedCssBaseline>
         </ThemeProvider>
+        </DirectionProvider>
       ) : null}
     </AppFrame>
   );

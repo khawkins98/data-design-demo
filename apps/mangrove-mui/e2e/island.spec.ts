@@ -305,23 +305,30 @@ test.describe("embedded island", () => {
   });
 
   /**
-   * The known MUI RTL defect, measured in THIS layout rather than assumed from
-   * the kitchen sink's measurement.
+   * THIS TEST DID EXACTLY WHAT IT WAS BUILT TO DO, so read the inversion below as
+   * the mechanism working rather than as a test being bent to fit.
    *
-   * Mechanism is identical: `MuiInputLabel-outlined` is positioned with a
-   * physical `left: 0` plus `transform: translate(14px, -9px)`, which theme
-   * direction does not flip, and the documented fix (stylis-plugin-rtl) is a
-   * third-party package Brief 1 constraint 2 forbids.
+   * It used to assert the defect - `toBeGreaterThan(16)` - with the comment
+   * "asserts the defect, deliberately, so the day MUI fixes it this test fails and
+   * the evidence gets revisited rather than quietly going stale". Wiring MUI's
+   * documented RTL step 3 (`@mui/stylis-plugin-rtl` in an emotion cache; see
+   * src/direction.tsx) fixed the defect, this assertion failed on the next run,
+   * and the evidence is being revisited. That is the whole point of writing tests
+   * against findings and not only against features.
    *
-   * The magnitude differs, and that is the point of recording it here. The
-   * kitchen sink's worst case is a full-width field, where the label lands 843px
-   * from the field it names. The island's filter controls sit in ~280px grid
-   * columns, so the displacement is bounded by the column width: the label still
-   * sits at the wrong END of its own field, but it no longer crosses the page and
-   * cannot reach the host prose either side of the region. Less spectacular, and
-   * still wrong on every labelled control in the view.
+   * The defect it recorded: `MuiInputLabel-outlined` is positioned with a physical
+   * `left: 0` plus `transform: translate(14px, -9px)`, which theme direction alone
+   * does not flip, so in Arabic every floating label sat at the wrong END of its
+   * own field. Bounded here by the filter grid's ~280px columns rather than the
+   * full content width, which is why the island's numbers were always smaller than
+   * the kitchen sink's - same defect, less spectacular.
+   *
+   * It now asserts the correct state, on the same measurement, with the same 16px
+   * tolerance. Nothing about the metric changed: `f.right - l.right` was already
+   * the logical-start distance under RTL, which is why this file needed only its
+   * comparison inverted while the kitchen-sink twin needed its metric rewritten.
    */
-  test("RTL leaves MUI's floating labels at the wrong end of the field", async ({ page }) => {
+  test("RTL puts MUI's floating labels at the field's logical start", async ({ page }) => {
     await page.goto(`${URL}?candidate=on`);
     await selectLocale(page, "العربية");
 
@@ -355,19 +362,20 @@ test.describe("embedded island", () => {
       minOffsetPx: Math.min(...offsets),
       fields: measurement,
       note:
-        "Bounded by the filter grid's column width rather than the content column " +
-        "width, so smaller than the kitchen sink's 843px worst case. Same defect.",
+        "Every label must sit within 16px of its field's logical start - the 14px " +
+        "MUI reserves for the outline notch. Before @mui/stylis-plugin-rtl was " +
+        "wired, these offsets were bounded only by the filter grid's column width.",
     });
 
     expect(measurement.length, "no labelled controls found to measure").toBeGreaterThan(0);
 
-    // ASSERTS THE DEFECT, deliberately, so the day MUI fixes it this test fails
-    // and the evidence gets revisited rather than quietly going stale.
+    // EVERY label, not the average: one control left behind by the flip is the
+    // defect returning on a narrower path.
     expect(
       Math.max(...offsets),
-      "MUI's RTL floating-label defect appears to be fixed; re-measure and update " +
-        "the known-issues registry (mui-rtl-unfixable)",
-    ).toBeGreaterThan(16);
+      "a floating label is not at its field's logical start; check that the " +
+        "emotion RTL cache in src/direction.tsx still wraps this view",
+    ).toBeLessThanOrEqual(16);
   });
 
   test("axe on the candidate region and the whole page", async ({ page }, testInfo) => {

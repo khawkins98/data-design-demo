@@ -1,6 +1,6 @@
 {
   "$comment": "GENERATED from packages/known-issues/src/issues.ts by scripts/build-known-issues-json.mjs. Do not edit: add issues to the TypeScript registry, which the demo pages also import.",
-  "issueCount": 42,
+  "issueCount": 43,
   "pairings": {
     "delta-react-aria": {
       "total": 7,
@@ -16,24 +16,16 @@
       }
     },
     "delta-mui": {
-      "total": 7,
+      "total": 6,
       "counts": {
-        "blocker": 1,
         "caveat": 5,
         "info": 1
       },
-      "resolvedCount": 5,
-      "scoreableBlockers": [
-        {
-          "id": "mui-rtl-unfixable",
-          "title": "RTL is not achievable in the MUI Community tier",
-          "owner": "candidate",
-          "remediability": "out-of-scope"
-        }
-      ],
+      "resolvedCount": 7,
+      "scoreableBlockers": [],
       "headline": {
-        "severity": "blocker",
-        "title": "RTL is not achievable in the MUI Community tier"
+        "severity": "caveat",
+        "title": "MUI needs a third setup step for RTL, and fails silently without it"
       }
     },
     "delta-carbon": {
@@ -106,24 +98,16 @@
       }
     },
     "mangrove-mui": {
-      "total": 8,
+      "total": 7,
       "counts": {
-        "blocker": 1,
         "caveat": 4,
         "info": 3
       },
-      "resolvedCount": 5,
-      "scoreableBlockers": [
-        {
-          "id": "mui-rtl-unfixable",
-          "title": "RTL is not achievable in the MUI Community tier",
-          "owner": "candidate",
-          "remediability": "out-of-scope"
-        }
-      ],
+      "resolvedCount": 7,
+      "scoreableBlockers": [],
       "headline": {
-        "severity": "blocker",
-        "title": "RTL is not achievable in the MUI Community tier"
+        "severity": "caveat",
+        "title": "MUI needs a third setup step for RTL, and fails silently without it"
       }
     },
     "mangrove-carbon": {
@@ -204,8 +188,8 @@
       "resolved": 6
     },
     "mui": {
-      "open": 9,
-      "resolved": 5
+      "open": 8,
+      "resolved": 7
     },
     "carbon": {
       "open": 11,
