@@ -53,7 +53,7 @@ const CANDIDATES = [
 ];
 
 const SEVERITY_LABEL = {
-  blocker: "Blocker",
+  blocker: "Warning",
   decision: "Decision needed",
   caveat: "Caveat",
   info: "Context",
