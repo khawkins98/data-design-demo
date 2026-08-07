@@ -73,8 +73,8 @@ const built = pairings.filter((p) => p.evidence);
 
 const STATUS_MARK = {
   native: "N",
-  composed: "C",
-  custom: "X",
+  composed: "COM",
+  custom: "CUS",
   unsupported: "**U**",
 };
 
@@ -100,6 +100,20 @@ function countStatuses(evidence) {
   return counts;
 }
 
+function spark(value, max) {
+  const n = typeof value === "number" ? value : parseFloat(String(value));
+  if (Number.isNaN(n) || !max) return String(value);
+  const pct = Math.round((n / max) * 100);
+  return `{spark:${pct}:${value}}`;
+}
+
+function sparkRow(label, extractor) {
+  const vals = pairings.map((p) => p.evidence ? extractor(p) : null);
+  const nums = vals.filter((v) => v !== null && v !== undefined).map(Number).filter((n) => !isNaN(n));
+  const max = Math.max(...nums, 0);
+  return `| ${label} | ${vals.map((v) => v === null || v === undefined ? "—" : spark(Number(v), max)).join(" | ")} |`;
+}
+
 const header = pairings.map((p) => `${p.candidate.name.replace(/ \(.*\)/, "")}<br>${p.host.name}`);
 const headerRow = `| | ${header.join(" | ")} |`;
 const dividerRow = `| --- | ${pairings.map(() => "---").join(" | ")} |`;
@@ -123,19 +137,27 @@ const lines = [
   "",
   headerRow,
   dividerRow,
-  `| **Native** | ${pairings.map((p) => (p.evidence ? countStatuses(p.evidence).native : "—")).join(" | ")} |`,
-  `| **Composed** | ${pairings.map((p) => (p.evidence ? countStatuses(p.evidence).composed : "—")).join(" | ")} |`,
-  `| **Custom** | ${pairings.map((p) => (p.evidence ? countStatuses(p.evidence).custom : "—")).join(" | ")} |`,
-  `| **Unsupported** | ${pairings.map((p) => (p.evidence ? countStatuses(p.evidence).unsupported : "—")).join(" | ")} |`,
-  `| Custom lines of code | ${pairings.map((p) => (p.evidence ? (p.evidence.requirements ?? []).reduce((a, r) => a + (r.customLinesOfCode ?? 0), 0) : "—")).join(" | ")} |`,
-  `| Custom CSS lines | ${pairings.map((p) => cell(p.evidence?.customCss?.lines)).join(" | ")} |`,
-  `| CSS selectors | ${pairings.map((p) => cell(p.evidence?.customCss?.selectors)).join(" | ")} |`,
-  `| Wrappers | ${pairings.map((p) => cell(p.evidence?.wrappers?.count)).join(" | ")} |`,
-  `| Tokens applied | ${pairings.map((p) => cell(p.evidence?.theming?.tokensApplied)).join(" | ")} |`,
-  `| Tokens unreachable | ${pairings.map((p) => cell(p.evidence?.theming?.tokensUnreachable)).join(" | ")} |`,
-  `| Bundle (kB gzipped) | ${pairings.map((p) => cell(p.evidence?.bundle?.gzippedKb)).join(" | ")} |`,
-  `| Dependencies | ${pairings.map((p) => cell(p.evidence?.bundle?.dependencyCount)).join(" | ")} |`,
-  `| Build time (s) | ${pairings.map((p) => cell(p.evidence?.buildTimeSeconds)).join(" | ")} |`,
+  ...(() => {
+    const allCounts = pairings.map((p) => p.evidence ? countStatuses(p.evidence) : null);
+    const maxN = Math.max(...allCounts.map((c) => c?.native ?? 0));
+    const maxCom = Math.max(...allCounts.map((c) => c?.composed ?? 0));
+    const maxCus = Math.max(...allCounts.map((c) => c?.custom ?? 0));
+    return [
+      `| **Native** | ${allCounts.map((c) => c ? spark(c.native, maxN) : "—").join(" | ")} |`,
+      `| **Composed** | ${allCounts.map((c) => c ? spark(c.composed, maxCom) : "—").join(" | ")} |`,
+      `| **Custom** | ${allCounts.map((c) => c ? spark(c.custom, maxCus) : "—").join(" | ")} |`,
+      `| **Unsupported** | ${allCounts.map((c) => c ? String(c.unsupported) : "—").join(" | ")} |`,
+    ];
+  })(),
+  sparkRow("Custom lines of code", (p) => (p.evidence.requirements ?? []).reduce((a, r) => a + (r.customLinesOfCode ?? 0), 0)),
+  sparkRow("Custom CSS lines", (p) => p.evidence?.customCss?.lines),
+  sparkRow("CSS selectors", (p) => p.evidence?.customCss?.selectors),
+  sparkRow("Wrappers", (p) => p.evidence?.wrappers?.count),
+  sparkRow("Tokens applied", (p) => p.evidence?.theming?.tokensApplied),
+  sparkRow("Tokens unreachable", (p) => p.evidence?.theming?.tokensUnreachable),
+  sparkRow("Bundle (kB gzipped)", (p) => p.evidence?.bundle?.gzippedKb),
+  sparkRow("Dependencies", (p) => p.evidence?.bundle?.dependencyCount),
+  sparkRow("Build time (s)", (p) => p.evidence?.buildTimeSeconds),
   "",
   "## Conformance signals",
   "",
@@ -159,52 +181,28 @@ const lines = [
   `| axe incomplete | ${pairings.map((p) => cell(p.evidence?.axe?.incomplete)).join(" | ")} |`,
   `| RTL | ${pairings.map((p) => cell(p.evidence?.rtl?.status)).join(" | ")} |`,
   `| Long labels | ${pairings.map((p) => cell(p.evidence?.longLabels?.status)).join(" | ")} |`,
-  `| Blockers | ${pairings.map((p) => (p.evidence ? (p.evidence.blockers?.length ?? 0) : "—")).join(" | ")} |`,
+  `| Warnings | ${pairings.map((p) => (p.evidence ? (p.evidence.blockers?.length ?? 0) : "—")).join(" | ")} |`,
   "",
   "## Requirement matrix",
   "",
-  "`N` native · `C` composed · `X` custom · **`U`** unsupported · `·` not started",
+  "`N` native · `COM` composed · `CUS` custom · **`U`** unsupported · `·` not started",
   "",
   headerRow,
   dividerRow,
   ...REQUIREMENT_IDS.map(requirementRow),
+  ...(() => {
+    const allCounts = pairings.map((p) => p.evidence ? countStatuses(p.evidence) : null);
+    const maxN = Math.max(...allCounts.map((c) => c?.native ?? 0));
+    const maxCom = Math.max(...allCounts.map((c) => c?.composed ?? 0));
+    const maxCus = Math.max(...allCounts.map((c) => c?.custom ?? 0));
+    return [
+      `| **Native** | ${allCounts.map((c) => c ? spark(c.native, maxN) : "—").join(" | ")} |`,
+      `| **Composed** | ${allCounts.map((c) => c ? spark(c.composed, maxCom) : "—").join(" | ")} |`,
+      `| **Custom** | ${allCounts.map((c) => c ? spark(c.custom, maxCus) : "—").join(" | ")} |`,
+    ];
+  })(),
   "",
 ];
-
-// Unsupported requirements deserve their own list: they are the reason a
-// candidate might be ruled out, and they are easy to miss in a wide table.
-const unsupported = [];
-for (const p of built) {
-  for (const req of p.evidence.requirements ?? []) {
-    if (req.status === "unsupported") {
-      unsupported.push({ pairing: p.dir, id: req.id, notes: req.notes ?? "" });
-    }
-  }
-}
-
-lines.push("## Unsupported requirements", "");
-if (unsupported.length === 0) {
-  lines.push(
-    built.length === pairings.length
-      ? "None. Every requirement was met natively, by composition, or with custom code."
-      : "None so far, among the pairings that have reported.",
-    "",
-  );
-} else {
-  for (const entry of unsupported) {
-    lines.push(`- **${entry.pairing}** · \`${entry.id}\` — ${entry.notes}`, "");
-  }
-}
-
-// Blockers, verbatim.
-const blockers = built.flatMap((p) => (p.evidence.blockers ?? []).map((b) => ({ pairing: p.dir, b })));
-lines.push("## Blockers", "");
-lines.push(
-  blockers.length === 0
-    ? "None reported."
-    : blockers.map((entry) => `- **${entry.pairing}** — ${entry.b}`).join("\n"),
-  "",
-);
 
 // Human-review items: count up front, detail collapsed.
 const reviewItems = built.flatMap((p) =>
@@ -239,6 +237,17 @@ writeFileSync(OUT, markdown, "utf8");
  * the comparison would arrive as an unreadable wall of pipes in the browser.
  * The .md stays for reading in the repo, where GitHub renders it.
  */
+function statusCellClass(text) {
+  const t = text.trim();
+  if (t === "N") return "st-n";
+  if (t === "COM") return "st-com";
+  if (t === "CUS") return "st-cus";
+  if (t === "**U**") return "st-u";
+  if (t === "clean") return "st-n";
+  if (t === "**FAILED**") return "st-u";
+  return null;
+}
+
 function toHtml(md) {
   const inline = (text) =>
     text
@@ -250,7 +259,10 @@ function toHtml(md) {
       .replace(/&lt;br&gt;/g, "<br>")
       .replace(/`([^`]+)`/g, "<code>$1</code>")
       .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
-      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
+      .replace(/\{spark:(\d+):([^}]+)\}/g, (_, pct, display) => {
+        return `<span class="spark"><span class="spark-bar" style="width:${pct}%"></span>${display}</span>`;
+      });
 
   const out = [];
   const rows = md.split("\n");
@@ -264,7 +276,10 @@ function toHtml(md) {
     out.push(`<thead><tr>${table.head.map((c) => `<th>${inline(c)}</th>`).join("")}</tr></thead>`);
     out.push("<tbody>");
     for (const r of table.body) {
-      out.push(`<tr>${r.map((c) => `<td>${inline(c)}</td>`).join("")}</tr>`);
+      out.push(`<tr>${r.map((c) => {
+        const cls = statusCellClass(c);
+        return cls ? `<td class="${cls}">${inline(c)}</td>` : `<td>${inline(c)}</td>`;
+      }).join("")}</tr>`);
     }
     out.push("</tbody></table></div>");
     table = null;
@@ -287,6 +302,11 @@ function toHtml(md) {
 
   for (const line of rows) {
     if (line.startsWith("<!--") || line.startsWith("  ") || line === "-->") continue;
+    if (line.startsWith("<details") || line === "</details>") {
+      closePara(); closeList(); closeTable();
+      out.push(line);
+      continue;
+    }
 
     if (line.startsWith("|")) {
       closeList();
@@ -355,11 +375,23 @@ const html = `<!doctype html>
       code { font-size:0.9em; }
       a { color: var(--accent); }
       ul { max-width: 80ch; color: var(--muted); }
+      .spark { position:relative; display:inline-block; min-width:3.5rem; text-align:right; padding:0 0.3rem; }
+      .spark-bar { position:absolute; inset:0; background:var(--accent); opacity:0.13; border-radius:2px; }
+      .st-n   { background:#d4edda; color:#155724; text-align:center; }
+      .st-com { background:#fff3cd; color:#856404; text-align:center; }
+      .st-cus { background:#ffe0b2; color:#7a4100; text-align:center; }
+      .st-u   { background:#f8d7da; color:#721c24; text-align:center; }
+      @media (prefers-color-scheme: dark) {
+        .st-n   { background:#1b3a26; color:#8fd6a4; }
+        .st-com { background:#3a2e0a; color:#e0c36a; }
+        .st-cus { background:#3a2508; color:#e0a86a; }
+        .st-u   { background:#3a1215; color:#e08a92; }
+      }
     </style>
   </head>
   <body>
     <main>
-      <p><a href="./">&larr; Back to the demos</a></p>
+      <p><a href="./">&larr; Back to the ranking</a></p>
 ${toHtml(markdown)}
     </main>
   </body>

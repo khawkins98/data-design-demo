@@ -12,19 +12,19 @@
 
 | | Adobe React Aria<br>Delta | MUI<br>Delta | IBM Carbon<br>Delta | Mantine<br>Delta | Ant Design<br>Delta | Adobe React Aria<br>Mangrove | MUI<br>Mangrove | IBM Carbon<br>Mangrove | Mantine<br>Mangrove | Ant Design<br>Mangrove |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| **Native** | 20 | 26 | 19 | 20 | 28 | 21 | 26 | 19 | 19 | 28 |
-| **Composed** | 8 | 4 | 10 | 7 | 1 | 7 | 4 | 10 | 10 | 1 |
-| **Custom** | 2 | 0 | 1 | 3 | 1 | 2 | 0 | 1 | 1 | 1 |
+| **Native** | {spark:71:20} | {spark:93:26} | {spark:68:19} | {spark:71:20} | {spark:100:28} | {spark:75:21} | {spark:93:26} | {spark:68:19} | {spark:68:19} | {spark:100:28} |
+| **Composed** | {spark:80:8} | {spark:40:4} | {spark:100:10} | {spark:70:7} | {spark:10:1} | {spark:70:7} | {spark:40:4} | {spark:100:10} | {spark:100:10} | {spark:10:1} |
+| **Custom** | {spark:67:2} | {spark:0:0} | {spark:33:1} | {spark:100:3} | {spark:33:1} | {spark:67:2} | {spark:0:0} | {spark:33:1} | {spark:33:1} | {spark:33:1} |
 | **Unsupported** | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| Custom lines of code | 128 | 77 | 171 | 411 | 95 | 122 | 77 | 171 | 293 | 95 |
-| Custom CSS lines | 715 | 14 | 300 | 72 | 46 | 661 | 27 | 351 | 103 | 46 |
-| CSS selectors | 156 | 3 | 34 | 17 | 6 | 120 | 7 | 48 | 44 | 6 |
-| Wrappers | 5 | 3 | 4 | 4 | 4 | 3 | 2 | 4 | 4 | 4 |
-| Tokens applied | 48 | 29 | 50 | 66 | 44 | 47 | 32 | 50 | 62 | 44 |
-| Tokens unreachable | 0 | 0 | 21 | 5 | 0 | 0 | 0 | 22 | 0 | 0 |
-| Bundle (kB gzipped) | 238.8 | 387.4 | 261.5 | 238.8 | 392.3 | 237.6 | 397.6 | 207.8 | 270.9 | 423.4 |
-| Dependencies | 19 | 142 | 145 | 112 | 68 | 20 | 158 | 146 | 113 | 69 |
-| Build time (s) | 2 | 2.4 | 2.8 | 2.6 | 1.5 | 1.2 | 1.7 | 4.7 | 3.58 | 1.5 |
+| Custom lines of code | {spark:31:128} | {spark:19:77} | {spark:42:171} | {spark:100:411} | {spark:23:95} | {spark:30:122} | {spark:19:77} | {spark:42:171} | {spark:71:293} | {spark:23:95} |
+| Custom CSS lines | {spark:100:715} | {spark:2:14} | {spark:42:300} | {spark:10:72} | {spark:6:46} | {spark:92:661} | {spark:4:27} | {spark:49:351} | {spark:14:103} | {spark:6:46} |
+| CSS selectors | {spark:100:156} | {spark:2:3} | {spark:22:34} | {spark:11:17} | {spark:4:6} | {spark:77:120} | {spark:4:7} | {spark:31:48} | {spark:28:44} | {spark:4:6} |
+| Wrappers | {spark:100:5} | {spark:60:3} | {spark:80:4} | {spark:80:4} | {spark:80:4} | {spark:60:3} | {spark:40:2} | {spark:80:4} | {spark:80:4} | {spark:80:4} |
+| Tokens applied | {spark:73:48} | {spark:44:29} | {spark:76:50} | {spark:100:66} | {spark:67:44} | {spark:71:47} | {spark:48:32} | {spark:76:50} | {spark:94:62} | {spark:67:44} |
+| Tokens unreachable | {spark:0:0} | {spark:0:0} | {spark:95:21} | {spark:23:5} | {spark:0:0} | {spark:0:0} | {spark:0:0} | {spark:100:22} | {spark:0:0} | {spark:0:0} |
+| Bundle (kB gzipped) | {spark:56:238.8} | {spark:91:387.4} | {spark:62:261.5} | {spark:56:238.8} | {spark:93:392.3} | {spark:56:237.6} | {spark:94:397.6} | {spark:49:207.8} | {spark:64:270.9} | {spark:100:423.4} |
+| Dependencies | {spark:12:19} | {spark:90:142} | {spark:92:145} | {spark:71:112} | {spark:43:68} | {spark:13:20} | {spark:100:158} | {spark:92:146} | {spark:72:113} | {spark:44:69} |
+| Build time (s) | {spark:43:2} | {spark:51:2.4} | {spark:60:2.8} | {spark:55:2.6} | {spark:32:1.5} | {spark:26:1.2} | {spark:36:1.7} | {spark:100:4.7} | {spark:76:3.58} | {spark:32:1.5} |
 
 ## Conformance signals
 
@@ -41,52 +41,47 @@ to the candidate subtree, so host baseline violations are excluded.
 | axe incomplete | 1 | 4 | 2 | 1 | 1 | 1 | 4 | 2 | 0 | 1 |
 | RTL | clean | clean | clean | clean | clean | clean | clean | clean | clean | clean |
 | Long labels | clean | clean | clean | clean | clean | clean | clean | clean | clean | clean |
-| Blockers | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| Warnings | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 
 ## Requirement matrix
 
-`N` native · `C` composed · `X` custom · **`U`** unsupported · `·` not started
+`N` native · `COM` composed · `CUS` custom · **`U`** unsupported · `·` not started
 
 | | Adobe React Aria<br>Delta | MUI<br>Delta | IBM Carbon<br>Delta | Mantine<br>Delta | Ant Design<br>Delta | Adobe React Aria<br>Mangrove | MUI<br>Mangrove | IBM Carbon<br>Mangrove | Mantine<br>Mangrove | Ant Design<br>Mangrove |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `buttons` | N | N | N | N | N | N | N | N | N | N |
 | `links` | N | N | N | N | N | N | N | N | N | N |
 | `text-input` | N | N | N | N | N | N | N | N | N | N |
-| `validation-states` | N | C | C | C | N | N | C | C | C | N |
+| `validation-states` | N | COM | COM | COM | N | N | COM | COM | COM | N |
 | `disabled-states` | N | N | N | N | N | N | N | N | N | N |
 | `select-small` | N | N | N | N | N | N | N | N | N | N |
 | `select-medium` | N | N | N | N | N | N | N | N | N | N |
 | `select-large` | N | N | N | N | N | N | N | N | N | N |
-| `multiselect` | C | N | C | N | N | C | N | C | N | N |
-| `combobox-searchable` | N | N | C | N | N | N | N | N | N | N |
+| `multiselect` | COM | N | COM | N | N | COM | N | COM | N | N |
+| `combobox-searchable` | N | N | COM | N | N | N | N | N | N | N |
 | `date-picker` | N | N | N | N | N | N | N | N | N | N |
-| `datetime-range-picker` | N | C | C | N | N | N | C | C | N | N |
+| `datetime-range-picker` | N | COM | COM | N | N | N | COM | COM | N | N |
 | `modal` | N | N | N | N | N | N | N | N | N | N |
 | `tooltip` | N | N | N | N | N | N | N | N | N | N |
-| `popover` | N | N | N | N | N | N | N | C | N | N |
+| `popover` | N | N | N | N | N | N | N | COM | N | N |
 | `accordion` | N | N | N | N | N | N | N | N | N | N |
-| `cards` | X | N | N | N | N | X | N | N | N | N |
-| `left-nav` | N | N | C | N | N | N | N | N | N | N |
-| `table-render` | N | N | C | C | N | N | N | N | C | N |
-| `table-sort` | C | N | N | X | N | C | N | N | C | N |
-| `table-multiselect` | C | N | N | X | N | C | N | N | C | N |
-| `table-filter` | C | N | N | C | N | C | N | N | C | N |
-| `table-paginate` | X | N | C | C | N | X | N | C | C | N |
-| `table-column-resize-or-reorder` | N | N | X | X | X | N | N | X | X | X |
-| `table-states` | C | N | C | C | N | C | N | C | C | N |
-| `form-states` | C | N | N | N | N | C | N | C | C | N |
+| `cards` | CUS | N | N | N | N | CUS | N | N | N | N |
+| `left-nav` | N | N | COM | N | N | N | N | N | N | N |
+| `table-render` | N | N | COM | COM | N | N | N | N | COM | N |
+| `table-sort` | COM | N | N | CUS | N | COM | N | N | COM | N |
+| `table-multiselect` | COM | N | N | CUS | N | COM | N | N | COM | N |
+| `table-filter` | COM | N | N | COM | N | COM | N | N | COM | N |
+| `table-paginate` | CUS | N | COM | COM | N | CUS | N | COM | COM | N |
+| `table-column-resize-or-reorder` | N | N | CUS | CUS | CUS | N | N | CUS | CUS | CUS |
+| `table-states` | COM | N | COM | COM | N | COM | N | COM | COM | N |
+| `form-states` | COM | N | N | N | N | COM | N | COM | COM | N |
 | `locale-switcher` | N | N | N | N | N | N | N | N | N | N |
-| `rtl` | N | C | N | C | N | N | C | C | C | N |
-| `long-labels` | C | N | C | N | N | N | N | C | N | N |
-| `side-by-side` | C | C | C | C | C | C | C | C | C | C |
-
-## Unsupported requirements
-
-None. Every requirement was met natively, by composition, or with custom code.
-
-## Blockers
-
-None reported.
+| `rtl` | N | COM | N | COM | N | N | COM | COM | COM | N |
+| `long-labels` | COM | N | COM | N | N | N | N | COM | N | N |
+| `side-by-side` | COM | COM | COM | COM | COM | COM | COM | COM | COM | COM |
+| **Native** | {spark:71:20} | {spark:93:26} | {spark:68:19} | {spark:71:20} | {spark:100:28} | {spark:75:21} | {spark:93:26} | {spark:68:19} | {spark:68:19} | {spark:100:28} |
+| **Composed** | {spark:80:8} | {spark:40:4} | {spark:100:10} | {spark:70:7} | {spark:10:1} | {spark:70:7} | {spark:40:4} | {spark:100:10} | {spark:100:10} | {spark:10:1} |
+| **Custom** | {spark:67:2} | {spark:0:0} | {spark:33:1} | {spark:100:3} | {spark:33:1} | {spark:67:2} | {spark:0:0} | {spark:33:1} | {spark:33:1} | {spark:33:1} |
 
 ## Still needs human review
 
