@@ -239,7 +239,7 @@
 <div class="scroll"><table><thead>
 <tr><th>Pairing</th><th>attribute</th><th>contract</th><th>off route</th><th>of which hashed</th><th>CSS rules</th></tr>
 </thead><tbody>
-<tr><td>delta-react-aria</td><td>21</td><td>0</td><td><strong>0</strong></td><td>0</td><td>193</td></tr>
+<tr><td>delta-react-aria</td><td>21</td><td>0</td><td><strong>0</strong></td><td>0</td><td>209</td></tr>
 <tr><td>mangrove-react-aria</td><td>18</td><td>0</td><td><strong>0</strong></td><td>0</td><td>155</td></tr>
 <tr><td>delta-mui</td><td>0</td><td>2</td><td><strong>0</strong></td><td>0</td><td>3</td></tr>
 <tr><td>mangrove-mui</td><td>0</td><td>4</td><td><strong>0</strong></td><td>0</td><td>5</td></tr>
@@ -406,7 +406,7 @@
 <div class="scroll"><table><thead>
 <tr><th>Pairing</th><th>tokens applied</th><th>unreachable</th><th>propagation</th><th>live var() refs in shipped CSS</th></tr>
 </thead><tbody>
-<tr><td>delta-react-aria</td><td>48</td><td>0</td><td><strong>stylesheet-swap</strong></td><td>392</td></tr>
+<tr><td>delta-react-aria</td><td>48</td><td>0</td><td><strong>stylesheet-swap</strong></td><td>406</td></tr>
 <tr><td>mangrove-react-aria</td><td>47</td><td>0</td><td><strong>stylesheet-swap</strong></td><td>309</td></tr>
 <tr><td>delta-mui</td><td>29</td><td>0</td><td><strong>mostly-rebuild</strong></td><td>38</td></tr>
 <tr><td>mangrove-mui</td><td>32</td><td>0</td><td><strong>mostly-rebuild</strong></td><td>38</td></tr>
@@ -433,8 +433,8 @@
 </thead><tbody>
 <tr><td>delta-react-aria</td><td>clean</td><td>native</td><td>0</td><td>0</td></tr>
 <tr><td>mangrove-react-aria</td><td>clean</td><td>native</td><td>0</td><td>0</td></tr>
-<tr><td>delta-mui</td><td><strong>issues</strong></td><td>composed</td><td>6</td><td>2</td></tr>
-<tr><td>mangrove-mui</td><td><strong>issues</strong></td><td>composed</td><td>6</td><td>1</td></tr>
+<tr><td>delta-mui</td><td>clean</td><td>composed</td><td>29</td><td>0</td></tr>
+<tr><td>mangrove-mui</td><td>clean</td><td>composed</td><td>29</td><td>0</td></tr>
 <tr><td>delta-carbon</td><td>clean</td><td>native</td><td>0</td><td>1</td></tr>
 <tr><td>mangrove-carbon</td><td>clean</td><td>composed</td><td>6</td><td>2</td></tr>
 <tr><td>delta-mantine</td><td>clean</td><td>composed</td><td>18</td><td>2</td></tr>
@@ -447,19 +447,6 @@
 
 <details><summary>Recorded RTL issues, per pairing</summary>
 
-<p><strong><code>delta-mui</code></strong> - 2 recorded</p>
-
-<ul>
-<li>MUI's outlined floating labels do not flip in RTL. <code>direction: "rtl"</code> on the theme does not change the physical offsets emotion has already emitted: <code>.MuiInputLabel-outlined</code> uses <code>left: 0</code>, so wherever a FormControl is wider than its input the label detaches from its field. Measured at 1440x900 in Arabic: 4 fields displaced by more than 100px, the worst a visible 218px-wide input whose label sits 854px away. Visible in screenshots/desktop/rtl/01-forms.png, bottom form.</li>
-<li>MUI's documented remedy is <code>stylis-plugin-rtl</code>, a third-party package that Brief 1 constraint 2 forbids. So this is not fixable within the rules, and it is a genuine RTL limitation of MUI Community for a service that must serve Arabic.</li>
-
-</ul>
-<p><strong><code>mangrove-mui</code></strong> - 1 recorded</p>
-
-<ul>
-<li>MuiInputLabel-outlined is positioned with a physical <code>left: 0</code> that theme direction does not flip. A TextField whose FormControl is wider than its input renders its floating label at the physical left edge: measured label x=51, input x=921, gap 870px, at all three viewports. Fix requires stylis-plugin-rtl, which constraint 2 forbids. The e2e assertion is left failing.</li>
-
-</ul>
 <p><strong><code>delta-carbon</code></strong> - 1 recorded</p>
 
 <ul>

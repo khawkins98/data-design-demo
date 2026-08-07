@@ -20,7 +20,7 @@ numbers cannot.
 | **Composed** | 8 | 4 | 10 | 7 | 1 | 7 | 4 | 10 | 10 | 1 |
 | **Custom** | 2 | 0 | 1 | 3 | 1 | 2 | 0 | 1 | 1 | 1 |
 | **Unsupported** | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| Custom lines of code | 128 | 54 | 171 | 411 | 95 | 122 | 54 | 171 | 293 | 95 |
+| Custom lines of code | 128 | 77 | 171 | 411 | 95 | 122 | 77 | 171 | 293 | 95 |
 | Custom CSS lines | 715 | 14 | 300 | 72 | 46 | 661 | 27 | 351 | 103 | 46 |
 | CSS selectors | 156 | 3 | 34 | 17 | 6 | 120 | 7 | 48 | 44 | 6 |
 | Wrappers | 5 | 3 | 4 | 4 | 4 | 3 | 2 | 4 | 4 | 4 |
@@ -43,7 +43,7 @@ to the candidate subtree, so host baseline violations are excluded.
 | axe critical | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | axe serious | 0 | 1 | 2 | 0 | 1 | 0 | 1 | 1 | 0 | 1 |
 | axe incomplete | 1 | 4 | 2 | 1 | 1 | 1 | 4 | 2 | 0 | 1 |
-| RTL | clean | issues | clean | clean | clean | clean | issues | clean | clean | clean |
+| RTL | clean | clean | clean | clean | clean | clean | clean | clean | clean | clean |
 | Long labels | clean | clean | clean | clean | clean | clean | clean | clean | clean | clean |
 | Blockers | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 

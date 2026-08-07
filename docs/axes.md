@@ -158,7 +158,7 @@ theming mechanism, which is what accumulates across sites and across upgrades.
 
 | Pairing | attribute | contract | off route | of which hashed | CSS rules |
 | --- | --- | --- | --- | --- | --- |
-| delta-react-aria | 21 | 0 | **0** | 0 | 193 |
+| delta-react-aria | 21 | 0 | **0** | 0 | 209 |
 | mangrove-react-aria | 18 | 0 | **0** | 0 | 155 |
 | delta-mui | 0 | 2 | **0** | 0 | 3 |
 | mangrove-mui | 0 | 4 | **0** | 0 | 5 |
@@ -308,7 +308,7 @@ swap reaches every site at once; a rebuild is per site, forever.
 
 | Pairing | tokens applied | unreachable | propagation | live var() refs in shipped CSS |
 | --- | --- | --- | --- | --- |
-| delta-react-aria | 48 | 0 | **stylesheet-swap** | 392 |
+| delta-react-aria | 48 | 0 | **stylesheet-swap** | 406 |
 | mangrove-react-aria | 47 | 0 | **stylesheet-swap** | 309 |
 | delta-mui | 29 | 0 | **mostly-rebuild** | 38 |
 | mangrove-mui | 32 | 0 | **mostly-rebuild** | 38 |
@@ -333,8 +333,8 @@ mitigating first. Both print as clean; they are not the same purchase.
 | --- | --- | --- | --- | --- |
 | delta-react-aria | clean | native | 0 | 0 |
 | mangrove-react-aria | clean | native | 0 | 0 |
-| delta-mui | **issues** | composed | 6 | 2 |
-| mangrove-mui | **issues** | composed | 6 | 1 |
+| delta-mui | clean | composed | 29 | 0 |
+| mangrove-mui | clean | composed | 29 | 0 |
 | delta-carbon | clean | native | 0 | 1 |
 | mangrove-carbon | clean | composed | 6 | 2 |
 | delta-mantine | clean | composed | 18 | 2 |
@@ -348,15 +348,6 @@ ownership - candidate, third-party dependency, or mitigated - decides what it me
 and that is judgement rather than a number.
 
 <details><summary>Recorded RTL issues, per pairing</summary>
-
-**`delta-mui`** - 2 recorded
-
-- MUI's outlined floating labels do not flip in RTL. `direction: "rtl"` on the theme does not change the physical offsets emotion has already emitted: `.MuiInputLabel-outlined` uses `left: 0`, so wherever a FormControl is wider than its input the label detaches from its field. Measured at 1440x900 in Arabic: 4 fields displaced by more than 100px, the worst a visible 218px-wide input whose label sits 854px away. Visible in screenshots/desktop/rtl/01-forms.png, bottom form.
-- MUI's documented remedy is `stylis-plugin-rtl`, a third-party package that Brief 1 constraint 2 forbids. So this is not fixable within the rules, and it is a genuine RTL limitation of MUI Community for a service that must serve Arabic.
-
-**`mangrove-mui`** - 1 recorded
-
-- MuiInputLabel-outlined is positioned with a physical `left: 0` that theme direction does not flip. A TextField whose FormControl is wider than its input renders its floating label at the physical left edge: measured label x=51, input x=921, gap 870px, at all three viewports. Fix requires stylis-plugin-rtl, which constraint 2 forbids. The e2e assertion is left failing.
 
 **`delta-carbon`** - 1 recorded
 

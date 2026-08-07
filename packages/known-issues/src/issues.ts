@@ -344,9 +344,9 @@ export const KNOWN_ISSUES: readonly KnownIssue[] = Object.freeze([
     candidates: ["react-aria"],
     hosts: ["*"],
     owner: "candidate",
-    title: "React Aria is unstyled, so this page carries 121 to 133 CSS rules",
+    title: "React Aria is unstyled, so these pairings carry 155 to 209 CSS rules",
     detail:
-      "React Aria ships behaviour and accessibility, not appearance. Every visual decision on this page is a stylesheet this repository owns. The upside is that none of those rules reach an undocumented class name: they target published data-* state attributes, so they survive DOM restructuring in a way class-based overrides do not.",
+      "React Aria ships behaviour and accessibility, not appearance. Every visual decision on these pages is a stylesheet this repository owns. Counted as declaration blocks in the apps' own CSS, excluding comments and at-rule wrappers: 155 on Mangrove (theme 126, views 29) and 209 on Delta (theme 138, views 71). The figure was 121 to 133 before the step wizard and the DELTA menu bar were built - both of which four other candidates got largely for free, and which added about 70 rules here. THIS COUNT IS HAND-MAINTAINED and will drift; it is the same weakness recorded against Carbon's customCss figures. The upside is unchanged and real: none of those rules reach an undocumented class name - they target published data-* state attributes, so they survive DOM restructuring in a way class-based overrides do not.",
     links: [{ label: "axis A2", href: "../axes.html" }],
   },
   {

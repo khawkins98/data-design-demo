@@ -463,7 +463,7 @@
           <p class="pairing__licence">react-aria-components<br />Apache-2.0</p>
           <p class="card__issue card__issue--caveat">
       <span class="card__issue-badge">Caveat</span>
-      React Aria is unstyled, so this page carries 121 to 133 CSS rules <a class="card__issue-more" href="./issues.html#react-aria">all 11 findings</a>
+      React Aria is unstyled, so these pairings carry 155 to 209 CSS rules <a class="card__issue-more" href="./issues.html#react-aria">all 12 findings</a>
     </p>
         </div>
         <div class="pairing__hosts">
@@ -496,9 +496,9 @@
         <div class="pairing__meta">
           <h2 class="pairing__title" id="pairing-mui">MUI (Community only)</h2>
           <p class="pairing__licence">@mui/material<br />MIT</p>
-          <p class="card__issue card__issue--blocker">
-      <span class="card__issue-badge">Blocker</span>
-      RTL is not achievable in the MUI Community tier <a class="card__issue-more" href="./issues.html#mui">all 9 findings</a>
+          <p class="card__issue card__issue--caveat">
+      <span class="card__issue-badge">Caveat</span>
+      MUI needs a third setup step for RTL, and fails silently without it <a class="card__issue-more" href="./issues.html#mui">all 9 findings</a>
     </p>
         </div>
         <div class="pairing__hosts">
@@ -509,7 +509,7 @@
           <p class="card__host">on <strong>Delta</strong></p>
         </header>
         <p class="card__status" data-status="complete">Complete</p>
-        <ul class="flags"><li class="flag flag--ok" tabindex="0" aria-describedby="help-leakage" data-help="Did the library change how the REST of the page looks, outside its own area? Measured by loading the page twice, with and without the library, and comparing UNDRR's own headings, buttons, tables and cards." data-term="Leakage">Leakage: clean</li><li class="flag flag--bad" tabindex="0" aria-describedby="help-rtl" data-help="Does Arabic work in the COMPONENTS, not just the page? A page can flip correctly while a library's own dropdowns, dialogs and date pickers stay left-to-right inside it." data-term="RTL">RTL: issues</li><li class="flag flag--ok" tabindex="0" aria-describedby="help-longLabels" data-help="UNDRR's real content includes very long strings, and its French and Arabic are longer again. &quot;Clean&quot; means nothing overflowed the viewport or was clipped when the fixture text was left untouched." data-term="Long labels">Long labels: clean</li></ul>
+        <ul class="flags"><li class="flag flag--ok" tabindex="0" aria-describedby="help-leakage" data-help="Did the library change how the REST of the page looks, outside its own area? Measured by loading the page twice, with and without the library, and comparing UNDRR's own headings, buttons, tables and cards." data-term="Leakage">Leakage: clean</li><li class="flag flag--ok" tabindex="0" aria-describedby="help-rtl" data-help="Does Arabic work in the COMPONENTS, not just the page? A page can flip correctly while a library's own dropdowns, dialogs and date pickers stay left-to-right inside it." data-term="RTL">RTL: clean</li><li class="flag flag--ok" tabindex="0" aria-describedby="help-longLabels" data-help="UNDRR's real content includes very long strings, and its French and Arabic are longer again. &quot;Clean&quot; means nothing overflowed the viewport or was clipped when the fixture text was left untouched." data-term="Long labels">Long labels: clean</li></ul>
         
         <ul class="views"><li class="view"><a class="view__link" href="./delta-mui/app.html">A whole DELTA screen</a> <span class="view__hint">layout, navigation and a full records workflow</span></li><li class="view"><a class="view__link" href="./delta-mui/">Component inventory</a> <span class="view__hint">every component on one page - proves capability, not adoption</span></li></ul>
       </article>
@@ -520,7 +520,7 @@
           <p class="card__host">on <strong>Mangrove</strong></p>
         </header>
         <p class="card__status" data-status="complete">Complete</p>
-        <ul class="flags"><li class="flag flag--ok" tabindex="0" aria-describedby="help-leakage" data-help="Did the library change how the REST of the page looks, outside its own area? Measured by loading the page twice, with and without the library, and comparing UNDRR's own headings, buttons, tables and cards." data-term="Leakage">Leakage: clean</li><li class="flag flag--bad" tabindex="0" aria-describedby="help-rtl" data-help="Does Arabic work in the COMPONENTS, not just the page? A page can flip correctly while a library's own dropdowns, dialogs and date pickers stay left-to-right inside it." data-term="RTL">RTL: issues</li><li class="flag flag--ok" tabindex="0" aria-describedby="help-longLabels" data-help="UNDRR's real content includes very long strings, and its French and Arabic are longer again. &quot;Clean&quot; means nothing overflowed the viewport or was clipped when the fixture text was left untouched." data-term="Long labels">Long labels: clean</li></ul>
+        <ul class="flags"><li class="flag flag--ok" tabindex="0" aria-describedby="help-leakage" data-help="Did the library change how the REST of the page looks, outside its own area? Measured by loading the page twice, with and without the library, and comparing UNDRR's own headings, buttons, tables and cards." data-term="Leakage">Leakage: clean</li><li class="flag flag--ok" tabindex="0" aria-describedby="help-rtl" data-help="Does Arabic work in the COMPONENTS, not just the page? A page can flip correctly while a library's own dropdowns, dialogs and date pickers stay left-to-right inside it." data-term="RTL">RTL: clean</li><li class="flag flag--ok" tabindex="0" aria-describedby="help-longLabels" data-help="UNDRR's real content includes very long strings, and its French and Arabic are longer again. &quot;Clean&quot; means nothing overflowed the viewport or was clipped when the fixture text was left untouched." data-term="Long labels">Long labels: clean</li></ul>
         
         <ul class="views"><li class="view"><a class="view__link" href="./mangrove-mui/island.html">Inside a real page</a> <span class="view__hint">the candidate owns one region of a live Mangrove page</span></li><li class="view"><a class="view__link" href="./mangrove-mui/">Component inventory</a> <span class="view__hint">every component on one page - proves capability, not adoption</span></li></ul>
       </article>
@@ -533,7 +533,7 @@
           <p class="pairing__licence">@carbon/react<br />Apache-2.0</p>
           <p class="card__issue card__issue--blocker">
       <span class="card__issue-badge">Blocker</span>
-      Carbon cannot express about 30% of the UNDRR design tokens <a class="card__issue-more" href="./issues.html#carbon">all 11 findings</a>
+      Carbon cannot express about 30% of the UNDRR design tokens <a class="card__issue-more" href="./issues.html#carbon">all 12 findings</a>
     </p>
         </div>
         <div class="pairing__hosts">
@@ -574,7 +574,7 @@
           <p class="pairing__licence">@mantine/core<br />MIT</p>
           <p class="card__issue card__issue--blocker">
       <span class="card__issue-badge">Blocker</span>
-      Modal's close button ships with no accessible name <a class="card__issue-more" href="./issues.html#mantine">all 8 findings</a>
+      Modal's close button ships with no accessible name <a class="card__issue-more" href="./issues.html#mantine">all 11 findings</a>
     </p>
         </div>
         <div class="pairing__hosts">
@@ -612,7 +612,7 @@
           <p class="pairing__licence">antd<br />MIT</p>
           <p class="card__issue card__issue--caveat">
       <span class="card__issue-badge">Caveat</span>
-      The data table has an upstream accessibility defect <a class="card__issue-more" href="./issues.html#antd">all 12 findings</a>
+      The data table has an upstream accessibility defect <a class="card__issue-more" href="./issues.html#antd">all 14 findings</a>
     </p>
         </div>
         <div class="pairing__hosts">

@@ -379,17 +379,48 @@ L.push("");
 if (ranked[0].blockers.length === 0) {
   L.push(
     `It leads on the composite at ${ranked[0].composite} against ${ranked[1].composite} for ` +
-      `${ranked[1].name}, and it is the only candidate of ${ranked.length} carrying no blocking ` +
-      "defect. Arabic works from a `dir` attribute alone. It stays inside its own subtree on both hosts.",
+      `${ranked[1].name}` +
+      /*
+       * DERIVED. This said "and it is the only candidate of 5 carrying no
+       * blocking defect", which stopped being true the moment MUI's RTL blocker
+       * was withdrawn - the same class of hard-coded claim as the fallbacks
+       * paragraph further down, and the second one this file has had to lose.
+       */
+      (clean.length === 1
+        ? `, and it is the only candidate of ${ranked.length} carrying no blocking defect.`
+        : `, and is one of ${clean.length} of ${ranked.length} candidates carrying no` +
+          ` blocking defect.`) +
+      " Arabic works from a `dir` attribute alone. It stays inside its own subtree on both hosts.",
   );
   L.push("");
+  /*
+   * GATED ON THE WINNER'S IDENTITY, because the paragraph below is about React
+   * Aria specifically - "ships behaviour, not appearance", a hand-written CSS
+   * count - and this file recommends whoever ranks first. If the ranking ever
+   * moves, silence is correct and a confident paragraph about the wrong library
+   * is not.
+   */
+  if (ranked[0].candidate === "react-aria") {
   L.push("**The cost, which the composite does not charge it for.** React Aria ships behaviour,");
   L.push("not appearance. Adopting it means UNDRR builds and then owns the visual layer");
-  L.push("permanently - this evaluation's own demo carries 121 to 133 hand-written CSS rules for");
-  L.push("one page. Three of the seven axes reward exactly the property that creates that cost:");
+  L.push("permanently - this evaluation's own demos carry 155 to 209 hand-written CSS rules, a");
+  L.push("figure that grew by about 70 when a step wizard and a menu bar were added that four");
+  L.push("other candidates supplied themselves. Three of the seven axes reward exactly the");
+  L.push("property that creates that cost:");
   L.push("a library with no opinions cannot conflict with Mangrove, cannot bake in wrong colours");
-  L.push("and cannot mistheme. **Read the recommendation as \"adopt this and fund a design");
-  L.push("system\", not as \"adopt this and save work\".**");
+  L.push("and cannot mistheme.");
+  /*
+   * ONE LINE, NOT TWO, AND THAT IS THE FIX. The bold used to open on one pushed
+   * line and close on the next; the HTML writer converts inline markup per line,
+   * so both `**` survived into the page as literal asterisks - on the single most
+   * emphatic sentence of the recommendation. Any inline span must stay on one
+   * pushed line.
+   */
+  L.push(
+    '**Read the recommendation as "adopt this and fund a design system", not as ' +
+      '"adopt this and save work".**',
+  );
+  }
 } else {
   L.push(
     `It leads on the composite at ${ranked[0].composite}, but carries ` +
@@ -444,8 +475,12 @@ L.push("");
 
 L.push("## Ranking");
 L.push("");
-L.push("Composite is the weighted mean of the two hosts. **Blockers are listed beside the");
-L.push("score and never folded into it**: a weighted composite can otherwise let a good");
+// Same one-line rule as the recommendation's bold: inline markup is converted per
+// pushed line, so a span split across two arrives as literal asterisks.
+L.push(
+  "Composite is the weighted mean of the two hosts. **Blockers are listed beside the " +
+    "score and never folded into it**: a weighted composite can otherwise let a good",
+);
 L.push("bundle size offset an unfixable defect, so the number ranks and is not permitted");
 L.push("to hide anything.");
 L.push("");
