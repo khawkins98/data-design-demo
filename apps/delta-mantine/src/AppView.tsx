@@ -60,6 +60,7 @@ import {
 import { LOCALES, LOSS_RECORDS, OPTIONS_SMALL } from "@undrr-eval/fixtures";
 import type { LabelSet, LocaleCode, LossRecord, VerificationStatus } from "@undrr-eval/fixtures";
 import { AppFrame, ViewSwitcher } from "@undrr-eval/host-delta";
+import type { DeltaMenu, DeltaMenuEntry } from "@undrr-eval/host-delta";
 import { KnownIssues } from "@undrr-eval/known-issues";
 import { viewLinks } from "@undrr-eval/test-harness/views";
 import { TOKEN_SCOPE_CLASS } from "@undrr-eval/undrr-tokens";
@@ -71,6 +72,7 @@ import { sortRecords } from "./table-model.js";
 import type { SortState, SortableKey } from "./table-model.js";
 import { undrrCssVariablesResolver, undrrMantineTheme } from "./theme.js";
 import { EventWizard } from "./views/EventWizard.js";
+import { NavMenu, ProfileMenu } from "./views/NavMenu.js";
 
 /** "All", as a Select value: Mantine's Select cannot hold an empty-string value. */
 const ALL = "all";
@@ -724,7 +726,29 @@ export function AppView({
     );
   }
 
-  return (
+  /*
+   * THE PROVIDERS NOW WRAP THE FRAME, NOT ONLY THE CANDIDATE SUBTREE, AND THAT IS
+   * A FINDING ABOUT THE MENU SLOT RATHER THAN A TIDY-UP.
+   *
+   * Mantine components throw outright without `MantineProvider` in the tree -
+   * "MantineProvider was not found in component tree" - and the bar's menus render
+   * inside the host frame, above where the provider used to sit. So putting a
+   * candidate component into host chrome forces the candidate's own context to
+   * enclose the host chrome too.
+   *
+   * The cost is measurable and worth naming: with the providers outside, Mantine's
+   * CSS variables and `:where([dir])` rules now apply to the whole page rather than
+   * to the candidate subtree, so this pairing has a LARGER blast radius than it did
+   * - by construction, not by accident. Only under `?candidate=on`: the wrapper is
+   * conditional, so the `?candidate=off` leakage baseline is untouched and the
+   * assertion still compares like with like.
+   *
+   * MUI needed no equivalent change, because MUI falls back to a default theme
+   * instead of throwing. React Aria needed none either - it has no provider at all
+   * beyond `I18nProvider`. This is a per-library cost of putting components in
+   * someone else's chrome, and it is exactly what the slot was built to surface.
+   */
+  const framed = (
     <AppFrame
       title={demo.labels.appTitle}
       dir={demo.dir}
@@ -746,10 +770,35 @@ export function AppView({
           otherHost={{ label: "Mantine on Mangrove", href: "../mangrove-mantine/" }}
         />
       }
+      /*
+       * The host bar's menus, built with this library. Passed only when the
+       * candidate is enabled, so the `?candidate=off` baseline still renders the
+       * frame's own plain links and holds no candidate markup at all.
+       */
+      {...(candidateEnabled
+        ? {
+            navMenu: (menu: DeltaMenu) => <NavMenu menu={menu} />,
+            profileMenu: (items: readonly DeltaMenuEntry[]) => <ProfileMenu items={items} />,
+          }
+        : {})}
       notices={<KnownIssues candidate="mantine" host="delta" candidateName="Mantine" />}
     >
       {candidate}
     </AppFrame>
+  );
+
+  if (!candidateEnabled) return framed;
+
+  return (
+    <DirectionProvider initialDirection={demo.dir} detectDirection={false}>
+      <MantineProvider
+        theme={undrrMantineTheme}
+        cssVariablesResolver={undrrCssVariablesResolver}
+        forceColorScheme="light"
+      >
+        {framed}
+      </MantineProvider>
+    </DirectionProvider>
   );
 }
 

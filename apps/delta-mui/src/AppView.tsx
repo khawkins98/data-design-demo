@@ -70,6 +70,7 @@ import { createTheme } from "@mui/material/styles";
 import { LOCALES, LOSS_RECORDS, OPTIONS_SMALL } from "@undrr-eval/fixtures";
 import type { LocaleCode, LossRecord, VerificationStatus } from "@undrr-eval/fixtures";
 import { AppFrame, ViewSwitcher } from "@undrr-eval/host-delta";
+import type { DeltaMenu, DeltaMenuEntry } from "@undrr-eval/host-delta";
 import { viewLinks } from "@undrr-eval/test-harness/views";
 import { KnownIssues } from "@undrr-eval/known-issues";
 import { DemoContext, labelsFor, undrrMuiTheme } from "@undrr-eval/integration-mui";
@@ -78,6 +79,7 @@ import { TOKEN_SCOPE_CLASS } from "@undrr-eval/undrr-tokens";
 
 import { DirectionProvider } from "./direction.js";
 import { EventWizard } from "./views/EventWizard.js";
+import { NavMenu, ProfileMenu } from "./views/NavMenu.js";
 
 /** The leakage contract: `?candidate=off` renders the frame with no candidate. */
 const params = new URLSearchParams(window.location.search);
@@ -280,6 +282,17 @@ export function AppView(): ReactElement {
           otherHost={{ label: "MUI on Mangrove", href: "../mangrove-mui/" }}
         />
       }
+      /*
+       * The host bar's menus, built with this library. Passed only when the
+       * candidate is enabled, so the `?candidate=off` baseline still renders the
+       * frame's own plain links and holds no candidate markup at all.
+       */
+      {...(candidateEnabled
+        ? {
+            navMenu: (menu: DeltaMenu) => <NavMenu menu={menu} />,
+            profileMenu: (items: readonly DeltaMenuEntry[]) => <ProfileMenu items={items} />,
+          }
+        : {})}
       notices={<KnownIssues candidate="mui" host="delta" candidateName="MUI Community" />}
     >
       {candidateEnabled ? (

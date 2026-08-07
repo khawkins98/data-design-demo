@@ -8,10 +8,20 @@
     "wcag21aa",
     "wcag22aa"
   ],
-  "violations": [],
+  "violations": [
+    {
+      "id": "color-contrast",
+      "impact": "serious",
+      "help": "Elements must meet minimum color contrast ratio thresholds",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright",
+      "nodes": [
+        ".ant-avatar-string"
+      ]
+    }
+  ],
   "counts": {
-    "violations": 0,
-    "serious": 0,
+    "violations": 1,
+    "serious": 1,
     "critical": 0,
     "incomplete": 1
   },

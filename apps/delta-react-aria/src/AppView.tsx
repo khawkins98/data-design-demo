@@ -51,6 +51,7 @@ import {
 import { LOCALES } from "@undrr-eval/fixtures";
 import type { LocaleCode, LossRecord } from "@undrr-eval/fixtures";
 import { AppFrame, ViewSwitcher } from "@undrr-eval/host-delta";
+import type { DeltaMenu, DeltaMenuEntry } from "@undrr-eval/host-delta";
 import { KnownIssues } from "@undrr-eval/known-issues";
 import { viewLinks } from "@undrr-eval/test-harness/views";
 import { TOKEN_SCOPE_CLASS } from "@undrr-eval/undrr-tokens";
@@ -59,6 +60,7 @@ import { DemoContext, labelsFor, useDemo } from "./demo-state.js";
 import type { DemoContextValue } from "./demo-state.js";
 import { MODAL_OVERLAY_CLASS } from "./overlay-class.js";
 import { EventWizard } from "./views/EventWizard.js";
+import { NavMenu, ProfileMenu } from "./views/NavMenu.js";
 import { RecordsFilters } from "./views/RecordsFilters.js";
 import { RecordsPagination } from "./views/RecordsPagination.js";
 import { RecordsTable } from "./views/RecordsTable.js";
@@ -285,6 +287,18 @@ export function AppView(): ReactElement {
           otherHost={{ label: "React Aria on Mangrove", href: "../mangrove-react-aria/" }}
         />
       }
+      /*
+       * The host bar's menus, built with React Aria. Passed only when the
+       * candidate is enabled, so the `?candidate=off` baseline still renders the
+       * frame's plain links and contains no candidate markup at all - which is
+       * what keeps the leakage assertion comparing like with like.
+       */
+      {...(candidateEnabled
+        ? {
+            navMenu: (menu: DeltaMenu) => <NavMenu menu={menu} />,
+            profileMenu: (items: readonly DeltaMenuEntry[]) => <ProfileMenu items={items} />,
+          }
+        : {})}
       notices={<KnownIssues candidate="react-aria" host="delta" candidateName="Adobe React Aria" />}
     >
       {candidateEnabled ? (

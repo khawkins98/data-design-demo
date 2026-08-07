@@ -60,6 +60,7 @@ import { StyleProvider } from "@ant-design/cssinjs";
 import { LOCALES, LOSS_RECORDS, OPTIONS_SMALL } from "@undrr-eval/fixtures";
 import type { LocaleCode, LossRecord, VerificationStatus } from "@undrr-eval/fixtures";
 import { AppFrame, ViewSwitcher } from "@undrr-eval/host-delta";
+import type { DeltaMenu, DeltaMenuEntry } from "@undrr-eval/host-delta";
 import { viewLinks } from "@undrr-eval/test-harness/views";
 import { KnownIssues } from "@undrr-eval/known-issues";
 import { DemoContext, labelsFor, undrrAntdTheme } from "@undrr-eval/integration-antd";
@@ -67,6 +68,7 @@ import type { DemoContextValue } from "@undrr-eval/integration-antd";
 import { TOKEN_SCOPE_CLASS, color } from "@undrr-eval/undrr-tokens";
 
 import { EventWizard } from "./views/EventWizard.js";
+import { NavMenu, ProfileMenu } from "./views/NavMenu.js";
 
 /** The leakage contract: `?candidate=off` renders the frame with no candidate. */
 const params = new URLSearchParams(window.location.search);
@@ -322,6 +324,17 @@ export function AppView(): ReactElement {
           otherHost={{ label: "Ant Design on Mangrove", href: "../mangrove-antd/" }}
         />
       }
+      /*
+       * The host bar's menus, built with this library. Passed only when the
+       * candidate is enabled, so the `?candidate=off` baseline still renders the
+       * frame's own plain links and holds no candidate markup at all.
+       */
+      {...(candidateEnabled
+        ? {
+            navMenu: (menu: DeltaMenu) => <NavMenu menu={menu} />,
+            profileMenu: (items: readonly DeltaMenuEntry[]) => <ProfileMenu items={items} />,
+          }
+        : {})}
       notices={<KnownIssues candidate="antd" host="delta" candidateName="Ant Design" />}
     >
       {candidateEnabled ? (

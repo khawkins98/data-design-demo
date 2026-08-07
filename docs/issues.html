@@ -151,29 +151,29 @@
       <div class="tallies">
         <button type="button" class="tally" data-filter-candidate="react-aria">
           <span class="tally__name">Adobe React Aria</span>
-          <span class="tally__count">11</span>
+          <span class="tally__count">12</span>
         </button>
         <button type="button" class="tally" data-filter-candidate="mui">
           <span class="tally__name">MUI (Community only)</span>
-          <span class="tally__count">8</span>
+          <span class="tally__count">9</span>
         </button>
         <button type="button" class="tally" data-filter-candidate="carbon">
           <span class="tally__name">IBM Carbon</span>
-          <span class="tally__count">11</span>
+          <span class="tally__count">12</span>
         </button>
         <button type="button" class="tally" data-filter-candidate="mantine">
           <span class="tally__name">Mantine</span>
-          <span class="tally__count">8</span>
+          <span class="tally__count">11</span>
         </button>
         <button type="button" class="tally" data-filter-candidate="antd">
           <span class="tally__name">Ant Design</span>
-          <span class="tally__count">12</span>
+          <span class="tally__count">14</span>
         </button>
       </div>
-      <p class="status" id="status" role="status">30 open findings shown.</p>
+      <p class="status" id="status" role="status">35 open findings shown.</p>
 
       <table class="register" id="open">
-        <caption class="register__caption">Open findings (30)</caption>
+        <caption class="register__caption">Open findings (35)</caption>
         <thead>
           <tr>
             <th scope="col">Severity</th>
@@ -606,12 +606,47 @@
             </tr>
 
             <tr class="row row--caveat"
+                id="antd-dropdown-trigger-has-no-aria"
+                data-severity="caveat"
+                data-owner="candidate"
+                data-candidates="antd"
+                data-remediability="per-site-code"
+                data-index="12">
+              <td class="cell-sev">
+                <span class="badge badge--caveat">Caveat</span>
+              </td>
+              <td class="cell-cand">Ant Design</td>
+              <td class="cell-title">
+                <button type="button" class="disclose" aria-expanded="true" aria-controls="detail-antd-dropdown-trigger-has-no-aria">
+                  <span class="disclose__mark" aria-hidden="true"></span>
+                  <span class="disclose__text">Ant Design's dropdown trigger tells a screen reader nothing</span>
+                </button>
+              </td>
+              <td class="cell-owner">the library</td>
+              <td class="cell-escape">per-site code</td>
+            </tr>
+            <tr class="detail" id="detail-antd-dropdown-trigger-has-no-aria">
+              <td colspan="5">
+                <p class="detail__text">Measured on the built page, before opening and after: antd's <code>Dropdown</code> puts NO <code>aria-haspopup</code>, NO <code>aria-expanded</code> and NO <code>aria-controls</code> on its trigger. The other four candidates all set haspopup and toggle expanded - React Aria, MUI and Carbon with <code>aria-haspopup=&quot;true&quot;</code>, Mantine with <code>&quot;menu&quot;</code>. So a screen-reader user hears &quot;DATA, button&quot; with no indication that it opens a menu or that the menu is now open, and DELTA's four top-level navigation items become four buttons that appear to do nothing. Same species as [[antd-disabled-step-leaves-the-tree]]: the visual affordance is complete and the accessible one is absent.</p>
+                
+                <p class="detail__meta">
+                  Belongs to <strong>the library</strong>
+                  &middot; affects both hosts
+                  &middot; counts towards the score
+                  &middot; escape: fixable in consuming code, repeated per site
+                </p>
+                <p class="detail__links"><a href="https://github.com/khawkins98/data-design-demo/blob/main/apps/delta-antd/src/views/NavMenu.tsx">the menu</a> &middot; <a href="../axes.html">axis A7</a></p>
+                <p class="detail__id"><code>antd-dropdown-trigger-has-no-aria</code></p>
+              </td>
+            </tr>
+
+            <tr class="row row--caveat"
                 id="carbon-stepper-truncates-step-names"
                 data-severity="caveat"
                 data-owner="candidate"
                 data-candidates="carbon"
                 data-remediability="per-site-code"
-                data-index="12">
+                data-index="13">
               <td class="cell-sev">
                 <span class="badge badge--caveat">Caveat</span>
               </td>
@@ -646,7 +681,7 @@
                 data-owner="candidate"
                 data-candidates="carbon"
                 data-remediability=""
-                data-index="13">
+                data-index="14">
               <td class="cell-sev">
                 <span class="badge badge--caveat">Caveat</span>
               </td>
@@ -676,12 +711,47 @@
             </tr>
 
             <tr class="row row--caveat"
+                id="carbon-menu-item-label-is-a-string"
+                data-severity="caveat"
+                data-owner="candidate"
+                data-candidates="carbon"
+                data-remediability="inherent"
+                data-index="15">
+              <td class="cell-sev">
+                <span class="badge badge--caveat">Caveat</span>
+              </td>
+              <td class="cell-cand">Carbon</td>
+              <td class="cell-title">
+                <button type="button" class="disclose" aria-expanded="true" aria-controls="detail-carbon-menu-item-label-is-a-string">
+                  <span class="disclose__mark" aria-hidden="true"></span>
+                  <span class="disclose__text">Carbon's menu item cannot hold DELTA's supporting line at all</span>
+                </button>
+              </td>
+              <td class="cell-owner">the library</td>
+              <td class="cell-escape">inherent</td>
+            </tr>
+            <tr class="detail" id="detail-carbon-menu-item-label-is-a-string">
+              <td colspan="5">
+                <p class="detail__text">Carbon is the one candidate where DELTA's existing menu item cannot be reproduced. <code>MenuItem</code> takes <code>label</code> as a STRING and renders it into its own <code>.cds--menu-item__label</code>; there is no children slot. The only other text slot is <code>shortcut</code>, intended for keyboard hints, which renders muted at the inline end rather than beneath the label - so the demo uses it and looks visibly wrong, deliberately, rather than disguising the gap. <code>OverflowMenuItem</code>'s <code>itemText</code> is a string too. Carbon also has no avatar component, so the profile trigger is a labelled button rather than the initials circle the design file shows.</p>
+                
+                <p class="detail__meta">
+                  Belongs to <strong>the library</strong>
+                  &middot; affects both hosts
+                  &middot; counts towards the score
+                  &middot; escape: cannot be escaped while using the library as documented
+                </p>
+                <p class="detail__links"><a href="https://github.com/khawkins98/data-design-demo/blob/main/apps/delta-carbon/src/views/NavMenu.tsx">the menu</a> &middot; <a href="../axes.html">axis A5</a></p>
+                <p class="detail__id"><code>carbon-menu-item-label-is-a-string</code></p>
+              </td>
+            </tr>
+
+            <tr class="row row--caveat"
                 id="mantine-no-column-sizing"
                 data-severity="caveat"
                 data-owner="candidate"
                 data-candidates="mantine antd"
                 data-remediability=""
-                data-index="14">
+                data-index="16">
               <td class="cell-sev">
                 <span class="badge badge--caveat">Caveat</span>
               </td>
@@ -711,12 +781,47 @@
             </tr>
 
             <tr class="row row--caveat"
+                id="mantine-disabled-menu-item-is-natively-disabled"
+                data-severity="caveat"
+                data-owner="candidate"
+                data-candidates="mantine"
+                data-remediability="per-site-code"
+                data-index="17">
+              <td class="cell-sev">
+                <span class="badge badge--caveat">Caveat</span>
+              </td>
+              <td class="cell-cand">Mantine</td>
+              <td class="cell-title">
+                <button type="button" class="disclose" aria-expanded="true" aria-controls="detail-mantine-disabled-menu-item-is-natively-disabled">
+                  <span class="disclose__mark" aria-hidden="true"></span>
+                  <span class="disclose__text">Mantine's disabled menu item is removed from the keyboard's reach</span>
+                </button>
+              </td>
+              <td class="cell-owner">the library</td>
+              <td class="cell-escape">per-site code</td>
+            </tr>
+            <tr class="detail" id="detail-mantine-disabled-menu-item-is-natively-disabled">
+              <td colspan="5">
+                <p class="detail__text"><code>Menu.Item</code> with <code>disabled</code> renders a <code>&lt;button&gt;</code> carrying the NATIVE <code>disabled</code> attribute and <code>tabindex=&quot;-1&quot;</code>, and no <code>aria-disabled</code>. A natively disabled button is not focusable, so a screen-reader user arrowing through the menu never lands on the item and is never told it exists - the item is invisible rather than unavailable. The WAI-ARIA practices ask for menu items to stay focusable precisely so unavailability is discoverable. MUI and Carbon use <code>aria-disabled</code> with <code>tabindex=&quot;-1&quot;</code>; React Aria is the only one of the five that leaves the item genuinely focusable. Recorded because this evaluation first assumed Mantine did the right thing here and had to measure to find out otherwise.</p>
+                
+                <p class="detail__meta">
+                  Belongs to <strong>the library</strong>
+                  &middot; affects both hosts
+                  &middot; counts towards the score
+                  &middot; escape: fixable in consuming code, repeated per site
+                </p>
+                <p class="detail__links"><a href="https://github.com/khawkins98/data-design-demo/blob/main/apps/delta-mantine/src/views/NavMenu.tsx">the menu</a> &middot; <a href="../axes.html">axis A7</a></p>
+                <p class="detail__id"><code>mantine-disabled-menu-item-is-natively-disabled</code></p>
+              </td>
+            </tr>
+
+            <tr class="row row--caveat"
                 id="carbon-off-route-overrides"
                 data-severity="caveat"
                 data-owner="candidate"
                 data-candidates="carbon"
                 data-remediability=""
-                data-index="15">
+                data-index="18">
               <td class="cell-sev">
                 <span class="badge badge--caveat">Caveat</span>
               </td>
@@ -751,7 +856,7 @@
                 data-owner="candidate"
                 data-candidates="mui"
                 data-remediability="inherent"
-                data-index="16">
+                data-index="19">
               <td class="cell-sev">
                 <span class="badge badge--caveat">Caveat</span>
               </td>
@@ -786,7 +891,7 @@
                 data-owner="candidate"
                 data-candidates="mui"
                 data-remediability="config"
-                data-index="17">
+                data-index="20">
               <td class="cell-sev">
                 <span class="badge badge--caveat">Caveat</span>
               </td>
@@ -816,12 +921,47 @@
             </tr>
 
             <tr class="row row--caveat"
+                id="no-candidate-has-a-menu-item-description-slot"
+                data-severity="caveat"
+                data-owner="candidate"
+                data-candidates="react-aria mui mantine antd"
+                data-remediability="per-site-code"
+                data-index="21">
+              <td class="cell-sev">
+                <span class="badge badge--caveat">Caveat</span>
+              </td>
+              <td class="cell-cand">React Aria, MUI, Mantine, Ant Design</td>
+              <td class="cell-title">
+                <button type="button" class="disclose" aria-expanded="true" aria-controls="detail-no-candidate-has-a-menu-item-description-slot">
+                  <span class="disclose__mark" aria-hidden="true"></span>
+                  <span class="disclose__text">No candidate has a slot for DELTA's two-line menu item</span>
+                </button>
+              </td>
+              <td class="cell-owner">the library</td>
+              <td class="cell-escape">per-site code</td>
+            </tr>
+            <tr class="detail" id="detail-no-candidate-has-a-menu-item-description-slot">
+              <td colspan="5">
+                <p class="detail__text">DELTA's menu items are a bold label above muted supporting text - <code>RegularMenuBar</code> renders it through a custom <code>itemRenderer</code>, and every item under DATA and ANALYSIS uses it. Not one of the five candidates has a prop for it. React Aria is cheapest, because <code>MenuItem</code> imposes no internal structure and two spans just work; Mantine likewise, once measured - this evaluation first recorded that <code>Menu.Item</code> takes a <code>description</code> prop, which it does not, and the prop was accepted silently and rendered nothing. MUI needs <code>flexDirection: &quot;column&quot;</code> because <code>MenuItem</code> lays children out in a row, and its native route (<code>ListItemText secondary</code>) brings Typography's own colour and spacing. Ant Design accepts a ReactNode as <code>label</code> but sizes the cell for one line, so the item's height becomes ours.</p>
+                
+                <p class="detail__meta">
+                  Belongs to <strong>the library</strong>
+                  &middot; affects both hosts
+                  &middot; counts towards the score
+                  &middot; escape: fixable in consuming code, repeated per site
+                </p>
+                <p class="detail__links"><a href="https://github.com/khawkins98/data-design-demo/blob/main/packages/host-delta/src/menu-model.ts">the model</a> &middot; <a href="../axes.html">axis A1</a></p>
+                <p class="detail__id"><code>no-candidate-has-a-menu-item-description-slot</code></p>
+              </td>
+            </tr>
+
+            <tr class="row row--caveat"
                 id="stepper-omits-aria-current"
                 data-severity="caveat"
                 data-owner="candidate"
                 data-candidates="mui carbon mantine antd"
                 data-remediability="per-site-code"
-                data-index="18">
+                data-index="22">
               <td class="cell-sev">
                 <span class="badge badge--caveat">Caveat</span>
               </td>
@@ -851,12 +991,47 @@
             </tr>
 
             <tr class="row row--caveat"
+                id="menu-slot-hoists-the-provider"
+                data-severity="caveat"
+                data-owner="this evaluation"
+                data-candidates="mantine"
+                data-remediability="per-site-code"
+                data-index="23">
+              <td class="cell-sev">
+                <span class="badge badge--caveat">Caveat</span>
+              </td>
+              <td class="cell-cand">Mantine</td>
+              <td class="cell-title">
+                <button type="button" class="disclose" aria-expanded="true" aria-controls="detail-menu-slot-hoists-the-provider">
+                  <span class="disclose__mark" aria-hidden="true"></span>
+                  <span class="disclose__text">Putting Mantine in host chrome forces its provider around the whole page</span>
+                </button>
+              </td>
+              <td class="cell-owner">our method<span class="cell-owner__note">not scored</span></td>
+              <td class="cell-escape">per-site code</td>
+            </tr>
+            <tr class="detail" id="detail-menu-slot-hoists-the-provider">
+              <td colspan="5">
+                <p class="detail__text">Mantine components throw without <code>MantineProvider</code> in the tree - &quot;MantineProvider was not found in component tree&quot; - and the menu bar renders inside the host frame, above where the provider used to sit. So the provider had to be hoisted to wrap <code>AppFrame</code> itself. The consequence is real and is recorded rather than hidden: Mantine's CSS variables and <code>:where([dir])</code> rules now apply to the whole page rather than to the candidate subtree, so this pairing's blast radius is larger by construction. The wrapper is conditional on <code>?candidate=on</code>, so the leakage baseline is untouched and the assertion still compares like with like. MUI needed no equivalent change because it falls back to a default theme instead of throwing; React Aria has no such provider at all. Any real site adopting a library for shared chrome inherits this same question.</p>
+                
+                <p class="detail__meta">
+                  Belongs to <strong>this evaluation's method</strong>
+                  &middot; affects Delta
+                  &middot; <strong>not counted</strong> towards any score
+                  &middot; escape: fixable in consuming code, repeated per site
+                </p>
+                <p class="detail__links"><a href="https://github.com/khawkins98/data-design-demo/blob/main/packages/host-delta/src/AppFrame.tsx">the frame</a> &middot; <a href="../axes.html">axis A4</a></p>
+                <p class="detail__id"><code>menu-slot-hoists-the-provider</code></p>
+              </td>
+            </tr>
+
+            <tr class="row row--caveat"
                 id="react-aria-css-cost"
                 data-severity="caveat"
                 data-owner="candidate"
                 data-candidates="react-aria"
                 data-remediability=""
-                data-index="19">
+                data-index="24">
               <td class="cell-sev">
                 <span class="badge badge--caveat">Caveat</span>
               </td>
@@ -891,7 +1066,7 @@
                 data-owner="candidate"
                 data-candidates="react-aria"
                 data-remediability="inherent"
-                data-index="20">
+                data-index="25">
               <td class="cell-sev">
                 <span class="badge badge--caveat">Caveat</span>
               </td>
@@ -926,7 +1101,7 @@
                 data-owner="candidate"
                 data-candidates="react-aria"
                 data-remediability=""
-                data-index="21">
+                data-index="26">
               <td class="cell-sev">
                 <span class="badge badge--caveat">Caveat</span>
               </td>
@@ -961,7 +1136,7 @@
                 data-owner="our implementation"
                 data-candidates="react-aria"
                 data-remediability=""
-                data-index="22">
+                data-index="27">
               <td class="cell-sev">
                 <span class="badge badge--caveat">Caveat</span>
               </td>
@@ -996,7 +1171,7 @@
                 data-owner="candidate"
                 data-candidates="antd"
                 data-remediability=""
-                data-index="23">
+                data-index="28">
               <td class="cell-sev">
                 <span class="badge badge--caveat">Caveat</span>
               </td>
@@ -1031,7 +1206,7 @@
                 data-owner="this evaluation"
                 data-candidates="react-aria mui carbon mantine antd"
                 data-remediability="config"
-                data-index="24">
+                data-index="29">
               <td class="cell-sev">
                 <span class="badge badge--caveat">Caveat</span>
               </td>
@@ -1066,7 +1241,7 @@
                 data-owner="this evaluation"
                 data-candidates="react-aria"
                 data-remediability="per-site-code"
-                data-index="25">
+                data-index="30">
               <td class="cell-sev">
                 <span class="badge badge--caveat">Caveat</span>
               </td>
@@ -1101,7 +1276,7 @@
                 data-owner="this evaluation"
                 data-candidates="react-aria"
                 data-remediability=""
-                data-index="26">
+                data-index="31">
               <td class="cell-sev">
                 <span class="badge badge--caveat">Caveat</span>
               </td>
@@ -1136,7 +1311,7 @@
                 data-owner="host"
                 data-candidates="react-aria mui carbon mantine antd"
                 data-remediability=""
-                data-index="27">
+                data-index="32">
               <td class="cell-sev">
                 <span class="badge badge--info">Context</span>
               </td>
@@ -1171,7 +1346,7 @@
                 data-owner="host"
                 data-candidates="react-aria mui carbon mantine antd"
                 data-remediability=""
-                data-index="28">
+                data-index="33">
               <td class="cell-sev">
                 <span class="badge badge--info">Context</span>
               </td>
@@ -1206,7 +1381,7 @@
                 data-owner="this evaluation"
                 data-candidates="react-aria mui carbon mantine antd"
                 data-remediability=""
-                data-index="29">
+                data-index="34">
               <td class="cell-sev">
                 <span class="badge badge--info">Context</span>
               </td>

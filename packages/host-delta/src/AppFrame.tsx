@@ -83,6 +83,8 @@ import type { ReactElement, ReactNode } from "react";
 import { DELTA_FRAME_CANARY_IDS } from "@undrr-eval/test-harness/frame-canaries";
 
 import { HostCanaries } from "./HostShell.js";
+import { DELTA_MENUS, DELTA_PROFILE_MENU } from "./menu-model.js";
+import type { DeltaMenu, DeltaMenuEntry } from "./menu-model.js";
 
 export interface AppFrameProps {
   /** Application title, rendered as the page heading. */
@@ -113,21 +115,47 @@ export interface AppFrameProps {
    * the switcher is the way OFF it and belongs with the chrome.
    */
   readonly pageHeader?: ReactNode;
+  /**
+   * THE ONE PLACE A CANDIDATE IS ALLOWED OUTSIDE `data-candidate-root`, and the
+   * exception is deliberate enough to be worth the paragraph.
+   *
+   * DELTA's bar is not decoration: `RegularMenuBar` is a PrimeReact `Menubar`
+   * whose four top-level items each open a submenu, and replacing PrimeReact means
+   * replacing that. Until this slot existed the frame rendered `<a href="#data">`
+   * with a caret glued on - chrome that LOOKED like a menu and opened nothing, so
+   * the single most-used component on the estate went unmeasured while the demos
+   * scored each other on date pickers.
+   *
+   * Each pairing passes its own library's menu here. What it costs: candidate
+   * markup now renders outside the candidate subtree, so `data-candidate-root` no
+   * longer means "everything the candidate rendered". Three things keep the
+   * measurements honest in exchange:
+   *
+   *  1. WITH NO SLOT PASSED the frame renders the plain links it always did. That
+   *     is what `?candidate=off` gets, so the leakage baseline still contains no
+   *     candidate markup and the assertion still compares like with like.
+   *  2. THE CANARIES ARE UNAFFECTED. `data-canary` and `data-frame-canary`
+   *     elements are siblings of the menus, never inside them, so a candidate
+   *     stylesheet reaching the bar still registers as leakage rather than being
+   *     excused by this slot.
+   *  3. THE SCOPED AXE RUNS STILL SCOPE TO `data-candidate-root`, so a menu's
+   *     accessibility is asserted by the menu's own spec rather than silently
+   *     folded into the page score.
+   *
+   * The menus are given the model from `menu-model.ts` rather than markup,
+   * because five libraries have five menu APIs and only the data is shareable.
+   */
+  readonly navMenu?: (menu: DeltaMenu) => ReactNode;
+  /** The avatar menu, on the same terms as `navMenu`. */
+  readonly profileMenu?: (items: readonly DeltaMenuEntry[]) => ReactNode;
 }
 
-/**
- * Top-level menu items, from DELTA's own `RegularMenuBar`: uppercased labels, each
- * with an icon and a submenu. Host chrome, so English in every locale.
- *
- * `DATA` is marked current because this frame renders a data screen. Real DELTA
- * marks the section containing the route.
+/*
+ * The four top-level items used to be declared here as `MENU_ITEMS`, with an
+ * `href` and no contents. They now live in `menu-model.ts` WITH their submenus,
+ * transcribed from DELTA's `RegularMenuBar`, because a slot that hands each
+ * candidate a menu to build needs something to build it from.
  */
-const MENU_ITEMS = [
-  { href: "#data", label: "Data", icon: "database", current: true },
-  { href: "#analysis", label: "Analysis", icon: "chart", current: false },
-  { href: "#about", label: "About", icon: "info", current: false },
-  { href: "#settings", label: "Settings", icon: "cog", current: false },
-];
 
 /**
  * The nav icons, inline rather than from an icon font.
@@ -143,7 +171,14 @@ const ICON_PATHS: Record<string, string> = {
   cog: "M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm8-3-1.8-.5-.4-1 .9-1.6-1.6-1.6-1.6.9-1-.4L13 4h-2l-.5 1.8-1 .4-1.6-.9L6.3 6.9l.9 1.6-.4 1L5 11v2l1.8.5.4 1-.9 1.6 1.6 1.6 1.6-.9 1 .4L11 20h2l.5-1.8 1-.4 1.6.9 1.6-1.6-.9-1.6.4-1L20 13v-1Z",
 };
 
-function NavIcon({ name }: { readonly name: string }): ReactElement {
+/**
+ * Exported as `DeltaNavIcon` so a candidate rendering its own menu trigger can
+ * use the SAME icon the fallback link uses. Without it each pairing would either
+ * drop the icons - changing how the bar reads - or reinvent them, and the demos
+ * would stop being visually comparable for a reason that has nothing to do with
+ * the libraries.
+ */
+export function NavIcon({ name }: { readonly name: string }): ReactElement {
   return (
     <svg
       aria-hidden="true"
@@ -184,6 +219,8 @@ export function AppFrame({
   dir = "ltr",
   notices,
   pageHeader,
+  navMenu,
+  profileMenu,
 }: AppFrameProps): ReactElement {
   return (
     <div dir={dir} className="min-h-screen bg-white text-slate-900">
@@ -194,8 +231,25 @@ export function AppFrame({
        */}
       <header className="border-b border-slate-200 bg-white">
         <div className="mg-container flex flex-wrap items-center gap-x-4 gap-y-2 px-4 py-2.5">
-          {/* Brand lockup: the tile, then DELTA over RESILIENCE. */}
-          <a className="flex items-center gap-2.5 no-underline" href="#home">
+          {/*
+           * Brand lockup: the tile, then DELTA over RESILIENCE.
+           *
+           * IT CARRIES THE `nav-link` CANARY, and that moved here from the first
+           * nav item when the nav items became candidate menus. A canary only
+           * measures anything if it is the SAME element in the candidate render
+           * and in the `?candidate=off` baseline; once the first nav item is a
+           * React Aria button in one state and a plain anchor in the other, a
+           * canary on it compares two different elements and every difference it
+           * reports is the slot, not leakage. This anchor is host markup in both
+           * states, is a real link with link styling - which is what the canary is
+           * for - and sits in the same bar, so it is subject to exactly the same
+           * candidate stylesheet.
+           */}
+          <a
+            className="flex items-center gap-2.5 no-underline"
+            href="#home"
+            data-canary="nav-link"
+          >
             <span
               aria-hidden="true"
               className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-[#004F91] text-white"
@@ -249,23 +303,33 @@ export function AppFrame({
            */}
           <nav data-canary="nav" className="ms-auto" aria-label="Sections">
             <ul className="flex flex-wrap items-center gap-x-1">
-              {MENU_ITEMS.map((item, index) => (
-                <li key={item.href}>
-                  <a
-                    href={item.href}
-                    aria-haspopup="true"
-                    {...(item.current ? { "aria-current": "page" as const } : {})}
-                    {...(index === 0 ? { "data-canary": "nav-link" } : {})}
-                    className={`flex items-center gap-1.5 border-b-2 px-2.5 py-2 text-xs font-semibold uppercase tracking-wide no-underline ${
-                      item.current
-                        ? "border-[#004F91] text-[#004F91]"
-                        : "border-transparent text-slate-600 hover:text-[#004F91]"
-                    }`}
-                  >
-                    <NavIcon name={item.icon} />
-                    {item.label}
-                    <Caret />
-                  </a>
+              {DELTA_MENUS.map((menu) => (
+                <li key={menu.id} data-nav-item={menu.id}>
+                  {navMenu ? (
+                    navMenu(menu)
+                  ) : (
+                    /*
+                     * The fallback, and what every pairing rendered before the slot
+                     * existed: a link with a caret that opens nothing. Kept because
+                     * `?candidate=off` needs a bar to render, and because a pairing
+                     * that does not pass `navMenu` should look visibly unfinished
+                     * rather than silently lose its navigation.
+                     */
+                    <a
+                      href={`#${menu.id}`}
+                      aria-haspopup="true"
+                      {...(menu.current ? { "aria-current": "page" as const } : {})}
+                      className={`flex items-center gap-1.5 border-b-2 px-2.5 py-2 text-xs font-semibold uppercase tracking-wide no-underline ${
+                        menu.current
+                          ? "border-[#004F91] text-[#004F91]"
+                          : "border-transparent text-slate-600 hover:text-[#004F91]"
+                      }`}
+                    >
+                      <NavIcon name={menu.icon} />
+                      {menu.label}
+                      <Caret />
+                    </a>
+                  )}
                 </li>
               ))}
             </ul>
@@ -274,14 +338,20 @@ export function AppFrame({
           <span aria-hidden="true" className="hidden h-8 w-px bg-slate-200 md:block" />
 
           {/* Account. A button, because in DELTA it opens the profile menu. */}
-          <button
-            type="button"
-            className="flex size-9 shrink-0 items-center justify-center rounded-full border border-slate-300 bg-slate-50 text-xs font-bold text-slate-600"
-            aria-label="Account"
-            aria-haspopup="true"
-          >
-            KH
-          </button>
+          <div data-nav-item="profile">
+            {profileMenu ? (
+              profileMenu(DELTA_PROFILE_MENU)
+            ) : (
+              <button
+                type="button"
+                className="flex size-9 shrink-0 items-center justify-center rounded-full border border-slate-300 bg-slate-50 text-xs font-bold text-slate-600"
+                aria-label="Account"
+                aria-haspopup="true"
+              >
+                KH
+              </button>
+            )}
+          </div>
         </div>
       </header>
 

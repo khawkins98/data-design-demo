@@ -1,11 +1,11 @@
 {
   "$comment": "GENERATED from packages/known-issues/src/issues.ts by scripts/build-known-issues-json.mjs. Do not edit: add issues to the TypeScript registry, which the demo pages also import.",
-  "issueCount": 43,
+  "issueCount": 48,
   "pairings": {
     "delta-react-aria": {
-      "total": 7,
+      "total": 8,
       "counts": {
-        "caveat": 6,
+        "caveat": 7,
         "info": 1
       },
       "resolvedCount": 6,
@@ -16,9 +16,9 @@
       }
     },
     "delta-mui": {
-      "total": 6,
+      "total": 7,
       "counts": {
-        "caveat": 5,
+        "caveat": 6,
         "info": 1
       },
       "resolvedCount": 7,
@@ -29,11 +29,11 @@
       }
     },
     "delta-carbon": {
-      "total": 8,
+      "total": 9,
       "counts": {
         "blocker": 1,
         "decision": 1,
-        "caveat": 5,
+        "caveat": 6,
         "info": 1
       },
       "resolvedCount": 7,
@@ -51,10 +51,10 @@
       }
     },
     "delta-mantine": {
-      "total": 6,
+      "total": 9,
       "counts": {
         "blocker": 1,
-        "caveat": 4,
+        "caveat": 7,
         "info": 1
       },
       "resolvedCount": 7,
@@ -72,9 +72,9 @@
       }
     },
     "delta-antd": {
-      "total": 8,
+      "total": 10,
       "counts": {
-        "caveat": 7,
+        "caveat": 9,
         "info": 1
       },
       "resolvedCount": 4,
@@ -85,9 +85,9 @@
       }
     },
     "mangrove-react-aria": {
-      "total": 9,
+      "total": 10,
       "counts": {
-        "caveat": 6,
+        "caveat": 7,
         "info": 3
       },
       "resolvedCount": 6,
@@ -98,9 +98,9 @@
       }
     },
     "mangrove-mui": {
-      "total": 7,
+      "total": 8,
       "counts": {
-        "caveat": 4,
+        "caveat": 5,
         "info": 3
       },
       "resolvedCount": 7,
@@ -111,11 +111,11 @@
       }
     },
     "mangrove-carbon": {
-      "total": 10,
+      "total": 11,
       "counts": {
         "blocker": 2,
         "decision": 1,
-        "caveat": 4,
+        "caveat": 5,
         "info": 3
       },
       "resolvedCount": 7,
@@ -139,10 +139,10 @@
       }
     },
     "mangrove-mantine": {
-      "total": 7,
+      "total": 9,
       "counts": {
         "blocker": 1,
-        "caveat": 3,
+        "caveat": 5,
         "info": 3
       },
       "resolvedCount": 7,
@@ -160,11 +160,11 @@
       }
     },
     "mangrove-antd": {
-      "total": 11,
+      "total": 13,
       "counts": {
         "blocker": 1,
         "decision": 1,
-        "caveat": 6,
+        "caveat": 8,
         "info": 3
       },
       "resolvedCount": 4,
@@ -184,23 +184,23 @@
   },
   "candidates": {
     "react-aria": {
-      "open": 11,
+      "open": 12,
       "resolved": 6
     },
     "mui": {
-      "open": 8,
+      "open": 9,
       "resolved": 7
     },
     "carbon": {
-      "open": 11,
+      "open": 12,
       "resolved": 7
     },
     "mantine": {
-      "open": 8,
+      "open": 11,
       "resolved": 7
     },
     "antd": {
-      "open": 12,
+      "open": 14,
       "resolved": 4
     }
   }

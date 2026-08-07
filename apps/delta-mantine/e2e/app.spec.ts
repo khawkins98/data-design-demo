@@ -914,6 +914,77 @@ test.describe("full application", () => {
     expect(clipped, "step labels are clipped in German").toEqual([]);
   });
 
+
+  /**
+   * THE HOST MENU BAR, BUILT WITH THIS LIBRARY.
+   *
+   * DELTA's bar is a PrimeReact `Menubar` whose four items each open a submenu, so
+   * replacing PrimeReact means replacing a menu. The frame's `navMenu` slot lets
+   * this pairing render it, and this is the only assertion that the result is a
+   * real menu rather than chrome that looks like one - which is what the bar was
+   * before the slot existed.
+   *
+   * Scoped to `[data-nav-item]`, the frame's own marker, so the same test shape
+   * works across five libraries whose menus share no class names.
+   */
+  test("the DELTA menu bar opens a real menu", async ({ page }) => {
+    await page.goto(`${URL}?candidate=on`);
+
+    const trigger = page.locator('[data-nav-item="data"] button').first();
+    await expect(trigger).toHaveAttribute("aria-haspopup", "menu");
+
+    await trigger.click();
+    await expect(page.locator('[role="menu"]').first()).toBeVisible();
+    // The trigger reports its own state, which four of five candidates do.
+    await expect(trigger).toHaveAttribute("aria-expanded", "true");
+
+    // DELTA's DATA menu is three items, each with its supporting line.
+    const items = page.locator('[role="menuitem"]');
+    await expect(items).toHaveCount(3);
+    await expect(items.first()).toContainText("Hazardous events");
+    await expect(items.first()).toContainText("Monitor hazardous situations");
+
+    /*
+     * Escape closes it. Asserted as NOT VISIBLE rather than absent from the DOM,
+     * because the five libraries differ on that and the difference is not a
+     * defect: React Aria, MUI, Mantine and Carbon unmount the panel, while antd
+     * leaves it mounted under a wrapper with `display: none` - hidden from the
+     * accessibility tree either way. Counting nodes would have failed antd for
+     * behaviour that is correct.
+     */
+    await page.keyboard.press("Escape");
+    await expect(page.locator('[role="menu"]').first()).not.toBeVisible();
+  });
+
+  /**
+   * The disabled item, which is where the five diverge most. Recorded per pairing
+   * rather than asserted uniformly, because "correct" differs: the APG asks for a
+   * disabled menu item to stay focusable so its unavailability is discoverable.
+   */
+  test("the menu bar's disabled item is marked as such", async ({ page }) => {
+    await page.goto(`${URL}?candidate=on`);
+    await page.locator('[data-nav-item="settings"] button').first().click();
+    await expect(page.locator('[role="menu"]').first()).toBeVisible();
+
+    const apiKeys = await page.evaluate(() => {
+      const item = [...document.querySelectorAll('[role="menuitem"]')].find((el) =>
+        (el.textContent ?? "").includes("API keys"),
+      );
+      if (!item) return null;
+      return {
+        ariaDisabled: item.getAttribute("aria-disabled"),
+        native: item.hasAttribute("disabled"),
+        tabindex: item.getAttribute("tabindex"),
+      };
+    });
+
+    expect(apiKeys, "the disabled API keys item was not rendered").not.toBeNull();
+    if (apiKeys) {
+      // Mantine uses the NATIVE disabled attribute, so the item is not focusable.
+      expect(apiKeys.native, "expected a natively disabled item").toBe(true);
+    }
+  });
+
   test("axe on the candidate region and the whole page", async ({ page }, testInfo) => {
     await page.goto(`${URL}?candidate=on`);
 

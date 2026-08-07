@@ -425,6 +425,100 @@ export const KNOWN_ISSUES: readonly KnownIssue[] = Object.freeze([
     links: [{ label: "axis A5", href: "../axes.html" }],
   },
 
+  /* --------------------------------------------------- the DELTA menu bar -- */
+  /*
+   * DELTA's menu bar was host chrome that only LOOKED like a menu: four links with
+   * a caret that opened nothing. Real DELTA composes it from PrimeReact's
+   * `Menubar`, so replacing PrimeReact means replacing a menu, and the single
+   * most-used component on the estate was going unmeasured. `AppFrame` now takes a
+   * `navMenu` slot and each pairing builds the bar with its own library, from the
+   * same model transcribed from DELTA's own `RegularMenuBar`.
+   *
+   * All measured on the built pages at 1440px, not read from documentation.
+   */
+  {
+    id: "antd-dropdown-trigger-has-no-aria",
+    severity: "caveat",
+    // Escapable: the trigger is our own `Button`, so the attributes can be written
+    // by hand and wired to `onOpenChange`. Not escapable by configuration, and it
+    // recurs on every trigger on every site.
+    remediability: "per-site-code",
+    candidates: ["antd"],
+    hosts: ["*"],
+    owner: "candidate",
+    title: "Ant Design's dropdown trigger tells a screen reader nothing",
+    detail:
+      "Measured on the built page, before opening and after: antd's `Dropdown` puts NO `aria-haspopup`, NO `aria-expanded` and NO `aria-controls` on its trigger. The other four candidates all set haspopup and toggle expanded - React Aria, MUI and Carbon with `aria-haspopup=\"true\"`, Mantine with `\"menu\"`. So a screen-reader user hears \"DATA, button\" with no indication that it opens a menu or that the menu is now open, and DELTA's four top-level navigation items become four buttons that appear to do nothing. Same species as [[antd-disabled-step-leaves-the-tree]]: the visual affordance is complete and the accessible one is absent.",
+    links: [
+      { label: "the menu", href: `${BLOB}/apps/delta-antd/src/views/NavMenu.tsx` },
+      { label: "axis A7", href: "../axes.html" },
+    ],
+  },
+  {
+    id: "mantine-disabled-menu-item-is-natively-disabled",
+    severity: "caveat",
+    remediability: "per-site-code",
+    candidates: ["mantine"],
+    hosts: ["*"],
+    owner: "candidate",
+    title: "Mantine's disabled menu item is removed from the keyboard's reach",
+    detail:
+      "`Menu.Item` with `disabled` renders a `<button>` carrying the NATIVE `disabled` attribute and `tabindex=\"-1\"`, and no `aria-disabled`. A natively disabled button is not focusable, so a screen-reader user arrowing through the menu never lands on the item and is never told it exists - the item is invisible rather than unavailable. The WAI-ARIA practices ask for menu items to stay focusable precisely so unavailability is discoverable. MUI and Carbon use `aria-disabled` with `tabindex=\"-1\"`; React Aria is the only one of the five that leaves the item genuinely focusable. Recorded because this evaluation first assumed Mantine did the right thing here and had to measure to find out otherwise.",
+    links: [
+      { label: "the menu", href: `${BLOB}/apps/delta-mantine/src/views/NavMenu.tsx` },
+      { label: "axis A7", href: "../axes.html" },
+    ],
+  },
+  {
+    id: "no-candidate-has-a-menu-item-description-slot",
+    severity: "caveat",
+    remediability: "per-site-code",
+    candidates: ["react-aria", "mui", "mantine", "antd"],
+    hosts: ["*"],
+    owner: "candidate",
+    title: "No candidate has a slot for DELTA's two-line menu item",
+    detail:
+      "DELTA's menu items are a bold label above muted supporting text - `RegularMenuBar` renders it through a custom `itemRenderer`, and every item under DATA and ANALYSIS uses it. Not one of the five candidates has a prop for it. React Aria is cheapest, because `MenuItem` imposes no internal structure and two spans just work; Mantine likewise, once measured - this evaluation first recorded that `Menu.Item` takes a `description` prop, which it does not, and the prop was accepted silently and rendered nothing. MUI needs `flexDirection: \"column\"` because `MenuItem` lays children out in a row, and its native route (`ListItemText secondary`) brings Typography's own colour and spacing. Ant Design accepts a ReactNode as `label` but sizes the cell for one line, so the item's height becomes ours.",
+    links: [
+      { label: "the model", href: `${BLOB}/packages/host-delta/src/menu-model.ts` },
+      { label: "axis A1", href: "../axes.html" },
+    ],
+  },
+  {
+    id: "carbon-menu-item-label-is-a-string",
+    severity: "caveat",
+    // `inherent`: `label` is typed as a string and rendered into Carbon's own
+    // element. There is no children slot to reach past it without rebuilding the
+    // component, which is not "using the library as documented".
+    remediability: "inherent",
+    candidates: ["carbon"],
+    hosts: ["*"],
+    owner: "candidate",
+    title: "Carbon's menu item cannot hold DELTA's supporting line at all",
+    detail:
+      "Carbon is the one candidate where DELTA's existing menu item cannot be reproduced. `MenuItem` takes `label` as a STRING and renders it into its own `.cds--menu-item__label`; there is no children slot. The only other text slot is `shortcut`, intended for keyboard hints, which renders muted at the inline end rather than beneath the label - so the demo uses it and looks visibly wrong, deliberately, rather than disguising the gap. `OverflowMenuItem`'s `itemText` is a string too. Carbon also has no avatar component, so the profile trigger is a labelled button rather than the initials circle the design file shows.",
+    links: [
+      { label: "the menu", href: `${BLOB}/apps/delta-carbon/src/views/NavMenu.tsx` },
+      { label: "axis A5", href: "../axes.html" },
+    ],
+  },
+  {
+    id: "menu-slot-hoists-the-provider",
+    severity: "caveat",
+    remediability: "per-site-code",
+    candidates: ["mantine"],
+    hosts: ["delta"],
+    // Ours: the slot is this evaluation's design, and the consequence is a
+    // property of that design meeting Mantine's requirements.
+    owner: "this evaluation",
+    title: "Putting Mantine in host chrome forces its provider around the whole page",
+    detail:
+      "Mantine components throw without `MantineProvider` in the tree - \"MantineProvider was not found in component tree\" - and the menu bar renders inside the host frame, above where the provider used to sit. So the provider had to be hoisted to wrap `AppFrame` itself. The consequence is real and is recorded rather than hidden: Mantine's CSS variables and `:where([dir])` rules now apply to the whole page rather than to the candidate subtree, so this pairing's blast radius is larger by construction. The wrapper is conditional on `?candidate=on`, so the leakage baseline is untouched and the assertion still compares like with like. MUI needed no equivalent change because it falls back to a default theme instead of throwing; React Aria has no such provider at all. Any real site adopting a library for shared chrome inherits this same question.",
+    links: [
+      { label: "the frame", href: `${BLOB}/packages/host-delta/src/AppFrame.tsx` },
+      { label: "axis A4", href: "../axes.html" },
+    ],
+  },
   /* ------------------------------------------------------- the step wizard -- */
   /*
    * These six come from one screen built five times: DELTA's add-disaster-event

@@ -523,3 +523,144 @@
   color: var(--undrr-color-text);
   overflow-wrap: break-word;
 }
+
+/* ------------------------------------------------------------------ menus -- */
+/*
+ * THE MENU BAR, AND THIS BLOCK IS THE FINDING. React Aria ships the whole
+ * behavioural contract for a menu - roles, focus movement, roving arrow keys with
+ * wrap, type-ahead, Escape, click-outside, overlay flipping, RTL placement - and
+ * not one pixel of appearance. Every rule below exists because the library
+ * deliberately has no opinion, which is the same trade this pairing makes on every
+ * other component; it is simply most visible on a component with this much
+ * surface. Four other candidates write between 0 and a handful of rules here.
+ *
+ * All logical properties, so Arabic needs no second code path: the popover's own
+ * placement is mirrored by React Aria from the I18nProvider locale.
+ */
+
+.demo-navmenu__trigger {
+  display: flex;
+  align-items: center;
+  gap: var(--undrr-space-1);
+  padding: var(--undrr-space-2) 0.625rem;
+  border: 0;
+  border-block-end: 2px solid transparent;
+  background: none;
+  color: #475569;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+}
+
+.demo-navmenu__trigger:hover {
+  color: #004f91;
+}
+
+.demo-navmenu__trigger--current {
+  border-block-end-color: #004f91;
+  color: #004f91;
+}
+
+/* React Aria sets data-focus-visible; it does not style it. */
+.demo-navmenu__trigger[data-focus-visible],
+.demo-navmenu__avatar[data-focus-visible],
+.demo-navmenu__item[data-focus-visible] {
+  outline: 2px solid #004f91;
+  outline-offset: 2px;
+}
+
+.demo-navmenu__caret {
+  inline-size: 0;
+  block-size: 0;
+  border-inline: 0.25rem solid transparent;
+  border-block-start: 0.3rem solid currentcolor;
+  opacity: 0.7;
+}
+
+.demo-navmenu__avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 2.25rem;
+  block-size: 2.25rem;
+  flex-shrink: 0;
+  border: 1px solid #cbd5e1;
+  border-radius: 50%;
+  background: #f8fafc;
+  color: #475569;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.demo-navmenu__popover {
+  min-inline-size: 16rem;
+  inline-size: min(21.25rem, calc(100vw - 2rem));
+  max-inline-size: calc(100vw - 2rem);
+  border: 1px solid var(--undrr-color-border);
+  border-radius: var(--undrr-radius-md);
+  background: #fff;
+  box-shadow: 0 10px 20px rgb(15 35 46 / 12%);
+}
+
+.demo-navmenu__menu {
+  padding: var(--undrr-space-1) 0;
+  margin: 0;
+  outline: none;
+}
+
+.demo-navmenu__item {
+  display: block;
+  padding: var(--undrr-space-2) var(--undrr-space-3);
+  cursor: pointer;
+  outline: none;
+}
+
+.demo-navmenu__item[data-hovered],
+.demo-navmenu__item[data-focused] {
+  background: #eff6ff;
+}
+
+/*
+ * `isDisabled` gives `aria-disabled` and a data attribute, and leaves the item
+ * FOCUSABLE - the APG-correct behaviour for a menu item, and the opposite of what
+ * a native `disabled` button does. Only the appearance is ours.
+ */
+.demo-navmenu__item[data-disabled] {
+  color: var(--undrr-color-text-muted);
+  cursor: default;
+}
+
+.demo-navmenu__item[data-disabled][data-hovered] {
+  background: none;
+}
+
+.demo-navmenu__label {
+  display: block;
+  color: #004f91;
+  font-size: var(--undrr-font-size-sm);
+  font-weight: 700;
+}
+
+.demo-navmenu__item[data-disabled] .demo-navmenu__label {
+  color: var(--undrr-color-text-muted);
+}
+
+/* The separator, drawn on the item that follows it. See NavMenu.tsx. */
+.demo-navmenu__label--after-rule {
+  padding-block-start: var(--undrr-space-2);
+  border-block-start: 1px solid var(--undrr-color-border);
+  margin-block-start: var(--undrr-space-1);
+}
+
+.demo-navmenu__description {
+  display: block;
+  margin-block-start: 0.125rem;
+  color: var(--undrr-color-text-muted);
+  font-size: 0.75rem;
+  line-height: 1.3;
+}

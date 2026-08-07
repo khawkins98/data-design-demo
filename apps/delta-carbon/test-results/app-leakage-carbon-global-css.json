@@ -30,7 +30,6 @@
     "font-family",
     "font-size",
     "font-weight",
-    "letter-spacing",
     "line-height",
     "margin-top",
     "padding-bottom",
@@ -38,8 +37,38 @@
     "padding-right",
     "padding-top"
   ],
-  "differenceCount": 81,
+  "differenceCount": 74,
   "differences": [
+    {
+      "canary": "nav-link",
+      "property": "color",
+      "before": "oklch(0.208 0.042 265.755)",
+      "after": "rgb(0, 98, 254)"
+    },
+    {
+      "canary": "nav-link",
+      "property": "font-family",
+      "before": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+      "after": "\"IBM Plex Sans\", system-ui, -apple-system, \"system-ui\", \".SFNSText-Regular\", sans-serif"
+    },
+    {
+      "canary": "nav-link",
+      "property": "line-height",
+      "before": "24px",
+      "after": "16px"
+    },
+    {
+      "canary": "nav-link",
+      "property": "border-top-color",
+      "before": "oklch(0.208 0.042 265.755)",
+      "after": "rgb(0, 98, 254)"
+    },
+    {
+      "canary": "nav-link",
+      "property": "border-top-style",
+      "before": "solid",
+      "after": "none"
+    },
     {
       "canary": "nav",
       "property": "font-family",
@@ -57,78 +86,6 @@
       "property": "border-top-style",
       "before": "solid",
       "after": "none"
-    },
-    {
-      "canary": "nav-link",
-      "property": "color",
-      "before": "rgb(0, 79, 145)",
-      "after": "rgb(0, 98, 254)"
-    },
-    {
-      "canary": "nav-link",
-      "property": "font-family",
-      "before": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
-      "after": "\"IBM Plex Sans\", system-ui, -apple-system, \"system-ui\", \".SFNSText-Regular\", sans-serif"
-    },
-    {
-      "canary": "nav-link",
-      "property": "font-size",
-      "before": "12px",
-      "after": "16px"
-    },
-    {
-      "canary": "nav-link",
-      "property": "font-weight",
-      "before": "600",
-      "after": "400"
-    },
-    {
-      "canary": "nav-link",
-      "property": "letter-spacing",
-      "before": "0.3px",
-      "after": "0.4px"
-    },
-    {
-      "canary": "nav-link",
-      "property": "border-bottom-width",
-      "before": "2px",
-      "after": "0px"
-    },
-    {
-      "canary": "nav-link",
-      "property": "border-top-color",
-      "before": "rgb(0, 79, 145)",
-      "after": "rgb(0, 98, 254)"
-    },
-    {
-      "canary": "nav-link",
-      "property": "border-top-style",
-      "before": "solid",
-      "after": "none"
-    },
-    {
-      "canary": "nav-link",
-      "property": "padding-top",
-      "before": "8px",
-      "after": "0px"
-    },
-    {
-      "canary": "nav-link",
-      "property": "padding-right",
-      "before": "10px",
-      "after": "0px"
-    },
-    {
-      "canary": "nav-link",
-      "property": "padding-bottom",
-      "before": "8px",
-      "after": "0px"
-    },
-    {
-      "canary": "nav-link",
-      "property": "padding-left",
-      "before": "10px",
-      "after": "0px"
     },
     {
       "canary": "heading-1",

@@ -21,6 +21,14 @@ export type { HostShellProps } from "./HostShell.js";
 export { AppFrame, DELTA_FRAME_CANARY_IDS } from "./AppFrame.js";
 export type { AppFrameProps } from "./AppFrame.js";
 
+/**
+ * DELTA's real menu bar contents, for the AppFrame `navMenu` slot. Data rather
+ * than markup, because five candidates have five menu APIs.
+ */
+export { DELTA_MENUS, DELTA_PROFILE_MENU } from "./menu-model.js";
+export { NavIcon as DeltaNavIcon } from "./AppFrame.js";
+export type { DeltaMenu, DeltaMenuEntry } from "./menu-model.js";
+
 /** Cross-view navigation. Pass through a frame's `notices` slot. */
 export { ViewSwitcher } from "./ViewSwitcher.js";
 export type { ViewSwitcherProps } from "./ViewSwitcher.js";
