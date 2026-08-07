@@ -1,6 +1,6 @@
 {
   "$comment": "GENERATED from packages/known-issues/src/issues.ts by scripts/build-known-issues-json.mjs. Do not edit: add issues to the TypeScript registry, which the demo pages also import.",
-  "issueCount": 48,
+  "issueCount": 49,
   "pairings": {
     "delta-react-aria": {
       "total": 8,
@@ -8,7 +8,7 @@
         "caveat": 7,
         "info": 1
       },
-      "resolvedCount": 6,
+      "resolvedCount": 7,
       "scoreableBlockers": [],
       "headline": {
         "severity": "caveat",
@@ -90,7 +90,7 @@
         "caveat": 7,
         "info": 3
       },
-      "resolvedCount": 6,
+      "resolvedCount": 7,
       "scoreableBlockers": [],
       "headline": {
         "severity": "caveat",
@@ -185,7 +185,7 @@
   "candidates": {
     "react-aria": {
       "open": 12,
-      "resolved": 6
+      "resolved": 7
     },
     "mui": {
       "open": 9,

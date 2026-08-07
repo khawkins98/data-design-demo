@@ -1413,7 +1413,7 @@
       </table>
 
       <table class="register" id="fixed">
-        <caption class="register__caption">Fixed in our own demo code, kept on the record (13)</caption>
+        <caption class="register__caption">Fixed in our own demo code, kept on the record (14)</caption>
         <thead>
           <tr>
             <th scope="col">Severity</th>
@@ -1426,12 +1426,47 @@
         <tbody>
 
             <tr class="row row--caveat row--resolved"
+                id="portalled-overlay-leaves-the-token-scope"
+                data-severity="caveat"
+                data-owner="our implementation"
+                data-candidates="react-aria"
+                data-remediability="per-site-code"
+                data-index="0">
+              <td class="cell-sev">
+                <span class="badge badge--caveat">Caveat</span>
+              </td>
+              <td class="cell-cand">React Aria</td>
+              <td class="cell-title">
+                <button type="button" class="disclose" aria-expanded="true" aria-controls="detail-portalled-overlay-leaves-the-token-scope">
+                  <span class="disclose__mark" aria-hidden="true"></span>
+                  <span class="disclose__text">A portalled menu left the token scope, and every tokened rule silently died</span>
+                </button>
+              </td>
+              <td class="cell-owner">our demo code<span class="cell-owner__note">not scored</span></td>
+              <td class="cell-escape">per-site code</td>
+            </tr>
+            <tr class="detail" id="detail-portalled-overlay-leaves-the-token-scope">
+              <td colspan="5">
+                <p class="detail__text">The UNDRR custom properties are scoped to a <code>.undrr-tokens</code> wrapper inside the candidate subtree, and React Aria portals its <code>Popover</code> to <code>document.body</code> - outside it. So every <code>var(--undrr-*)</code> in the menu stylesheet resolved to nothing, and because an unresolved custom property makes the whole declaration invalid, CSS discarded each one and reported nothing. MEASURED before the fix: no border (<code>0px none</code>), no radius, zero padding on the panel and on every item, the label at the inherited 16px instead of 0.875rem, and the description black instead of muted. Only the literal values - the box shadow and the white background - survived, which is exactly why it looked deliberate rather than broken. Same portal boundary that loses CSS <code>direction</code> in this pairing's delete dialog: React context crosses a portal, CSS inheritance does not.</p>
+                <p class="detail__text detail__text--fix"><strong>How it was fixed.</strong> The token scope class is applied to the <code>Popover</code> itself, so the properties resolve inside the portal. Two token names were also wrong - <code>--undrr-color-text</code> and <code>--undrr-color-text-muted</code> do not exist, against <code>--undrr-color-text-primary</code> and <code>--undrr-color-text-secondary</code> - and had been silently dropped in 12 declarations; an audit of every <code>var(--undrr-*)</code> reference across all apps and packages now reports none undefined without a fallback.</p>
+                <p class="detail__meta">
+                  Belongs to <strong>our own demo code, not the library</strong>
+                  &middot; affects both hosts
+                  &middot; <strong>not counted</strong> towards any score
+                  &middot; escape: fixable in consuming code, repeated per site
+                </p>
+                <p class="detail__links"><a href="https://github.com/khawkins98/data-design-demo/blob/main/apps/delta-react-aria/src/views/NavMenu.tsx">the menu</a> &middot; <a href="../axes.html">axis A5</a></p>
+                <p class="detail__id"><code>portalled-overlay-leaves-the-token-scope</code></p>
+              </td>
+            </tr>
+
+            <tr class="row row--caveat row--resolved"
                 id="ours-accessibility-attributes-omitted"
                 data-severity="caveat"
                 data-owner="our implementation"
                 data-candidates="react-aria carbon mantine"
                 data-remediability=""
-                data-index="0">
+                data-index="1">
               <td class="cell-sev">
                 <span class="badge badge--caveat">Caveat</span>
               </td>
@@ -1466,7 +1501,7 @@
                 data-owner="our implementation"
                 data-candidates="react-aria mui carbon mantine antd"
                 data-remediability=""
-                data-index="1">
+                data-index="2">
               <td class="cell-sev">
                 <span class="badge badge--caveat">Caveat</span>
               </td>
@@ -1501,7 +1536,7 @@
                 data-owner="our implementation"
                 data-candidates="mui mantine antd"
                 data-remediability=""
-                data-index="2">
+                data-index="3">
               <td class="cell-sev">
                 <span class="badge badge--caveat">Caveat</span>
               </td>
@@ -1536,7 +1571,7 @@
                 data-owner="our implementation"
                 data-candidates="carbon"
                 data-remediability=""
-                data-index="3">
+                data-index="4">
               <td class="cell-sev">
                 <span class="badge badge--caveat">Caveat</span>
               </td>
@@ -1571,7 +1606,7 @@
                 data-owner="our implementation"
                 data-candidates="react-aria mantine"
                 data-remediability=""
-                data-index="4">
+                data-index="5">
               <td class="cell-sev">
                 <span class="badge badge--caveat">Caveat</span>
               </td>
@@ -1606,7 +1641,7 @@
                 data-owner="our implementation"
                 data-candidates="mui"
                 data-remediability="config"
-                data-index="5">
+                data-index="6">
               <td class="cell-sev">
                 <span class="badge badge--caveat">Caveat</span>
               </td>
@@ -1641,7 +1676,7 @@
                 data-owner="our implementation"
                 data-candidates="carbon"
                 data-remediability=""
-                data-index="6">
+                data-index="7">
               <td class="cell-sev">
                 <span class="badge badge--caveat">Caveat</span>
               </td>
@@ -1676,7 +1711,7 @@
                 data-owner="our implementation"
                 data-candidates="mantine"
                 data-remediability=""
-                data-index="7">
+                data-index="8">
               <td class="cell-sev">
                 <span class="badge badge--caveat">Caveat</span>
               </td>
@@ -1711,7 +1746,7 @@
                 data-owner="our implementation"
                 data-candidates="react-aria mui"
                 data-remediability=""
-                data-index="8">
+                data-index="9">
               <td class="cell-sev">
                 <span class="badge badge--caveat">Caveat</span>
               </td>
@@ -1746,7 +1781,7 @@
                 data-owner="our implementation"
                 data-candidates="react-aria mui carbon mantine antd"
                 data-remediability=""
-                data-index="9">
+                data-index="10">
               <td class="cell-sev">
                 <span class="badge badge--caveat">Caveat</span>
               </td>
@@ -1781,7 +1816,7 @@
                 data-owner="our implementation"
                 data-candidates="react-aria mui carbon"
                 data-remediability=""
-                data-index="10">
+                data-index="11">
               <td class="cell-sev">
                 <span class="badge badge--caveat">Caveat</span>
               </td>
@@ -1816,7 +1851,7 @@
                 data-owner="our implementation"
                 data-candidates="carbon mantine antd"
                 data-remediability=""
-                data-index="11">
+                data-index="12">
               <td class="cell-sev">
                 <span class="badge badge--caveat">Caveat</span>
               </td>
@@ -1851,7 +1886,7 @@
                 data-owner="our implementation"
                 data-candidates="mui"
                 data-remediability="per-site-code"
-                data-index="12">
+                data-index="13">
               <td class="cell-sev">
                 <span class="badge badge--caveat">Caveat</span>
               </td>

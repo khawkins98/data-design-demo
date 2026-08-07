@@ -425,6 +425,23 @@ export const KNOWN_ISSUES: readonly KnownIssue[] = Object.freeze([
     links: [{ label: "axis A5", href: "../axes.html" }],
   },
 
+  {
+    id: "portalled-overlay-leaves-the-token-scope",
+    severity: "caveat",
+    remediability: "per-site-code",
+    candidates: ["react-aria"],
+    hosts: ["*"],
+    owner: "our implementation",
+    title: "A portalled menu left the token scope, and every tokened rule silently died",
+    detail:
+      "The UNDRR custom properties are scoped to a `.undrr-tokens` wrapper inside the candidate subtree, and React Aria portals its `Popover` to `document.body` - outside it. So every `var(--undrr-*)` in the menu stylesheet resolved to nothing, and because an unresolved custom property makes the whole declaration invalid, CSS discarded each one and reported nothing. MEASURED before the fix: no border (`0px none`), no radius, zero padding on the panel and on every item, the label at the inherited 16px instead of 0.875rem, and the description black instead of muted. Only the literal values - the box shadow and the white background - survived, which is exactly why it looked deliberate rather than broken. Same portal boundary that loses CSS `direction` in this pairing's delete dialog: React context crosses a portal, CSS inheritance does not.",
+    resolved:
+      "The token scope class is applied to the `Popover` itself, so the properties resolve inside the portal. Two token names were also wrong - `--undrr-color-text` and `--undrr-color-text-muted` do not exist, against `--undrr-color-text-primary` and `--undrr-color-text-secondary` - and had been silently dropped in 12 declarations; an audit of every `var(--undrr-*)` reference across all apps and packages now reports none undefined without a fallback.",
+    links: [
+      { label: "the menu", href: `${BLOB}/apps/delta-react-aria/src/views/NavMenu.tsx` },
+      { label: "axis A5", href: "../axes.html" },
+    ],
+  },
   /* --------------------------------------------------- the DELTA menu bar -- */
   /*
    * DELTA's menu bar was host chrome that only LOOKED like a menu: four links with

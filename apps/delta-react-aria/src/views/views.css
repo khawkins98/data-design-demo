@@ -314,7 +314,7 @@
   margin: 0 0 var(--undrr-space-4);
   font-size: var(--undrr-font-size-lg);
   font-weight: 700;
-  color: var(--undrr-color-text);
+  color: var(--undrr-color-text-primary);
 }
 
 .demo-stepper__list {
@@ -405,7 +405,7 @@
   background: var(--undrr-color-surface);
   font-weight: 700;
   font-variant-numeric: tabular-nums;
-  color: var(--undrr-color-text-muted);
+  color: var(--undrr-color-text-secondary);
 }
 
 .demo-stepper__text {
@@ -418,7 +418,7 @@
 
 .demo-stepper__label {
   font-weight: 600;
-  color: var(--undrr-color-text);
+  color: var(--undrr-color-text-primary);
   /* German's "Zusätzliche Einzelheiten" is why this wraps rather than truncates:
      a step whose name is clipped is a step the reader cannot identify. */
   overflow-wrap: break-word;
@@ -428,7 +428,7 @@
   font-size: var(--undrr-font-size-xs);
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--undrr-color-text-muted);
+  color: var(--undrr-color-text-secondary);
 }
 
 .demo-stepper__item[data-state="current"] .demo-stepper__marker {
@@ -462,14 +462,14 @@
   margin: 0 0 var(--undrr-space-3);
   font-size: var(--undrr-font-size-base);
   font-weight: 700;
-  color: var(--undrr-color-text);
+  color: var(--undrr-color-text-primary);
 }
 
 .demo-wizard__placeholder {
   margin: 0;
   max-width: 60ch;
   font-size: var(--undrr-font-size-sm);
-  color: var(--undrr-color-text-muted);
+  color: var(--undrr-color-text-secondary);
 }
 
 .demo-wizard__actions {
@@ -498,7 +498,7 @@
   margin: 0 0 var(--undrr-space-3);
   font-size: var(--undrr-font-size-base);
   font-weight: 700;
-  color: var(--undrr-color-text);
+  color: var(--undrr-color-text-primary);
 }
 
 .demo-review__grid {
@@ -514,13 +514,13 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--undrr-color-text-muted);
+  color: var(--undrr-color-text-secondary);
 }
 
 .demo-review__value {
   margin: var(--undrr-space-1) 0 0;
   font-size: var(--undrr-font-size-sm);
-  color: var(--undrr-color-text);
+  color: var(--undrr-color-text-primary);
   overflow-wrap: break-word;
 }
 
@@ -565,9 +565,13 @@
 }
 
 /* React Aria sets data-focus-visible; it does not style it. */
+/*
+ * Triggers only. The menu ITEM gets a filled row plus an inline-start bar instead
+ * (see below): an outline-offset ring on a row inside a panel with
+ * `overflow: hidden` is clipped on three sides and reads as a rendering fault.
+ */
 .demo-navmenu__trigger[data-focus-visible],
-.demo-navmenu__avatar[data-focus-visible],
-.demo-navmenu__item[data-focus-visible] {
+.demo-navmenu__avatar[data-focus-visible] {
   outline: 2px solid #004f91;
   outline-offset: 2px;
 }
@@ -597,14 +601,45 @@
   cursor: pointer;
 }
 
+/*
+ * The panel. DELTA's own submenu box is 16rem minimum and caps at 21.25rem, from
+ * `RegularMenuBar`'s `pt.submenu` classes, so those numbers are DELTA's rather
+ * than chosen here.
+ *
+ * `overflow: hidden` so the first and last items' hover fills cannot square off
+ * the rounded corners - the alternative is a radius on the items themselves, which
+ * then has to be undone for every item that is not first or last.
+ */
 .demo-navmenu__popover {
   min-inline-size: 16rem;
   inline-size: min(21.25rem, calc(100vw - 2rem));
   max-inline-size: calc(100vw - 2rem);
+  overflow: hidden;
   border: 1px solid var(--undrr-color-border);
   border-radius: var(--undrr-radius-md);
   background: #fff;
-  box-shadow: 0 10px 20px rgb(15 35 46 / 12%);
+  box-shadow:
+    0 1px 2px rgb(15 35 46 / 8%),
+    0 12px 28px rgb(15 35 46 / 14%);
+}
+
+/* React Aria animates nothing by itself; entry is ours, and it respects the
+   reduced-motion preference because a menu appearing is not information. */
+.demo-navmenu__popover[data-entering] {
+  animation: demo-navmenu-in 120ms ease-out;
+}
+
+@keyframes demo-navmenu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-0.25rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .demo-navmenu__popover[data-entering] {
+    animation: none;
+  }
 }
 
 .demo-navmenu__menu {
@@ -613,15 +648,27 @@
   outline: none;
 }
 
+/*
+ * The row. `data-hovered` and `data-focused` are both needed and are not the same
+ * thing: React Aria drives keyboard navigation through `data-focused`, so styling
+ * hover alone would leave an arrow-key user with no visible position at all. The
+ * inline-start bar is what distinguishes the two - focus gets the bar, hover does
+ * not - because a mouse user already knows where the pointer is.
+ */
 .demo-navmenu__item {
   display: block;
   padding: var(--undrr-space-2) var(--undrr-space-3);
+  border-inline-start: 3px solid transparent;
   cursor: pointer;
   outline: none;
 }
 
-.demo-navmenu__item[data-hovered],
+.demo-navmenu__item[data-hovered] {
+  background: #f1f6fb;
+}
+
 .demo-navmenu__item[data-focused] {
+  border-inline-start-color: #004f91;
   background: #eff6ff;
 }
 
@@ -631,7 +678,7 @@
  * a native `disabled` button does. Only the appearance is ours.
  */
 .demo-navmenu__item[data-disabled] {
-  color: var(--undrr-color-text-muted);
+  color: var(--undrr-color-text-secondary);
   cursor: default;
 }
 
@@ -642,25 +689,33 @@
 .demo-navmenu__label {
   display: block;
   color: #004f91;
-  font-size: var(--undrr-font-size-sm);
+  font-size: var(--undrr-font-size-sm, 0.875rem);
   font-weight: 700;
+  line-height: 1.3;
 }
 
 .demo-navmenu__item[data-disabled] .demo-navmenu__label {
-  color: var(--undrr-color-text-muted);
-}
-
-/* The separator, drawn on the item that follows it. See NavMenu.tsx. */
-.demo-navmenu__label--after-rule {
-  padding-block-start: var(--undrr-space-2);
-  border-block-start: 1px solid var(--undrr-color-border);
-  margin-block-start: var(--undrr-space-1);
+  color: var(--undrr-color-text-secondary);
 }
 
 .demo-navmenu__description {
   display: block;
   margin-block-start: 0.125rem;
-  color: var(--undrr-color-text-muted);
-  font-size: 0.75rem;
-  line-height: 1.3;
+  color: var(--undrr-color-text-secondary);
+  font-size: var(--undrr-font-size-xs, 0.75rem);
+  line-height: 1.35;
+}
+
+/*
+ * The separator rule, drawn on the item that follows it. It has to reach the panel
+ * edges to read as a divider rather than as an underline on one row, and the item
+ * has a 3px focus bar plus horizontal padding - so the rule is pulled out to the
+ * full width with negative margins and the padding is given back.
+ */
+.demo-navmenu__item .demo-navmenu__label--after-rule {
+  padding-block-start: var(--undrr-space-2);
+  border-block-start: 1px solid var(--undrr-color-border);
+  margin-block-start: var(--undrr-space-1);
+  margin-inline: calc(var(--undrr-space-3) * -1);
+  padding-inline: var(--undrr-space-3);
 }

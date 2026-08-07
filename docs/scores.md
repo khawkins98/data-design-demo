@@ -137,7 +137,7 @@ Each cell carries the fact that assigned the band. `strong` scores full weight,
 
 Worst open issue: **caveat** - React Aria is unstyled, so these pairings carry 155 to 209 CSS rules
 
-8 open findings. 6 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.
+8 open findings. 7 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.
 
 | Axis | Band | Weight | Why |
 | --- | --- | --- | --- |
@@ -153,7 +153,7 @@ Worst open issue: **caveat** - React Aria is unstyled, so these pairings carry 1
 
 Worst open issue: **caveat** - React Aria is unstyled, so these pairings carry 155 to 209 CSS rules
 
-10 open findings. 6 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.
+10 open findings. 7 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.
 
 | Axis | Band | Weight | Why |
 | --- | --- | --- | --- |

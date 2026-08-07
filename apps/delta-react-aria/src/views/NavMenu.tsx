@@ -46,12 +46,30 @@ import type { ReactElement } from "react";
 import { Button, Menu, MenuItem, MenuTrigger, Popover } from "react-aria-components";
 
 import { DeltaNavIcon } from "@undrr-eval/host-delta";
+import { TOKEN_SCOPE_CLASS } from "@undrr-eval/undrr-tokens";
 import type { DeltaMenu, DeltaMenuEntry } from "@undrr-eval/host-delta";
 
 /** Shared by both menus, so the panel is identical whatever opened it. */
 function MenuPanel({ items }: { readonly items: readonly DeltaMenuEntry[] }): ReactElement {
   return (
-    <Popover className="demo-navmenu__popover" placement="bottom start" offset={4}>
+    /*
+     * THE TOKEN SCOPE CLASS IS ON THE POPOVER, AND IT HAS TO BE. React Aria
+     * portals the popover to document.body, outside the wrapper that carries
+     * `.undrr-tokens` - so every `var(--undrr-*)` in the menu CSS resolved to
+     * nothing and the whole declaration was dropped as invalid. Measured before
+     * this class was added: no border, no radius, zero padding on the panel and on
+     * every item, the label at the inherited 16px instead of the small step, and
+     * the description black instead of muted. Only the literal values survived.
+     *
+     * A silent failure by design - an unresolved custom property is an invalid
+     * declaration, so CSS discards it and reports nothing. Same portal boundary
+     * that loses CSS `direction` in the delete dialog; see AppView.tsx.
+     */
+    <Popover
+      className={`${TOKEN_SCOPE_CLASS} demo-navmenu__popover`}
+      placement="bottom start"
+      offset={4}
+    >
       <Menu className="demo-navmenu__menu">
         {items.map((entry) => (
           <MenuItem
