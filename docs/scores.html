@@ -31,7 +31,8 @@
       .ov-name { text-align:start !important; font-weight:600; }
       .ov-score { font-size:1rem; }
       .ov-ax { font-size:0.6875rem; }
-      .ov-ax a { text-decoration:underline dotted; text-underline-offset:0.2em; text-decoration-color:var(--muted); }
+      .ov-ax a { text-decoration:none; }
+      .ov-ax-hint { display:block; font-size:0.5625rem; font-weight:400; color:var(--muted); line-height:1.2; }
       .ov-demos { font-size:0.75rem; }
       .ov-demos a + a { margin-inline-start:0.5rem; }
       .ov-s { background:#d4edda; color:#155724; }
@@ -74,7 +75,7 @@
 <h2>At a glance</h2>
 <p>Worst band across both hosts per axis. Colour key: <span class="ov-s ov-key">strong</span> <span class="ov-w ov-key">workable</span> <span class="ov-k ov-key">weak</span> <span class="ov-b ov-key">blocked</span></p>
 <div class="scroll"><table class="ov-table"><thead>
-<tr><th>Candidate</th><th>Score</th><th>Blockers</th><th class="ov-ax"><a href="./axes.html#a1" title="A1 Implementation effort">A1</a></th><th class="ov-ax"><a href="./axes.html#a2" title="A2 Maintainability at scale">A2</a></th><th class="ov-ax"><a href="./axes.html#a3" title="A3 Reproducibility across sites">A3</a></th><th class="ov-ax"><a href="./axes.html#a4" title="A4 Mangrove compatibility">A4</a></th><th class="ov-ax"><a href="./axes.html#a5" title="A5 Theming fidelity">A5</a></th><th class="ov-ax"><a href="./axes.html#a6" title="A6 Right-to-left">A6</a></th><th class="ov-ax"><a href="./axes.html#a7" title="A7 Accessibility conformance">A7</a></th><th>Demos</th></tr>
+<tr><th>Candidate</th><th>Score</th><th>Blockers</th><th class="ov-ax"><a href="./axes.html#a1" title="A1 Implementation effort">A1<span class="ov-ax-hint">Effort</span></a></th><th class="ov-ax"><a href="./axes.html#a2" title="A2 Maintainability at scale">A2<span class="ov-ax-hint">Maintain</span></a></th><th class="ov-ax"><a href="./axes.html#a3" title="A3 Reproducibility across sites">A3<span class="ov-ax-hint">Reuse</span></a></th><th class="ov-ax"><a href="./axes.html#a4" title="A4 Mangrove compatibility">A4<span class="ov-ax-hint">Mangrove</span></a></th><th class="ov-ax"><a href="./axes.html#a5" title="A5 Theming fidelity">A5<span class="ov-ax-hint">Theming</span></a></th><th class="ov-ax"><a href="./axes.html#a6" title="A6 Right-to-left">A6<span class="ov-ax-hint">RTL</span></a></th><th class="ov-ax"><a href="./axes.html#a7" title="A7 Accessibility conformance">A7<span class="ov-ax-hint">a11y</span></a></th><th>Demos</th></tr>
 </thead><tbody>
 <tr><td class="ov-name">Adobe React Aria</td><td class="ov-score"><strong>84</strong></td><td class="ov-blockers"><span class="ov-ok">none</span></td><td class="ov-w" title="A1: workable">W</td><td class="ov-w" title="A2: workable">W</td><td class="ov-w" title="A3: workable">W</td><td class="ov-s" title="A4: strong">S</td><td class="ov-s" title="A5: strong">S</td><td class="ov-s" title="A6: strong">S</td><td class="ov-s" title="A7: strong">S</td><td class="ov-demos"><a href="./delta-react-aria/app.html">Delta</a> <a href="./mangrove-react-aria/island.html">Mangrove</a></td></tr>
 <tr><td class="ov-name">MUI (Community only)</td><td class="ov-score"><strong>69</strong></td><td class="ov-blockers"><span class="ov-ok">none</span></td><td class="ov-w" title="A1: workable">W</td><td class="ov-k" title="A2: weak">Wk</td><td class="ov-w" title="A3: workable">W</td><td class="ov-s" title="A4: strong">S</td><td class="ov-s" title="A5: strong">S</td><td class="ov-w" title="A6: workable">W</td><td class="ov-w" title="A7: workable">W</td><td class="ov-demos"><a href="./delta-mui/app.html">Delta</a> <a href="./mangrove-mui/island.html">Mangrove</a></td></tr>

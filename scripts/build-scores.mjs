@@ -564,6 +564,7 @@ function buildOverviewHtml() {
   const axisKeys = AXES.map(([key]) => key);
   const axisShort = ["A1", "A2", "A3", "A4", "A5", "A6", "A7"];
   const axisLabel = AXES.map(([, label]) => label);
+  const axisHint = ["Effort", "Maintain", "Reuse", "Mangrove", "Theming", "RTL", "a11y"];
 
   const gridRows = ranked.map((c) => {
     const deltaPairing = c.pair.find((p) => p.host === "delta");
@@ -618,7 +619,7 @@ function buildOverviewHtml() {
     `<span class="ov-b ov-key">blocked</span></p>\n` +
     `<div class="scroll"><table class="ov-table"><thead>\n` +
     `<tr><th>Candidate</th><th>Score</th><th>Blockers</th>` +
-    axisShort.map((a, i) => `<th class="ov-ax"><a href="./axes.html#${a.toLowerCase()}" title="${esc(axisLabel[i])}">${a}</a></th>`).join("") +
+    axisShort.map((a, i) => `<th class="ov-ax"><a href="./axes.html#${a.toLowerCase()}" title="${esc(axisLabel[i])}">${a}<span class="ov-ax-hint">${axisHint[i]}</span></a></th>`).join("") +
     `<th>Demos</th></tr>\n` +
     `</thead><tbody>\n` +
     gridRows.join("\n") +
@@ -719,7 +720,8 @@ const html = `<!doctype html>
       .ov-name { text-align:start !important; font-weight:600; }
       .ov-score { font-size:1rem; }
       .ov-ax { font-size:0.6875rem; }
-      .ov-ax a { text-decoration:underline dotted; text-underline-offset:0.2em; text-decoration-color:var(--muted); }
+      .ov-ax a { text-decoration:none; }
+      .ov-ax-hint { display:block; font-size:0.5625rem; font-weight:400; color:var(--muted); line-height:1.2; }
       .ov-demos { font-size:0.75rem; }
       .ov-demos a + a { margin-inline-start:0.5rem; }
       .ov-s { background:#d4edda; color:#155724; }
