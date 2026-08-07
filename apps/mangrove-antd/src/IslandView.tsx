@@ -248,7 +248,7 @@ export function IslandView(): ReactElement {
       title={labels.appTitle}
       dir={demo.dir}
       /*
-       * The frame's `notices` slot renders both of these OUTSIDE
+       * The frame's `pageHeader` and `notices` slots render both of these OUTSIDE
        * `data-candidate-root`, so no candidate stylesheet can restyle them and the
        * candidate subtree is genuinely empty under `?candidate=off`. Passed
        * unconditionally, so they are present in the leakage baseline as well as the
@@ -258,16 +258,14 @@ export function IslandView(): ReactElement {
        * screen view is a Delta view, and this is the Mangrove host. Listing it here
        * would produce a dead link to an `app.html` this app does not ship.
        */
-      notices={
-        <>
-          <ViewSwitcher
-            views={viewLinks(["island", "inventory"], "island")}
-            pairingName="Ant Design on Mangrove"
-            otherHost={{ label: "Ant Design on Delta", href: "../delta-antd/" }}
-          />
-          <KnownIssues candidate="antd" host="mangrove" candidateName="Ant Design" />
-        </>
+      pageHeader={
+        <ViewSwitcher
+          views={viewLinks(["island", "inventory"], "island")}
+          pairingName="Ant Design on Mangrove"
+          otherHost={{ label: "Ant Design on Delta", href: "../delta-antd/" }}
+        />
       }
+      notices={<KnownIssues candidate="antd" host="mangrove" candidateName="Ant Design" />}
     >
       {candidateEnabled ? (
         /*

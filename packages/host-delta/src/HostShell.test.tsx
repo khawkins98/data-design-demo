@@ -49,6 +49,24 @@ describe("Delta HostShell", () => {
     );
   });
 
+  it("renders the page header above the body, outside the candidate root", () => {
+    // Position is the reason this slot exists: passed as a child, the view switcher
+    // rendered inside `main` BELOW the canary block, putting the navigation for the
+    // page a screen down where it read as content within the page.
+    const withHeader = renderToStaticMarkup(
+      <HostShell title="Test page" pageHeader={<div id="page-header" />}>
+        <p>candidate subtree</p>
+      </HostShell>,
+    );
+    const header = withHeader.indexOf('id="page-header"');
+    const canaries = withHeader.indexOf('data-canary="heading-2"');
+    const root = withHeader.indexOf("data-candidate-root");
+    expect(header).toBeGreaterThan(-1);
+    expect(header, "the page header must precede the body").toBeLessThan(canaries);
+    expect(header).toBeLessThan(root);
+    expect(withHeader.slice(root)).not.toContain('id="page-header"');
+  });
+
   it("uses Tailwind utility classes, as Delta does", () => {
     expect(html).toMatch(/class="[^"]*\b(flex|grid|border|text-)/);
   });

@@ -260,7 +260,7 @@ export function AppView(): ReactElement {
       title={labels.appTitle}
       dir={demo.dir}
       /*
-       * The frame's `notices` slot renders both of these OUTSIDE
+       * The frame's `pageHeader` and `notices` slots render both of these OUTSIDE
        * `data-candidate-root`, so no candidate stylesheet can restyle them and the
        * candidate subtree is genuinely empty under `?candidate=off`. Passed
        * unconditionally, so they are present in the leakage baseline as well as the
@@ -270,16 +270,14 @@ export function AppView(): ReactElement {
        * is a Mangrove view, and this is the Delta host. Listing it here would produce
        * a dead link to an `island.html` this app does not ship.
        */
-      notices={
-        <>
-          <ViewSwitcher
-            views={viewLinks(["application", "inventory"], "application")}
-            pairingName="MUI Community on Delta"
-            otherHost={{ label: "MUI on Mangrove", href: "../mangrove-mui/" }}
-          />
-          <KnownIssues candidate="mui" host="delta" candidateName="MUI Community" />
-        </>
+      pageHeader={
+        <ViewSwitcher
+          views={viewLinks(["application", "inventory"], "application")}
+          pairingName="MUI Community on Delta"
+          otherHost={{ label: "MUI on Mangrove", href: "../mangrove-mui/" }}
+        />
       }
+      notices={<KnownIssues candidate="mui" host="delta" candidateName="MUI Community" />}
     >
       {candidateEnabled ? (
         <ThemeProvider theme={theme}>

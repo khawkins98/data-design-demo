@@ -61,6 +61,17 @@ export interface AppFrameProps {
    * it and lose the box. Both were tried before this prop existed.
    */
   readonly notices?: ReactNode;
+  /**
+   * Page-level chrome, rendered full width beneath the toolbar and above the
+   * body — the `ViewSwitcher`, in practice. Same slot, same reasons, as
+   * `HostShell`'s: it is the frame around the page, so it sits where the frame
+   * is, not inside `main` beside the content.
+   *
+   * Distinct from `notices` on purpose. Both are host chrome, but the
+   * known-issues box is a caveat ABOUT this page and belongs with the content;
+   * the switcher is the way OFF it and belongs with the chrome.
+   */
+  readonly pageHeader?: ReactNode;
 }
 
 /**
@@ -80,6 +91,7 @@ export function AppFrame({
   children,
   dir = "ltr",
   notices,
+  pageHeader,
 }: AppFrameProps): ReactElement {
   return (
     <div dir={dir} className="min-h-screen bg-slate-50 text-slate-900">
@@ -121,6 +133,9 @@ export function AppFrame({
           </button>
         </div>
       </header>
+
+      {/* Spans the sidebar too: it navigates the whole page, not the content column. */}
+      {pageHeader ? <div className="px-6 pt-4">{pageHeader}</div> : null}
 
       <div className="grid items-start md:grid-cols-[14rem_minmax(0,1fr)]">
         {/*

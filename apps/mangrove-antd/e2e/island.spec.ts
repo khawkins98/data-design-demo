@@ -327,14 +327,22 @@ test.describe("embedded island", () => {
     });
     expect(insideCandidate, "the known-issues box is inside the candidate subtree").toBe(0);
 
-    // Same for the view switcher, which goes through the same `notices` slot.
-    await expect(page.locator(`${ROOT} .mg-viewswitcher`)).toHaveCount(0);
-    await expect(page.locator(".mg-viewswitcher")).toHaveCount(1);
+    /*
+     * Same for the view switcher, which goes through the frame's `pageHeader` slot
+     * rather than `notices` — the box is a caveat about this page, the switcher is
+     * the way off it — but is host chrome on identical terms.
+     *
+     * `[aria-current="page"]` is scoped to the tab row: the breadcrumb marks the
+     * current page too, so unscoped it matches two elements and the assertion below
+     * would fail on a header that is behaving correctly.
+     */
+    await expect(page.locator(`${ROOT} .mg-pageheader`)).toHaveCount(0);
+    await expect(page.locator(".mg-pageheader")).toHaveCount(1);
     await expect(
-      page.locator('.mg-viewswitcher [aria-current="page"]'),
+      page.locator('nav[aria-label="Demo views"] [aria-current="page"]'),
     ).toHaveText("Inside a real page");
     // This host ships no app.html, so the switcher must not offer that view.
-    await expect(page.locator('.mg-viewswitcher a[href="./app.html"]')).toHaveCount(0);
+    await expect(page.locator('.mg-pageheader a[href="./app.html"]')).toHaveCount(0);
   });
 
   test("the candidate subtree is empty with candidate=off", async ({ page }) => {

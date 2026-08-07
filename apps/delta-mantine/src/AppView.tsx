@@ -717,7 +717,7 @@ export function AppView({
       title={demo.labels.appTitle}
       dir={demo.dir}
       /*
-       * The frame's `notices` slot renders both of these OUTSIDE
+       * The frame's `pageHeader` and `notices` slots render both of these OUTSIDE
        * `data-candidate-root`, so no candidate stylesheet can restyle them and the
        * candidate subtree is genuinely empty under `?candidate=off`. Passed
        * unconditionally, so they sit in the leakage baseline as well as the
@@ -727,16 +727,14 @@ export function AppView({
        * view is a Mangrove view and this is the Delta host. Listing it would
        * produce a dead link to an `island.html` this app does not ship.
        */
-      notices={
-        <>
-          <ViewSwitcher
-            views={viewLinks(["application", "inventory"], "application")}
-            pairingName="Mantine on Delta"
-            otherHost={{ label: "Mantine on Mangrove", href: "../mangrove-mantine/" }}
-          />
-          <KnownIssues candidate="mantine" host="delta" candidateName="Mantine" />
-        </>
+      pageHeader={
+        <ViewSwitcher
+          views={viewLinks(["application", "inventory"], "application")}
+          pairingName="Mantine on Delta"
+          otherHost={{ label: "Mantine on Mangrove", href: "../mangrove-mantine/" }}
+        />
       }
+      notices={<KnownIssues candidate="mantine" host="delta" candidateName="Mantine" />}
     >
       {candidate}
     </AppFrame>

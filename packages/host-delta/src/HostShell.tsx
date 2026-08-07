@@ -28,6 +28,22 @@ export interface HostShellProps {
   readonly children: ReactNode;
   /** Document direction, driven by the demo's locale switcher. */
   readonly dir?: "ltr" | "rtl";
+  /**
+   * Page-level chrome, rendered full width directly beneath the masthead and
+   * ABOVE the body — the `ViewSwitcher`, in practice.
+   *
+   * A slot rather than `children` because position is the whole point. Passed as
+   * a child, the switcher landed inside `<main>` below the canary block, so the
+   * navigation for the page appeared a screen down, after a wall of host
+   * reference markup, reading as something belonging to the content rather than
+   * as the frame around it. Navigation that frames a page has to sit where the
+   * frame is.
+   *
+   * Outside `data-candidate-root`, like `HostCanaries`, so no candidate
+   * stylesheet can restyle it and it cannot pollute the `?candidate=off`
+   * baseline.
+   */
+  readonly pageHeader?: ReactNode;
 }
 
 /** Nav items are host chrome, so they stay in English in every locale. */
@@ -166,7 +182,12 @@ export function HostCanaries(): ReactElement {
   );
 }
 
-export function HostShell({ title, children, dir = "ltr" }: HostShellProps): ReactElement {
+export function HostShell({
+  title,
+  children,
+  dir = "ltr",
+  pageHeader,
+}: HostShellProps): ReactElement {
   return (
     <div dir={dir} className="min-h-screen bg-slate-50 text-slate-900">
       <header className="flex flex-wrap items-baseline gap-4 border-b border-slate-300 bg-white px-6 py-4">
@@ -175,6 +196,14 @@ export function HostShell({ title, children, dir = "ltr" }: HostShellProps): Rea
           {title}
         </h1>
       </header>
+
+      {/*
+       * Full width, above the body grid, so the page navigation spans the page
+       * it navigates rather than sitting in one column of it. No background of
+       * its own: it takes the page's, which is what lets the current tab break
+       * the rule beneath it and join the content below.
+       */}
+      {pageHeader ? <div className="px-6 pt-4">{pageHeader}</div> : null}
 
       <div className="grid items-start gap-6 p-6 md:grid-cols-[16rem_minmax(0,1fr)]">
         <nav data-canary="nav" aria-label="Sections">

@@ -90,6 +90,24 @@ describe("Delta AppFrame", () => {
     expect(notice).toBeLessThan(root);
   });
 
+  it("renders the page header above the body, outside the candidate root", () => {
+    // Position is the reason this slot exists. Rendered as a child instead, the
+    // view switcher landed inside `main` beside the content, so the navigation FOR
+    // the page read as content WITHIN it.
+    const withHeader = renderToStaticMarkup(
+      <AppFrame title="Disaster events" pageHeader={<div id="page-header" />}>
+        <p>candidate subtree</p>
+      </AppFrame>,
+    );
+    const header = withHeader.indexOf('id="page-header"');
+    const sidebar = withHeader.indexOf('aria-label="Application"');
+    const root = withHeader.indexOf("data-candidate-root");
+    expect(header).toBeGreaterThan(-1);
+    expect(header, "the page header must precede the body grid").toBeLessThan(sidebar);
+    expect(header).toBeLessThan(root);
+    expect(withHeader.slice(root)).not.toContain('id="page-header"');
+  });
+
   it("applies the requested direction", () => {
     expect(render("rtl")).toContain('dir="rtl"');
     expect(render("ltr")).toContain('dir="ltr"');

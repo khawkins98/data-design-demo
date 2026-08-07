@@ -338,7 +338,7 @@ export function AppView(): ReactElement {
       title={labels.appTitle}
       dir={demo.dir}
       /*
-       * The frame's `notices` slot renders both of these OUTSIDE
+       * The frame's `pageHeader` and `notices` slots render both of these OUTSIDE
        * `data-candidate-root`, so no candidate stylesheet can restyle them and the
        * candidate subtree is genuinely empty under `?candidate=off`. Passed
        * unconditionally, so they are present in the leakage baseline as well as the
@@ -348,16 +348,14 @@ export function AppView(): ReactElement {
        * is a Mangrove view and this is the Delta host, so listing it would produce a
        * dead link to an `island.html` this app does not ship.
        */
-      notices={
-        <>
-          <ViewSwitcher
-            views={viewLinks(["application", "inventory"], "application")}
-            pairingName="IBM Carbon on Delta"
-            otherHost={{ label: "Carbon on Mangrove", href: "../mangrove-carbon/" }}
-          />
-          <KnownIssues candidate="carbon" host="delta" candidateName="IBM Carbon" />
-        </>
+      pageHeader={
+        <ViewSwitcher
+          views={viewLinks(["application", "inventory"], "application")}
+          pairingName="IBM Carbon on Delta"
+          otherHost={{ label: "Carbon on Mangrove", href: "../mangrove-carbon/" }}
+        />
       }
+      notices={<KnownIssues candidate="carbon" host="delta" candidateName="IBM Carbon" />}
     >
       {candidateEnabled ? (
         /* `.undrr-tokens` declares the UNDRR custom properties; `.demo` maps them

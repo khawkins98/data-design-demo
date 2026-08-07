@@ -176,19 +176,25 @@ export function App({
   }
 
   return (
-    <HostShell title={demo.labels.appTitle} dir={demo.dir}>
-      {/*
-        * Cross-view navigation, outside the candidate wrapper for the same reason
-        * the known-issues box is. `"application"` is deliberately absent from
-        * `available`: the whole-DELTA-screen view is a Delta view and this is the
-        * Mangrove host, so listing it would produce a dead link to an `app.html`
-        * this app does not ship.
-        */}
-      <ViewSwitcher
-        views={viewLinks(["island", "inventory"], "inventory")}
-        pairingName="Mantine on Mangrove"
-        otherHost={{ label: "Mantine on Delta", href: "../delta-mantine/" }}
-      />
+    <HostShell
+      title={demo.labels.appTitle}
+      dir={demo.dir}
+      pageHeader={
+        /*
+         * Cross-view navigation, in the frame's page-header slot and outside the
+         * candidate wrapper for the same reason the known-issues box is.
+         * `"application"` is deliberately absent from
+         * `available`: the whole-DELTA-screen view is a Delta view and this is the
+         * Mangrove host, so listing it would produce a dead link to an `app.html`
+         * this app does not ship.
+         */
+        <ViewSwitcher
+          views={viewLinks(["island", "inventory"], "inventory")}
+          pairingName="Mantine on Mangrove"
+          otherHost={{ label: "Mantine on Delta", href: "../delta-mantine/" }}
+        />
+      }
+    >
 
       {/*
         * Rendered OUTSIDE the candidate wrapper and in BOTH candidate states.

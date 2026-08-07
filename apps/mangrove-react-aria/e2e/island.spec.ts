@@ -142,35 +142,73 @@ test.describe("embedded island", () => {
     ).toHaveCount(1);
   });
 
-  test("view switcher mirrors under RTL", async ({ page }) => {
-    // It uses logical properties (`ms-`/`ps-`/`border-s`), which SHOULD mirror on
-    // their own — but the frame sets `dir` on a wrapper rather than on <html>, and
-    // this run already found that a portal escaping that wrapper loses direction.
-    // Verified rather than assumed.
+  test("page header mirrors under RTL, glyph included", async ({ page }) => {
+    /*
+     * The header's boxes use logical properties, which SHOULD mirror on their own —
+     * but the frame sets `dir` on a wrapper rather than on <html>, and this run
+     * already found that a portal escaping that wrapper loses direction. Verified
+     * rather than assumed.
+     *
+     * The breadcrumb separator is checked SEPARATELY from the layout because CSS
+     * does not mirror generated CONTENT. `margin-inline-end` puts the glyph on the
+     * correct side in both directions while the glyph itself keeps pointing the way
+     * the reader came, which is a defect logical properties cannot catch and this
+     * assertion can.
+     */
     await page.goto(`${URL}?candidate=on`);
 
-    const separator = page.locator('nav[aria-label="Demo views"] li').last();
-    const ltr = await separator.evaluate((el) => {
-      const cs = getComputedStyle(el);
-      return { left: cs.borderLeftWidth, right: cs.borderRightWidth };
+    const crumb = page.locator('nav[aria-label="Breadcrumb"] li').last();
+    const firstTab = page.locator('nav[aria-label="Demo views"] li').first();
+    const read = async () => ({
+      ...(await crumb.evaluate((el) => ({
+        direction: getComputedStyle(el).direction,
+        glyph: getComputedStyle(el, "::before").content,
+      }))),
+      // The first tab's own position across the two loads, NOT first-versus-last:
+      // the tab row wraps at narrow widths, where comparing two tabs on different
+      // rows compares nothing.
+      tabX: (await firstTab.boundingBox())?.x ?? -1,
     });
-    expect(ltr.left, "LTR: inline-start border should be on the left").not.toBe("0px");
-    expect(ltr.right).toBe("0px");
+
+    const ltr = await read();
+    expect(ltr.direction).toBe("ltr");
+    expect(ltr.glyph, "LTR: the separator should point forwards").toContain("›");
 
     await selectLocale(page, "العربية");
     await expect(page.locator('[dir="rtl"]')).toHaveCount(1);
 
-    const rtl = await separator.evaluate((el) => {
-      const cs = getComputedStyle(el);
+    const rtl = await read();
+    expect(rtl.direction).toBe("rtl");
+    expect(rtl.glyph, "RTL: the separator should have flipped").toContain("‹");
+    expect(rtl.tabX, "RTL: the tab row should start from the right").toBeGreaterThan(ltr.tabX);
+  });
+
+  test("the page header frames the page, above the content", async ({ page }) => {
+    /*
+     * Position is the point of the `pageHeader` slot, so it is asserted rather than
+     * left to review: passed as a child instead, the switcher rendered inside the
+     * content region BELOW the page title and the host canary block, which put the
+     * navigation for the page a screen down and made it read as content within it.
+     */
+    await page.goto(`${URL}?candidate=on`);
+
+    const order = await page.evaluate(() => {
+      const header = document.querySelector('nav[aria-label="Demo views"]');
+      const title = document.querySelector("[data-canary='heading-1']");
+      const candidate = document.querySelector("[data-candidate-root]");
       return {
-        direction: cs.direction,
-        left: cs.borderLeftWidth,
-        right: cs.borderRightWidth,
+        headerTop: header?.getBoundingClientRect().top ?? -1,
+        titleTop: title?.getBoundingClientRect().top ?? -1,
+        candidateTop: candidate?.getBoundingClientRect().top ?? -1,
+        insideContent: header?.closest(".mg-page-content--padded") !== null,
       };
     });
-    expect(rtl.direction).toBe("rtl");
-    expect(rtl.right, "RTL: inline-start border should have moved to the right").not.toBe("0px");
-    expect(rtl.left).toBe("0px");
+
+    expect(order.insideContent, "the page header belongs to the frame, not the content").toBe(
+      false,
+    );
+    expect(order.headerTop).toBeLessThan(order.titleTop);
+    expect(order.headerTop).toBeLessThan(order.candidateTop);
   });
 
   test("candidate=off leaves the candidate region empty", async ({ page }) => {

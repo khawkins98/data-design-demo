@@ -91,7 +91,24 @@ export function App(): ReactElement {
   }, [locale]);
 
   return (
-    <HostShell title={demo.labels.appTitle} dir={demo.dir}>
+    <HostShell
+      title={demo.labels.appTitle}
+      dir={demo.dir}
+      pageHeader={
+        /*
+         * Cross-view navigation, in the frame's page-header slot. Host chrome on the
+         * same terms as the known-issues box below: outside the candidate wrapper, present in both
+         * candidate states. `"application"` is absent from `available` because the
+         * whole-DELTA-screen view belongs to the Delta host and this app ships no
+         * `app.html`.
+         */
+        <ViewSwitcher
+          views={viewLinks(["island", "inventory"], "inventory")}
+          pairingName="IBM Carbon on Mangrove"
+          otherHost={{ label: "Carbon on Delta", href: "../delta-carbon/" }}
+        />
+      }
+    >
       {/*
         * Rendered OUTSIDE the candidate wrapper and in BOTH candidate states.
         * Outside, so no candidate stylesheet restyles the warning box and every
@@ -99,18 +116,6 @@ export function App(): ReactElement {
         * leakage baseline as well as the candidate render and therefore cannot
         * itself register as a difference.
         */}
-      {/*
-        * Cross-view navigation, a sibling of the known-issues box and for the same
-        * reason: host chrome, outside the candidate wrapper, present in both
-        * candidate states. `"application"` is absent from `available` because the
-        * whole-DELTA-screen view belongs to the Delta host and this app ships no
-        * `app.html`.
-        */}
-      <ViewSwitcher
-        views={viewLinks(["island", "inventory"], "inventory")}
-        pairingName="IBM Carbon on Mangrove"
-        otherHost={{ label: "Carbon on Delta", href: "../delta-carbon/" }}
-      />
 
       <KnownIssues candidate="carbon" host="mangrove" candidateName="IBM Carbon" />
 

@@ -127,8 +127,22 @@
  * a physical `border-left` on the active tab would stay on the wrong side in RTL.
  */
 .mg-pageheader {
-  margin: 0 0 1.5rem;
+  margin: 0;
   border-bottom: 1px solid #d5d5d5;
+}
+
+/*
+ * The bands the two frames place it in. The header carries no vertical margin
+ * of its own: it spans the full page width directly under the masthead, and the
+ * space beneath its rule is the content region's own top padding, so the rule
+ * lands between the two rather than floating inside either.
+ */
+.mg-host__pageheader {
+  padding: 1rem 1.5rem 0;
+}
+
+.mg-island__pageheader {
+  padding-top: 1rem;
 }
 
 .mg-pageheader__crumbs {

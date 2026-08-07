@@ -55,7 +55,24 @@ export function App(): ReactElement {
   const selectedIndex = LOCALES.findIndex((entry) => entry.code === locale);
 
   return (
-    <HostShell title={demo.labels.appTitle} dir={demo.dir}>
+    <HostShell
+      title={demo.labels.appTitle}
+      dir={demo.dir}
+      pageHeader={
+        /*
+         * Cross-view navigation, in the frame's page-header slot. Host chrome on the
+         * same terms as the known-issues box below: outside the candidate wrapper, present in both
+         * candidate states. `"island"` is absent from `available` because the
+         * embedded-island view belongs to the Mangrove host and this app ships no
+         * `island.html`.
+         */
+        <ViewSwitcher
+          views={viewLinks(["application", "inventory"], "inventory")}
+          pairingName="IBM Carbon on Delta"
+          otherHost={{ label: "Carbon on Mangrove", href: "../mangrove-carbon/" }}
+        />
+      }
+    >
       {/*
         * Rendered OUTSIDE the candidate wrapper and in BOTH candidate states.
         * Outside, so no candidate stylesheet restyles the warning box and every
@@ -63,18 +80,6 @@ export function App(): ReactElement {
         * leakage baseline as well as the candidate render and therefore cannot
         * itself register as a difference.
         */}
-      {/*
-        * Cross-view navigation, a sibling of the known-issues box and for the same
-        * reason: host chrome, outside the candidate wrapper, present in both
-        * candidate states. `"island"` is absent from `available` because the
-        * embedded-island view belongs to the Mangrove host and this app ships no
-        * `island.html`.
-        */}
-      <ViewSwitcher
-        views={viewLinks(["application", "inventory"], "inventory")}
-        pairingName="IBM Carbon on Delta"
-        otherHost={{ label: "Carbon on Mangrove", href: "../mangrove-carbon/" }}
-      />
 
       <KnownIssues candidate="carbon" host="delta" candidateName="IBM Carbon" />
 

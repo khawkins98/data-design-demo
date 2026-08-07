@@ -79,22 +79,27 @@ export function App(): ReactElement {
   }, [locale]);
 
   return (
-    <HostShell title={demo.labels.appTitle} dir={demo.dir}>
-      {/*
-        * Host chrome, on the same terms as the known-issues box below: rendered
-        * OUTSIDE the candidate wrapper and in BOTH candidate states, so no
-        * candidate stylesheet restyles it and it cannot itself register as a
-        * leakage difference.
-        *
-        * `application` is listed but `island` is not: the island view is
-        * Mangrove-only, and linking to an `island.html` this app does not ship
-        * would be a dead end — the problem the switcher exists to fix.
-        */}
-      <ViewSwitcher
-        views={viewLinks(["application", "inventory"], "inventory")}
-        pairingName="Adobe React Aria on Delta"
-        otherHost={{ label: "React Aria on Mangrove", href: "../mangrove-react-aria/" }}
-      />
+    <HostShell
+      title={demo.labels.appTitle}
+      dir={demo.dir}
+      pageHeader={
+        /*
+         * Cross-view navigation, in the frame's page-header slot. Host chrome on the
+         * same terms as the known-issues box below: rendered OUTSIDE the candidate
+         * wrapper and in BOTH candidate states, so no candidate stylesheet restyles
+         * it and it cannot itself register as a leakage difference.
+         *
+         * `application` is listed but `island` is not: the island view is
+         * Mangrove-only, and linking to an `island.html` this app does not ship
+         * would be a dead end — the problem the switcher exists to fix.
+         */
+        <ViewSwitcher
+          views={viewLinks(["application", "inventory"], "inventory")}
+          pairingName="Adobe React Aria on Delta"
+          otherHost={{ label: "React Aria on Mangrove", href: "../mangrove-react-aria/" }}
+        />
+      }
+    >
 
       {/*
         * Rendered OUTSIDE the candidate wrapper and in BOTH candidate states.

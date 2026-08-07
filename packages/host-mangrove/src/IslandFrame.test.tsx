@@ -76,6 +76,24 @@ describe("Mangrove IslandFrame", () => {
     expect(notice).toBeLessThan(root);
   });
 
+  it("renders the page header above the content region, outside the candidate root", () => {
+    // Position is the reason this slot exists. Rendered as a child instead, the
+    // view switcher landed below the page title and the canary block, so the
+    // navigation FOR the page read as content WITHIN it.
+    const withHeader = renderToStaticMarkup(
+      <IslandFrame title="Loss records" pageHeader={<div id="page-header" />}>
+        <p>candidate subtree</p>
+      </IslandFrame>,
+    );
+    const header = withHeader.indexOf('id="page-header"');
+    const title = withHeader.indexOf('data-canary="heading-1"');
+    const root = withHeader.indexOf("data-candidate-root");
+    expect(header).toBeGreaterThan(-1);
+    expect(header, "the page header must precede the content region").toBeLessThan(title);
+    expect(header).toBeLessThan(root);
+    expect(withHeader.slice(root)).not.toContain('id="page-header"');
+  });
+
   it("applies the requested direction", () => {
     expect(render("rtl")).toContain('dir="rtl"');
     expect(render("ltr")).toContain('dir="ltr"');

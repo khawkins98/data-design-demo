@@ -60,6 +60,17 @@ export interface IslandFrameProps {
    * it and lose the box. Both were tried before this prop existed.
    */
   readonly notices?: ReactNode;
+  /**
+   * Page-level chrome, rendered beneath the masthead navigation and above the
+   * content region — the `ViewSwitcher`, in practice. Same slot, same reasons,
+   * as `HostShell`'s: it is the frame around the page, so it sits with the
+   * frame's own navigation rather than inside the content.
+   *
+   * Distinct from `notices` on purpose. Both are host chrome, but the
+   * known-issues box is a caveat ABOUT this page and belongs with the content;
+   * the switcher is the way OFF it and belongs with the chrome.
+   */
+  readonly pageHeader?: ReactNode;
 }
 
 /**
@@ -81,6 +92,7 @@ export function IslandFrame({
   children,
   dir = "ltr",
   notices,
+  pageHeader,
 }: IslandFrameProps): ReactElement {
   return (
     <div className="mg-host mg-island" dir={dir}>
@@ -141,6 +153,14 @@ export function IslandFrame({
           ))}
         </ul>
       </nav>
+
+      {/*
+       * Directly under the masthead navigation, in its own `mg-container` so it
+       * lines up with the content below rather than running to the viewport edge.
+       */}
+      {pageHeader ? (
+        <div className="mg-container mg-island__pageheader">{pageHeader}</div>
+      ) : null}
 
       <div className="mg-container mg-page-content--padded">
         {/*

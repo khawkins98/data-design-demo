@@ -112,23 +112,23 @@ export function IslandView(): ReactElement {
     <IslandFrame
       title={demo.labels.appTitle}
       dir={demo.dir}
-      notices={
-        <>
-          {/*
-           * Both boxes are host chrome and reach the page through `notices`, so
-           * they render outside `data-candidate-root` in both candidate states.
-           * `island` is listed but `application` is not: the full-application view
-           * is Delta-only, and a link to an `app.html` this app does not ship would
-           * be a dead end — the exact problem the switcher exists to fix.
-           */}
-          <ViewSwitcher
-            views={viewLinks(["island", "inventory"], "island")}
-            pairingName="Adobe React Aria on Mangrove"
-            otherHost={{ label: "React Aria on Delta", href: "../delta-react-aria/" }}
-          />
-          <KnownIssues candidate="react-aria" host="mangrove" candidateName="Adobe React Aria" />
-        </>
+      pageHeader={
+        /*
+         * Host chrome, reaching the page through the frame's `pageHeader` slot rather
+         * than `notices` - the known-issues box is a caveat about this page and
+         * belongs with the content, the switcher is the way off it and belongs with
+         * the frame - so it renders outside `data-candidate-root` in both states.
+         * `island` is listed but `application` is not: the full-application view
+         * is Delta-only, and a link to an `app.html` this app does not ship would
+         * be a dead end — the exact problem the switcher exists to fix.
+         */
+        <ViewSwitcher
+          views={viewLinks(["island", "inventory"], "island")}
+          pairingName="Adobe React Aria on Mangrove"
+          otherHost={{ label: "React Aria on Delta", href: "../delta-react-aria/" }}
+        />
       }
+      notices={<KnownIssues candidate="react-aria" host="mangrove" candidateName="Adobe React Aria" />}
     >
       {candidateEnabled ? (
         /**

@@ -486,7 +486,7 @@ export function IslandView({
       title={labels.appTitle}
       dir={demo.dir}
       /*
-       * The frame's `notices` slot renders both of these OUTSIDE
+       * The frame's `pageHeader` and `notices` slots render both of these OUTSIDE
        * `data-candidate-root`, so no candidate stylesheet can restyle them and the
        * candidate subtree is genuinely empty under `?candidate=off`. Passed
        * unconditionally, so they sit in the leakage baseline as well as the
@@ -496,16 +496,14 @@ export function IslandView({
        * screen view is a Delta view and this is the Mangrove host. Listing it would
        * produce a dead link to an `app.html` this app does not ship.
        */
-      notices={
-        <>
-          <ViewSwitcher
-            views={viewLinks(["island", "inventory"], "island")}
-            pairingName="Mantine on Mangrove"
-            otherHost={{ label: "Mantine on Delta", href: "../delta-mantine/" }}
-          />
-          <KnownIssues candidate="mantine" host="mangrove" candidateName="Mantine" />
-        </>
+      pageHeader={
+        <ViewSwitcher
+          views={viewLinks(["island", "inventory"], "island")}
+          pairingName="Mantine on Mangrove"
+          otherHost={{ label: "Mantine on Delta", href: "../delta-mantine/" }}
+        />
       }
+      notices={<KnownIssues candidate="mantine" host="mangrove" candidateName="Mantine" />}
     >
       {candidate}
     </IslandFrame>

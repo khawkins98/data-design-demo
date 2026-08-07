@@ -331,7 +331,9 @@ test.describe("full application", () => {
     expect(insideCandidate, "the known-issues box is inside the candidate subtree").toBe(0);
 
     /*
-     * Same for the view switcher, which goes through the same `notices` slot. The
+     * Same for the view switcher, which goes through the frame's `pageHeader` slot
+     * rather than `notices` — the box is a caveat about this page, the switcher is
+     * the way off it — but is host chrome on identical terms. The
      * Delta host's switcher is styled with Tailwind utilities rather than a
      * `mg-viewswitcher` class — unlike the Mangrove one — so it is located by its
      * accessible name, which is the part that is contractual.

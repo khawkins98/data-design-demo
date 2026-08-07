@@ -83,19 +83,24 @@ export function App(): ReactElement {
   );
 
   return (
-    <HostShell title={demo.labels.appTitle} dir={demo.dir}>
-      {/*
-        * Cross-view navigation, immediately before the known-issues box and on the
-        * same terms: outside the candidate wrapper, in both candidate states. This
-        * page is the inventory, so it is the one flagged `current`. `"application"`
-        * is not listed — that view belongs to the Delta host, and the link to it
-        * goes through `otherHost` instead.
-        */}
-      <ViewSwitcher
-        views={viewLinks(["island", "inventory"], "inventory")}
-        pairingName="MUI Community on Mangrove"
-        otherHost={{ label: "MUI on Delta", href: "../delta-mui/" }}
-      />
+    <HostShell
+      title={demo.labels.appTitle}
+      dir={demo.dir}
+      pageHeader={
+        /*
+         * Cross-view navigation, in the frame's page-header slot, on the same terms as
+         * the known-issues box below: outside the candidate wrapper, in both candidate states. This
+         * page is the inventory, so it is the one flagged `current`. `"application"`
+         * is not listed — that view belongs to the Delta host, and the link to it
+         * goes through `otherHost` instead.
+         */
+        <ViewSwitcher
+          views={viewLinks(["island", "inventory"], "inventory")}
+          pairingName="MUI Community on Mangrove"
+          otherHost={{ label: "MUI on Delta", href: "../delta-mui/" }}
+        />
+      }
+    >
 
       {/*
         * Rendered OUTSIDE the candidate wrapper and in BOTH candidate states.

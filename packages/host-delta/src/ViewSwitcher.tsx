@@ -7,8 +7,10 @@
  * utilities instead of hand-written CSS, which is the split the two `HostShell`s
  * already take.
  *
- * Every directional utility here is logical (`ms-`, `ps-`, `border-s`) so the header
- * mirrors in Arabic without a second rule.
+ * Every directional utility here is logical (`me-`, and no physical `border-l`/`-r`
+ * anywhere) so the header's boxes mirror in Arabic on their own. The one thing that
+ * does not is the breadcrumb separator GLYPH, which needs the explicit `rtl:`
+ * variant below: CSS mirrors boxes, not generated content.
  */
 
 import type { ReactElement } from "react";
@@ -25,7 +27,14 @@ export interface ViewSwitcherProps {
 }
 
 const TAB = "block px-3.5 py-2 text-sm no-underline border border-transparent border-b-0 -mb-px";
-const TAB_CURRENT = "font-bold text-slate-900 bg-white border-slate-300 border-b-white";
+/*
+ * `bg-slate-50`, not `bg-white`: the current tab has no bottom border, so what
+ * covers the container's rule and joins the tab to the page is its BACKGROUND.
+ * That only reads as joined if it matches what is below, and both Delta frames
+ * put the page on `bg-slate-50`. White made it a floating chip sitting on the
+ * line instead of breaking it.
+ */
+const TAB_CURRENT = "font-bold text-slate-900 bg-slate-50 border-slate-300";
 const TAB_LINK = "text-sky-800 hover:bg-slate-100";
 
 export function ViewSwitcher({
@@ -37,8 +46,9 @@ export function ViewSwitcher({
 
   const current = views.find((view) => view.current);
 
+  // No bottom margin: the frame's page-header band owns the spacing around it.
   return (
-    <div className="mb-6 border-b border-slate-300">
+    <div className="border-b border-slate-300">
       {/* The way out, where readers look for it. */}
       <nav aria-label="Breadcrumb">
         <ol className="mb-2 flex flex-wrap gap-x-2 gap-y-1 text-[0.8125rem] text-slate-600">

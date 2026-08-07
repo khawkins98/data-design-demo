@@ -26,11 +26,19 @@
  * NOT STICKY, also deliberately. A fixed header would overlay candidate content in
  * every screenshot the harness captures, and those screenshots are evidence.
  *
- * It belongs in host chrome, beside where the known-issues box renders, for the
- * same reasons: it sits outside `data-candidate-root`, so no candidate stylesheet
- * can restyle it and it cannot pollute the `?candidate=off` baseline; and being in
- * the host packages it is inherited by every pairing rather than reimplemented ten
- * times.
+ * WHERE IT SITS. Every frame takes it through a `pageHeader` slot that renders it
+ * full width directly under the masthead, above the body. It first arrived through
+ * the `notices` slot instead, beside the known-issues box, which put it a screen
+ * down the page after the host canary block - so the navigation FOR the page read
+ * as content WITHIN it. The two are host chrome on the same terms but answer
+ * different questions: the known-issues box is a caveat about this page and
+ * belongs with the content, the switcher is the way off it and belongs with the
+ * frame.
+ *
+ * It stays host chrome for the reasons the known-issues box is: outside
+ * `data-candidate-root`, so no candidate stylesheet can restyle it and it cannot
+ * pollute the `?candidate=off` baseline; and living in the host packages, so every
+ * pairing inherits it rather than reimplementing it ten times.
  */
 
 import type { ReactElement } from "react";

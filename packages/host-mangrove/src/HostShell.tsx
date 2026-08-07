@@ -20,6 +20,22 @@ export interface HostShellProps {
   readonly children: ReactNode;
   /** Document direction, driven by the demo's locale switcher. */
   readonly dir?: "ltr" | "rtl";
+  /**
+   * Page-level chrome, rendered full width directly beneath the masthead and
+   * ABOVE the body — the `ViewSwitcher`, in practice.
+   *
+   * A slot rather than `children` because position is the whole point. Passed as
+   * a child, the switcher landed inside `<main>` below the canary block, so the
+   * navigation for the page appeared a screen down, after a wall of host
+   * reference markup, reading as something belonging to the content rather than
+   * as the frame around it. Navigation that frames a page has to sit where the
+   * frame is.
+   *
+   * Outside `data-candidate-root`, like `HostCanaries`, so no candidate
+   * stylesheet can restyle it and it cannot pollute the `?candidate=off`
+   * baseline.
+   */
+  readonly pageHeader?: ReactNode;
 }
 
 /** Nav items are host chrome, so they stay in English in every locale. */
@@ -134,7 +150,12 @@ export function HostCanaries(): ReactElement {
   );
 }
 
-export function HostShell({ title, children, dir = "ltr" }: HostShellProps): ReactElement {
+export function HostShell({
+  title,
+  children,
+  dir = "ltr",
+  pageHeader,
+}: HostShellProps): ReactElement {
   return (
     <div className="mg-host" dir={dir}>
       <header className="mg-host__header">
@@ -143,6 +164,12 @@ export function HostShell({ title, children, dir = "ltr" }: HostShellProps): Rea
           {title}
         </h1>
       </header>
+
+      {/*
+       * Full width, above the body grid, so the page navigation spans the page
+       * it navigates rather than sitting in one column of it.
+       */}
+      {pageHeader ? <div className="mg-host__pageheader">{pageHeader}</div> : null}
 
       <div className="mg-host__body">
         <nav data-canary="nav" className="mg-host__nav" aria-label="Sections">
