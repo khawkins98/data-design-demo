@@ -18,6 +18,8 @@ import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { UNDRR_QUESTIONS } from "./lib/undrr-questions.mjs";
+
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, "..");
 const MANIFEST = join(ROOT, "docs", "manifest.json");
@@ -46,69 +48,26 @@ const DOCS_BLOB = "https://github.com/khawkins98/data-design-demo/blob/main/docs
  * the landing page's content, and the demos are evidence a reader can check
  * afterwards.
  *
+ * THE ANSWERS NO LONGER LIVE HERE. They moved to scripts/lib/undrr-questions.mjs so
+ * that axes.html can open each axis section with the same question and the same
+ * answer: a reader clicking "A6 Right-to-left" from a card below used to land on a
+ * table headed `beyond native | traps | wrappers` with no mention of what they had
+ * been reading. The plain-language layer existed, it was just on one page only. Both
+ * pages now generate from that module and cannot drift apart.
+ *
  * Prose source of truth is docs/undrr-questions.md and docs/decision-axes.md.
- * These summaries are deliberately one line each: anything longer belongs in the
- * axis, and anything that cannot be said in one line is not yet a finding.
  */
-const QUESTIONS = [
-  {
-    question: "Repeatability",
-    asks: "Can a second team reproduce the integration without inventing their own conventions?",
-    axis: "A3",
-    axisName: "Reproducibility across sites",
-    answer:
-      "Measured by extraction for MUI: 86% of the integration shares across sites. React Aria's is fully portable but has no package to hold it, so it is shared by duplication.",
-  },
-  {
-    question: "Standardisation",
-    asks: "One shared component vocabulary across the estate, or one dialect per project?",
-    axis: "A3",
-    axisName: "Reproducibility across sites",
-    answer:
-      "shadcn/ui was excluded outright for guaranteeing a fork per site. Among the five built, the theme and token layer extracts; kitchen-sink section components do not.",
-  },
-  {
-    question: "Mangrove integration",
-    asks: "Can it live inside an existing Mangrove page without fighting it?",
-    axis: "A4",
-    axisName: "Mangrove compatibility",
-    answer:
-      "Leakage is clean for every pairing except mangrove-carbon, whose global stylesheet is not containable. Ant Design loses every cascade conflict to Mangrove - which the realistic layouts showed is not a matter of taste: Mangrove's rules also cover Select's own value, so its filters render blank on the Mangrove host.",
-  },
-  {
-    question: "Design-token alignment",
-    asks: "Can it be driven by UNDRR tokens, and does a token change propagate?",
-    axis: "A5",
-    axisName: "Theming fidelity and propagation",
-    answer:
-      "React Aria and Carbon resolve tokens in the browser, so a Mangrove change is a stylesheet swap. MUI, Mantine and Ant Design bake values in, making it a rebuild of every site. Carbon leaves 21-22 of 71 tokens unreachable at all.",
-  },
-  {
-    question: "Right-to-left",
-    asks: "Does Arabic work in the components, not just the page?",
-    axis: "A6",
-    axisName: "Right-to-left",
-    answer:
-      "MUI Community fails on both hosts and cannot be fixed within the brief's constraints. React Aria and Ant Design are clean at zero cost; Mantine is clean only after mitigation. This needs a policy call, not a bug fix.",
-  },
-  {
-    question: "Accessibility",
-    asks: "Does it meet UNDRR's obligations in practice?",
-    axis: "A7",
-    axisName: "Accessibility conformance",
-    answer:
-      "Zero is a floor, not a conformance claim: no screen-reader or human keyboard pass was run on any pairing. And the floor is lower than the kitchen sinks suggested - the realistic layouts found a critical unnamed-button defect in Mantine's Modal that every scoped axe run in this repository was blind to, because portalled overlays render outside the scanned subtree.",
-  },
-];
 
-const questionsHtml = QUESTIONS.map(
+const questionsHtml = UNDRR_QUESTIONS.map(
   (q) => `
           <div class="question">
             <h3 class="question__title">${esc(q.question)}</h3>
             <p class="question__asks">${esc(q.asks)}</p>
             <p class="question__answer">${esc(q.answer)}</p>
             <p class="question__axis">
-              <a href="./axes.html">${esc(q.axis)} ${esc(q.axisName)}</a>
+              <a href="./axes.html#${esc(q.axis.toLowerCase())}"
+                >Evidence: ${esc(q.axis)} ${esc(q.axisName)}</a
+              >
             </p>
           </div>`,
 ).join("\n");

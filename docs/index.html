@@ -242,7 +242,9 @@
             <p class="question__asks">Can a second team reproduce the integration without inventing their own conventions?</p>
             <p class="question__answer">Measured by extraction for MUI: 86% of the integration shares across sites. React Aria's is fully portable but has no package to hold it, so it is shared by duplication.</p>
             <p class="question__axis">
-              <a href="./axes.html">A3 Reproducibility across sites</a>
+              <a href="./axes.html#a3"
+                >Evidence: A3 Reproducibility across sites</a
+              >
             </p>
           </div>
 
@@ -251,7 +253,9 @@
             <p class="question__asks">One shared component vocabulary across the estate, or one dialect per project?</p>
             <p class="question__answer">shadcn/ui was excluded outright for guaranteeing a fork per site. Among the five built, the theme and token layer extracts; kitchen-sink section components do not.</p>
             <p class="question__axis">
-              <a href="./axes.html">A3 Reproducibility across sites</a>
+              <a href="./axes.html#a3"
+                >Evidence: A3 Reproducibility across sites</a
+              >
             </p>
           </div>
 
@@ -260,7 +264,9 @@
             <p class="question__asks">Can it live inside an existing Mangrove page without fighting it?</p>
             <p class="question__answer">Leakage is clean for every pairing except mangrove-carbon, whose global stylesheet is not containable. Ant Design loses every cascade conflict to Mangrove - which the realistic layouts showed is not a matter of taste: Mangrove's rules also cover Select's own value, so its filters render blank on the Mangrove host.</p>
             <p class="question__axis">
-              <a href="./axes.html">A4 Mangrove compatibility</a>
+              <a href="./axes.html#a4"
+                >Evidence: A4 Mangrove compatibility</a
+              >
             </p>
           </div>
 
@@ -269,7 +275,9 @@
             <p class="question__asks">Can it be driven by UNDRR tokens, and does a token change propagate?</p>
             <p class="question__answer">React Aria and Carbon resolve tokens in the browser, so a Mangrove change is a stylesheet swap. MUI, Mantine and Ant Design bake values in, making it a rebuild of every site. Carbon leaves 21-22 of 71 tokens unreachable at all.</p>
             <p class="question__axis">
-              <a href="./axes.html">A5 Theming fidelity and propagation</a>
+              <a href="./axes.html#a5"
+                >Evidence: A5 Theming fidelity and propagation</a
+              >
             </p>
           </div>
 
@@ -278,7 +286,9 @@
             <p class="question__asks">Does Arabic work in the components, not just the page?</p>
             <p class="question__answer">MUI Community fails on both hosts and cannot be fixed within the brief's constraints. React Aria and Ant Design are clean at zero cost; Mantine is clean only after mitigation. This needs a policy call, not a bug fix.</p>
             <p class="question__axis">
-              <a href="./axes.html">A6 Right-to-left</a>
+              <a href="./axes.html#a6"
+                >Evidence: A6 Right-to-left</a
+              >
             </p>
           </div>
 
@@ -287,7 +297,9 @@
             <p class="question__asks">Does it meet UNDRR's obligations in practice?</p>
             <p class="question__answer">Zero is a floor, not a conformance claim: no screen-reader or human keyboard pass was run on any pairing. And the floor is lower than the kitchen sinks suggested - the realistic layouts found a critical unnamed-button defect in Mantine's Modal that every scoped axe run in this repository was blind to, because portalled overlays render outside the scanned subtree.</p>
             <p class="question__axis">
-              <a href="./axes.html">A7 Accessibility conformance</a>
+              <a href="./axes.html#a7"
+                >Evidence: A7 Accessibility conformance</a
+              >
             </p>
           </div>
         </div>

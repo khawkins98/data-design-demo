@@ -19,6 +19,8 @@ import { existsSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { axisPreamble } from "./lib/undrr-questions.mjs";
+
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, "..");
 const APPS = join(ROOT, "apps");
@@ -271,21 +273,57 @@ function table(headers, bodyRows) {
 }
 
 const lines = [];
+
+/**
+ * Opens an axis section: the heading, then the UNDRR question it answers and the
+ * answer, before any measurement.
+ *
+ * The section used to open on its own table legend - `beyond native` is the count
+ * of... - which assumes the reader arrived already knowing why they should care.
+ * They usually arrived by clicking a one-line answer on the landing page, and found
+ * nothing here that acknowledged it. So the plain-language layer comes first and the
+ * evidence follows it, from the same source the landing page uses.
+ *
+ * @param {string} axis  "A1" .. "A7"
+ * @param {string} title Axis name, as the heading shows it.
+ */
+function pushAxis(axis, title) {
+  lines.push(`## ${axis} - ${title}`);
+  lines.push("");
+  lines.push(...axisPreamble(axis));
+}
+
 lines.push("# Axis scores");
 lines.push("");
 lines.push("GENERATED FILE - regenerate with `pnpm axes`. Axis definitions and");
 lines.push("measurement rules are in [decision-axes.md](./decision-axes.md).");
 lines.push("");
+/*
+ * WHAT THIS PAGE IS, said before the reader hits the first table.
+ *
+ * A project manager clicking through these pages read this one as unreadable, and
+ * the diagnosis was placement rather than prose: it opens on measurement and never
+ * says which of the three pages a reader should be on. So it now says. The order is
+ * the order a decision gets made in - conclusion, then evidence, then the full
+ * matrix - and this page is explicitly the middle one.
+ */
+lines.push("**This is the evidence layer.** Each section opens with the UNDRR question");
+lines.push("it answers, in plain language, and then shows the measurements behind that");
+lines.push("answer. Nothing here is typed by hand.");
+lines.push("");
+/*
+ * One line per bullet, unwrapped, because `toHtml` maps a `- ` line to one `<li>`
+ * and would render a wrapped continuation as a stray paragraph after the item.
+ */
 lines.push(
-  "Read this instead of the requirement matrix when choosing. The matrix says every",
+  "- For the recommendation and what it costs, read the [ranking](./scores.html) first.",
 );
 lines.push(
-  "candidate can do the job; these axes say what each one costs to live with.",
+  "- For whether a candidate can do a given thing at all, the [requirement matrix](./comparison.html) holds all 300 assessments. It is an appendix to consult, not a page to read: every candidate can do the job, so the matrix does not discriminate between them and these axes do.",
 );
 lines.push("");
 
-lines.push("## A1 - Implementation effort");
-lines.push("");
+pushAxis("A1", "Implementation effort");
 lines.push(
   "`beyond native` is the count of the 30 requirements needing more than dropping in",
 );
@@ -333,8 +371,7 @@ for (const r of rows.filter((x) => x.escapeHatchText.length > 0)) {
 lines.push("</details>");
 lines.push("");
 
-lines.push("## A2 - Maintainability at scale");
-lines.push("");
+pushAxis("A2", "Maintainability at scale");
 lines.push("Every distinct styling hook, classified by the promise behind it.");
 lines.push("");
 lines.push(
@@ -419,8 +456,7 @@ if (withHooks.length > 0) {
   lines.push("");
 }
 
-lines.push("## A3 - Reproducibility across sites");
-lines.push("");
+pushAxis("A3", "Reproducibility across sites");
 if (!extractionResults) {
   lines.push(
     "**Not yet measured.** The extraction experiment has not been run, so this axis is",
@@ -474,8 +510,7 @@ if (!extractionResults) {
 }
 lines.push("");
 
-lines.push("## A4 - Mangrove compatibility");
-lines.push("");
+pushAxis("A4", "Mangrove compatibility");
 lines.push(
   "RTL and accessibility used to be two columns here. They are now A6 and A7: both are",
 );
@@ -496,8 +531,7 @@ lines.push(
 );
 lines.push("");
 
-lines.push("## A5 - Theming fidelity and propagation");
-lines.push("");
+pushAxis("A5", "Theming fidelity and propagation");
 lines.push(
   "`unreachable` tokens are a ceiling, not a cost: there is no hook to attach them to.",
 );
@@ -520,8 +554,7 @@ lines.push(
 );
 lines.push("");
 
-lines.push("## A6 - Right-to-left");
-lines.push("");
+pushAxis("A6", "Right-to-left");
 lines.push(
   "Read `status` against `setup`. `clean` at `native`/0 lines means a `dir` attribute",
 );
@@ -567,8 +600,7 @@ for (const r of rows.filter((x) => x.rtlIssues.length > 0)) {
 lines.push("</details>");
 lines.push("");
 
-lines.push("## A7 - Accessibility conformance");
-lines.push("");
+pushAxis("A7", "Accessibility conformance");
 lines.push(
   "`incomplete` is not a pass: it counts checks axe declined to decide, each of which is",
 );
@@ -666,6 +698,8 @@ function toHtml(markdown) {
   const out = [];
   let inTable = false;
   let inDetails = false;
+  let inQuote = false;
+  let inList = false;
   for (const raw of markdown.split("\n")) {
     const line = raw.trimEnd();
     if (line.startsWith("<details") || line.startsWith("</details")) {
@@ -690,14 +724,63 @@ function toHtml(markdown) {
       out.push("</tbody></table></div>");
       inTable = false;
     }
-    if (line.startsWith("## ")) out.push(`<h2>${inline(line.slice(3))}</h2>`);
+    /*
+     * Blockquote, used for the plain-language block that opens each axis section.
+     *
+     * Each `> ` line becomes its own paragraph, and a bare `>` becomes the blank
+     * line that keeps the question and the answer apart - the paragraph-merging
+     * step below joins `</p>\n<p>` but not `</p>\n\n<p>`, so the separation
+     * survives it.
+     */
+    if (line.startsWith(">")) {
+      if (!inQuote) {
+        out.push('<blockquote class="answers">');
+        inQuote = true;
+      }
+      const content = line.replace(/^>\s?/, "");
+      out.push(content === "" ? "" : `<p>${inline(content)}</p>`);
+      continue;
+    }
+    if (inQuote) {
+      out.push("</blockquote>");
+      inQuote = false;
+    }
+    /*
+     * Axis headings carry an id so the six questions on the landing page can link
+     * to the axis that answers them - `axes.html#a6` - rather than to the top of a
+     * long page the reader then has to scan.
+     */
+    /*
+     * List items were emitted as bare `<li>` with no `<ul>` around them. Browsers
+     * render that, which is why it survived, but it leaves every list on this page
+     * - including the friction logs - unannounced to a screen reader, which is a
+     * poor look on the page that scores five libraries on accessibility.
+     */
+    if (inList && !line.startsWith("- ") && line !== "") {
+      out.push("</ul>");
+      inList = false;
+    }
+    if (line.startsWith("## ")) {
+      const text = line.slice(3);
+      const axis = /^(A[1-7])\b/.exec(text);
+      const id = axis ? ` id="${axis[1].toLowerCase()}"` : "";
+      out.push(`<h2${id}>${inline(text)}</h2>`);
+    }
     else if (line.startsWith("# ")) out.push(`<h1>${inline(line.slice(2))}</h1>`);
-    else if (line.startsWith("- ")) out.push(`<li>${inline(line.slice(2))}</li>`);
+    else if (line.startsWith("- ")) {
+      if (!inList) {
+        out.push("<ul>");
+        inList = true;
+      }
+      out.push(`<li>${inline(line.slice(2))}</li>`);
+    }
     else if (line === "") out.push("");
     else if (inDetails) out.push(`<p>${inline(line)}</p>`);
     else out.push(`<p>${inline(line)}</p>`);
   }
   if (inTable) out.push("</tbody></table></div>");
+  if (inQuote) out.push("</blockquote>");
+  if (inList) out.push("</ul>");
   // Merge consecutive paragraphs that were really one wrapped sentence.
   return out.join("\n").replace(/<\/p>\n<p>/g, " ");
 }
@@ -750,6 +833,22 @@ const html = `<!doctype html>
       summary { cursor: pointer; color: var(--accent); font-size: 0.875rem; }
       a { color: var(--accent); }
       nav { margin-bottom: 1.5rem; font-size: 0.875rem; }
+      /*
+       * The plain-language block that opens each axis: the UNDRR question and the
+       * answer. Deliberately the most readable thing in the section - wider leading,
+       * no monospace, an accent rule down the inline start - because it is what a
+       * non-engineer arriving from the landing page needs, and the tables below it
+       * are what they can consult afterwards.
+       */
+      blockquote.answers {
+        margin: 0 0 1.25rem;
+        padding: 0.875rem 1.125rem;
+        border-inline-start: 4px solid var(--accent);
+        background: var(--surface);
+        border-radius: 0 6px 6px 0;
+      }
+      blockquote.answers p { margin: 0 0 0.5rem; font-size: 0.9375rem; }
+      blockquote.answers p:last-child { margin-bottom: 0; }
     </style>
   </head>
   <body>

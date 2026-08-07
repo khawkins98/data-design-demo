@@ -3,10 +3,16 @@
 GENERATED FILE - regenerate with `pnpm axes`. Axis definitions and
 measurement rules are in [decision-axes.md](./decision-axes.md).
 
-Read this instead of the requirement matrix when choosing. The matrix says every
-candidate can do the job; these axes say what each one costs to live with.
+**This is the evidence layer.** Each section opens with the UNDRR question
+it answers, in plain language, and then shows the measurements behind that
+answer. Nothing here is typed by hand.
+
+- For the recommendation and what it costs, read the [ranking](./scores.html) first.
+- For whether a candidate can do a given thing at all, the [requirement matrix](./comparison.html) holds all 300 assessments. It is an appendix to consult, not a page to read: every candidate can do the job, so the matrix does not discriminate between them and these axes do.
 
 ## A1 - Implementation effort
+
+> **None of the six UNDRR questions maps to A1 directly.** It is measured because the weighted composite scores it, and because the questions were asked about living with a library rather than about building with one. See the [ranking](./scores.html) for what it is worth there.
 
 `beyond native` is the count of the 30 requirements needing more than dropping in
 a documented component. `traps` counts documented approaches that failed and
@@ -139,6 +145,8 @@ suffice, recorded by the run that hit it.
 
 ## A2 - Maintainability at scale
 
+> **None of the six UNDRR questions maps to A2 directly.** It is measured because the weighted composite scores it, and because the questions were asked about living with a library rather than about building with one. See the [ranking](./scores.html) for what it is worth there.
+
 Every distinct styling hook, classified by the promise behind it.
 
 `attribute` hooks are semantic (`[data-*]`, `[slot]`) and survive DOM restructuring.
@@ -183,6 +191,14 @@ supported theming route did not reach.
 </details>
 
 ## A3 - Reproducibility across sites
+
+> **Answers: Repeatability** - Can a second team reproduce the integration without inventing their own conventions?
+>
+> Measured by extraction for MUI: 86% of the integration shares across sites. React Aria's is fully portable but has no package to hold it, so it is shared by duplication.
+>
+> **Answers: Standardisation** - One shared component vocabulary across the estate, or one dialect per project?
+>
+> shadcn/ui was excluded outright for guaranteeing a fork per site. Among the five built, the theme and token layer extracts; kitchen-sink section components do not.
 
 `basis` is the most important column. Only MUI was actually extracted and both
 host apps rewired onto the package; everything else is analysis and says so.
@@ -257,6 +273,10 @@ What resists extraction:
 
 ## A4 - Mangrove compatibility
 
+> **Answers: Mangrove integration** - Can it live inside an existing Mangrove page without fighting it?
+>
+> Leakage is clean for every pairing except mangrove-carbon, whose global stylesheet is not containable. Ant Design loses every cascade conflict to Mangrove - which the realistic layouts showed is not a matter of taste: Mangrove's rules also cover Select's own value, so its filters render blank on the Mangrove host.
+
 RTL and accessibility used to be two columns here. They are now A6 and A7: both are
 estate-wide obligations rather than symptoms of host coexistence, and both were too
 consequential to leave as columns in someone else's table.
@@ -276,6 +296,10 @@ consequential to leave as columns in someone else's table.
 
 ## A5 - Theming fidelity and propagation
 
+> **Answers: Design-token alignment** - Can it be driven by UNDRR tokens, and does a token change propagate?
+>
+> React Aria and Carbon resolve tokens in the browser, so a Mangrove change is a stylesheet swap. MUI, Mantine and Ant Design bake values in, making it a rebuild of every site. Carbon leaves 21-22 of 71 tokens unreachable at all.
+
 `unreachable` tokens are a ceiling, not a cost: there is no hook to attach them to.
 `propagation` is how a Mangrove token change reaches a built site - a stylesheet
 swap reaches every site at once; a rebuild is per site, forever.
@@ -294,6 +318,10 @@ swap reaches every site at once; a rebuild is per site, forever.
 | mangrove-antd | 44 | 0 | **mostly-rebuild** | 41 |
 
 ## A6 - Right-to-left
+
+> **Answers: Right-to-left** - Does Arabic work in the components, not just the page?
+>
+> MUI Community fails on both hosts and cannot be fixed within the brief's constraints. React Aria and Ant Design are clean at zero cost; Mantine is clean only after mitigation. This needs a policy call, not a bug fix.
 
 Read `status` against `setup`. `clean` at `native`/0 lines means a `dir` attribute
 sufficed. `clean` at `composed`/18 lines means the library needed configuring and
@@ -345,6 +373,10 @@ and that is judgement rather than a number.
 </details>
 
 ## A7 - Accessibility conformance
+
+> **Answers: Accessibility** - Does it meet UNDRR's obligations in practice?
+>
+> Zero is a floor, not a conformance claim: no screen-reader or human keyboard pass was run on any pairing. And the floor is lower than the kitchen sinks suggested - the realistic layouts found a critical unnamed-button defect in Mantine's Modal that every scoped axe run in this repository was blind to, because portalled overlays render outside the scanned subtree.
 
 `incomplete` is not a pass: it counts checks axe declined to decide, each of which is
 work a human still owes. Nine of the ten runs ran axe unscoped, so these counts are
