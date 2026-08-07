@@ -1,11 +1,11 @@
 {
   "$comment": "GENERATED from packages/known-issues/src/issues.ts by scripts/build-known-issues-json.mjs. Do not edit: add issues to the TypeScript registry, which the demo pages also import.",
-  "issueCount": 34,
+  "issueCount": 36,
   "pairings": {
     "delta-react-aria": {
-      "total": 4,
+      "total": 6,
       "counts": {
-        "caveat": 3,
+        "caveat": 5,
         "info": 1
       },
       "resolvedCount": 6,
@@ -16,10 +16,10 @@
       }
     },
     "delta-mui": {
-      "total": 3,
+      "total": 4,
       "counts": {
         "blocker": 1,
-        "caveat": 1,
+        "caveat": 2,
         "info": 1
       },
       "resolvedCount": 5,
@@ -37,11 +37,11 @@
       }
     },
     "delta-carbon": {
-      "total": 5,
+      "total": 6,
       "counts": {
         "blocker": 1,
         "decision": 1,
-        "caveat": 2,
+        "caveat": 3,
         "info": 1
       },
       "resolvedCount": 7,
@@ -59,10 +59,10 @@
       }
     },
     "delta-mantine": {
-      "total": 4,
+      "total": 5,
       "counts": {
         "blocker": 1,
-        "caveat": 2,
+        "caveat": 3,
         "info": 1
       },
       "resolvedCount": 7,
@@ -80,9 +80,9 @@
       }
     },
     "delta-antd": {
-      "total": 5,
+      "total": 6,
       "counts": {
-        "caveat": 4,
+        "caveat": 5,
         "info": 1
       },
       "resolvedCount": 4,
@@ -200,23 +200,23 @@
   },
   "candidates": {
     "react-aria": {
-      "open": 8,
+      "open": 10,
       "resolved": 6
     },
     "mui": {
-      "open": 5,
+      "open": 6,
       "resolved": 5
     },
     "carbon": {
-      "open": 8,
+      "open": 9,
       "resolved": 7
     },
     "mantine": {
-      "open": 6,
+      "open": 7,
       "resolved": 7
     },
     "antd": {
-      "open": 9,
+      "open": 10,
       "resolved": 4
     }
   }

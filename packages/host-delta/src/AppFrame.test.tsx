@@ -71,9 +71,25 @@ describe("Delta AppFrame", () => {
     expect(root).toBeLessThan(strip);
   });
 
-  it("renders application chrome the candidate does not own", () => {
-    expect(html).toContain('aria-label="Application"');
+  it("renders DELTA's own menu bar, not a generic application shell", () => {
+    /*
+     * These are the specifics that make the screen read as DELTA rather than as a
+     * plausible admin layout, and they are exactly what the first version of this
+     * frame got wrong: it had a UNDRR wordmark and a sidebar, and DELTA has
+     * neither. Asserted rather than left to review, because the difference is
+     * invisible in a diff and obvious to anyone who uses DELTA.
+     */
+    expect(html).toContain("DELTA");
+    expect(html).toContain("Resilience");
+    expect(html).toContain('aria-label="Sections"');
+    for (const label of ["Data", "Analysis", "About", "Settings"]) {
+      expect(html, label).toContain(`>${label}`);
+    }
+    // The site switcher, and the page title passed in.
+    expect(html).toContain("Yemen");
     expect(html).toContain("Disaster events");
+    // No sidebar: the candidate gets the full width, as it does in DELTA.
+    expect(html).not.toContain('aria-label="Application"');
   });
 
   it("renders notices outside the candidate root", () => {
@@ -100,10 +116,10 @@ describe("Delta AppFrame", () => {
       </AppFrame>,
     );
     const header = withHeader.indexOf('id="page-header"');
-    const sidebar = withHeader.indexOf('aria-label="Application"');
+    const title = withHeader.indexOf('data-canary="heading-1"');
     const root = withHeader.indexOf("data-candidate-root");
     expect(header).toBeGreaterThan(-1);
-    expect(header, "the page header must precede the body grid").toBeLessThan(sidebar);
+    expect(header, "the page header must precede the page title").toBeLessThan(title);
     expect(header).toBeLessThan(root);
     expect(withHeader.slice(root)).not.toContain('id="page-header"');
   });
@@ -113,11 +129,27 @@ describe("Delta AppFrame", () => {
     expect(render("ltr")).toContain('dir="ltr"');
   });
 
-  it("uses logical properties for the sidebar edge", () => {
-    // `border-e`/`border-s` rather than `border-r`/`border-l`, so the frame does
-    // not become the reason a candidate's RTL result looks wrong. A6 is measuring
-    // the candidate, not the scaffold.
-    expect(html).toMatch(/class="border-e /);
-    expect(html).not.toMatch(/class="[^"]*\bborder-r\b/);
+  it("uses no physical directional utilities", () => {
+    /*
+     * `ms-`/`me-`/`ps-`/`border-s` rather than `ml-`/`mr-`/`pl-`/`border-l`, so the
+     * frame does not become the reason a candidate's RTL result looks wrong. A6 is
+     * measuring the candidate, not the scaffold.
+     *
+     * The sidebar's `border-e` used to be the one case; the sidebar is gone, so this
+     * now guards the whole bar - the nav is pushed to the end with `ms-auto`, and an
+     * `ml-auto` there would pin it to the left in Arabic.
+     */
+    /*
+     * Scoped to the frame's OWN chrome, everything before the candidate region.
+     * Widening it to the whole render fails on `HostCanaries`, which uses `pr-4`
+     * on its table cells - shared with the kitchen sink, pinned by
+     * tests/host-parity.test.tsx, and left alone deliberately rather than changed
+     * from under nine other pairings. It is a real latent RTL flaw in host chrome
+     * and it is recorded here rather than silently fixed.
+     */
+    const chrome = html.slice(0, html.indexOf("data-candidate-root"));
+    expect(chrome).toContain("ms-auto");
+    expect(chrome).not.toMatch(/class="[^"]*\b(ml|mr|pl|pr)-/);
+    expect(chrome).not.toMatch(/class="[^"]*\bborder-(l|r)\b/);
   });
 });

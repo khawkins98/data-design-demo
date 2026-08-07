@@ -131,7 +131,7 @@ Each cell carries the fact that assigned the band. `strong` scores full weight,
 
 Worst open issue: **caveat** - React Aria is unstyled, so this page carries 121 to 133 CSS rules
 
-4 open findings. 6 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.
+6 open findings. 6 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.
 
 | Axis | Band | Weight | Why |
 | --- | --- | --- | --- |
@@ -163,7 +163,7 @@ Worst open issue: **caveat** - React Aria is unstyled, so this page carries 121 
 
 Worst open issue: **blocker** - RTL is not achievable in the MUI Community tier
 
-3 open findings. 5 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.
+4 open findings. 5 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.
 
 | Axis | Band | Weight | Why |
 | --- | --- | --- | --- |
@@ -195,7 +195,7 @@ Worst open issue: **blocker** - RTL is not achievable in the MUI Community tier
 
 Worst open issue: **blocker** - Carbon cannot express about 30% of the UNDRR design tokens
 
-5 open findings. 7 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.
+6 open findings. 7 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.
 
 | Axis | Band | Weight | Why |
 | --- | --- | --- | --- |
@@ -227,7 +227,7 @@ Worst open issue: **blocker** - Carbon cannot express about 30% of the UNDRR des
 
 Worst open issue: **blocker** - Modal's close button ships with no accessible name
 
-4 open findings. 7 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.
+5 open findings. 7 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.
 
 | Axis | Band | Weight | Why |
 | --- | --- | --- | --- |
@@ -259,7 +259,7 @@ Worst open issue: **blocker** - Modal's close button ships with no accessible na
 
 Worst open issue: **caveat** - The data table has an upstream accessibility defect
 
-5 open findings. 4 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.
+6 open findings. 4 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.
 
 | Axis | Band | Weight | Why |
 | --- | --- | --- | --- |

@@ -581,6 +581,36 @@ export const KNOWN_ISSUES: readonly KnownIssue[] = Object.freeze([
     links: [{ label: "axis A7", href: "../axes.html" }],
   },
   {
+    id: "react-aria-tooltip-focus-test-not-isolated",
+    severity: "caveat",
+    candidates: ["react-aria"],
+    hosts: ["delta"],
+    owner: "this evaluation",
+    remediability: "per-site-code",
+    title: "The focus-tooltip result depends on what ran before it",
+    detail:
+      "`tooltip opens on keyboard focus, not only hover` fails intermittently in a FULL suite run and never in isolation: measured at 10 passes in 10 isolated runs, against one full-suite run where it failed on both the mobile and desktop projects and two full-suite runs where it passed. The button is focused when it fails - that assertion passes on the line above - and `.demo-tooltip` is simply never in the DOM, so what varies is not focus but whether React Aria considers the focus VISIBLE. The spec's own helper documents the dependency: React Aria opens a focus tooltip only when the interaction modality is keyboard, and modality is global page state that a pointer event anywhere can flip. THE CAUSE IS NOT ATTRIBUTED, deliberately. A stale pointer position surviving into the next test is the obvious candidate and this entry does not claim to have proven it. What is certain is that the assertion is not isolated from the rest of the run, so a green result from it is weaker evidence than it appears - which is why this is recorded as ours rather than scored against the candidate. Not caused by the DELTA chrome rebuild: it is in the kitchen-sink spec, which uses HostShell and not AppFrame.",
+    links: [
+      { label: "the spec", href: `${BLOB}/apps/delta-react-aria/e2e/demo.spec.ts` },
+      { label: "axis A7", href: "../axes.html#a7" },
+    ],
+  },
+  {
+    id: "delta-host-has-no-mangrove-stylesheet",
+    severity: "caveat",
+    candidates: ["*"],
+    hosts: ["delta"],
+    owner: "this evaluation",
+    remediability: "config",
+    title: "The Delta host carries Mangrove class names with no Mangrove stylesheet behind them",
+    detail:
+      "AppFrame renders `mg-button`, `mg-container` and `dts-*` classes because real DELTA does, and its own docblock claimed this made \"a candidate's own base styles meet Mangrove specificity and Tailwind Preflight together\". MEASURED IN THE BUILT PAGE, IT DOES NOT: zero `.mg-button` rules are loaded, and both `mg-button` elements compute to background rgba(0,0,0,0), border-width 0px, padding 0px - Tailwind Preflight's reset and nothing else. The Delta entries import the host Tailwind sheet, the tokens, the known-issues sheet and the candidate theme; no Mangrove stylesheet is among them. The three e2e specs that check this assert toHaveClass(/mg-button/), which a class name satisfies whether or not it styles anything, so the gap survived review. REAL DELTA LOADS ONE FIRST: app/root.tsx links /assets/css/style-dts.css - 67KB, 81 `.mg-button` rules - BEFORE the Tailwind sheet. CONSEQUENCE FOR SCORING: A4 on the Delta host has been measured against one cascade where DELTA runs two, so a Delta-host A4 result is a floor and not a verdict, and the Mangrove-host result is the only one that has met Mangrove specificity. Fixing it is a stylesheet import, hence `config`, but it reopens every A4 and A6 measurement taken on this host, which is why it is recorded as a decision rather than taken as one during a layout change.",
+    links: [
+      { label: "the frame", href: `${BLOB}/packages/host-delta/src/AppFrame.tsx` },
+      { label: "axis A4", href: "../axes.html#a4" },
+    ],
+  },
+  {
     id: "harness-static-css-limitation",
     severity: "info",
     candidates: ["*"],

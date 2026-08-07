@@ -61,7 +61,7 @@
 
       <section class="candidate" id="react-aria">
         <h2 class="candidate__name">Adobe React Aria</h2>
-        <p class="candidate__count">8 open &middot; 6 found in our own code and fixed</p>
+        <p class="candidate__count">10 open &middot; 6 found in our own code and fixed</p>
         <h3 class="candidate__group">Open</h3>
 
         <article class="issue issue--caveat" id="react-aria-css-cost">
@@ -152,6 +152,42 @@
           
           <p class="issue__links"><a href="../axes.html">axis A7</a></p>
           <p class="issue__id"><code>long-labels-clean-is-not-reproducible</code></p>
+        </article>
+
+        <article class="issue issue--caveat" id="react-aria-tooltip-focus-test-not-isolated">
+          <h4 class="issue__title">
+            <span class="issue__badge">Caveat</span>
+            The focus-tooltip result depends on what ran before it
+            
+          </h4>
+          <p class="issue__meta">
+            Belongs to <strong>this evaluation's method</strong>
+            &middot; affects Delta
+            &middot; <strong>not counted</strong> towards any score
+            &middot; escape: fixable in consuming code, repeated per site
+          </p>
+          <p class="issue__detail"><code>tooltip opens on keyboard focus, not only hover</code> fails intermittently in a FULL suite run and never in isolation: measured at 10 passes in 10 isolated runs, against one full-suite run where it failed on both the mobile and desktop projects and two full-suite runs where it passed. The button is focused when it fails - that assertion passes on the line above - and <code>.demo-tooltip</code> is simply never in the DOM, so what varies is not focus but whether React Aria considers the focus VISIBLE. The spec's own helper documents the dependency: React Aria opens a focus tooltip only when the interaction modality is keyboard, and modality is global page state that a pointer event anywhere can flip. THE CAUSE IS NOT ATTRIBUTED, deliberately. A stale pointer position surviving into the next test is the obvious candidate and this entry does not claim to have proven it. What is certain is that the assertion is not isolated from the rest of the run, so a green result from it is weaker evidence than it appears - which is why this is recorded as ours rather than scored against the candidate. Not caused by the DELTA chrome rebuild: it is in the kitchen-sink spec, which uses HostShell and not AppFrame.</p>
+          
+          <p class="issue__links"><a href="https://github.com/khawkins98/data-design-demo/blob/main/apps/delta-react-aria/e2e/demo.spec.ts">the spec</a> &middot; <a href="../axes.html#a7">axis A7</a></p>
+          <p class="issue__id"><code>react-aria-tooltip-focus-test-not-isolated</code></p>
+        </article>
+
+        <article class="issue issue--caveat" id="delta-host-has-no-mangrove-stylesheet">
+          <h4 class="issue__title">
+            <span class="issue__badge">Caveat</span>
+            The Delta host carries Mangrove class names with no Mangrove stylesheet behind them
+            
+          </h4>
+          <p class="issue__meta">
+            Belongs to <strong>this evaluation's method</strong>
+            &middot; affects Delta
+            &middot; <strong>not counted</strong> towards any score
+            &middot; escape: reversible per site by changing a setting
+          </p>
+          <p class="issue__detail">AppFrame renders <code>mg-button</code>, <code>mg-container</code> and <code>dts-*</code> classes because real DELTA does, and its own docblock claimed this made &quot;a candidate's own base styles meet Mangrove specificity and Tailwind Preflight together&quot;. MEASURED IN THE BUILT PAGE, IT DOES NOT: zero <code>.mg-button</code> rules are loaded, and both <code>mg-button</code> elements compute to background rgba(0,0,0,0), border-width 0px, padding 0px - Tailwind Preflight's reset and nothing else. The Delta entries import the host Tailwind sheet, the tokens, the known-issues sheet and the candidate theme; no Mangrove stylesheet is among them. The three e2e specs that check this assert toHaveClass(/mg-button/), which a class name satisfies whether or not it styles anything, so the gap survived review. REAL DELTA LOADS ONE FIRST: app/root.tsx links /assets/css/style-dts.css - 67KB, 81 <code>.mg-button</code> rules - BEFORE the Tailwind sheet. CONSEQUENCE FOR SCORING: A4 on the Delta host has been measured against one cascade where DELTA runs two, so a Delta-host A4 result is a floor and not a verdict, and the Mangrove-host result is the only one that has met Mangrove specificity. Fixing it is a stylesheet import, hence <code>config</code>, but it reopens every A4 and A6 measurement taken on this host, which is why it is recorded as a decision rather than taken as one during a layout change.</p>
+          
+          <p class="issue__links"><a href="https://github.com/khawkins98/data-design-demo/blob/main/packages/host-delta/src/AppFrame.tsx">the frame</a> &middot; <a href="../axes.html#a4">axis A4</a></p>
+          <p class="issue__id"><code>delta-host-has-no-mangrove-stylesheet</code></p>
         </article>
 
         <article class="issue issue--info" id="mangrove-no-runtime-tokens">
@@ -320,7 +356,7 @@
 
       <section class="candidate" id="mui">
         <h2 class="candidate__name">MUI (Community only)</h2>
-        <p class="candidate__count">5 open &middot; 5 found in our own code and fixed</p>
+        <p class="candidate__count">6 open &middot; 5 found in our own code and fixed</p>
         <h3 class="candidate__group">Open</h3>
 
         <article class="issue issue--blocker" id="mui-rtl-unfixable">
@@ -357,6 +393,24 @@
           
           <p class="issue__links"><a href="../axes.html">axis A5</a></p>
           <p class="issue__id"><code>mui-build-time-theme</code></p>
+        </article>
+
+        <article class="issue issue--caveat" id="delta-host-has-no-mangrove-stylesheet">
+          <h4 class="issue__title">
+            <span class="issue__badge">Caveat</span>
+            The Delta host carries Mangrove class names with no Mangrove stylesheet behind them
+            
+          </h4>
+          <p class="issue__meta">
+            Belongs to <strong>this evaluation's method</strong>
+            &middot; affects Delta
+            &middot; <strong>not counted</strong> towards any score
+            &middot; escape: reversible per site by changing a setting
+          </p>
+          <p class="issue__detail">AppFrame renders <code>mg-button</code>, <code>mg-container</code> and <code>dts-*</code> classes because real DELTA does, and its own docblock claimed this made &quot;a candidate's own base styles meet Mangrove specificity and Tailwind Preflight together&quot;. MEASURED IN THE BUILT PAGE, IT DOES NOT: zero <code>.mg-button</code> rules are loaded, and both <code>mg-button</code> elements compute to background rgba(0,0,0,0), border-width 0px, padding 0px - Tailwind Preflight's reset and nothing else. The Delta entries import the host Tailwind sheet, the tokens, the known-issues sheet and the candidate theme; no Mangrove stylesheet is among them. The three e2e specs that check this assert toHaveClass(/mg-button/), which a class name satisfies whether or not it styles anything, so the gap survived review. REAL DELTA LOADS ONE FIRST: app/root.tsx links /assets/css/style-dts.css - 67KB, 81 <code>.mg-button</code> rules - BEFORE the Tailwind sheet. CONSEQUENCE FOR SCORING: A4 on the Delta host has been measured against one cascade where DELTA runs two, so a Delta-host A4 result is a floor and not a verdict, and the Mangrove-host result is the only one that has met Mangrove specificity. Fixing it is a stylesheet import, hence <code>config</code>, but it reopens every A4 and A6 measurement taken on this host, which is why it is recorded as a decision rather than taken as one during a layout change.</p>
+          
+          <p class="issue__links"><a href="https://github.com/khawkins98/data-design-demo/blob/main/packages/host-delta/src/AppFrame.tsx">the frame</a> &middot; <a href="../axes.html#a4">axis A4</a></p>
+          <p class="issue__id"><code>delta-host-has-no-mangrove-stylesheet</code></p>
         </article>
 
         <article class="issue issue--info" id="mangrove-no-runtime-tokens">
@@ -507,7 +561,7 @@
 
       <section class="candidate" id="carbon">
         <h2 class="candidate__name">IBM Carbon</h2>
-        <p class="candidate__count">8 open &middot; 7 found in our own code and fixed</p>
+        <p class="candidate__count">9 open &middot; 7 found in our own code and fixed</p>
         <h3 class="candidate__group">Open</h3>
 
         <article class="issue issue--blocker" id="carbon-unreachable-tokens">
@@ -598,6 +652,24 @@
           
           <p class="issue__links"><a href="https://github.com/khawkins98/data-design-demo/blob/main/apps/delta-carbon/EVIDENCE.md">evidence</a></p>
           <p class="issue__id"><code>carbon-global-stylesheet</code></p>
+        </article>
+
+        <article class="issue issue--caveat" id="delta-host-has-no-mangrove-stylesheet">
+          <h4 class="issue__title">
+            <span class="issue__badge">Caveat</span>
+            The Delta host carries Mangrove class names with no Mangrove stylesheet behind them
+            
+          </h4>
+          <p class="issue__meta">
+            Belongs to <strong>this evaluation's method</strong>
+            &middot; affects Delta
+            &middot; <strong>not counted</strong> towards any score
+            &middot; escape: reversible per site by changing a setting
+          </p>
+          <p class="issue__detail">AppFrame renders <code>mg-button</code>, <code>mg-container</code> and <code>dts-*</code> classes because real DELTA does, and its own docblock claimed this made &quot;a candidate's own base styles meet Mangrove specificity and Tailwind Preflight together&quot;. MEASURED IN THE BUILT PAGE, IT DOES NOT: zero <code>.mg-button</code> rules are loaded, and both <code>mg-button</code> elements compute to background rgba(0,0,0,0), border-width 0px, padding 0px - Tailwind Preflight's reset and nothing else. The Delta entries import the host Tailwind sheet, the tokens, the known-issues sheet and the candidate theme; no Mangrove stylesheet is among them. The three e2e specs that check this assert toHaveClass(/mg-button/), which a class name satisfies whether or not it styles anything, so the gap survived review. REAL DELTA LOADS ONE FIRST: app/root.tsx links /assets/css/style-dts.css - 67KB, 81 <code>.mg-button</code> rules - BEFORE the Tailwind sheet. CONSEQUENCE FOR SCORING: A4 on the Delta host has been measured against one cascade where DELTA runs two, so a Delta-host A4 result is a floor and not a verdict, and the Mangrove-host result is the only one that has met Mangrove specificity. Fixing it is a stylesheet import, hence <code>config</code>, but it reopens every A4 and A6 measurement taken on this host, which is why it is recorded as a decision rather than taken as one during a layout change.</p>
+          
+          <p class="issue__links"><a href="https://github.com/khawkins98/data-design-demo/blob/main/packages/host-delta/src/AppFrame.tsx">the frame</a> &middot; <a href="../axes.html#a4">axis A4</a></p>
+          <p class="issue__id"><code>delta-host-has-no-mangrove-stylesheet</code></p>
         </article>
 
         <article class="issue issue--info" id="mangrove-no-runtime-tokens">
@@ -784,7 +856,7 @@
 
       <section class="candidate" id="mantine">
         <h2 class="candidate__name">Mantine</h2>
-        <p class="candidate__count">6 open &middot; 7 found in our own code and fixed</p>
+        <p class="candidate__count">7 open &middot; 7 found in our own code and fixed</p>
         <h3 class="candidate__group">Open</h3>
 
         <article class="issue issue--blocker" id="mantine-modal-close-unnamed">
@@ -839,6 +911,24 @@
           
           <p class="issue__links"><a href="../axes.html">axis A5</a></p>
           <p class="issue__id"><code>mantine-build-time-theme</code></p>
+        </article>
+
+        <article class="issue issue--caveat" id="delta-host-has-no-mangrove-stylesheet">
+          <h4 class="issue__title">
+            <span class="issue__badge">Caveat</span>
+            The Delta host carries Mangrove class names with no Mangrove stylesheet behind them
+            
+          </h4>
+          <p class="issue__meta">
+            Belongs to <strong>this evaluation's method</strong>
+            &middot; affects Delta
+            &middot; <strong>not counted</strong> towards any score
+            &middot; escape: reversible per site by changing a setting
+          </p>
+          <p class="issue__detail">AppFrame renders <code>mg-button</code>, <code>mg-container</code> and <code>dts-*</code> classes because real DELTA does, and its own docblock claimed this made &quot;a candidate's own base styles meet Mangrove specificity and Tailwind Preflight together&quot;. MEASURED IN THE BUILT PAGE, IT DOES NOT: zero <code>.mg-button</code> rules are loaded, and both <code>mg-button</code> elements compute to background rgba(0,0,0,0), border-width 0px, padding 0px - Tailwind Preflight's reset and nothing else. The Delta entries import the host Tailwind sheet, the tokens, the known-issues sheet and the candidate theme; no Mangrove stylesheet is among them. The three e2e specs that check this assert toHaveClass(/mg-button/), which a class name satisfies whether or not it styles anything, so the gap survived review. REAL DELTA LOADS ONE FIRST: app/root.tsx links /assets/css/style-dts.css - 67KB, 81 <code>.mg-button</code> rules - BEFORE the Tailwind sheet. CONSEQUENCE FOR SCORING: A4 on the Delta host has been measured against one cascade where DELTA runs two, so a Delta-host A4 result is a floor and not a verdict, and the Mangrove-host result is the only one that has met Mangrove specificity. Fixing it is a stylesheet import, hence <code>config</code>, but it reopens every A4 and A6 measurement taken on this host, which is why it is recorded as a decision rather than taken as one during a layout change.</p>
+          
+          <p class="issue__links"><a href="https://github.com/khawkins98/data-design-demo/blob/main/packages/host-delta/src/AppFrame.tsx">the frame</a> &middot; <a href="../axes.html#a4">axis A4</a></p>
+          <p class="issue__id"><code>delta-host-has-no-mangrove-stylesheet</code></p>
         </article>
 
         <article class="issue issue--info" id="mangrove-no-runtime-tokens">
@@ -1025,7 +1115,7 @@
 
       <section class="candidate" id="antd">
         <h2 class="candidate__name">Ant Design</h2>
-        <p class="candidate__count">9 open &middot; 4 found in our own code and fixed</p>
+        <p class="candidate__count">10 open &middot; 4 found in our own code and fixed</p>
         <h3 class="candidate__group">Open</h3>
 
         <article class="issue issue--blocker" id="antd-select-value-hidden-on-mangrove">
@@ -1134,6 +1224,24 @@
           
           <p class="issue__links"><a href="../requirements.md">the requirement</a></p>
           <p class="issue__id"><code>mantine-no-column-sizing</code></p>
+        </article>
+
+        <article class="issue issue--caveat" id="delta-host-has-no-mangrove-stylesheet">
+          <h4 class="issue__title">
+            <span class="issue__badge">Caveat</span>
+            The Delta host carries Mangrove class names with no Mangrove stylesheet behind them
+            
+          </h4>
+          <p class="issue__meta">
+            Belongs to <strong>this evaluation's method</strong>
+            &middot; affects Delta
+            &middot; <strong>not counted</strong> towards any score
+            &middot; escape: reversible per site by changing a setting
+          </p>
+          <p class="issue__detail">AppFrame renders <code>mg-button</code>, <code>mg-container</code> and <code>dts-*</code> classes because real DELTA does, and its own docblock claimed this made &quot;a candidate's own base styles meet Mangrove specificity and Tailwind Preflight together&quot;. MEASURED IN THE BUILT PAGE, IT DOES NOT: zero <code>.mg-button</code> rules are loaded, and both <code>mg-button</code> elements compute to background rgba(0,0,0,0), border-width 0px, padding 0px - Tailwind Preflight's reset and nothing else. The Delta entries import the host Tailwind sheet, the tokens, the known-issues sheet and the candidate theme; no Mangrove stylesheet is among them. The three e2e specs that check this assert toHaveClass(/mg-button/), which a class name satisfies whether or not it styles anything, so the gap survived review. REAL DELTA LOADS ONE FIRST: app/root.tsx links /assets/css/style-dts.css - 67KB, 81 <code>.mg-button</code> rules - BEFORE the Tailwind sheet. CONSEQUENCE FOR SCORING: A4 on the Delta host has been measured against one cascade where DELTA runs two, so a Delta-host A4 result is a floor and not a verdict, and the Mangrove-host result is the only one that has met Mangrove specificity. Fixing it is a stylesheet import, hence <code>config</code>, but it reopens every A4 and A6 measurement taken on this host, which is why it is recorded as a decision rather than taken as one during a layout change.</p>
+          
+          <p class="issue__links"><a href="https://github.com/khawkins98/data-design-demo/blob/main/packages/host-delta/src/AppFrame.tsx">the frame</a> &middot; <a href="../axes.html#a4">axis A4</a></p>
+          <p class="issue__id"><code>delta-host-has-no-mangrove-stylesheet</code></p>
         </article>
 
         <article class="issue issue--info" id="mangrove-no-runtime-tokens">
