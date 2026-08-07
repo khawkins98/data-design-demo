@@ -151,53 +151,6 @@
   font-size: var(--undrr-font-size-sm);
 }
 
-/* ----------------------------------------------------------- sort indicator */
-
-/**
- * SORTABLE COLUMNS HAD NO VISIBLE SORT STATE, and the library had already told us
- * how to draw one.
- *
- * `Column` stamps its render state onto the `<th>` as data attributes and
- * documents them as the styling API — `react-aria-components@1.20.0`
- * `dist/types/src/Table.d.ts:170` declares `@selector [data-allows-sorting]` and
- * `:176` declares `@selector [data-sort-direction="ascending | descending"]`. The
- * runtime really does emit both (`dist/private/Table.mjs:753-754`). We styled
- * `[data-focus-visible]` from the same list and skipped these two, so screen
- * reader users got `aria-sort` while sighted users got nothing: no affordance
- * saying a header was clickable, and no way to tell which column was sorted or
- * which way. That is our omission, not a library gap.
- *
- * Drawn with borders on an EMPTY `::after` rather than a glyph in `content`.
- * Generated text is announced by some screen readers, which would duplicate
- * `aria-sort`; `content: "▲" / ""` would silence it but has uneven support, and
- * where it is unsupported the whole declaration drops and the indicator vanishes.
- * A borders-only triangle has nothing to announce in any browser.
- */
-.demo-table__column[data-allows-sorting]::after {
-  content: "";
-  display: inline-block;
-  width: 0;
-  height: 0;
-  margin-inline-start: var(--undrr-space-2);
-  /* Symmetric, so the triangle needs no RTL mirror. */
-  border-right: 0.25rem solid transparent;
-  border-bottom: 0.3rem solid currentcolor;
-  border-left: 0.25rem solid transparent;
-  vertical-align: middle;
-  /* Dimmed: "this column can be sorted", not "this column is sorted". */
-  opacity: 0.35;
-}
-
-.demo-table__column[data-sort-direction="ascending"]::after {
-  opacity: 1;
-}
-
-.demo-table__column[data-sort-direction="descending"]::after {
-  border-top: 0.3rem solid currentcolor;
-  border-bottom: 0;
-  opacity: 1;
-}
-
 /* ------------------------------------------------------------ row actions */
 
 .demo-table__column--actions,

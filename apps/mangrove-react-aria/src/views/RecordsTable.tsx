@@ -4,10 +4,9 @@
  * Identical in both hosts — see `records-state.ts` for why that means two copies
  * rather than one import.
  *
- * Deliberately NOT the kitchen sink's table. That one demonstrates capability:
- * multi-select, column resizing, every fixture column. This one is modelled on
- * what DELTA's records screen actually shows — six columns, a status pill, and
- * row-action icon buttons — because the question here is layout, not inventory.
+ * Shows multi-select, column resizing, sorting, status badges, and row-action
+ * buttons — the same React Aria table capabilities the kitchen sink demonstrates,
+ * applied to a realistic screen layout with six data columns.
  *
  * TWO THINGS WORTH RECORDING.
  *
@@ -20,18 +19,21 @@
  *    found, restated at screen scale.
  */
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import type { ReactElement } from "react";
 import {
   Button,
   Cell,
+  Checkbox,
   Column,
+  ColumnResizer,
+  ResizableTableContainer,
   Row,
   Table,
   TableBody,
   TableHeader,
 } from "react-aria-components";
-import type { SortDescriptor } from "react-aria-components";
+import type { Selection, SortDescriptor } from "react-aria-components";
 
 import type { LossRecord } from "@undrr-eval/fixtures";
 
@@ -41,18 +43,16 @@ import { useDemo } from "../demo-state.js";
  * Row-action glyphs as inline SVG, on the same Material path data every other
  * pairing uses.
  *
- * These were emoji (✎, 🗑) until a review caught it. Emoji render as full-colour
- * vendor glyphs that ignore `currentColor` and every design token, so the danger
+ * These were emoji until a review caught it. Emoji render as full-colour vendor
+ * glyphs that ignore `currentColor` and every design token, so the danger
  * variant's colour change never reached the icon and the column looked unlike
- * the same column in the other four candidates. That breaks the comparison, not
- * just the aesthetics.
+ * the same column in the other four candidates.
  */
 const ROW_ACTION_PATHS = {
   edit: "M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm17.71-10.21a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z",
   remove: "M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z",
 } as const;
 
-/** Sized in `em` so the button's own font size keeps driving the glyph. */
 function RowActionIcon({ path }: { readonly path: string }): ReactElement {
   return (
     <svg
@@ -69,6 +69,27 @@ function RowActionIcon({ path }: { readonly path: string }): ReactElement {
   );
 }
 
+function SelectionCheckbox(): ReactElement {
+  return (
+    <Checkbox slot="selection" className="demo-checkbox">
+      {({ isSelected, isIndeterminate }) => (
+        <span
+          className="demo-checkbox__box"
+          aria-hidden="true"
+          data-selected={isSelected || undefined}
+          data-indeterminate={isIndeterminate || undefined}
+        >
+          {isIndeterminate ? "–" : isSelected ? "✓" : ""}
+        </span>
+      )}
+    </Checkbox>
+  );
+}
+
+function ColumnResizerControl(): ReactElement {
+  return <ColumnResizer className="demo-table__resizer" />;
+}
+
 export function RecordsTable({
   rows,
   sort,
@@ -82,6 +103,7 @@ export function RecordsTable({
   readonly onDelete?: (record: LossRecord) => void;
 }): ReactElement {
   const { labels, bcp47 } = useDemo();
+  const [selected, setSelected] = useState<Selection>(new Set());
 
   const numberFormat = useMemo(() => new Intl.NumberFormat(bcp47), [bcp47]);
   const decimalFormat = useMemo(
@@ -97,40 +119,62 @@ export function RecordsTable({
   const showActions = onDelete !== undefined;
 
   return (
-    <div className="demo-tablewrap">
+    <ResizableTableContainer className="demo-tablewrap">
       <Table
         className="demo-table"
         aria-label={labels.navRecords}
         sortDescriptor={sort}
         onSortChange={onSortChange}
+        selectionMode="multiple"
+        selectedKeys={selected}
+        onSelectionChange={setSelected}
       >
         <TableHeader>
+          <Column className="demo-table__column demo-table__column--select">
+            <SelectionCheckbox />
+          </Column>
           <Column id="country" isRowHeader allowsSorting className="demo-table__column">
-            {labels.colCountry}
+            <div className="demo-table__columnInner">
+              <span>{labels.colCountry}</span>
+              <ColumnResizerControl />
+            </div>
           </Column>
           <Column id="hazardType" allowsSorting className="demo-table__column">
-            {labels.colHazard}
+            <div className="demo-table__columnInner">
+              <span>{labels.colHazard}</span>
+              <ColumnResizerControl />
+            </div>
           </Column>
           <Column id="eventDate" allowsSorting className="demo-table__column">
-            {labels.colEventDate}
+            <div className="demo-table__columnInner">
+              <span>{labels.colEventDate}</span>
+              <ColumnResizerControl />
+            </div>
           </Column>
           <Column id="peopleAffected" allowsSorting className="demo-table__column">
-            {labels.colPeopleAffected}
+            <div className="demo-table__columnInner">
+              <span>{labels.colPeopleAffected}</span>
+              <ColumnResizerControl />
+            </div>
           </Column>
           <Column
             id="economicLossUsdMillions"
             allowsSorting
             className="demo-table__column"
           >
-            {labels.colEconomicLoss}
+            <div className="demo-table__columnInner">
+              <span>{labels.colEconomicLoss}</span>
+              <ColumnResizerControl />
+            </div>
           </Column>
           <Column id="verificationStatus" allowsSorting className="demo-table__column">
-            {labels.colStatus}
+            <div className="demo-table__columnInner">
+              <span>{labels.colStatus}</span>
+              <ColumnResizerControl />
+            </div>
           </Column>
           {showActions ? (
             <Column id="actions" className="demo-table__column demo-table__column--actions">
-              {/* Icon-only column. The header still needs a name for screen
-                  readers, and React Aria will not invent one. */}
               <span className="demo-visually-hidden">{labels.actionFilter}</span>
             </Column>
           ) : null}
@@ -142,6 +186,9 @@ export function RecordsTable({
         >
           {(record: LossRecord) => (
             <Row id={record.id} className="demo-table__row">
+              <Cell className="demo-table__cell demo-table__cell--select">
+                <SelectionCheckbox />
+              </Cell>
               <Cell className="demo-table__cell">{record.country}</Cell>
               <Cell className="demo-table__cell">{record.hazardType}</Cell>
               <Cell className="demo-table__cell">
@@ -181,6 +228,6 @@ export function RecordsTable({
           )}
         </TableBody>
       </Table>
-    </div>
+    </ResizableTableContainer>
   );
 }
