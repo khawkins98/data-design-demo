@@ -133,26 +133,54 @@ are overridden by hand — and only because both components spread `...other` af
 their own `role`, which is an accident of implementation, not an extension point.
 The roving tab index installed by the same flag cannot be removed at all.
 
-**And this is a position, not a bug.** MUI v5 through v7 emitted
-`aria-current="step"` — the value this document calls correct. PR
+**And this is a position, not a bug — one MUI argued itself into.** v5 through v7
+emitted `aria-current="step"`, the value this document calls correct. PR
 [#47687](https://github.com/mui/material-ui/pull/47687), merged 12 March 2026 and
 shipped in v9.0.0, replaced it; the
 [v9 migration guide](https://mui.com/material-ui/migration/upgrade-to-v9/) lists
 *"the `aria-current` changed to `aria-selected`"* among a set of accessibility
-improvements. The change answers two long-standing requests to make the stepper
-announce more. In the other direction, issue
-[#47356](https://github.com/mui/material-ui/issues/47356) asked for precisely the
-`nav`/`ol`/`aria-current="step"` pattern in November 2025 and was **closed as not
-planned**, folded into the issue #47687 went on to resolve the other way. No one
-has yet filed against the v9 output — it is four months old at the time of
-writing, and this evaluation appears to be the first place the objection is
-recorded.
+improvements, and the change does fix two real complaints that the stepper
+announced too little.
+
+The part worth reading is the thread. On issue
+[#43689](https://github.com/mui/material-ui/issues/43689), 27 January 2026, a MUI
+maintainer asked of the proposal:
+
+> Wouldn't it be a bit odd if Stepper provides all the `tab` roles except
+> `tabpanel`?
+
+The PR's own author agreed the same day:
+
+> I'm currently hesitant in turning the stepper into a tab list. I think the
+> ordered list markup, combined with the `aria-current` and step buttons pointing
+> to the content area is enough.
+
+**That is the last human comment on the thread.** Two weeks later a commit titled
+`refactor as tablist` landed; the issue was closed by a bot on merge. A second
+reviewer raised the same doubt inside the PR — *"Since this isn't a tablist, I'm
+not sure"* — and got an answer about keyboard mechanics, not about the role. No
+public rationale for the reversal exists in the PR, the issue, the commit
+messages or any RFC.
+
+So the objection in this document is not an outside opinion MUI has never heard.
+It is MUI's own, raised twice, conceded once, and then shipped past without being
+answered.
+
+**Nobody outside MUI has filed against it, and there is a reason.** Four months
+after release, v9 is **11.4% of `@mui/material` installs**; v5 — which emits
+`aria-current="step"` — is still 40%. MUI's screen-reader/browser test matrix was
+drafted a month *after* v9.0.0 and does not include Stepper. And their axe CI
+asserts on two rules only (`color-contrast`, `link-in-text-block`), which would
+not catch this even if it asserted on everything: `ol[role=tablist] >
+li[role=presentation] > button[role=tab]` is a structurally valid tab list. Read
+the silence as *nobody has pointed a screen reader at a v9 gated wizard yet* — not
+as review and approval.
 
 That changes what the finding means for a procurement decision. An unnoticed bug
-gets reported and fixed. A deliberate design choice, documented in a migration
-guide, with the alternative already declined, is a **disagreement you inherit** —
-and every wizard on the estate carries the hand-written correction for as long as
-MUI is the dependency.
+gets reported and fixed. A deliberate choice, documented in a migration guide,
+whose strongest critics were the maintainers who shipped it, is a **disagreement
+you inherit** — and every wizard on the estate carries the hand-written correction
+for as long as MUI is the dependency.
 
 **So what a shipped stepper saves is the CSS, not the semantics.** That is the
 sentence to carry into the decision, because it is the opposite of the intuition,

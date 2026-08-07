@@ -440,7 +440,7 @@ export const KNOWN_ISSUES: readonly KnownIssue[] = Object.freeze([
     owner: "candidate",
     title: "MUI announces an ordered wizard as a tab list",
     detail:
-      "`Stepper` sniffs its children, finds `StepButton` and silently switches into tab-list mode: `role=\"tablist\"` plus `aria-orientation` on the root, `role=\"tab\"` + `aria-selected` + `aria-posinset`/`aria-setsize` on every step, and `role=\"presentation\"` on the `Step` list items. There is no opt-out prop. A tab set tells a screen-reader user the panels are peers they may visit in any order, which is the opposite of a wizard that gates later steps - and it is the one thing about a stepper that ARIA has a documented answer for. Correcting the role also makes MUI's hard-coded `aria-orientation` a CRITICAL axe violation, `aria-allowed-attr`, because it is invalid on `role=\"group\"`; axe found it. Six attributes are overridden by hand and the roving tab index cannot be removed. THIS IS NEW AND IT IS DELIBERATE: v5 through v7 emitted `aria-current=\"step\"`, the correct value; PR #47687 replaced it in v9.0.0 (April 2026) and the migration guide records the swap as an accessibility improvement. A user asked for exactly the `nav`/`ol`/`aria-current` pattern in issue #47356 (November 2025); it was closed as not planned. So this is not an oversight upstream is likely to fix, and adopting MUI means adopting the disagreement.",
+      "`Stepper` sniffs its children, finds `StepButton` and silently switches into tab-list mode: `role=\"tablist\"` plus `aria-orientation` on the root, `role=\"tab\"` + `aria-selected` + `aria-posinset`/`aria-setsize` on every step, and `role=\"presentation\"` on the `Step` list items. There is no opt-out prop. A tab set tells a screen-reader user the panels are peers they may visit in any order, which is the opposite of a wizard that gates later steps - and it is the one thing about a stepper that ARIA has a documented answer for. Correcting the role also makes MUI's hard-coded `aria-orientation` a CRITICAL axe violation, `aria-allowed-attr`, because it is invalid on `role=\"group\"`; axe found it. Six attributes are overridden by hand and the roving tab index cannot be removed. THIS IS NEW, AND MUI RAISED THE OBJECTION AGAINST ITSELF: v5 through v7 emitted `aria-current=\"step\"`, the correct value; PR #47687 replaced it in v9.0.0 (April 2026) and the migration guide records the swap as an accessibility improvement. On 2026-01-27 a MUI maintainer asked on issue #43689 \"Wouldn't it be a bit odd if Stepper provides all the `tab` roles except `tabpanel`?\", and the PR's own author replied the same day \"I'm currently hesitant in turning the stepper into a tab list. I think the ordered list markup, combined with the `aria-current` and step buttons pointing to the content area is enough.\" That is the last human comment on the thread; a commit titled `refactor as tablist` landed two weeks later and the issue was closed by a bot. The question was never answered. No opt-out was added, and MUI's screen-reader test matrix did not exist when this shipped - it was drafted a month after v9.0.0 and does not include Stepper.",
     links: [
       { label: "the wizard", href: `${BLOB}/apps/delta-mui/src/views/EventWizard.tsx` },
       {
@@ -448,8 +448,8 @@ export const KNOWN_ISSUES: readonly KnownIssue[] = Object.freeze([
         href: "https://github.com/mui/material-ui/pull/47687",
       },
       {
-        label: "MUI issue #47356, closed as not planned",
-        href: "https://github.com/mui/material-ui/issues/47356",
+        label: "the unanswered objection, MUI issue #43689",
+        href: "https://github.com/mui/material-ui/issues/43689",
       },
       {
         label: "v9 migration guide",

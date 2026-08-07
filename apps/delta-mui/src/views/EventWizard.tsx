@@ -31,17 +31,31 @@
  * nowhere and offers no prop for. `Step` also takes `role="presentation"` in this
  * mode (Step.js:156), which strips the list-item semantics the same release added.
  *
- * IT IS DELIBERATE, AND UPSTREAM HAS ALREADY DECLINED THE ALTERNATIVE. This is not
- * a bug awaiting a fix, and the version history is the evidence: v5, v6 and v7 all
- * emitted `aria-current="step"` on `StepButton`. PR #47687 ("[Stepper][MenuList]
- * [Tabs] Improve accessibility", merged 2026-03-12) replaced it for v9.0.0, and the
- * v9 migration guide records "the `aria-current` changed to `aria-selected`" as an
- * improvement. Issue #47356 asked for `nav`/`ol`/`aria-current="step"` in November
- * 2025 and was closed as NOT PLANNED. No issue has been filed against the v9
- * output. So the override below is permanent maintenance, not a stopgap.
+ * IT IS DELIBERATE, AND MUI RAISED THIS OBJECTION AGAINST ITSELF. Not a bug
+ * awaiting a fix: v5, v6 and v7 all emitted `aria-current="step"` on `StepButton`;
+ * PR #47687 ("[Stepper][MenuList][Tabs] Improve accessibility", merged 2026-03-12)
+ * replaced it for v9.0.0, and the v9 migration guide records "the `aria-current`
+ * changed to `aria-selected`" as an improvement.
+ *
+ * On issue #43689, 2026-01-27, a MUI maintainer asked "Wouldn't it be a bit odd if
+ * Stepper provides all the `tab` roles except `tabpanel`?" and the PR's own author
+ * answered the same day: "I'm currently hesitant in turning the stepper into a tab
+ * list. I think the ordered list markup, combined with the aria-current and step
+ * buttons pointing to the content area is enough." That is the LAST HUMAN COMMENT
+ * on the thread. A commit titled `refactor as tablist` landed two weeks later and
+ * a bot closed the issue on merge. A second reviewer asked the same thing inside
+ * the PR - "Since this isn't a tablist, I'm not sure" - and was answered about
+ * keyboard mechanics rather than the role. So the override below is permanent
+ * maintenance, not a stopgap.
+ *
+ * NOBODY OUTSIDE MUI HAS FILED AGAINST IT, and the reason is adoption, not
+ * consensus: four months after release v9 is 11.4% of `@mui/material` installs
+ * against v5's 40%, MUI's screen-reader test matrix postdates v9.0.0 and omits
+ * Stepper, and their axe CI asserts only `color-contrast` and `link-in-text-block`
+ * - which would miss this anyway, because a wrong tablist is a valid tablist.
  *
  *   https://github.com/mui/material-ui/pull/47687
- *   https://github.com/mui/material-ui/issues/47356
+ *   https://github.com/mui/material-ui/issues/43689
  *   https://mui.com/material-ui/migration/upgrade-to-v9/
  *
  * SO THREE ARIA ATTRIBUTES ARE OVERRIDDEN BY HAND BELOW, and the override only
