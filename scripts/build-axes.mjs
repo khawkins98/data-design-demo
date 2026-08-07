@@ -11,6 +11,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { axisPreamble } from "./lib/undrr-questions.mjs";
+import { scoreA1, scoreA2, scoreA3, scoreA4, scoreA5, scoreA6, scoreA7 } from "./lib/score-axis.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, "..");
@@ -187,6 +188,7 @@ const rows = appDirs().map((app) => {
     candidate,
     host: evidence.host,
     name: evidence.candidate,
+    evidence,
     mix,
     beyondNative: mix.composed + mix.custom,
     wrappers: evidence.wrappers ?? {},
@@ -213,6 +215,44 @@ const rows = appDirs().map((app) => {
     extraction: extractionResults?.[candidate] ?? null,
   };
 });
+
+/** Per-candidate, per-axis band (worst of two hosts). Used for summary strips. */
+const BAND_RANK = { strong: 0, workable: 1, weak: 2, blocked: 3 };
+const BAND_BY_RANK = ["strong", "workable", "weak", "blocked"];
+const axisScorerByKey = {
+  A1: (r) => scoreA1(r.evidence),
+  A2: (r) => scoreA2(r.evidence, []),
+  A3: (r) => scoreA3(r.candidate, extractionResults),
+  A4: (r) => scoreA4(r.evidence),
+  A5: (r) => scoreA5(r.evidence),
+  A6: (r) => scoreA6(r.evidence),
+  A7: (r) => scoreA7(r.evidence),
+};
+
+function candidateBands(axisKey) {
+  const result = [];
+  for (const candidate of CANDIDATE_ORDER) {
+    const pairings = rows.filter((r) => r.candidate === candidate);
+    if (pairings.length === 0) continue;
+    let worstRank = 0;
+    let worstBecause = "";
+    for (const p of pairings) {
+      const score = axisScorerByKey[axisKey](p);
+      const rank = BAND_RANK[score.band] ?? 0;
+      if (rank > worstRank) {
+        worstRank = rank;
+        worstBecause = score.because;
+      }
+    }
+    result.push({
+      candidate,
+      name: pairings[0].name,
+      band: BAND_BY_RANK[worstRank],
+      because: worstBecause,
+    });
+  }
+  return result;
+}
 
 /* ---------------------------------------------------------------- markdown -- */
 
@@ -621,6 +661,30 @@ function inline(text) {
     .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
 }
 
+/** Builds a colored band-summary strip for one axis. */
+function buildBandSummary(axisKey) {
+  const bandClass = { strong: "ax-s", workable: "ax-w", weak: "ax-k", blocked: "ax-b" };
+  const bands = candidateBands(axisKey);
+  const cells = bands
+    .map(
+      (b) =>
+        `<span class="ax-chip ${bandClass[b.band]}" title="${esc(b.because)}">${esc(b.name)}: ${b.band}</span>`,
+    )
+    .join("");
+  return `<div class="ax-summary">${cells}</div>`;
+}
+
+/** Injects band summaries after each axis heading's preamble in the HTML. */
+function injectBandSummaries(bodyHtml) {
+  return bodyHtml.replace(
+    /(<h2 id="(a[1-7])">[^<]*<\/h2>\s*(?:<blockquote class="answers">[\s\S]*?<\/blockquote>)?)/g,
+    (match, full, axisId) => {
+      const axisKey = axisId.toUpperCase();
+      return full + "\n" + buildBandSummary(axisKey);
+    },
+  );
+}
+
 const html = `<!doctype html>
 <!-- GENERATED FILE - produced by scripts/build-axes.mjs. Regenerate: pnpm axes -->
 <html lang="en">
@@ -672,12 +736,25 @@ const html = `<!doctype html>
       }
       blockquote.answers p { margin: 0 0 0.5rem; font-size: 0.9375rem; }
       blockquote.answers p:last-child { margin-bottom: 0; }
+      /* Per-axis band summary strip. */
+      .ax-summary { display: flex; flex-wrap: wrap; gap: 0.375rem; margin: 0 0 1.25rem; }
+      .ax-chip { display: inline-block; padding: 0.25rem 0.625rem; border-radius: 4px; font-size: 0.8125rem; font-weight: 600; cursor: default; }
+      .ax-s { background: #d4edda; color: #155724; }
+      .ax-w { background: #fff3cd; color: #856404; }
+      .ax-k { background: #ffe0b2; color: #7a4100; }
+      .ax-b { background: #f8d7da; color: #721c24; }
+      @media (prefers-color-scheme: dark) {
+        .ax-s { background: #1b3a26; color: #8fd6a4; }
+        .ax-w { background: #3a2e0a; color: #e0c36a; }
+        .ax-k { background: #3a2508; color: #e0a86a; }
+        .ax-b { background: #3a1215; color: #e08a92; }
+      }
     </style>
   </head>
   <body>
     <main>
-      <nav><a href="./">Back to the demos</a> &middot; <a href="./comparison.html">Requirement matrix</a></nav>
-${toHtml(md)}
+      <nav><a href="./">Back to the ranking</a> &middot; <a href="./comparison.html">Requirement matrix</a></nav>
+${injectBandSummaries(toHtml(md))}
     </main>
   </body>
 </html>

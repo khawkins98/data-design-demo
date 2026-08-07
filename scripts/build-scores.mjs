@@ -17,6 +17,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { UNDRR_QUESTIONS } from "./lib/undrr-questions.mjs";
+import { BANDS, scoreA1, scoreA2, scoreA3, scoreA4, scoreA5, scoreA6, scoreA7 } from "./lib/score-axis.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, "..");
@@ -49,8 +50,6 @@ if (weightTotal !== 100) {
   process.exit(1);
 }
 
-/** Bands, and the score each contributes before weighting. */
-const BANDS = Object.freeze({ strong: 1, workable: 0.6, weak: 0.3, blocked: 0 });
 
 /** How a blocker can be escaped, cheapest first. Not folded into the composite. */
 const REMEDIABILITY_ORDER = ["config", "per-site-code", "upstream-only", "out-of-scope", "inherent"];
@@ -88,125 +87,12 @@ function appDirs() {
     });
 }
 
-/* ---- axis rules: each returns { band, because } ---- */
-
-function scoreA1(ev) {
-  const mix = { native: 0, composed: 0, custom: 0 };
-  for (const r of ev.requirements ?? []) if (r.status in mix) mix[r.status] += 1;
-  const beyond = mix.composed + mix.custom;
-  const traps = (ev.theming?.escapeHatchesUsed ?? []).length;
-  const because = `${beyond} of 30 requirements needed more than a documented component; ${traps} documented approaches failed and needed working around`;
-  if (beyond <= 6 && traps <= 2) return { band: "strong", because };
-  if (beyond <= 12 && traps <= 8) return { band: "workable", because };
-  return { band: "weak", because };
-}
-
-function scoreA2(ev, issues) {
-  // Proxy: escape-hatch count + scoreable maintenance issues.
-  const traps = (ev.theming?.escapeHatchesUsed ?? []).length;
-  const maint = issues.filter((i) => /token|theme|upgrade|internal|layer/i.test(i.title)).length;
-  const because = `${traps} escape hatches off the documented theming route; ${maint} scoreable maintenance findings`;
-  if (traps === 0 && maint <= 1) return { band: "strong", because };
-  if (traps <= 6) return { band: "workable", because };
-  return { band: "weak", because };
-}
-
-function scoreA3(candidate) {
-  const e = extraction?.[candidate];
-  if (!e) {
-    return {
-      band: "weak",
-      because: "no extraction experiment was run, so shareability is unmeasured for this candidate",
-    };
-  }
-  const outcome = e.outcome ?? e.basis ?? "unknown";
-  if (outcome === "packaged") {
-    return { band: "strong", because: "the integration extracted into one shared package" };
-  }
-  if (outcome === "fork-per-site") {
-    return {
-      band: "blocked",
-      because: "the distribution model requires each site to own a copy of the source",
-    };
-  }
-  return { band: "workable", because: `extraction outcome recorded as ${outcome}` };
-}
-
-function scoreA4(ev) {
-  const leaks = ev.leakage?.assertionPassed !== true;
-  const diffs = (ev.leakage?.differences ?? []).length;
-  const probe = ev.leakage?.globalStylesheetProbe;
-  if (leaks) {
-    return {
-      band: "blocked",
-      because: `the candidate restyled ${diffs} computed properties on host markup outside its own subtree`,
-    };
-  }
-  if (probe) {
-    return {
-      band: "workable",
-      because: "clean only because the documented global stylesheet was not loaded as documented",
-    };
-  }
-  return { band: "strong", because: "no host canary changed when the candidate mounted" };
-}
-
-function scoreA5(ev) {
-  const unreachable = ev.theming?.tokensUnreachable ?? 0;
-  const applied = ev.theming?.tokensApplied ?? 0;
-  const total = unreachable + applied;
-  if (unreachable > 0) {
-    return {
-      band: "weak",
-      because: `${unreachable} of ${total} UNDRR tokens cannot be attached at all - a ceiling, not a cost`,
-    };
-  }
-  return { band: "strong", because: `all ${total} reachable tokens applied` };
-}
-
-function scoreA6(ev) {
-  const status = ev.rtl?.status;
-  const req = (ev.requirements ?? []).find((r) => r.id === "rtl");
-  const lines = req?.customLinesOfCode ?? 0;
-  const recorded = (ev.rtl?.issues ?? []).length;
-  if (status !== "clean") {
-    return {
-      band: "blocked",
-      because: `Arabic is not correct as shipped: ${recorded} recorded defect${
-        recorded === 1 ? "" : "s"
-      }, unresolved`,
-    };
-  }
-  if (lines === 0 && recorded === 0) {
-    return { band: "strong", because: "Arabic worked from a dir attribute alone, at zero custom lines" };
-  }
-  return {
-    band: "workable",
-    because: `clean, but only after ${lines} custom lines and ${recorded} recorded mitigations`,
-  };
-}
-
-function scoreA7(ev) {
-  const axe = ev.axe ?? {};
-  const critical = axe.critical ?? 0;
-  const serious = axe.serious ?? 0;
-  const incomplete = axe.incomplete ?? 0;
-  const tail = `${incomplete} checks axe declined to decide, each still owed a human`;
-  if (critical > 0) {
-    return { band: "blocked", because: `${critical} critical automated violations; ${tail}` };
-  }
-  if (serious > 0) {
-    return { band: "workable", because: `${serious} serious automated violations; ${tail}` };
-  }
-  return { band: "strong", because: `no critical or serious automated violations; ${tail}` };
-}
-
 /* ------------------------------------------------------------------ assembly -- */
 
 const AXES = [
   ["A1_effort", "A1 Implementation effort", (ev) => scoreA1(ev)],
   ["A2_maintainability", "A2 Maintainability at scale", (ev, c, i) => scoreA2(ev, i)],
-  ["A3_reproducibility", "A3 Reproducibility across sites", (ev, c) => scoreA3(c)],
+  ["A3_reproducibility", "A3 Reproducibility across sites", (ev, c) => scoreA3(c, extraction)],
   ["A4_mangrove", "A4 Mangrove compatibility", (ev) => scoreA4(ev)],
   ["A5_theming", "A5 Theming fidelity", (ev) => scoreA5(ev)],
   ["A6_rtl", "A6 Right-to-left", (ev) => scoreA6(ev)],

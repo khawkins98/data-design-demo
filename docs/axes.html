@@ -49,11 +49,24 @@
       }
       blockquote.answers p { margin: 0 0 0.5rem; font-size: 0.9375rem; }
       blockquote.answers p:last-child { margin-bottom: 0; }
+      /* Per-axis band summary strip. */
+      .ax-summary { display: flex; flex-wrap: wrap; gap: 0.375rem; margin: 0 0 1.25rem; }
+      .ax-chip { display: inline-block; padding: 0.25rem 0.625rem; border-radius: 4px; font-size: 0.8125rem; font-weight: 600; cursor: default; }
+      .ax-s { background: #d4edda; color: #155724; }
+      .ax-w { background: #fff3cd; color: #856404; }
+      .ax-k { background: #ffe0b2; color: #7a4100; }
+      .ax-b { background: #f8d7da; color: #721c24; }
+      @media (prefers-color-scheme: dark) {
+        .ax-s { background: #1b3a26; color: #8fd6a4; }
+        .ax-w { background: #3a2e0a; color: #e0c36a; }
+        .ax-k { background: #3a2508; color: #e0a86a; }
+        .ax-b { background: #3a1215; color: #e08a92; }
+      }
     </style>
   </head>
   <body>
     <main>
-      <nav><a href="./">Back to the demos</a> &middot; <a href="./comparison.html">Requirement matrix</a></nav>
+      <nav><a href="./">Back to the ranking</a> &middot; <a href="./comparison.html">Requirement matrix</a></nav>
 <h1>Axis scores</h1>
 
 <p>GENERATED FILE - regenerate with <code>pnpm axes</code>. Axis definitions and measurement rules are in <a href="./decision-axes.md">decision-axes.md</a>.</p>
@@ -70,6 +83,7 @@
 <blockquote class="answers">
 <p><strong>None of the six UNDRR questions maps to A1 directly.</strong> It is measured because the weighted composite scores it, and because the questions were asked about living with a library rather than about building with one. See the <a href="./scores.html">ranking</a> for what it is worth there.</p>
 </blockquote>
+<div class="ax-summary"><span class="ax-chip ax-w" title="10 of 30 requirements needed more than a documented component; 5 documented approaches failed and needed working around">Adobe React Aria: workable</span><span class="ax-chip ax-w" title="4 of 30 requirements needed more than a documented component; 5 documented approaches failed and needed working around">MUI (Community only): workable</span><span class="ax-chip ax-k" title="11 of 30 requirements needed more than a documented component; 14 documented approaches failed and needed working around">IBM Carbon: weak</span><span class="ax-chip ax-k" title="10 of 30 requirements needed more than a documented component; 11 documented approaches failed and needed working around">Mantine: weak</span><span class="ax-chip ax-w" title="2 of 30 requirements needed more than a documented component; 7 documented approaches failed and needed working around">Ant Design: workable</span></div>
 
 <p><code>beyond native</code> counts requirements needing more than a documented component. <code>traps</code> counts documented approaches that failed and needed workarounds.</p>
 
@@ -225,6 +239,7 @@
 <blockquote class="answers">
 <p><strong>None of the six UNDRR questions maps to A2 directly.</strong> It is measured because the weighted composite scores it, and because the questions were asked about living with a library rather than about building with one. See the <a href="./scores.html">ranking</a> for what it is worth there.</p>
 </blockquote>
+<div class="ax-summary"><span class="ax-chip ax-w" title="5 escape hatches off the documented theming route; 0 scoreable maintenance findings">Adobe React Aria: workable</span><span class="ax-chip ax-k" title="7 escape hatches off the documented theming route; 0 scoreable maintenance findings">MUI (Community only): weak</span><span class="ax-chip ax-k" title="14 escape hatches off the documented theming route; 0 scoreable maintenance findings">IBM Carbon: weak</span><span class="ax-chip ax-k" title="11 escape hatches off the documented theming route; 0 scoreable maintenance findings">Mantine: weak</span><span class="ax-chip ax-k" title="7 escape hatches off the documented theming route; 0 scoreable maintenance findings">Ant Design: weak</span></div>
 
 <p>Every distinct styling hook, classified by the promise behind it.</p>
 
@@ -273,6 +288,7 @@
 
 <p>shadcn/ui was excluded outright for guaranteeing a fork per site. Among the five built, the theme and token layer extracts; kitchen-sink section components do not.</p>
 </blockquote>
+<div class="ax-summary"><span class="ax-chip ax-w" title="extraction outcome recorded as analysed">Adobe React Aria: workable</span><span class="ax-chip ax-w" title="extraction outcome recorded as measured">MUI (Community only): workable</span><span class="ax-chip ax-w" title="extraction outcome recorded as analysed">IBM Carbon: workable</span><span class="ax-chip ax-w" title="extraction outcome recorded as analysed">Mantine: workable</span><span class="ax-chip ax-w" title="extraction outcome recorded as measured">Ant Design: workable</span></div>
 
 <p><code>basis</code>: only MUI was actually extracted; other entries are analysis.</p>
 
@@ -369,6 +385,7 @@
 
 <p>Leakage is clean for every pairing except mangrove-carbon, whose global stylesheet is not containable. Ant Design loses every cascade conflict to Mangrove - which the realistic layouts showed is not a matter of taste: Mangrove's rules also cover Select's own value, so its filters render blank on the Mangrove host.</p>
 </blockquote>
+<div class="ax-summary"><span class="ax-chip ax-s" title="">Adobe React Aria: strong</span><span class="ax-chip ax-s" title="">MUI (Community only): strong</span><span class="ax-chip ax-b" title="the candidate restyled 19 computed properties on host markup outside its own subtree">IBM Carbon: blocked</span><span class="ax-chip ax-s" title="">Mantine: strong</span><span class="ax-chip ax-w" title="clean only because the documented global stylesheet was not loaded as documented">Ant Design: workable</span></div>
 
 
 <div class="scroll"><table><thead>
@@ -393,6 +410,7 @@
 
 <p>React Aria and Carbon resolve tokens in the browser, so a Mangrove change is a stylesheet swap. MUI, Mantine and Ant Design bake values in, making it a rebuild of every site. Carbon leaves 21-22 of 71 tokens unreachable at all.</p>
 </blockquote>
+<div class="ax-summary"><span class="ax-chip ax-s" title="">Adobe React Aria: strong</span><span class="ax-chip ax-s" title="">MUI (Community only): strong</span><span class="ax-chip ax-k" title="21 of 71 UNDRR tokens cannot be attached at all - a ceiling, not a cost">IBM Carbon: weak</span><span class="ax-chip ax-k" title="5 of 71 UNDRR tokens cannot be attached at all - a ceiling, not a cost">Mantine: weak</span><span class="ax-chip ax-s" title="">Ant Design: strong</span></div>
 
 <p><code>unreachable</code>: tokens with no hook to attach to. <code>propagation</code>: stylesheet swap reaches every site at once; rebuild is per site.</p>
 
@@ -418,6 +436,7 @@
 
 <p>MUI Community fails on both hosts and cannot be fixed within the brief's constraints. React Aria and Ant Design are clean at zero cost; Mantine is clean only after mitigation. This needs a policy call, not a bug fix.</p>
 </blockquote>
+<div class="ax-summary"><span class="ax-chip ax-s" title="">Adobe React Aria: strong</span><span class="ax-chip ax-w" title="clean, but only after 29 custom lines and 0 recorded mitigations">MUI (Community only): workable</span><span class="ax-chip ax-w" title="clean, but only after 0 custom lines and 1 recorded mitigations">IBM Carbon: workable</span><span class="ax-chip ax-w" title="clean, but only after 18 custom lines and 2 recorded mitigations">Mantine: workable</span><span class="ax-chip ax-s" title="">Ant Design: strong</span></div>
 
 <p>Read <code>status</code> against <code>setup</code>: <code>clean</code> at <code>native</code>/0 lines means a <code>dir</code> attribute sufficed; <code>clean</code> at <code>composed</code>/18 lines means the library needed mitigation.</p>
 
@@ -469,6 +488,7 @@
 
 <p>Zero is a floor, not a conformance claim: no screen-reader or human keyboard pass was run on any pairing. And the floor is lower than the kitchen sinks suggested - the realistic layouts found a critical unnamed-button defect in Mantine's Modal that every scoped axe run in this repository was blind to, because portalled overlays render outside the scanned subtree.</p>
 </blockquote>
+<div class="ax-summary"><span class="ax-chip ax-s" title="">Adobe React Aria: strong</span><span class="ax-chip ax-w" title="1 serious automated violations; 4 checks axe declined to decide, each still owed a human">MUI (Community only): workable</span><span class="ax-chip ax-w" title="2 serious automated violations; 2 checks axe declined to decide, each still owed a human">IBM Carbon: workable</span><span class="ax-chip ax-s" title="">Mantine: strong</span><span class="ax-chip ax-w" title="1 serious automated violations; 1 checks axe declined to decide, each still owed a human">Ant Design: workable</span></div>
 
 <p><code>incomplete</code> counts checks axe declined to decide. Nine of ten runs ran axe unscoped, so counts are directional, not exact.</p>
 
