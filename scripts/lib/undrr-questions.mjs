@@ -1,35 +1,9 @@
 /**
- * The six questions UNDRR asked, and the answer this evaluation gives to each.
+ * The six questions UNDRR asked and the answer this evaluation gives to each.
+ * Shared by build-docs-index.mjs (landing page) and build-axes.mjs (evidence page).
  *
- * ONE SOURCE, TWO PAGES, ON PURPOSE. These answers began life inside
- * build-docs-index.mjs, so the landing page carried them and the evidence page did
- * not. A reader clicking "A6 Right-to-left" from a plain-language answer landed in
- * axes.html on a table headed `beyond native | traps | wrappers` with no mention of
- * the question they had just been reading. That is what a project manager clicking
- * through these pages reported as unreadable, and it was not a writing problem: the
- * plain-language layer existed, it was just on the wrong page.
- *
- * Both pages now generate from here. The alternative considered was repointing the
- * six links at scores.html, which does open in the right register - "What this says
- * to do" - but is organised BY PAIRING, so there is no per-axis section to land on
- * and all six questions would have arrived at the same page top, losing the one
- * useful thing the links do: say which axis answers which question.
- *
- * WHAT AN `answer` IS. The standing conclusion, in the register a non-engineer
- * reads: what was found, what it costs, what decision it forces. One line each -
- * anything longer belongs in the axis, and anything that cannot be said in one line
- * is not yet a finding.
- *
- * A KNOWN RISK, RECORDED RATHER THAN QUIETLY FIXED. Four of these six answers quote
- * figures - "86% of the integration shares", "21-22 of 71 tokens" - which are NOT
- * derived at build time. They are hand-written, so a rerun that moves them leaves
- * them stale, and every stale claim this repository has produced was exactly that: a
- * number written into prose and left behind by the thing it described. They are kept
- * verbatim because they carry the specificity that makes the answers useful, and
- * because rewriting them to be vaguer would be a real loss dressed up as a fix.
- * Anyone regenerating the axis tables should reread these six lines.
- *
- * Consumed by scripts/build-docs-index.mjs and scripts/build-axes.mjs.
+ * Answers quote hand-written figures that are NOT derived at build time.
+ * After regenerating axis tables, verify these six lines still match.
  */
 
 /**
@@ -94,9 +68,7 @@ export const UNDRR_QUESTIONS = [
 ];
 
 /**
- * The questions one axis answers. Empty for A1 and A2, which is itself worth
- * saying on the page rather than leaving as a silent gap - see `axisPreamble`.
- *
+ * The questions one axis answers. Empty for A1 and A2.
  * @param {string} axis
  * @returns {readonly UndrrQuestion[]}
  */
@@ -105,11 +77,9 @@ export function questionsForAxis(axis) {
 }
 
 /**
- * The plain-language block that opens an axis section, as markdown blockquote
- * lines: the question in UNDRR's words, then the answer, before any table.
- *
+ * Markdown blockquote lines: UNDRR question then answer, ready to push.
  * @param {string} axis
- * @returns {string[]} lines, empty-terminated, ready to push
+ * @returns {string[]}
  */
 export function axisPreamble(axis) {
   const questions = questionsForAxis(axis);

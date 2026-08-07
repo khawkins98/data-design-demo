@@ -1,16 +1,7 @@
 #!/usr/bin/env node
 /**
- * Scores every pairing on the seven decision axes and writes docs/axes.md
- * and docs/axes.html.
- *
- * See docs/decision-axes.md for what each axis means and why lines of code is
- * demoted to a supporting figure.
- *
- * Everything here is either measured from source and build output, or read from
- * a run's own evidence.json. Where a number is a run's self-declaration rather
- * than a measurement, it is labelled as such: the two disagree in at least one
- * place (see overridesLibraryInternals below) and the disagreement is
- * informative.
+ * Scores every pairing on seven decision axes; writes docs/axes.md and
+ * docs/axes.html. Axis definitions: docs/decision-axes.md.
  *
  *   pnpm axes
  */
@@ -27,24 +18,10 @@ const APPS = join(ROOT, "apps");
 const DOCS = join(ROOT, "docs");
 
 /**
- * Styling hooks, classified by what kind of promise the library makes about them.
- *
- * A binary safe/fragile split turned out to be the wrong shape, because the four
- * libraries make genuinely different promises and checking the documentation
- * moved two of them:
- *
- * - Mantine documents `.mantine-{Component}-{element}` static classes as a
- *   supported way to style components from plain CSS, and gates them behind a
- *   `withStaticClasses` provider prop. That is an API, not an internal.
- * - Carbon documents `cds--` as an internal BEM authoring convention whose
- *   prefix consumers may *reconfigure* via `<ClassPrefix>`, and points consumers
- *   at `--cds-*` custom properties for theming instead. Targeting the classes
- *   works, but it is off the documented path.
- * - Mantine's `m_*` hashed classes are unambiguously internal.
- *
- * `convention` is therefore not "will break on upgrade" - Carbon's class names
- * are stable in practice. It is "achieved by going around the library's own
- * theming route", which is the thing that accumulates across sites and upgrades.
+ * Styling hooks, classified by the library's documented promise:
+ * - contract: documented styling API (Mantine static classes, MUI globals)
+ * - convention: stable but off the documented theming route (Carbon BEM, Ant BEM)
+ * - generated: hashed internal classes (Mantine CSS-module, Emotion)
  */
 const HOOK_TIERS = [
   {
@@ -74,11 +51,7 @@ const HOOK_TIERS = [
   },
 ];
 
-/**
- * Attribute selectors that are a semantic contract rather than a class name at
- * all. React Aria publishes `data-*` render state and `slot`; these survive DOM
- * restructuring in a way any class-based hook cannot.
- */
+/** Attribute selectors (`data-*`, `slot`) that survive DOM restructuring. */
 const ATTRIBUTE_HOOK_PATTERN = /\[(?:data-[a-z-]+|slot)(?:[~^$*|]?=[^\]]*)?\]/g;
 
 /** Candidate id -> display name, in the order the comparison uses. */
@@ -115,15 +88,7 @@ function ownStylesheets(app) {
     .join("\n");
 }
 
-/**
- * Strips CSS comments before any selector counting.
- *
- * These stylesheets are heavily commented, and the comments discuss the very
- * class names being counted - `mangrove-mantine/demo.css` explains a specificity
- * conflict by naming Mantine's `.m_8fb7ebe7` in prose. Counting comment text as
- * a styling hook overstated the fragile-hook figure for every pairing that
- * documents its reasoning, which is to say the careful ones.
- */
+/** Strips CSS comments so class names mentioned in prose are not counted as hooks. */
 function stripComments(css) {
   return css.replace(/\/\*[\s\S]*?\*\//g, "");
 }
@@ -165,16 +130,7 @@ function stylingHooks(rawCss) {
 
 /**
  * A5: how a Mangrove token change reaches a built site.
- *
- * `var(--undrr-*)` surviving into the shipped CSS means the value is resolved in
- * the browser against the token stylesheet, so changing tokens is a stylesheet
- * swap. A theme object instead reads the token module at build/run time and
- * emits its own values, so the token values live inside each site's JS bundle
- * and a change means rebuilding every site.
- *
- * Note: token hex literals appear in every bundle at an identical count,
- * because all pairings import the shared TypeScript token module. That count is
- * therefore NOT evidence of a baked theme and is not used.
+ * `var(--undrr-*)` in shipped CSS = stylesheet swap; baked values = rebuild per site.
  */
 function propagation(app) {
   const dist = join(APPS, app, "dist", "assets");
@@ -212,13 +168,8 @@ function extraction() {
 const extractionResults = extraction();
 
 /**
- * Production dependency counts measured by ONE method for all apps.
- *
- * The per-run `bundle.dependencyCount` values are not comparable with each
- * other: each run measured however it chose, and the disagreement reorders the
- * candidates. Mantine recorded 112-113 where a production-only count gives
- * 27-28. Both are reported, because a metric that changes the ranking depending
- * on who measured it should be shown disagreeing rather than quietly replaced.
+ * Production dependency counts measured by one method for all apps (`pnpm deps:count`).
+ * Per-run self-reported counts disagree and reorder candidates; both are shown.
  */
 const dependencyCounts = existsSync(join(DOCS, "dependency-counts.json"))
   ? readJson(join(DOCS, "dependency-counts.json")).apps
@@ -253,8 +204,7 @@ const rows = appDirs().map((app) => {
     globalProbe: evidence.leakage?.globalStylesheetProbe ?? null,
     rtl: evidence.rtl?.status ?? null,
     rtlIssues: evidence.rtl?.issues ?? [],
-    // A6: `clean` spans "a dir attribute sufficed" and "clean after 18 lines of
-    // mitigation". The status field alone hides that, so carry the setup cost.
+    // A6: carry setup cost alongside status.
     rtlRequirement: (evidence.requirements ?? []).find(
       (r) => (typeof r === "string" ? r : r.id) === "rtl",
     ) ?? null,
@@ -275,17 +225,8 @@ function table(headers, bodyRows) {
 const lines = [];
 
 /**
- * Opens an axis section: the heading, then the UNDRR question it answers and the
- * answer, before any measurement.
- *
- * The section used to open on its own table legend - `beyond native` is the count
- * of... - which assumes the reader arrived already knowing why they should care.
- * They usually arrived by clicking a one-line answer on the landing page, and found
- * nothing here that acknowledged it. So the plain-language layer comes first and the
- * evidence follows it, from the same source the landing page uses.
- *
- * @param {string} axis  "A1" .. "A7"
- * @param {string} title Axis name, as the heading shows it.
+ * Opens an axis section: heading, then the UNDRR question and answer from
+ * axisPreamble, before any measurement table.
  */
 function pushAxis(axis, title) {
   lines.push(`## ${axis} - ${title}`);
@@ -298,39 +239,22 @@ lines.push("");
 lines.push("GENERATED FILE - regenerate with `pnpm axes`. Axis definitions and");
 lines.push("measurement rules are in [decision-axes.md](./decision-axes.md).");
 lines.push("");
-/*
- * WHAT THIS PAGE IS, said before the reader hits the first table.
- *
- * A project manager clicking through these pages read this one as unreadable, and
- * the diagnosis was placement rather than prose: it opens on measurement and never
- * says which of the three pages a reader should be on. So it now says. The order is
- * the order a decision gets made in - conclusion, then evidence, then the full
- * matrix - and this page is explicitly the middle one.
- */
-lines.push("**This is the evidence layer.** Each section opens with the UNDRR question");
-lines.push("it answers, in plain language, and then shows the measurements behind that");
-lines.push("answer. Nothing here is typed by hand.");
+lines.push("**This is the evidence layer.** Each section shows the UNDRR question");
+lines.push("it answers, then the measurements behind it.");
 lines.push("");
-/*
- * One line per bullet, unwrapped, because `toHtml` maps a `- ` line to one `<li>`
- * and would render a wrapped continuation as a stray paragraph after the item.
- */
 lines.push(
-  "- For the recommendation and what it costs, read the [ranking](./scores.html) first.",
+  "- For the recommendation, read the [ranking](./scores.html) first.",
 );
 lines.push(
-  "- For whether a candidate can do a given thing at all, the [requirement matrix](./comparison.html) holds all 300 assessments. It is an appendix to consult, not a page to read: every candidate can do the job, so the matrix does not discriminate between them and these axes do.",
+  "- For per-requirement coverage, see the [requirement matrix](./comparison.html) (all 300 assessments).",
 );
 lines.push("");
 
 pushAxis("A1", "Implementation effort");
 lines.push(
-  "`beyond native` is the count of the 30 requirements needing more than dropping in",
+  "`beyond native` counts requirements needing more than a documented component.",
 );
-lines.push(
-  "a documented component. `traps` counts documented approaches that failed and",
-);
-lines.push("needed working around. Neither is a time estimate; see the axis definition.");
+lines.push("`traps` counts documented approaches that failed and needed workarounds.");
 lines.push("");
 lines.push(
   table(
@@ -348,13 +272,7 @@ lines.push(
   ),
 );
 lines.push("");
-lines.push(
-  "The friction log is the honest proxy for time: implementation time goes on dead",
-);
-lines.push(
-  "ends, not on typing. Each entry below is a place the documented approach did not",
-);
-lines.push("suffice, recorded by the run that hit it.");
+lines.push("Each friction-log entry is a place the documented approach did not suffice.");
 lines.push("");
 lines.push("<details><summary>The friction log, per pairing</summary>");
 lines.push("");
@@ -375,16 +293,10 @@ pushAxis("A2", "Maintainability at scale");
 lines.push("Every distinct styling hook, classified by the promise behind it.");
 lines.push("");
 lines.push(
-  "`attribute` hooks are semantic (`[data-*]`, `[slot]`) and survive DOM restructuring.",
+  "`attribute`: semantic selectors (`[data-*]`, `[slot]`). `contract`: documented styling API.",
 );
 lines.push(
-  "`contract` hooks are class names the library documents as a styling API. `off route`",
-);
-lines.push(
-  "hooks are the ones that matter: styling achieved by going around the library's own",
-);
-lines.push(
-  "theming mechanism, which is what accumulates across sites and across upgrades.",
+  "`off route`: styling that bypasses the library's own theming mechanism.",
 );
 lines.push("");
 lines.push(
@@ -402,28 +314,14 @@ lines.push(
 );
 lines.push("");
 lines.push(
-  "Checking the documentation moved two libraries here, and both moves were away from",
+  "Mantine's `.mantine-{Component}-{element}` classes are a documented API",
 );
 lines.push(
-  "my first reading. Mantine's `.mantine-{Component}-{element}` classes are a",
+  "(`withStaticClasses`), so they count as contract. Carbon's `cds--` classes are",
 );
 lines.push(
-  "documented styling API gated behind a `withStaticClasses` provider prop, not an",
+  "stable but off the documented theming route (`--cds-*` custom properties).",
 );
-lines.push(
-  "internal - so Mantine's overrides are contract hooks. Carbon's `cds--` classes are",
-);
-lines.push(
-  "documented as an internal BEM authoring convention with a *reconfigurable* prefix,",
-);
-lines.push(
-  "while Carbon points consumers at `--cds-*` custom properties for theming - so",
-);
-lines.push(
-  "Carbon's overrides are off-route. That is not a prediction that they will break;",
-);
-lines.push("Carbon's class names are stable in practice. It is a count of the places the");
-lines.push("supported theming route did not reach.");
 lines.push("");
 const disagreements = rows.filter(
   (r) => r.declaredOverridesInternals === true && r.hooks.offRoute === 0,
@@ -432,8 +330,7 @@ if (disagreements.length > 0) {
   lines.push(
     `**Every run declared \`overridesLibraryInternals: true\`, including ${disagreements.length} ` +
       `with no off-route hook at all** (${disagreements.map((r) => r.app).join(", ")}). ` +
-      "Self-assessment of this collapsed to a constant and carries no information, " +
-      "which is why the field is reported but not scored.",
+      "The field collapsed to a constant and is reported but not scored.",
   );
   lines.push("");
 }
@@ -459,22 +356,15 @@ if (withHooks.length > 0) {
 pushAxis("A3", "Reproducibility across sites");
 if (!extractionResults) {
   lines.push(
-    "**Not yet measured.** The extraction experiment has not been run, so this axis is",
+    "**Not yet measured.** The extraction experiment has not been run.",
   );
-  lines.push(
-    "blank rather than guessed. Divergence between the two host apps is not a valid",
-  );
-  lines.push("substitute - see the caveat in the axis definition.");
 } else {
   const entries = CANDIDATE_ORDER.filter((c) => extractionResults[c]).map((c) => [
     c,
     extractionResults[c],
   ]);
   lines.push(
-    "`basis` is the most important column. Only MUI was actually extracted and both",
-  );
-  lines.push(
-    "host apps rewired onto the package; everything else is analysis and says so.",
+    "`basis`: only MUI was actually extracted; other entries are analysis.",
   );
   lines.push("");
   lines.push(
@@ -511,13 +401,6 @@ if (!extractionResults) {
 lines.push("");
 
 pushAxis("A4", "Mangrove compatibility");
-lines.push(
-  "RTL and accessibility used to be two columns here. They are now A6 and A7: both are",
-);
-lines.push(
-  "estate-wide obligations rather than symptoms of host coexistence, and both were too",
-);
-lines.push("consequential to leave as columns in someone else's table.");
 lines.push("");
 lines.push(
   table(
@@ -533,12 +416,9 @@ lines.push("");
 
 pushAxis("A5", "Theming fidelity and propagation");
 lines.push(
-  "`unreachable` tokens are a ceiling, not a cost: there is no hook to attach them to.",
+  "`unreachable`: tokens with no hook to attach to. `propagation`: stylesheet swap",
 );
-lines.push(
-  "`propagation` is how a Mangrove token change reaches a built site - a stylesheet",
-);
-lines.push("swap reaches every site at once; a rebuild is per site, forever.");
+lines.push("reaches every site at once; rebuild is per site.");
 lines.push("");
 lines.push(
   table(
@@ -556,14 +436,9 @@ lines.push("");
 
 pushAxis("A6", "Right-to-left");
 lines.push(
-  "Read `status` against `setup`. `clean` at `native`/0 lines means a `dir` attribute",
+  "Read `status` against `setup`: `clean` at `native`/0 lines means a `dir` attribute",
 );
-lines.push(
-  "sufficed. `clean` at `composed`/18 lines means the library needed configuring and",
-);
-lines.push(
-  "mitigating first. Both print as clean; they are not the same purchase.",
-);
+lines.push("sufficed; `clean` at `composed`/18 lines means the library needed mitigation.");
 lines.push("");
 lines.push(
   table(
@@ -579,15 +454,9 @@ lines.push(
 );
 lines.push("");
 lines.push(
-  "A candidate whose two hosts disagree implicates the host; one whose two hosts agree",
+  "Two hosts agreeing implicates the candidate; disagreeing implicates the host.",
 );
-lines.push(
-  "implicates the candidate. Every recorded issue is reproduced verbatim below, because",
-);
-lines.push(
-  "ownership - candidate, third-party dependency, or mitigated - decides what it means,",
-);
-lines.push("and that is judgement rather than a number.");
+lines.push("Recorded issues are reproduced verbatim below.");
 lines.push("");
 lines.push("<details><summary>Recorded RTL issues, per pairing</summary>");
 lines.push("");
@@ -602,14 +471,9 @@ lines.push("");
 
 pushAxis("A7", "Accessibility conformance");
 lines.push(
-  "`incomplete` is not a pass: it counts checks axe declined to decide, each of which is",
+  "`incomplete` counts checks axe declined to decide. Nine of ten runs ran axe",
 );
-lines.push(
-  "work a human still owes. Nine of the ten runs ran axe unscoped, so these counts are",
-);
-lines.push(
-  "sound at the level of *zero versus some* and unsound at the level of exact numbers.",
-);
+lines.push("unscoped, so counts are directional, not exact.");
 lines.push("");
 lines.push(
   table(
@@ -628,37 +492,16 @@ lines.push(
   "**Zero automated violations is a floor, not a conformance claim.** No screen-reader",
 );
 lines.push(
-  "pass, no human keyboard-only walkthrough and no plain-language review was run on any",
+  "or keyboard-only walkthrough was run. A row of zeroes means the automated subset passed.",
 );
-lines.push(
-  "pairing. Automated tooling reaches a minority of WCAG criteria, so a row of zeroes",
-);
-lines.push(
-  "means the automated subset passed - not that the pairing is accessible. See",
-);
-lines.push("[decision-axes.md](./decision-axes.md) for what ownership does to these numbers.");
 lines.push("");
 
 lines.push("## Supporting figures");
 lines.push("");
-lines.push("Reported because they are asked for, not because they decide anything.");
-lines.push("");
 lines.push(
-  "The two dependency columns disagree, and the disagreement is the point. `prod pkgs`",
+  "`prod pkgs` is measured uniformly (`pnpm deps:count`). `as recorded` is each run's",
 );
-lines.push(
-  "is the production tree measured for every app by one method (`pnpm deps:count`).",
-);
-lines.push(
-  "`as recorded` is whatever each run put in its own `evidence.json`. Those figures",
-);
-lines.push(
-  "were each measured differently and they reorder the candidates - Mantine was",
-);
-lines.push(
-  "recorded at 112 where a production count gives 27 - so only the first column is",
-);
-lines.push("safe to compare across rows.");
+lines.push("self-reported figure; the two disagree and only `prod pkgs` is comparable across rows.");
 lines.push("");
 lines.push(
   table(
@@ -724,14 +567,7 @@ function toHtml(markdown) {
       out.push("</tbody></table></div>");
       inTable = false;
     }
-    /*
-     * Blockquote, used for the plain-language block that opens each axis section.
-     *
-     * Each `> ` line becomes its own paragraph, and a bare `>` becomes the blank
-     * line that keeps the question and the answer apart - the paragraph-merging
-     * step below joins `</p>\n<p>` but not `</p>\n\n<p>`, so the separation
-     * survives it.
-     */
+    /* Blockquote: each `> ` line becomes a <p>; bare `>` becomes a blank line. */
     if (line.startsWith(">")) {
       if (!inQuote) {
         out.push('<blockquote class="answers">');
@@ -745,17 +581,7 @@ function toHtml(markdown) {
       out.push("</blockquote>");
       inQuote = false;
     }
-    /*
-     * Axis headings carry an id so the six questions on the landing page can link
-     * to the axis that answers them - `axes.html#a6` - rather than to the top of a
-     * long page the reader then has to scan.
-     */
-    /*
-     * List items were emitted as bare `<li>` with no `<ul>` around them. Browsers
-     * render that, which is why it survived, but it leaves every list on this page
-     * - including the friction logs - unannounced to a screen reader, which is a
-     * poor look on the page that scores five libraries on accessibility.
-     */
+    /* Axis headings carry an id for deep-linking from the landing page. */
     if (inList && !line.startsWith("- ") && line !== "") {
       out.push("</ul>");
       inList = false;
@@ -833,13 +659,7 @@ const html = `<!doctype html>
       summary { cursor: pointer; color: var(--accent); font-size: 0.875rem; }
       a { color: var(--accent); }
       nav { margin-bottom: 1.5rem; font-size: 0.875rem; }
-      /*
-       * The plain-language block that opens each axis: the UNDRR question and the
-       * answer. Deliberately the most readable thing in the section - wider leading,
-       * no monospace, an accent rule down the inline start - because it is what a
-       * non-engineer arriving from the landing page needs, and the tables below it
-       * are what they can consult afterwards.
-       */
+      /* Plain-language Q&A block at the top of each axis section. */
       blockquote.answers {
         margin: 0 0 1.25rem;
         padding: 0.875rem 1.125rem;

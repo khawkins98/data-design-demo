@@ -236,57 +236,29 @@
       <h1>UNDRR data design system evaluation</h1>
       <p class="subtitle">Ten controlled proofs of concept: five candidate UI libraries against two UNDRR host shells.</p>
 
-      <!--
-        Start here, ABOVE the cards.
-        These three documents were previously in the footer, in small print, which
-        read as fine print rather than as the route in. They are what a reader
-        choosing a library should hit first; the demos are evidence they can check
-        afterwards, not the argument itself.
-      -->
       <section class="start" aria-labelledby="start-here">
         <h2 class="start__title" id="start-here">Start here</h2>
         <p class="start__lead">
-          This is a continuity decision, not a component-library purchase. DELTA
-          runs PrimeReact today; whatever replaces it becomes the default
-          front-end foundation for DELTA, Mangrove-based properties and data
-          systems not yet built.
-        </p>
-        <p class="start__lead">
-          Every candidate can do the job: across 300 requirement assessments,
-          nothing came back unsupported. So the requirement matrix does not
-          discriminate, and these six questions do.
+          Whatever replaces PrimeReact becomes the default front-end foundation
+          for DELTA, Mangrove properties and future data systems. All five
+          candidates meet all 300 requirements, so the requirement matrix does
+          not discriminate. These six questions do.
         </p>
 
-        <!--
-          The recommendation, on the first screen.
-          A project manager reviewing this site could assemble a director-ready
-          summary only by digging past the page meant to provide it, and reported
-          that the site "never makes a recommendation". Hedging is not neutrality
-          when the reader's job is to decide.
-        -->
         <p class="start__verdict">
           <strong>If you only read one thing:</strong> the evidence recommends
-          <strong>Adobe React Aria</strong> — it is the only candidate of five with
-          no blocking defect, and Arabic works without custom code. But it ships
-          behaviour and not appearance, so adopting it means UNDRR builds and owns
-          the visual layer permanently. Read it as <em>adopt this and fund a design
-          system</em>, not <em>adopt this and save work</em>.
-          <a href="./scores.html">The ranking, the weights and what they cost</a>.
+          <strong>Adobe React Aria</strong> — the only candidate with no blocking
+          defect, and Arabic works without custom code. But it ships behaviour,
+          not appearance: adopting it means UNDRR builds and owns the visual
+          layer permanently.
+          <a href="./scores.html">Ranking, weights and costs</a>.
         </p>
 
-        <!--
-          Why three views. The argument for the whole realistic-layout exercise was
-          previously buried inside a collapsed accordion on one demo page, and it is
-          the strongest thing the evaluation has.
-        -->
         <p class="start__lead">
-          <strong>Each option is shown three ways, and the differences are the
-          point.</strong> A component inventory proves the parts exist — and hides
-          things: Ant Design's filters look fine there because an unset dropdown and
-          a broken one look identical. Put the same library inside a real UNDRR page
-          and the filter renders blank, so a reviewer cannot see what they filtered
-          by. Two of the three defects that decide this evaluation are invisible in a
-          tidy component list.
+          <strong>Each option is shown three ways.</strong> A component inventory
+          proves the parts exist but hides integration defects. Two of the three
+          deciding defects are invisible in a component list and only appear
+          inside a real UNDRR page.
         </p>
 
         <div class="questions">
@@ -371,44 +343,21 @@
         </div>
 
         <p class="start__more">
-          <a href="./scores.html"><strong>Weighted scores and the shortlist</strong></a>
-          — the five candidates ranked across all seven axes, with each blocker
-          shown beside the score rather than folded into it, and what it would
-          take to escape each one &middot;
-          <a href="./axes.html"><strong>All seven decision axes</strong></a>, with
-          what is measured on each and where a measurement cannot honestly be
-          made &middot;
-          <!--
-            Linked on GitHub rather than as ./undrr-questions.md: Pages serves a
-            raw .md as plain text, so an in-site link would look broken. A
-            generated undrr-questions.html would be better still.
-          -->
+          <a href="./scores.html"><strong>Weighted scores</strong></a>
+          — all five ranked, with blockers shown beside the score &middot;
+          <a href="./axes.html"><strong>Decision axes</strong></a>
+          — what is measured on each &middot;
           <a href="https://github.com/khawkins98/data-design-demo/blob/main/docs/undrr-questions.md">the six questions in full</a>
           &middot;
-          <!--
-            Also GitHub rather than in-site, and for a second reason beyond raw-.md:
-            the three diagrams are Mermaid, which GitHub renders and Pages does not.
-          -->
           <a href="https://github.com/khawkins98/data-design-demo/blob/main/docs/architecture-options.md"><strong>Architecture
-          options</strong></a> — what adopting each candidate does to Mangrove, and
-          why the reuse argument is a stronger case than the composite &middot;
+          options</strong></a> — what each candidate does to Mangrove &middot;
           <a href="./comparison.html">requirement matrix</a> — the 300 assessments
-          confirming all five cover DELTA's components. It is the audit trail, not
-          the decision.
+          (audit trail, not the decision).
         </p>
       </section>
 
-      <!--
-        Glossary. Every term here was quoted back by a reviewer as a phrase that
-        stopped them, on a page they had been directed to as a decision-maker. The
-        two axes it defines - A1 and A2 - were never introduced anywhere, and A2
-        carries the second-heaviest weight in the score.
-      -->
       <details class="glossary">
-        <summary class="glossary__summary">
-          Plain-English glossary — the words this evaluation uses without explaining
-          them
-        </summary>
+        <summary class="glossary__summary">Glossary</summary>
         <dl class="glossary__list">
           <dt>Leakage</dt>
           <dd>A component library changing how the rest of the page looks, outside its own area. If a library restyles UNDRR's own headings and buttons, every page it appears on inherits that. The test loads each page twice, with and without the library, and compares.</dd>
@@ -417,40 +366,28 @@
           <dt>Long labels</dt>
           <dd>UNDRR's own content is not short, and translation makes it longer: a label that fits in English may not fit in French or Arabic. The fixtures deliberately include long strings, and the check is whether anything overflows the viewport or gets clipped rather than wrapping.</dd>
           <dt>Kitchen sink / component inventory</dt>
-          <dd>
-            One page showing every control at once. Proves the parts exist; tells you
-            almost nothing about using them together.
-          </dd>
+          <dd>One page showing every control. Proves the parts exist.</dd>
           <dt>Embedded island</dt>
-          <dd>
-            The library placed inside a real UNDRR Mangrove page, owning one region,
-            with genuine content around it. This is where the defects showed up.
-          </dd>
+          <dd>The library inside a real UNDRR Mangrove page, owning one region.</dd>
           <dt>Portalled overlay</dt>
           <dd>
-            A dialog or dropdown that the browser moves to the end of the page to
-            display it on top. It leaves the area being tested, so automated checks
-            can miss what is inside it — which is how a critical defect in Mantine's
-            dialog went unseen until a realistic screen was built.
+            A dialog or dropdown the browser moves to the end of the page.
+            Automated checks can miss what is inside it.
           </dd>
           <dt>Escape hatch / off the documented route</dt>
           <dd>
-            A place where the library's supported way of restyling something did not
-            reach, so we styled around it. Each one is a thing that could break when
-            the library updates, on every site using it.
+            Where the library's theming API did not reach, so styling was applied
+            outside it. Each one risks breaking on library updates.
           </dd>
           <dt>axe</dt>
           <dd>
-            An automated accessibility scanner. It catches a minority of accessibility
-            problems, which is why every result here is described as a floor rather
-            than a pass.
+            An automated accessibility scanner. Catches a minority of problems;
+            results here are a floor, not a pass.
           </dd>
           <dt>A1 Implementation effort &middot; A2 Maintainability at scale</dt>
           <dd>
-            The two scored axes not covered by the six questions above. A1 is what it
-            costs to build the first site. A2 is what it costs to keep every site
-            working through library updates — weighted second-heaviest, because the
-            estate is the point.
+            A1: cost to build the first site. A2: cost to keep every site working
+            through library updates.
           </dd>
         </dl>
       </details>
@@ -463,7 +400,7 @@
           <p class="pairing__licence">react-aria-components<br />Apache-2.0</p>
           <p class="card__issue card__issue--caveat">
       <span class="card__issue-badge">Caveat</span>
-      React Aria is unstyled, so these pairings carry 155 to 209 CSS rules <a class="card__issue-more" href="./issues.html#react-aria">all 12 findings</a>
+      React Aria is unstyled, so these pairings carry 155 to 213 CSS rules <a class="card__issue-more" href="./issues.html#react-aria">all 12 findings</a>
     </p>
         </div>
         <div class="pairing__hosts">
@@ -644,10 +581,8 @@
 
       <footer>
         <p>
-          Every demo renders identical fixture data, identical labels and an
-          identical fixed date, inside a host shell it may not modify. Metrics
-          come from each run's <code>evidence.json</code>. Blocked runs are
-          reported as blocked: an honest stop is a result, not a gap.
+          Every demo renders identical fixture data inside a host shell it may
+          not modify. Metrics come from each run's <code>evidence.json</code>.
         </p>
         <p>
           Host shells are derived from
@@ -658,11 +593,6 @@
       </footer>
     </div>
 
-    <!--
-      The badge descriptions, rendered once and shared by every badge through
-      aria-describedby. Not inside the cards: thirty copies of three sentences would
-      be read out thirty times.
-    -->
       <div class="visually-hidden" id="help-leakage">Leakage: Did the library change how the REST of the page looks, outside its own area? Measured by loading the page twice, with and without the library, and comparing UNDRR's own headings, buttons, tables and cards.</div>
       <div class="visually-hidden" id="help-rtl">RTL: Does Arabic work in the COMPONENTS, not just the page? A page can flip correctly while a library's own dropdowns, dialogs and date pickers stay left-to-right inside it.</div>
       <div class="visually-hidden" id="help-longLabels">Long labels: UNDRR's real content includes very long strings, and its French and Arabic are longer again. &quot;Clean&quot; means nothing overflowed the viewport or was clipped when the fixture text was left untouched.</div>
@@ -670,25 +600,7 @@
     <div id="badge-tip" role="tooltip" aria-hidden="true"></div>
 
     <script>
-      /*
-       * Tooltips for the card badges.
-       *
-       * The glossary explains these terms and stays - it is where someone reading the
-       * page properly will look. This is for the other reader: the one who scanned to
-       * the cards, hit "Long labels: clean" and has no idea what was measured. A
-       * glossary two screens away does not help them at that moment.
-       *
-       * ONE element, moved and refilled, rather than one per badge: there are thirty
-       * badges on this page. Shown on FOCUS as well as hover, because a tooltip
-       * reachable only by mouse is not reachable at all for a keyboard user, and this
-       * page fronts an evaluation that scores five libraries on that exact omission.
-       * Escape dismisses it, which is what WCAG 1.4.13 asks of content that appears
-       * on hover.
-       *
-       * The accessible text does NOT come from here. Every badge carries
-       * aria-describedby pointing at a real element above, so a screen reader gets the
-       * explanation whether or not this script runs. This is the visual layer only.
-       */
+      /* Badge tooltips. One element moved on hover/focus; Escape dismisses (WCAG 1.4.13). */
       (() => {
         const tip = document.getElementById("badge-tip");
         if (!tip) return;
@@ -704,11 +616,9 @@
             strong.textContent = term;
             tip.append(strong);
           }
-          // textContent, not innerHTML: the text is ours, but building the habit in
-          // a generated page costs nothing and the alternative teaches the wrong one.
           tip.append(document.createTextNode(help));
 
-          // Measure, then place: above the badge if there is room, otherwise below.
+          // Position above the badge if room, otherwise below.
           tip.dataset.open = "true";
           tip.setAttribute("aria-hidden", "false");
           const anchor = badge.getBoundingClientRect();
@@ -738,7 +648,7 @@
         document.addEventListener("keydown", (event) => {
           if (event.key === "Escape" && current) hide();
         });
-        // A fixed tooltip would otherwise stay put while the page moves under it.
+        // Dismiss on scroll/resize so the tooltip doesn't float detached.
         window.addEventListener("scroll", () => current && hide(), { passive: true });
         window.addEventListener("resize", () => current && hide());
       })();

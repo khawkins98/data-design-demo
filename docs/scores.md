@@ -1,59 +1,42 @@
 # Weighted scores
 
-GENERATED FILE - regenerate with `pnpm scores`. Axis definitions are in
-[decision-axes.md](./decision-axes.md); the questions these serve are in
-[undrr-questions.md](./undrr-questions.md).
+GENERATED FILE - regenerate with `pnpm scores`. See
+[decision-axes.md](./decision-axes.md) and [undrr-questions.md](./undrr-questions.md).
 
-Every value here is derived from `evidence.json`, the known-issues registry and
-`extraction-results.json`. Nothing is typed by hand, and only defects owned by
-the library or the pairing can affect a score - never a host defect, which is the
-same for all five, and never one of ours.
+All values derived from `evidence.json`, the known-issues registry and
+`extraction-results.json`. Only library-owned defects affect scores.
 
 ## What this says to do
 
 **Adopt Adobe React Aria.**
 
-It leads on the composite at 84 against 69 for MUI (Community only), and is one of 2 of 5 candidates carrying no blocking defect. Arabic works from a `dir` attribute alone. It stays inside its own subtree on both hosts.
+Composite 84 vs 69 for MUI (Community only); one of 2/5 unblocked candidates. Arabic works from a `dir` attribute alone. Stays inside its own subtree on both hosts.
 
-**The cost, which the composite does not charge it for.** React Aria ships behaviour,
-not appearance. Adopting it means UNDRR builds and then owns the visual layer
-permanently - this evaluation's own demos carry 155 to 213 hand-written CSS rules, a
-figure that grew by about 70 when a step wizard and a menu bar were added that four
-other candidates supplied themselves. Three of the seven axes reward exactly the
-property that creates that cost:
-a library with no opinions cannot conflict with Mangrove, cannot bake in wrong colours
-and cannot mistheme.
+**The cost.** React Aria ships behaviour, not appearance. Adopting it means UNDRR
+owns the visual layer permanently - the demos carry 155-213 hand-written CSS rules.
+Three of seven axes reward the property that creates that cost: no opinions means no
+Mangrove conflicts, no wrong colours, no mistheming.
 **Read the recommendation as "adopt this and fund a design system", not as "adopt this and save work".**
 
-**Read this alongside the architecture it implies.**
-A library that ships fewer components is also one whose gaps get filled in Mangrove
-rather than per-site, which turns a missing stepper into shared tooling instead of
-local work - and that is the strongest case for this recommendation, stronger than the
-composite. It is also the case that carries the staffing bill. Both are set out in
-[architecture-options.md](./architecture-options.md), which argues a position and
-changes no score.
+**Read this alongside [architecture-options.md](./architecture-options.md).**
+Fewer built-in components means gaps filled in Mangrove, not per-site - that is the
+strongest case for this recommendation, and the one that carries the staffing bill.
 
-**Two things must happen before this is signed off, and neither is a technical task.**
+**Before sign-off:**
 
-1. A human accessibility pass. Every A7 band on this page rests on automated scanning.
-   No screen-reader test and no human keyboard walkthrough was run on any candidate, so
-   no conformance claim can be made from this evidence.
-2. A decision on MUI's exclusion. Its Arabic defect has a fix that this evaluation's
-   rules forbid. If UNDRR relaxes that rule, MUI returns to contention - which makes its
-   position a procurement question rather than an engineering result.
+1. A human accessibility pass. A7 bands rest on automated scanning only - no conformance claim can be made without screen-reader and keyboard testing.
+2. A decision on MUI's exclusion. Its Arabic defect has a fix this evaluation's rules forbid. Relaxing that rule returns MUI to contention.
 
 ## Weights
 
-A judgement about what UNDRR values, not a measurement - so it is recorded as one.
+A judgement, not a measurement.
 
 - **Chosen by:** Proposed by the evaluation author, not yet ratified by UNDRR
 - **Date:** 2026-08-06
-- **Status:** **not ratified.** Nobody at UNDRR has agreed these numbers.
-- **Basis:** Derived from the framing in undrr-questions.md: a continuity decision about an estate, so axes about living with a library across many sites outweigh the one about building the first site. A6 and A7 carry the most because they are standing obligations rather than preferences, and the composite model UNDRR chose cannot gate on them - weight is the only lever left.
+- **Status:** **not ratified**
+- **Basis:** Estate continuity framing (undrr-questions.md). Multi-site axes outweigh first-site effort; A6/A7 highest as standing obligations the composite cannot gate on.
 
-This matters more than it looks. A6 at 18 is the weight that removes MUI from
-contention; if it were 12 the ranking would change. Anyone defending this choice should
-expect to defend the weights first, and should be able to say who set them.
+A6 at 18 is the weight that removes MUI from contention; at 12 the ranking would change.
 
 | Axis | Weight |
 | --- | --- |
@@ -67,9 +50,7 @@ expect to defend the weights first, and should be able to say who set them.
 
 ## Ranking
 
-Composite is the weighted mean of the two hosts. **Blockers are listed beside the score and never folded into it**: a weighted composite can otherwise let a good
-bundle size offset an unfixable defect, so the number ranks and is not permitted
-to hide anything.
+Composite is the weighted mean of the two hosts. **Blockers are listed beside the score, never folded into it.**
 
 | # | Candidate | Composite | Library-owned blockers |
 | --- | --- | --- | --- |
@@ -83,30 +64,19 @@ to hide anything.
 
 **Adobe React Aria** ranks first on the composite and carries no blocker, so it is the recommendation.
 
-**MUI (Community only)** (69) also carries no blocker, which makes it a viable second choice on this evidence rather than a fallback requiring a waiver.
+**MUI (Community only)** (69) also carries no blocker - viable second choice without a waiver.
 
 Ant Design and Mantine carry blockers that can be escaped in configuration or consuming code: see the escape-cost table below.
 
-IBM Carbon cannot escape its blockers without a change in the library or a decision that is UNDRR's rather than an engineer's.
+IBM Carbon cannot escape its blockers without a library change or a UNDRR policy decision.
 
 ## Blockers, in full
 
-A blocked axis is not a low score. It is a statement that the axis is not satisfied
-at all, by the library rather than by our code.
+Blocked = axis not satisfied at all, by the library rather than our code.
 
-Two things to know before reading these as a ranking of severity.
+**A finding can appear twice** - once from `evidence.json`, once from the known-issues registry. Two records of one fact, kept separate to surface disagreements.
 
-**A finding can appear twice** - once as an axis verdict derived from
-`evidence.json`, once as its known-issues entry. Those are two records of one
-fact from two sources, deliberately not merged, because silently collapsing them
-would hide a disagreement if the two sources ever stopped matching.
-
-**Remediability is recorded but not scored.** Each blocker carries how it could be
-escaped, taken from the registry rather than inferred. It is kept out of the
-composite on purpose: it describes the cost of living with a defect, not the axis
-the defect sits on, so averaging it in would double-count severity and blur both.
-It is here to answer one question the composite cannot - whether a candidate below
-the top of the ranking can be brought up to it.
+**Remediability is recorded but not scored.** It answers whether a candidate below the top can be brought up to it.
 
 | Candidate | Blockers | Cheapest escape | Hardest escape |
 | --- | --- | --- | --- |
@@ -295,13 +265,8 @@ Worst open issue: **blocker** - Select controls do not display their selected va
 
 ## What this cannot tell you
 
-- A composite is a summary of the diagnostics, not a replacement for them. Where a
-  band and the axis prose disagree, the prose is the evidence.
-- Accessibility bands rest on automated checks only. No screen-reader pass and no
-  human keyboard walkthrough was run on any pairing, so `strong` on A7 means the
-  automated floor was cleared, not that the pairing is accessible.
-- A6 measures layout direction and mirroring, not whether Arabic reads well to an
-  Arabic reader.
-- Changing the weights changes the ranking. If a decision rests on a two-point gap,
-  it rests on the weights and not on the evidence.
+- Where a band and the axis prose disagree, the prose is the evidence.
+- A7 bands rest on automated checks only - `strong` means the automated floor was cleared, not that the pairing is accessible.
+- A6 measures layout direction, not whether Arabic reads well to an Arabic reader.
+- Changing the weights changes the ranking. A two-point gap rests on the weights, not the evidence.
 

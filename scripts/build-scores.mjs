@@ -1,46 +1,15 @@
 #!/usr/bin/env node
 /**
- * Scores every pairing across the seven axes and writes docs/scores.md and
- * docs/scores.html.
- *
+ * Scores every pairing across the seven axes → docs/scores.md + docs/scores.html.
  *   pnpm scores
  *
- * WHY THIS EXISTS. The diagnostic layer is thorough and overwhelming: seven axes,
- * thirty requirements, thirty-four known issues, ten pairings, three views each. A
- * reader who has to choose needs a way in that is shorter than reading all of it,
- * and a shortlist of two or three worth deeper analysis. That is this file's whole
- * job.
+ * Rules:
+ * 1. DERIVED ONLY — every value traces to evidence.json, known-issues, or extraction-results.
+ * 2. NO COMPARATIVE PROSE — comparisons are computed at build time, never written.
+ * 3. ONLY LIBRARY-OWNED DEFECTS COUNT — host and evaluation defects excluded.
+ * 4. SHOW REASONING — every band carries the fact that assigned it.
  *
- * FOUR RULES IT FOLLOWS, each of them a lesson from something that went wrong.
- *
- * 1. EVERYTHING IS DERIVED. No score is typed by hand. A hand-assigned number
- *    drifts from the evidence within a week and then the evidence stops being the
- *    source of truth. Every value here traces to evidence.json, the known-issues
- *    registry, or extraction-results.json.
- *
- * 2. NO COMPARATIVE PROSE. Every stale claim found in the audit was stated
- *    comparatively: "MUI has no logical equivalent", "unlike MUI's pagination".
- *    Findings stated about the library in front of us survived; findings stated as
- *    "better than X" all had to be rewritten when X changed. So comparisons here
- *    are computed at build time from data and never written into prose.
- *
- * 3. ONLY DEFECTS BELONGING TO THE THING BEING CHOSEN MAY COUNT. Enforced by
- *    SCOREABLE_OWNERS in the registry. `host` cannot discriminate between
- *    candidates; `our implementation` and `this evaluation` are ours. The audit
- *    found that every candidate whose table behaviour we hand-rolled had a defect
- *    in it and every candidate whose table behaviour the library owned did not - a
- *    score built before that was separated would have read one implementation of
- *    differing quality as five libraries of differing quality.
- *
- * 4. A NUMBER MUST SHOW ITS REASONING. Every band carries the fact that assigned
- *    it. "Blocked: Arabic labels displaced up to 843px, unfixable inside the
- *    brief's constraints" is usable; "A6: 2/10" is not.
- *
- * A NOTE ON THE MODEL. UNDRR chose a weighted composite across all seven axes over
- * gating on RTL and accessibility. The known weakness of a composite is that a
- * candidate can offset an unfixable defect with a good score elsewhere, so this
- * generator reports library-owned blockers BESIDE the composite and never folds
- * them into it. The number ranks; it is not allowed to hide anything.
+ * Blockers are reported beside the composite, never folded into it.
  */
 
 import { existsSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
@@ -52,36 +21,13 @@ const ROOT = join(HERE, "..");
 const APPS = join(ROOT, "apps");
 const DOCS = join(ROOT, "docs");
 
-/**
- * THE WEIGHTS. Edit these, not the logic below.
- *
- * They are a judgement about what UNDRR values, not a measurement, and they are
- * the one thing in this file that is meant to be argued about. They must sum to
- * 100; the generator asserts it rather than silently normalising, because a set of
- * weights that does not sum to 100 is more likely a mistake than an intention.
- *
- * The defaults below reflect the framing in docs/undrr-questions.md: this is a
- * continuity decision about an estate, so the axes about living with a library
- * across many sites carry more than the one about building the first one. A6 and
- * A7 are weighted highest because they are standing obligations rather than
- * preferences - the composite cannot gate on them, so weight is the only lever
- * left.
- */
-/**
- * Who chose the weights, when, and on what basis.
- *
- * Printed on the page. A project manager reviewing the site put it exactly right:
- * right-to-left at 18 is the weight that removes MUI from contention, and without
- * provenance there is no way to defend that in a meeting - "change them in
- * scripts/build-scores.mjs" is not an answer to "who decided this". A weight is a
- * judgement, and an undocumented judgement presented beside measured evidence reads
- * as if it were measured too.
- */
+/** Weights must sum to 100. Edit these, not the logic below. */
+/** Provenance is printed on the page so the weights can be defended. */
 const WEIGHT_PROVENANCE = Object.freeze({
   chosenBy: "Proposed by the evaluation author, not yet ratified by UNDRR",
   date: "2026-08-06",
   basis:
-    "Derived from the framing in undrr-questions.md: a continuity decision about an estate, so axes about living with a library across many sites outweigh the one about building the first site. A6 and A7 carry the most because they are standing obligations rather than preferences, and the composite model UNDRR chose cannot gate on them - weight is the only lever left.",
+    "Estate continuity framing (undrr-questions.md). Multi-site axes outweigh first-site effort; A6/A7 highest as standing obligations the composite cannot gate on.",
   ratified: false,
 });
 
@@ -104,15 +50,7 @@ if (weightTotal !== 100) {
 /** Bands, and the score each contributes before weighting. */
 const BANDS = Object.freeze({ strong: 1, workable: 0.6, weak: 0.3, blocked: 0 });
 
-/**
- * How a blocker can be escaped, cheapest first.
- *
- * NOT folded into the composite, and that is deliberate. Remediability is a fact
- * about the cost of living with a defect, not about the axis the defect sits on, so
- * averaging it into a score would double-count severity and blur both. It tiers the
- * blockers instead, which is what the reader actually needs: whether row 2 of the
- * ranking joins row 1 or not.
- */
+/** How a blocker can be escaped, cheapest first. Not folded into the composite. */
 const REMEDIABILITY_ORDER = ["config", "per-site-code", "upstream-only", "out-of-scope", "inherent"];
 
 const REMEDIABILITY = Object.freeze({
@@ -148,13 +86,7 @@ function appDirs() {
     });
 }
 
-/* ------------------------------------------------------------ the axis rules --
- *
- * Each returns { band, because } where `because` is the deciding fact, in words a
- * reader can check against the evidence. The rules are deliberately coarse: the
- * evidence does not support finer discrimination than this, and a band implies less
- * precision than a number does, which is the point.
- */
+/* ---- axis rules: each returns { band, because } ---- */
 
 function scoreA1(ev) {
   const mix = { native: 0, composed: 0, custom: 0 };
@@ -168,10 +100,7 @@ function scoreA1(ev) {
 }
 
 function scoreA2(ev, issues) {
-  // Off-route styling is the A2 signal, and the honest proxy available here is the
-  // count of documented-path failures the run recorded, plus scoreable maintenance
-  // issues. The CSS-selector census lives in build-axes.mjs; it is not duplicated,
-  // because two implementations of one metric is how two numbers start disagreeing.
+  // Proxy: escape-hatch count + scoreable maintenance issues.
   const traps = (ev.theming?.escapeHatchesUsed ?? []).length;
   const maint = issues.filter((i) => /token|theme|upgrade|internal|layer/i.test(i.title)).length;
   const because = `${traps} escape hatches off the documented theming route; ${maint} scoreable maintenance findings`;
@@ -287,8 +216,7 @@ const rows = appDirs().map((app) => {
   const candidate = CANDIDATE_ORDER.find((c) => app.endsWith(c)) ?? app;
   const pairing = knownIssues.pairings?.[app] ?? {};
 
-  // Open, scoreable issues only. The registry's own gate decides what qualifies;
-  // this file does not get a second opinion on it.
+  // Open, scoreable issues only.
   const scoreable = [];
   const blockers = [];
 
@@ -298,20 +226,11 @@ const rows = appDirs().map((app) => {
     const result = fn(ev, candidate, scoreable);
     axes[key] = { label, ...result, weight: WEIGHTS[key] };
     composite += BANDS[result.band] * WEIGHTS[key];
-    // Keyed by axis, not by sentence, so the same blocked axis on two hosts is one
-    // blocker rather than two near-identical lines.
+    // Dedupe: same blocked axis on two hosts = one blocker.
     if (result.band === "blocked") blockers.push({ key: label, text: result.because });
   }
 
-  /*
-   * Registry blockers, which the axis rules cannot see.
-   *
-   * A defect can block adoption without moving any field in evidence.json. antd's
-   * Select rendering its selected value invisible under Mangrove is the case that
-   * proved it: leakage passes, axe is clean, every A4 signal reads fine, and the
-   * control does not display what the user chose. Scored as blocking, because a
-   * composite that called that candidate unblocked would be worse than no score.
-   */
+  /* Registry blockers not visible to the axis rules. */
   for (const b of pairing.scoreableBlockers ?? []) {
     blockers.push({
       key: b.id,
@@ -339,22 +258,20 @@ const byCandidate = CANDIDATE_ORDER.map((candidate) => {
   const pair = rows.filter((r) => r.candidate === candidate);
   if (pair.length === 0) return null;
   const composite = Math.round(pair.reduce((a, r) => a + r.composite, 0) / pair.length);
-  // Dedupe by axis or issue id: one blocked axis appearing on both hosts is one
-  // finding about the candidate, not two.
+  // Dedupe blockers across hosts.
   const seen = new Map();
   for (const b of pair.flatMap((r) => r.blockers)) if (!seen.has(b.key)) seen.set(b.key, b);
   const blockers = [...seen.values()].map(
     (b) => `${b.key}: ${b.text}${b.remediability ? ` [escape: ${REMEDIABILITY[b.remediability]}]` : ""}`,
   );
-  // The cheapest escape route among this candidate's blockers, for the tiering
-  // below. Derived, never asserted in prose - see rule 2 at the top of this file.
+  // Cheapest/hardest escape route among this candidate's blockers.
   const escapes = [...seen.values()].map((b) => b.remediability).filter(Boolean);
   const easiest = REMEDIABILITY_ORDER.find((r) => escapes.includes(r)) ?? null;
   const hardest = [...REMEDIABILITY_ORDER].reverse().find((r) => escapes.includes(r)) ?? null;
   return { candidate, name: pair[0].name, composite, blockers, easiest, hardest, pair };
 }).filter(Boolean);
 
-// Comparisons are computed, never written into prose. See rule 2 at the top.
+// Rank by composite, derive comparisons.
 const ranked = [...byCandidate].sort((a, b) => b.composite - a.composite);
 const clean = ranked.filter((c) => c.blockers.length === 0);
 
@@ -363,14 +280,11 @@ const clean = ranked.filter((c) => c.blockers.length === 0);
 const L = [];
 L.push("# Weighted scores");
 L.push("");
-L.push("GENERATED FILE - regenerate with `pnpm scores`. Axis definitions are in");
-L.push("[decision-axes.md](./decision-axes.md); the questions these serve are in");
-L.push("[undrr-questions.md](./undrr-questions.md).");
+L.push("GENERATED FILE - regenerate with `pnpm scores`. See");
+L.push("[decision-axes.md](./decision-axes.md) and [undrr-questions.md](./undrr-questions.md).");
 L.push("");
-L.push("Every value here is derived from `evidence.json`, the known-issues registry and");
-L.push("`extraction-results.json`. Nothing is typed by hand, and only defects owned by");
-L.push("the library or the pairing can affect a score - never a host defect, which is the");
-L.push("same for all five, and never one of ours.");
+L.push("All values derived from `evidence.json`, the known-issues registry and");
+L.push("`extraction-results.json`. Only library-owned defects affect scores.");
 L.push("");
 L.push("## What this says to do");
 L.push("");
@@ -378,44 +292,20 @@ L.push(`**Adopt ${ranked[0].name}.**`);
 L.push("");
 if (ranked[0].blockers.length === 0) {
   L.push(
-    `It leads on the composite at ${ranked[0].composite} against ${ranked[1].composite} for ` +
-      `${ranked[1].name}` +
-      /*
-       * DERIVED. This said "and it is the only candidate of 5 carrying no
-       * blocking defect", which stopped being true the moment MUI's RTL blocker
-       * was withdrawn - the same class of hard-coded claim as the fallbacks
-       * paragraph further down, and the second one this file has had to lose.
-       */
+    `Composite ${ranked[0].composite} vs ${ranked[1].composite} for ${ranked[1].name}` +
       (clean.length === 1
-        ? `, and it is the only candidate of ${ranked.length} carrying no blocking defect.`
-        : `, and is one of ${clean.length} of ${ranked.length} candidates carrying no` +
-          ` blocking defect.`) +
-      " Arabic works from a `dir` attribute alone. It stays inside its own subtree on both hosts.",
+        ? `; only unblocked candidate of ${ranked.length}.`
+        : `; one of ${clean.length}/${ranked.length} unblocked candidates.`) +
+      " Arabic works from a `dir` attribute alone. Stays inside its own subtree on both hosts.",
   );
   L.push("");
-  /*
-   * GATED ON THE WINNER'S IDENTITY, because the paragraph below is about React
-   * Aria specifically - "ships behaviour, not appearance", a hand-written CSS
-   * count - and this file recommends whoever ranks first. If the ranking ever
-   * moves, silence is correct and a confident paragraph about the wrong library
-   * is not.
-   */
+  // Only emitted when React Aria is the winner, since the paragraph is specific to it.
   if (ranked[0].candidate === "react-aria") {
-  L.push("**The cost, which the composite does not charge it for.** React Aria ships behaviour,");
-  L.push("not appearance. Adopting it means UNDRR builds and then owns the visual layer");
-  L.push("permanently - this evaluation's own demos carry 155 to 213 hand-written CSS rules, a");
-  L.push("figure that grew by about 70 when a step wizard and a menu bar were added that four");
-  L.push("other candidates supplied themselves. Three of the seven axes reward exactly the");
-  L.push("property that creates that cost:");
-  L.push("a library with no opinions cannot conflict with Mangrove, cannot bake in wrong colours");
-  L.push("and cannot mistheme.");
-  /*
-   * ONE LINE, NOT TWO, AND THAT IS THE FIX. The bold used to open on one pushed
-   * line and close on the next; the HTML writer converts inline markup per line,
-   * so both `**` survived into the page as literal asterisks - on the single most
-   * emphatic sentence of the recommendation. Any inline span must stay on one
-   * pushed line.
-   */
+  L.push("**The cost.** React Aria ships behaviour, not appearance. Adopting it means UNDRR");
+  L.push("owns the visual layer permanently - the demos carry 155-213 hand-written CSS rules.");
+  L.push("Three of seven axes reward the property that creates that cost: no opinions means no");
+  L.push("Mangrove conflicts, no wrong colours, no mistheming.");
+  // Inline bold must stay on one pushed line or the HTML converter emits literal asterisks.
   L.push(
     '**Read the recommendation as "adopt this and fund a design system", not as ' +
       '"adopt this and save work".**',
@@ -429,44 +319,28 @@ if (ranked[0].blockers.length === 0) {
   );
 }
 L.push("");
-/*
- * The reuse argument is deliberately a POINTER, not prose repeated here. It is a
- * judgement about UNDRR's estate rather than anything derived from evidence.json,
- * and this file is generated - so stating it here would put an unsourced claim
- * inside a document whose whole promise is that nothing in it is typed by hand.
- */
-L.push("**Read this alongside the architecture it implies.**");
-L.push("A library that ships fewer components is also one whose gaps get filled in Mangrove");
-L.push("rather than per-site, which turns a missing stepper into shared tooling instead of");
-L.push("local work - and that is the strongest case for this recommendation, stronger than the");
-L.push("composite. It is also the case that carries the staffing bill. Both are set out in");
-L.push("[architecture-options.md](./architecture-options.md), which argues a position and");
-L.push("changes no score.");
+L.push("**Read this alongside [architecture-options.md](./architecture-options.md).**");
+L.push("Fewer built-in components means gaps filled in Mangrove, not per-site - that is the");
+L.push("strongest case for this recommendation, and the one that carries the staffing bill.");
 L.push("");
-L.push("**Two things must happen before this is signed off, and neither is a technical task.**");
+L.push("**Before sign-off:**");
 L.push("");
-L.push("1. A human accessibility pass. Every A7 band on this page rests on automated scanning.");
-L.push("   No screen-reader test and no human keyboard walkthrough was run on any candidate, so");
-L.push("   no conformance claim can be made from this evidence.");
-L.push("2. A decision on MUI's exclusion. Its Arabic defect has a fix that this evaluation's");
-L.push("   rules forbid. If UNDRR relaxes that rule, MUI returns to contention - which makes its");
-L.push("   position a procurement question rather than an engineering result.");
+L.push("1. A human accessibility pass. A7 bands rest on automated scanning only - no conformance claim can be made without screen-reader and keyboard testing.");
+L.push("2. A decision on MUI's exclusion. Its Arabic defect has a fix this evaluation's rules forbid. Relaxing that rule returns MUI to contention.");
 L.push("");
 
 L.push("## Weights");
 L.push("");
-L.push("A judgement about what UNDRR values, not a measurement - so it is recorded as one.");
+L.push("A judgement, not a measurement.");
 L.push("");
 L.push(`- **Chosen by:** ${WEIGHT_PROVENANCE.chosenBy}`);
 L.push(`- **Date:** ${WEIGHT_PROVENANCE.date}`);
 L.push(
-  `- **Status:** ${WEIGHT_PROVENANCE.ratified ? "ratified by UNDRR" : "**not ratified.** Nobody at UNDRR has agreed these numbers."}`,
+  `- **Status:** ${WEIGHT_PROVENANCE.ratified ? "ratified by UNDRR" : "**not ratified**"}`,
 );
 L.push(`- **Basis:** ${WEIGHT_PROVENANCE.basis}`);
 L.push("");
-L.push("This matters more than it looks. A6 at 18 is the weight that removes MUI from");
-L.push("contention; if it were 12 the ranking would change. Anyone defending this choice should");
-L.push("expect to defend the weights first, and should be able to say who set them.");
+L.push("A6 at 18 is the weight that removes MUI from contention; at 12 the ranking would change.");
 L.push("");
 L.push(`| Axis | Weight |`);
 L.push(`| --- | --- |`);
@@ -475,14 +349,10 @@ L.push("");
 
 L.push("## Ranking");
 L.push("");
-// Same one-line rule as the recommendation's bold: inline markup is converted per
-// pushed line, so a span split across two arrives as literal asterisks.
 L.push(
   "Composite is the weighted mean of the two hosts. **Blockers are listed beside the " +
-    "score and never folded into it**: a weighted composite can otherwise let a good",
+    "score, never folded into it.**",
 );
-L.push("bundle size offset an unfixable defect, so the number ranks and is not permitted");
-L.push("to hide anything.");
 L.push("");
 L.push("| # | Candidate | Composite | Library-owned blockers |");
 L.push("| --- | --- | --- | --- |");
@@ -501,16 +371,6 @@ if (clean.length > 0) {
       `${clean.map((c) => c.name).join(", ")}.`,
   );
   L.push("");
-  /*
-   * DERIVED, NOT HARD-CODED, and it used to be neither. This paragraph said "the
-   * next two are the credible fallbacks, because their blockers can be escaped"
-   * and "the bottom two cannot" - sentences that silently assumed exactly one
-   * clean candidate and a fixed 1/2/2 split. When MUI's RTL blocker was withdrawn
-   * the page began recommending a candidate as a fallback "because its blockers
-   * can be escaped" while also reporting that it had none. Prose that hard-codes
-   * a shape the data can change is a liability in a generated document, so the
-   * shape now comes from the data.
-   */
   const blocked = ranked.filter((c) => c.blockers.length > 0);
   const escapable = blocked.filter(
     (c) => c.easiest === "config" || c.easiest === "per-site-code",
@@ -526,10 +386,8 @@ if (clean.length > 0) {
     L.push("");
     L.push(
       `${others.map((c) => `**${c.name}** (${c.composite})`).join(", ")} ` +
-        `${others.length === 1 ? "also carries" : "also carry"} no blocker, which makes ` +
-        `${others.length === 1 ? "it a" : "them"} viable ` +
-        `${others.length === 1 ? "second choice" : "choices"} on this evidence rather than ` +
-        `a fallback requiring a waiver.`,
+        `${others.length === 1 ? "also carries" : "also carry"} no blocker - viable ` +
+        `${others.length === 1 ? "second choice" : "choices"} without a waiver.`,
     );
   }
   if (escapable.length > 0) {
@@ -545,8 +403,7 @@ if (clean.length > 0) {
     L.push(
       `${stuck.map((c) => c.name).join(" and ")} ` +
         `${stuck.length === 1 ? "cannot escape its blockers" : "cannot escape theirs"} ` +
-        `without a change in the library or a decision that is UNDRR's rather than an` +
-        ` engineer's.`,
+        `without a library change or a UNDRR policy decision.`,
     );
   }
 } else {
@@ -557,22 +414,11 @@ L.push("");
 
 L.push("## Blockers, in full");
 L.push("");
-L.push("A blocked axis is not a low score. It is a statement that the axis is not satisfied");
-L.push("at all, by the library rather than by our code.");
+L.push("Blocked = axis not satisfied at all, by the library rather than our code.");
 L.push("");
-L.push("Two things to know before reading these as a ranking of severity.");
+L.push("**A finding can appear twice** - once from `evidence.json`, once from the known-issues registry. Two records of one fact, kept separate to surface disagreements.");
 L.push("");
-L.push("**A finding can appear twice** - once as an axis verdict derived from");
-L.push("`evidence.json`, once as its known-issues entry. Those are two records of one");
-L.push("fact from two sources, deliberately not merged, because silently collapsing them");
-L.push("would hide a disagreement if the two sources ever stopped matching.");
-L.push("");
-L.push("**Remediability is recorded but not scored.** Each blocker carries how it could be");
-L.push("escaped, taken from the registry rather than inferred. It is kept out of the");
-L.push("composite on purpose: it describes the cost of living with a defect, not the axis");
-L.push("the defect sits on, so averaging it in would double-count severity and blur both.");
-L.push("It is here to answer one question the composite cannot - whether a candidate below");
-L.push("the top of the ranking can be brought up to it.");
+L.push("**Remediability is recorded but not scored.** It answers whether a candidate below the top can be brought up to it.");
 L.push("");
 L.push("| Candidate | Blockers | Cheapest escape | Hardest escape |");
 L.push("| --- | --- | --- | --- |");
@@ -620,15 +466,10 @@ for (const row of rows) {
 
 L.push("## What this cannot tell you");
 L.push("");
-L.push("- A composite is a summary of the diagnostics, not a replacement for them. Where a");
-L.push("  band and the axis prose disagree, the prose is the evidence.");
-L.push("- Accessibility bands rest on automated checks only. No screen-reader pass and no");
-L.push("  human keyboard walkthrough was run on any pairing, so `strong` on A7 means the");
-L.push("  automated floor was cleared, not that the pairing is accessible.");
-L.push("- A6 measures layout direction and mirroring, not whether Arabic reads well to an");
-L.push("  Arabic reader.");
-L.push("- Changing the weights changes the ranking. If a decision rests on a two-point gap,");
-L.push("  it rests on the weights and not on the evidence.");
+L.push("- Where a band and the axis prose disagree, the prose is the evidence.");
+L.push("- A7 bands rest on automated checks only - `strong` means the automated floor was cleared, not that the pairing is accessible.");
+L.push("- A6 measures layout direction, not whether Arabic reads well to an Arabic reader.");
+L.push("- Changing the weights changes the ranking. A two-point gap rests on the weights, not the evidence.");
 L.push("");
 
 const md = L.join("\n");
@@ -640,17 +481,7 @@ function esc(v) {
   return String(v).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
-/**
- * Hand-written docs, for the HTML build only.
- *
- * A relative `./foo.md` is right in scores.md, which is read on GitHub, and broken
- * in scores.html: GitHub Pages serves a raw .md as `text/plain`, so the link lands
- * a decision-maker in unrendered markdown. Mermaid makes it worse than ugly -
- * architecture-options.md's three diagrams would arrive as fenced code. So the two
- * outputs get different hrefs for the same source line, and only the HTML side is
- * rewritten. Generated siblings - scores.html, axes.html - keep their in-site
- * relative links and must not match this.
- */
+/** .md links rewritten to blob URLs in the HTML build (Pages serves raw .md as text/plain). */
 const DOCS_BLOB = "https://github.com/khawkins98/data-design-demo/blob/main/docs";
 
 /** `code`, **bold** and [links](x), the only inline markup this file emits. */
@@ -662,16 +493,7 @@ function inline(text) {
     .replace(/href="\.\/([^"]+\.md)"/g, `href="${DOCS_BLOB}/$1"`);
 }
 
-/**
- * Markdown to HTML for the subset this generator emits.
- *
- * THE FIRST VERSION OF THIS FUNCTION KEPT ONLY THE HEADINGS. It mapped the
- * markdown lines, returned null for anything that was not an h1/h2/h3, and then
- * filtered the nulls out - so the published page was a list of section titles with
- * every table, paragraph, ranking and blocker silently discarded, while scores.md
- * beside it was complete. It looked plausible enough to commit and was useless to
- * read. Mirrors the converter in build-axes.mjs, which handles the same subset.
- */
+/** Markdown to HTML for the subset this generator emits. Mirrors build-axes.mjs. */
 function toHtml(markdown) {
   const out = [];
   let inTable = false;
@@ -725,7 +547,7 @@ function toHtml(markdown) {
   }
   if (inTable) out.push("</tbody></table></div>");
   if (inList) out.push("</ul>");
-  // Consecutive paragraphs were one wrapped sentence in the source.
+  // Join consecutive <p> tags (one wrapped sentence in the source).
   return out.join("\n").replace(/<\/p>\n<p>/g, " ");
 }
 

@@ -3,20 +3,18 @@
 GENERATED FILE - regenerate with `pnpm axes`. Axis definitions and
 measurement rules are in [decision-axes.md](./decision-axes.md).
 
-**This is the evidence layer.** Each section opens with the UNDRR question
-it answers, in plain language, and then shows the measurements behind that
-answer. Nothing here is typed by hand.
+**This is the evidence layer.** Each section shows the UNDRR question
+it answers, then the measurements behind it.
 
-- For the recommendation and what it costs, read the [ranking](./scores.html) first.
-- For whether a candidate can do a given thing at all, the [requirement matrix](./comparison.html) holds all 300 assessments. It is an appendix to consult, not a page to read: every candidate can do the job, so the matrix does not discriminate between them and these axes do.
+- For the recommendation, read the [ranking](./scores.html) first.
+- For per-requirement coverage, see the [requirement matrix](./comparison.html) (all 300 assessments).
 
 ## A1 - Implementation effort
 
 > **None of the six UNDRR questions maps to A1 directly.** It is measured because the weighted composite scores it, and because the questions were asked about living with a library rather than about building with one. See the [ranking](./scores.html) for what it is worth there.
 
-`beyond native` is the count of the 30 requirements needing more than dropping in
-a documented component. `traps` counts documented approaches that failed and
-needed working around. Neither is a time estimate; see the axis definition.
+`beyond native` counts requirements needing more than a documented component.
+`traps` counts documented approaches that failed and needed workarounds.
 
 | Pairing | native | composed | custom | beyond native | traps | wrappers | flagged for review |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -31,9 +29,7 @@ needed working around. Neither is a time estimate; see the axis definition.
 | delta-antd | 28 | 1 | 1 | **2** | 7 | 4 (128 ln) | 7 |
 | mangrove-antd | 28 | 1 | 1 | **2** | 7 | 4 (128 ln) | 9 |
 
-The friction log is the honest proxy for time: implementation time goes on dead
-ends, not on typing. Each entry below is a place the documented approach did not
-suffice, recorded by the run that hit it.
+Each friction-log entry is a place the documented approach did not suffice.
 
 <details><summary>The friction log, per pairing</summary>
 
@@ -151,10 +147,8 @@ suffice, recorded by the run that hit it.
 
 Every distinct styling hook, classified by the promise behind it.
 
-`attribute` hooks are semantic (`[data-*]`, `[slot]`) and survive DOM restructuring.
-`contract` hooks are class names the library documents as a styling API. `off route`
-hooks are the ones that matter: styling achieved by going around the library's own
-theming mechanism, which is what accumulates across sites and across upgrades.
+`attribute`: semantic selectors (`[data-*]`, `[slot]`). `contract`: documented styling API.
+`off route`: styling that bypasses the library's own theming mechanism.
 
 | Pairing | attribute | contract | off route | of which hashed | CSS rules |
 | --- | --- | --- | --- | --- | --- |
@@ -169,17 +163,11 @@ theming mechanism, which is what accumulates across sites and across upgrades.
 | delta-antd | 0 | 0 | **0** | 0 | 8 |
 | mangrove-antd | 0 | 0 | **0** | 0 | 6 |
 
-Checking the documentation moved two libraries here, and both moves were away from
-my first reading. Mantine's `.mantine-{Component}-{element}` classes are a
-documented styling API gated behind a `withStaticClasses` provider prop, not an
-internal - so Mantine's overrides are contract hooks. Carbon's `cds--` classes are
-documented as an internal BEM authoring convention with a *reconfigurable* prefix,
-while Carbon points consumers at `--cds-*` custom properties for theming - so
-Carbon's overrides are off-route. That is not a prediction that they will break;
-Carbon's class names are stable in practice. It is a count of the places the
-supported theming route did not reach.
+Mantine's `.mantine-{Component}-{element}` classes are a documented API
+(`withStaticClasses`), so they count as contract. Carbon's `cds--` classes are
+stable but off the documented theming route (`--cds-*` custom properties).
 
-**Every run declared `overridesLibraryInternals: true`, including 6 with no off-route hook at all** (delta-react-aria, mangrove-react-aria, delta-mui, mangrove-mui, delta-mantine, mangrove-mantine). Self-assessment of this collapsed to a constant and carries no information, which is why the field is reported but not scored.
+**Every run declared `overridesLibraryInternals: true`, including 6 with no off-route hook at all** (delta-react-aria, mangrove-react-aria, delta-mui, mangrove-mui, delta-mantine, mangrove-mantine). The field collapsed to a constant and is reported but not scored.
 
 <details><summary>Every class hook, per pairing</summary>
 
@@ -202,8 +190,7 @@ supported theming route did not reach.
 >
 > shadcn/ui was excluded outright for guaranteeing a fork per site. Among the five built, the theme and token layer extracts; kitchen-sink section components do not.
 
-`basis` is the most important column. Only MUI was actually extracted and both
-host apps rewired onto the package; everything else is analysis and says so.
+`basis`: only MUI was actually extracted; other entries are analysis.
 
 | Candidate | basis | verdict | shared | per site | shared % |
 | --- | --- | --- | --- | --- | --- |
@@ -279,9 +266,6 @@ What resists extraction:
 >
 > Leakage is clean for every pairing except mangrove-carbon, whose global stylesheet is not containable. Ant Design loses every cascade conflict to Mangrove - which the realistic layouts showed is not a matter of taste: Mangrove's rules also cover Select's own value, so its filters render blank on the Mangrove host.
 
-RTL and accessibility used to be two columns here. They are now A6 and A7: both are
-estate-wide obligations rather than symptoms of host coexistence, and both were too
-consequential to leave as columns in someone else's table.
 
 | Pairing | leakage | documented setup loadable as-is |
 | --- | --- | --- |
@@ -302,9 +286,8 @@ consequential to leave as columns in someone else's table.
 >
 > React Aria and Carbon resolve tokens in the browser, so a Mangrove change is a stylesheet swap. MUI, Mantine and Ant Design bake values in, making it a rebuild of every site. Carbon leaves 21-22 of 71 tokens unreachable at all.
 
-`unreachable` tokens are a ceiling, not a cost: there is no hook to attach them to.
-`propagation` is how a Mangrove token change reaches a built site - a stylesheet
-swap reaches every site at once; a rebuild is per site, forever.
+`unreachable`: tokens with no hook to attach to. `propagation`: stylesheet swap
+reaches every site at once; rebuild is per site.
 
 | Pairing | tokens applied | unreachable | propagation | live var() refs in shipped CSS |
 | --- | --- | --- | --- | --- |
@@ -325,9 +308,8 @@ swap reaches every site at once; a rebuild is per site, forever.
 >
 > MUI Community fails on both hosts and cannot be fixed within the brief's constraints. React Aria and Ant Design are clean at zero cost; Mantine is clean only after mitigation. This needs a policy call, not a bug fix.
 
-Read `status` against `setup`. `clean` at `native`/0 lines means a `dir` attribute
-sufficed. `clean` at `composed`/18 lines means the library needed configuring and
-mitigating first. Both print as clean; they are not the same purchase.
+Read `status` against `setup`: `clean` at `native`/0 lines means a `dir` attribute
+sufficed; `clean` at `composed`/18 lines means the library needed mitigation.
 
 | Pairing | status | setup | custom lines | recorded issues |
 | --- | --- | --- | --- | --- |
@@ -342,10 +324,8 @@ mitigating first. Both print as clean; they are not the same purchase.
 | delta-antd | clean | native | 0 | 0 |
 | mangrove-antd | clean | native | 0 | 0 |
 
-A candidate whose two hosts disagree implicates the host; one whose two hosts agree
-implicates the candidate. Every recorded issue is reproduced verbatim below, because
-ownership - candidate, third-party dependency, or mitigated - decides what it means,
-and that is judgement rather than a number.
+Two hosts agreeing implicates the candidate; disagreeing implicates the host.
+Recorded issues are reproduced verbatim below.
 
 <details><summary>Recorded RTL issues, per pairing</summary>
 
@@ -371,9 +351,8 @@ and that is judgement rather than a number.
 >
 > Zero is a floor, not a conformance claim: no screen-reader or human keyboard pass was run on any pairing. And the floor is lower than the kitchen sinks suggested - the realistic layouts found a critical unnamed-button defect in Mantine's Modal that every scoped axe run in this repository was blind to, because portalled overlays render outside the scanned subtree.
 
-`incomplete` is not a pass: it counts checks axe declined to decide, each of which is
-work a human still owes. Nine of the ten runs ran axe unscoped, so these counts are
-sound at the level of *zero versus some* and unsound at the level of exact numbers.
+`incomplete` counts checks axe declined to decide. Nine of ten runs ran axe
+unscoped, so counts are directional, not exact.
 
 | Pairing | critical | serious | incomplete | scope |
 | --- | --- | --- | --- | --- |
@@ -389,21 +368,12 @@ sound at the level of *zero versus some* and unsound at the level of exact numbe
 | mangrove-antd | 0 | 1 | 1 | whole page, unscoped |
 
 **Zero automated violations is a floor, not a conformance claim.** No screen-reader
-pass, no human keyboard-only walkthrough and no plain-language review was run on any
-pairing. Automated tooling reaches a minority of WCAG criteria, so a row of zeroes
-means the automated subset passed - not that the pairing is accessible. See
-[decision-axes.md](./decision-axes.md) for what ownership does to these numbers.
+or keyboard-only walkthrough was run. A row of zeroes means the automated subset passed.
 
 ## Supporting figures
 
-Reported because they are asked for, not because they decide anything.
-
-The two dependency columns disagree, and the disagreement is the point. `prod pkgs`
-is the production tree measured for every app by one method (`pnpm deps:count`).
-`as recorded` is whatever each run put in its own `evidence.json`. Those figures
-were each measured differently and they reorder the candidates - Mantine was
-recorded at 112 where a production count gives 27 - so only the first column is
-safe to compare across rows.
+`prod pkgs` is measured uniformly (`pnpm deps:count`). `as recorded` is each run's
+self-reported figure; the two disagree and only `prod pkgs` is comparable across rows.
 
 | Pairing | custom CSS lines | bundle kB gz | prod pkgs | as recorded | licences | build s |
 | --- | --- | --- | --- | --- | --- | --- |

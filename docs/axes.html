@@ -39,13 +39,7 @@
       summary { cursor: pointer; color: var(--accent); font-size: 0.875rem; }
       a { color: var(--accent); }
       nav { margin-bottom: 1.5rem; font-size: 0.875rem; }
-      /*
-       * The plain-language block that opens each axis: the UNDRR question and the
-       * answer. Deliberately the most readable thing in the section - wider leading,
-       * no monospace, an accent rule down the inline start - because it is what a
-       * non-engineer arriving from the landing page needs, and the tables below it
-       * are what they can consult afterwards.
-       */
+      /* Plain-language Q&A block at the top of each axis section. */
       blockquote.answers {
         margin: 0 0 1.25rem;
         padding: 0.875rem 1.125rem;
@@ -64,11 +58,11 @@
 
 <p>GENERATED FILE - regenerate with <code>pnpm axes</code>. Axis definitions and measurement rules are in <a href="./decision-axes.md">decision-axes.md</a>.</p>
 
-<p><strong>This is the evidence layer.</strong> Each section opens with the UNDRR question it answers, in plain language, and then shows the measurements behind that answer. Nothing here is typed by hand.</p>
+<p><strong>This is the evidence layer.</strong> Each section shows the UNDRR question it answers, then the measurements behind it.</p>
 
 <ul>
-<li>For the recommendation and what it costs, read the <a href="./scores.html">ranking</a> first.</li>
-<li>For whether a candidate can do a given thing at all, the <a href="./comparison.html">requirement matrix</a> holds all 300 assessments. It is an appendix to consult, not a page to read: every candidate can do the job, so the matrix does not discriminate between them and these axes do.</li>
+<li>For the recommendation, read the <a href="./scores.html">ranking</a> first.</li>
+<li>For per-requirement coverage, see the <a href="./comparison.html">requirement matrix</a> (all 300 assessments).</li>
 
 </ul>
 <h2 id="a1">A1 - Implementation effort</h2>
@@ -77,7 +71,7 @@
 <p><strong>None of the six UNDRR questions maps to A1 directly.</strong> It is measured because the weighted composite scores it, and because the questions were asked about living with a library rather than about building with one. See the <a href="./scores.html">ranking</a> for what it is worth there.</p>
 </blockquote>
 
-<p><code>beyond native</code> is the count of the 30 requirements needing more than dropping in a documented component. <code>traps</code> counts documented approaches that failed and needed working around. Neither is a time estimate; see the axis definition.</p>
+<p><code>beyond native</code> counts requirements needing more than a documented component. <code>traps</code> counts documented approaches that failed and needed workarounds.</p>
 
 <div class="scroll"><table><thead>
 <tr><th>Pairing</th><th>native</th><th>composed</th><th>custom</th><th>beyond native</th><th>traps</th><th>wrappers</th><th>flagged for review</th></tr>
@@ -94,7 +88,7 @@
 <tr><td>mangrove-antd</td><td>28</td><td>1</td><td>1</td><td><strong>2</strong></td><td>7</td><td>4 (128 ln)</td><td>9</td></tr>
 </tbody></table></div>
 
-<p>The friction log is the honest proxy for time: implementation time goes on dead ends, not on typing. Each entry below is a place the documented approach did not suffice, recorded by the run that hit it.</p>
+<p>Each friction-log entry is a place the documented approach did not suffice.</p>
 
 <details><summary>The friction log, per pairing</summary>
 
@@ -234,7 +228,7 @@
 
 <p>Every distinct styling hook, classified by the promise behind it.</p>
 
-<p><code>attribute</code> hooks are semantic (<code>[data-*]</code>, <code>[slot]</code>) and survive DOM restructuring. <code>contract</code> hooks are class names the library documents as a styling API. <code>off route</code> hooks are the ones that matter: styling achieved by going around the library's own theming mechanism, which is what accumulates across sites and across upgrades.</p>
+<p><code>attribute</code>: semantic selectors (<code>[data-*]</code>, <code>[slot]</code>). <code>contract</code>: documented styling API. <code>off route</code>: styling that bypasses the library's own theming mechanism.</p>
 
 <div class="scroll"><table><thead>
 <tr><th>Pairing</th><th>attribute</th><th>contract</th><th>off route</th><th>of which hashed</th><th>CSS rules</th></tr>
@@ -251,9 +245,9 @@
 <tr><td>mangrove-antd</td><td>0</td><td>0</td><td><strong>0</strong></td><td>0</td><td>6</td></tr>
 </tbody></table></div>
 
-<p>Checking the documentation moved two libraries here, and both moves were away from my first reading. Mantine's <code>.mantine-{Component}-{element}</code> classes are a documented styling API gated behind a <code>withStaticClasses</code> provider prop, not an internal - so Mantine's overrides are contract hooks. Carbon's <code>cds--</code> classes are documented as an internal BEM authoring convention with a *reconfigurable* prefix, while Carbon points consumers at <code>--cds-*</code> custom properties for theming - so Carbon's overrides are off-route. That is not a prediction that they will break; Carbon's class names are stable in practice. It is a count of the places the supported theming route did not reach.</p>
+<p>Mantine's <code>.mantine-{Component}-{element}</code> classes are a documented API (<code>withStaticClasses</code>), so they count as contract. Carbon's <code>cds--</code> classes are stable but off the documented theming route (<code>--cds-*</code> custom properties).</p>
 
-<p><strong>Every run declared <code>overridesLibraryInternals: true</code>, including 6 with no off-route hook at all</strong> (delta-react-aria, mangrove-react-aria, delta-mui, mangrove-mui, delta-mantine, mangrove-mantine). Self-assessment of this collapsed to a constant and carries no information, which is why the field is reported but not scored.</p>
+<p><strong>Every run declared <code>overridesLibraryInternals: true</code>, including 6 with no off-route hook at all</strong> (delta-react-aria, mangrove-react-aria, delta-mui, mangrove-mui, delta-mantine, mangrove-mantine). The field collapsed to a constant and is reported but not scored.</p>
 
 <details><summary>Every class hook, per pairing</summary>
 
@@ -280,7 +274,7 @@
 <p>shadcn/ui was excluded outright for guaranteeing a fork per site. Among the five built, the theme and token layer extracts; kitchen-sink section components do not.</p>
 </blockquote>
 
-<p><code>basis</code> is the most important column. Only MUI was actually extracted and both host apps rewired onto the package; everything else is analysis and says so.</p>
+<p><code>basis</code>: only MUI was actually extracted; other entries are analysis.</p>
 
 <div class="scroll"><table><thead>
 <tr><th>Candidate</th><th>basis</th><th>verdict</th><th>shared</th><th>per site</th><th>shared %</th></tr>
@@ -376,7 +370,6 @@
 <p>Leakage is clean for every pairing except mangrove-carbon, whose global stylesheet is not containable. Ant Design loses every cascade conflict to Mangrove - which the realistic layouts showed is not a matter of taste: Mangrove's rules also cover Select's own value, so its filters render blank on the Mangrove host.</p>
 </blockquote>
 
-<p>RTL and accessibility used to be two columns here. They are now A6 and A7: both are estate-wide obligations rather than symptoms of host coexistence, and both were too consequential to leave as columns in someone else's table.</p>
 
 <div class="scroll"><table><thead>
 <tr><th>Pairing</th><th>leakage</th><th>documented setup loadable as-is</th></tr>
@@ -401,7 +394,7 @@
 <p>React Aria and Carbon resolve tokens in the browser, so a Mangrove change is a stylesheet swap. MUI, Mantine and Ant Design bake values in, making it a rebuild of every site. Carbon leaves 21-22 of 71 tokens unreachable at all.</p>
 </blockquote>
 
-<p><code>unreachable</code> tokens are a ceiling, not a cost: there is no hook to attach them to. <code>propagation</code> is how a Mangrove token change reaches a built site - a stylesheet swap reaches every site at once; a rebuild is per site, forever.</p>
+<p><code>unreachable</code>: tokens with no hook to attach to. <code>propagation</code>: stylesheet swap reaches every site at once; rebuild is per site.</p>
 
 <div class="scroll"><table><thead>
 <tr><th>Pairing</th><th>tokens applied</th><th>unreachable</th><th>propagation</th><th>live var() refs in shipped CSS</th></tr>
@@ -426,7 +419,7 @@
 <p>MUI Community fails on both hosts and cannot be fixed within the brief's constraints. React Aria and Ant Design are clean at zero cost; Mantine is clean only after mitigation. This needs a policy call, not a bug fix.</p>
 </blockquote>
 
-<p>Read <code>status</code> against <code>setup</code>. <code>clean</code> at <code>native</code>/0 lines means a <code>dir</code> attribute sufficed. <code>clean</code> at <code>composed</code>/18 lines means the library needed configuring and mitigating first. Both print as clean; they are not the same purchase.</p>
+<p>Read <code>status</code> against <code>setup</code>: <code>clean</code> at <code>native</code>/0 lines means a <code>dir</code> attribute sufficed; <code>clean</code> at <code>composed</code>/18 lines means the library needed mitigation.</p>
 
 <div class="scroll"><table><thead>
 <tr><th>Pairing</th><th>status</th><th>setup</th><th>custom lines</th><th>recorded issues</th></tr>
@@ -443,7 +436,7 @@
 <tr><td>mangrove-antd</td><td>clean</td><td>native</td><td>0</td><td>0</td></tr>
 </tbody></table></div>
 
-<p>A candidate whose two hosts disagree implicates the host; one whose two hosts agree implicates the candidate. Every recorded issue is reproduced verbatim below, because ownership - candidate, third-party dependency, or mitigated - decides what it means, and that is judgement rather than a number.</p>
+<p>Two hosts agreeing implicates the candidate; disagreeing implicates the host. Recorded issues are reproduced verbatim below.</p>
 
 <details><summary>Recorded RTL issues, per pairing</summary>
 
@@ -477,7 +470,7 @@
 <p>Zero is a floor, not a conformance claim: no screen-reader or human keyboard pass was run on any pairing. And the floor is lower than the kitchen sinks suggested - the realistic layouts found a critical unnamed-button defect in Mantine's Modal that every scoped axe run in this repository was blind to, because portalled overlays render outside the scanned subtree.</p>
 </blockquote>
 
-<p><code>incomplete</code> is not a pass: it counts checks axe declined to decide, each of which is work a human still owes. Nine of the ten runs ran axe unscoped, so these counts are sound at the level of *zero versus some* and unsound at the level of exact numbers.</p>
+<p><code>incomplete</code> counts checks axe declined to decide. Nine of ten runs ran axe unscoped, so counts are directional, not exact.</p>
 
 <div class="scroll"><table><thead>
 <tr><th>Pairing</th><th>critical</th><th>serious</th><th>incomplete</th><th>scope</th></tr>
@@ -494,13 +487,11 @@
 <tr><td>mangrove-antd</td><td>0</td><td>1</td><td>1</td><td>whole page, unscoped</td></tr>
 </tbody></table></div>
 
-<p><strong>Zero automated violations is a floor, not a conformance claim.</strong> No screen-reader pass, no human keyboard-only walkthrough and no plain-language review was run on any pairing. Automated tooling reaches a minority of WCAG criteria, so a row of zeroes means the automated subset passed - not that the pairing is accessible. See <a href="./decision-axes.md">decision-axes.md</a> for what ownership does to these numbers.</p>
+<p><strong>Zero automated violations is a floor, not a conformance claim.</strong> No screen-reader or keyboard-only walkthrough was run. A row of zeroes means the automated subset passed.</p>
 
 <h2>Supporting figures</h2>
 
-<p>Reported because they are asked for, not because they decide anything.</p>
-
-<p>The two dependency columns disagree, and the disagreement is the point. <code>prod pkgs</code> is the production tree measured for every app by one method (<code>pnpm deps:count</code>). <code>as recorded</code> is whatever each run put in its own <code>evidence.json</code>. Those figures were each measured differently and they reorder the candidates - Mantine was recorded at 112 where a production count gives 27 - so only the first column is safe to compare across rows.</p>
+<p><code>prod pkgs</code> is measured uniformly (<code>pnpm deps:count</code>). <code>as recorded</code> is each run's self-reported figure; the two disagree and only <code>prod pkgs</code> is comparable across rows.</p>
 
 <div class="scroll"><table><thead>
 <tr><th>Pairing</th><th>custom CSS lines</th><th>bundle kB gz</th><th>prod pkgs</th><th>as recorded</th><th>licences</th><th>build s</th></tr>

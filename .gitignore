@@ -18,6 +18,7 @@ apps/*/screenshots/
 .env.local
 
 # Preview scratch.
+packages/host-preview/screenshots/
 packages/host-preview/test-results/
 
 # Playwright's per-test working dir (traces, error contexts). The JSON files
