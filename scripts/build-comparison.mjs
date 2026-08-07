@@ -19,6 +19,7 @@
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { siteNavHtml, siteNavCss } from "./lib/site-nav.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, "..");
@@ -387,11 +388,12 @@ const html = `<!doctype html>
         .st-cus { background:#3a2508; color:#e0a86a; }
         .st-u   { background:#3a1215; color:#e08a92; }
       }
+${siteNavCss}
     </style>
   </head>
   <body>
     <main>
-      <p><a href="./">&larr; Back to the ranking</a></p>
+${siteNavHtml("comparison")}
 ${toHtml(markdown)}
     </main>
   </body>
