@@ -18,16 +18,16 @@ it answers, then the measurements behind it.
 
 | Pairing | native||one documented component did it | composed||assembled from multiple components | custom||built from scratch | beyond native||composed + custom; lower is easier | traps||documented approach failed, needed a workaround | wrappers||glue components the demo had to write | flagged for review||may need a human judgement call |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| delta-react-aria | 20 | 8 | 2 | **10** | 5 | 5 (104 ln) | 7 |
-| mangrove-react-aria | 21 | 7 | 2 | **9** | 3 | 3 (78 ln) | 7 |
-| delta-mui | 26 | 4 | 0 | **4** | 5 | 3 (62 ln) | 7 |
-| mangrove-mui | 26 | 4 | 0 | **4** | 7 | 2 (53 ln) | 10 |
-| delta-carbon | 19 | 10 | 1 | **11** | 14 | 4 (71 ln) | 10 |
-| mangrove-carbon | 19 | 10 | 1 | **11** | 8 | 4 (71 ln) | 11 |
-| delta-mantine | 20 | 7 | 3 | **10** | 11 | 4 (179 ln) | 10 |
-| mangrove-mantine | 19 | 10 | 1 | **11** | 9 | 4 (176 ln) | 9 |
-| delta-antd | 28 | 1 | 1 | **2** | 7 | 4 (128 ln) | 7 |
-| mangrove-antd | 28 | 1 | 1 | **2** | 7 | 4 (128 ln) | 9 |
+| delta-react-aria | {spark:20:28} | {spark:8:10} | {spark:2:3} | **{spark:10:11}** | {spark:5:14} | 5 (104 ln) | {spark:7:11} |
+| mangrove-react-aria | {spark:21:28} | {spark:7:10} | {spark:2:3} | **{spark:9:11}** | {spark:3:14} | 3 (78 ln) | {spark:7:11} |
+| delta-mui | {spark:26:28} | {spark:4:10} | {spark:0:3} | **{spark:4:11}** | {spark:5:14} | 3 (62 ln) | {spark:7:11} |
+| mangrove-mui | {spark:26:28} | {spark:4:10} | {spark:0:3} | **{spark:4:11}** | {spark:7:14} | 2 (53 ln) | {spark:10:11} |
+| delta-carbon | {spark:19:28} | {spark:10:10} | {spark:1:3} | **{spark:11:11}** | {spark:14:14} | 4 (71 ln) | {spark:10:11} |
+| mangrove-carbon | {spark:19:28} | {spark:10:10} | {spark:1:3} | **{spark:11:11}** | {spark:8:14} | 4 (71 ln) | {spark:11:11} |
+| delta-mantine | {spark:20:28} | {spark:7:10} | {spark:3:3} | **{spark:10:11}** | {spark:11:14} | 4 (179 ln) | {spark:10:11} |
+| mangrove-mantine | {spark:19:28} | {spark:10:10} | {spark:1:3} | **{spark:11:11}** | {spark:9:14} | 4 (176 ln) | {spark:9:11} |
+| delta-antd | {spark:28:28} | {spark:1:10} | {spark:1:3} | **{spark:2:11}** | {spark:7:14} | 4 (128 ln) | {spark:7:11} |
+| mangrove-antd | {spark:28:28} | {spark:1:10} | {spark:1:3} | **{spark:2:11}** | {spark:7:14} | 4 (128 ln) | {spark:9:11} |
 
 Each friction-log entry is a place the documented approach did not suffice.
 
@@ -152,16 +152,16 @@ Every distinct styling hook, classified by the promise behind it.
 
 | Pairing | attribute||semantic selectors like [data-*], [slot] | contract||documented styling API; safe to use | off route||bypasses the library's theming; fragile | of which hashed||generated class names that change between builds | CSS rules||total rules in the demo's own stylesheets |
 | --- | --- | --- | --- | --- | --- |
-| delta-react-aria | 22 | 0 | **0** | 0 | 213 |
-| mangrove-react-aria | 18 | 0 | **0** | 0 | 155 |
-| delta-mui | 0 | 2 | **0** | 0 | 3 |
-| mangrove-mui | 0 | 4 | **0** | 0 | 5 |
-| delta-carbon | 0 | 0 | **19** | 0 | 48 |
-| mangrove-carbon | 0 | 0 | **15** | 0 | 53 |
-| delta-mantine | 3 | 3 | **0** | 0 | 16 |
-| mangrove-mantine | 2 | 4 | **0** | 0 | 22 |
-| delta-antd | 0 | 0 | **0** | 0 | 8 |
-| mangrove-antd | 0 | 0 | **0** | 0 | 6 |
+| delta-react-aria | {spark:22:22} | {spark:0:4} | **0** | 0 | {spark:213:213} |
+| mangrove-react-aria | {spark:18:22} | {spark:0:4} | **0** | 0 | {spark:155:213} |
+| delta-mui | {spark:0:22} | {spark:2:4} | **0** | 0 | {spark:3:213} |
+| mangrove-mui | {spark:0:22} | {spark:4:4} | **0** | 0 | {spark:5:213} |
+| delta-carbon | {spark:0:22} | {spark:0:4} | **{spark:19:19}** | 0 | {spark:48:213} |
+| mangrove-carbon | {spark:0:22} | {spark:0:4} | **{spark:15:19}** | 0 | {spark:53:213} |
+| delta-mantine | {spark:3:22} | {spark:3:4} | **0** | 0 | {spark:16:213} |
+| mangrove-mantine | {spark:2:22} | {spark:4:4} | **0** | 0 | {spark:22:213} |
+| delta-antd | {spark:0:22} | {spark:0:4} | **0** | 0 | {spark:8:213} |
+| mangrove-antd | {spark:0:22} | {spark:0:4} | **0** | 0 | {spark:6:213} |
 
 Mantine's `.mantine-{Component}-{element}` classes are a documented API
 (`withStaticClasses`), so they count as contract. Carbon's `cds--` classes are
@@ -291,16 +291,16 @@ reaches every site at once; rebuild is per site.
 
 | Pairing | tokens applied||UNDRR design tokens successfully connected | unreachable||tokens with no hook to attach to | propagation||how a token change reaches every site | live var() refs in shipped CSS||CSS custom properties surviving to production |
 | --- | --- | --- | --- | --- |
-| delta-react-aria | 48 | 0 | **stylesheet-swap** | 409 |
-| mangrove-react-aria | 47 | 0 | **stylesheet-swap** | 309 |
-| delta-mui | 29 | 0 | **mostly-rebuild** | 38 |
-| mangrove-mui | 32 | 0 | **mostly-rebuild** | 38 |
-| delta-carbon | 50 | **21** | **stylesheet-swap** | 263 |
-| mangrove-carbon | 50 | **22** | **stylesheet-swap** | 201 |
-| delta-mantine | 66 | **5** | **mostly-rebuild** | 44 |
-| mangrove-mantine | 62 | 0 | **mostly-rebuild** | 44 |
-| delta-antd | 44 | 0 | **mostly-rebuild** | 42 |
-| mangrove-antd | 44 | 0 | **mostly-rebuild** | 41 |
+| delta-react-aria | {spark:48:66} | 0 | **stylesheet-swap** | {spark:409:409} |
+| mangrove-react-aria | {spark:47:66} | 0 | **stylesheet-swap** | {spark:309:409} |
+| delta-mui | {spark:29:66} | 0 | **mostly-rebuild** | {spark:38:409} |
+| mangrove-mui | {spark:32:66} | 0 | **mostly-rebuild** | {spark:38:409} |
+| delta-carbon | {spark:50:66} | **{spark:21:22}** | **stylesheet-swap** | {spark:263:409} |
+| mangrove-carbon | {spark:50:66} | **{spark:22:22}** | **stylesheet-swap** | {spark:201:409} |
+| delta-mantine | {spark:66:66} | **{spark:5:22}** | **mostly-rebuild** | {spark:44:409} |
+| mangrove-mantine | {spark:62:66} | 0 | **mostly-rebuild** | {spark:44:409} |
+| delta-antd | {spark:44:66} | 0 | **mostly-rebuild** | {spark:42:409} |
+| mangrove-antd | {spark:44:66} | 0 | **mostly-rebuild** | {spark:41:409} |
 
 ## A6 - Right-to-left
 
@@ -313,16 +313,16 @@ sufficed; `clean` at `composed`/18 lines means the library needed mitigation.
 
 | Pairing | status||does Arabic render correctly? | setup||native (dir attribute) or composed (extra code)? | custom lines||lines of code needed to make RTL work | recorded issues||defects found during RTL testing |
 | --- | --- | --- | --- | --- |
-| delta-react-aria | clean | native | 0 | 0 |
-| mangrove-react-aria | clean | native | 0 | 0 |
-| delta-mui | clean | composed | 29 | 0 |
-| mangrove-mui | clean | composed | 29 | 0 |
-| delta-carbon | clean | native | 0 | 1 |
-| mangrove-carbon | clean | composed | 6 | 2 |
-| delta-mantine | clean | composed | 18 | 2 |
-| mangrove-mantine | clean | composed | 10 | 0 |
-| delta-antd | clean | native | 0 | 0 |
-| mangrove-antd | clean | native | 0 | 0 |
+| delta-react-aria | clean | native | {spark:0:29} | {spark:0:2} |
+| mangrove-react-aria | clean | native | {spark:0:29} | {spark:0:2} |
+| delta-mui | clean | composed | {spark:29:29} | {spark:0:2} |
+| mangrove-mui | clean | composed | {spark:29:29} | {spark:0:2} |
+| delta-carbon | clean | native | {spark:0:29} | {spark:1:2} |
+| mangrove-carbon | clean | composed | {spark:6:29} | {spark:2:2} |
+| delta-mantine | clean | composed | {spark:18:29} | {spark:2:2} |
+| mangrove-mantine | clean | composed | {spark:10:29} | {spark:0:2} |
+| delta-antd | clean | native | {spark:0:29} | {spark:0:2} |
+| mangrove-antd | clean | native | {spark:0:29} | {spark:0:2} |
 
 Two hosts agreeing implicates the candidate; disagreeing implicates the host.
 Recorded issues are reproduced verbatim below.
@@ -356,16 +356,16 @@ unscoped, so counts are directional, not exact.
 
 | Pairing | critical||must-fix violations (axe automated scan) | serious||should-fix violations | incomplete||axe could not decide; needs a human | scope||what part of the page was scanned |
 | --- | --- | --- | --- | --- |
-| delta-react-aria | 0 | 0 | 1 | whole page, unscoped |
-| mangrove-react-aria | 0 | 0 | 1 | whole page, unscoped |
-| delta-mui | 0 | 1 | 4 | whole page, unscoped |
-| mangrove-mui | 0 | 1 | 4 | candidate subtree |
-| delta-carbon | 0 | 2 | 2 | whole page, unscoped |
-| mangrove-carbon | 0 | 1 | 2 | whole page, unscoped |
-| delta-mantine | 0 | 0 | 1 | whole page, unscoped |
-| mangrove-mantine | 0 | 0 | 0 | whole page, unscoped |
-| delta-antd | 0 | 1 | 1 | whole page, unscoped |
-| mangrove-antd | 0 | 1 | 1 | whole page, unscoped |
+| delta-react-aria | 0 | {spark:0:2} | {spark:1:4} | whole page, unscoped |
+| mangrove-react-aria | 0 | {spark:0:2} | {spark:1:4} | whole page, unscoped |
+| delta-mui | 0 | {spark:1:2} | {spark:4:4} | whole page, unscoped |
+| mangrove-mui | 0 | {spark:1:2} | {spark:4:4} | candidate subtree |
+| delta-carbon | 0 | {spark:2:2} | {spark:2:4} | whole page, unscoped |
+| mangrove-carbon | 0 | {spark:1:2} | {spark:2:4} | whole page, unscoped |
+| delta-mantine | 0 | {spark:0:2} | {spark:1:4} | whole page, unscoped |
+| mangrove-mantine | 0 | {spark:0:2} | {spark:0:4} | whole page, unscoped |
+| delta-antd | 0 | {spark:1:2} | {spark:1:4} | whole page, unscoped |
+| mangrove-antd | 0 | {spark:1:2} | {spark:1:4} | whole page, unscoped |
 
 **Zero automated violations is a floor, not a conformance claim.** No screen-reader
 or keyboard-only walkthrough was run. A row of zeroes means the automated subset passed.
@@ -377,14 +377,14 @@ self-reported figure; the two disagree and only `prod pkgs` is comparable across
 
 | Pairing | custom CSS lines||written by the demo, not the library | bundle kB gz||shipped JavaScript size, gzipped | prod pkgs||production npm packages (uniform method) | as recorded||self-reported by each run; not comparable | licences||licence families across dependencies | build s||seconds to build from clean |
 | --- | --- | --- | --- | --- | --- | --- |
-| delta-react-aria | 715 | 238.8 | **16** | 19 | 0BSD 1, Apache-2.0 8, MIT 7 | 2 |
-| mangrove-react-aria | 661 | 237.6 | **17** | 20 | 0BSD 1, Apache-2.0 9, MIT 7 | 1.2 |
-| delta-mui | 14 | 387.4 | **92** | 142 | BSD-3-Clause 3, ISC 2, MIT 87 | 2.4 |
-| mangrove-mui | 27 | 397.6 | **93** | 158 | Apache-2.0 1, BSD-3-Clause 3, ISC 2, MIT 87 | 1.7 |
-| delta-carbon | 300 | 261.5 | **78** | 145 | 0BSD 1, Apache-2.0 16, BSD-3-Clause 1, MIT 51, OFL-1.1 9 | 2.8 |
-| mangrove-carbon | 351 | 207.8 | **79** | 146 | 0BSD 1, Apache-2.0 17, BSD-3-Clause 1, MIT 51, OFL-1.1 9 | 4.7 |
-| delta-mantine | 72 | 238.8 | **27** | 112 | (MIT OR CC0-1.0) 1, 0BSD 1, MIT 25 | 2.6 |
-| mangrove-mantine | 103 | 270.9 | **28** | 113 | (MIT OR CC0-1.0) 1, 0BSD 1, Apache-2.0 1, MIT 25 | 3.58 |
-| delta-antd | 46 | 392.3 | **68** | 68 | MIT 68 | 1.5 |
-| mangrove-antd | 46 | 423.4 | **69** | 69 | Apache-2.0 1, MIT 68 | 1.5 |
+| delta-react-aria | {spark:715:715} | {spark:238.8:423.4} | **{spark:16:93}** | {spark:19:158} | 0BSD 1, Apache-2.0 8, MIT 7 | {spark:2:4.7} |
+| mangrove-react-aria | {spark:661:715} | {spark:237.6:423.4} | **{spark:17:93}** | {spark:20:158} | 0BSD 1, Apache-2.0 9, MIT 7 | {spark:1.2:4.7} |
+| delta-mui | {spark:14:715} | {spark:387.4:423.4} | **{spark:92:93}** | {spark:142:158} | BSD-3-Clause 3, ISC 2, MIT 87 | {spark:2.4:4.7} |
+| mangrove-mui | {spark:27:715} | {spark:397.6:423.4} | **{spark:93:93}** | {spark:158:158} | Apache-2.0 1, BSD-3-Clause 3, ISC 2, MIT 87 | {spark:1.7:4.7} |
+| delta-carbon | {spark:300:715} | {spark:261.5:423.4} | **{spark:78:93}** | {spark:145:158} | 0BSD 1, Apache-2.0 16, BSD-3-Clause 1, MIT 51, OFL-1.1 9 | {spark:2.8:4.7} |
+| mangrove-carbon | {spark:351:715} | {spark:207.8:423.4} | **{spark:79:93}** | {spark:146:158} | 0BSD 1, Apache-2.0 17, BSD-3-Clause 1, MIT 51, OFL-1.1 9 | {spark:4.7:4.7} |
+| delta-mantine | {spark:72:715} | {spark:238.8:423.4} | **{spark:27:93}** | {spark:112:158} | (MIT OR CC0-1.0) 1, 0BSD 1, MIT 25 | {spark:2.6:4.7} |
+| mangrove-mantine | {spark:103:715} | {spark:270.9:423.4} | **{spark:28:93}** | {spark:113:158} | (MIT OR CC0-1.0) 1, 0BSD 1, Apache-2.0 1, MIT 25 | {spark:3.58:4.7} |
+| delta-antd | {spark:46:715} | {spark:392.3:423.4} | **{spark:68:93}** | {spark:68:158} | MIT 68 | {spark:1.5:4.7} |
+| mangrove-antd | {spark:46:715} | {spark:423.4:423.4} | **{spark:69:93}** | {spark:69:158} | Apache-2.0 1, MIT 68 | {spark:1.5:4.7} |
 

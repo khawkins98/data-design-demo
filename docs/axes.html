@@ -33,6 +33,9 @@
       th, td { text-align: left; padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); white-space: nowrap; }
       th { background: color-mix(in srgb, var(--border) 30%, transparent); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; vertical-align: bottom; }
       .th-hint { display: block; font-weight: 400; text-transform: none; letter-spacing: 0; font-size: 0.6875rem; color: var(--muted); line-height: 1.3; margin-top: 0.125rem; white-space: normal; }
+      .spark { position: relative; display: inline-block; min-width: 3rem; }
+      .spark-bar { position: absolute; inset: 0; border-radius: 2px; background: color-mix(in srgb, var(--accent) 18%, transparent); pointer-events: none; }
+      @media (prefers-color-scheme: dark) { .spark-bar { background: color-mix(in srgb, var(--accent) 25%, transparent); } }
       tbody tr:last-child td { border-bottom: 0; }
       td:first-child { font-family: ui-monospace, monospace; font-size: 0.75rem; }
       li { max-width: 68ch; font-size: 0.875rem; }
@@ -91,16 +94,16 @@
 <div class="scroll"><table><thead>
 <tr><th>Pairing</th><th>native<span class="th-hint">one documented component did it</span></th><th>composed<span class="th-hint">assembled from multiple components</span></th><th>custom<span class="th-hint">built from scratch</span></th><th>beyond native<span class="th-hint">composed + custom; lower is easier</span></th><th>traps<span class="th-hint">documented approach failed, needed a workaround</span></th><th>wrappers<span class="th-hint">glue components the demo had to write</span></th><th>flagged for review<span class="th-hint">may need a human judgement call</span></th></tr>
 </thead><tbody>
-<tr><td>delta-react-aria</td><td>20</td><td>8</td><td>2</td><td><strong>10</strong></td><td>5</td><td>5 (104 ln)</td><td>7</td></tr>
-<tr><td>mangrove-react-aria</td><td>21</td><td>7</td><td>2</td><td><strong>9</strong></td><td>3</td><td>3 (78 ln)</td><td>7</td></tr>
-<tr><td>delta-mui</td><td>26</td><td>4</td><td>0</td><td><strong>4</strong></td><td>5</td><td>3 (62 ln)</td><td>7</td></tr>
-<tr><td>mangrove-mui</td><td>26</td><td>4</td><td>0</td><td><strong>4</strong></td><td>7</td><td>2 (53 ln)</td><td>10</td></tr>
-<tr><td>delta-carbon</td><td>19</td><td>10</td><td>1</td><td><strong>11</strong></td><td>14</td><td>4 (71 ln)</td><td>10</td></tr>
-<tr><td>mangrove-carbon</td><td>19</td><td>10</td><td>1</td><td><strong>11</strong></td><td>8</td><td>4 (71 ln)</td><td>11</td></tr>
-<tr><td>delta-mantine</td><td>20</td><td>7</td><td>3</td><td><strong>10</strong></td><td>11</td><td>4 (179 ln)</td><td>10</td></tr>
-<tr><td>mangrove-mantine</td><td>19</td><td>10</td><td>1</td><td><strong>11</strong></td><td>9</td><td>4 (176 ln)</td><td>9</td></tr>
-<tr><td>delta-antd</td><td>28</td><td>1</td><td>1</td><td><strong>2</strong></td><td>7</td><td>4 (128 ln)</td><td>7</td></tr>
-<tr><td>mangrove-antd</td><td>28</td><td>1</td><td>1</td><td><strong>2</strong></td><td>7</td><td>4 (128 ln)</td><td>9</td></tr>
+<tr><td>delta-react-aria</td><td><span class="spark"><span class="spark-bar" style="width:71%"></span>20</span></td><td><span class="spark"><span class="spark-bar" style="width:80%"></span>8</span></td><td><span class="spark"><span class="spark-bar" style="width:67%"></span>2</span></td><td><strong><span class="spark"><span class="spark-bar" style="width:91%"></span>10</span></strong></td><td><span class="spark"><span class="spark-bar" style="width:36%"></span>5</span></td><td>5 (104 ln)</td><td><span class="spark"><span class="spark-bar" style="width:64%"></span>7</span></td></tr>
+<tr><td>mangrove-react-aria</td><td><span class="spark"><span class="spark-bar" style="width:75%"></span>21</span></td><td><span class="spark"><span class="spark-bar" style="width:70%"></span>7</span></td><td><span class="spark"><span class="spark-bar" style="width:67%"></span>2</span></td><td><strong><span class="spark"><span class="spark-bar" style="width:82%"></span>9</span></strong></td><td><span class="spark"><span class="spark-bar" style="width:21%"></span>3</span></td><td>3 (78 ln)</td><td><span class="spark"><span class="spark-bar" style="width:64%"></span>7</span></td></tr>
+<tr><td>delta-mui</td><td><span class="spark"><span class="spark-bar" style="width:93%"></span>26</span></td><td><span class="spark"><span class="spark-bar" style="width:40%"></span>4</span></td><td><span class="spark"><span class="spark-bar" style="width:0%"></span>0</span></td><td><strong><span class="spark"><span class="spark-bar" style="width:36%"></span>4</span></strong></td><td><span class="spark"><span class="spark-bar" style="width:36%"></span>5</span></td><td>3 (62 ln)</td><td><span class="spark"><span class="spark-bar" style="width:64%"></span>7</span></td></tr>
+<tr><td>mangrove-mui</td><td><span class="spark"><span class="spark-bar" style="width:93%"></span>26</span></td><td><span class="spark"><span class="spark-bar" style="width:40%"></span>4</span></td><td><span class="spark"><span class="spark-bar" style="width:0%"></span>0</span></td><td><strong><span class="spark"><span class="spark-bar" style="width:36%"></span>4</span></strong></td><td><span class="spark"><span class="spark-bar" style="width:50%"></span>7</span></td><td>2 (53 ln)</td><td><span class="spark"><span class="spark-bar" style="width:91%"></span>10</span></td></tr>
+<tr><td>delta-carbon</td><td><span class="spark"><span class="spark-bar" style="width:68%"></span>19</span></td><td><span class="spark"><span class="spark-bar" style="width:100%"></span>10</span></td><td><span class="spark"><span class="spark-bar" style="width:33%"></span>1</span></td><td><strong><span class="spark"><span class="spark-bar" style="width:100%"></span>11</span></strong></td><td><span class="spark"><span class="spark-bar" style="width:100%"></span>14</span></td><td>4 (71 ln)</td><td><span class="spark"><span class="spark-bar" style="width:91%"></span>10</span></td></tr>
+<tr><td>mangrove-carbon</td><td><span class="spark"><span class="spark-bar" style="width:68%"></span>19</span></td><td><span class="spark"><span class="spark-bar" style="width:100%"></span>10</span></td><td><span class="spark"><span class="spark-bar" style="width:33%"></span>1</span></td><td><strong><span class="spark"><span class="spark-bar" style="width:100%"></span>11</span></strong></td><td><span class="spark"><span class="spark-bar" style="width:57%"></span>8</span></td><td>4 (71 ln)</td><td><span class="spark"><span class="spark-bar" style="width:100%"></span>11</span></td></tr>
+<tr><td>delta-mantine</td><td><span class="spark"><span class="spark-bar" style="width:71%"></span>20</span></td><td><span class="spark"><span class="spark-bar" style="width:70%"></span>7</span></td><td><span class="spark"><span class="spark-bar" style="width:100%"></span>3</span></td><td><strong><span class="spark"><span class="spark-bar" style="width:91%"></span>10</span></strong></td><td><span class="spark"><span class="spark-bar" style="width:79%"></span>11</span></td><td>4 (179 ln)</td><td><span class="spark"><span class="spark-bar" style="width:91%"></span>10</span></td></tr>
+<tr><td>mangrove-mantine</td><td><span class="spark"><span class="spark-bar" style="width:68%"></span>19</span></td><td><span class="spark"><span class="spark-bar" style="width:100%"></span>10</span></td><td><span class="spark"><span class="spark-bar" style="width:33%"></span>1</span></td><td><strong><span class="spark"><span class="spark-bar" style="width:100%"></span>11</span></strong></td><td><span class="spark"><span class="spark-bar" style="width:64%"></span>9</span></td><td>4 (176 ln)</td><td><span class="spark"><span class="spark-bar" style="width:82%"></span>9</span></td></tr>
+<tr><td>delta-antd</td><td><span class="spark"><span class="spark-bar" style="width:100%"></span>28</span></td><td><span class="spark"><span class="spark-bar" style="width:10%"></span>1</span></td><td><span class="spark"><span class="spark-bar" style="width:33%"></span>1</span></td><td><strong><span class="spark"><span class="spark-bar" style="width:18%"></span>2</span></strong></td><td><span class="spark"><span class="spark-bar" style="width:50%"></span>7</span></td><td>4 (128 ln)</td><td><span class="spark"><span class="spark-bar" style="width:64%"></span>7</span></td></tr>
+<tr><td>mangrove-antd</td><td><span class="spark"><span class="spark-bar" style="width:100%"></span>28</span></td><td><span class="spark"><span class="spark-bar" style="width:10%"></span>1</span></td><td><span class="spark"><span class="spark-bar" style="width:33%"></span>1</span></td><td><strong><span class="spark"><span class="spark-bar" style="width:18%"></span>2</span></strong></td><td><span class="spark"><span class="spark-bar" style="width:50%"></span>7</span></td><td>4 (128 ln)</td><td><span class="spark"><span class="spark-bar" style="width:82%"></span>9</span></td></tr>
 </tbody></table></div>
 
 <p>Each friction-log entry is a place the documented approach did not suffice.</p>
@@ -249,16 +252,16 @@
 <div class="scroll"><table><thead>
 <tr><th>Pairing</th><th>attribute<span class="th-hint">semantic selectors like [data-*], [slot]</span></th><th>contract<span class="th-hint">documented styling API; safe to use</span></th><th>off route<span class="th-hint">bypasses the library's theming; fragile</span></th><th>of which hashed<span class="th-hint">generated class names that change between builds</span></th><th>CSS rules<span class="th-hint">total rules in the demo's own stylesheets</span></th></tr>
 </thead><tbody>
-<tr><td>delta-react-aria</td><td>22</td><td>0</td><td><strong>0</strong></td><td>0</td><td>213</td></tr>
-<tr><td>mangrove-react-aria</td><td>18</td><td>0</td><td><strong>0</strong></td><td>0</td><td>155</td></tr>
-<tr><td>delta-mui</td><td>0</td><td>2</td><td><strong>0</strong></td><td>0</td><td>3</td></tr>
-<tr><td>mangrove-mui</td><td>0</td><td>4</td><td><strong>0</strong></td><td>0</td><td>5</td></tr>
-<tr><td>delta-carbon</td><td>0</td><td>0</td><td><strong>19</strong></td><td>0</td><td>48</td></tr>
-<tr><td>mangrove-carbon</td><td>0</td><td>0</td><td><strong>15</strong></td><td>0</td><td>53</td></tr>
-<tr><td>delta-mantine</td><td>3</td><td>3</td><td><strong>0</strong></td><td>0</td><td>16</td></tr>
-<tr><td>mangrove-mantine</td><td>2</td><td>4</td><td><strong>0</strong></td><td>0</td><td>22</td></tr>
-<tr><td>delta-antd</td><td>0</td><td>0</td><td><strong>0</strong></td><td>0</td><td>8</td></tr>
-<tr><td>mangrove-antd</td><td>0</td><td>0</td><td><strong>0</strong></td><td>0</td><td>6</td></tr>
+<tr><td>delta-react-aria</td><td><span class="spark"><span class="spark-bar" style="width:100%"></span>22</span></td><td><span class="spark"><span class="spark-bar" style="width:0%"></span>0</span></td><td><strong>0</strong></td><td>0</td><td><span class="spark"><span class="spark-bar" style="width:100%"></span>213</span></td></tr>
+<tr><td>mangrove-react-aria</td><td><span class="spark"><span class="spark-bar" style="width:82%"></span>18</span></td><td><span class="spark"><span class="spark-bar" style="width:0%"></span>0</span></td><td><strong>0</strong></td><td>0</td><td><span class="spark"><span class="spark-bar" style="width:73%"></span>155</span></td></tr>
+<tr><td>delta-mui</td><td><span class="spark"><span class="spark-bar" style="width:0%"></span>0</span></td><td><span class="spark"><span class="spark-bar" style="width:50%"></span>2</span></td><td><strong>0</strong></td><td>0</td><td><span class="spark"><span class="spark-bar" style="width:1%"></span>3</span></td></tr>
+<tr><td>mangrove-mui</td><td><span class="spark"><span class="spark-bar" style="width:0%"></span>0</span></td><td><span class="spark"><span class="spark-bar" style="width:100%"></span>4</span></td><td><strong>0</strong></td><td>0</td><td><span class="spark"><span class="spark-bar" style="width:2%"></span>5</span></td></tr>
+<tr><td>delta-carbon</td><td><span class="spark"><span class="spark-bar" style="width:0%"></span>0</span></td><td><span class="spark"><span class="spark-bar" style="width:0%"></span>0</span></td><td><strong><span class="spark"><span class="spark-bar" style="width:100%"></span>19</span></strong></td><td>0</td><td><span class="spark"><span class="spark-bar" style="width:23%"></span>48</span></td></tr>
+<tr><td>mangrove-carbon</td><td><span class="spark"><span class="spark-bar" style="width:0%"></span>0</span></td><td><span class="spark"><span class="spark-bar" style="width:0%"></span>0</span></td><td><strong><span class="spark"><span class="spark-bar" style="width:79%"></span>15</span></strong></td><td>0</td><td><span class="spark"><span class="spark-bar" style="width:25%"></span>53</span></td></tr>
+<tr><td>delta-mantine</td><td><span class="spark"><span class="spark-bar" style="width:14%"></span>3</span></td><td><span class="spark"><span class="spark-bar" style="width:75%"></span>3</span></td><td><strong>0</strong></td><td>0</td><td><span class="spark"><span class="spark-bar" style="width:8%"></span>16</span></td></tr>
+<tr><td>mangrove-mantine</td><td><span class="spark"><span class="spark-bar" style="width:9%"></span>2</span></td><td><span class="spark"><span class="spark-bar" style="width:100%"></span>4</span></td><td><strong>0</strong></td><td>0</td><td><span class="spark"><span class="spark-bar" style="width:10%"></span>22</span></td></tr>
+<tr><td>delta-antd</td><td><span class="spark"><span class="spark-bar" style="width:0%"></span>0</span></td><td><span class="spark"><span class="spark-bar" style="width:0%"></span>0</span></td><td><strong>0</strong></td><td>0</td><td><span class="spark"><span class="spark-bar" style="width:4%"></span>8</span></td></tr>
+<tr><td>mangrove-antd</td><td><span class="spark"><span class="spark-bar" style="width:0%"></span>0</span></td><td><span class="spark"><span class="spark-bar" style="width:0%"></span>0</span></td><td><strong>0</strong></td><td>0</td><td><span class="spark"><span class="spark-bar" style="width:3%"></span>6</span></td></tr>
 </tbody></table></div>
 
 <p>Mantine's <code>.mantine-{Component}-{element}</code> classes are a documented API (<code>withStaticClasses</code>), so they count as contract. Carbon's <code>cds--</code> classes are stable but off the documented theming route (<code>--cds-*</code> custom properties).</p>
@@ -418,16 +421,16 @@
 <div class="scroll"><table><thead>
 <tr><th>Pairing</th><th>tokens applied<span class="th-hint">UNDRR design tokens successfully connected</span></th><th>unreachable<span class="th-hint">tokens with no hook to attach to</span></th><th>propagation<span class="th-hint">how a token change reaches every site</span></th><th>live var() refs in shipped CSS<span class="th-hint">CSS custom properties surviving to production</span></th></tr>
 </thead><tbody>
-<tr><td>delta-react-aria</td><td>48</td><td>0</td><td><strong>stylesheet-swap</strong></td><td>409</td></tr>
-<tr><td>mangrove-react-aria</td><td>47</td><td>0</td><td><strong>stylesheet-swap</strong></td><td>309</td></tr>
-<tr><td>delta-mui</td><td>29</td><td>0</td><td><strong>mostly-rebuild</strong></td><td>38</td></tr>
-<tr><td>mangrove-mui</td><td>32</td><td>0</td><td><strong>mostly-rebuild</strong></td><td>38</td></tr>
-<tr><td>delta-carbon</td><td>50</td><td><strong>21</strong></td><td><strong>stylesheet-swap</strong></td><td>263</td></tr>
-<tr><td>mangrove-carbon</td><td>50</td><td><strong>22</strong></td><td><strong>stylesheet-swap</strong></td><td>201</td></tr>
-<tr><td>delta-mantine</td><td>66</td><td><strong>5</strong></td><td><strong>mostly-rebuild</strong></td><td>44</td></tr>
-<tr><td>mangrove-mantine</td><td>62</td><td>0</td><td><strong>mostly-rebuild</strong></td><td>44</td></tr>
-<tr><td>delta-antd</td><td>44</td><td>0</td><td><strong>mostly-rebuild</strong></td><td>42</td></tr>
-<tr><td>mangrove-antd</td><td>44</td><td>0</td><td><strong>mostly-rebuild</strong></td><td>41</td></tr>
+<tr><td>delta-react-aria</td><td><span class="spark"><span class="spark-bar" style="width:73%"></span>48</span></td><td>0</td><td><strong>stylesheet-swap</strong></td><td><span class="spark"><span class="spark-bar" style="width:100%"></span>409</span></td></tr>
+<tr><td>mangrove-react-aria</td><td><span class="spark"><span class="spark-bar" style="width:71%"></span>47</span></td><td>0</td><td><strong>stylesheet-swap</strong></td><td><span class="spark"><span class="spark-bar" style="width:76%"></span>309</span></td></tr>
+<tr><td>delta-mui</td><td><span class="spark"><span class="spark-bar" style="width:44%"></span>29</span></td><td>0</td><td><strong>mostly-rebuild</strong></td><td><span class="spark"><span class="spark-bar" style="width:9%"></span>38</span></td></tr>
+<tr><td>mangrove-mui</td><td><span class="spark"><span class="spark-bar" style="width:48%"></span>32</span></td><td>0</td><td><strong>mostly-rebuild</strong></td><td><span class="spark"><span class="spark-bar" style="width:9%"></span>38</span></td></tr>
+<tr><td>delta-carbon</td><td><span class="spark"><span class="spark-bar" style="width:76%"></span>50</span></td><td><strong><span class="spark"><span class="spark-bar" style="width:95%"></span>21</span></strong></td><td><strong>stylesheet-swap</strong></td><td><span class="spark"><span class="spark-bar" style="width:64%"></span>263</span></td></tr>
+<tr><td>mangrove-carbon</td><td><span class="spark"><span class="spark-bar" style="width:76%"></span>50</span></td><td><strong><span class="spark"><span class="spark-bar" style="width:100%"></span>22</span></strong></td><td><strong>stylesheet-swap</strong></td><td><span class="spark"><span class="spark-bar" style="width:49%"></span>201</span></td></tr>
+<tr><td>delta-mantine</td><td><span class="spark"><span class="spark-bar" style="width:100%"></span>66</span></td><td><strong><span class="spark"><span class="spark-bar" style="width:23%"></span>5</span></strong></td><td><strong>mostly-rebuild</strong></td><td><span class="spark"><span class="spark-bar" style="width:11%"></span>44</span></td></tr>
+<tr><td>mangrove-mantine</td><td><span class="spark"><span class="spark-bar" style="width:94%"></span>62</span></td><td>0</td><td><strong>mostly-rebuild</strong></td><td><span class="spark"><span class="spark-bar" style="width:11%"></span>44</span></td></tr>
+<tr><td>delta-antd</td><td><span class="spark"><span class="spark-bar" style="width:67%"></span>44</span></td><td>0</td><td><strong>mostly-rebuild</strong></td><td><span class="spark"><span class="spark-bar" style="width:10%"></span>42</span></td></tr>
+<tr><td>mangrove-antd</td><td><span class="spark"><span class="spark-bar" style="width:67%"></span>44</span></td><td>0</td><td><strong>mostly-rebuild</strong></td><td><span class="spark"><span class="spark-bar" style="width:10%"></span>41</span></td></tr>
 </tbody></table></div>
 
 <h2 id="a6">A6 - Right-to-left</h2>
@@ -444,16 +447,16 @@
 <div class="scroll"><table><thead>
 <tr><th>Pairing</th><th>status<span class="th-hint">does Arabic render correctly?</span></th><th>setup<span class="th-hint">native (dir attribute) or composed (extra code)?</span></th><th>custom lines<span class="th-hint">lines of code needed to make RTL work</span></th><th>recorded issues<span class="th-hint">defects found during RTL testing</span></th></tr>
 </thead><tbody>
-<tr><td>delta-react-aria</td><td>clean</td><td>native</td><td>0</td><td>0</td></tr>
-<tr><td>mangrove-react-aria</td><td>clean</td><td>native</td><td>0</td><td>0</td></tr>
-<tr><td>delta-mui</td><td>clean</td><td>composed</td><td>29</td><td>0</td></tr>
-<tr><td>mangrove-mui</td><td>clean</td><td>composed</td><td>29</td><td>0</td></tr>
-<tr><td>delta-carbon</td><td>clean</td><td>native</td><td>0</td><td>1</td></tr>
-<tr><td>mangrove-carbon</td><td>clean</td><td>composed</td><td>6</td><td>2</td></tr>
-<tr><td>delta-mantine</td><td>clean</td><td>composed</td><td>18</td><td>2</td></tr>
-<tr><td>mangrove-mantine</td><td>clean</td><td>composed</td><td>10</td><td>0</td></tr>
-<tr><td>delta-antd</td><td>clean</td><td>native</td><td>0</td><td>0</td></tr>
-<tr><td>mangrove-antd</td><td>clean</td><td>native</td><td>0</td><td>0</td></tr>
+<tr><td>delta-react-aria</td><td>clean</td><td>native</td><td><span class="spark"><span class="spark-bar" style="width:0%"></span>0</span></td><td><span class="spark"><span class="spark-bar" style="width:0%"></span>0</span></td></tr>
+<tr><td>mangrove-react-aria</td><td>clean</td><td>native</td><td><span class="spark"><span class="spark-bar" style="width:0%"></span>0</span></td><td><span class="spark"><span class="spark-bar" style="width:0%"></span>0</span></td></tr>
+<tr><td>delta-mui</td><td>clean</td><td>composed</td><td><span class="spark"><span class="spark-bar" style="width:100%"></span>29</span></td><td><span class="spark"><span class="spark-bar" style="width:0%"></span>0</span></td></tr>
+<tr><td>mangrove-mui</td><td>clean</td><td>composed</td><td><span class="spark"><span class="spark-bar" style="width:100%"></span>29</span></td><td><span class="spark"><span class="spark-bar" style="width:0%"></span>0</span></td></tr>
+<tr><td>delta-carbon</td><td>clean</td><td>native</td><td><span class="spark"><span class="spark-bar" style="width:0%"></span>0</span></td><td><span class="spark"><span class="spark-bar" style="width:50%"></span>1</span></td></tr>
+<tr><td>mangrove-carbon</td><td>clean</td><td>composed</td><td><span class="spark"><span class="spark-bar" style="width:21%"></span>6</span></td><td><span class="spark"><span class="spark-bar" style="width:100%"></span>2</span></td></tr>
+<tr><td>delta-mantine</td><td>clean</td><td>composed</td><td><span class="spark"><span class="spark-bar" style="width:62%"></span>18</span></td><td><span class="spark"><span class="spark-bar" style="width:100%"></span>2</span></td></tr>
+<tr><td>mangrove-mantine</td><td>clean</td><td>composed</td><td><span class="spark"><span class="spark-bar" style="width:34%"></span>10</span></td><td><span class="spark"><span class="spark-bar" style="width:0%"></span>0</span></td></tr>
+<tr><td>delta-antd</td><td>clean</td><td>native</td><td><span class="spark"><span class="spark-bar" style="width:0%"></span>0</span></td><td><span class="spark"><span class="spark-bar" style="width:0%"></span>0</span></td></tr>
+<tr><td>mangrove-antd</td><td>clean</td><td>native</td><td><span class="spark"><span class="spark-bar" style="width:0%"></span>0</span></td><td><span class="spark"><span class="spark-bar" style="width:0%"></span>0</span></td></tr>
 </tbody></table></div>
 
 <p>Two hosts agreeing implicates the candidate; disagreeing implicates the host. Recorded issues are reproduced verbatim below.</p>
@@ -496,16 +499,16 @@
 <div class="scroll"><table><thead>
 <tr><th>Pairing</th><th>critical<span class="th-hint">must-fix violations (axe automated scan)</span></th><th>serious<span class="th-hint">should-fix violations</span></th><th>incomplete<span class="th-hint">axe could not decide; needs a human</span></th><th>scope<span class="th-hint">what part of the page was scanned</span></th></tr>
 </thead><tbody>
-<tr><td>delta-react-aria</td><td>0</td><td>0</td><td>1</td><td>whole page, unscoped</td></tr>
-<tr><td>mangrove-react-aria</td><td>0</td><td>0</td><td>1</td><td>whole page, unscoped</td></tr>
-<tr><td>delta-mui</td><td>0</td><td>1</td><td>4</td><td>whole page, unscoped</td></tr>
-<tr><td>mangrove-mui</td><td>0</td><td>1</td><td>4</td><td>candidate subtree</td></tr>
-<tr><td>delta-carbon</td><td>0</td><td>2</td><td>2</td><td>whole page, unscoped</td></tr>
-<tr><td>mangrove-carbon</td><td>0</td><td>1</td><td>2</td><td>whole page, unscoped</td></tr>
-<tr><td>delta-mantine</td><td>0</td><td>0</td><td>1</td><td>whole page, unscoped</td></tr>
-<tr><td>mangrove-mantine</td><td>0</td><td>0</td><td>0</td><td>whole page, unscoped</td></tr>
-<tr><td>delta-antd</td><td>0</td><td>1</td><td>1</td><td>whole page, unscoped</td></tr>
-<tr><td>mangrove-antd</td><td>0</td><td>1</td><td>1</td><td>whole page, unscoped</td></tr>
+<tr><td>delta-react-aria</td><td>0</td><td><span class="spark"><span class="spark-bar" style="width:0%"></span>0</span></td><td><span class="spark"><span class="spark-bar" style="width:25%"></span>1</span></td><td>whole page, unscoped</td></tr>
+<tr><td>mangrove-react-aria</td><td>0</td><td><span class="spark"><span class="spark-bar" style="width:0%"></span>0</span></td><td><span class="spark"><span class="spark-bar" style="width:25%"></span>1</span></td><td>whole page, unscoped</td></tr>
+<tr><td>delta-mui</td><td>0</td><td><span class="spark"><span class="spark-bar" style="width:50%"></span>1</span></td><td><span class="spark"><span class="spark-bar" style="width:100%"></span>4</span></td><td>whole page, unscoped</td></tr>
+<tr><td>mangrove-mui</td><td>0</td><td><span class="spark"><span class="spark-bar" style="width:50%"></span>1</span></td><td><span class="spark"><span class="spark-bar" style="width:100%"></span>4</span></td><td>candidate subtree</td></tr>
+<tr><td>delta-carbon</td><td>0</td><td><span class="spark"><span class="spark-bar" style="width:100%"></span>2</span></td><td><span class="spark"><span class="spark-bar" style="width:50%"></span>2</span></td><td>whole page, unscoped</td></tr>
+<tr><td>mangrove-carbon</td><td>0</td><td><span class="spark"><span class="spark-bar" style="width:50%"></span>1</span></td><td><span class="spark"><span class="spark-bar" style="width:50%"></span>2</span></td><td>whole page, unscoped</td></tr>
+<tr><td>delta-mantine</td><td>0</td><td><span class="spark"><span class="spark-bar" style="width:0%"></span>0</span></td><td><span class="spark"><span class="spark-bar" style="width:25%"></span>1</span></td><td>whole page, unscoped</td></tr>
+<tr><td>mangrove-mantine</td><td>0</td><td><span class="spark"><span class="spark-bar" style="width:0%"></span>0</span></td><td><span class="spark"><span class="spark-bar" style="width:0%"></span>0</span></td><td>whole page, unscoped</td></tr>
+<tr><td>delta-antd</td><td>0</td><td><span class="spark"><span class="spark-bar" style="width:50%"></span>1</span></td><td><span class="spark"><span class="spark-bar" style="width:25%"></span>1</span></td><td>whole page, unscoped</td></tr>
+<tr><td>mangrove-antd</td><td>0</td><td><span class="spark"><span class="spark-bar" style="width:50%"></span>1</span></td><td><span class="spark"><span class="spark-bar" style="width:25%"></span>1</span></td><td>whole page, unscoped</td></tr>
 </tbody></table></div>
 
 <p><strong>Zero automated violations is a floor, not a conformance claim.</strong> No screen-reader or keyboard-only walkthrough was run. A row of zeroes means the automated subset passed.</p>
@@ -517,16 +520,16 @@
 <div class="scroll"><table><thead>
 <tr><th>Pairing</th><th>custom CSS lines<span class="th-hint">written by the demo, not the library</span></th><th>bundle kB gz<span class="th-hint">shipped JavaScript size, gzipped</span></th><th>prod pkgs<span class="th-hint">production npm packages (uniform method)</span></th><th>as recorded<span class="th-hint">self-reported by each run; not comparable</span></th><th>licences<span class="th-hint">licence families across dependencies</span></th><th>build s<span class="th-hint">seconds to build from clean</span></th></tr>
 </thead><tbody>
-<tr><td>delta-react-aria</td><td>715</td><td>238.8</td><td><strong>16</strong></td><td>19</td><td>0BSD 1, Apache-2.0 8, MIT 7</td><td>2</td></tr>
-<tr><td>mangrove-react-aria</td><td>661</td><td>237.6</td><td><strong>17</strong></td><td>20</td><td>0BSD 1, Apache-2.0 9, MIT 7</td><td>1.2</td></tr>
-<tr><td>delta-mui</td><td>14</td><td>387.4</td><td><strong>92</strong></td><td>142</td><td>BSD-3-Clause 3, ISC 2, MIT 87</td><td>2.4</td></tr>
-<tr><td>mangrove-mui</td><td>27</td><td>397.6</td><td><strong>93</strong></td><td>158</td><td>Apache-2.0 1, BSD-3-Clause 3, ISC 2, MIT 87</td><td>1.7</td></tr>
-<tr><td>delta-carbon</td><td>300</td><td>261.5</td><td><strong>78</strong></td><td>145</td><td>0BSD 1, Apache-2.0 16, BSD-3-Clause 1, MIT 51, OFL-1.1 9</td><td>2.8</td></tr>
-<tr><td>mangrove-carbon</td><td>351</td><td>207.8</td><td><strong>79</strong></td><td>146</td><td>0BSD 1, Apache-2.0 17, BSD-3-Clause 1, MIT 51, OFL-1.1 9</td><td>4.7</td></tr>
-<tr><td>delta-mantine</td><td>72</td><td>238.8</td><td><strong>27</strong></td><td>112</td><td>(MIT OR CC0-1.0) 1, 0BSD 1, MIT 25</td><td>2.6</td></tr>
-<tr><td>mangrove-mantine</td><td>103</td><td>270.9</td><td><strong>28</strong></td><td>113</td><td>(MIT OR CC0-1.0) 1, 0BSD 1, Apache-2.0 1, MIT 25</td><td>3.58</td></tr>
-<tr><td>delta-antd</td><td>46</td><td>392.3</td><td><strong>68</strong></td><td>68</td><td>MIT 68</td><td>1.5</td></tr>
-<tr><td>mangrove-antd</td><td>46</td><td>423.4</td><td><strong>69</strong></td><td>69</td><td>Apache-2.0 1, MIT 68</td><td>1.5</td></tr>
+<tr><td>delta-react-aria</td><td><span class="spark"><span class="spark-bar" style="width:100%"></span>715</span></td><td>{spark:238.8:423.4}</td><td><strong><span class="spark"><span class="spark-bar" style="width:17%"></span>16</span></strong></td><td><span class="spark"><span class="spark-bar" style="width:12%"></span>19</span></td><td>0BSD 1, Apache-2.0 8, MIT 7</td><td>{spark:2:4.7}</td></tr>
+<tr><td>mangrove-react-aria</td><td><span class="spark"><span class="spark-bar" style="width:92%"></span>661</span></td><td>{spark:237.6:423.4}</td><td><strong><span class="spark"><span class="spark-bar" style="width:18%"></span>17</span></strong></td><td><span class="spark"><span class="spark-bar" style="width:13%"></span>20</span></td><td>0BSD 1, Apache-2.0 9, MIT 7</td><td>{spark:1.2:4.7}</td></tr>
+<tr><td>delta-mui</td><td><span class="spark"><span class="spark-bar" style="width:2%"></span>14</span></td><td>{spark:387.4:423.4}</td><td><strong><span class="spark"><span class="spark-bar" style="width:99%"></span>92</span></strong></td><td><span class="spark"><span class="spark-bar" style="width:90%"></span>142</span></td><td>BSD-3-Clause 3, ISC 2, MIT 87</td><td>{spark:2.4:4.7}</td></tr>
+<tr><td>mangrove-mui</td><td><span class="spark"><span class="spark-bar" style="width:4%"></span>27</span></td><td>{spark:397.6:423.4}</td><td><strong><span class="spark"><span class="spark-bar" style="width:100%"></span>93</span></strong></td><td><span class="spark"><span class="spark-bar" style="width:100%"></span>158</span></td><td>Apache-2.0 1, BSD-3-Clause 3, ISC 2, MIT 87</td><td>{spark:1.7:4.7}</td></tr>
+<tr><td>delta-carbon</td><td><span class="spark"><span class="spark-bar" style="width:42%"></span>300</span></td><td>{spark:261.5:423.4}</td><td><strong><span class="spark"><span class="spark-bar" style="width:84%"></span>78</span></strong></td><td><span class="spark"><span class="spark-bar" style="width:92%"></span>145</span></td><td>0BSD 1, Apache-2.0 16, BSD-3-Clause 1, MIT 51, OFL-1.1 9</td><td>{spark:2.8:4.7}</td></tr>
+<tr><td>mangrove-carbon</td><td><span class="spark"><span class="spark-bar" style="width:49%"></span>351</span></td><td>{spark:207.8:423.4}</td><td><strong><span class="spark"><span class="spark-bar" style="width:85%"></span>79</span></strong></td><td><span class="spark"><span class="spark-bar" style="width:92%"></span>146</span></td><td>0BSD 1, Apache-2.0 17, BSD-3-Clause 1, MIT 51, OFL-1.1 9</td><td>{spark:4.7:4.7}</td></tr>
+<tr><td>delta-mantine</td><td><span class="spark"><span class="spark-bar" style="width:10%"></span>72</span></td><td>{spark:238.8:423.4}</td><td><strong><span class="spark"><span class="spark-bar" style="width:29%"></span>27</span></strong></td><td><span class="spark"><span class="spark-bar" style="width:71%"></span>112</span></td><td>(MIT OR CC0-1.0) 1, 0BSD 1, MIT 25</td><td>{spark:2.6:4.7}</td></tr>
+<tr><td>mangrove-mantine</td><td><span class="spark"><span class="spark-bar" style="width:14%"></span>103</span></td><td>{spark:270.9:423.4}</td><td><strong><span class="spark"><span class="spark-bar" style="width:30%"></span>28</span></strong></td><td><span class="spark"><span class="spark-bar" style="width:72%"></span>113</span></td><td>(MIT OR CC0-1.0) 1, 0BSD 1, Apache-2.0 1, MIT 25</td><td>{spark:3.58:4.7}</td></tr>
+<tr><td>delta-antd</td><td><span class="spark"><span class="spark-bar" style="width:6%"></span>46</span></td><td>{spark:392.3:423.4}</td><td><strong><span class="spark"><span class="spark-bar" style="width:73%"></span>68</span></strong></td><td><span class="spark"><span class="spark-bar" style="width:43%"></span>68</span></td><td>MIT 68</td><td>{spark:1.5:4.7}</td></tr>
+<tr><td>mangrove-antd</td><td><span class="spark"><span class="spark-bar" style="width:6%"></span>46</span></td><td>{spark:423.4:423.4}</td><td><strong><span class="spark"><span class="spark-bar" style="width:74%"></span>69</span></strong></td><td><span class="spark"><span class="spark-bar" style="width:44%"></span>69</span></td><td>Apache-2.0 1, MIT 68</td><td>{spark:1.5:4.7}</td></tr>
 </tbody></table></div>
 
     </main>

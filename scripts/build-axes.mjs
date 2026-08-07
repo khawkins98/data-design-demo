@@ -256,6 +256,17 @@ function candidateBands(axisKey) {
 
 /* ---------------------------------------------------------------- markdown -- */
 
+/**
+ * Wraps a numeric value with a bar marker for the HTML renderer.
+ * Format: {spark:VALUE:MAX} — inline() converts it to a CSS bar.
+ * Non-numeric or zero-max values pass through unchanged.
+ */
+function spark(value, max) {
+  const n = typeof value === "number" ? value : parseInt(String(value), 10);
+  if (Number.isNaN(n) || !max) return value;
+  return `{spark:${n}:${max}}`;
+}
+
 function table(headers, bodyRows) {
   const head = `| ${headers.join(" | ")} |`;
   const rule = `| ${headers.map(() => "---").join(" | ")} |`;
@@ -296,21 +307,29 @@ lines.push(
 );
 lines.push("`traps` counts documented approaches that failed and needed workarounds.");
 lines.push("");
-lines.push(
-  table(
-    ["Pairing", "native||one documented component did it", "composed||assembled from multiple components", "custom||built from scratch", "beyond native||composed + custom; lower is easier", "traps||documented approach failed, needed a workaround", "wrappers||glue components the demo had to write", "flagged for review||may need a human judgement call"],
-    rows.map((r) => [
-      r.app,
-      r.mix.native,
-      r.mix.composed,
-      r.mix.custom,
-      `**${r.beyondNative}**`,
-      r.escapeHatches,
-      `${r.wrappers.count ?? "?"} (${r.wrappers.totalLines ?? "?"} ln)`,
-      r.humanReview,
-    ]),
-  ),
-);
+{
+  const maxNative = Math.max(...rows.map((r) => r.mix.native));
+  const maxComposed = Math.max(...rows.map((r) => r.mix.composed));
+  const maxCustom = Math.max(...rows.map((r) => r.mix.custom));
+  const maxBeyond = Math.max(...rows.map((r) => r.beyondNative));
+  const maxTraps = Math.max(...rows.map((r) => r.escapeHatches));
+  const maxReview = Math.max(...rows.map((r) => r.humanReview));
+  lines.push(
+    table(
+      ["Pairing", "native||one documented component did it", "composed||assembled from multiple components", "custom||built from scratch", "beyond native||composed + custom; lower is easier", "traps||documented approach failed, needed a workaround", "wrappers||glue components the demo had to write", "flagged for review||may need a human judgement call"],
+      rows.map((r) => [
+        r.app,
+        spark(r.mix.native, maxNative),
+        spark(r.mix.composed, maxComposed),
+        spark(r.mix.custom, maxCustom),
+        `**${spark(r.beyondNative, maxBeyond)}**`,
+        spark(r.escapeHatches, maxTraps),
+        `${r.wrappers.count ?? "?"} (${r.wrappers.totalLines ?? "?"} ln)`,
+        spark(r.humanReview, maxReview),
+      ]),
+    ),
+  );
+}
 lines.push("");
 lines.push("Each friction-log entry is a place the documented approach did not suffice.");
 lines.push("");
@@ -342,19 +361,26 @@ lines.push(
   "`off route`: styling that bypasses the library's own theming mechanism.",
 );
 lines.push("");
-lines.push(
-  table(
-    ["Pairing", "attribute||semantic selectors like [data-*], [slot]", "contract||documented styling API; safe to use", "off route||bypasses the library's theming; fragile", "of which hashed||generated class names that change between builds", "CSS rules||total rules in the demo's own stylesheets"],
-    rows.map((r) => [
-      r.app,
-      r.hooks.attributes,
-      r.hooks.contract,
-      r.hooks.offRoute === 0 ? "**0**" : `**${r.hooks.offRoute}**`,
-      r.hooks.generated,
-      r.hooks.rules,
-    ]),
-  ),
-);
+{
+  const maxAttr = Math.max(...rows.map((r) => r.hooks.attributes));
+  const maxContract = Math.max(...rows.map((r) => r.hooks.contract));
+  const maxOff = Math.max(...rows.map((r) => r.hooks.offRoute));
+  const maxHashed = Math.max(...rows.map((r) => r.hooks.generated));
+  const maxRules = Math.max(...rows.map((r) => r.hooks.rules));
+  lines.push(
+    table(
+      ["Pairing", "attribute||semantic selectors like [data-*], [slot]", "contract||documented styling API; safe to use", "off route||bypasses the library's theming; fragile", "of which hashed||generated class names that change between builds", "CSS rules||total rules in the demo's own stylesheets"],
+      rows.map((r) => [
+        r.app,
+        spark(r.hooks.attributes, maxAttr),
+        spark(r.hooks.contract, maxContract),
+        r.hooks.offRoute === 0 ? "**0**" : `**${spark(r.hooks.offRoute, maxOff)}**`,
+        spark(r.hooks.generated, maxHashed),
+        spark(r.hooks.rules, maxRules),
+      ]),
+    ),
+  );
+}
 lines.push("");
 lines.push(
   "Mantine's `.mantine-{Component}-{element}` classes are a documented API",
@@ -463,18 +489,23 @@ lines.push(
 );
 lines.push("reaches every site at once; rebuild is per site.");
 lines.push("");
-lines.push(
-  table(
-    ["Pairing", "tokens applied||UNDRR design tokens successfully connected", "unreachable||tokens with no hook to attach to", "propagation||how a token change reaches every site", "live var() refs in shipped CSS||CSS custom properties surviving to production"],
-    rows.map((r) => [
-      r.app,
-      r.tokensApplied ?? "?",
-      r.tokensUnreachable ? `**${r.tokensUnreachable}**` : "0",
-      `**${r.propagation.model}**`,
-      r.propagation.cssVarRefs ?? "not built",
-    ]),
-  ),
-);
+{
+  const maxApplied = Math.max(...rows.map((r) => r.tokensApplied ?? 0));
+  const maxUnreachable = Math.max(...rows.map((r) => r.tokensUnreachable ?? 0));
+  const maxVarRefs = Math.max(...rows.map((r) => r.propagation.cssVarRefs ?? 0));
+  lines.push(
+    table(
+      ["Pairing", "tokens applied||UNDRR design tokens successfully connected", "unreachable||tokens with no hook to attach to", "propagation||how a token change reaches every site", "live var() refs in shipped CSS||CSS custom properties surviving to production"],
+      rows.map((r) => [
+        r.app,
+        spark(r.tokensApplied ?? "?", maxApplied),
+        r.tokensUnreachable ? `**${spark(r.tokensUnreachable, maxUnreachable)}**` : "0",
+        `**${r.propagation.model}**`,
+        spark(r.propagation.cssVarRefs ?? "not built", maxVarRefs),
+      ]),
+    ),
+  );
+}
 lines.push("");
 
 pushAxis("A6", "Right-to-left");
@@ -483,18 +514,22 @@ lines.push(
 );
 lines.push("sufficed; `clean` at `composed`/18 lines means the library needed mitigation.");
 lines.push("");
-lines.push(
-  table(
-    ["Pairing", "status||does Arabic render correctly?", "setup||native (dir attribute) or composed (extra code)?", "custom lines||lines of code needed to make RTL work", "recorded issues||defects found during RTL testing"],
-    rows.map((r) => [
-      r.app,
-      r.rtl === "clean" ? "clean" : `**${r.rtl}**`,
-      r.rtlRequirement?.status ?? "?",
-      r.rtlRequirement?.customLinesOfCode ?? "?",
-      r.rtlIssues.length,
-    ]),
-  ),
-);
+{
+  const maxLines = Math.max(...rows.map((r) => r.rtlRequirement?.customLinesOfCode ?? 0));
+  const maxIssues = Math.max(...rows.map((r) => r.rtlIssues.length));
+  lines.push(
+    table(
+      ["Pairing", "status||does Arabic render correctly?", "setup||native (dir attribute) or composed (extra code)?", "custom lines||lines of code needed to make RTL work", "recorded issues||defects found during RTL testing"],
+      rows.map((r) => [
+        r.app,
+        r.rtl === "clean" ? "clean" : `**${r.rtl}**`,
+        r.rtlRequirement?.status ?? "?",
+        spark(r.rtlRequirement?.customLinesOfCode ?? "?", maxLines),
+        spark(r.rtlIssues.length, maxIssues),
+      ]),
+    ),
+  );
+}
 lines.push("");
 lines.push(
   "Two hosts agreeing implicates the candidate; disagreeing implicates the host.",
@@ -518,18 +553,23 @@ lines.push(
 );
 lines.push("unscoped, so counts are directional, not exact.");
 lines.push("");
-lines.push(
-  table(
-    ["Pairing", "critical||must-fix violations (axe automated scan)", "serious||should-fix violations", "incomplete||axe could not decide; needs a human", "scope||what part of the page was scanned"],
-    rows.map((r) => [
-      r.app,
-      r.axe.critical ? `**${r.axe.critical}**` : (r.axe.critical ?? "?"),
-      r.axe.serious ?? "?",
-      r.axe.incomplete ?? "?",
-      r.axe.scope ? "candidate subtree" : "whole page, unscoped",
-    ]),
-  ),
-);
+{
+  const maxCrit = Math.max(...rows.map((r) => r.axe.critical ?? 0));
+  const maxSerious = Math.max(...rows.map((r) => r.axe.serious ?? 0));
+  const maxInc = Math.max(...rows.map((r) => r.axe.incomplete ?? 0));
+  lines.push(
+    table(
+      ["Pairing", "critical||must-fix violations (axe automated scan)", "serious||should-fix violations", "incomplete||axe could not decide; needs a human", "scope||what part of the page was scanned"],
+      rows.map((r) => [
+        r.app,
+        r.axe.critical ? `**${spark(r.axe.critical, maxCrit)}**` : (r.axe.critical ?? "?"),
+        spark(r.axe.serious ?? "?", maxSerious),
+        spark(r.axe.incomplete ?? "?", maxInc),
+        r.axe.scope ? "candidate subtree" : "whole page, unscoped",
+      ]),
+    ),
+  );
+}
 lines.push("");
 lines.push(
   "**Zero automated violations is a floor, not a conformance claim.** No screen-reader",
@@ -546,28 +586,36 @@ lines.push(
 );
 lines.push("self-reported figure; the two disagree and only `prod pkgs` is comparable across rows.");
 lines.push("");
-lines.push(
-  table(
-    ["Pairing", "custom CSS lines||written by the demo, not the library", "bundle kB gz||shipped JavaScript size, gzipped", "prod pkgs||production npm packages (uniform method)", "as recorded||self-reported by each run; not comparable", "licences||licence families across dependencies", "build s||seconds to build from clean"],
-    rows.map((r) => {
-      const deps = dependencyCounts[r.app];
-      const licences = deps?.licences
-        ? Object.entries(deps.licences)
-            .map(([name, count]) => `${name} ${count}`)
-            .join(", ")
-        : "?";
-      return [
-        r.app,
-        r.cssLines ?? "?",
-        r.bundle.gzippedKb ?? "?",
-        deps ? `**${deps.productionPackages}**` : "?",
-        r.bundle.dependencyCount ?? "?",
-        licences,
-        readJson(join(APPS, r.app, "evidence.json")).buildTimeSeconds ?? "?",
-      ];
-    }),
-  ),
-);
+{
+  const maxCss = Math.max(...rows.map((r) => r.cssLines ?? 0));
+  const maxBundle = Math.max(...rows.map((r) => r.bundle.gzippedKb ?? 0));
+  const maxProd = Math.max(...rows.map((r) => dependencyCounts[r.app]?.productionPackages ?? 0));
+  const maxDeps = Math.max(...rows.map((r) => r.bundle.dependencyCount ?? 0));
+  const buildTimes = rows.map((r) => readJson(join(APPS, r.app, "evidence.json")).buildTimeSeconds ?? 0);
+  const maxBuild = Math.max(...buildTimes);
+  lines.push(
+    table(
+      ["Pairing", "custom CSS lines||written by the demo, not the library", "bundle kB gz||shipped JavaScript size, gzipped", "prod pkgs||production npm packages (uniform method)", "as recorded||self-reported by each run; not comparable", "licences||licence families across dependencies", "build s||seconds to build from clean"],
+      rows.map((r, i) => {
+        const deps = dependencyCounts[r.app];
+        const licences = deps?.licences
+          ? Object.entries(deps.licences)
+              .map(([name, count]) => `${name} ${count}`)
+              .join(", ")
+          : "?";
+        return [
+          r.app,
+          spark(r.cssLines ?? "?", maxCss),
+          spark(r.bundle.gzippedKb ?? "?", maxBundle),
+          deps ? `**${spark(deps.productionPackages, maxProd)}**` : "?",
+          spark(r.bundle.dependencyCount ?? "?", maxDeps),
+          licences,
+          spark(buildTimes[i], maxBuild),
+        ];
+      }),
+    ),
+  );
+}
 lines.push("");
 
 const md = lines.join("\n");
@@ -661,6 +709,10 @@ function toHtml(markdown) {
 
 function inline(text) {
   return esc(text)
+    .replace(/\{spark:(\d+):(\d+)\}/g, (_, v, m) => {
+      const pct = Math.round((parseInt(v, 10) / parseInt(m, 10)) * 100);
+      return `<span class="spark"><span class="spark-bar" style="width:${pct}%"></span>${v}</span>`;
+    })
     .replace(/`([^`]+)`/g, "<code>$1</code>")
     .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
     .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
@@ -725,6 +777,9 @@ const html = `<!doctype html>
       th, td { text-align: left; padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); white-space: nowrap; }
       th { background: color-mix(in srgb, var(--border) 30%, transparent); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; vertical-align: bottom; }
       .th-hint { display: block; font-weight: 400; text-transform: none; letter-spacing: 0; font-size: 0.6875rem; color: var(--muted); line-height: 1.3; margin-top: 0.125rem; white-space: normal; }
+      .spark { position: relative; display: inline-block; min-width: 3rem; }
+      .spark-bar { position: absolute; inset: 0; border-radius: 2px; background: color-mix(in srgb, var(--accent) 18%, transparent); pointer-events: none; }
+      @media (prefers-color-scheme: dark) { .spark-bar { background: color-mix(in srgb, var(--accent) 25%, transparent); } }
       tbody tr:last-child td { border-bottom: 0; }
       td:first-child { font-family: ui-monospace, monospace; font-size: 0.75rem; }
       li { max-width: 68ch; font-size: 0.875rem; }
