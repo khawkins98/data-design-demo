@@ -750,75 +750,43 @@ const html = `<!doctype html>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Axis scores - UNDRR data design system evaluation</title>
+    <link rel="stylesheet" href="./mangrove.css" />
     <style>
-      :root {
-        color-scheme: light dark;
-        --bg: #f4f6f8; --surface: #fff; --text: #14232e; --muted: #4a5c69;
-        --border: #c8d2da; --accent: #2f6f8f; --bad: #a11f2c;
-      }
-      @media (prefers-color-scheme: dark) {
-        :root {
-          --bg: #10191f; --surface: #17232b; --text: #e8eef2; --muted: #a3b3bf;
-          --border: #2c3d48; --accent: #7fb3cc; --bad: #ef8b96;
-        }
-      }
-      * { box-sizing: border-box; }
-      body {
-        margin: 0; padding: 2rem 1.5rem 4rem; background: var(--bg); color: var(--text);
-        font-family: system-ui, -apple-system, "Segoe UI", sans-serif; line-height: 1.55;
-      }
-      main { max-width: 74rem; margin: 0 auto; }
-      h1 { font-size: 1.75rem; margin: 0 0 1rem; }
+      :root { --accent: #004f91; --muted: #4a5c69; --border: #d5d5d5; --surface: #fff; --bad: #c10920; }
       h2 { font-size: 1.1875rem; margin: 2.5rem 0 0.5rem; padding-top: 1rem; border-top: 1px solid var(--border); }
-      p { margin: 0 0 0.75rem; max-width: 68ch; color: var(--text); }
-      code { font-size: 0.875em; background: color-mix(in srgb, var(--border) 35%, transparent); padding: 0.1em 0.35em; border-radius: 3px; }
-      strong { color: var(--text); }
+      p { max-width: 68ch; }
       .scroll { overflow-x: auto; margin: 0 0 1rem; border: 1px solid var(--border); border-radius: 6px; background: var(--surface); }
       table { border-collapse: collapse; width: 100%; font-size: 0.8125rem; }
       th, td { text-align: left; padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); white-space: nowrap; }
-      th { background: color-mix(in srgb, var(--border) 30%, transparent); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; vertical-align: bottom; }
+      th { background: #f5f5f5; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; vertical-align: bottom; }
       .th-hint { display: block; font-weight: 400; text-transform: none; letter-spacing: 0; font-size: 0.6875rem; color: var(--muted); line-height: 1.3; margin-top: 0.125rem; white-space: normal; }
       .spark { position: relative; display: inline-block; min-width: 3rem; }
-      .spark-bar { position: absolute; inset: 0; border-radius: 2px; background: color-mix(in srgb, var(--accent) 18%, transparent); pointer-events: none; }
-      @media (prefers-color-scheme: dark) { .spark-bar { background: color-mix(in srgb, var(--accent) 25%, transparent); } }
+      .spark-bar { position: absolute; inset: 0; border-radius: 2px; background: rgba(0,79,145,0.12); pointer-events: none; }
       tbody tr:last-child td { border-bottom: 0; }
       td:first-child { font-family: ui-monospace, monospace; font-size: 0.75rem; }
       li { max-width: 68ch; font-size: 0.875rem; }
       details { margin: 0 0 1rem; }
       summary { cursor: pointer; color: var(--accent); font-size: 0.875rem; }
-      a { color: var(--accent); }
-      nav { margin-bottom: 1.5rem; font-size: 0.875rem; }
-      /* Plain-language Q&A block at the top of each axis section. */
       blockquote.answers {
-        margin: 0 0 1.25rem;
-        padding: 0.875rem 1.125rem;
-        border-inline-start: 4px solid var(--accent);
-        background: var(--surface);
-        border-radius: 0 6px 6px 0;
+        margin: 0 0 1.25rem; padding: 0.875rem 1.125rem;
+        border-inline-start: 4px solid var(--accent); background: var(--surface); border-radius: 0 6px 6px 0;
       }
       blockquote.answers p { margin: 0 0 0.5rem; font-size: 0.9375rem; }
       blockquote.answers p:last-child { margin-bottom: 0; }
-      /* Per-axis band summary strip. */
       .ax-summary { display: flex; flex-wrap: wrap; gap: 0.375rem; margin: 0 0 1.25rem; }
       .ax-chip { display: inline-block; padding: 0.25rem 0.625rem; border-radius: 4px; font-size: 0.8125rem; font-weight: 600; cursor: default; }
       .ax-s { background: #d4edda; color: #155724; }
       .ax-w { background: #fff3cd; color: #856404; }
       .ax-k { background: #ffe0b2; color: #7a4100; }
       .ax-b { background: #f8d7da; color: #721c24; }
-      @media (prefers-color-scheme: dark) {
-        .ax-s { background: #1b3a26; color: #8fd6a4; }
-        .ax-w { background: #3a2e0a; color: #e0c36a; }
-        .ax-k { background: #3a2508; color: #e0a86a; }
-        .ax-b { background: #3a1215; color: #e08a92; }
-      }
 ${siteNavCss}
     </style>
   </head>
   <body>
-    <main>
 ${siteNavHtml("axes")}
+    <div class="mg-container mg-page-content--padded">
 ${injectBandSummaries(toHtml(md))}
-    </main>
+    </div>
   </body>
 </html>
 `;

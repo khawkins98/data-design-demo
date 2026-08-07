@@ -5,24 +5,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Architecture options - UNDRR data design system evaluation</title>
+    <link rel="stylesheet" href="./mangrove.css" />
     <style>
-      :root { color-scheme: light dark; --bg:#f4f6f8; --surface:#fff; --text:#14232e;
-              --muted:#4a5c69; --border:#c8d2da; --accent:#2f6f8f; }
-      @media (prefers-color-scheme: dark) {
-        :root { --bg:#10191f; --surface:#17232b; --text:#e8eef2; --muted:#a3b3bf;
-                --border:#2c3d48; --accent:#7fb3cc; }
-      }
-      * { box-sizing: border-box; }
-      body { margin:0; padding:2rem 1.5rem 4rem; background:var(--bg); color:var(--text);
-             font-family: system-ui, -apple-system, "Segoe UI", sans-serif; line-height:1.6; }
-      main { max-width: 72ch; margin: 0 auto; }
-      h1 { font-size:1.75rem; margin:2rem 0 0.5rem; }
-      h2 { margin-top:2.5rem; font-size:1.25rem; border-bottom:1px solid var(--border); padding-bottom:0.25rem; }
-      h3 { margin-top:2rem; font-size:1.05rem; }
-      h4 { margin-top:1.5rem; font-size:1rem; }
-      p { color:var(--text); }
-      a { color: var(--accent); }
-      code { font-size:0.9em; background:var(--surface); padding:0.1em 0.3em; border-radius:3px; border:1px solid var(--border); }
+      :root { --accent:#004f91; --muted:#4a5c69; --border:#d5d5d5; --surface:#fff; }
       pre { background:var(--surface); border:1px solid var(--border); border-radius:6px;
             padding:1rem; overflow-x:auto; font-size:0.8125rem; }
       pre code { background:none; border:none; padding:0; }
@@ -33,22 +18,47 @@
       table { border-collapse:collapse; font-size:0.8125rem; background:var(--surface); width:100%; }
       th, td { padding:0.375rem 0.625rem; border:1px solid var(--border); text-align:left; vertical-align:top; }
       thead th { background:var(--surface); font-weight:700; }
-      ol, ul { padding-inline-start:1.5rem; }
-      li { margin:0.25rem 0; }
-      li + li { margin-top:0.5rem; }
       .mermaid { background:var(--surface); border:1px solid var(--border); border-radius:6px;
                  padding:1rem; text-align:center; }
 
-      .site-nav { display:flex; flex-wrap:wrap; gap:0; border-bottom:1px solid var(--border); margin:0 0 1.5rem; font-size:0.8125rem; }
-      .site-nav a, .site-nav__current { padding:0.5rem 0.75rem; text-decoration:none; color:var(--muted); white-space:nowrap; }
-      .site-nav a:hover { color:var(--text); background:var(--surface); }
-      .site-nav__current { font-weight:700; color:var(--text); border-bottom:2px solid var(--accent); }
+      .mg-docs-main { max-width:72ch; }
+      .mg-docs-main h1 { font-size:1.75rem; margin:2rem 0 0.5rem; }
+      .mg-docs-main h2 { margin-top:2.5rem; font-size:1.25rem; border-bottom:1px solid #d5d5d5; padding-bottom:0.25rem; }
+      .mg-docs-main h3 { margin-top:2rem; font-size:1.05rem; }
+      .mg-docs-main h4 { margin-top:1.5rem; font-size:1rem; }
+
     </style>
   </head>
   <body>
-    <main>
-<nav class="site-nav"><a href="./">Ranking</a><a href="./axes.html">Decision axes</a><a href="./comparison.html">Requirement matrix</a><a href="./issues.html">Findings</a><span class="site-nav__current">Architecture</span></nav>
-<h1 id="architecture-options-what-adopting-each-candidate-does-to-mangrove">Architecture options — what adopting each candidate does to Mangrove</h1>
+
+    <header id="header" class="mg-page-header mg-page-header--default">
+      <div class="mg-page-header__decoration" aria-hidden="true">
+        <div></div><div></div><div></div><div></div>
+      </div>
+    </header>
+
+    <nav class="mg-mega-wrapper" aria-label="Main Navigation">
+      <ul class="mg-mega-topbar | mg-container mg-container-full-width"
+          role="menubar" aria-label="Main navigation menu">
+          <li class="mg-mega-topbar__item" role="none">
+              <a class="mg-mega-topbar__item-link" href="./" role="menuitem">Ranking</a>
+            </li>
+          <li class="mg-mega-topbar__item" role="none">
+              <a class="mg-mega-topbar__item-link" href="./axes.html" role="menuitem">Decision axes</a>
+            </li>
+          <li class="mg-mega-topbar__item" role="none">
+              <a class="mg-mega-topbar__item-link" href="./comparison.html" role="menuitem">Requirement matrix</a>
+            </li>
+          <li class="mg-mega-topbar__item" role="none">
+              <a class="mg-mega-topbar__item-link" href="./issues.html" role="menuitem">Findings</a>
+            </li>
+          <li class="mg-mega-topbar__item mg-mega-topbar__item--active" role="none">
+              <a class="mg-mega-topbar__item-link" href="./architecture-options.html" role="menuitem">Architecture</a>
+            </li>
+      </ul>
+    </nav>
+    <div class="mg-container mg-page-content--padded">
+<h1 id="architecture-options-what-adopting-each-candidate-does-to-design-system-cohesion-at-undrr">Architecture options — what adopting each candidate does to design system cohesion at UNDRR</h1>
 <p>HAND-WRITTEN. This is a framing for a decision, not a measurement, and it is kept out of the generated pages for that reason. Every number quoted here is traceable to <a href="./scores.md">scores.md</a>, <a href="./axes.md">axes.md</a> or a candidate's <code>evidence.json</code>; the argument built on top of them is the author's, and UNDRR is free to reject it without touching a single score.</p>
 <h2 id="the-question-a-component-inventory-cannot-ask">The question a component inventory cannot ask</h2>
 <p><a href="./comparison.md">comparison.md</a> records 300 assessments and finds that all five candidates cover DELTA's components. That is a real result and a useless one for choosing between them, because every serious React library ships buttons, inputs, selects and tables. It discriminates between nothing.</p>
@@ -141,10 +151,10 @@
 <p>   primitive. A Mangrove component has to inherit focus ring, density, spacing    and RTL behaviour from whatever surrounds it, or it looks foreign. Under shape    C there is only one surrounding context, which is exactly why the shape is    coherent — and why mixing C with A on the same page is the worst of both.</p>
 <h2 id="what-this-does-not-settle">What this does not settle</h2>
 <p>Nothing here changes a score, and it should not be read as doing so. The two conditions on the recommendation in <a href="./scores.md">scores.md</a> still stand: no human accessibility pass has been run against any candidate, and MUI's exclusion rests on a rule UNDRR has not ratified. This document only argues that if shape C is chosen, it should be chosen <em>for the reuse</em>, with the staffing named — and not because a stepper was missing.</p>
-    </main>
+    </div>
     <script type="module">
       import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
-      mermaid.initialize({ startOnLoad: true, theme: window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'default' });
+      mermaid.initialize({ startOnLoad: true, theme: 'default' });
     </script>
   </body>
 </html>

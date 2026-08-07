@@ -353,19 +353,9 @@ const html = `<!doctype html>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Candidate comparison - UNDRR data design system evaluation</title>
+    <link rel="stylesheet" href="./mangrove.css" />
     <style>
-      :root { color-scheme: light dark; --bg:#f4f6f8; --surface:#fff; --text:#14232e;
-              --muted:#4a5c69; --border:#c8d2da; --accent:#2f6f8f; }
-      @media (prefers-color-scheme: dark) {
-        :root { --bg:#10191f; --surface:#17232b; --text:#e8eef2; --muted:#a3b3bf;
-                --border:#2c3d48; --accent:#7fb3cc; }
-      }
-      * { box-sizing: border-box; }
-      body { margin:0; padding:2rem 1.5rem 4rem; background:var(--bg); color:var(--text);
-             font-family: system-ui, -apple-system, "Segoe UI", sans-serif; line-height:1.5; }
-      main { max-width: 90rem; margin: 0 auto; }
-      h1 { font-size:1.75rem; } h2 { margin-top:2.5rem; font-size:1.25rem; }
-      h3 { margin-top:1.5rem; font-size:1rem; }
+      :root { --accent:#004f91; --muted:#4a5c69; --border:#d5d5d5; --surface:#fff; }
       p { max-width: 80ch; color: var(--muted); }
       .scroll { overflow-x:auto; margin:1rem 0; }
       table { border-collapse: collapse; font-size:0.8125rem; background:var(--surface); }
@@ -373,8 +363,6 @@ const html = `<!doctype html>
                white-space:nowrap; }
       thead th { position:sticky; top:0; background:var(--surface); }
       tbody td:first-child, tbody th:first-child { font-weight:600; }
-      code { font-size:0.9em; }
-      a { color: var(--accent); }
       ul { max-width: 80ch; color: var(--muted); }
       .spark { position:relative; display:inline-block; min-width:3.5rem; text-align:right; padding:0 0.3rem; }
       .spark-bar { position:absolute; inset:0; background:var(--accent); opacity:0.13; border-radius:2px; }
@@ -382,20 +370,14 @@ const html = `<!doctype html>
       .st-com { background:#fff3cd; color:#856404; text-align:center; }
       .st-cus { background:#ffe0b2; color:#7a4100; text-align:center; }
       .st-u   { background:#f8d7da; color:#721c24; text-align:center; }
-      @media (prefers-color-scheme: dark) {
-        .st-n   { background:#1b3a26; color:#8fd6a4; }
-        .st-com { background:#3a2e0a; color:#e0c36a; }
-        .st-cus { background:#3a2508; color:#e0a86a; }
-        .st-u   { background:#3a1215; color:#e08a92; }
-      }
 ${siteNavCss}
     </style>
   </head>
   <body>
-    <main>
 ${siteNavHtml("comparison")}
+    <div class="mg-container mg-page-content--padded">
 ${toHtml(markdown)}
-    </main>
+    </div>
   </body>
 </html>
 `;

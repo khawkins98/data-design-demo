@@ -1,4 +1,4 @@
-# Architecture options — what adopting each candidate does to Mangrove
+# Architecture options — what adopting each candidate does to design system cohesion at UNDRR
 
 HAND-WRITTEN. This is a framing for a decision, not a measurement, and it is kept
 out of the generated pages for that reason. Every number quoted here is traceable

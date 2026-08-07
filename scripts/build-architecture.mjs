@@ -221,24 +221,9 @@ const html = `<!doctype html>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Architecture options - UNDRR data design system evaluation</title>
+    <link rel="stylesheet" href="./mangrove.css" />
     <style>
-      :root { color-scheme: light dark; --bg:#f4f6f8; --surface:#fff; --text:#14232e;
-              --muted:#4a5c69; --border:#c8d2da; --accent:#2f6f8f; }
-      @media (prefers-color-scheme: dark) {
-        :root { --bg:#10191f; --surface:#17232b; --text:#e8eef2; --muted:#a3b3bf;
-                --border:#2c3d48; --accent:#7fb3cc; }
-      }
-      * { box-sizing: border-box; }
-      body { margin:0; padding:2rem 1.5rem 4rem; background:var(--bg); color:var(--text);
-             font-family: system-ui, -apple-system, "Segoe UI", sans-serif; line-height:1.6; }
-      main { max-width: 72ch; margin: 0 auto; }
-      h1 { font-size:1.75rem; margin:2rem 0 0.5rem; }
-      h2 { margin-top:2.5rem; font-size:1.25rem; border-bottom:1px solid var(--border); padding-bottom:0.25rem; }
-      h3 { margin-top:2rem; font-size:1.05rem; }
-      h4 { margin-top:1.5rem; font-size:1rem; }
-      p { color:var(--text); }
-      a { color: var(--accent); }
-      code { font-size:0.9em; background:var(--surface); padding:0.1em 0.3em; border-radius:3px; border:1px solid var(--border); }
+      :root { --accent:#004f91; --muted:#4a5c69; --border:#d5d5d5; --surface:#fff; }
       pre { background:var(--surface); border:1px solid var(--border); border-radius:6px;
             padding:1rem; overflow-x:auto; font-size:0.8125rem; }
       pre code { background:none; border:none; padding:0; }
@@ -249,22 +234,19 @@ const html = `<!doctype html>
       table { border-collapse:collapse; font-size:0.8125rem; background:var(--surface); width:100%; }
       th, td { padding:0.375rem 0.625rem; border:1px solid var(--border); text-align:left; vertical-align:top; }
       thead th { background:var(--surface); font-weight:700; }
-      ol, ul { padding-inline-start:1.5rem; }
-      li { margin:0.25rem 0; }
-      li + li { margin-top:0.5rem; }
       .mermaid { background:var(--surface); border:1px solid var(--border); border-radius:6px;
                  padding:1rem; text-align:center; }
 ${siteNavCss}
     </style>
   </head>
   <body>
-    <main>
 ${siteNavHtml("architecture")}
+    <div class="mg-container mg-page-content--padded">
 ${bodyHtml}
-    </main>
+    </div>
     <script type="module">
       import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
-      mermaid.initialize({ startOnLoad: true, theme: window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'default' });
+      mermaid.initialize({ startOnLoad: true, theme: 'default' });
     </script>
   </body>
 </html>

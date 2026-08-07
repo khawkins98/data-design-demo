@@ -5,19 +5,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Candidate comparison - UNDRR data design system evaluation</title>
+    <link rel="stylesheet" href="./mangrove.css" />
     <style>
-      :root { color-scheme: light dark; --bg:#f4f6f8; --surface:#fff; --text:#14232e;
-              --muted:#4a5c69; --border:#c8d2da; --accent:#2f6f8f; }
-      @media (prefers-color-scheme: dark) {
-        :root { --bg:#10191f; --surface:#17232b; --text:#e8eef2; --muted:#a3b3bf;
-                --border:#2c3d48; --accent:#7fb3cc; }
-      }
-      * { box-sizing: border-box; }
-      body { margin:0; padding:2rem 1.5rem 4rem; background:var(--bg); color:var(--text);
-             font-family: system-ui, -apple-system, "Segoe UI", sans-serif; line-height:1.5; }
-      main { max-width: 90rem; margin: 0 auto; }
-      h1 { font-size:1.75rem; } h2 { margin-top:2.5rem; font-size:1.25rem; }
-      h3 { margin-top:1.5rem; font-size:1rem; }
+      :root { --accent:#004f91; --muted:#4a5c69; --border:#d5d5d5; --surface:#fff; }
       p { max-width: 80ch; color: var(--muted); }
       .scroll { overflow-x:auto; margin:1rem 0; }
       table { border-collapse: collapse; font-size:0.8125rem; background:var(--surface); }
@@ -25,8 +15,6 @@
                white-space:nowrap; }
       thead th { position:sticky; top:0; background:var(--surface); }
       tbody td:first-child, tbody th:first-child { font-weight:600; }
-      code { font-size:0.9em; }
-      a { color: var(--accent); }
       ul { max-width: 80ch; color: var(--muted); }
       .spark { position:relative; display:inline-block; min-width:3.5rem; text-align:right; padding:0 0.3rem; }
       .spark-bar { position:absolute; inset:0; background:var(--accent); opacity:0.13; border-radius:2px; }
@@ -34,22 +22,44 @@
       .st-com { background:#fff3cd; color:#856404; text-align:center; }
       .st-cus { background:#ffe0b2; color:#7a4100; text-align:center; }
       .st-u   { background:#f8d7da; color:#721c24; text-align:center; }
-      @media (prefers-color-scheme: dark) {
-        .st-n   { background:#1b3a26; color:#8fd6a4; }
-        .st-com { background:#3a2e0a; color:#e0c36a; }
-        .st-cus { background:#3a2508; color:#e0a86a; }
-        .st-u   { background:#3a1215; color:#e08a92; }
-      }
 
-      .site-nav { display:flex; flex-wrap:wrap; gap:0; border-bottom:1px solid var(--border); margin:0 0 1.5rem; font-size:0.8125rem; }
-      .site-nav a, .site-nav__current { padding:0.5rem 0.75rem; text-decoration:none; color:var(--muted); white-space:nowrap; }
-      .site-nav a:hover { color:var(--text); background:var(--surface); }
-      .site-nav__current { font-weight:700; color:var(--text); border-bottom:2px solid var(--accent); }
+      .mg-docs-main { max-width:72ch; }
+      .mg-docs-main h1 { font-size:1.75rem; margin:2rem 0 0.5rem; }
+      .mg-docs-main h2 { margin-top:2.5rem; font-size:1.25rem; border-bottom:1px solid #d5d5d5; padding-bottom:0.25rem; }
+      .mg-docs-main h3 { margin-top:2rem; font-size:1.05rem; }
+      .mg-docs-main h4 { margin-top:1.5rem; font-size:1rem; }
+
     </style>
   </head>
   <body>
-    <main>
-<nav class="site-nav"><a href="./">Ranking</a><a href="./axes.html">Decision axes</a><span class="site-nav__current">Requirement matrix</span><a href="./issues.html">Findings</a><a href="./architecture-options.html">Architecture</a></nav>
+
+    <header id="header" class="mg-page-header mg-page-header--default">
+      <div class="mg-page-header__decoration" aria-hidden="true">
+        <div></div><div></div><div></div><div></div>
+      </div>
+    </header>
+
+    <nav class="mg-mega-wrapper" aria-label="Main Navigation">
+      <ul class="mg-mega-topbar | mg-container mg-container-full-width"
+          role="menubar" aria-label="Main navigation menu">
+          <li class="mg-mega-topbar__item" role="none">
+              <a class="mg-mega-topbar__item-link" href="./" role="menuitem">Ranking</a>
+            </li>
+          <li class="mg-mega-topbar__item" role="none">
+              <a class="mg-mega-topbar__item-link" href="./axes.html" role="menuitem">Decision axes</a>
+            </li>
+          <li class="mg-mega-topbar__item mg-mega-topbar__item--active" role="none">
+              <a class="mg-mega-topbar__item-link" href="./comparison.html" role="menuitem">Requirement matrix</a>
+            </li>
+          <li class="mg-mega-topbar__item" role="none">
+              <a class="mg-mega-topbar__item-link" href="./issues.html" role="menuitem">Findings</a>
+            </li>
+          <li class="mg-mega-topbar__item" role="none">
+              <a class="mg-mega-topbar__item-link" href="./architecture-options.html" role="menuitem">Architecture</a>
+            </li>
+      </ul>
+    </nav>
+    <div class="mg-container mg-page-content--padded">
 <h1>Candidate comparison</h1>
 <p>10 of 10 pairings built. All five candidates met every requirement (zero <code>unsupported</code>). The biggest differentiator is not what each library can do, but how it integrates: RTL support, style containment, and theming route are where the candidates diverge. See <a href="./scores.md">scores</a> for the weighted recommendation.</p>
 <h2>Headline</h2>
@@ -147,6 +157,6 @@
 <h3>mangrove-antd</h3>
 <ul><li>THE CENTRAL QUESTION, and it is a design decision rather than a defect. On this host antd's controls render as MANGROVE's controls, because antd's styles are layered and Mangrove's are not. It cost zero lines of repair CSS, where mangrove-mui needed 27 lines to achieve the opposite. If UNDRR wants Mangrove's look and feel to win by default across many sites, this is the best mechanism found anywhere in this evaluation - it is a single prop, it needs no per-component work, and it cannot drift. If UNDRR wants the UNDRR token mapping to be authoritative over the host, it is a problem, because controlHeight and borderRadius do not reach any control Mangrove styles by element. The choice is reversible per-site by dropping <code>layer</code>, which is why it belongs to UNDRR rather than to this evaluation.</li><li>Because the host wins, the two antd pairings do NOT look alike, and that is expected rather than a bug. Compare apps/delta-antd/screenshots with apps/mangrove-antd/screenshots at the same viewport to see what <code>layer</code> does. Any conclusion drawn from one host's screenshots does not transfer to the other.</li><li>If Mangrove 2.0 adopts cascade layers, this behaviour inverts and antd would start winning conflicts against the host. That should be checked against the 2.0 branch before either decision is locked in. Tracked in issue #4.</li><li>antd is themed at bundle time, so a Mangrove token change requires rebuilding every consuming site. cssVar mode would fix that but breaks containment as configured here. Whether that trade can be reopened depends on whether :root-level antd custom properties are acceptable once Mangrove 2.0 ships its own.</li><li>The aria-hidden-focus defect on .ant-table-measure-row is upstream and unfixable through the public API without giving up scroll.x or row selection. It should be reported to antd.</li><li>antd's derived greys failed contrast in four places. They were pinned, but the same derivation will apply to any component whose colour is not explicitly set, so a real deployment needs an audit rather than trusting the seed tokens.</li><li>Typography.Link does not underline by default, which is a WCAG 1.4.1 question for inline links in body text. Not fixed here because the same question applies to Mangrove's own link styling and the two should be settled together.</li><li>Column resize is ours, so it is ours to maintain: 95 lines including RTL direction handling and keyboard support. Mantine has the same gap. React Aria, MUI and Carbon do not.</li><li>demo-state.ts is byte-identical to the copy in integration-mui. It is candidate-independent as well as host-independent and belongs in the scaffold, but packages/ is import-only for demo runs so it was left duplicated rather than churning six other apps.</li></ul>
 </details>
-    </main>
+    </div>
   </body>
 </html>

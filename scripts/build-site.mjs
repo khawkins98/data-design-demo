@@ -27,6 +27,16 @@ const SITE = join(ROOT, "_site");
 const DOCS = join(ROOT, "docs");
 const APPS = join(ROOT, "apps");
 
+// Copy Mangrove's compiled stylesheet into docs/ so generated HTML pages can
+// reference it. The file is not committed — it is a build artifact derived from
+// the npm package the demo apps already depend on.
+const MANGROVE_CSS = join(
+  ROOT,
+  "packages/host-mangrove/node_modules/@undrr/undrr-mangrove/css/style.css",
+);
+copyFileSync(MANGROVE_CSS, join(DOCS, "mangrove.css"));
+process.stdout.write("copied mangrove.css → docs/\n");
+
 /** Directory entries under apps/ that are actual apps. */
 function appDirs() {
   if (!existsSync(APPS)) return [];

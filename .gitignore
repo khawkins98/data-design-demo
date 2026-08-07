@@ -25,6 +25,9 @@ packages/host-preview/test-results/
 # written alongside it in test-results/ ARE evidence and stay committed.
 apps/*/test-results/playwright/
 
+# Mangrove CSS copied from node_modules during site build.
+docs/mangrove.css
+
 # Assembled comparison site, rebuilt by `pnpm site`.
 _site/
 .gstack/

@@ -294,16 +294,10 @@ const html = `<!doctype html>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Known issues register - UNDRR data design evaluation</title>
+    <link rel="stylesheet" href="./mangrove.css" />
     <style>
-      :root { color-scheme: light dark; --bg:#fbfbfb; --surface:#fff; --text:#14232e; --muted:#5b6b77; --border:#d9dee2; --accent:#004f91; --bad:#c10920; --pending:#8a5a00; }
-      @media (prefers-color-scheme: dark) { :root { --bg:#11181d; --surface:#18222a; --text:#e8eef2; --muted:#9fb0bc; --border:#2b3841; --accent:#7fb2e5; --bad:#ff8090; --pending:#e0a838; } }
-      body { margin:0; padding:2rem 1.5rem 4rem; background:var(--bg); color:var(--text); font-family:system-ui,-apple-system,"Segoe UI",sans-serif; line-height:1.55; }
-      .page { max-width:60rem; margin:0 auto; }
-      h1 { font-size:1.75rem; margin:0 0 0.5rem; }
+      :root { --accent:#004f91; --muted:#5b6b77; --border:#d5d5d5; --surface:#fff; --bad:#c10920; --pending:#8a5a00; --bg:#fff; --text:#1a1a1a; }
       .lead { color:var(--muted); max-width:72ch; }
-      .toc { margin:1.5rem 0 2.5rem; padding:0; list-style:none; display:flex; flex-wrap:wrap; gap:0.5rem 1rem; font-size:0.9375rem; }
-      a { color:var(--accent); }
-      code { font-size:0.9em; }
 
       /* Controls */
       .controls { display:flex; flex-wrap:wrap; gap:0.75rem 1rem; align-items:flex-end; margin:1.5rem 0 1rem; padding:0.875rem 1rem; background:var(--surface); border:1px solid var(--border); border-radius:6px; }
@@ -370,8 +364,8 @@ ${siteNavCss}
     </style>
   </head>
   <body>
-    <div class="page">
 ${siteNavHtml("issues")}
+    <div class="mg-container mg-page-content--padded">
       <h1>Known issues register</h1>
       <p class="lead">
         Every finding this evaluation recorded, in full, generated from the same

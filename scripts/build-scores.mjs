@@ -594,22 +594,15 @@ const html = `<!doctype html>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>UNDRR data design system evaluation</title>
+    <link rel="stylesheet" href="./mangrove.css" />
     <style>
-      :root { color-scheme: light dark; --bg:#fbfbfb; --surface:#fff; --text:#14232e; --muted:#5b6b77; --border:#d9dee2; --accent:#004f91; --bad:#c10920; --ok:#1f6b45; }
-      @media (prefers-color-scheme: dark) { :root { --bg:#11181d; --surface:#18222a; --text:#e8eef2; --muted:#9fb0bc; --border:#2b3841; --accent:#7fb2e5; --bad:#ff8090; --ok:#6fc79b; } }
-      body { margin:0; padding:2rem 1.5rem 4rem; background:var(--bg); color:var(--text); font-family:system-ui,-apple-system,"Segoe UI",sans-serif; line-height:1.5; }
-      .page { max-width:70rem; margin:0 auto; }
-      h1 { font-size:1.75rem; margin:0 0 0.25rem; }
-      .subtitle { color:var(--muted); margin:0 0 1.5rem; max-width:60ch; }
-      h2 { font-size:1.25rem; margin:2.5rem 0 0.75rem; }
-      h3 { font-size:1rem; margin:2rem 0 0.5rem; font-family:ui-monospace,monospace; }
-      table { border-collapse:collapse; width:100%; margin:0.75rem 0 1.5rem; font-size:0.875rem; display:block; overflow-x:auto; }
+      :root { --accent:#004f91; --bad:#c10920; --ok:#1f6b45; --muted:#5b6b77; --border:#d5d5d5; --surface:#fff; }
+      h3 { font-family:ui-monospace,monospace; }
+      table { border-collapse:collapse; width:100%; margin:0.75rem 0 1.5rem; font-size:0.875rem; }
       th,td { border:1px solid var(--border); padding:0.4rem 0.6rem; text-align:start; vertical-align:top; }
       th { background:var(--surface); }
-      code { font-size:0.9em; }
-      a { color:var(--accent); }
-      p,li { max-width:80ch; }
-      strong { color:var(--text); }
+      .subtitle { color:var(--muted); margin:0 0 1.5rem; max-width:60ch; }
+      .scroll { overflow-x:auto; }
       details { margin:1rem 0; }
       summary { cursor:pointer; font-weight:600; padding:0.5rem 0; }
       summary:hover { color:var(--accent); }
@@ -620,7 +613,7 @@ const html = `<!doctype html>
       .ov-name { text-align:start !important; font-weight:600; }
       .ov-score { font-size:1rem; }
       .ov-ax { font-size:0.6875rem; }
-      .ov-ax a { text-decoration:none; }
+      .ov-ax a { text-decoration:none; color:inherit; }
       .ov-table td a { color:inherit; text-decoration:none; display:block; }
       .ov-ax-hint { display:block; font-size:0.5625rem; font-weight:400; color:var(--muted); line-height:1.2; }
       .ov-demos { font-size:0.75rem; }
@@ -633,37 +626,23 @@ const html = `<!doctype html>
       .ov-w { background:#fff3cd; color:#856404; }
       .ov-k { background:#ffe0b2; color:#7a4100; }
       .ov-b { background:#f8d7da; color:#721c24; }
-      @media (prefers-color-scheme:dark) {
-        .ov-s { background:#1b3a26; color:#8fd6a4; }
-        .ov-w { background:#3a2e0a; color:#e0c36a; }
-        .ov-k { background:#3a2508; color:#e0a86a; }
-        .ov-b { background:#3a1215; color:#e08a92; }
-      }
       .ov-key { display:inline-block; padding:0.1rem 0.4rem; border-radius:3px; font-size:0.75rem; }
       .ov-ok { color:var(--ok); font-weight:600; }
       .ov-bad { color:var(--bad); font-weight:700; text-decoration:underline; text-underline-offset:2px; }
       .ov-blockers { min-width:3rem; }
       .verdict { margin:0 0 1.5rem; padding:1rem 1.25rem; background:var(--surface); border:1px solid var(--accent); border-radius:6px; max-width:82ch; }
-      .questions { margin:1.5rem 0 0; max-width:78ch; }
-      .question { padding:0.875rem 0; border-top:1px solid var(--border); }
-      .question:first-child { border-top:0; padding-top:0.25rem; }
-      .question__title { font-size:0.9375rem; margin:0 0 0.375rem; display:flex; flex-wrap:wrap; align-items:baseline; gap:0.5rem; font-family:inherit; }
-      .question__asks { font-weight:400; font-size:0.8125rem; color:var(--muted); }
-      .question__answer { margin:0 0 0.375rem; font-size:0.875rem; }
-      .question__axis { margin:0; font-size:0.75rem; }
       .glossary { margin:0 0 2rem; font-size:0.875rem; }
       .glossary__summary { cursor:pointer; color:var(--accent); font-weight:600; }
       .glossary__list { margin:0.875rem 0 0; max-width:80ch; }
       .glossary__list dt { font-weight:700; margin-top:0.75rem; }
       .glossary__list dd { margin:0.125rem 0 0; color:var(--muted); }
-      .nav-links { font-size:0.8125rem; max-width:78ch; margin:1rem 0 0; }
       footer { margin-top:3rem; color:var(--muted); font-size:0.8125rem; max-width:70ch; }
 ${siteNavCss}
     </style>
   </head>
   <body>
-    <div class="page">
 ${siteNavHtml("scores")}
+    <div class="mg-container mg-page-content--padded">
       <h1>UNDRR data design system evaluation</h1>
       <p class="subtitle">Five candidate UI libraries, two UNDRR host shells, ten controlled proofs of concept.</p>
 
@@ -676,8 +655,6 @@ ${buildOverviewHtml()}
         Arabic works from a <code>dir</code> attribute alone. Stays inside its own subtree on both hosts.
         ${ranked[0].candidate === "react-aria" ? '<br /><strong>The cost.</strong> React Aria ships behaviour, not appearance. Adopting it means UNDRR owns the visual layer permanently. <strong>Read this as &ldquo;fund a design system&rdquo;, not &ldquo;save work&rdquo;.</strong>' : ""}
       </div>
-
-
 
 ${buildGlossaryHtml()}
 
