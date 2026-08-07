@@ -432,7 +432,11 @@ function toHtml(markdown) {
     }
 
     if (line.startsWith("### ")) out.push(`<h3>${inline(line.slice(4))}</h3>`);
-    else if (line.startsWith("## ")) out.push(`<h2>${inline(line.slice(3))}</h2>`);
+    else if (line.startsWith("## ")) {
+      const text = line.slice(3);
+      const id = /^Blockers/.test(text) ? ' id="blockers"' : "";
+      out.push(`<h2${id}>${inline(text)}</h2>`);
+    }
     else if (line.startsWith("# ")) out.push(`<h1>${inline(line.slice(2))}</h1>`);
     else if (line === "") out.push("");
     else out.push(`<p>${inline(line)}</p>`);
@@ -475,7 +479,7 @@ function buildOverviewHtml() {
     const blockerBadge =
       c.blockers.length === 0
         ? '<span class="ov-ok">none</span>'
-        : `<span class="ov-bad">${c.blockers.length}</span>`;
+        : `<a href="#blockers" class="ov-bad">${c.blockers.length}</a>`;
 
     const demoLinks = [
       deltaDemo ? `<a href="${deltaDemo}">Delta</a>` : null,
@@ -623,7 +627,7 @@ const html = `<!doctype html>
       }
       .ov-key { display:inline-block; padding:0.1rem 0.4rem; border-radius:3px; font-size:0.75rem; }
       .ov-ok { color:var(--ok); font-weight:600; }
-      .ov-bad { color:var(--bad); font-weight:700; }
+      .ov-bad { color:var(--bad); font-weight:700; text-decoration:underline; text-underline-offset:2px; }
       .ov-blockers { min-width:3rem; }
       .verdict { margin:0 0 1.5rem; padding:1rem 1.25rem; background:var(--surface); border:1px solid var(--accent); border-radius:6px; max-width:82ch; }
       .questions { margin:1.5rem 0 0; max-width:78ch; }
@@ -678,6 +682,17 @@ ${buildGlossaryHtml()}
 ${collapseLatePairings(toHtml(md))}
       </details>
 
+      <script>
+        function openAnchor() {
+          var el = document.querySelector(location.hash);
+          if (!el) return;
+          var d = el.closest("details");
+          while (d) { d.open = true; d = d.parentElement.closest("details"); }
+          el.scrollIntoView();
+        }
+        addEventListener("hashchange", openAnchor);
+        if (location.hash) openAnchor();
+      </script>
       <footer>
         <p>
           Every demo renders identical fixture data inside a host shell it may
