@@ -31,7 +31,8 @@
       .scroll { overflow-x: auto; margin: 0 0 1rem; border: 1px solid var(--border); border-radius: 6px; background: var(--surface); }
       table { border-collapse: collapse; width: 100%; font-size: 0.8125rem; }
       th, td { text-align: left; padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); white-space: nowrap; }
-      th { background: color-mix(in srgb, var(--border) 30%, transparent); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; }
+      th { background: color-mix(in srgb, var(--border) 30%, transparent); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; vertical-align: bottom; }
+      .th-hint { display: block; font-weight: 400; text-transform: none; letter-spacing: 0; font-size: 0.6875rem; color: var(--muted); line-height: 1.3; margin-top: 0.125rem; white-space: normal; }
       tbody tr:last-child td { border-bottom: 0; }
       td:first-child { font-family: ui-monospace, monospace; font-size: 0.75rem; }
       li { max-width: 68ch; font-size: 0.875rem; }
@@ -88,7 +89,7 @@
 <p><code>beyond native</code> counts requirements needing more than a documented component. <code>traps</code> counts documented approaches that failed and needed workarounds.</p>
 
 <div class="scroll"><table><thead>
-<tr><th>Pairing</th><th>native</th><th>composed</th><th>custom</th><th>beyond native</th><th>traps</th><th>wrappers</th><th>flagged for review</th></tr>
+<tr><th>Pairing</th><th>native<span class="th-hint">one documented component did it</span></th><th>composed<span class="th-hint">assembled from multiple components</span></th><th>custom<span class="th-hint">built from scratch</span></th><th>beyond native<span class="th-hint">composed + custom; lower is easier</span></th><th>traps<span class="th-hint">documented approach failed, needed a workaround</span></th><th>wrappers<span class="th-hint">glue components the demo had to write</span></th><th>flagged for review<span class="th-hint">may need a human judgement call</span></th></tr>
 </thead><tbody>
 <tr><td>delta-react-aria</td><td>20</td><td>8</td><td>2</td><td><strong>10</strong></td><td>5</td><td>5 (104 ln)</td><td>7</td></tr>
 <tr><td>mangrove-react-aria</td><td>21</td><td>7</td><td>2</td><td><strong>9</strong></td><td>3</td><td>3 (78 ln)</td><td>7</td></tr>
@@ -246,7 +247,7 @@
 <p><code>attribute</code>: semantic selectors (<code>[data-*]</code>, <code>[slot]</code>). <code>contract</code>: documented styling API. <code>off route</code>: styling that bypasses the library's own theming mechanism.</p>
 
 <div class="scroll"><table><thead>
-<tr><th>Pairing</th><th>attribute</th><th>contract</th><th>off route</th><th>of which hashed</th><th>CSS rules</th></tr>
+<tr><th>Pairing</th><th>attribute<span class="th-hint">semantic selectors like [data-*], [slot]</span></th><th>contract<span class="th-hint">documented styling API; safe to use</span></th><th>off route<span class="th-hint">bypasses the library's theming; fragile</span></th><th>of which hashed<span class="th-hint">generated class names that change between builds</span></th><th>CSS rules<span class="th-hint">total rules in the demo's own stylesheets</span></th></tr>
 </thead><tbody>
 <tr><td>delta-react-aria</td><td>22</td><td>0</td><td><strong>0</strong></td><td>0</td><td>213</td></tr>
 <tr><td>mangrove-react-aria</td><td>18</td><td>0</td><td><strong>0</strong></td><td>0</td><td>155</td></tr>
@@ -293,7 +294,7 @@
 <p><code>basis</code>: only MUI was actually extracted; other entries are analysis.</p>
 
 <div class="scroll"><table><thead>
-<tr><th>Candidate</th><th>basis</th><th>verdict</th><th>shared</th><th>per site</th><th>shared %</th></tr>
+<tr><th>Candidate</th><th>basis<span class="th-hint">measured or analysed?</span></th><th>verdict<span class="th-hint">can it be shared across sites?</span></th><th>shared<span class="th-hint">code lines reusable across sites</span></th><th>per site<span class="th-hint">code lines each site must own</span></th><th>shared %<span class="th-hint">proportion that is reusable</span></th></tr>
 </thead><tbody>
 <tr><td>react-aria</td><td>analysed</td><td><strong>likely packaged</strong></td><td>-</td><td>-</td><td>-</td></tr>
 <tr><td>mui</td><td><strong>measured</strong></td><td><strong>packaged</strong></td><td>809 ln</td><td>277 ln</td><td>74%</td></tr>
@@ -389,7 +390,7 @@
 
 
 <div class="scroll"><table><thead>
-<tr><th>Pairing</th><th>leakage</th><th>documented setup loadable as-is</th></tr>
+<tr><th>Pairing</th><th>leakage<span class="th-hint">does the library restyle the host page outside its own area?</span></th><th>documented setup loadable as-is<span class="th-hint">can the library's default setup load without fighting Mangrove?</span></th></tr>
 </thead><tbody>
 <tr><td>delta-react-aria</td><td>clean</td><td>not probed</td></tr>
 <tr><td>mangrove-react-aria</td><td>clean</td><td>not probed</td></tr>
@@ -415,7 +416,7 @@
 <p><code>unreachable</code>: tokens with no hook to attach to. <code>propagation</code>: stylesheet swap reaches every site at once; rebuild is per site.</p>
 
 <div class="scroll"><table><thead>
-<tr><th>Pairing</th><th>tokens applied</th><th>unreachable</th><th>propagation</th><th>live var() refs in shipped CSS</th></tr>
+<tr><th>Pairing</th><th>tokens applied<span class="th-hint">UNDRR design tokens successfully connected</span></th><th>unreachable<span class="th-hint">tokens with no hook to attach to</span></th><th>propagation<span class="th-hint">how a token change reaches every site</span></th><th>live var() refs in shipped CSS<span class="th-hint">CSS custom properties surviving to production</span></th></tr>
 </thead><tbody>
 <tr><td>delta-react-aria</td><td>48</td><td>0</td><td><strong>stylesheet-swap</strong></td><td>409</td></tr>
 <tr><td>mangrove-react-aria</td><td>47</td><td>0</td><td><strong>stylesheet-swap</strong></td><td>309</td></tr>
@@ -441,7 +442,7 @@
 <p>Read <code>status</code> against <code>setup</code>: <code>clean</code> at <code>native</code>/0 lines means a <code>dir</code> attribute sufficed; <code>clean</code> at <code>composed</code>/18 lines means the library needed mitigation.</p>
 
 <div class="scroll"><table><thead>
-<tr><th>Pairing</th><th>status</th><th>setup</th><th>custom lines</th><th>recorded issues</th></tr>
+<tr><th>Pairing</th><th>status<span class="th-hint">does Arabic render correctly?</span></th><th>setup<span class="th-hint">native (dir attribute) or composed (extra code)?</span></th><th>custom lines<span class="th-hint">lines of code needed to make RTL work</span></th><th>recorded issues<span class="th-hint">defects found during RTL testing</span></th></tr>
 </thead><tbody>
 <tr><td>delta-react-aria</td><td>clean</td><td>native</td><td>0</td><td>0</td></tr>
 <tr><td>mangrove-react-aria</td><td>clean</td><td>native</td><td>0</td><td>0</td></tr>
@@ -493,7 +494,7 @@
 <p><code>incomplete</code> counts checks axe declined to decide. Nine of ten runs ran axe unscoped, so counts are directional, not exact.</p>
 
 <div class="scroll"><table><thead>
-<tr><th>Pairing</th><th>critical</th><th>serious</th><th>incomplete</th><th>scope</th></tr>
+<tr><th>Pairing</th><th>critical<span class="th-hint">must-fix violations (axe automated scan)</span></th><th>serious<span class="th-hint">should-fix violations</span></th><th>incomplete<span class="th-hint">axe could not decide; needs a human</span></th><th>scope<span class="th-hint">what part of the page was scanned</span></th></tr>
 </thead><tbody>
 <tr><td>delta-react-aria</td><td>0</td><td>0</td><td>1</td><td>whole page, unscoped</td></tr>
 <tr><td>mangrove-react-aria</td><td>0</td><td>0</td><td>1</td><td>whole page, unscoped</td></tr>
@@ -514,7 +515,7 @@
 <p><code>prod pkgs</code> is measured uniformly (<code>pnpm deps:count</code>). <code>as recorded</code> is each run's self-reported figure; the two disagree and only <code>prod pkgs</code> is comparable across rows.</p>
 
 <div class="scroll"><table><thead>
-<tr><th>Pairing</th><th>custom CSS lines</th><th>bundle kB gz</th><th>prod pkgs</th><th>as recorded</th><th>licences</th><th>build s</th></tr>
+<tr><th>Pairing</th><th>custom CSS lines<span class="th-hint">written by the demo, not the library</span></th><th>bundle kB gz<span class="th-hint">shipped JavaScript size, gzipped</span></th><th>prod pkgs<span class="th-hint">production npm packages (uniform method)</span></th><th>as recorded<span class="th-hint">self-reported by each run; not comparable</span></th><th>licences<span class="th-hint">licence families across dependencies</span></th><th>build s<span class="th-hint">seconds to build from clean</span></th></tr>
 </thead><tbody>
 <tr><td>delta-react-aria</td><td>715</td><td>238.8</td><td><strong>16</strong></td><td>19</td><td>0BSD 1, Apache-2.0 8, MIT 7</td><td>2</td></tr>
 <tr><td>mangrove-react-aria</td><td>661</td><td>237.6</td><td><strong>17</strong></td><td>20</td><td>0BSD 1, Apache-2.0 9, MIT 7</td><td>1.2</td></tr>

@@ -298,7 +298,7 @@ lines.push("`traps` counts documented approaches that failed and needed workarou
 lines.push("");
 lines.push(
   table(
-    ["Pairing", "native", "composed", "custom", "beyond native", "traps", "wrappers", "flagged for review"],
+    ["Pairing", "native||one documented component did it", "composed||assembled from multiple components", "custom||built from scratch", "beyond native||composed + custom; lower is easier", "traps||documented approach failed, needed a workaround", "wrappers||glue components the demo had to write", "flagged for review||may need a human judgement call"],
     rows.map((r) => [
       r.app,
       r.mix.native,
@@ -344,7 +344,7 @@ lines.push(
 lines.push("");
 lines.push(
   table(
-    ["Pairing", "attribute", "contract", "off route", "of which hashed", "CSS rules"],
+    ["Pairing", "attribute||semantic selectors like [data-*], [slot]", "contract||documented styling API; safe to use", "off route||bypasses the library's theming; fragile", "of which hashed||generated class names that change between builds", "CSS rules||total rules in the demo's own stylesheets"],
     rows.map((r) => [
       r.app,
       r.hooks.attributes,
@@ -412,7 +412,7 @@ if (!extractionResults) {
   lines.push("");
   lines.push(
     table(
-      ["Candidate", "basis", "verdict", "shared", "per site", "shared %"],
+      ["Candidate", "basis||measured or analysed?", "verdict||can it be shared across sites?", "shared||code lines reusable across sites", "per site||code lines each site must own", "shared %||proportion that is reusable"],
       entries.map(([c, e]) => [
         c,
         e.basis === "measured" ? "**measured**" : e.basis,
@@ -447,7 +447,7 @@ pushAxis("A4", "Mangrove compatibility");
 lines.push("");
 lines.push(
   table(
-    ["Pairing", "leakage", "documented setup loadable as-is"],
+    ["Pairing", "leakage||does the library restyle the host page outside its own area?", "documented setup loadable as-is||can the library's default setup load without fighting Mangrove?"],
     rows.map((r) => [
       r.app,
       r.leakagePassed ? "clean" : `**FAILED** (${r.leakageDiffs} diffs)`,
@@ -465,7 +465,7 @@ lines.push("reaches every site at once; rebuild is per site.");
 lines.push("");
 lines.push(
   table(
-    ["Pairing", "tokens applied", "unreachable", "propagation", "live var() refs in shipped CSS"],
+    ["Pairing", "tokens applied||UNDRR design tokens successfully connected", "unreachable||tokens with no hook to attach to", "propagation||how a token change reaches every site", "live var() refs in shipped CSS||CSS custom properties surviving to production"],
     rows.map((r) => [
       r.app,
       r.tokensApplied ?? "?",
@@ -485,7 +485,7 @@ lines.push("sufficed; `clean` at `composed`/18 lines means the library needed mi
 lines.push("");
 lines.push(
   table(
-    ["Pairing", "status", "setup", "custom lines", "recorded issues"],
+    ["Pairing", "status||does Arabic render correctly?", "setup||native (dir attribute) or composed (extra code)?", "custom lines||lines of code needed to make RTL work", "recorded issues||defects found during RTL testing"],
     rows.map((r) => [
       r.app,
       r.rtl === "clean" ? "clean" : `**${r.rtl}**`,
@@ -520,7 +520,7 @@ lines.push("unscoped, so counts are directional, not exact.");
 lines.push("");
 lines.push(
   table(
-    ["Pairing", "critical", "serious", "incomplete", "scope"],
+    ["Pairing", "critical||must-fix violations (axe automated scan)", "serious||should-fix violations", "incomplete||axe could not decide; needs a human", "scope||what part of the page was scanned"],
     rows.map((r) => [
       r.app,
       r.axe.critical ? `**${r.axe.critical}**` : (r.axe.critical ?? "?"),
@@ -548,7 +548,7 @@ lines.push("self-reported figure; the two disagree and only `prod pkgs` is compa
 lines.push("");
 lines.push(
   table(
-    ["Pairing", "custom CSS lines", "bundle kB gz", "prod pkgs", "as recorded", "licences", "build s"],
+    ["Pairing", "custom CSS lines||written by the demo, not the library", "bundle kB gz||shipped JavaScript size, gzipped", "prod pkgs||production npm packages (uniform method)", "as recorded||self-reported by each run; not comparable", "licences||licence families across dependencies", "build s||seconds to build from clean"],
     rows.map((r) => {
       const deps = dependencyCounts[r.app];
       const licences = deps?.licences
@@ -598,7 +598,12 @@ function toHtml(markdown) {
       if (/^-+$/.test(cells[0] ?? "")) continue;
       if (!inTable) {
         out.push("<div class=\"scroll\"><table><thead>");
-        out.push(`<tr>${cells.map((c) => `<th>${inline(c)}</th>`).join("")}</tr>`);
+        out.push(`<tr>${cells.map((c) => {
+          const [name, hint] = c.split("||");
+          return hint
+            ? `<th>${inline(name)}<span class="th-hint">${esc(hint)}</span></th>`
+            : `<th>${inline(name)}</th>`;
+        }).join("")}</tr>`);
         out.push("</thead><tbody>");
         inTable = true;
       } else {
@@ -718,7 +723,8 @@ const html = `<!doctype html>
       .scroll { overflow-x: auto; margin: 0 0 1rem; border: 1px solid var(--border); border-radius: 6px; background: var(--surface); }
       table { border-collapse: collapse; width: 100%; font-size: 0.8125rem; }
       th, td { text-align: left; padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); white-space: nowrap; }
-      th { background: color-mix(in srgb, var(--border) 30%, transparent); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; }
+      th { background: color-mix(in srgb, var(--border) 30%, transparent); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; vertical-align: bottom; }
+      .th-hint { display: block; font-weight: 400; text-transform: none; letter-spacing: 0; font-size: 0.6875rem; color: var(--muted); line-height: 1.3; margin-top: 0.125rem; white-space: normal; }
       tbody tr:last-child td { border-bottom: 0; }
       td:first-child { font-family: ui-monospace, monospace; font-size: 0.75rem; }
       li { max-width: 68ch; font-size: 0.875rem; }

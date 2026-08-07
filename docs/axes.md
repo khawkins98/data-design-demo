@@ -16,7 +16,7 @@ it answers, then the measurements behind it.
 `beyond native` counts requirements needing more than a documented component.
 `traps` counts documented approaches that failed and needed workarounds.
 
-| Pairing | native | composed | custom | beyond native | traps | wrappers | flagged for review |
+| Pairing | native||one documented component did it | composed||assembled from multiple components | custom||built from scratch | beyond native||composed + custom; lower is easier | traps||documented approach failed, needed a workaround | wrappers||glue components the demo had to write | flagged for review||may need a human judgement call |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | delta-react-aria | 20 | 8 | 2 | **10** | 5 | 5 (104 ln) | 7 |
 | mangrove-react-aria | 21 | 7 | 2 | **9** | 3 | 3 (78 ln) | 7 |
@@ -150,7 +150,7 @@ Every distinct styling hook, classified by the promise behind it.
 `attribute`: semantic selectors (`[data-*]`, `[slot]`). `contract`: documented styling API.
 `off route`: styling that bypasses the library's own theming mechanism.
 
-| Pairing | attribute | contract | off route | of which hashed | CSS rules |
+| Pairing | attribute||semantic selectors like [data-*], [slot] | contract||documented styling API; safe to use | off route||bypasses the library's theming; fragile | of which hashed||generated class names that change between builds | CSS rules||total rules in the demo's own stylesheets |
 | --- | --- | --- | --- | --- | --- |
 | delta-react-aria | 22 | 0 | **0** | 0 | 213 |
 | mangrove-react-aria | 18 | 0 | **0** | 0 | 155 |
@@ -192,7 +192,7 @@ stable but off the documented theming route (`--cds-*` custom properties).
 
 `basis`: only MUI was actually extracted; other entries are analysis.
 
-| Candidate | basis | verdict | shared | per site | shared % |
+| Candidate | basis||measured or analysed? | verdict||can it be shared across sites? | shared||code lines reusable across sites | per site||code lines each site must own | shared %||proportion that is reusable |
 | --- | --- | --- | --- | --- | --- |
 | react-aria | analysed | **likely packaged** | - | - | - |
 | mui | **measured** | **packaged** | 809 ln | 277 ln | 74% |
@@ -267,7 +267,7 @@ What resists extraction:
 > Leakage is clean for every pairing except mangrove-carbon, whose global stylesheet is not containable. Ant Design loses every cascade conflict to Mangrove - which the realistic layouts showed is not a matter of taste: Mangrove's rules also cover Select's own value, so its filters render blank on the Mangrove host.
 
 
-| Pairing | leakage | documented setup loadable as-is |
+| Pairing | leakage||does the library restyle the host page outside its own area? | documented setup loadable as-is||can the library's default setup load without fighting Mangrove? |
 | --- | --- | --- |
 | delta-react-aria | clean | not probed |
 | mangrove-react-aria | clean | not probed |
@@ -289,7 +289,7 @@ What resists extraction:
 `unreachable`: tokens with no hook to attach to. `propagation`: stylesheet swap
 reaches every site at once; rebuild is per site.
 
-| Pairing | tokens applied | unreachable | propagation | live var() refs in shipped CSS |
+| Pairing | tokens applied||UNDRR design tokens successfully connected | unreachable||tokens with no hook to attach to | propagation||how a token change reaches every site | live var() refs in shipped CSS||CSS custom properties surviving to production |
 | --- | --- | --- | --- | --- |
 | delta-react-aria | 48 | 0 | **stylesheet-swap** | 409 |
 | mangrove-react-aria | 47 | 0 | **stylesheet-swap** | 309 |
@@ -311,7 +311,7 @@ reaches every site at once; rebuild is per site.
 Read `status` against `setup`: `clean` at `native`/0 lines means a `dir` attribute
 sufficed; `clean` at `composed`/18 lines means the library needed mitigation.
 
-| Pairing | status | setup | custom lines | recorded issues |
+| Pairing | status||does Arabic render correctly? | setup||native (dir attribute) or composed (extra code)? | custom lines||lines of code needed to make RTL work | recorded issues||defects found during RTL testing |
 | --- | --- | --- | --- | --- |
 | delta-react-aria | clean | native | 0 | 0 |
 | mangrove-react-aria | clean | native | 0 | 0 |
@@ -354,7 +354,7 @@ Recorded issues are reproduced verbatim below.
 `incomplete` counts checks axe declined to decide. Nine of ten runs ran axe
 unscoped, so counts are directional, not exact.
 
-| Pairing | critical | serious | incomplete | scope |
+| Pairing | critical||must-fix violations (axe automated scan) | serious||should-fix violations | incomplete||axe could not decide; needs a human | scope||what part of the page was scanned |
 | --- | --- | --- | --- | --- |
 | delta-react-aria | 0 | 0 | 1 | whole page, unscoped |
 | mangrove-react-aria | 0 | 0 | 1 | whole page, unscoped |
@@ -375,7 +375,7 @@ or keyboard-only walkthrough was run. A row of zeroes means the automated subset
 `prod pkgs` is measured uniformly (`pnpm deps:count`). `as recorded` is each run's
 self-reported figure; the two disagree and only `prod pkgs` is comparable across rows.
 
-| Pairing | custom CSS lines | bundle kB gz | prod pkgs | as recorded | licences | build s |
+| Pairing | custom CSS lines||written by the demo, not the library | bundle kB gz||shipped JavaScript size, gzipped | prod pkgs||production npm packages (uniform method) | as recorded||self-reported by each run; not comparable | licences||licence families across dependencies | build s||seconds to build from clean |
 | --- | --- | --- | --- | --- | --- | --- |
 | delta-react-aria | 715 | 238.8 | **16** | 19 | 0BSD 1, Apache-2.0 8, MIT 7 | 2 |
 | mangrove-react-aria | 661 | 237.6 | **17** | 20 | 0BSD 1, Apache-2.0 9, MIT 7 | 1.2 |
