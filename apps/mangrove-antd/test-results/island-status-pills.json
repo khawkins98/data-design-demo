@@ -1,5 +1,82 @@
 {
-  "ids": [],
-  "pills": [],
-  "colours": []
+  "ids": [
+    "DRR-0005",
+    "DRR-0181",
+    "DRR-0233",
+    "DRR-0104",
+    "DRR-0003",
+    "DRR-0093",
+    "DRR-0046",
+    "DRR-0094",
+    "DRR-0174",
+    "DRR-0089"
+  ],
+  "pills": [
+    {
+      "text": "pending",
+      "background": "rgb(255, 247, 229)"
+    },
+    {
+      "text": "disputed",
+      "background": "rgb(251, 234, 235)"
+    },
+    {
+      "text": "withdrawn",
+      "background": "rgb(240, 243, 244)"
+    },
+    {
+      "text": "pending",
+      "background": "rgb(255, 247, 229)"
+    },
+    {
+      "text": "verified",
+      "background": "rgb(235, 249, 242)"
+    },
+    {
+      "text": "verified",
+      "background": "rgb(235, 249, 242)"
+    },
+    {
+      "text": "withdrawn",
+      "background": "rgb(240, 243, 244)"
+    },
+    {
+      "text": "pending",
+      "background": "rgb(255, 247, 229)"
+    },
+    {
+      "text": "pending",
+      "background": "rgb(255, 247, 229)"
+    },
+    {
+      "text": "pending",
+      "background": "rgb(255, 247, 229)"
+    }
+  ],
+  "colours": [
+    {
+      "status": "pending",
+      "colours": [
+        "rgb(255, 247, 229)"
+      ]
+    },
+    {
+      "status": "disputed",
+      "colours": [
+        "rgb(251, 234, 235)"
+      ]
+    },
+    {
+      "status": "withdrawn",
+      "colours": [
+        "rgb(240, 243, 244)"
+      ]
+    },
+    {
+      "status": "verified",
+      "colours": [
+        "rgb(235, 249, 242)"
+      ]
+    }
+  ]
 }
