@@ -28,7 +28,21 @@
  * this markup as tabs tells a screen-reader user they can move freely through a
  * form that will refuse them, and `aria-selected` on a step is a statement about
  * selection where the correct statement is `aria-current="step"` — which MUI emits
- * nowhere and offers no prop for.
+ * nowhere and offers no prop for. `Step` also takes `role="presentation"` in this
+ * mode (Step.js:156), which strips the list-item semantics the same release added.
+ *
+ * IT IS DELIBERATE, AND UPSTREAM HAS ALREADY DECLINED THE ALTERNATIVE. This is not
+ * a bug awaiting a fix, and the version history is the evidence: v5, v6 and v7 all
+ * emitted `aria-current="step"` on `StepButton`. PR #47687 ("[Stepper][MenuList]
+ * [Tabs] Improve accessibility", merged 2026-03-12) replaced it for v9.0.0, and the
+ * v9 migration guide records "the `aria-current` changed to `aria-selected`" as an
+ * improvement. Issue #47356 asked for `nav`/`ol`/`aria-current="step"` in November
+ * 2025 and was closed as NOT PLANNED. No issue has been filed against the v9
+ * output. So the override below is permanent maintenance, not a stopgap.
+ *
+ *   https://github.com/mui/material-ui/pull/47687
+ *   https://github.com/mui/material-ui/issues/47356
+ *   https://mui.com/material-ui/migration/upgrade-to-v9/
  *
  * SO THREE ARIA ATTRIBUTES ARE OVERRIDDEN BY HAND BELOW, and the override only
  * works by accident of prop order: both components spread `...other` AFTER their

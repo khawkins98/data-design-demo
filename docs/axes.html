@@ -86,7 +86,7 @@
 <tr><td>mangrove-react-aria</td><td>21</td><td>7</td><td>2</td><td><strong>9</strong></td><td>3</td><td>3 (78 ln)</td><td>7</td></tr>
 <tr><td>delta-mui</td><td>26</td><td>4</td><td>0</td><td><strong>4</strong></td><td>5</td><td>3 (62 ln)</td><td>7</td></tr>
 <tr><td>mangrove-mui</td><td>26</td><td>4</td><td>0</td><td><strong>4</strong></td><td>7</td><td>2 (53 ln)</td><td>10</td></tr>
-<tr><td>delta-carbon</td><td>19</td><td>10</td><td>1</td><td><strong>11</strong></td><td>12</td><td>4 (71 ln)</td><td>10</td></tr>
+<tr><td>delta-carbon</td><td>19</td><td>10</td><td>1</td><td><strong>11</strong></td><td>14</td><td>4 (71 ln)</td><td>10</td></tr>
 <tr><td>mangrove-carbon</td><td>19</td><td>10</td><td>1</td><td><strong>11</strong></td><td>8</td><td>4 (71 ln)</td><td>11</td></tr>
 <tr><td>delta-mantine</td><td>20</td><td>7</td><td>3</td><td><strong>10</strong></td><td>11</td><td>4 (179 ln)</td><td>10</td></tr>
 <tr><td>mangrove-mantine</td><td>19</td><td>10</td><td>1</td><td><strong>11</strong></td><td>9</td><td>4 (176 ln)</td><td>9</td></tr>
@@ -138,14 +138,16 @@
 <li>None needed for portalled overlays.</li>
 
 </ul>
-<p><strong><code>delta-carbon</code></strong> - 12 entries</p>
+<p><strong><code>delta-carbon</code></strong> - 14 entries</p>
 
 <ul>
 <li>@carbon/styles/css/styles.css IS NOT IMPORTED.</li>
 <li>TRAP 1, silent and consequential: <code>@carbon/styles/scss/layout</code> is REQUIRED but is not a component partial.</li>
 <li>TRAP 2, the same shape one level down: components/data-table/_index.scss includes only the CORE table mixin.</li>
 <li>A 20-line Vite plugin in vite.config.ts rewrites the one <code>:root</code> rule Carbon's layer module emits onto the token scope class, so the shipped stylesheet contains zero selectors that can match host markup.</li>
-<li>Nineteen CSS rules reach into .cds-- class names, each for a token Carbon's theme cannot express: corner radius (Carbon has no radius token and is square by design), list-box menu max-height, table-header and list-box option wrapping for th...</li>
+<li>Twenty-two CSS selectors reach into .cds-- class names, each for a token Carbon's theme cannot express or a behaviour it hard-codes: corner radius (Carbon has no radius token and is square by design), list-box menu max-height, table-header ...</li>
+<li>THREE OF THOSE TWENTY-TWO ARE THE STEP WIZARD'S, and they are behaviour rather than tokens.</li>
+<li>THE PROGRESS INDICATOR HAS NO RESPONSIVE BEHAVIOUR AT ALL.</li>
 <li>Carbon's published TypeScript types do not compile under exactOptionalPropertyTypes: true.</li>
 <li>@carbon/styles/scss/fonts is NOT loaded.</li>
 <li>PORTALS ARE MOSTLY A NON-ISSUE HERE, and that is a finding rather than luck avoided.</li>
@@ -237,15 +239,15 @@
 <div class="scroll"><table><thead>
 <tr><th>Pairing</th><th>attribute</th><th>contract</th><th>off route</th><th>of which hashed</th><th>CSS rules</th></tr>
 </thead><tbody>
-<tr><td>delta-react-aria</td><td>19</td><td>0</td><td><strong>0</strong></td><td>0</td><td>167</td></tr>
+<tr><td>delta-react-aria</td><td>21</td><td>0</td><td><strong>0</strong></td><td>0</td><td>193</td></tr>
 <tr><td>mangrove-react-aria</td><td>18</td><td>0</td><td><strong>0</strong></td><td>0</td><td>155</td></tr>
 <tr><td>delta-mui</td><td>0</td><td>2</td><td><strong>0</strong></td><td>0</td><td>3</td></tr>
 <tr><td>mangrove-mui</td><td>0</td><td>4</td><td><strong>0</strong></td><td>0</td><td>5</td></tr>
-<tr><td>delta-carbon</td><td>0</td><td>0</td><td><strong>16</strong></td><td>0</td><td>34</td></tr>
+<tr><td>delta-carbon</td><td>0</td><td>0</td><td><strong>19</strong></td><td>0</td><td>48</td></tr>
 <tr><td>mangrove-carbon</td><td>0</td><td>0</td><td><strong>15</strong></td><td>0</td><td>53</td></tr>
 <tr><td>delta-mantine</td><td>3</td><td>3</td><td><strong>0</strong></td><td>0</td><td>16</td></tr>
 <tr><td>mangrove-mantine</td><td>2</td><td>4</td><td><strong>0</strong></td><td>0</td><td>22</td></tr>
-<tr><td>delta-antd</td><td>0</td><td>0</td><td><strong>0</strong></td><td>0</td><td>7</td></tr>
+<tr><td>delta-antd</td><td>0</td><td>0</td><td><strong>0</strong></td><td>0</td><td>8</td></tr>
 <tr><td>mangrove-antd</td><td>0</td><td>0</td><td><strong>0</strong></td><td>0</td><td>6</td></tr>
 </tbody></table></div>
 
@@ -258,7 +260,7 @@
 <ul>
 <li><code>delta-mui</code> - contract: <code>.MuiDataGrid-columnHeaderTitle</code>, <code>.MuiDataGrid-root</code></li>
 <li><code>mangrove-mui</code> - contract: <code>.MuiDataGrid-columnHeaderTitle</code>, <code>.MuiDataGrid-root</code>, <code>.MuiInputBase-input</code>, <code>.MuiOutlinedInput-input</code></li>
-<li><code>delta-carbon</code> - off route: <code>.cds--action-list</code>, <code>.cds--batch-actions</code>, <code>.cds--btn</code>, <code>.cds--data-table</code>, <code>.cds--date-picker</code>, <code>.cds--date-picker-container</code>, <code>.cds--list-box</code>, <code>.cds--modal-container</code>, <code>.cds--search-input</code>, <code>.cds--select-input</code>, <code>.cds--side-nav</code>, <code>.cds--table-header-label</code>, <code>.cds--tag</code>, <code>.cds--text-area</code>, <code>.cds--text-input</code>, <code>.cds--tile</code></li>
+<li><code>delta-carbon</code> - off route: <code>.cds--action-list</code>, <code>.cds--batch-actions</code>, <code>.cds--btn</code>, <code>.cds--data-table</code>, <code>.cds--date-picker</code>, <code>.cds--date-picker-container</code>, <code>.cds--list-box</code>, <code>.cds--modal-container</code>, <code>.cds--progress-label</code>, <code>.cds--progress-optional</code>, <code>.cds--progress-step-button</code>, <code>.cds--search-input</code>, <code>.cds--select-input</code>, <code>.cds--side-nav</code>, <code>.cds--table-header-label</code>, <code>.cds--tag</code>, <code>.cds--text-area</code>, <code>.cds--text-input</code>, <code>.cds--tile</code></li>
 <li><code>mangrove-carbon</code> - off route: <code>.cds--data-table</code>, <code>.cds--data-table-container</code>, <code>.cds--data-table-content</code>, <code>.cds--date-picker</code>, <code>.cds--layer-one</code>, <code>.cds--link</code>, <code>.cds--modal</code>, <code>.cds--radio-button-group</code>, <code>.cds--search-input</code>, <code>.cds--side-nav</code>, <code>.cds--table-sort</code>, <code>.cds--text-area</code>, <code>.cds--text-input</code>, <code>.cds--tile</code>, <code>.cds--time-picker</code></li>
 <li><code>delta-mantine</code> - contract: <code>.mantine-InputWrapper-label</code>, <code>.mantine-SegmentedControl-label</code>, <code>.mantine-Select-label</code></li>
 <li><code>mangrove-mantine</code> - contract: <code>.mantine-PillsInputField-field</code>, <code>.mantine-TimePicker-field</code>, <code>.mantine-focus-always</code>, <code>.mantine-focus-auto</code></li>
@@ -404,11 +406,11 @@
 <div class="scroll"><table><thead>
 <tr><th>Pairing</th><th>tokens applied</th><th>unreachable</th><th>propagation</th><th>live var() refs in shipped CSS</th></tr>
 </thead><tbody>
-<tr><td>delta-react-aria</td><td>48</td><td>0</td><td><strong>stylesheet-swap</strong></td><td>340</td></tr>
+<tr><td>delta-react-aria</td><td>48</td><td>0</td><td><strong>stylesheet-swap</strong></td><td>392</td></tr>
 <tr><td>mangrove-react-aria</td><td>47</td><td>0</td><td><strong>stylesheet-swap</strong></td><td>309</td></tr>
 <tr><td>delta-mui</td><td>29</td><td>0</td><td><strong>mostly-rebuild</strong></td><td>38</td></tr>
 <tr><td>mangrove-mui</td><td>32</td><td>0</td><td><strong>mostly-rebuild</strong></td><td>38</td></tr>
-<tr><td>delta-carbon</td><td>50</td><td><strong>21</strong></td><td><strong>stylesheet-swap</strong></td><td>237</td></tr>
+<tr><td>delta-carbon</td><td>50</td><td><strong>21</strong></td><td><strong>stylesheet-swap</strong></td><td>263</td></tr>
 <tr><td>mangrove-carbon</td><td>50</td><td><strong>22</strong></td><td><strong>stylesheet-swap</strong></td><td>201</td></tr>
 <tr><td>delta-mantine</td><td>66</td><td><strong>5</strong></td><td><strong>mostly-rebuild</strong></td><td>44</td></tr>
 <tr><td>mangrove-mantine</td><td>62</td><td>0</td><td><strong>mostly-rebuild</strong></td><td>44</td></tr>

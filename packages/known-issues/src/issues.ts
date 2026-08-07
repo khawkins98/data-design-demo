@@ -440,9 +440,21 @@ export const KNOWN_ISSUES: readonly KnownIssue[] = Object.freeze([
     owner: "candidate",
     title: "MUI announces an ordered wizard as a tab list",
     detail:
-      "`Stepper` sniffs its children, finds `StepButton` and silently switches into tab-list mode: `role=\"tablist\"` plus `aria-orientation` on the root, and `role=\"tab\"` + `aria-selected` + `aria-posinset`/`aria-setsize` on every step. There is no opt-out prop. A tab set tells a screen-reader user the panels are peers they may visit in any order, which is the opposite of a wizard that gates later steps - and it is the one thing about a stepper that ARIA has a documented answer for. Correcting the role also makes MUI's hard-coded `aria-orientation` a CRITICAL axe violation, `aria-allowed-attr`, because it is invalid on `role=\"group\"`; axe found it. Six attributes are overridden by hand and the roving tab index cannot be removed.",
+      "`Stepper` sniffs its children, finds `StepButton` and silently switches into tab-list mode: `role=\"tablist\"` plus `aria-orientation` on the root, `role=\"tab\"` + `aria-selected` + `aria-posinset`/`aria-setsize` on every step, and `role=\"presentation\"` on the `Step` list items. There is no opt-out prop. A tab set tells a screen-reader user the panels are peers they may visit in any order, which is the opposite of a wizard that gates later steps - and it is the one thing about a stepper that ARIA has a documented answer for. Correcting the role also makes MUI's hard-coded `aria-orientation` a CRITICAL axe violation, `aria-allowed-attr`, because it is invalid on `role=\"group\"`; axe found it. Six attributes are overridden by hand and the roving tab index cannot be removed. THIS IS NEW AND IT IS DELIBERATE: v5 through v7 emitted `aria-current=\"step\"`, the correct value; PR #47687 replaced it in v9.0.0 (April 2026) and the migration guide records the swap as an accessibility improvement. A user asked for exactly the `nav`/`ol`/`aria-current` pattern in issue #47356 (November 2025); it was closed as not planned. So this is not an oversight upstream is likely to fix, and adopting MUI means adopting the disagreement.",
     links: [
       { label: "the wizard", href: `${BLOB}/apps/delta-mui/src/views/EventWizard.tsx` },
+      {
+        label: "MUI PR #47687",
+        href: "https://github.com/mui/material-ui/pull/47687",
+      },
+      {
+        label: "MUI issue #47356, closed as not planned",
+        href: "https://github.com/mui/material-ui/issues/47356",
+      },
+      {
+        label: "v9 migration guide",
+        href: "https://mui.com/material-ui/migration/upgrade-to-v9/",
+      },
       { label: "axis A7", href: "../axes.html" },
     ],
   },

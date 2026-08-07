@@ -24,7 +24,7 @@ needed working around. Neither is a time estimate; see the axis definition.
 | mangrove-react-aria | 21 | 7 | 2 | **9** | 3 | 3 (78 ln) | 7 |
 | delta-mui | 26 | 4 | 0 | **4** | 5 | 3 (62 ln) | 7 |
 | mangrove-mui | 26 | 4 | 0 | **4** | 7 | 2 (53 ln) | 10 |
-| delta-carbon | 19 | 10 | 1 | **11** | 12 | 4 (71 ln) | 10 |
+| delta-carbon | 19 | 10 | 1 | **11** | 14 | 4 (71 ln) | 10 |
 | mangrove-carbon | 19 | 10 | 1 | **11** | 8 | 4 (71 ln) | 11 |
 | delta-mantine | 20 | 7 | 3 | **10** | 11 | 4 (179 ln) | 10 |
 | mangrove-mantine | 19 | 10 | 1 | **11** | 9 | 4 (176 ln) | 9 |
@@ -69,13 +69,15 @@ suffice, recorded by the run that hit it.
 - stylis-plugin-rtl was NOT added, because it is outside the candidate's ecosystem and constraint 2 forbids it.
 - None needed for portalled overlays.
 
-**`delta-carbon`** - 12 entries
+**`delta-carbon`** - 14 entries
 
 - @carbon/styles/css/styles.css IS NOT IMPORTED.
 - TRAP 1, silent and consequential: `@carbon/styles/scss/layout` is REQUIRED but is not a component partial.
 - TRAP 2, the same shape one level down: components/data-table/_index.scss includes only the CORE table mixin.
 - A 20-line Vite plugin in vite.config.ts rewrites the one `:root` rule Carbon's layer module emits onto the token scope class, so the shipped stylesheet contains zero selectors that can match host markup.
-- Nineteen CSS rules reach into .cds-- class names, each for a token Carbon's theme cannot express: corner radius (Carbon has no radius token and is square by design), list-box menu max-height, table-header and list-box option wrapping for th...
+- Twenty-two CSS selectors reach into .cds-- class names, each for a token Carbon's theme cannot express or a behaviour it hard-codes: corner radius (Carbon has no radius token and is square by design), list-box menu max-height, table-header ...
+- THREE OF THOSE TWENTY-TWO ARE THE STEP WIZARD'S, and they are behaviour rather than tokens.
+- THE PROGRESS INDICATOR HAS NO RESPONSIVE BEHAVIOUR AT ALL.
 - Carbon's published TypeScript types do not compile under exactOptionalPropertyTypes: true.
 - @carbon/styles/scss/fonts is NOT loaded.
 - PORTALS ARE MOSTLY A NON-ISSUE HERE, and that is a finding rather than luck avoided.
@@ -156,15 +158,15 @@ theming mechanism, which is what accumulates across sites and across upgrades.
 
 | Pairing | attribute | contract | off route | of which hashed | CSS rules |
 | --- | --- | --- | --- | --- | --- |
-| delta-react-aria | 19 | 0 | **0** | 0 | 167 |
+| delta-react-aria | 21 | 0 | **0** | 0 | 193 |
 | mangrove-react-aria | 18 | 0 | **0** | 0 | 155 |
 | delta-mui | 0 | 2 | **0** | 0 | 3 |
 | mangrove-mui | 0 | 4 | **0** | 0 | 5 |
-| delta-carbon | 0 | 0 | **16** | 0 | 34 |
+| delta-carbon | 0 | 0 | **19** | 0 | 48 |
 | mangrove-carbon | 0 | 0 | **15** | 0 | 53 |
 | delta-mantine | 3 | 3 | **0** | 0 | 16 |
 | mangrove-mantine | 2 | 4 | **0** | 0 | 22 |
-| delta-antd | 0 | 0 | **0** | 0 | 7 |
+| delta-antd | 0 | 0 | **0** | 0 | 8 |
 | mangrove-antd | 0 | 0 | **0** | 0 | 6 |
 
 Checking the documentation moved two libraries here, and both moves were away from
@@ -183,7 +185,7 @@ supported theming route did not reach.
 
 - `delta-mui` - contract: `.MuiDataGrid-columnHeaderTitle`, `.MuiDataGrid-root`
 - `mangrove-mui` - contract: `.MuiDataGrid-columnHeaderTitle`, `.MuiDataGrid-root`, `.MuiInputBase-input`, `.MuiOutlinedInput-input`
-- `delta-carbon` - off route: `.cds--action-list`, `.cds--batch-actions`, `.cds--btn`, `.cds--data-table`, `.cds--date-picker`, `.cds--date-picker-container`, `.cds--list-box`, `.cds--modal-container`, `.cds--search-input`, `.cds--select-input`, `.cds--side-nav`, `.cds--table-header-label`, `.cds--tag`, `.cds--text-area`, `.cds--text-input`, `.cds--tile`
+- `delta-carbon` - off route: `.cds--action-list`, `.cds--batch-actions`, `.cds--btn`, `.cds--data-table`, `.cds--date-picker`, `.cds--date-picker-container`, `.cds--list-box`, `.cds--modal-container`, `.cds--progress-label`, `.cds--progress-optional`, `.cds--progress-step-button`, `.cds--search-input`, `.cds--select-input`, `.cds--side-nav`, `.cds--table-header-label`, `.cds--tag`, `.cds--text-area`, `.cds--text-input`, `.cds--tile`
 - `mangrove-carbon` - off route: `.cds--data-table`, `.cds--data-table-container`, `.cds--data-table-content`, `.cds--date-picker`, `.cds--layer-one`, `.cds--link`, `.cds--modal`, `.cds--radio-button-group`, `.cds--search-input`, `.cds--side-nav`, `.cds--table-sort`, `.cds--text-area`, `.cds--text-input`, `.cds--tile`, `.cds--time-picker`
 - `delta-mantine` - contract: `.mantine-InputWrapper-label`, `.mantine-SegmentedControl-label`, `.mantine-Select-label`
 - `mangrove-mantine` - contract: `.mantine-PillsInputField-field`, `.mantine-TimePicker-field`, `.mantine-focus-always`, `.mantine-focus-auto`
@@ -306,11 +308,11 @@ swap reaches every site at once; a rebuild is per site, forever.
 
 | Pairing | tokens applied | unreachable | propagation | live var() refs in shipped CSS |
 | --- | --- | --- | --- | --- |
-| delta-react-aria | 48 | 0 | **stylesheet-swap** | 340 |
+| delta-react-aria | 48 | 0 | **stylesheet-swap** | 392 |
 | mangrove-react-aria | 47 | 0 | **stylesheet-swap** | 309 |
 | delta-mui | 29 | 0 | **mostly-rebuild** | 38 |
 | mangrove-mui | 32 | 0 | **mostly-rebuild** | 38 |
-| delta-carbon | 50 | **21** | **stylesheet-swap** | 237 |
+| delta-carbon | 50 | **21** | **stylesheet-swap** | 263 |
 | mangrove-carbon | 50 | **22** | **stylesheet-swap** | 201 |
 | delta-mantine | 66 | **5** | **mostly-rebuild** | 44 |
 | mangrove-mantine | 62 | 0 | **mostly-rebuild** | 44 |

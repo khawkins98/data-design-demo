@@ -126,12 +126,33 @@ component, not the twelve doing ordinary layout.
 **MUI does not merely omit it — it asserts something false.** `Stepper` sniffs its
 children, finds `StepButton`, and silently switches into tab-list mode:
 `role="tablist"` on the root, `role="tab"` + `aria-selected` +
-`aria-posinset`/`aria-setsize` on each step. There is no opt-out prop. A tab set
-tells a screen-reader user the panels are peers they may visit in any order, in a
-form that gates them. Six attributes are overridden by hand — and only because both
-components spread `...other` after their own `role`, which is an accident of
-implementation, not an extension point. The roving tab index installed by the same
-flag cannot be removed at all.
+`aria-posinset`/`aria-setsize` on each step, and `role="presentation"` on the list
+items. There is no opt-out prop. A tab set tells a screen-reader user the panels
+are peers they may visit in any order, in a form that gates them. Six attributes
+are overridden by hand — and only because both components spread `...other` after
+their own `role`, which is an accident of implementation, not an extension point.
+The roving tab index installed by the same flag cannot be removed at all.
+
+**And this is a position, not a bug.** MUI v5 through v7 emitted
+`aria-current="step"` — the value this document calls correct. PR
+[#47687](https://github.com/mui/material-ui/pull/47687), merged 12 March 2026 and
+shipped in v9.0.0, replaced it; the
+[v9 migration guide](https://mui.com/material-ui/migration/upgrade-to-v9/) lists
+*"the `aria-current` changed to `aria-selected`"* among a set of accessibility
+improvements. The change answers two long-standing requests to make the stepper
+announce more. In the other direction, issue
+[#47356](https://github.com/mui/material-ui/issues/47356) asked for precisely the
+`nav`/`ol`/`aria-current="step"` pattern in November 2025 and was **closed as not
+planned**, folded into the issue #47687 went on to resolve the other way. No one
+has yet filed against the v9 output — it is four months old at the time of
+writing, and this evaluation appears to be the first place the objection is
+recorded.
+
+That changes what the finding means for a procurement decision. An unnoticed bug
+gets reported and fixed. A deliberate design choice, documented in a migration
+guide, with the alternative already declined, is a **disagreement you inherit** —
+and every wizard on the estate carries the hand-written correction for as long as
+MUI is the dependency.
 
 **So what a shipped stepper saves is the CSS, not the semantics.** That is the
 sentence to carry into the decision, because it is the opposite of the intuition,
