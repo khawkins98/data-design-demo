@@ -205,7 +205,7 @@ export function IslandView(): ReactElement {
 
   return (
     <IslandFrame
-      title={labels.appTitle}
+      title="Demo: Mangrove + MUI"
       dir={demo.dir}
       /*
        * The frame's `pageHeader` and `notices` slots render both of these OUTSIDE

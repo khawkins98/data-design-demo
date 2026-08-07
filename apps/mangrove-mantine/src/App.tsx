@@ -177,7 +177,7 @@ export function App({
 
   return (
     <HostShell
-      title={demo.labels.appTitle}
+      title="Demo: Mangrove + Mantine"
       dir={demo.dir}
       pageHeader={
         /*

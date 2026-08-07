@@ -92,7 +92,7 @@ export function App(): ReactElement {
 
   return (
     <HostShell
-      title={demo.labels.appTitle}
+      title="Demo: Mangrove + Carbon"
       dir={demo.dir}
       pageHeader={
         /*

@@ -110,7 +110,7 @@ export function IslandView(): ReactElement {
 
   return (
     <IslandFrame
-      title={demo.labels.appTitle}
+      title="Demo: Mangrove + React Aria"
       dir={demo.dir}
       pageHeader={
         /*

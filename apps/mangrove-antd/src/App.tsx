@@ -71,7 +71,7 @@ export function App(): ReactElement {
 
   return (
     <HostShell
-      title={demo.labels.appTitle}
+      title="Demo: Mangrove + Ant Design"
       dir={demo.dir}
       pageHeader={
         /*

@@ -83,7 +83,7 @@ export function App(): ReactElement {
 
   return (
     <HostShell
-      title={demo.labels.appTitle}
+      title="Demo: Delta + MUI"
       dir={demo.dir}
       pageHeader={
         /*
