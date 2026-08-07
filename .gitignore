@@ -4,21 +4,20 @@ dist-ssr/
 *.tsbuildinfo
 .DS_Store
 
-# Playwright working files. Note that apps/*/screenshots and apps/*/test-results
-# ARE committed on purpose: they are the evaluation evidence.
+# Playwright working files.
 playwright-report/
 .playwright/
 blob-report/
 test-results-tmp/
 
+# Screenshots are regenerable from test runs — not committed.
+apps/*/screenshots/
+
 # Local env
 .env
 .env.local
 
-# The preview is a scratch control, not evidence: its screenshots and results
-# are regenerated on demand and would only add churn. The eight real demos DO
-# commit theirs.
-packages/host-preview/screenshots/
+# Preview scratch.
 packages/host-preview/test-results/
 
 # Playwright's per-test working dir (traces, error contexts). The JSON files
