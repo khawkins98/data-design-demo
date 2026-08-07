@@ -63,6 +63,16 @@ execFileSync("node", [join(HERE, "build-comparison.mjs")], { cwd: ROOT, stdio: "
 // it rather than guessing.
 execFileSync("node", [join(HERE, "build-axes.mjs")], { cwd: ROOT, stdio: "inherit" });
 
+// Architecture options — hand-written markdown rendered to HTML for the site nav.
+execFileSync("node", [join(HERE, "build-architecture.mjs")], { cwd: ROOT, stdio: "inherit" });
+
+// Issues register — all known issues rendered to a filterable HTML page.
+execFileSync(
+  "node",
+  ["--experimental-strip-types", join(HERE, "build-issues-page.mjs")],
+  { cwd: ROOT, stdio: "inherit" },
+);
+
 // Scores page doubles as the landing page since it carries the overview grid,
 // recommendation, and the six framing questions.
 execFileSync(
