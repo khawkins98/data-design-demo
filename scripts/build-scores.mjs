@@ -563,6 +563,7 @@ function buildOverviewHtml() {
   const bandLabel = { strong: "S", workable: "W", weak: "Wk", blocked: "B" };
   const axisKeys = AXES.map(([key]) => key);
   const axisShort = ["A1", "A2", "A3", "A4", "A5", "A6", "A7"];
+  const axisLabel = AXES.map(([, label]) => label);
 
   const gridRows = ranked.map((c) => {
     const deltaPairing = c.pair.find((p) => p.host === "delta");
@@ -617,7 +618,7 @@ function buildOverviewHtml() {
     `<span class="ov-b ov-key">blocked</span></p>\n` +
     `<div class="scroll"><table class="ov-table"><thead>\n` +
     `<tr><th>Candidate</th><th>Score</th><th>Blockers</th>` +
-    axisShort.map((a) => `<th class="ov-ax">${a}</th>`).join("") +
+    axisShort.map((a, i) => `<th class="ov-ax"><a href="./axes.html#${a.toLowerCase()}" title="${esc(axisLabel[i])}">${a}</a></th>`).join("") +
     `<th>Demos</th></tr>\n` +
     `</thead><tbody>\n` +
     gridRows.join("\n") +
@@ -718,6 +719,7 @@ const html = `<!doctype html>
       .ov-name { text-align:start !important; font-weight:600; }
       .ov-score { font-size:1rem; }
       .ov-ax { font-size:0.6875rem; }
+      .ov-ax a { text-decoration:underline dotted; text-underline-offset:0.2em; text-decoration-color:var(--muted); }
       .ov-demos { font-size:0.75rem; }
       .ov-demos a + a { margin-inline-start:0.5rem; }
       .ov-s { background:#d4edda; color:#155724; }
