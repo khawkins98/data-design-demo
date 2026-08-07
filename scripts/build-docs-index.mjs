@@ -58,11 +58,26 @@ const DOCS_BLOB = "https://github.com/khawkins98/data-design-demo/blob/main/docs
  * Prose source of truth is docs/undrr-questions.md and docs/decision-axes.md.
  */
 
+/*
+ * A stacked list, not a card grid.
+ *
+ * These were four-to-a-row cards, and cards were the wrong container for them. The
+ * answers are two to five lines and vary in length, so an auto-filling grid set
+ * every card to the tallest one's height, left the short ones padded with dead
+ * space, and squeezed the text into 16rem columns - narrow enough that the answers
+ * broke over four or five words a line. Reading six of those is work.
+ *
+ * Cards suit things you scan and pick one of, which is what the pairing cards below
+ * are. These are things you READ, in order, all six. So they run full width at a
+ * readable measure, one after another, with a rule between them.
+ */
 const questionsHtml = UNDRR_QUESTIONS.map(
   (q) => `
           <div class="question">
-            <h3 class="question__title">${esc(q.question)}</h3>
-            <p class="question__asks">${esc(q.asks)}</p>
+            <h3 class="question__title">
+              ${esc(q.question)}
+              <span class="question__asks">${esc(q.asks)}</span>
+            </h3>
             <p class="question__answer">${esc(q.answer)}</p>
             <p class="question__axis">
               <a href="./axes.html#${esc(q.axis.toLowerCase())}"
@@ -270,6 +285,86 @@ function knownIssueNote(appDir, candidateId) {
     </p>`;
 }
 
+/**
+ * What each badge on a card actually means.
+ *
+ * ONE SOURCE FOR THE TOOLTIP AND THE GLOSSARY. `short` is what appears on hover or
+ * focus; `long` is the glossary entry. Both are generated from here, so the pop-up
+ * explanation and the glossary cannot come to disagree about what "clean" claims -
+ * which they would within one revision if each were written where it is displayed.
+ *
+ * The badges are the most-read thing on this page and the least self-explanatory:
+ * "Long labels: clean" is meaningless to anyone who has not read the brief, and a
+ * glossary two screens down is not where a reader looks when a badge confuses them.
+ */
+const BADGE_HELP = {
+  leakage: {
+    term: "Leakage",
+    short:
+      "Did the library change how the REST of the page looks, outside its own area? Measured by loading the page twice, with and without the library, and comparing UNDRR's own headings, buttons, tables and cards.",
+    long: "A component library changing how the rest of the page looks, outside its own area. If a library restyles UNDRR's own headings and buttons, every page it appears on inherits that. The test loads each page twice, with and without the library, and compares.",
+  },
+  rtl: {
+    term: "RTL",
+    short:
+      "Does Arabic work in the COMPONENTS, not just the page? A page can flip correctly while a library's own dropdowns, dialogs and date pickers stay left-to-right inside it.",
+    long: "Right-to-left. Arabic reads right to left, so the whole interface mirrors. Setting a direction on the page is the easy half; the question is whether the library's own components mirror with it, including the ones the browser moves elsewhere to display.",
+  },
+  longLabels: {
+    term: "Long labels",
+    short:
+      "UNDRR's real content includes very long strings, and its French and Arabic are longer again. \"Clean\" means nothing overflowed the viewport or was clipped when the fixture text was left untouched.",
+    long: "UNDRR's own content is not short, and translation makes it longer: a label that fits in English may not fit in French or Arabic. The fixtures deliberately include long strings, and the check is whether anything overflows the viewport or gets clipped rather than wrapping.",
+  },
+};
+
+/**
+ * The description each badge points at with `aria-describedby`, rendered once and
+ * shared by all ten cards.
+ *
+ * Repeating the text inside every badge would make a screen reader read the
+ * explanation thirty times on one page. One element per badge kind, referenced by
+ * every badge of that kind, is both valid and quieter.
+ */
+const badgeHelpHtml = Object.entries(BADGE_HELP)
+  .map(
+    ([key, help]) =>
+      `      <div class="visually-hidden" id="help-${key}">${esc(help.term)}: ${esc(
+        help.short,
+      )}</div>`,
+  )
+  .join("\n");
+
+/**
+ * The glossary entries for the three badge terms, from the same map the tooltips
+ * use. Generated rather than hand-written beside the other entries so that a
+ * correction to one reaches both.
+ */
+const badgeGlossaryHtml = Object.values(BADGE_HELP)
+  .map(
+    (help) =>
+      `          <dt>${esc(help.term)}</dt>\n          <dd>${esc(help.long)}</dd>`,
+  )
+  .join("\n");
+
+/**
+ * One badge.
+ *
+ * `tabindex="0"` on a non-interactive element is deliberate: a tooltip reachable
+ * only by mouse is not reachable at all for a keyboard user, and this page carries
+ * an evaluation that scores five libraries on exactly that kind of omission. It is
+ * NOT a `<button>`, because pressing it does nothing and announcing a button would
+ * promise an action that does not exist.
+ */
+function badge(key, label, ok) {
+  const help = BADGE_HELP[key];
+  return (
+    `<li class="flag flag--${ok ? "ok" : "bad"}" tabindex="0"` +
+    ` aria-describedby="help-${key}" data-help="${esc(help.short)}"` +
+    ` data-term="${esc(help.term)}">${esc(label)}</li>`
+  );
+}
+
 /** Renders the leakage and RTL flags, which are the comparison's headline signals. */
 function flags(evidence) {
   if (!evidence) return "";
@@ -278,23 +373,23 @@ function flags(evidence) {
   if (evidence.leakage) {
     const passed = evidence.leakage.assertionPassed === true;
     items.push(
-      `<li class="flag ${passed ? "flag--ok" : "flag--bad"}">Leakage: ${
-        passed ? "clean" : `${evidence.leakage.differences?.length ?? 0} differences`
-      }</li>`,
+      badge(
+        "leakage",
+        `Leakage: ${passed ? "clean" : `${evidence.leakage.differences?.length ?? 0} differences`}`,
+        passed,
+      ),
     );
   }
   if (evidence.rtl?.status) {
-    items.push(
-      `<li class="flag flag--${evidence.rtl.status === "clean" ? "ok" : "bad"}">RTL: ${esc(
-        evidence.rtl.status,
-      )}</li>`,
-    );
+    items.push(badge("rtl", `RTL: ${evidence.rtl.status}`, evidence.rtl.status === "clean"));
   }
   if (evidence.longLabels?.status) {
     items.push(
-      `<li class="flag flag--${
-        evidence.longLabels.status === "clean" ? "ok" : "bad"
-      }">Long labels: ${esc(evidence.longLabels.status)}</li>`,
+      badge(
+        "longLabels",
+        `Long labels: ${evidence.longLabels.status}`,
+        evidence.longLabels.status === "clean",
+      ),
     );
   }
 
@@ -453,21 +548,21 @@ const html = `<!doctype html>
         gap: 1rem;
         grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
       }
-      .questions {
-        display: grid;
-        gap: 0.875rem;
-        grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
-        margin: 1rem 0;
+      /* Read in order, all six - so one column at a readable measure, not a grid. */
+      .questions { margin: 1rem 0 0; max-width: 78ch; }
+      .question { padding: 0.875rem 0; border-top: 1px solid var(--border); }
+      .question:first-child { border-top: 0; padding-top: 0.25rem; }
+      .question__title {
+        font-size: 0.9375rem;
+        margin: 0 0 0.375rem;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 0.5rem;
       }
-      .question {
-        padding: 0.75rem 0.875rem;
-        background: var(--bg);
-        border: 1px solid var(--border);
-        border-radius: 6px;
-      }
-      .question__title { font-size: 0.9375rem; margin: 0 0 0.25rem; }
-      .question__asks { margin: 0 0 0.5rem; font-size: 0.8125rem; color: var(--muted); }
-      .question__answer { margin: 0 0 0.5rem; font-size: 0.8125rem; }
+      /* The question itself, inside the heading: one line, one thought. */
+      .question__asks { font-weight: 400; font-size: 0.8125rem; color: var(--muted); }
+      .question__answer { margin: 0 0 0.375rem; font-size: 0.875rem; }
       .question__axis { margin: 0; font-size: 0.75rem; }
       .start__more { margin: 1rem 0 0; font-size: 0.8125rem; max-width: 78ch; }
       .ceiling {
@@ -504,6 +599,60 @@ const html = `<!doctype html>
       .flag { font-size: 0.6875rem; padding: 0.125rem 0.5rem; border-radius: 999px; border: 1px solid var(--border); }
       .flag--ok { color: var(--ok); }
       .flag--bad { color: var(--bad); }
+      /*
+       * The badges carry an explanation on hover and on focus, so they need to look
+       * like they reward attention. A dotted underline is the long-standing
+       * convention for "there is a definition behind this" and does not imply a link.
+       */
+      .flag[data-help] {
+        cursor: help;
+        text-decoration: underline dotted;
+        text-underline-offset: 0.2em;
+        text-decoration-color: var(--muted);
+      }
+      .flag[data-help]:hover, .flag[data-help]:focus-visible {
+        background: color-mix(in srgb, var(--border) 30%, transparent);
+      }
+      .flag[data-help]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+      /* Screen-reader-only: the shared badge descriptions aria-describedby points at. */
+      .visually-hidden {
+        position: absolute;
+        width: 1px; height: 1px;
+        margin: -1px; padding: 0;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      /*
+       * One tooltip element, moved and filled on demand rather than one per badge.
+       * Fixed positioning, because the badges sit inside cards that scroll and clip;
+       * an absolutely-positioned tooltip inside a card would be cut off by it.
+       */
+      #badge-tip {
+        position: fixed;
+        z-index: 20;
+        max-width: 30rem;
+        padding: 0.5rem 0.75rem;
+        font-size: 0.8125rem;
+        line-height: 1.4;
+        background: var(--surface);
+        color: var(--text);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        box-shadow: 0 6px 20px rgb(0 0 0 / 0.18);
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 120ms ease;
+      }
+      #badge-tip[data-open="true"] { opacity: 1; }
+      #badge-tip code { font-size: 0.9em; }
+      #badge-tip strong { display: block; margin-bottom: 0.125rem; }
+      @media (prefers-reduced-motion: reduce) {
+        #badge-tip { transition: none; }
+      }
       .card__issue {
         margin: 0.25rem 0 0;
         padding: 0.5rem 0.625rem;
@@ -651,13 +800,7 @@ ${questionsHtml}
           them
         </summary>
         <dl class="glossary__list">
-          <dt>Leakage</dt>
-          <dd>
-            A component library changing how the rest of the page looks, outside its
-            own area. If a library restyles UNDRR's own headings and buttons, every
-            page it appears on inherits that. The test loads each page twice, with
-            and without the library, and compares.
-          </dd>
+${badgeGlossaryHtml}
           <dt>Kitchen sink / component inventory</dt>
           <dd>
             One page showing every control at once. Proves the parts exist; tells you
@@ -716,6 +859,90 @@ ${cardHtml}
         </p>
       </footer>
     </div>
+
+    <!--
+      The badge descriptions, rendered once and shared by every badge through
+      aria-describedby. Not inside the cards: thirty copies of three sentences would
+      be read out thirty times.
+    -->
+${badgeHelpHtml}
+
+    <div id="badge-tip" role="tooltip" aria-hidden="true"></div>
+
+    <script>
+      /*
+       * Tooltips for the card badges.
+       *
+       * The glossary explains these terms and stays - it is where someone reading the
+       * page properly will look. This is for the other reader: the one who scanned to
+       * the cards, hit "Long labels: clean" and has no idea what was measured. A
+       * glossary two screens away does not help them at that moment.
+       *
+       * ONE element, moved and refilled, rather than one per badge: there are thirty
+       * badges on this page. Shown on FOCUS as well as hover, because a tooltip
+       * reachable only by mouse is not reachable at all for a keyboard user, and this
+       * page fronts an evaluation that scores five libraries on that exact omission.
+       * Escape dismisses it, which is what WCAG 1.4.13 asks of content that appears
+       * on hover.
+       *
+       * The accessible text does NOT come from here. Every badge carries
+       * aria-describedby pointing at a real element above, so a screen reader gets the
+       * explanation whether or not this script runs. This is the visual layer only.
+       */
+      (() => {
+        const tip = document.getElementById("badge-tip");
+        if (!tip) return;
+        let current = null;
+
+        function show(badge) {
+          current = badge;
+          const term = badge.dataset.term ?? "";
+          const help = badge.dataset.help ?? "";
+          tip.innerHTML = "";
+          if (term) {
+            const strong = document.createElement("strong");
+            strong.textContent = term;
+            tip.append(strong);
+          }
+          // textContent, not innerHTML: the text is ours, but building the habit in
+          // a generated page costs nothing and the alternative teaches the wrong one.
+          tip.append(document.createTextNode(help));
+
+          // Measure, then place: above the badge if there is room, otherwise below.
+          tip.dataset.open = "true";
+          tip.setAttribute("aria-hidden", "false");
+          const anchor = badge.getBoundingClientRect();
+          const box = tip.getBoundingClientRect();
+          const margin = 8;
+          let left = anchor.left + anchor.width / 2 - box.width / 2;
+          left = Math.max(margin, Math.min(left, window.innerWidth - box.width - margin));
+          const above = anchor.top - box.height - margin;
+          const top = above >= margin ? above : anchor.bottom + margin;
+          tip.style.left = left + "px";
+          tip.style.top = top + "px";
+        }
+
+        function hide() {
+          current = null;
+          tip.dataset.open = "false";
+          tip.setAttribute("aria-hidden", "true");
+        }
+
+        for (const badge of document.querySelectorAll(".flag[data-help]")) {
+          badge.addEventListener("mouseenter", () => show(badge));
+          badge.addEventListener("mouseleave", hide);
+          badge.addEventListener("focus", () => show(badge));
+          badge.addEventListener("blur", hide);
+        }
+
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape" && current) hide();
+        });
+        // A fixed tooltip would otherwise stay put while the page moves under it.
+        window.addEventListener("scroll", () => current && hide(), { passive: true });
+        window.addEventListener("resize", () => current && hide());
+      })();
+    </script>
   </body>
 </html>
 `;

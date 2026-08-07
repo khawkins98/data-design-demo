@@ -74,21 +74,21 @@
         gap: 1rem;
         grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
       }
-      .questions {
-        display: grid;
-        gap: 0.875rem;
-        grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
-        margin: 1rem 0;
+      /* Read in order, all six - so one column at a readable measure, not a grid. */
+      .questions { margin: 1rem 0 0; max-width: 78ch; }
+      .question { padding: 0.875rem 0; border-top: 1px solid var(--border); }
+      .question:first-child { border-top: 0; padding-top: 0.25rem; }
+      .question__title {
+        font-size: 0.9375rem;
+        margin: 0 0 0.375rem;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 0.5rem;
       }
-      .question {
-        padding: 0.75rem 0.875rem;
-        background: var(--bg);
-        border: 1px solid var(--border);
-        border-radius: 6px;
-      }
-      .question__title { font-size: 0.9375rem; margin: 0 0 0.25rem; }
-      .question__asks { margin: 0 0 0.5rem; font-size: 0.8125rem; color: var(--muted); }
-      .question__answer { margin: 0 0 0.5rem; font-size: 0.8125rem; }
+      /* The question itself, inside the heading: one line, one thought. */
+      .question__asks { font-weight: 400; font-size: 0.8125rem; color: var(--muted); }
+      .question__answer { margin: 0 0 0.375rem; font-size: 0.875rem; }
       .question__axis { margin: 0; font-size: 0.75rem; }
       .start__more { margin: 1rem 0 0; font-size: 0.8125rem; max-width: 78ch; }
       .ceiling {
@@ -125,6 +125,60 @@
       .flag { font-size: 0.6875rem; padding: 0.125rem 0.5rem; border-radius: 999px; border: 1px solid var(--border); }
       .flag--ok { color: var(--ok); }
       .flag--bad { color: var(--bad); }
+      /*
+       * The badges carry an explanation on hover and on focus, so they need to look
+       * like they reward attention. A dotted underline is the long-standing
+       * convention for "there is a definition behind this" and does not imply a link.
+       */
+      .flag[data-help] {
+        cursor: help;
+        text-decoration: underline dotted;
+        text-underline-offset: 0.2em;
+        text-decoration-color: var(--muted);
+      }
+      .flag[data-help]:hover, .flag[data-help]:focus-visible {
+        background: color-mix(in srgb, var(--border) 30%, transparent);
+      }
+      .flag[data-help]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+      /* Screen-reader-only: the shared badge descriptions aria-describedby points at. */
+      .visually-hidden {
+        position: absolute;
+        width: 1px; height: 1px;
+        margin: -1px; padding: 0;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      /*
+       * One tooltip element, moved and filled on demand rather than one per badge.
+       * Fixed positioning, because the badges sit inside cards that scroll and clip;
+       * an absolutely-positioned tooltip inside a card would be cut off by it.
+       */
+      #badge-tip {
+        position: fixed;
+        z-index: 20;
+        max-width: 30rem;
+        padding: 0.5rem 0.75rem;
+        font-size: 0.8125rem;
+        line-height: 1.4;
+        background: var(--surface);
+        color: var(--text);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        box-shadow: 0 6px 20px rgb(0 0 0 / 0.18);
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 120ms ease;
+      }
+      #badge-tip[data-open="true"] { opacity: 1; }
+      #badge-tip code { font-size: 0.9em; }
+      #badge-tip strong { display: block; margin-bottom: 0.125rem; }
+      @media (prefers-reduced-motion: reduce) {
+        #badge-tip { transition: none; }
+      }
       .card__issue {
         margin: 0.25rem 0 0;
         padding: 0.5rem 0.625rem;
@@ -238,8 +292,10 @@
         <div class="questions">
 
           <div class="question">
-            <h3 class="question__title">Repeatability</h3>
-            <p class="question__asks">Can a second team reproduce the integration without inventing their own conventions?</p>
+            <h3 class="question__title">
+              Repeatability
+              <span class="question__asks">Can a second team reproduce the integration without inventing their own conventions?</span>
+            </h3>
             <p class="question__answer">Measured by extraction for MUI: 86% of the integration shares across sites. React Aria's is fully portable but has no package to hold it, so it is shared by duplication.</p>
             <p class="question__axis">
               <a href="./axes.html#a3"
@@ -249,8 +305,10 @@
           </div>
 
           <div class="question">
-            <h3 class="question__title">Standardisation</h3>
-            <p class="question__asks">One shared component vocabulary across the estate, or one dialect per project?</p>
+            <h3 class="question__title">
+              Standardisation
+              <span class="question__asks">One shared component vocabulary across the estate, or one dialect per project?</span>
+            </h3>
             <p class="question__answer">shadcn/ui was excluded outright for guaranteeing a fork per site. Among the five built, the theme and token layer extracts; kitchen-sink section components do not.</p>
             <p class="question__axis">
               <a href="./axes.html#a3"
@@ -260,8 +318,10 @@
           </div>
 
           <div class="question">
-            <h3 class="question__title">Mangrove integration</h3>
-            <p class="question__asks">Can it live inside an existing Mangrove page without fighting it?</p>
+            <h3 class="question__title">
+              Mangrove integration
+              <span class="question__asks">Can it live inside an existing Mangrove page without fighting it?</span>
+            </h3>
             <p class="question__answer">Leakage is clean for every pairing except mangrove-carbon, whose global stylesheet is not containable. Ant Design loses every cascade conflict to Mangrove - which the realistic layouts showed is not a matter of taste: Mangrove's rules also cover Select's own value, so its filters render blank on the Mangrove host.</p>
             <p class="question__axis">
               <a href="./axes.html#a4"
@@ -271,8 +331,10 @@
           </div>
 
           <div class="question">
-            <h3 class="question__title">Design-token alignment</h3>
-            <p class="question__asks">Can it be driven by UNDRR tokens, and does a token change propagate?</p>
+            <h3 class="question__title">
+              Design-token alignment
+              <span class="question__asks">Can it be driven by UNDRR tokens, and does a token change propagate?</span>
+            </h3>
             <p class="question__answer">React Aria and Carbon resolve tokens in the browser, so a Mangrove change is a stylesheet swap. MUI, Mantine and Ant Design bake values in, making it a rebuild of every site. Carbon leaves 21-22 of 71 tokens unreachable at all.</p>
             <p class="question__axis">
               <a href="./axes.html#a5"
@@ -282,8 +344,10 @@
           </div>
 
           <div class="question">
-            <h3 class="question__title">Right-to-left</h3>
-            <p class="question__asks">Does Arabic work in the components, not just the page?</p>
+            <h3 class="question__title">
+              Right-to-left
+              <span class="question__asks">Does Arabic work in the components, not just the page?</span>
+            </h3>
             <p class="question__answer">MUI Community fails on both hosts and cannot be fixed within the brief's constraints. React Aria and Ant Design are clean at zero cost; Mantine is clean only after mitigation. This needs a policy call, not a bug fix.</p>
             <p class="question__axis">
               <a href="./axes.html#a6"
@@ -293,8 +357,10 @@
           </div>
 
           <div class="question">
-            <h3 class="question__title">Accessibility</h3>
-            <p class="question__asks">Does it meet UNDRR's obligations in practice?</p>
+            <h3 class="question__title">
+              Accessibility
+              <span class="question__asks">Does it meet UNDRR's obligations in practice?</span>
+            </h3>
             <p class="question__answer">Zero is a floor, not a conformance claim: no screen-reader or human keyboard pass was run on any pairing. And the floor is lower than the kitchen sinks suggested - the realistic layouts found a critical unnamed-button defect in Mantine's Modal that every scoped axe run in this repository was blind to, because portalled overlays render outside the scanned subtree.</p>
             <p class="question__axis">
               <a href="./axes.html#a7"
@@ -338,12 +404,11 @@
         </summary>
         <dl class="glossary__list">
           <dt>Leakage</dt>
-          <dd>
-            A component library changing how the rest of the page looks, outside its
-            own area. If a library restyles UNDRR's own headings and buttons, every
-            page it appears on inherits that. The test loads each page twice, with
-            and without the library, and compares.
-          </dd>
+          <dd>A component library changing how the rest of the page looks, outside its own area. If a library restyles UNDRR's own headings and buttons, every page it appears on inherits that. The test loads each page twice, with and without the library, and compares.</dd>
+          <dt>RTL</dt>
+          <dd>Right-to-left. Arabic reads right to left, so the whole interface mirrors. Setting a direction on the page is the easy half; the question is whether the library's own components mirror with it, including the ones the browser moves elsewhere to display.</dd>
+          <dt>Long labels</dt>
+          <dd>UNDRR's own content is not short, and translation makes it longer: a label that fits in English may not fit in French or Arabic. The fixtures deliberately include long strings, and the check is whether anything overflows the viewport or gets clipped rather than wrapping.</dd>
           <dt>Kitchen sink / component inventory</dt>
           <dd>
             One page showing every control at once. Proves the parts exist; tells you
@@ -402,7 +467,7 @@
           <p class="card__host">on <strong>Delta</strong></p>
         </header>
         <p class="card__status" data-status="complete">Complete</p>
-        <ul class="flags"><li class="flag flag--ok">Leakage: clean</li><li class="flag flag--ok">RTL: clean</li><li class="flag flag--ok">Long labels: clean</li></ul>
+        <ul class="flags"><li class="flag flag--ok" tabindex="0" aria-describedby="help-leakage" data-help="Did the library change how the REST of the page looks, outside its own area? Measured by loading the page twice, with and without the library, and comparing UNDRR's own headings, buttons, tables and cards." data-term="Leakage">Leakage: clean</li><li class="flag flag--ok" tabindex="0" aria-describedby="help-rtl" data-help="Does Arabic work in the COMPONENTS, not just the page? A page can flip correctly while a library's own dropdowns, dialogs and date pickers stay left-to-right inside it." data-term="RTL">RTL: clean</li><li class="flag flag--ok" tabindex="0" aria-describedby="help-longLabels" data-help="UNDRR's real content includes very long strings, and its French and Arabic are longer again. &quot;Clean&quot; means nothing overflowed the viewport or was clipped when the fixture text was left untouched." data-term="Long labels">Long labels: clean</li></ul>
         
         <ul class="views"><li class="view"><a class="view__link" href="./delta-react-aria/app.html">A whole DELTA screen</a> <span class="view__hint">layout, navigation and a full records workflow</span></li><li class="view"><a class="view__link" href="./delta-react-aria/">Component inventory</a> <span class="view__hint">every component on one page - proves capability, not adoption</span></li></ul>
       </article>
@@ -413,7 +478,7 @@
           <p class="card__host">on <strong>Mangrove</strong></p>
         </header>
         <p class="card__status" data-status="complete">Complete</p>
-        <ul class="flags"><li class="flag flag--ok">Leakage: clean</li><li class="flag flag--ok">RTL: clean</li><li class="flag flag--ok">Long labels: clean</li></ul>
+        <ul class="flags"><li class="flag flag--ok" tabindex="0" aria-describedby="help-leakage" data-help="Did the library change how the REST of the page looks, outside its own area? Measured by loading the page twice, with and without the library, and comparing UNDRR's own headings, buttons, tables and cards." data-term="Leakage">Leakage: clean</li><li class="flag flag--ok" tabindex="0" aria-describedby="help-rtl" data-help="Does Arabic work in the COMPONENTS, not just the page? A page can flip correctly while a library's own dropdowns, dialogs and date pickers stay left-to-right inside it." data-term="RTL">RTL: clean</li><li class="flag flag--ok" tabindex="0" aria-describedby="help-longLabels" data-help="UNDRR's real content includes very long strings, and its French and Arabic are longer again. &quot;Clean&quot; means nothing overflowed the viewport or was clipped when the fixture text was left untouched." data-term="Long labels">Long labels: clean</li></ul>
         
         <ul class="views"><li class="view"><a class="view__link" href="./mangrove-react-aria/island.html">Inside a real page</a> <span class="view__hint">the candidate owns one region of a live Mangrove page</span></li><li class="view"><a class="view__link" href="./mangrove-react-aria/">Component inventory</a> <span class="view__hint">every component on one page - proves capability, not adoption</span></li></ul>
       </article>
@@ -437,7 +502,7 @@
           <p class="card__host">on <strong>Delta</strong></p>
         </header>
         <p class="card__status" data-status="complete">Complete</p>
-        <ul class="flags"><li class="flag flag--ok">Leakage: clean</li><li class="flag flag--bad">RTL: issues</li><li class="flag flag--ok">Long labels: clean</li></ul>
+        <ul class="flags"><li class="flag flag--ok" tabindex="0" aria-describedby="help-leakage" data-help="Did the library change how the REST of the page looks, outside its own area? Measured by loading the page twice, with and without the library, and comparing UNDRR's own headings, buttons, tables and cards." data-term="Leakage">Leakage: clean</li><li class="flag flag--bad" tabindex="0" aria-describedby="help-rtl" data-help="Does Arabic work in the COMPONENTS, not just the page? A page can flip correctly while a library's own dropdowns, dialogs and date pickers stay left-to-right inside it." data-term="RTL">RTL: issues</li><li class="flag flag--ok" tabindex="0" aria-describedby="help-longLabels" data-help="UNDRR's real content includes very long strings, and its French and Arabic are longer again. &quot;Clean&quot; means nothing overflowed the viewport or was clipped when the fixture text was left untouched." data-term="Long labels">Long labels: clean</li></ul>
         
         <ul class="views"><li class="view"><a class="view__link" href="./delta-mui/app.html">A whole DELTA screen</a> <span class="view__hint">layout, navigation and a full records workflow</span></li><li class="view"><a class="view__link" href="./delta-mui/">Component inventory</a> <span class="view__hint">every component on one page - proves capability, not adoption</span></li></ul>
       </article>
@@ -448,7 +513,7 @@
           <p class="card__host">on <strong>Mangrove</strong></p>
         </header>
         <p class="card__status" data-status="complete">Complete</p>
-        <ul class="flags"><li class="flag flag--ok">Leakage: clean</li><li class="flag flag--bad">RTL: issues</li><li class="flag flag--ok">Long labels: clean</li></ul>
+        <ul class="flags"><li class="flag flag--ok" tabindex="0" aria-describedby="help-leakage" data-help="Did the library change how the REST of the page looks, outside its own area? Measured by loading the page twice, with and without the library, and comparing UNDRR's own headings, buttons, tables and cards." data-term="Leakage">Leakage: clean</li><li class="flag flag--bad" tabindex="0" aria-describedby="help-rtl" data-help="Does Arabic work in the COMPONENTS, not just the page? A page can flip correctly while a library's own dropdowns, dialogs and date pickers stay left-to-right inside it." data-term="RTL">RTL: issues</li><li class="flag flag--ok" tabindex="0" aria-describedby="help-longLabels" data-help="UNDRR's real content includes very long strings, and its French and Arabic are longer again. &quot;Clean&quot; means nothing overflowed the viewport or was clipped when the fixture text was left untouched." data-term="Long labels">Long labels: clean</li></ul>
         
         <ul class="views"><li class="view"><a class="view__link" href="./mangrove-mui/island.html">Inside a real page</a> <span class="view__hint">the candidate owns one region of a live Mangrove page</span></li><li class="view"><a class="view__link" href="./mangrove-mui/">Component inventory</a> <span class="view__hint">every component on one page - proves capability, not adoption</span></li></ul>
       </article>
@@ -472,7 +537,7 @@
           <p class="card__host">on <strong>Delta</strong></p>
         </header>
         <p class="card__status" data-status="complete">Complete</p>
-        <ul class="flags"><li class="flag flag--ok">Leakage: clean</li><li class="flag flag--ok">RTL: clean</li><li class="flag flag--ok">Long labels: clean</li></ul>
+        <ul class="flags"><li class="flag flag--ok" tabindex="0" aria-describedby="help-leakage" data-help="Did the library change how the REST of the page looks, outside its own area? Measured by loading the page twice, with and without the library, and comparing UNDRR's own headings, buttons, tables and cards." data-term="Leakage">Leakage: clean</li><li class="flag flag--ok" tabindex="0" aria-describedby="help-rtl" data-help="Does Arabic work in the COMPONENTS, not just the page? A page can flip correctly while a library's own dropdowns, dialogs and date pickers stay left-to-right inside it." data-term="RTL">RTL: clean</li><li class="flag flag--ok" tabindex="0" aria-describedby="help-longLabels" data-help="UNDRR's real content includes very long strings, and its French and Arabic are longer again. &quot;Clean&quot; means nothing overflowed the viewport or was clipped when the fixture text was left untouched." data-term="Long labels">Long labels: clean</li></ul>
         <p class="ceiling">
         <strong>21</strong> of 71 UNDRR tokens unreachable
         <span class="ceiling__note">a ceiling, not a cost: there is no hook to attach them to</span>
@@ -486,7 +551,7 @@
           <p class="card__host">on <strong>Mangrove</strong></p>
         </header>
         <p class="card__status" data-status="complete">Complete</p>
-        <ul class="flags"><li class="flag flag--bad">Leakage: 19 differences</li><li class="flag flag--ok">RTL: clean</li><li class="flag flag--ok">Long labels: clean</li></ul>
+        <ul class="flags"><li class="flag flag--bad" tabindex="0" aria-describedby="help-leakage" data-help="Did the library change how the REST of the page looks, outside its own area? Measured by loading the page twice, with and without the library, and comparing UNDRR's own headings, buttons, tables and cards." data-term="Leakage">Leakage: 19 differences</li><li class="flag flag--ok" tabindex="0" aria-describedby="help-rtl" data-help="Does Arabic work in the COMPONENTS, not just the page? A page can flip correctly while a library's own dropdowns, dialogs and date pickers stay left-to-right inside it." data-term="RTL">RTL: clean</li><li class="flag flag--ok" tabindex="0" aria-describedby="help-longLabels" data-help="UNDRR's real content includes very long strings, and its French and Arabic are longer again. &quot;Clean&quot; means nothing overflowed the viewport or was clipped when the fixture text was left untouched." data-term="Long labels">Long labels: clean</li></ul>
         <p class="ceiling">
         <strong>22</strong> of 72 UNDRR tokens unreachable
         <span class="ceiling__note">a ceiling, not a cost: there is no hook to attach them to</span>
@@ -513,7 +578,7 @@
           <p class="card__host">on <strong>Delta</strong></p>
         </header>
         <p class="card__status" data-status="complete">Complete</p>
-        <ul class="flags"><li class="flag flag--ok">Leakage: clean</li><li class="flag flag--ok">RTL: clean</li><li class="flag flag--ok">Long labels: clean</li></ul>
+        <ul class="flags"><li class="flag flag--ok" tabindex="0" aria-describedby="help-leakage" data-help="Did the library change how the REST of the page looks, outside its own area? Measured by loading the page twice, with and without the library, and comparing UNDRR's own headings, buttons, tables and cards." data-term="Leakage">Leakage: clean</li><li class="flag flag--ok" tabindex="0" aria-describedby="help-rtl" data-help="Does Arabic work in the COMPONENTS, not just the page? A page can flip correctly while a library's own dropdowns, dialogs and date pickers stay left-to-right inside it." data-term="RTL">RTL: clean</li><li class="flag flag--ok" tabindex="0" aria-describedby="help-longLabels" data-help="UNDRR's real content includes very long strings, and its French and Arabic are longer again. &quot;Clean&quot; means nothing overflowed the viewport or was clipped when the fixture text was left untouched." data-term="Long labels">Long labels: clean</li></ul>
         <p class="ceiling">
         <strong>5</strong> of 71 UNDRR tokens unreachable
         <span class="ceiling__note">a ceiling, not a cost: there is no hook to attach them to</span>
@@ -527,7 +592,7 @@
           <p class="card__host">on <strong>Mangrove</strong></p>
         </header>
         <p class="card__status" data-status="complete">Complete</p>
-        <ul class="flags"><li class="flag flag--ok">Leakage: clean</li><li class="flag flag--ok">RTL: clean</li><li class="flag flag--ok">Long labels: clean</li></ul>
+        <ul class="flags"><li class="flag flag--ok" tabindex="0" aria-describedby="help-leakage" data-help="Did the library change how the REST of the page looks, outside its own area? Measured by loading the page twice, with and without the library, and comparing UNDRR's own headings, buttons, tables and cards." data-term="Leakage">Leakage: clean</li><li class="flag flag--ok" tabindex="0" aria-describedby="help-rtl" data-help="Does Arabic work in the COMPONENTS, not just the page? A page can flip correctly while a library's own dropdowns, dialogs and date pickers stay left-to-right inside it." data-term="RTL">RTL: clean</li><li class="flag flag--ok" tabindex="0" aria-describedby="help-longLabels" data-help="UNDRR's real content includes very long strings, and its French and Arabic are longer again. &quot;Clean&quot; means nothing overflowed the viewport or was clipped when the fixture text was left untouched." data-term="Long labels">Long labels: clean</li></ul>
         
         <ul class="views"><li class="view"><a class="view__link" href="./mangrove-mantine/island.html">Inside a real page</a> <span class="view__hint">the candidate owns one region of a live Mangrove page</span></li><li class="view"><a class="view__link" href="./mangrove-mantine/">Component inventory</a> <span class="view__hint">every component on one page - proves capability, not adoption</span></li></ul>
       </article>
@@ -551,7 +616,7 @@
           <p class="card__host">on <strong>Delta</strong></p>
         </header>
         <p class="card__status" data-status="complete">Complete</p>
-        <ul class="flags"><li class="flag flag--ok">Leakage: clean</li><li class="flag flag--ok">RTL: clean</li><li class="flag flag--ok">Long labels: clean</li></ul>
+        <ul class="flags"><li class="flag flag--ok" tabindex="0" aria-describedby="help-leakage" data-help="Did the library change how the REST of the page looks, outside its own area? Measured by loading the page twice, with and without the library, and comparing UNDRR's own headings, buttons, tables and cards." data-term="Leakage">Leakage: clean</li><li class="flag flag--ok" tabindex="0" aria-describedby="help-rtl" data-help="Does Arabic work in the COMPONENTS, not just the page? A page can flip correctly while a library's own dropdowns, dialogs and date pickers stay left-to-right inside it." data-term="RTL">RTL: clean</li><li class="flag flag--ok" tabindex="0" aria-describedby="help-longLabels" data-help="UNDRR's real content includes very long strings, and its French and Arabic are longer again. &quot;Clean&quot; means nothing overflowed the viewport or was clipped when the fixture text was left untouched." data-term="Long labels">Long labels: clean</li></ul>
         
         <ul class="views"><li class="view"><a class="view__link" href="./delta-antd/app.html">A whole DELTA screen</a> <span class="view__hint">layout, navigation and a full records workflow</span></li><li class="view"><a class="view__link" href="./delta-antd/">Component inventory</a> <span class="view__hint">every component on one page - proves capability, not adoption</span></li></ul>
       </article>
@@ -562,7 +627,7 @@
           <p class="card__host">on <strong>Mangrove</strong></p>
         </header>
         <p class="card__status" data-status="complete">Complete</p>
-        <ul class="flags"><li class="flag flag--ok">Leakage: clean</li><li class="flag flag--ok">RTL: clean</li><li class="flag flag--ok">Long labels: clean</li></ul>
+        <ul class="flags"><li class="flag flag--ok" tabindex="0" aria-describedby="help-leakage" data-help="Did the library change how the REST of the page looks, outside its own area? Measured by loading the page twice, with and without the library, and comparing UNDRR's own headings, buttons, tables and cards." data-term="Leakage">Leakage: clean</li><li class="flag flag--ok" tabindex="0" aria-describedby="help-rtl" data-help="Does Arabic work in the COMPONENTS, not just the page? A page can flip correctly while a library's own dropdowns, dialogs and date pickers stay left-to-right inside it." data-term="RTL">RTL: clean</li><li class="flag flag--ok" tabindex="0" aria-describedby="help-longLabels" data-help="UNDRR's real content includes very long strings, and its French and Arabic are longer again. &quot;Clean&quot; means nothing overflowed the viewport or was clipped when the fixture text was left untouched." data-term="Long labels">Long labels: clean</li></ul>
         
         <ul class="views"><li class="view"><a class="view__link" href="./mangrove-antd/island.html">Inside a real page</a> <span class="view__hint">the candidate owns one region of a live Mangrove page</span></li><li class="view"><a class="view__link" href="./mangrove-antd/">Component inventory</a> <span class="view__hint">every component on one page - proves capability, not adoption</span></li></ul>
       </article>
@@ -585,5 +650,91 @@
         </p>
       </footer>
     </div>
+
+    <!--
+      The badge descriptions, rendered once and shared by every badge through
+      aria-describedby. Not inside the cards: thirty copies of three sentences would
+      be read out thirty times.
+    -->
+      <div class="visually-hidden" id="help-leakage">Leakage: Did the library change how the REST of the page looks, outside its own area? Measured by loading the page twice, with and without the library, and comparing UNDRR's own headings, buttons, tables and cards.</div>
+      <div class="visually-hidden" id="help-rtl">RTL: Does Arabic work in the COMPONENTS, not just the page? A page can flip correctly while a library's own dropdowns, dialogs and date pickers stay left-to-right inside it.</div>
+      <div class="visually-hidden" id="help-longLabels">Long labels: UNDRR's real content includes very long strings, and its French and Arabic are longer again. &quot;Clean&quot; means nothing overflowed the viewport or was clipped when the fixture text was left untouched.</div>
+
+    <div id="badge-tip" role="tooltip" aria-hidden="true"></div>
+
+    <script>
+      /*
+       * Tooltips for the card badges.
+       *
+       * The glossary explains these terms and stays - it is where someone reading the
+       * page properly will look. This is for the other reader: the one who scanned to
+       * the cards, hit "Long labels: clean" and has no idea what was measured. A
+       * glossary two screens away does not help them at that moment.
+       *
+       * ONE element, moved and refilled, rather than one per badge: there are thirty
+       * badges on this page. Shown on FOCUS as well as hover, because a tooltip
+       * reachable only by mouse is not reachable at all for a keyboard user, and this
+       * page fronts an evaluation that scores five libraries on that exact omission.
+       * Escape dismisses it, which is what WCAG 1.4.13 asks of content that appears
+       * on hover.
+       *
+       * The accessible text does NOT come from here. Every badge carries
+       * aria-describedby pointing at a real element above, so a screen reader gets the
+       * explanation whether or not this script runs. This is the visual layer only.
+       */
+      (() => {
+        const tip = document.getElementById("badge-tip");
+        if (!tip) return;
+        let current = null;
+
+        function show(badge) {
+          current = badge;
+          const term = badge.dataset.term ?? "";
+          const help = badge.dataset.help ?? "";
+          tip.innerHTML = "";
+          if (term) {
+            const strong = document.createElement("strong");
+            strong.textContent = term;
+            tip.append(strong);
+          }
+          // textContent, not innerHTML: the text is ours, but building the habit in
+          // a generated page costs nothing and the alternative teaches the wrong one.
+          tip.append(document.createTextNode(help));
+
+          // Measure, then place: above the badge if there is room, otherwise below.
+          tip.dataset.open = "true";
+          tip.setAttribute("aria-hidden", "false");
+          const anchor = badge.getBoundingClientRect();
+          const box = tip.getBoundingClientRect();
+          const margin = 8;
+          let left = anchor.left + anchor.width / 2 - box.width / 2;
+          left = Math.max(margin, Math.min(left, window.innerWidth - box.width - margin));
+          const above = anchor.top - box.height - margin;
+          const top = above >= margin ? above : anchor.bottom + margin;
+          tip.style.left = left + "px";
+          tip.style.top = top + "px";
+        }
+
+        function hide() {
+          current = null;
+          tip.dataset.open = "false";
+          tip.setAttribute("aria-hidden", "true");
+        }
+
+        for (const badge of document.querySelectorAll(".flag[data-help]")) {
+          badge.addEventListener("mouseenter", () => show(badge));
+          badge.addEventListener("mouseleave", hide);
+          badge.addEventListener("focus", () => show(badge));
+          badge.addEventListener("blur", hide);
+        }
+
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape" && current) hide();
+        });
+        // A fixed tooltip would otherwise stay put while the page moves under it.
+        window.addEventListener("scroll", () => current && hide(), { passive: true });
+        window.addEventListener("resize", () => current && hide());
+      })();
+    </script>
   </body>
 </html>
