@@ -582,7 +582,7 @@ function buildOverviewHtml() {
           BANDS[b] < BANDS[w] && (b === dBand || b === mBand) ? b : w,
           dBand,
         );
-        return `<td class="${bandClass[worst]}" title="${axisShort[i]}: ${worst}">${bandLabel[worst]}</td>`;
+        return `<td class="${bandClass[worst]}"><a href="./axes.html#${axisShort[i].toLowerCase()}" title="${esc(axisLabel[i])}: ${worst}">${bandLabel[worst]}</a></td>`;
       })
       .join("");
 
@@ -721,6 +721,7 @@ const html = `<!doctype html>
       .ov-score { font-size:1rem; }
       .ov-ax { font-size:0.6875rem; }
       .ov-ax a { text-decoration:none; }
+      .ov-table td a { color:inherit; text-decoration:none; display:block; }
       .ov-ax-hint { display:block; font-size:0.5625rem; font-weight:400; color:var(--muted); line-height:1.2; }
       .ov-demos { font-size:0.75rem; }
       .ov-demos a + a { margin-inline-start:0.5rem; }
