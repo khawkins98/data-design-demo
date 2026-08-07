@@ -48,6 +48,17 @@
  * keyboard mechanics rather than the role. So the override below is permanent
  * maintenance, not a stopgap.
  *
+ * HOW MUCH IT MATTERS, CONSERVATIVELY. Not a WCAG 2.1 AA failure - a structurally
+ * valid tab list satisfies 4.1.2 - and not novel either: Angular Material has done
+ * the same for about nine years, uncontested. The measurable harm is narrower than
+ * the role argument: per a11ysupport.io, `aria-selected="true"` is NOT conveyed by
+ * NVDA on either browser or by VoiceOver on either platform, while
+ * `aria-current="step"` is supported by all five combinations - so for most
+ * screen-reader users the swap means the current step is simply no longer
+ * announced. A comprehension regression against v7, not a barrier. The override
+ * below stays because it is cheap and correct, not because the alternative is
+ * disqualifying.
+ *
  * NOBODY OUTSIDE MUI HAS FILED AGAINST IT, and the reason is adoption, not
  * consensus: four months after release v9 is 11.4% of `@mui/material` installs
  * against v5's 40%, MUI's screen-reader test matrix postdates v9.0.0 and omits

@@ -176,11 +176,27 @@ li[role=presentation] > button[role=tab]` is a structurally valid tab list. Read
 the silence as *nobody has pointed a screen reader at a v9 gated wizard yet* — not
 as review and approval.
 
-That changes what the finding means for a procurement decision. An unnoticed bug
-gets reported and fixed. A deliberate choice, documented in a migration guide,
-whose strongest critics were the maintainers who shipped it, is a **disagreement
-you inherit** — and every wizard on the estate carries the hand-written correction
-for as long as MUI is the dependency.
+**How much this actually matters, stated conservatively.** It is **not** a WCAG
+2.1 AA failure — a structurally valid tab list satisfies 4.1.2, and no
+conformance audit would flag it. Nor is it novel: **Angular Material has treated
+its stepper as a tab list for roughly nine years**, documented and uncontested,
+which is a fair argument that the wider accessibility community does not regard
+this as serious.
+
+The measurable harm is narrower and more concrete than the role argument.
+Per [a11ysupport.io](https://a11ysupport.io/tech/aria/aria-selected_attribute),
+`aria-selected="true"` is **not conveyed by NVDA on either browser, nor by
+VoiceOver on macOS or iOS** — only JAWS announces it — whereas
+[`aria-current="step"`](https://a11ysupport.io/tech/aria/aria-current_attribute)
+is supported by all five combinations. So for most screen-reader users the change
+means the current step is no longer announced at all. That is a comprehension
+regression against v7, not a barrier: the form still works, and the step count is
+still visible.
+
+So: **a note to be aware of, not a reason to strike MUI off.** What it does tell
+you is a maintenance fact rather than a compliance one — the correction is
+permanent, it recurs in every wizard on the estate, and the people best placed to
+remove the need for it already raised the objection and shipped past it.
 
 **So what a shipped stepper saves is the CSS, not the semantics.** That is the
 sentence to carry into the decision, because it is the opposite of the intuition,
