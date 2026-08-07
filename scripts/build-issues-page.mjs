@@ -19,6 +19,17 @@
  *
  * Generated from the same registry the demo pages import, so the two cannot
  * disagree.
+ *
+ * WHY ONE TABLE RATHER THAN FIVE SECTIONS. The register was a linear stack of 42
+ * prose cards grouped by candidate, and at that length it stopped being readable:
+ * a reader could not see the severity distribution, could not compare two
+ * libraries without scrolling between sections, and - worst - could not see that
+ * several findings are the SAME finding recurring across libraries, because the
+ * sections split them apart. `stepper-omits-aria-current` is one fact about four
+ * candidates; as four entries in four sections it read as four unrelated problems.
+ * So: a single severity-sorted table with the candidates in a column, filters over
+ * it, and the full prose one click away. The per-candidate counts survive as the
+ * tally chips, which double as filters.
  */
 
 import { existsSync, writeFileSync } from "node:fs";
@@ -87,62 +98,193 @@ function hostsLabel(issue) {
   return issue.hosts.map((h) => (h === "delta" ? "Delta" : "Mangrove")).join(" and ");
 }
 
-function issueHtml(issue) {
+/** Short names, because this column repeats on every one of 40-odd rows. */
+const SHORT_NAME = {
+  "react-aria": "React Aria",
+  mui: "MUI",
+  carbon: "Carbon",
+  mantine: "Mantine",
+  antd: "Ant Design",
+};
+
+const SHORT_OWNER = {
+  candidate: "the library",
+  pairing: "library + host",
+  "third party": "a dependency",
+  host: "the host",
+  "our implementation": "our demo code",
+  "this evaluation": "our method",
+};
+
+const SHORT_REMEDIABILITY = {
+  config: "config",
+  "per-site-code": "per-site code",
+  "upstream-only": "upstream only",
+  "out-of-scope": "out of scope",
+  inherent: "inherent",
+};
+
+/**
+ * An issue can name several candidates, or `*`. Listing them in one cell beats
+ * emitting the same finding as four near-identical rows - the cross-library
+ * findings are precisely the ones a reader should see as ONE fact, and
+ * `stepper-omits-aria-current` repeated four times would read as four problems.
+ */
+function candidatesOf(issue) {
+  if (issue.candidates.includes("*")) return CANDIDATES.map(([id]) => id);
+  return CANDIDATES.map(([id]) => id).filter((id) => issue.candidates.includes(id));
+}
+
+function candidatesLabel(issue) {
+  const ids = candidatesOf(issue);
+  if (ids.length === CANDIDATES.length) return "all five";
+  return ids.map((id) => SHORT_NAME[id] ?? id).join(", ");
+}
+
+/**
+ * Two rows per finding: the summary row, and a detail row it discloses.
+ *
+ * The detail row is a real `<tr>` rather than a nested table or a `<details>`,
+ * so the disclosed text stays inside the table's own row sequence for a screen
+ * reader rather than appearing after it. Its cell spans the full width, which is
+ * why the summary row's column count is fixed rather than conditional.
+ *
+ * PROGRESSIVE ENHANCEMENT: the detail rows are open in the served HTML and the
+ * script closes them on load. So with JavaScript off - or before the script runs
+ * - this page is the same complete register it was before, just laid out as a
+ * table. Nothing is reachable only by clicking.
+ */
+function rowHtml(issue, index) {
   const scoreable = SCOREABLE_OWNERS.includes(issue.owner);
+  const detailId = `detail-${esc(issue.id)}`;
   return `
-        <article class="issue issue--${esc(issue.severity)}${issue.resolved ? " issue--resolved" : ""}" id="${esc(issue.id)}">
-          <h4 class="issue__title">
-            <span class="issue__badge">${esc(SEVERITY_LABEL[issue.severity] ?? issue.severity)}</span>
-            ${inline(issue.title)}
-            ${issue.resolved ? '<span class="issue__fixed">fixed</span>' : ""}
-          </h4>
-          <p class="issue__meta">
-            Belongs to <strong>${esc(OWNER_LABEL[issue.owner] ?? issue.owner)}</strong>
-            &middot; affects ${esc(hostsLabel(issue))}
-            &middot; ${scoreable ? "counts towards the score" : "<strong>not counted</strong> towards any score"}
-            ${
-              issue.remediability
-                ? `&middot; escape: ${esc(REMEDIABILITY_LABEL[issue.remediability] ?? issue.remediability)}`
-                : ""
-            }
-          </p>
-          <p class="issue__detail">${inline(issue.detail)}</p>
-          ${
-            issue.resolved
-              ? `<p class="issue__resolution"><strong>How it was fixed.</strong> ${inline(issue.resolved)}</p>`
-              : ""
-          }
-          ${
-            issue.links.length > 0
-              ? `<p class="issue__links">${issue.links
-                  .map((l) => `<a href="${esc(l.href)}">${esc(l.label)}</a>`)
-                  .join(" &middot; ")}</p>`
-              : ""
-          }
-          <p class="issue__id"><code>${esc(issue.id)}</code></p>
-        </article>`;
+            <tr class="row row--${esc(issue.severity)}${issue.resolved ? " row--resolved" : ""}"
+                id="${esc(issue.id)}"
+                data-severity="${esc(issue.severity)}"
+                data-owner="${esc(issue.owner)}"
+                data-candidates="${esc(candidatesOf(issue).join(" "))}"
+                data-remediability="${esc(issue.remediability ?? "")}"
+                data-index="${index}">
+              <td class="cell-sev">
+                <span class="badge badge--${esc(issue.severity)}">${esc(SEVERITY_LABEL[issue.severity] ?? issue.severity)}</span>
+              </td>
+              <td class="cell-cand">${esc(candidatesLabel(issue))}</td>
+              <td class="cell-title">
+                <button type="button" class="disclose" aria-expanded="true" aria-controls="${detailId}">
+                  <span class="disclose__mark" aria-hidden="true"></span>
+                  <span class="disclose__text">${inline(issue.title)}</span>
+                </button>
+              </td>
+              <td class="cell-owner">${esc(SHORT_OWNER[issue.owner] ?? issue.owner)}${scoreable ? "" : '<span class="cell-owner__note">not scored</span>'}</td>
+              <td class="cell-escape">${issue.remediability ? esc(SHORT_REMEDIABILITY[issue.remediability] ?? issue.remediability) : "&mdash;"}</td>
+            </tr>
+            <tr class="detail" id="${detailId}">
+              <td colspan="5">
+                <p class="detail__text">${inline(issue.detail)}</p>
+                ${
+                  issue.resolved
+                    ? `<p class="detail__text detail__text--fix"><strong>How it was fixed.</strong> ${inline(issue.resolved)}</p>`
+                    : ""
+                }
+                <p class="detail__meta">
+                  Belongs to <strong>${esc(OWNER_LABEL[issue.owner] ?? issue.owner)}</strong>
+                  &middot; affects ${esc(hostsLabel(issue))}
+                  &middot; ${scoreable ? "counts towards the score" : "<strong>not counted</strong> towards any score"}
+                  ${
+                    issue.remediability
+                      ? `&middot; escape: ${esc(REMEDIABILITY_LABEL[issue.remediability] ?? issue.remediability)}`
+                      : ""
+                  }
+                </p>
+                ${
+                  issue.links.length > 0
+                    ? `<p class="detail__links">${issue.links
+                        .map((l) => `<a href="${esc(l.href)}">${esc(l.label)}</a>`)
+                        .join(" &middot; ")}</p>`
+                    : ""
+                }
+                <p class="detail__id"><code>${esc(issue.id)}</code></p>
+              </td>
+            </tr>`;
 }
 
 const bySeverity = (a, b) =>
-  SEVERITY_ORDER.indexOf(a.severity) - SEVERITY_ORDER.indexOf(b.severity);
+  SEVERITY_ORDER.indexOf(a.severity) - SEVERITY_ORDER.indexOf(b.severity) ||
+  a.title.localeCompare(b.title);
 
-const sections = CANDIDATES.map(([id, name]) => {
-  const mine = KNOWN_ISSUES.filter((i) => appliesToCandidate(i, id));
-  const open = mine.filter((i) => !i.resolved).sort(bySeverity);
-  const fixed = mine.filter((i) => i.resolved).sort(bySeverity);
+function tableHtml(id, caption, issues) {
+  if (issues.length === 0) return "";
   return `
-      <section class="candidate" id="${esc(id)}">
-        <h2 class="candidate__name">${esc(name)}</h2>
-        <p class="candidate__count">${open.length} open &middot; ${fixed.length} found in our own code and fixed</p>
-        <h3 class="candidate__group">Open</h3>
-${open.length > 0 ? open.map(issueHtml).join("\n") : "        <p>None recorded.</p>"}
-        ${
-          fixed.length > 0
-            ? `<h3 class="candidate__group">Fixed, kept on the record</h3>\n${fixed.map(issueHtml).join("\n")}`
-            : ""
-        }
-      </section>`;
+      <table class="register" id="${esc(id)}">
+        <caption class="register__caption">${caption}</caption>
+        <thead>
+          <tr>
+            <th scope="col">Severity</th>
+            <th scope="col">Candidate</th>
+            <th scope="col">Finding</th>
+            <th scope="col">Belongs to</th>
+            <th scope="col">Escape</th>
+          </tr>
+        </thead>
+        <tbody>
+${issues.map(rowHtml).join("\n")}
+        </tbody>
+      </table>`;
+}
+
+const openIssues = KNOWN_ISSUES.filter((i) => !i.resolved).sort(bySeverity);
+const fixedIssues = KNOWN_ISSUES.filter((i) => i.resolved).sort(bySeverity);
+
+/**
+ * Counts per candidate, which no longer fall out of the section structure now
+ * that there are no sections. They double as filter buttons.
+ */
+const tallies = CANDIDATES.map(([id, name]) => {
+  const open = openIssues.filter((i) => appliesToCandidate(i, id)).length;
+  return `        <button type="button" class="tally" data-filter-candidate="${esc(id)}">
+          <span class="tally__name">${esc(name)}</span>
+          <span class="tally__count">${open}</span>
+        </button>`;
 }).join("\n");
+
+const sections = `
+      <div class="controls">
+        <div class="control">
+          <label for="f-severity">Severity</label>
+          <select id="f-severity" data-filter="severity">
+            <option value="">any</option>
+${SEVERITY_ORDER.map((s) => `            <option value="${esc(s)}">${esc(SEVERITY_LABEL[s] ?? s)}</option>`).join("\n")}
+          </select>
+        </div>
+        <div class="control">
+          <label for="f-candidate">Candidate</label>
+          <select id="f-candidate" data-filter="candidate">
+            <option value="">any</option>
+${CANDIDATES.map(([id, name]) => `            <option value="${esc(id)}">${esc(name)}</option>`).join("\n")}
+          </select>
+        </div>
+        <div class="control">
+          <label for="f-owner">Belongs to</label>
+          <select id="f-owner" data-filter="owner">
+            <option value="">any</option>
+${Object.entries(OWNER_LABEL)
+  .map(([id, label]) => `            <option value="${esc(id)}">${esc(label)}</option>`)
+  .join("\n")}
+          </select>
+        </div>
+        <div class="control">
+          <label for="f-text">Search</label>
+          <input id="f-text" type="search" data-filter="text" placeholder="e.g. stepper, tokens, RTL" />
+        </div>
+        <button type="button" class="control__reset" id="f-reset">Clear filters</button>
+      </div>
+      <p class="tallies-label">Open findings per candidate — a cross-library finding counts once for each:</p>
+      <div class="tallies">
+${tallies}
+      </div>
+      <p class="status" id="status" role="status">${openIssues.length} open findings shown.</p>
+${tableHtml("open", `Open findings (${openIssues.length})`, openIssues)}
+${tableHtml("fixed", `Fixed in our own demo code, kept on the record (${fixedIssues.length})`, fixedIssues)}`;
 
 const html = `<!doctype html>
 <!-- GENERATED FILE - produced by scripts/build-issues-page.mjs. Regenerate: pnpm issues:page -->
@@ -159,23 +301,70 @@ const html = `<!doctype html>
       h1 { font-size:1.75rem; margin:0 0 0.5rem; }
       .lead { color:var(--muted); max-width:72ch; }
       .toc { margin:1.5rem 0 2.5rem; padding:0; list-style:none; display:flex; flex-wrap:wrap; gap:0.5rem 1rem; font-size:0.9375rem; }
-      .candidate { margin:0 0 3rem; }
-      .candidate__name { font-size:1.375rem; margin:0 0 0.25rem; padding-bottom:0.375rem; border-bottom:2px solid var(--border); }
-      .candidate__count { margin:0 0 1rem; color:var(--muted); font-size:0.875rem; }
-      .candidate__group { font-size:0.9375rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--muted); margin:1.75rem 0 0.75rem; }
-      .issue { background:var(--surface); border:1px solid var(--border); border-inline-start:4px solid var(--muted); border-radius:6px; padding:0.875rem 1rem; margin:0 0 0.875rem; }
-      .issue--blocker { border-inline-start-color:var(--bad); }
-      .issue--decision { border-inline-start-color:var(--pending); }
-      .issue--resolved { opacity:0.82; }
-      .issue__title { font-size:1rem; margin:0 0 0.375rem; }
-      .issue__badge { display:inline-block; font-size:0.625rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; padding:0.125rem 0.375rem; border:1px solid var(--border); border-radius:3px; margin-inline-end:0.5rem; vertical-align:0.1em; }
-      .issue__fixed { font-size:0.6875rem; font-weight:700; text-transform:uppercase; color:var(--muted); margin-inline-start:0.5rem; }
-      .issue__meta { margin:0 0 0.5rem; font-size:0.75rem; color:var(--muted); }
-      .issue__detail, .issue__resolution { margin:0 0 0.5rem; font-size:0.875rem; max-width:80ch; }
-      .issue__links { margin:0 0 0.25rem; font-size:0.8125rem; }
-      .issue__id { margin:0; font-size:0.6875rem; color:var(--muted); }
       a { color:var(--accent); }
       code { font-size:0.9em; }
+
+      /* Controls */
+      .controls { display:flex; flex-wrap:wrap; gap:0.75rem 1rem; align-items:flex-end; margin:1.5rem 0 1rem; padding:0.875rem 1rem; background:var(--surface); border:1px solid var(--border); border-radius:6px; }
+      .control { display:flex; flex-direction:column; gap:0.25rem; }
+      .control label { font-size:0.6875rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--muted); font-weight:600; }
+      .control select, .control input { font:inherit; font-size:0.875rem; padding:0.3rem 0.4rem; border:1px solid var(--border); border-radius:4px; background:var(--bg); color:var(--text); min-width:11rem; }
+      .control__reset { font:inherit; font-size:0.8125rem; padding:0.4rem 0.75rem; border:1px solid var(--border); border-radius:4px; background:var(--bg); color:var(--text); cursor:pointer; }
+      .control__reset:hover { border-color:var(--accent); color:var(--accent); }
+
+      /* Per-candidate tallies, doubling as filter buttons */
+      .tallies-label { font-size:0.8125rem; color:var(--muted); margin:1.25rem 0 0.5rem; }
+      .tallies { display:flex; flex-wrap:wrap; gap:0.5rem; margin:0 0 1.25rem; }
+      .tally { display:inline-flex; align-items:center; gap:0.5rem; font:inherit; font-size:0.8125rem; padding:0.35rem 0.6rem; border:1px solid var(--border); border-radius:999px; background:var(--surface); color:var(--text); cursor:pointer; }
+      .tally:hover { border-color:var(--accent); }
+      .tally[aria-pressed="true"] { border-color:var(--accent); background:var(--accent); color:var(--bg); }
+      .tally__count { font-weight:700; font-variant-numeric:tabular-nums; }
+      .status { font-size:0.8125rem; color:var(--muted); margin:0 0 0.75rem; }
+
+      /* The register */
+      .register { width:100%; border-collapse:collapse; margin:0 0 2.5rem; font-size:0.875rem; }
+      .register__caption { text-align:start; font-size:1.0625rem; font-weight:700; padding:0 0 0.5rem; }
+      .register th { text-align:start; font-size:0.6875rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--muted); border-bottom:2px solid var(--border); padding:0.4rem 0.5rem; white-space:nowrap; }
+      .register td { border-bottom:1px solid var(--border); padding:0.5rem; vertical-align:top; }
+      .row--blocker .cell-sev { border-inline-start:4px solid var(--bad); }
+      .row--decision .cell-sev { border-inline-start:4px solid var(--pending); }
+      .row--resolved { opacity:0.85; }
+      .row:target > td { background:color-mix(in srgb, var(--accent) 12%, transparent); }
+      .cell-sev { white-space:nowrap; }
+      .cell-cand, .cell-owner, .cell-escape { color:var(--muted); font-size:0.8125rem; white-space:nowrap; }
+      .cell-owner__note { display:block; font-size:0.6875rem; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; }
+      .cell-title { width:52%; }
+      .badge { display:inline-block; font-size:0.625rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; padding:0.125rem 0.375rem; border:1px solid var(--border); border-radius:3px; }
+      .badge--blocker { border-color:var(--bad); color:var(--bad); }
+      .badge--decision { border-color:var(--pending); color:var(--pending); }
+
+      /* Disclosure */
+      .disclose { display:flex; gap:0.5rem; align-items:baseline; width:100%; font:inherit; font-size:0.9375rem; text-align:start; background:none; border:0; padding:0; color:var(--text); cursor:pointer; }
+      .disclose:hover .disclose__text { color:var(--accent); }
+      .disclose__mark::before { content:"\\25BE"; display:inline-block; font-size:0.75rem; color:var(--muted); }
+      .disclose[aria-expanded="false"] .disclose__mark::before { content:"\\25B8"; }
+      .detail > td { background:var(--surface); padding:0.75rem 1rem 0.875rem 2.25rem; }
+      .detail__text { margin:0 0 0.5rem; max-width:80ch; }
+      .detail__text--fix { color:var(--muted); }
+      .detail__meta { margin:0 0 0.5rem; font-size:0.75rem; color:var(--muted); }
+      .detail__links { margin:0 0 0.25rem; font-size:0.8125rem; }
+      .detail__id { margin:0; font-size:0.6875rem; color:var(--muted); }
+      [hidden] { display:none !important; }
+
+      /* Small screens: the five columns do not fit, so the row becomes a stack.
+         The detail cell keeps its own layout - it was never a grid of columns. */
+      @media (max-width: 44rem) {
+        .register, .register tbody, .register tr, .register td { display:block; width:auto; }
+        .register thead { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
+        .register .row { border-bottom:1px solid var(--border); padding:0.5rem 0 0.25rem; }
+        .register .row > td { border:0; padding:0.1rem 0.5rem; }
+        .row--blocker .cell-sev, .row--decision .cell-sev { border-inline-start:0; }
+        .cell-cand, .cell-owner, .cell-escape { display:inline-block; white-space:normal; }
+        .cell-owner::before { content:"belongs to "; }
+        .cell-escape::before { content:"\\00b7 escape: "; }
+        .cell-title { width:auto; }
+        .detail > td { padding-inline-start:1rem; }
+      }
     </style>
   </head>
   <body>
@@ -189,19 +378,149 @@ const html = `<!doctype html>
         would take to escape it.
       </p>
       <p class="lead">
-        The <em>fixed</em> sections are defects found in our own demo code. They are
-        kept rather than deleted: a record of the bugs this evaluation found in
-        itself is what entitles it to report bugs in anyone else's, and they are
-        excluded from every score.
+        The second table is defects found in our own demo code. They are kept
+        rather than deleted: a record of the bugs this evaluation found in itself
+        is what entitles it to report bugs in anyone else's, and they are excluded
+        from every score.
+      </p>
+      <p class="lead">
+        One table, every candidate, sorted by severity — because the findings that
+        matter most are the ones that recur across libraries, and five separate
+        sections hid them. Select a row to read the finding in full. Filtering and
+        disclosure need JavaScript; without it the whole register is simply open.
       </p>
       <ul class="toc">
-${CANDIDATES.map(([id, name]) => `        <li><a href="#${esc(id)}">${esc(name)}</a></li>`).join("\n")}
         <li><a href="./scores.html">Weighted scores</a></li>
         <li><a href="./axes.html">Decision axes</a></li>
         <li><a href="./">All pairings</a></li>
       </ul>
 ${sections}
     </div>
+    <script>
+      /*
+        Three behaviours, no dependencies: row disclosure, filtering, and keeping
+        a linked-to row reachable.
+
+        The detail rows ship OPEN and are closed here, so the page degrades to the
+        full register with JavaScript off. Same reason the filters do nothing until
+        this runs - an unfiltered table is the honest default.
+      */
+      (function () {
+        var rows = Array.prototype.slice.call(document.querySelectorAll(".row"));
+        var status = document.getElementById("status");
+        var openCount = document.querySelectorAll("#open .row").length;
+
+        function detailFor(row) {
+          var button = row.querySelector(".disclose");
+          return button ? document.getElementById(button.getAttribute("aria-controls")) : null;
+        }
+
+        function setOpen(row, open) {
+          var button = row.querySelector(".disclose");
+          var detail = detailFor(row);
+          if (!button || !detail) return;
+          button.setAttribute("aria-expanded", String(open));
+          detail.hidden = !open;
+        }
+
+        rows.forEach(function (row) {
+          setOpen(row, false);
+          var button = row.querySelector(".disclose");
+          if (!button) return;
+          button.addEventListener("click", function () {
+            setOpen(row, button.getAttribute("aria-expanded") !== "true");
+          });
+        });
+
+        /* A deep link to #some-issue-id must not land on a collapsed row. */
+        function revealHash() {
+          if (!window.location.hash) return;
+          var target = document.getElementById(window.location.hash.slice(1));
+          if (target && target.classList.contains("row")) setOpen(target, true);
+        }
+        revealHash();
+        window.addEventListener("hashchange", revealHash);
+
+        var state = { severity: "", candidate: "", owner: "", text: "" };
+
+        function matches(row) {
+          if (state.severity && row.dataset.severity !== state.severity) return false;
+          if (state.owner && row.dataset.owner !== state.owner) return false;
+          if (state.candidate) {
+            var list = (row.dataset.candidates || "").split(" ");
+            if (list.indexOf(state.candidate) === -1) return false;
+          }
+          if (state.text) {
+            /* Searches the detail too, so "RTL" finds findings whose title
+               does not say RTL. The detail row's text is the same string. */
+            var detail = detailFor(row);
+            var hay = (row.textContent + " " + (detail ? detail.textContent : "")).toLowerCase();
+            if (hay.indexOf(state.text) === -1) return false;
+          }
+          return true;
+        }
+
+        function apply() {
+          var shown = 0;
+          var shownOpen = 0;
+          rows.forEach(function (row) {
+            var ok = matches(row);
+            row.hidden = !ok;
+            var detail = detailFor(row);
+            if (detail && !ok) detail.hidden = true;
+            if (ok) {
+              shown += 1;
+              if (row.closest("#open")) shownOpen += 1;
+            }
+          });
+          document.querySelectorAll(".register").forEach(function (table) {
+            table.hidden = table.querySelectorAll(".row:not([hidden])").length === 0;
+          });
+          var filtered = state.severity || state.candidate || state.owner || state.text;
+          status.textContent = filtered
+            ? shown + " findings match (" + shownOpen + " of " + openCount + " open)."
+            : openCount + " open findings shown.";
+        }
+
+        document.querySelectorAll("[data-filter]").forEach(function (input) {
+          var key = input.getAttribute("data-filter");
+          input.addEventListener("input", function () {
+            state[key] = key === "text" ? input.value.trim().toLowerCase() : input.value;
+            if (key === "candidate") syncTallies();
+            apply();
+          });
+        });
+
+        var tallies = Array.prototype.slice.call(document.querySelectorAll(".tally"));
+        function syncTallies() {
+          tallies.forEach(function (t) {
+            t.setAttribute(
+              "aria-pressed",
+              String(t.getAttribute("data-filter-candidate") === state.candidate)
+            );
+          });
+        }
+        tallies.forEach(function (t) {
+          t.setAttribute("aria-pressed", "false");
+          t.addEventListener("click", function () {
+            var id = t.getAttribute("data-filter-candidate");
+            state.candidate = state.candidate === id ? "" : id;
+            document.getElementById("f-candidate").value = state.candidate;
+            syncTallies();
+            apply();
+          });
+        });
+
+        document.getElementById("f-reset").addEventListener("click", function () {
+          state = { severity: "", candidate: "", owner: "", text: "" };
+          document.querySelectorAll("[data-filter]").forEach(function (i) {
+            i.value = "";
+          });
+          syncTallies();
+          apply();
+        });
+      })();
+    </script>
   </body>
 </html>
 `;
