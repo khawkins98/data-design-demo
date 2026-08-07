@@ -403,7 +403,7 @@ if (ranked[0].blockers.length === 0) {
   if (ranked[0].candidate === "react-aria") {
   L.push("**The cost, which the composite does not charge it for.** React Aria ships behaviour,");
   L.push("not appearance. Adopting it means UNDRR builds and then owns the visual layer");
-  L.push("permanently - this evaluation's own demos carry 155 to 209 hand-written CSS rules, a");
+  L.push("permanently - this evaluation's own demos carry 155 to 213 hand-written CSS rules, a");
   L.push("figure that grew by about 70 when a step wizard and a menu bar were added that four");
   L.push("other candidates supplied themselves. Three of the seven axes reward exactly the");
   L.push("property that creates that cost:");

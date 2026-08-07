@@ -26,7 +26,7 @@ export type { AppFrameProps } from "./AppFrame.js";
  * than markup, because five candidates have five menu APIs.
  */
 export { DELTA_MENUS, DELTA_PROFILE_MENU } from "./menu-model.js";
-export { NavIcon as DeltaNavIcon } from "./AppFrame.js";
+export { NavIcon as DeltaNavIcon, Caret as DeltaCaret } from "./AppFrame.js";
 export type { DeltaMenu, DeltaMenuEntry } from "./menu-model.js";
 
 /** Cross-view navigation. Pass through a frame's `notices` slot. */

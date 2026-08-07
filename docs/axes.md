@@ -158,7 +158,7 @@ theming mechanism, which is what accumulates across sites and across upgrades.
 
 | Pairing | attribute | contract | off route | of which hashed | CSS rules |
 | --- | --- | --- | --- | --- | --- |
-| delta-react-aria | 21 | 0 | **0** | 0 | 209 |
+| delta-react-aria | 22 | 0 | **0** | 0 | 213 |
 | mangrove-react-aria | 18 | 0 | **0** | 0 | 155 |
 | delta-mui | 0 | 2 | **0** | 0 | 3 |
 | mangrove-mui | 0 | 4 | **0** | 0 | 5 |
@@ -308,7 +308,7 @@ swap reaches every site at once; a rebuild is per site, forever.
 
 | Pairing | tokens applied | unreachable | propagation | live var() refs in shipped CSS |
 | --- | --- | --- | --- | --- |
-| delta-react-aria | 48 | 0 | **stylesheet-swap** | 406 |
+| delta-react-aria | 48 | 0 | **stylesheet-swap** | 409 |
 | mangrove-react-aria | 47 | 0 | **stylesheet-swap** | 309 |
 | delta-mui | 29 | 0 | **mostly-rebuild** | 38 |
 | mangrove-mui | 32 | 0 | **mostly-rebuild** | 38 |

@@ -196,7 +196,14 @@ export function NavIcon({ name }: { readonly name: string }): ReactElement {
 }
 
 /** A disclosure caret. `aria-hidden`: the link text already carries the meaning. */
-function Caret(): ReactElement {
+/*
+ * Exported as `DeltaCaret` for the same reason as `DeltaNavIcon`: the design file
+ * puts a caret on every nav item, and a candidate rendering its own trigger has to
+ * be able to draw the host's one. Without it the bars diverged visually - React
+ * Aria had a caret, three others did not - which would make the screenshots
+ * differ for a reason that is not about the libraries.
+ */
+export function Caret(): ReactElement {
   return (
     <svg
       aria-hidden="true"
@@ -302,7 +309,17 @@ export function AppFrame({
            * `ms-auto` rather than `ml-auto`, so the bar mirrors in Arabic.
            */}
           <nav data-canary="nav" className="ms-auto" aria-label="Sections">
-            <ul className="flex flex-wrap items-center gap-x-1">
+            {/*
+             * The gap is the HOST's, deliberately, and it is why it lives here
+             * rather than in five stylesheets. Each candidate sets its own trigger
+             * padding through its own button component, so if the spacing between
+             * items were left to them the bar's rhythm would differ per pairing and
+             * the screenshots would stop being comparable for a reason that has
+             * nothing to do with the libraries. `gap-x-1` was too tight once the
+             * triggers became real buttons with a caret: the caret of one item sat
+             * against the icon of the next.
+             */}
+            <ul className="flex flex-wrap items-center gap-x-3 gap-y-1">
               {DELTA_MENUS.map((menu) => (
                 <li key={menu.id} data-nav-item={menu.id}>
                   {navMenu ? (

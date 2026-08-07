@@ -37,7 +37,7 @@ import { useState } from "react";
 import type { MouseEvent, ReactElement } from "react";
 import { Avatar, Button, Divider, Menu, MenuItem, Typography, useTheme } from "@mui/material";
 
-import { DeltaNavIcon } from "@undrr-eval/host-delta";
+import { DeltaCaret, DeltaNavIcon } from "@undrr-eval/host-delta";
 import type { DeltaMenu, DeltaMenuEntry } from "@undrr-eval/host-delta";
 
 /** The controlled-anchor dance MUI requires, written once and reused twice. */
@@ -117,6 +117,8 @@ export function NavMenu({ menu }: { readonly menu: DeltaMenu }): ReactElement {
         aria-expanded={open}
         aria-controls={open ? `menu-${menu.id}` : undefined}
         startIcon={<DeltaNavIcon name={menu.icon} />}
+        // The host's caret, so all five bars read the same.
+        endIcon={<DeltaCaret />}
         disableRipple
         sx={{
           px: 1.25,

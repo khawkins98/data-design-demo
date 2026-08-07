@@ -50,7 +50,7 @@ import type { ReactElement } from "react";
 import { Avatar, Button, Dropdown } from "antd";
 import type { MenuProps } from "antd";
 
-import { DeltaNavIcon } from "@undrr-eval/host-delta";
+import { DeltaCaret, DeltaNavIcon } from "@undrr-eval/host-delta";
 import type { DeltaMenu, DeltaMenuEntry } from "@undrr-eval/host-delta";
 
 type AntItems = NonNullable<MenuProps["items"]>;
@@ -119,6 +119,8 @@ export function NavMenu({ menu }: { readonly menu: DeltaMenu }): ReactElement {
         }}
       >
         {menu.label}
+        {/* The host's caret, so all five bars read the same. */}
+        <DeltaCaret />
       </Button>
     </Dropdown>
   );

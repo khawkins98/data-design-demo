@@ -45,7 +45,7 @@
 import type { ReactElement } from "react";
 import { Avatar, Menu, UnstyledButton } from "@mantine/core";
 
-import { DeltaNavIcon } from "@undrr-eval/host-delta";
+import { DeltaCaret, DeltaNavIcon } from "@undrr-eval/host-delta";
 import type { DeltaMenu, DeltaMenuEntry } from "@undrr-eval/host-delta";
 
 function entries(items: readonly DeltaMenuEntry[]): readonly ReactElement[] {
@@ -104,6 +104,8 @@ export function NavMenu({ menu }: { readonly menu: DeltaMenu }): ReactElement {
         >
           <DeltaNavIcon name={menu.icon} />
           {menu.label}
+          {/* The host's caret, so all five bars read the same. */}
+          <DeltaCaret />
         </UnstyledButton>
       </Menu.Target>
       <Menu.Dropdown>{entries(menu.items)}</Menu.Dropdown>

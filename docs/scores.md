@@ -17,7 +17,7 @@ It leads on the composite at 84 against 69 for MUI (Community only), and is one 
 
 **The cost, which the composite does not charge it for.** React Aria ships behaviour,
 not appearance. Adopting it means UNDRR builds and then owns the visual layer
-permanently - this evaluation's own demos carry 155 to 209 hand-written CSS rules, a
+permanently - this evaluation's own demos carry 155 to 213 hand-written CSS rules, a
 figure that grew by about 70 when a step wizard and a menu bar were added that four
 other candidates supplied themselves. Three of the seven axes reward exactly the
 property that creates that cost:
@@ -135,7 +135,7 @@ Each cell carries the fact that assigned the band. `strong` scores full weight,
 
 ### `delta-react-aria` - composite 84 / 100
 
-Worst open issue: **caveat** - React Aria is unstyled, so these pairings carry 155 to 209 CSS rules
+Worst open issue: **caveat** - React Aria is unstyled, so these pairings carry 155 to 213 CSS rules
 
 8 open findings. 7 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.
 
@@ -151,7 +151,7 @@ Worst open issue: **caveat** - React Aria is unstyled, so these pairings carry 1
 
 ### `mangrove-react-aria` - composite 84 / 100
 
-Worst open issue: **caveat** - React Aria is unstyled, so these pairings carry 155 to 209 CSS rules
+Worst open issue: **caveat** - React Aria is unstyled, so these pairings carry 155 to 213 CSS rules
 
 10 open findings. 7 defects were found in our own demo code and fixed; they are recorded in the registry and excluded from this score.
 

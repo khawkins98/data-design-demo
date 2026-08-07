@@ -12,7 +12,7 @@
       "scoreableBlockers": [],
       "headline": {
         "severity": "caveat",
-        "title": "React Aria is unstyled, so these pairings carry 155 to 209 CSS rules"
+        "title": "React Aria is unstyled, so these pairings carry 155 to 213 CSS rules"
       }
     },
     "delta-mui": {
@@ -94,7 +94,7 @@
       "scoreableBlockers": [],
       "headline": {
         "severity": "caveat",
-        "title": "React Aria is unstyled, so these pairings carry 155 to 209 CSS rules"
+        "title": "React Aria is unstyled, so these pairings carry 155 to 213 CSS rules"
       }
     },
     "mangrove-mui": {

@@ -576,9 +576,16 @@
   outline-offset: 2px;
 }
 
+/*
+ * A CSS triangle rather than the host's `Caret` SVG, because this one sits inside
+ * a flex trigger whose gap is set in the same rule - and a 0x0 element needs its
+ * own inline start margin, since the flex `gap` measures from the border box and
+ * the triangle's visual mass is entirely border.
+ */
 .demo-navmenu__caret {
   inline-size: 0;
   block-size: 0;
+  margin-inline-start: 0.125rem;
   border-inline: 0.25rem solid transparent;
   border-block-start: 0.3rem solid currentcolor;
   opacity: 0.7;
