@@ -151,14 +151,16 @@ export function HostCanaries(): ReactElement {
 }
 
 /**
- * Masthead navigation items. Host chrome, so they stay in English in every
- * locale, the same rule `IslandFrame`'s topbar follows.
+ * Masthead navigation. Links to the real sibling pages so the topbar is
+ * functional navigation, not decoration. Every demo app sits one directory
+ * below the site root, so `../` reaches the doc pages.
  */
 const TOPBAR_ITEMS = [
-  { href: "#home", label: "Home" },
-  { href: "#data", label: "Data and statistics" },
-  { href: "#reporting", label: "National reporting" },
-  { href: "#about", label: "About" },
+  { href: "../", label: "Ranking" },
+  { href: "../axes.html", label: "Decision axes" },
+  { href: "../comparison.html", label: "Requirement matrix" },
+  { href: "../issues.html", label: "Findings" },
+  { href: "../architecture-options.html", label: "Architecture" },
 ];
 
 export function HostShell({

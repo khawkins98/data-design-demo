@@ -74,14 +74,16 @@ export interface IslandFrameProps {
 }
 
 /**
- * Masthead navigation. Host chrome, so it stays in English in every locale, the
- * same rule `HostShell`'s nav follows.
+ * Masthead navigation. Links to the real sibling pages so the topbar is
+ * functional navigation, not decoration. Every demo app sits one directory
+ * below the site root, so `../` reaches the doc pages.
  */
 const TOPBAR_ITEMS = [
-  { href: "#home", label: "Home" },
-  { href: "#data", label: "Data and statistics" },
-  { href: "#reporting", label: "National reporting" },
-  { href: "#about", label: "About" },
+  { href: "../", label: "Ranking" },
+  { href: "../axes.html", label: "Decision axes" },
+  { href: "../comparison.html", label: "Requirement matrix" },
+  { href: "../issues.html", label: "Findings" },
+  { href: "../architecture-options.html", label: "Architecture" },
 ];
 
 /** The UNDRR logo, from the same CDN path the real page frame uses. */
