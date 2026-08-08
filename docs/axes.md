@@ -153,7 +153,7 @@ Every distinct styling hook, classified by the promise behind it.
 | Pairing | attribute||semantic selectors like [data-*], [slot] | contract||documented styling API; safe to use | off route||bypasses the library's theming; fragile | of which hashed||generated class names that change between builds | CSS rules||total rules in the demo's own stylesheets |
 | --- | --- | --- | --- | --- | --- |
 | delta-react-aria | {spark:22:22} | {spark:0:4} | **0** | 0 | {spark:211:211} |
-| mangrove-react-aria | {spark:18:22} | {spark:0:4} | **0** | 0 | {spark:153:211} |
+| mangrove-react-aria | {spark:18:22} | {spark:0:4} | **0** | 0 | {spark:155:211} |
 | delta-mui | {spark:0:22} | {spark:2:4} | **0** | 0 | {spark:3:211} |
 | mangrove-mui | {spark:0:22} | {spark:4:4} | **0** | 0 | {spark:5:211} |
 | delta-carbon | {spark:0:22} | {spark:0:4} | **{spark:19:19}** | 0 | {spark:48:211} |
@@ -184,29 +184,37 @@ stable but off the documented theming route (`--cds-*` custom properties).
 
 > **Answers: Repeatability** - Can a second team reproduce the integration without inventing their own conventions?
 >
-> Measured by extraction for MUI: 86% of the integration shares across sites. React Aria's is fully portable but has no package to hold it, so it is shared by duplication.
+> Measured packages now exist for the leading alternatives: MUI shares 86% once demo-only code is excluded, while the realistic React Aria records capability shares 618 source lines and 147 CSS lines across Delta and Mangrove.
 >
 > **Answers: Standardisation** - One shared component vocabulary across the estate, or one dialect per project?
 >
-> shadcn/ui was excluded outright for guaranteeing a fork per site. Among the five built, the theme and token layer extracts; kitchen-sink section components do not.
+> React Aria, MUI and Ant Design have all been exercised as shared packages. The remaining distinction is ownership: whether the shared layer preserves UNDRR's visual and interaction authority or mainly centralises a library configuration. shadcn/ui was excluded because its copy-in distribution guarantees a fork per site.
 
-`basis`: only MUI was actually extracted; other entries are analysis.
+`basis`: React Aria, MUI and Ant Design are measured package integrations; Carbon and Mantine remain analysis because consolidating two independently authored implementations would measure a rewrite rather than portability.
 
 | Candidate | basis||measured or analysed? | verdict||can it be shared across sites? | shared||code lines reusable across sites | per site||code lines each site must own | shared %||proportion that is reusable |
 | --- | --- | --- | --- | --- | --- |
-| react-aria | analysed | **likely packaged** | - | - | - |
+| react-aria | **measured** | **packaged** | 765 ln | - | - |
 | mui | **measured** | **packaged** | 809 ln | 277 ln | 74% |
 | carbon | analysed | **unknown - confounded** | - | - | - |
 | mantine | analysed | **unknown - confounded** | - | - | - |
 | antd | **measured** | **packaged** | 868 ln | 248 ln | 78% |
 | shadcn | not-run | **fork-per-site** | - | - | - |
 
-**react-aria** - 5 of 13 files are already code-identical (517 code lines), and the styling is CSS custom properties read from the shared tokens, which is host-independent by construction and needs no rebuild to retarget. Not extracted, so no measured figure is offered.
+**react-aria** - This is deliberately narrower than integration-mui: it extracts one realistic cross-host capability rather than the whole kitchen sink. That makes the reuse claim concrete without pretending the host reset and product frame are shareable. Token references remain live CSS custom properties, so changing the UNDRR token stylesheet does not require rebuilding either consumer.
 
 What resists extraction:
 
-- SectionDataTable and SectionForms diverged between the two runs and would need reconciling first
-- theme.css differs, though it consumes only var(--undrr-*) so it is host-independent by construction
+- theme.css still differs because Delta Preflight and Mangrove's element rules require different reset repair
+- Delta's wizard and navigation are product-specific rather than part of the records capability
+- host frames and page composition remain in each app
+
+Verified by:
+
+- 618 non-comment TypeScript lines and 147 CSS lines moved into packages/integration-react-aria
+- both realistic views now import the same filters, table, pagination, data derivation, announcement policy and records layout
+- root typecheck passes for all ten apps
+- the package build passes under the repository's strict TypeScript configuration
 
 **mui** - The residue's shape matters more than its size. Three of the four items are wiring. The fourth, demo.css, is the only one that is real per-site work, and it is a function of how aggressively the host styles bare elements rather than of MUI: 11 lines against Delta, 27 against Mangrove, because Mangrove styles input[type=...] at (0,1,1) and beats MUI's own slot class at (0,1,0).
 
@@ -291,16 +299,16 @@ reaches every site at once; rebuild is per site.
 
 | Pairing | tokens applied||UNDRR design tokens successfully connected | unreachable||tokens with no hook to attach to | propagation||how a token change reaches every site | live var() refs in shipped CSS||CSS custom properties surviving to production |
 | --- | --- | --- | --- | --- |
-| delta-react-aria | {spark:48:66} | 0 | **stylesheet-swap** | {spark:409:409} |
-| mangrove-react-aria | {spark:47:66} | 0 | **stylesheet-swap** | {spark:309:409} |
-| delta-mui | {spark:29:66} | 0 | **mostly-rebuild** | {spark:38:409} |
-| mangrove-mui | {spark:32:66} | 0 | **mostly-rebuild** | {spark:38:409} |
-| delta-carbon | {spark:50:66} | **{spark:21:22}** | **stylesheet-swap** | {spark:263:409} |
-| mangrove-carbon | {spark:50:66} | **{spark:22:22}** | **stylesheet-swap** | {spark:201:409} |
-| delta-mantine | {spark:66:66} | **{spark:5:22}** | **mostly-rebuild** | {spark:44:409} |
-| mangrove-mantine | {spark:62:66} | 0 | **mostly-rebuild** | {spark:44:409} |
-| delta-antd | {spark:44:66} | 0 | **mostly-rebuild** | {spark:42:409} |
-| mangrove-antd | {spark:44:66} | 0 | **mostly-rebuild** | {spark:41:409} |
+| delta-react-aria | {spark:48:66} | 0 | **stylesheet-swap** | {spark:413:413} |
+| mangrove-react-aria | {spark:47:66} | 0 | **stylesheet-swap** | {spark:313:413} |
+| delta-mui | {spark:29:66} | 0 | **mostly-rebuild** | {spark:38:413} |
+| mangrove-mui | {spark:32:66} | 0 | **mostly-rebuild** | {spark:38:413} |
+| delta-carbon | {spark:50:66} | **{spark:21:22}** | **stylesheet-swap** | {spark:263:413} |
+| mangrove-carbon | {spark:50:66} | **{spark:22:22}** | **stylesheet-swap** | {spark:201:413} |
+| delta-mantine | {spark:66:66} | **{spark:5:22}** | **mostly-rebuild** | {spark:44:413} |
+| mangrove-mantine | {spark:62:66} | 0 | **mostly-rebuild** | {spark:44:413} |
+| delta-antd | {spark:44:66} | 0 | **mostly-rebuild** | {spark:42:413} |
+| mangrove-antd | {spark:44:66} | 0 | **mostly-rebuild** | {spark:41:413} |
 
 ## A6 - Right-to-left
 

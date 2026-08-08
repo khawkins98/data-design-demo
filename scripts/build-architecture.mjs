@@ -9,7 +9,7 @@
  *   node scripts/build-architecture.mjs
  */
 
-import { readFileSync, writeFileSync } from "node:fs";
+import { readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { siteNavHtml, siteNavCss } from "./lib/site-nav.mjs";
@@ -18,6 +18,9 @@ const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, "..");
 const SRC = join(ROOT, "docs", "architecture-options.md");
 const OUT = join(ROOT, "docs", "architecture-options.html");
+const CASE_SRC = join(ROOT, "docs", "case-study-stepper.md");
+const CASE_OUT = join(ROOT, "docs", "case-study-stepper.html");
+const REUSE_RESULTS = join(ROOT, "docs", "reuse-results.json");
 
 const md = readFileSync(SRC, "utf8");
 
@@ -42,6 +45,7 @@ function toHtml(source) {
   let inTable = false;
   let tableHead = false;
   let inList = false;
+  let listItem = null;
   let inBlockquote = false;
   let para = null;
 
@@ -50,9 +54,15 @@ function toHtml(source) {
     out.push(`<p>${inline(para.join(" "))}</p>`);
     para = null;
   };
+  const closeListItem = () => {
+    if (!listItem) return;
+    out.push(`<li>${inline(listItem.join(" "))}</li>`);
+    listItem = null;
+  };
   const closeList = () => {
     if (!inList) return;
-    out.push("</ul>");
+    closeListItem();
+    out.push(inList === "ol" ? "</ol>" : "</ul>");
     inList = false;
   };
   const closeBlockquote = () => {
@@ -167,28 +177,35 @@ function toHtml(source) {
     // List items
     if (/^\d+\.\s/.test(line)) {
       closePara();
+      if (inList && inList !== "ol") closeList();
       if (!inList) {
         out.push("<ol>");
         inList = "ol";
       }
-      out.push(`<li>${inline(line.replace(/^\d+\.\s/, ""))}</li>`);
+      closeListItem();
+      listItem = [line.replace(/^\d+\.\s/, "")];
       i++;
       continue;
     }
     if (line.startsWith("- ")) {
       closePara();
+      if (inList && inList !== "ul") closeList();
       if (!inList) {
         out.push("<ul>");
         inList = "ul";
       }
-      out.push(`<li>${inline(line.slice(2))}</li>`);
+      closeListItem();
+      listItem = [line.slice(2)];
       i++;
       continue;
     }
     if (inList && line === "") {
-      if (inList === "ol") out.push("</ol>");
-      else out.push("</ul>");
-      inList = false;
+      closeList();
+      i++;
+      continue;
+    }
+    if (inList) {
+      listItem.push(line.trim());
       i++;
       continue;
     }
@@ -212,7 +229,78 @@ function toHtml(source) {
   return out.join("\n");
 }
 
-const bodyHtml = toHtml(md);
+function reuseComparisonHtml() {
+  const results = JSON.parse(readFileSync(REUSE_RESULTS, "utf8"));
+  const reactAria = results.candidates["react-aria"];
+  const mui = results.candidates.mui;
+
+  const countLines = (dir, extensionPattern) => {
+    const files = readdirSync(dir).flatMap((name) => {
+      const path = join(dir, name);
+      return statSync(path).isDirectory() ? [path] : extensionPattern.test(name) ? [path] : [];
+    });
+    return files.reduce((total, path) => {
+      if (statSync(path).isDirectory()) return total + countLines(path, extensionPattern);
+      const source = readFileSync(path, "utf8").replace(/\/\*[\s\S]*?\*\//g, "").replace(/^\s*\/\/.*$/gm, "");
+      return total + source.split(/\r?\n/).filter((line) => line.trim()).length;
+    }, 0);
+  };
+  const reactAriaSrc = join(ROOT, reactAria.package, "src");
+  const measuredSourceLines = countLines(reactAriaSrc, /\.tsx?$/);
+  const measuredCssLines = countLines(reactAriaSrc, /\.css$/);
+  if (
+    measuredSourceLines !== reactAria.sharedSourceLines ||
+    measuredCssLines !== reactAria.sharedCssLines
+  ) {
+    throw new Error(
+      `reuse-results.json drift: React Aria records ${reactAria.sharedSourceLines} source / ` +
+        `${reactAria.sharedCssLines} CSS lines, measured ${measuredSourceLines} / ${measuredCssLines}`,
+    );
+  }
+
+  const card = (name, candidate) => `
+    <article class="reuse-card">
+      <p class="reuse-card__eyebrow">Measured shared package</p>
+      <h3>${esc(name)}</h3>
+      <p class="reuse-card__metric"><strong>${candidate.sharedSourceLines}</strong> shared source lines${candidate.sharedCssLines ? ` + ${candidate.sharedCssLines} CSS` : ""}</p>
+      <p><strong>Visual authority: ${esc(candidate.visualAuthority)}</strong></p>
+      <p>${esc(candidate.visualAuthorityNote)}</p>
+    </article>`;
+
+  const changeRow = (label, key) => {
+    const a = reactAria.changes[key];
+    const m = mui.changes[key];
+    return `<tr>
+      <th scope="row">${esc(label)}</th>
+      <td><strong>${esc(a.result)}</strong><span class="cell-note">${esc(a.evidence)}</span></td>
+      <td><strong>${esc(m.result)}</strong><span class="cell-note">${esc(m.evidence)}</span></td>
+    </tr>`;
+  };
+
+  return `<section class="reuse-evidence" aria-labelledby="reuse-evidence-title">
+    <div class="reuse-evidence__heading">
+      <p class="reuse-card__eyebrow">Generated from reuse-results.json</p>
+      <h3 id="reuse-evidence-title">What the second product actually inherits</h3>
+      <p>${esc(results.capability)}</p>
+    </div>
+    <div class="reuse-grid">${card("Adobe React Aria", reactAria)}${card("MUI", mui)}
+    </div>
+    <div class="scroll reuse-table"><table>
+      <thead><tr><th>Controlled change</th><th>React Aria shared layer</th><th>MUI shared integration</th></tr></thead>
+      <tbody>
+        ${changeRow("UNDRR token", "token")}
+        ${changeRow("Interaction policy", "interactionPolicy")}
+        ${changeRow("RTL and localisation", "rtlAndLocalisation")}
+      </tbody>
+    </table></div>
+  </section>`;
+}
+
+let bodyHtml = toHtml(md);
+bodyHtml = bodyHtml.replace(
+  /(<h2 id="the-reuse-and-ownership-result">[\s\S]*?<\/h2>)/,
+  `$1\n${reuseComparisonHtml()}`,
+);
 
 const html = `<!doctype html>
 <!-- Rendered from docs/architecture-options.md by scripts/build-architecture.mjs -->
@@ -224,6 +312,7 @@ const html = `<!doctype html>
     <link rel="stylesheet" href="./mangrove.css" />
     <style>
       :root { --accent:#004f91; --muted:#4a5c69; --border:#d5d5d5; --surface:#fff; }
+      html { -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
       pre { background:var(--surface); border:1px solid var(--border); border-radius:6px;
             padding:1rem; overflow-x:auto; font-size:0.8125rem; }
       pre code { background:none; border:none; padding:0; }
@@ -236,12 +325,32 @@ const html = `<!doctype html>
       thead th { background:var(--surface); font-weight:700; }
       .mermaid { background:var(--surface); border:1px solid var(--border); border-radius:6px;
                  padding:1rem; text-align:center; }
+      .mg-docs-main { max-width:88ch; }
+      .mg-docs-main h1, .mg-docs-main h2, .mg-docs-main h3 { text-wrap:balance; }
+      .mg-docs-main p, .mg-docs-main li { text-wrap:pretty; }
+      .reuse-evidence { margin:1rem 0 2.5rem; padding:1.25rem; border-radius:10px;
+                        background:#f5f8fb; box-shadow:0 0 0 1px rgb(0 0 0 / 6%), 0 2px 8px rgb(0 0 0 / 5%); }
+      .reuse-evidence__heading h3 { margin:0.125rem 0 0.375rem; font-size:1.125rem; }
+      .reuse-evidence__heading p:last-child { margin:0; color:var(--muted); }
+      .reuse-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem; margin:1rem 0; }
+      .reuse-card { padding:1rem; border-radius:8px; background:var(--surface);
+                    box-shadow:0 0 0 1px rgb(0 0 0 / 6%), 0 1px 3px rgb(0 0 0 / 5%); }
+      .reuse-card h3 { margin:0.125rem 0 0.75rem; }
+      .reuse-card p { margin:0.375rem 0; font-size:0.875rem; }
+      .reuse-card__eyebrow { color:var(--accent); font-size:0.6875rem !important; font-weight:700;
+                             letter-spacing:0.06em; text-transform:uppercase; }
+      .reuse-card__metric { font-variant-numeric:tabular-nums; }
+      .reuse-card__metric strong { font-size:1.5rem; color:var(--accent); }
+      .reuse-table { margin-bottom:0; background:var(--surface); }
+      .reuse-table th[scope="row"] { white-space:nowrap; }
+      .cell-note { display:block; margin-top:0.25rem; color:var(--muted); font-size:0.75rem; line-height:1.4; }
+      @media (max-width:48rem) { .reuse-grid { grid-template-columns:1fr; } .reuse-evidence { padding:1rem; } }
 ${siteNavCss}
     </style>
   </head>
   <body>
 ${siteNavHtml("architecture")}
-    <div class="mg-container mg-page-content--padded">
+    <div class="mg-container mg-page-content--padded mg-docs-main">
 ${bodyHtml}
     </div>
     <script type="module">
@@ -253,4 +362,12 @@ ${bodyHtml}
 `;
 
 writeFileSync(OUT, html, "utf8");
-process.stdout.write(`wrote docs/architecture-options.html\n`);
+const caseBodyHtml = toHtml(readFileSync(CASE_SRC, "utf8"));
+const caseHtml = html
+  .replace(
+    "Architecture options - UNDRR data design system evaluation",
+    "Stepper case study - UNDRR data design system evaluation",
+  )
+  .replace(bodyHtml, caseBodyHtml);
+writeFileSync(CASE_OUT, caseHtml, "utf8");
+process.stdout.write(`wrote docs/architecture-options.html and docs/case-study-stepper.html\n`);

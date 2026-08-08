@@ -178,10 +178,11 @@ L.push("## Decisions needed");
 L.push("");
 L.push("1. **Human accessibility pass.** A7 bands rest on automated scanning only - no conformance claim without screen-reader and keyboard testing.");
 L.push("2. **MUI exclusion ruling.** Its Arabic defect has a fix this evaluation's rules forbid. Relaxing that rule returns MUI to contention.");
+L.push("3. **Operating-model commitment.** The preferred route funds and governs one shared UNDRR component layer; without that commitment, React Aria becomes bespoke CSS per product rather than an estate asset.");
 L.push("");
 L.push("## Recommendation");
 L.push("");
-L.push(`**Adopt ${ranked[0].name}.**`);
+L.push(`**Preferred foundation: a shared UNDRR component layer on ${ranked[0].name}.**`);
 L.push("");
 if (ranked[0].blockers.length === 0) {
   L.push(
@@ -193,8 +194,9 @@ if (ranked[0].blockers.length === 0) {
   );
   if (ranked[0].candidate === "react-aria") {
   L.push("");
-  L.push("**The cost.** React Aria ships behaviour, not appearance. Adopting it means UNDRR");
-  L.push('owns the visual layer permanently. **Read this as "fund a design system", not "save work".**');
+  L.push("**Why this model.** The reuse experiment now proves that React Aria and MUI can both sit behind one shared package. React Aria's advantage is not packageability: it is that live tokens propagate without rebuilding every site and the UNDRR layer remains the visual authority.");
+  L.push("");
+  L.push("**The cost.** React Aria ships behaviour, not appearance. Adopting it means UNDRR owns the visual layer permanently. **Read this as \"fund a design system\", not \"save work\".**");
   }
 } else {
   L.push(
@@ -203,7 +205,7 @@ if (ranked[0].blockers.length === 0) {
   );
 }
 L.push("");
-L.push("See also [architecture-options.md](./architecture-options.md) for the staffing implications.");
+L.push("See [architecture-options.md](./architecture-options.md) for the measured reuse comparison, visual-authority trade-off and staffing implications.");
 L.push("");
 
 L.push("## Weights");

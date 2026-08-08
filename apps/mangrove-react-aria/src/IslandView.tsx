@@ -34,16 +34,18 @@ import { I18nProvider, Radio, RadioGroup } from "react-aria-components";
 import { LOCALES } from "@undrr-eval/fixtures";
 import type { LocaleCode } from "@undrr-eval/fixtures";
 import { IslandFrame, ViewSwitcher } from "@undrr-eval/host-mangrove";
+import {
+  RecordsFilters,
+  RecordsPagination,
+  RecordsTable,
+  useRecordsView,
+} from "@undrr-eval/integration-react-aria";
 import { KnownIssues } from "@undrr-eval/known-issues";
 import { viewLinks } from "@undrr-eval/test-harness/views";
 import { TOKEN_SCOPE_CLASS } from "@undrr-eval/undrr-tokens";
 
 import { DemoContext, labelsFor, useDemo } from "./demo-state.js";
 import type { DemoContextValue } from "./demo-state.js";
-import { RecordsFilters } from "./views/RecordsFilters.js";
-import { RecordsPagination } from "./views/RecordsPagination.js";
-import { RecordsTable } from "./views/RecordsTable.js";
-import { useRecordsView } from "./views/records-state.js";
 
 const params = new URLSearchParams(window.location.search);
 

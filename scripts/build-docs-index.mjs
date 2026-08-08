@@ -570,11 +570,12 @@ const html = `<!doctype html>
 
         <p class="start__verdict">
           <strong>If you only read one thing:</strong> the evidence recommends
-          <strong>Adobe React Aria</strong> — the only candidate with no blocking
-          defect, and Arabic works without custom code. But it ships behaviour,
-          not appearance: adopting it means UNDRR builds and owns the visual
-          layer permanently.
-          <a href="./scores.html">Ranking, weights and costs</a>.
+          a <strong>shared UNDRR component layer on Adobe React Aria</strong>.
+          The reuse experiment proves that both React Aria and MUI can package;
+          React Aria is preferred because live tokens propagate without rebuilding
+          every site and UNDRR remains the visual authority. This is a commitment
+          to fund a design system, not a shortcut around one.
+          <a href="./architecture-options.html">Architecture, evidence and costs</a>.
         </p>
 
         <p class="start__lead">
@@ -595,8 +596,8 @@ ${questionsHtml}
           — what is measured on each &middot;
           <a href="${DOCS_BLOB}/undrr-questions.md">the six questions in full</a>
           &middot;
-          <a href="${DOCS_BLOB}/architecture-options.md"><strong>Architecture
-          options</strong></a> — what each candidate does to Mangrove &middot;
+          <a href="./architecture-options.html"><strong>Architecture
+          options</strong></a> — measured reuse, ownership and visual authority &middot;
           <a href="./comparison.html">requirement matrix</a> — the 300 assessments
           (audit trail, not the decision).
         </p>

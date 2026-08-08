@@ -15,6 +15,7 @@
     "@internationalized/date": "^3.12.3",
     "@undrr-eval/fixtures": "workspace:*",
     "@undrr-eval/host-mangrove": "workspace:*",
+    "@undrr-eval/integration-react-aria": "workspace:*",
     "@undrr-eval/known-issues": "workspace:*",
     "@undrr-eval/test-harness": "workspace:*",
     "@undrr-eval/undrr-tokens": "workspace:*",

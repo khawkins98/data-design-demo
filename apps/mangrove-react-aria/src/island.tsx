@@ -23,7 +23,7 @@ import "@undrr-eval/host-mangrove/host.css";
 import "@undrr-eval/undrr-tokens/tokens.css";
 import "@undrr-eval/known-issues/known-issues.css";
 import "./theme.css";
-import "./views/views.css";
+import "@undrr-eval/integration-react-aria/records.css";
 
 import { IslandView } from "./IslandView.js";
 

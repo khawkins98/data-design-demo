@@ -254,7 +254,7 @@
 <tr><th>Pairing</th><th>attribute<span class="th-hint">semantic selectors like [data-*], [slot]</span></th><th>contract<span class="th-hint">documented styling API; safe to use</span></th><th>off route<span class="th-hint">bypasses the library's theming; fragile</span></th><th>of which hashed<span class="th-hint">generated class names that change between builds</span></th><th>CSS rules<span class="th-hint">total rules in the demo's own stylesheets</span></th></tr>
 </thead><tbody>
 <tr><td>delta-react-aria</td><td><span class="spark"><span class="spark-bar" style="width:100%"></span>22</span></td><td><span class="spark"><span class="spark-bar" style="width:0%"></span>0</span></td><td><strong>0</strong></td><td>0</td><td><span class="spark"><span class="spark-bar" style="width:100%"></span>211</span></td></tr>
-<tr><td>mangrove-react-aria</td><td><span class="spark"><span class="spark-bar" style="width:82%"></span>18</span></td><td><span class="spark"><span class="spark-bar" style="width:0%"></span>0</span></td><td><strong>0</strong></td><td>0</td><td><span class="spark"><span class="spark-bar" style="width:73%"></span>153</span></td></tr>
+<tr><td>mangrove-react-aria</td><td><span class="spark"><span class="spark-bar" style="width:82%"></span>18</span></td><td><span class="spark"><span class="spark-bar" style="width:0%"></span>0</span></td><td><strong>0</strong></td><td>0</td><td><span class="spark"><span class="spark-bar" style="width:73%"></span>155</span></td></tr>
 <tr><td>delta-mui</td><td><span class="spark"><span class="spark-bar" style="width:0%"></span>0</span></td><td><span class="spark"><span class="spark-bar" style="width:50%"></span>2</span></td><td><strong>0</strong></td><td>0</td><td><span class="spark"><span class="spark-bar" style="width:1%"></span>3</span></td></tr>
 <tr><td>mangrove-mui</td><td><span class="spark"><span class="spark-bar" style="width:0%"></span>0</span></td><td><span class="spark"><span class="spark-bar" style="width:100%"></span>4</span></td><td><strong>0</strong></td><td>0</td><td><span class="spark"><span class="spark-bar" style="width:2%"></span>5</span></td></tr>
 <tr><td>delta-carbon</td><td><span class="spark"><span class="spark-bar" style="width:0%"></span>0</span></td><td><span class="spark"><span class="spark-bar" style="width:0%"></span>0</span></td><td><strong><span class="spark"><span class="spark-bar" style="width:100%"></span>19</span></strong></td><td>0</td><td><span class="spark"><span class="spark-bar" style="width:23%"></span>48</span></td></tr>
@@ -287,20 +287,20 @@
 <blockquote class="answers">
 <p><strong>Answers: Repeatability</strong> - Can a second team reproduce the integration without inventing their own conventions?</p>
 
-<p>Measured by extraction for MUI: 86% of the integration shares across sites. React Aria's is fully portable but has no package to hold it, so it is shared by duplication.</p>
+<p>Measured packages now exist for the leading alternatives: MUI shares 86% once demo-only code is excluded, while the realistic React Aria records capability shares 618 source lines and 147 CSS lines across Delta and Mangrove.</p>
 
 <p><strong>Answers: Standardisation</strong> - One shared component vocabulary across the estate, or one dialect per project?</p>
 
-<p>shadcn/ui was excluded outright for guaranteeing a fork per site. Among the five built, the theme and token layer extracts; kitchen-sink section components do not.</p>
+<p>React Aria, MUI and Ant Design have all been exercised as shared packages. The remaining distinction is ownership: whether the shared layer preserves UNDRR's visual and interaction authority or mainly centralises a library configuration. shadcn/ui was excluded because its copy-in distribution guarantees a fork per site.</p>
 </blockquote>
-<div class="ax-summary"><span class="ax-chip ax-w" title="extraction outcome recorded as analysed">Adobe React Aria: workable</span><span class="ax-chip ax-w" title="extraction outcome recorded as measured">MUI (Community only): workable</span><span class="ax-chip ax-w" title="extraction outcome recorded as analysed">IBM Carbon: workable</span><span class="ax-chip ax-w" title="extraction outcome recorded as analysed">Mantine: workable</span><span class="ax-chip ax-w" title="extraction outcome recorded as measured">Ant Design: workable</span></div>
+<div class="ax-summary"><span class="ax-chip ax-s" title="">Adobe React Aria: strong</span><span class="ax-chip ax-s" title="">MUI (Community only): strong</span><span class="ax-chip ax-w" title="extraction outcome recorded as unknown - confounded">IBM Carbon: workable</span><span class="ax-chip ax-w" title="extraction outcome recorded as unknown - confounded">Mantine: workable</span><span class="ax-chip ax-s" title="">Ant Design: strong</span></div>
 
-<p><code>basis</code>: only MUI was actually extracted; other entries are analysis.</p>
+<p><code>basis</code>: React Aria, MUI and Ant Design are measured package integrations; Carbon and Mantine remain analysis because consolidating two independently authored implementations would measure a rewrite rather than portability.</p>
 
 <div class="scroll"><table><thead>
 <tr><th>Candidate</th><th>basis<span class="th-hint">measured or analysed?</span></th><th>verdict<span class="th-hint">can it be shared across sites?</span></th><th>shared<span class="th-hint">code lines reusable across sites</span></th><th>per site<span class="th-hint">code lines each site must own</span></th><th>shared %<span class="th-hint">proportion that is reusable</span></th></tr>
 </thead><tbody>
-<tr><td>react-aria</td><td>analysed</td><td><strong>likely packaged</strong></td><td>-</td><td>-</td><td>-</td></tr>
+<tr><td>react-aria</td><td><strong>measured</strong></td><td><strong>packaged</strong></td><td>765 ln</td><td>-</td><td>-</td></tr>
 <tr><td>mui</td><td><strong>measured</strong></td><td><strong>packaged</strong></td><td>809 ln</td><td>277 ln</td><td>74%</td></tr>
 <tr><td>carbon</td><td>analysed</td><td><strong>unknown - confounded</strong></td><td>-</td><td>-</td><td>-</td></tr>
 <tr><td>mantine</td><td>analysed</td><td><strong>unknown - confounded</strong></td><td>-</td><td>-</td><td>-</td></tr>
@@ -308,13 +308,23 @@
 <tr><td>shadcn</td><td>not-run</td><td><strong>fork-per-site</strong></td><td>-</td><td>-</td><td>-</td></tr>
 </tbody></table></div>
 
-<p><strong>react-aria</strong> - 5 of 13 files are already code-identical (517 code lines), and the styling is CSS custom properties read from the shared tokens, which is host-independent by construction and needs no rebuild to retarget. Not extracted, so no measured figure is offered.</p>
+<p><strong>react-aria</strong> - This is deliberately narrower than integration-mui: it extracts one realistic cross-host capability rather than the whole kitchen sink. That makes the reuse claim concrete without pretending the host reset and product frame are shareable. Token references remain live CSS custom properties, so changing the UNDRR token stylesheet does not require rebuilding either consumer.</p>
 
 <p>What resists extraction:</p>
 
 <ul>
-<li>SectionDataTable and SectionForms diverged between the two runs and would need reconciling first</li>
-<li>theme.css differs, though it consumes only var(--undrr-*) so it is host-independent by construction</li>
+<li>theme.css still differs because Delta Preflight and Mangrove's element rules require different reset repair</li>
+<li>Delta's wizard and navigation are product-specific rather than part of the records capability</li>
+<li>host frames and page composition remain in each app</li>
+
+</ul>
+<p>Verified by:</p>
+
+<ul>
+<li>618 non-comment TypeScript lines and 147 CSS lines moved into packages/integration-react-aria</li>
+<li>both realistic views now import the same filters, table, pagination, data derivation, announcement policy and records layout</li>
+<li>root typecheck passes for all ten apps</li>
+<li>the package build passes under the repository's strict TypeScript configuration</li>
 
 </ul>
 <p><strong>mui</strong> - The residue's shape matters more than its size. Three of the four items are wiring. The fourth, demo.css, is the only one that is real per-site work, and it is a function of how aggressively the host styles bare elements rather than of MUI: 11 lines against Delta, 27 against Mangrove, because Mangrove styles input[type=...] at (0,1,1) and beats MUI's own slot class at (0,1,0).</p>
@@ -422,8 +432,8 @@
 <div class="scroll"><table><thead>
 <tr><th>Pairing</th><th>tokens applied<span class="th-hint">UNDRR design tokens successfully connected</span></th><th>unreachable<span class="th-hint">tokens with no hook to attach to</span></th><th>propagation<span class="th-hint">how a token change reaches every site</span></th><th>live var() refs in shipped CSS<span class="th-hint">CSS custom properties surviving to production</span></th></tr>
 </thead><tbody>
-<tr><td>delta-react-aria</td><td><span class="spark"><span class="spark-bar" style="width:73%"></span>48</span></td><td>0</td><td><strong>stylesheet-swap</strong></td><td><span class="spark"><span class="spark-bar" style="width:100%"></span>409</span></td></tr>
-<tr><td>mangrove-react-aria</td><td><span class="spark"><span class="spark-bar" style="width:71%"></span>47</span></td><td>0</td><td><strong>stylesheet-swap</strong></td><td><span class="spark"><span class="spark-bar" style="width:76%"></span>309</span></td></tr>
+<tr><td>delta-react-aria</td><td><span class="spark"><span class="spark-bar" style="width:73%"></span>48</span></td><td>0</td><td><strong>stylesheet-swap</strong></td><td><span class="spark"><span class="spark-bar" style="width:100%"></span>413</span></td></tr>
+<tr><td>mangrove-react-aria</td><td><span class="spark"><span class="spark-bar" style="width:71%"></span>47</span></td><td>0</td><td><strong>stylesheet-swap</strong></td><td><span class="spark"><span class="spark-bar" style="width:76%"></span>313</span></td></tr>
 <tr><td>delta-mui</td><td><span class="spark"><span class="spark-bar" style="width:44%"></span>29</span></td><td>0</td><td><strong>mostly-rebuild</strong></td><td><span class="spark"><span class="spark-bar" style="width:9%"></span>38</span></td></tr>
 <tr><td>mangrove-mui</td><td><span class="spark"><span class="spark-bar" style="width:48%"></span>32</span></td><td>0</td><td><strong>mostly-rebuild</strong></td><td><span class="spark"><span class="spark-bar" style="width:9%"></span>38</span></td></tr>
 <tr><td>delta-carbon</td><td><span class="spark"><span class="spark-bar" style="width:76%"></span>50</span></td><td><strong><span class="spark"><span class="spark-bar" style="width:95%"></span>21</span></strong></td><td><strong>stylesheet-swap</strong></td><td><span class="spark"><span class="spark-bar" style="width:64%"></span>263</span></td></tr>

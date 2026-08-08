@@ -34,7 +34,10 @@ export function scoreA3(candidate, extraction) {
       because: "no extraction experiment was run, so shareability is unmeasured for this candidate",
     };
   }
-  const outcome = e.outcome ?? e.basis ?? "unknown";
+  // `basis` says whether the result was measured or analysed; `verdict` says
+  // what the experiment found. Scoring the basis made every measured package
+  // merely "workable", even when two hosts actually consumed it successfully.
+  const outcome = e.verdict ?? e.outcome ?? e.basis ?? "unknown";
   if (outcome === "packaged") {
     return { band: "strong", because: "the integration extracted into one shared package" };
   }

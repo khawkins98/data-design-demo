@@ -9,17 +9,19 @@ defines what was measured. Each app's `EVIDENCE.md` has the raw findings.
 
 1. **Human accessibility pass.** A7 bands rest on automated scanning only - no conformance claim without screen-reader and keyboard testing.
 2. **MUI exclusion ruling.** Its Arabic defect has a fix this evaluation's rules forbid. Relaxing that rule returns MUI to contention.
+3. **Operating-model commitment.** The preferred route funds and governs one shared UNDRR component layer; without that commitment, React Aria becomes bespoke CSS per product rather than an estate asset.
 
 ## Recommendation
 
-**Adopt Adobe React Aria.**
+**Preferred foundation: a shared UNDRR component layer on Adobe React Aria.**
 
-Composite 84 vs 69 for MUI (Community only); one of 2/5 candidates without warnings. Arabic works from a `dir` attribute alone. Stays inside its own subtree on both hosts.
+Composite 90 vs 76 for MUI (Community only); one of 2/5 candidates without warnings. Arabic works from a `dir` attribute alone. Stays inside its own subtree on both hosts.
 
-**The cost.** React Aria ships behaviour, not appearance. Adopting it means UNDRR
-owns the visual layer permanently. **Read this as "fund a design system", not "save work".**
+**Why this model.** The reuse experiment now proves that React Aria and MUI can both sit behind one shared package. React Aria's advantage is not packageability: it is that live tokens propagate without rebuilding every site and the UNDRR layer remains the visual authority.
 
-See also [architecture-options.md](./architecture-options.md) for the staffing implications.
+**The cost.** React Aria ships behaviour, not appearance. Adopting it means UNDRR owns the visual layer permanently. **Read this as "fund a design system", not "save work".**
+
+See [architecture-options.md](./architecture-options.md) for the measured reuse comparison, visual-authority trade-off and staffing implications.
 
 ## Weights
 
@@ -48,9 +50,9 @@ Composite is the weighted mean of the two hosts. **Warnings are listed beside th
 
 | # | Candidate | Composite | Library-owned warnings |
 | --- | --- | --- | --- |
-| 1 | Adobe React Aria | **84** / 100 | none |
-| 2 | MUI (Community only) | **69** / 100 | none |
-| 3 | Ant Design | **68** / 100 | **1** - see below |
+| 1 | Adobe React Aria | **90** / 100 | none |
+| 2 | MUI (Community only) | **76** / 100 | none |
+| 3 | Ant Design | **74** / 100 | **1** - see below |
 | 4 | Mantine | **65** / 100 | **1** - see below |
 | 5 | IBM Carbon | **46** / 100 | **3** - see below |
 
@@ -58,7 +60,7 @@ Composite is the weighted mean of the two hosts. **Warnings are listed beside th
 
 **Adobe React Aria** ranks first on the composite and carries no warning, so it is the recommendation.
 
-**MUI (Community only)** (69) also carries no warning - viable second choice without a waiver.
+**MUI (Community only)** (76) also carries no warning - viable second choice without a waiver.
 
 Ant Design and Mantine carry warnings that can be escaped in configuration or consuming code: see the escape-cost table below.
 
@@ -110,7 +112,7 @@ Warning = axis not satisfied as shipped, typically overcomable with extra mainte
 
 Each cell carries the fact that assigned the band.
 
-### `delta-react-aria` - composite 84 / 100
+### `delta-react-aria` - composite 90 / 100
 
 Worst open issue: **caveat** - React Aria is unstyled, so these pairings carry 155 to 213 CSS rules
 
@@ -120,13 +122,13 @@ Worst open issue: **caveat** - React Aria is unstyled, so these pairings carry 1
 | --- | --- | --- | --- |
 | A1 Implementation effort | **workable** | 8 | 10 of 30 requirements needed more than a documented component; 5 documented approaches failed and needed working around |
 | A2 Maintainability at scale | **workable** | 16 | 5 escape hatches off the documented theming route; 0 scoreable maintenance findings |
-| A3 Reproducibility across sites | **workable** | 16 | extraction outcome recorded as analysed |
+| A3 Reproducibility across sites | strong | 16 | the integration extracted into one shared package |
 | A4 Mangrove compatibility | strong | 14 | no host canary changed when the candidate mounted |
 | A5 Theming fidelity | strong | 14 | all 48 reachable tokens applied |
 | A6 Right-to-left | strong | 18 | Arabic worked from a dir attribute alone, at zero custom lines |
 | A7 Accessibility conformance | strong | 14 | no critical or serious automated violations; 1 checks axe declined to decide, each still owed a human |
 
-### `mangrove-react-aria` - composite 84 / 100
+### `mangrove-react-aria` - composite 90 / 100
 
 Worst open issue: **caveat** - React Aria is unstyled, so these pairings carry 155 to 213 CSS rules
 
@@ -136,13 +138,13 @@ Worst open issue: **caveat** - React Aria is unstyled, so these pairings carry 1
 | --- | --- | --- | --- |
 | A1 Implementation effort | **workable** | 8 | 9 of 30 requirements needed more than a documented component; 3 documented approaches failed and needed working around |
 | A2 Maintainability at scale | **workable** | 16 | 3 escape hatches off the documented theming route; 0 scoreable maintenance findings |
-| A3 Reproducibility across sites | **workable** | 16 | extraction outcome recorded as analysed |
+| A3 Reproducibility across sites | strong | 16 | the integration extracted into one shared package |
 | A4 Mangrove compatibility | strong | 14 | no host canary changed when the candidate mounted |
 | A5 Theming fidelity | strong | 14 | all 47 reachable tokens applied |
 | A6 Right-to-left | strong | 18 | Arabic worked from a dir attribute alone, at zero custom lines |
 | A7 Accessibility conformance | strong | 14 | no critical or serious automated violations; 1 checks axe declined to decide, each still owed a human |
 
-### `delta-mui` - composite 71 / 100
+### `delta-mui` - composite 78 / 100
 
 Worst open issue: **caveat** - MUI needs a third setup step for RTL, and fails silently without it
 
@@ -152,13 +154,13 @@ Worst open issue: **caveat** - MUI needs a third setup step for RTL, and fails s
 | --- | --- | --- | --- |
 | A1 Implementation effort | **workable** | 8 | 4 of 30 requirements needed more than a documented component; 5 documented approaches failed and needed working around |
 | A2 Maintainability at scale | **workable** | 16 | 5 escape hatches off the documented theming route; 0 scoreable maintenance findings |
-| A3 Reproducibility across sites | **workable** | 16 | extraction outcome recorded as measured |
+| A3 Reproducibility across sites | strong | 16 | the integration extracted into one shared package |
 | A4 Mangrove compatibility | strong | 14 | no host canary changed when the candidate mounted |
 | A5 Theming fidelity | strong | 14 | all 29 reachable tokens applied |
 | A6 Right-to-left | **workable** | 18 | clean, but only after 29 custom lines and 0 recorded mitigations |
 | A7 Accessibility conformance | **workable** | 14 | 1 serious automated violations; 4 checks axe declined to decide, each still owed a human |
 
-### `mangrove-mui` - composite 66 / 100
+### `mangrove-mui` - composite 73 / 100
 
 Worst open issue: **caveat** - MUI needs a third setup step for RTL, and fails silently without it
 
@@ -168,7 +170,7 @@ Worst open issue: **caveat** - MUI needs a third setup step for RTL, and fails s
 | --- | --- | --- | --- |
 | A1 Implementation effort | **workable** | 8 | 4 of 30 requirements needed more than a documented component; 7 documented approaches failed and needed working around |
 | A2 Maintainability at scale | **weak** | 16 | 7 escape hatches off the documented theming route; 0 scoreable maintenance findings |
-| A3 Reproducibility across sites | **workable** | 16 | extraction outcome recorded as measured |
+| A3 Reproducibility across sites | strong | 16 | the integration extracted into one shared package |
 | A4 Mangrove compatibility | strong | 14 | no host canary changed when the candidate mounted |
 | A5 Theming fidelity | strong | 14 | all 32 reachable tokens applied |
 | A6 Right-to-left | **workable** | 18 | clean, but only after 29 custom lines and 0 recorded mitigations |
@@ -184,7 +186,7 @@ Worst open issue: **warning** - Carbon cannot express about 30% of the UNDRR des
 | --- | --- | --- | --- |
 | A1 Implementation effort | **weak** | 8 | 11 of 30 requirements needed more than a documented component; 14 documented approaches failed and needed working around |
 | A2 Maintainability at scale | **weak** | 16 | 14 escape hatches off the documented theming route; 0 scoreable maintenance findings |
-| A3 Reproducibility across sites | **workable** | 16 | extraction outcome recorded as analysed |
+| A3 Reproducibility across sites | **workable** | 16 | extraction outcome recorded as unknown - confounded |
 | A4 Mangrove compatibility | **workable** | 14 | clean only because the documented global stylesheet was not loaded as documented |
 | A5 Theming fidelity | **weak** | 14 | 21 of 71 UNDRR tokens cannot be attached at all - a ceiling, not a cost |
 | A6 Right-to-left | **workable** | 18 | clean, but only after 0 custom lines and 1 recorded mitigations |
@@ -200,7 +202,7 @@ Worst open issue: **warning** - Carbon cannot express about 30% of the UNDRR des
 | --- | --- | --- | --- |
 | A1 Implementation effort | **workable** | 8 | 11 of 30 requirements needed more than a documented component; 8 documented approaches failed and needed working around |
 | A2 Maintainability at scale | **weak** | 16 | 8 escape hatches off the documented theming route; 0 scoreable maintenance findings |
-| A3 Reproducibility across sites | **workable** | 16 | extraction outcome recorded as analysed |
+| A3 Reproducibility across sites | **workable** | 16 | extraction outcome recorded as unknown - confounded |
 | A4 Mangrove compatibility | **blocked** | 14 | the candidate restyled 19 computed properties on host markup outside its own subtree |
 | A5 Theming fidelity | **weak** | 14 | 22 of 72 UNDRR tokens cannot be attached at all - a ceiling, not a cost |
 | A6 Right-to-left | **workable** | 18 | clean, but only after 6 custom lines and 2 recorded mitigations |
@@ -216,7 +218,7 @@ Worst open issue: **warning** - Modal's close button ships with no accessible na
 | --- | --- | --- | --- |
 | A1 Implementation effort | **weak** | 8 | 10 of 30 requirements needed more than a documented component; 11 documented approaches failed and needed working around |
 | A2 Maintainability at scale | **weak** | 16 | 11 escape hatches off the documented theming route; 0 scoreable maintenance findings |
-| A3 Reproducibility across sites | **workable** | 16 | extraction outcome recorded as analysed |
+| A3 Reproducibility across sites | **workable** | 16 | extraction outcome recorded as unknown - confounded |
 | A4 Mangrove compatibility | strong | 14 | no host canary changed when the candidate mounted |
 | A5 Theming fidelity | **weak** | 14 | 5 of 71 UNDRR tokens cannot be attached at all - a ceiling, not a cost |
 | A6 Right-to-left | **workable** | 18 | clean, but only after 18 custom lines and 2 recorded mitigations |
@@ -232,13 +234,13 @@ Worst open issue: **warning** - Modal's close button ships with no accessible na
 | --- | --- | --- | --- |
 | A1 Implementation effort | **weak** | 8 | 11 of 30 requirements needed more than a documented component; 9 documented approaches failed and needed working around |
 | A2 Maintainability at scale | **weak** | 16 | 9 escape hatches off the documented theming route; 0 scoreable maintenance findings |
-| A3 Reproducibility across sites | **workable** | 16 | extraction outcome recorded as analysed |
+| A3 Reproducibility across sites | **workable** | 16 | extraction outcome recorded as unknown - confounded |
 | A4 Mangrove compatibility | strong | 14 | no host canary changed when the candidate mounted |
 | A5 Theming fidelity | strong | 14 | all 62 reachable tokens applied |
 | A6 Right-to-left | **workable** | 18 | clean, but only after 10 custom lines and 0 recorded mitigations |
 | A7 Accessibility conformance | strong | 14 | no critical or serious automated violations; 0 checks axe declined to decide, each still owed a human |
 
-### `delta-antd` - composite 68 / 100
+### `delta-antd` - composite 74 / 100
 
 Worst open issue: **caveat** - The data table has an upstream accessibility defect
 
@@ -248,13 +250,13 @@ Worst open issue: **caveat** - The data table has an upstream accessibility defe
 | --- | --- | --- | --- |
 | A1 Implementation effort | **workable** | 8 | 2 of 30 requirements needed more than a documented component; 7 documented approaches failed and needed working around |
 | A2 Maintainability at scale | **weak** | 16 | 7 escape hatches off the documented theming route; 0 scoreable maintenance findings |
-| A3 Reproducibility across sites | **workable** | 16 | extraction outcome recorded as measured |
+| A3 Reproducibility across sites | strong | 16 | the integration extracted into one shared package |
 | A4 Mangrove compatibility | **workable** | 14 | clean only because the documented global stylesheet was not loaded as documented |
 | A5 Theming fidelity | strong | 14 | all 44 reachable tokens applied |
 | A6 Right-to-left | strong | 18 | Arabic worked from a dir attribute alone, at zero custom lines |
 | A7 Accessibility conformance | **workable** | 14 | 1 serious automated violations; 1 checks axe declined to decide, each still owed a human |
 
-### `mangrove-antd` - composite 68 / 100
+### `mangrove-antd` - composite 74 / 100
 
 Worst open issue: **warning** - Select controls do not display their selected value
 
@@ -264,7 +266,7 @@ Worst open issue: **warning** - Select controls do not display their selected va
 | --- | --- | --- | --- |
 | A1 Implementation effort | **workable** | 8 | 2 of 30 requirements needed more than a documented component; 7 documented approaches failed and needed working around |
 | A2 Maintainability at scale | **weak** | 16 | 7 escape hatches off the documented theming route; 0 scoreable maintenance findings |
-| A3 Reproducibility across sites | **workable** | 16 | extraction outcome recorded as measured |
+| A3 Reproducibility across sites | strong | 16 | the integration extracted into one shared package |
 | A4 Mangrove compatibility | **workable** | 14 | clean only because the documented global stylesheet was not loaded as documented |
 | A5 Theming fidelity | strong | 14 | all 44 reachable tokens applied |
 | A6 Right-to-left | strong | 18 | Arabic worked from a dir attribute alone, at zero custom lines |

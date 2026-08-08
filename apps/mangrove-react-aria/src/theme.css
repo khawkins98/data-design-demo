@@ -711,6 +711,14 @@ select.demo-input:focus-visible {
   min-width: 0;
 }
 
+/* Anchor the full-cell header overlay to its own column. Without this, every
+   absolute inner row resolves against the table wrapper and the last header
+   intercepts clicks across the entire header row. */
+.demo-table__column {
+  position: relative;
+  overflow: hidden;
+}
+
 .demo-table__columnInner > span {
   /* The header row is a full-cell overlay; only its text is allowed to shrink. */
   flex: 0 1 auto;

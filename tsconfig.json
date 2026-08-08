@@ -20,6 +20,9 @@
       "path": "./packages/integration-mui"
     },
     {
+      "path": "./packages/integration-react-aria"
+    },
+    {
       "path": "./packages/integration-antd"
     },
     {

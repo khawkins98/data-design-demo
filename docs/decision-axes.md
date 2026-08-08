@@ -71,9 +71,10 @@ each app is the per-site cost; what refuses to move is recorded with the reason.
 | `partial` | A shared core exists but each site re-authors a named part, for a stated reason |
 | `fork-per-site` | The library's distribution model requires each site to own a copy of the source |
 
-**Done for MUI only, and the results say `basis: measured` or `analysed`
-accordingly.** `packages/integration-mui` holds 809 code lines - the entire token
-mapping and seven of the eight page sections - and both MUI apps now import it.
+**Measured for MUI, Ant Design and one realistic React Aria capability; the
+results distinguish `basis: measured` from `analysed`.**
+`packages/integration-mui` holds 809 code lines - the entire token mapping and
+seven of the eight page sections - and both MUI apps now import it.
 809 shared against 273-281 per site, and 135-149 of that residue is
 `SectionSideBySide`, which renders host markup beside candidate markup and so
 exists only because this is an evaluation. Excluding it, 86% is shared.
@@ -81,6 +82,13 @@ exists only because this is an evaluation. Excluding it, 86% is shared.
 The residue is mostly wiring (3 of 4 items); the fourth is host repair that
 scales with how aggressively the host styles bare elements (11 lines on Delta,
 27 on Mangrove).
+
+`packages/integration-react-aria` tests a narrower but more realistic unit: the
+records workspace used by the DELTA application and Mangrove island. It holds
+618 non-comment TypeScript lines and 147 CSS lines for filters, sorting,
+selection, pagination, announcement policy and layout. Both hosts import it;
+their frame, page composition and reset repair remain local. The controlled
+change results are in `reuse-results.json` and rendered on the architecture page.
 
 **Not done for Carbon or Mantine** — zero files are code-identical across hosts,
 so unifying would be a rewrite, not a measurement.

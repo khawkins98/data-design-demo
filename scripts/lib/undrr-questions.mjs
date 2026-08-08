@@ -23,7 +23,7 @@ export const UNDRR_QUESTIONS = [
     axis: "A3",
     axisName: "Reproducibility across sites",
     answer:
-      "Measured by extraction for MUI: 86% of the integration shares across sites. React Aria's is fully portable but has no package to hold it, so it is shared by duplication.",
+      "Measured packages now exist for the leading alternatives: MUI shares 86% once demo-only code is excluded, while the realistic React Aria records capability shares 618 source lines and 147 CSS lines across Delta and Mangrove.",
   },
   {
     question: "Standardisation",
@@ -31,7 +31,7 @@ export const UNDRR_QUESTIONS = [
     axis: "A3",
     axisName: "Reproducibility across sites",
     answer:
-      "shadcn/ui was excluded outright for guaranteeing a fork per site. Among the five built, the theme and token layer extracts; kitchen-sink section components do not.",
+      "React Aria, MUI and Ant Design have all been exercised as shared packages. The remaining distinction is ownership: whether the shared layer preserves UNDRR's visual and interaction authority or mainly centralises a library configuration. shadcn/ui was excluded because its copy-in distribution guarantees a fork per site.",
   },
   {
     question: "Mangrove integration",

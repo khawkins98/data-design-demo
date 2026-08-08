@@ -85,7 +85,13 @@ function ownStylesheets(app) {
       if (d.isDirectory()) return walk(p);
       return d.name.endsWith(".css") || d.name.endsWith(".scss") ? [p] : [];
     });
-  return walk(src)
+  const paths = walk(src);
+  // Shared integration CSS remains part of each product's styling surface even
+  // after extraction. Omitting it would make packaging look like CSS vanished.
+  if (app.endsWith("react-aria")) {
+    paths.push(join(ROOT, "packages", "integration-react-aria", "src", "records.css"));
+  }
+  return paths
     .map((p) => readFileSync(p, "utf8"))
     .join("\n");
 }
@@ -434,7 +440,7 @@ if (!extractionResults) {
     extractionResults[c],
   ]);
   lines.push(
-    "`basis`: only MUI was actually extracted; other entries are analysis.",
+    "`basis`: React Aria, MUI and Ant Design are measured package integrations; Carbon and Mantine remain analysis because consolidating two independently authored implementations would measure a rewrite rather than portability.",
   );
   lines.push("");
   lines.push(
