@@ -130,28 +130,28 @@ export function RecordsTable({
         onSelectionChange={setSelected}
       >
         <TableHeader>
-          <Column className="demo-table__column demo-table__column--select">
+          <Column minWidth={48} className="demo-table__column demo-table__column--select">
             <SelectionCheckbox />
           </Column>
-          <Column id="country" isRowHeader allowsSorting className="demo-table__column">
+          <Column id="country" isRowHeader allowsSorting minWidth={120} className="demo-table__column">
             <div className="demo-table__columnInner">
               <span>{labels.colCountry}</span>
               <ColumnResizerControl />
             </div>
           </Column>
-          <Column id="hazardType" allowsSorting className="demo-table__column">
+          <Column id="hazardType" allowsSorting minWidth={120} className="demo-table__column">
             <div className="demo-table__columnInner">
               <span>{labels.colHazard}</span>
               <ColumnResizerControl />
             </div>
           </Column>
-          <Column id="eventDate" allowsSorting className="demo-table__column">
+          <Column id="eventDate" allowsSorting minWidth={120} className="demo-table__column">
             <div className="demo-table__columnInner">
               <span>{labels.colEventDate}</span>
               <ColumnResizerControl />
             </div>
           </Column>
-          <Column id="peopleAffected" allowsSorting className="demo-table__column">
+          <Column id="peopleAffected" allowsSorting minWidth={110} className="demo-table__column">
             <div className="demo-table__columnInner">
               <span>{labels.colPeopleAffected}</span>
               <ColumnResizerControl />
@@ -160,6 +160,7 @@ export function RecordsTable({
           <Column
             id="economicLossUsdMillions"
             allowsSorting
+            minWidth={140}
             className="demo-table__column"
           >
             <div className="demo-table__columnInner">
@@ -167,7 +168,7 @@ export function RecordsTable({
               <ColumnResizerControl />
             </div>
           </Column>
-          <Column id="verificationStatus" allowsSorting className="demo-table__column">
+          <Column id="verificationStatus" allowsSorting minWidth={120} className="demo-table__column">
             <div className="demo-table__columnInner">
               <span>{labels.colStatus}</span>
               <ColumnResizerControl />
