@@ -1,0 +1,21 @@
+{
+  "$comment": "One-based indexes into each app evidence.json theming.escapeHatchesUsed array. A1/A2 score only offRouteOverrides. The four arrays must be exhaustive and disjoint.",
+  "definition": {
+    "offRouteOverrides": "Unsupported/internal overrides or deviations required because the documented route did not meet the evaluated need.",
+    "integrationWork": "Documented providers, configuration, adapters and composition required to integrate the candidate.",
+    "designDecisions": "Deliberate product or evaluation choices, limitations recorded without a workaround, and styling owned by the application.",
+    "notUsed": "Entries explicitly recording that no escape hatch was required."
+  },
+  "apps": {
+    "delta-antd": { "offRouteOverrides": [1], "integrationWork": [2, 3, 4, 7], "designDecisions": [5, 6], "notUsed": [] },
+    "delta-carbon": { "offRouteOverrides": [1, 4, 5, 6, 8], "integrationWork": [2, 3, 10, 14], "designDecisions": [7, 9, 11, 12, 13], "notUsed": [] },
+    "delta-mantine": { "offRouteOverrides": [3, 4, 8, 10], "integrationWork": [1, 2, 5, 6, 7, 9, 11], "designDecisions": [], "notUsed": [] },
+    "delta-mui": { "offRouteOverrides": [2], "integrationWork": [3, 4], "designDecisions": [1], "notUsed": [5] },
+    "delta-react-aria": { "offRouteOverrides": [2], "integrationWork": [1, 3], "designDecisions": [4], "notUsed": [5] },
+    "mangrove-antd": { "offRouteOverrides": [1], "integrationWork": [2, 3, 4, 7], "designDecisions": [5, 6], "notUsed": [] },
+    "mangrove-carbon": { "offRouteOverrides": [3, 4, 5, 6], "integrationWork": [2], "designDecisions": [1], "notUsed": [7, 8] },
+    "mangrove-mantine": { "offRouteOverrides": [1, 2, 4, 6], "integrationWork": [3, 5, 9], "designDecisions": [7, 8], "notUsed": [] },
+    "mangrove-mui": { "offRouteOverrides": [3], "integrationWork": [2, 4, 5, 6], "designDecisions": [1], "notUsed": [7] },
+    "mangrove-react-aria": { "offRouteOverrides": [1, 2], "integrationWork": [3], "designDecisions": [], "notUsed": [] }
+  }
+}

@@ -88,10 +88,8 @@ function assertAppBase(name, dist) {
   }
 }
 
-// Regenerate the landing page first, so it always reflects the evidence.json
-// files present on this commit. This used to be a separate `docs:index` step
-// that both `pnpm site` and CI had to remember to call; folding it in here means
-// the site can never be assembled around a stale index.
+// Regenerate the prototype matrix first, so it always reflects the evidence.json
+// files present on this commit.
 // The known-issues JSON first, because the landing page reads it. It is
 // transcribed from the TypeScript registry the demo pages import, so the cards
 // and the box on each demo cannot disagree about what is known.
@@ -123,13 +121,13 @@ execFileSync(
   { cwd: ROOT, stdio: "inherit" },
 );
 
-// Scores page doubles as the landing page since it carries the overview grid,
-// recommendation, and the six framing questions.
+// Ranking is the decision entry point and therefore also the site homepage.
 execFileSync(
   "node",
   ["--experimental-strip-types", join(HERE, "build-scores.mjs")],
   { cwd: ROOT, stdio: "inherit" },
 );
+copyFileSync(join(DOCS, "scores.html"), join(DOCS, "index.html"));
 
 const built = [];
 const missing = [];
@@ -149,9 +147,6 @@ mkdirSync(SITE, { recursive: true });
 
 // docs/ carries the generated pages and markdown reference documents.
 cpSync(DOCS, SITE, { recursive: true });
-
-// scores.html is the landing page.
-copyFileSync(join(SITE, "scores.html"), join(SITE, "index.html"));
 
 for (const name of built) {
   cpSync(join(APPS, name, "dist"), join(SITE, name), { recursive: true });

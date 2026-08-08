@@ -6,7 +6,7 @@
 
 # Candidate comparison
 
-10 of 10 pairings built. All five candidates met every requirement (zero `unsupported`). The biggest differentiator is not what each library can do, but how it integrates: RTL support, style containment, and theming route are where the candidates diverge. See [scores](./scores.md) for the weighted recommendation.
+All 10 demos implemented the 30 evaluated requirements; none recorded `unsupported`. This audit trail shows how they integrated. See [scores](./scores.html) for the recommendation.
 
 ## Headline
 
@@ -23,14 +23,11 @@
 | Tokens applied | {spark:73:48} | {spark:44:29} | {spark:76:50} | {spark:100:66} | {spark:67:44} | {spark:71:47} | {spark:48:32} | {spark:76:50} | {spark:94:62} | {spark:67:44} |
 | Tokens unreachable | {spark:0:0} | {spark:0:0} | {spark:95:21} | {spark:23:5} | {spark:0:0} | {spark:0:0} | {spark:0:0} | {spark:100:22} | {spark:0:0} | {spark:0:0} |
 | Bundle (kB gzipped) | {spark:56:238.8} | {spark:91:387.4} | {spark:62:261.5} | {spark:56:238.8} | {spark:93:392.3} | {spark:56:237.6} | {spark:94:397.6} | {spark:49:207.8} | {spark:64:270.9} | {spark:100:423.4} |
-| Dependencies | {spark:12:19} | {spark:90:142} | {spark:92:145} | {spark:71:112} | {spark:43:68} | {spark:13:20} | {spark:100:158} | {spark:92:146} | {spark:72:113} | {spark:44:69} |
 | Build time (s) | {spark:43:2} | {spark:51:2.4} | {spark:60:2.8} | {spark:55:2.6} | {spark:32:1.5} | {spark:26:1.2} | {spark:36:1.7} | {spark:100:4.7} | {spark:76:3.58} | {spark:32:1.5} |
 
 ## Conformance signals
 
-Leakage is the load-bearing one: it says whether the candidate stayed inside
-its own subtree and left the host's own elements alone. axe counts are scoped
-to the candidate subtree, so host baseline violations are excluded.
+Leakage measures whether candidate styles changed host elements. axe scopes vary, so counts are directional rather than directly comparable.
 
 | | Adobe React Aria<br>Delta | MUI<br>Delta | IBM Carbon<br>Delta | Mantine<br>Delta | Ant Design<br>Delta | Adobe React Aria<br>Mangrove | MUI<br>Mangrove | IBM Carbon<br>Mangrove | Mantine<br>Mangrove | Ant Design<br>Mangrove |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -41,7 +38,9 @@ to the candidate subtree, so host baseline violations are excluded.
 | axe incomplete | 1 | 4 | 2 | 1 | 1 | 1 | 4 | 2 | 0 | 1 |
 | RTL | clean | clean | clean | clean | clean | clean | clean | clean | clean | clean |
 | Long labels | clean | clean | clean | clean | clean | clean | clean | clean | clean | clean |
-| Warnings | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| Adoption warnings | 0 | 0 | 1 | 1 | 0 | 0 | 0 | 2 | 1 | 1 |
+
+Warning counts are remediation signals, not a ranking; ownership and severity differ.
 
 ## Requirement matrix
 
@@ -102,7 +101,7 @@ No run claims accessibility conformance.
 
 ### delta-mui
 
-- RTL floating labels are broken and cannot be fixed within the rules. MUI's remedy is stylis-plugin-rtl, which constraint 2 forbids as a third-party package. UNDRR needs to decide whether that is acceptable for an Arabic-serving service, or whether it disqualifies MUI Community. Confirmed to affect both MUI pairings, so it is the candidate and not the host.
+- MUI RTL is clean after its documented three-step setup: dir, a direction-aware theme and @mui/stylis-plugin-rtl. The route adds 29 integration lines, two dependencies and a provider; omitting the third step fails silently, so the setup belongs in any shared delivery standard.
 - axe `color-contrast` (1 serious): the helper text on the disabled TextField fails contrast. MUI applies its disabled text colour to the associated helper text, and the neutral token palette's --undrr-color-text-disabled (#8b9aa5) is roughly 2.8:1 on white. Disabled *controls* are exempt from WCAG 1.4.3, but helper text is not itself a disabled control, so this needs a ruling. Tokens are import-only so it could not be fixed here.
 - axe reported 4 incomplete rules it could not decide: aria-prohibited-attr, aria-valid-attr-value, color-contrast, duplicate-id-aria. `duplicate-id-aria` on a DataGrid page is worth a human look, since duplicate ARIA ids break screen-reader association.
 - The 400-option Select renders all 400 MenuItems. MUI Select has no built-in virtualisation; Autocomplete was capped at 100 rendered options instead. Whether the plain Select is acceptable at that size is a performance decision not taken here.
@@ -158,7 +157,7 @@ No run claims accessibility conformance.
 
 ### mangrove-mui
 
-- The failing RTL test needs a decision. Either UNDRR accepts stylis-plugin-rtl as part of adopting MUI -- it is maintained by the stylis project, not by MUI, and is a third-party dependency this brief forbids -- or Arabic gets misplaced field labels on any full-width TextField. This is the single most consequential unresolved item in this run.
+- MUI RTL is clean after its documented three-step setup: dir, a direction-aware theme and the first-party @mui/stylis-plugin-rtl package. The route adds 29 integration lines, two dependencies and a provider; omitting the third step fails silently, so the setup belongs in any shared delivery standard.
 - axe `color-contrast` (1 serious, scoped): the helper text on the disabled TextField fails contrast. MUI applies its disabled text colour to the associated helper text, and the neutral token palette's --undrr-color-text-disabled (#8b9aa5) is roughly 2.8:1 on white. Disabled *controls* are exempt from WCAG 1.4.3, but helper text is not itself a disabled control, so this needs a ruling. Tokens are import-only so it could not be fixed here.
 - axe reported 4 incomplete rules it could not decide across the page. `duplicate-id-aria` on a DataGrid page is worth a human look, since duplicate ARIA ids break screen-reader association.
 - The 10 lines of CSS neutralising Mangrove's `input[type=...]` rules are a per-app workaround that every Mangrove pairing will need in some form. It should be fixed in Mangrove -- either by excluding `[hidden]` and scoping the input rules to a class, or by shipping a reset consumers can opt into -- rather than written four times.

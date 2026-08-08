@@ -214,6 +214,7 @@
   },
   "leakage": {
     "assertionPassed": false,
+    "differenceCount": 54,
     "differences": [
       {
         "summary": "54 computed-property differences across 11 of the 14 host canaries, with Carbon's documented global stylesheet. Full diff in test-results/leakage.json. This is the expected and correct result: @carbon/styles/css/styles.css opens with an Eric-Meyer-style reset over html, body, div, h1-h6, p, a, table, button, ul, ol and more, sets body font-family to IBM Plex Sans, sets html { box-sizing: border-box } with *, *::before, *::after { box-sizing: inherit }, and restyles every heading and paragraph at element level. Restyling the document is what that stylesheet is for, so it is not containable as shipped."

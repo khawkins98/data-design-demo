@@ -182,6 +182,7 @@ const extractionResults = extraction();
 const dependencyCounts = existsSync(join(DOCS, "dependency-counts.json"))
   ? readJson(join(DOCS, "dependency-counts.json")).apps
   : {};
+const effortClassification = readJson(join(DOCS, "effort-classification.json")).apps;
 
 const rows = appDirs().map((app) => {
   const evidence = readJson(join(APPS, app, "evidence.json"));
@@ -189,6 +190,12 @@ const rows = appDirs().map((app) => {
   const mix = requirementMix(evidence);
   const prop = propagation(app);
   const candidate = CANDIDATE_ORDER.find((c) => app.endsWith(c)) ?? app;
+  const effort = effortClassification[app];
+  const allEffortIndexes = Object.values(effort).flat();
+  const noteCount = (evidence.theming?.escapeHatchesUsed ?? []).length;
+  if (new Set(allEffortIndexes).size !== noteCount || allEffortIndexes.some((i) => i < 1 || i > noteCount)) {
+    throw new Error(`effort-classification.json is not exhaustive and disjoint for ${app}`);
+  }
 
   return {
     app,
@@ -199,8 +206,9 @@ const rows = appDirs().map((app) => {
     mix,
     beyondNative: mix.composed + mix.custom,
     wrappers: evidence.wrappers ?? {},
-    escapeHatches: (evidence.theming?.escapeHatchesUsed ?? []).length,
-    escapeHatchText: evidence.theming?.escapeHatchesUsed ?? [],
+    effort,
+    escapeHatches: effort.offRouteOverrides.length,
+    escapeHatchText: effort.offRouteOverrides.map((i) => evidence.theming.escapeHatchesUsed[i - 1]),
     humanReview: (evidence.humanReviewRequired ?? []).length,
     hooks,
     declaredOverridesInternals: evidence.customCss?.overridesLibraryInternals ?? null,
@@ -227,8 +235,8 @@ const rows = appDirs().map((app) => {
 const BAND_RANK = { strong: 0, workable: 1, weak: 2, blocked: 3 };
 const BAND_BY_RANK = ["strong", "workable", "weak", "blocked"];
 const axisScorerByKey = {
-  A1: (r) => scoreA1(r.evidence),
-  A2: (r) => scoreA2(r.evidence, []),
+  A1: (r) => scoreA1(r.evidence, r.effort),
+  A2: (r) => scoreA2(r.evidence, [], r.effort),
   A3: (r) => scoreA3(r.candidate, extractionResults),
   A4: (r) => scoreA4(r.evidence),
   A5: (r) => scoreA5(r.evidence),
@@ -294,25 +302,14 @@ function pushAxis(axis, title) {
 
 lines.push("# Axis scores");
 lines.push("");
-lines.push("GENERATED FILE - regenerate with `pnpm axes`. Axis definitions and");
-lines.push("measurement rules are in [decision-axes.md](./decision-axes.md).");
-lines.push("");
-lines.push("**This is the evidence layer.** Each section shows the UNDRR question");
-lines.push("it answers, then the measurements behind it.");
-lines.push("");
-lines.push(
-  "- For the recommendation, read the [ranking](./scores.html) first.",
-);
-lines.push(
-  "- For per-requirement coverage, see the [requirement matrix](./comparison.html) (all 300 assessments).",
-);
+lines.push("Detailed measurements behind the [ranking](./scores.html). The [requirement matrix](./comparison.html) retains all 300 assessments.");
 lines.push("");
 
 pushAxis("A1", "Implementation effort");
 lines.push(
   "`beyond native` counts requirements needing more than a documented component.",
 );
-lines.push("`traps` counts documented approaches that failed and needed workarounds.");
+lines.push("`off-route overrides` counts only audited unsupported/internal workarounds. Documented integration work, product design decisions and explicit non-events are excluded; the exhaustive classification is in `effort-classification.json`.");
 lines.push("");
 {
   const maxNative = Math.max(...rows.map((r) => r.mix.native));
@@ -323,7 +320,7 @@ lines.push("");
   const maxReview = Math.max(...rows.map((r) => r.humanReview));
   lines.push(
     table(
-      ["Pairing", "native||one documented component did it", "composed||assembled from multiple components", "custom||built from scratch", "beyond native||composed + custom; lower is easier", "traps||documented approach failed, needed a workaround", "wrappers||glue components the demo had to write", "flagged for review||may need a human judgement call"],
+      ["Pairing", "native||one documented component did it", "composed||assembled from multiple components", "custom||built from scratch", "beyond native||composed + custom; lower is easier", "off-route overrides||audited unsupported or internal workarounds", "wrappers||glue components the demo had to write", "flagged for review||may need a human judgement call"],
       rows.map((r) => [
         r.app,
         spark(r.mix.native, maxNative),
@@ -338,12 +335,12 @@ lines.push("");
   );
 }
 lines.push("");
-lines.push("Each friction-log entry is a place the documented approach did not suffice.");
+lines.push("Each off-route entry is a place the documented approach did not suffice.");
 lines.push("");
-lines.push("<details><summary>The friction log, per pairing</summary>");
+lines.push("<details><summary>The audited off-route log, per pairing</summary>");
 lines.push("");
 for (const r of rows.filter((x) => x.escapeHatchText.length > 0)) {
-  lines.push(`**\`${r.app}\`** - ${r.escapeHatches} entries`);
+  lines.push(`**\`${r.app}\`** - ${r.escapeHatches} audited off-route overrides`);
   lines.push("");
   for (const h of r.escapeHatchText) {
     const first = String(h).split(/(?<=\.)\s+/)[0];
@@ -554,7 +551,7 @@ for (const r of rows.filter((x) => x.rtlIssues.length > 0)) {
 lines.push("</details>");
 lines.push("");
 
-pushAxis("A7", "Accessibility conformance");
+pushAxis("A7", "Automated accessibility signals");
 lines.push(
   "`incomplete` counts checks axe declined to decide. Nine of ten runs ran axe",
 );
@@ -790,9 +787,10 @@ ${siteNavCss}
   </head>
   <body>
 ${siteNavHtml("axes")}
-    <div class="mg-container mg-page-content--padded">
+    <main id="main" class="mg-container mg-page-content--padded">
+      <p class="audience-banner"><span class="audience-tag">Developer evidence</span>Measurement definitions and per-pairing signals. Automated accessibility results are not a conformance claim.</p>
 ${injectBandSummaries(toHtml(md))}
-    </div>
+    </main>
   </body>
 </html>
 `;

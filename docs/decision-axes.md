@@ -157,7 +157,7 @@ values already emitted.
 **Not measured.** Whether Arabic reads correctly to an Arabic reader — these
 tests cover layout direction only, not typography or translation quality.
 
-## A7 - Accessibility conformance
+## A7 - Automated accessibility signals
 
 *Does it meet UNDRR's accessibility commitments in practice?*
 

@@ -6,21 +6,36 @@
 /** Bands, and the score each contributes before weighting. */
 export const BANDS = Object.freeze({ strong: 1, workable: 0.6, weak: 0.3, blocked: 0 });
 
-export function scoreA1(ev) {
+function auditedOverrideCount(ev, effort) {
+  if (!effort) throw new Error("missing audited effort classification");
+  const categories = ["offRouteOverrides", "integrationWork", "designDecisions", "notUsed"];
+  const indexes = categories.flatMap((key) => effort[key] ?? []);
+  const noteCount = (ev.theming?.escapeHatchesUsed ?? []).length;
+  if (
+    indexes.length !== noteCount ||
+    new Set(indexes).size !== noteCount ||
+    indexes.some((index) => !Number.isInteger(index) || index < 1 || index > noteCount)
+  ) {
+    throw new Error("effort classification must cover every integration note exactly once");
+  }
+  return effort.offRouteOverrides.length;
+}
+
+export function scoreA1(ev, effort) {
   const mix = { native: 0, composed: 0, custom: 0 };
   for (const r of ev.requirements ?? []) if (r.status in mix) mix[r.status] += 1;
   const beyond = mix.composed + mix.custom;
-  const traps = (ev.theming?.escapeHatchesUsed ?? []).length;
-  const because = `${beyond} of 30 requirements needed more than a documented component; ${traps} documented approaches failed and needed working around`;
+  const traps = auditedOverrideCount(ev, effort);
+  const because = `${beyond} of 30 requirements needed composition or custom code; ${traps} audited off-route overrides`;
   if (beyond <= 6 && traps <= 2) return { band: "strong", because };
   if (beyond <= 12 && traps <= 8) return { band: "workable", because };
   return { band: "weak", because };
 }
 
-export function scoreA2(ev, issues) {
-  const traps = (ev.theming?.escapeHatchesUsed ?? []).length;
+export function scoreA2(ev, issues, effort) {
+  const traps = auditedOverrideCount(ev, effort);
   const maint = issues.filter((i) => /token|theme|upgrade|internal|layer/i.test(i.title)).length;
-  const because = `${traps} escape hatches off the documented theming route; ${maint} scoreable maintenance findings`;
+  const because = `${traps} audited off-route overrides; ${maint} scoreable maintenance findings`;
   if (traps === 0 && maint <= 1) return { band: "strong", because };
   if (traps <= 6) return { band: "workable", because };
   return { band: "weak", because };
@@ -52,7 +67,7 @@ export function scoreA3(candidate, extraction) {
 
 export function scoreA4(ev) {
   const leaks = ev.leakage?.assertionPassed !== true;
-  const diffs = (ev.leakage?.differences ?? []).length;
+  const diffs = ev.leakage?.differenceCount ?? (ev.leakage?.differences ?? []).length;
   const probe = ev.leakage?.globalStylesheetProbe;
   if (leaks) {
     return {
@@ -126,5 +141,5 @@ export const AXIS_DEFS = [
   ["A4_mangrove", "A4 Mangrove compatibility", scoreA4],
   ["A5_theming", "A5 Theming fidelity", scoreA5],
   ["A6_rtl", "A6 Right-to-left", scoreA6],
-  ["A7_accessibility", "A7 Accessibility conformance", scoreA7],
+  ["A7_accessibility", "A7 Automated accessibility signals", scoreA7],
 ];

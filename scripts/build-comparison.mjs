@@ -26,6 +26,10 @@ const ROOT = join(HERE, "..");
 const OUT = join(ROOT, "docs", "comparison.md");
 
 const manifest = JSON.parse(readFileSync(join(ROOT, "docs", "manifest.json"), "utf8"));
+const knownIssuesPath = join(ROOT, "docs", "known-issues.json");
+const knownIssues = existsSync(knownIssuesPath)
+  ? JSON.parse(readFileSync(knownIssuesPath, "utf8"))
+  : { pairings: {} };
 
 /**
  * Canonical requirement IDs, parsed from the contract in document order.
@@ -128,11 +132,8 @@ const lines = [
   "",
   "# Candidate comparison",
   "",
-  `${built.length} of ${pairings.length} pairings built.` +
-    ` All five candidates met every requirement (zero \`unsupported\`). The biggest differentiator` +
-    " is not what each library can do, but how it integrates: RTL support, style containment," +
-    " and theming route are where the candidates diverge." +
-    " See [scores](./scores.md) for the weighted recommendation.",
+  `All ${built.length} demos implemented the 30 evaluated requirements; none recorded \`unsupported\`.` +
+    " This audit trail shows how they integrated. See [scores](./scores.html) for the recommendation.",
   "",
   "## Headline",
   "",
@@ -157,14 +158,11 @@ const lines = [
   sparkRow("Tokens applied", (p) => p.evidence?.theming?.tokensApplied),
   sparkRow("Tokens unreachable", (p) => p.evidence?.theming?.tokensUnreachable),
   sparkRow("Bundle (kB gzipped)", (p) => p.evidence?.bundle?.gzippedKb),
-  sparkRow("Dependencies", (p) => p.evidence?.bundle?.dependencyCount),
   sparkRow("Build time (s)", (p) => p.evidence?.buildTimeSeconds),
   "",
   "## Conformance signals",
   "",
-  "Leakage is the load-bearing one: it says whether the candidate stayed inside",
-  "its own subtree and left the host's own elements alone. axe counts are scoped",
-  "to the candidate subtree, so host baseline violations are excluded.",
+  "Leakage measures whether candidate styles changed host elements. axe scopes vary, so counts are directional rather than directly comparable.",
   "",
   headerRow,
   dividerRow,
@@ -182,7 +180,12 @@ const lines = [
   `| axe incomplete | ${pairings.map((p) => cell(p.evidence?.axe?.incomplete)).join(" | ")} |`,
   `| RTL | ${pairings.map((p) => cell(p.evidence?.rtl?.status)).join(" | ")} |`,
   `| Long labels | ${pairings.map((p) => cell(p.evidence?.longLabels?.status)).join(" | ")} |`,
-  `| Warnings | ${pairings.map((p) => (p.evidence ? (p.evidence.blockers?.length ?? 0) : "—")).join(" | ")} |`,
+  `| Adoption warnings | ${pairings.map((p) => {
+    if (!p.evidence) return "—";
+    return knownIssues.pairings?.[p.dir]?.scoreableBlockers?.length ?? 0;
+  }).join(" | ")} |`,
+  "",
+  "Warning counts are remediation signals, not a ranking; ownership and severity differ.",
   "",
   "## Requirement matrix",
   "",
@@ -375,9 +378,10 @@ ${siteNavCss}
   </head>
   <body>
 ${siteNavHtml("comparison")}
-    <div class="mg-container mg-page-content--padded">
+    <main id="main" class="mg-container mg-page-content--padded">
+      <p class="audience-banner"><span class="audience-tag">Developer evidence</span>This requirement matrix is the audit trail behind the decision, not an executive summary.</p>
 ${toHtml(markdown)}
-    </div>
+    </main>
   </body>
 </html>
 `;

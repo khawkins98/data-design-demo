@@ -35,16 +35,46 @@
       .ax-k { background: #ffe0b2; color: #7a4100; }
       .ax-b { background: #f8d7da; color: #721c24; }
 
+      .skip-link { position:absolute; z-index:100; inset-block-start:0.5rem; inset-inline-start:0.5rem;
+        padding:0.5rem 0.75rem; background:#fff; color:#004f91; transform:translateY(-150%); }
+      .skip-link:focus { transform:translateY(0); }
       .mg-docs-main { max-width:72ch; }
       .mg-docs-main h1 { font-size:1.75rem; margin:2rem 0 0.5rem; }
       .mg-docs-main h2 { margin-top:2.5rem; font-size:1.25rem; border-bottom:1px solid #d5d5d5; padding-bottom:0.25rem; }
       .mg-docs-main h3 { margin-top:2rem; font-size:1.05rem; }
       .mg-docs-main h4 { margin-top:1.5rem; font-size:1rem; }
+      .audience-banner {
+        margin:1rem 0 1.5rem; padding:0.75rem 1rem; border-inline-start:3px solid #64748b;
+        background:#f3f6f8; color:#334155; font-size:0.875rem;
+      }
+      .audience-tag {
+        display:inline-flex; align-items:center; min-height:1.35rem; margin-inline-end:0.45rem;
+        padding:0.05rem 0.45rem; border:1px solid #94a3b8; border-radius:999px;
+        color:#475569; background:#f8fafc; font-size:0.6875rem; font-weight:700;
+        letter-spacing:0.045em; text-transform:uppercase; vertical-align:middle;
+      }
+      details.technical-detail {
+        margin:1rem 0; border:1px solid #cbd5e1; border-radius:6px; background:#f8fafc;
+      }
+      details.technical-detail > summary {
+        padding:0.7rem 0.85rem; cursor:pointer; color:#334155; font-weight:600;
+      }
+      .technical-detail__body { padding:0 0.9rem 0.9rem; border-top:1px solid #e2e8f0; }
+      .technical-detail__body > :first-child { margin-top:0.9rem; }
+      @media print {
+        .skip-link, .mg-page-header, .mg-mega-wrapper { display:none !important; }
+        details.technical-detail > summary { display:list-item; break-after:avoid; }
+        details.technical-detail:not([open]) > *:not(summary) { display:block; }
+        details.technical-detail { break-inside:auto; }
+        .technical-detail__body > :first-child { break-before:avoid; }
+        @page { margin:1.5cm; }
+      }
 
     </style>
   </head>
   <body>
 
+    <a class="skip-link" href="#main">Skip to main content</a>
     <header id="header" class="mg-page-header mg-page-header--default">
       <div class="mg-page-header__decoration" aria-hidden="true">
         <div></div><div></div><div></div><div></div>
@@ -52,189 +82,133 @@
     </header>
 
     <nav class="mg-mega-wrapper" aria-label="Main Navigation">
-      <ul class="mg-mega-topbar | mg-container mg-container-full-width"
-          role="menubar" aria-label="Main navigation menu">
-          <li class="mg-mega-topbar__item" role="none">
-              <a class="mg-mega-topbar__item-link" href="./" role="menuitem">Ranking</a>
+      <ul class="mg-mega-topbar | mg-container mg-container-full-width">
+          <li class="mg-mega-topbar__item">
+              <a class="mg-mega-topbar__item-link" href="./">Ranking</a>
             </li>
-          <li class="mg-mega-topbar__item mg-mega-topbar__item--active" role="none">
-              <a class="mg-mega-topbar__item-link" href="./axes.html" role="menuitem">Decision axes</a>
+          <li class="mg-mega-topbar__item">
+              <a class="mg-mega-topbar__item-link" href="./architecture-options.html">Architecture</a>
             </li>
-          <li class="mg-mega-topbar__item" role="none">
-              <a class="mg-mega-topbar__item-link" href="./comparison.html" role="menuitem">Requirement matrix</a>
+          <li class="mg-mega-topbar__item">
+              <a class="mg-mega-topbar__item-link" href="./prototypes.html">Prototypes</a>
             </li>
-          <li class="mg-mega-topbar__item" role="none">
-              <a class="mg-mega-topbar__item-link" href="./issues.html" role="menuitem">Findings</a>
+          <li class="mg-mega-topbar__item mg-mega-topbar__item--active">
+              <a class="mg-mega-topbar__item-link" href="./axes.html" aria-current="page">Evidence axes</a>
             </li>
-          <li class="mg-mega-topbar__item" role="none">
-              <a class="mg-mega-topbar__item-link" href="./architecture-options.html" role="menuitem">Architecture</a>
+          <li class="mg-mega-topbar__item">
+              <a class="mg-mega-topbar__item-link" href="./issues.html">Technical findings</a>
+            </li>
+          <li class="mg-mega-topbar__item">
+              <a class="mg-mega-topbar__item-link" href="./comparison.html">Requirement audit</a>
             </li>
       </ul>
     </nav>
-    <div class="mg-container mg-page-content--padded">
+    <main id="main" class="mg-container mg-page-content--padded">
+      <p class="audience-banner"><span class="audience-tag">Developer evidence</span>Measurement definitions and per-pairing signals. Automated accessibility results are not a conformance claim.</p>
 <h1>Axis scores</h1>
 
-<p>GENERATED FILE - regenerate with <code>pnpm axes</code>. Axis definitions and measurement rules are in <a href="./decision-axes.md">decision-axes.md</a>.</p>
+<p>Detailed measurements behind the <a href="./scores.html">ranking</a>. The <a href="./comparison.html">requirement matrix</a> retains all 300 assessments.</p>
 
-<p><strong>This is the evidence layer.</strong> Each section shows the UNDRR question it answers, then the measurements behind it.</p>
-
-<ul>
-<li>For the recommendation, read the <a href="./scores.html">ranking</a> first.</li>
-<li>For per-requirement coverage, see the <a href="./comparison.html">requirement matrix</a> (all 300 assessments).</li>
-
-</ul>
 <h2 id="a1">A1 - Implementation effort</h2>
 
 <blockquote class="answers">
 <p><strong>None of the six UNDRR questions maps to A1 directly.</strong> It is measured because the weighted composite scores it, and because the questions were asked about living with a library rather than about building with one. See the <a href="./scores.html">ranking</a> for what it is worth there.</p>
 </blockquote>
-<div class="ax-summary"><span class="ax-chip ax-w" title="10 of 30 requirements needed more than a documented component; 5 documented approaches failed and needed working around">Adobe React Aria: workable</span><span class="ax-chip ax-w" title="4 of 30 requirements needed more than a documented component; 5 documented approaches failed and needed working around">MUI (Community only): workable</span><span class="ax-chip ax-k" title="11 of 30 requirements needed more than a documented component; 14 documented approaches failed and needed working around">IBM Carbon: weak</span><span class="ax-chip ax-k" title="10 of 30 requirements needed more than a documented component; 11 documented approaches failed and needed working around">Mantine: weak</span><span class="ax-chip ax-w" title="2 of 30 requirements needed more than a documented component; 7 documented approaches failed and needed working around">Ant Design: workable</span></div>
+<div class="ax-summary"><span class="ax-chip ax-w" title="10 of 30 requirements needed composition or custom code; 1 audited off-route overrides">Adobe React Aria: workable</span><span class="ax-chip ax-s" title="">MUI (Community only): strong</span><span class="ax-chip ax-w" title="11 of 30 requirements needed composition or custom code; 5 audited off-route overrides">IBM Carbon: workable</span><span class="ax-chip ax-w" title="10 of 30 requirements needed composition or custom code; 4 audited off-route overrides">Mantine: workable</span><span class="ax-chip ax-s" title="">Ant Design: strong</span></div>
 
-<p><code>beyond native</code> counts requirements needing more than a documented component. <code>traps</code> counts documented approaches that failed and needed workarounds.</p>
+<p><code>beyond native</code> counts requirements needing more than a documented component. <code>off-route overrides</code> counts only audited unsupported/internal workarounds. Documented integration work, product design decisions and explicit non-events are excluded; the exhaustive classification is in <code>effort-classification.json</code>.</p>
 
 <div class="scroll"><table><thead>
-<tr><th>Pairing</th><th>native<span class="th-hint">one documented component did it</span></th><th>composed<span class="th-hint">assembled from multiple components</span></th><th>custom<span class="th-hint">built from scratch</span></th><th>beyond native<span class="th-hint">composed + custom; lower is easier</span></th><th>traps<span class="th-hint">documented approach failed, needed a workaround</span></th><th>wrappers<span class="th-hint">glue components the demo had to write</span></th><th>flagged for review<span class="th-hint">may need a human judgement call</span></th></tr>
+<tr><th>Pairing</th><th>native<span class="th-hint">one documented component did it</span></th><th>composed<span class="th-hint">assembled from multiple components</span></th><th>custom<span class="th-hint">built from scratch</span></th><th>beyond native<span class="th-hint">composed + custom; lower is easier</span></th><th>off-route overrides<span class="th-hint">audited unsupported or internal workarounds</span></th><th>wrappers<span class="th-hint">glue components the demo had to write</span></th><th>flagged for review<span class="th-hint">may need a human judgement call</span></th></tr>
 </thead><tbody>
-<tr><td>delta-react-aria</td><td><span class="spark"><span class="spark-bar" style="width:71%"></span>20</span></td><td><span class="spark"><span class="spark-bar" style="width:80%"></span>8</span></td><td><span class="spark"><span class="spark-bar" style="width:67%"></span>2</span></td><td><strong><span class="spark"><span class="spark-bar" style="width:91%"></span>10</span></strong></td><td><span class="spark"><span class="spark-bar" style="width:36%"></span>5</span></td><td>5 (104 ln)</td><td><span class="spark"><span class="spark-bar" style="width:64%"></span>7</span></td></tr>
-<tr><td>mangrove-react-aria</td><td><span class="spark"><span class="spark-bar" style="width:75%"></span>21</span></td><td><span class="spark"><span class="spark-bar" style="width:70%"></span>7</span></td><td><span class="spark"><span class="spark-bar" style="width:67%"></span>2</span></td><td><strong><span class="spark"><span class="spark-bar" style="width:82%"></span>9</span></strong></td><td><span class="spark"><span class="spark-bar" style="width:21%"></span>3</span></td><td>3 (78 ln)</td><td><span class="spark"><span class="spark-bar" style="width:64%"></span>7</span></td></tr>
-<tr><td>delta-mui</td><td><span class="spark"><span class="spark-bar" style="width:93%"></span>26</span></td><td><span class="spark"><span class="spark-bar" style="width:40%"></span>4</span></td><td><span class="spark"><span class="spark-bar" style="width:0%"></span>0</span></td><td><strong><span class="spark"><span class="spark-bar" style="width:36%"></span>4</span></strong></td><td><span class="spark"><span class="spark-bar" style="width:36%"></span>5</span></td><td>3 (62 ln)</td><td><span class="spark"><span class="spark-bar" style="width:64%"></span>7</span></td></tr>
-<tr><td>mangrove-mui</td><td><span class="spark"><span class="spark-bar" style="width:93%"></span>26</span></td><td><span class="spark"><span class="spark-bar" style="width:40%"></span>4</span></td><td><span class="spark"><span class="spark-bar" style="width:0%"></span>0</span></td><td><strong><span class="spark"><span class="spark-bar" style="width:36%"></span>4</span></strong></td><td><span class="spark"><span class="spark-bar" style="width:50%"></span>7</span></td><td>2 (53 ln)</td><td><span class="spark"><span class="spark-bar" style="width:91%"></span>10</span></td></tr>
-<tr><td>delta-carbon</td><td><span class="spark"><span class="spark-bar" style="width:68%"></span>19</span></td><td><span class="spark"><span class="spark-bar" style="width:100%"></span>10</span></td><td><span class="spark"><span class="spark-bar" style="width:33%"></span>1</span></td><td><strong><span class="spark"><span class="spark-bar" style="width:100%"></span>11</span></strong></td><td><span class="spark"><span class="spark-bar" style="width:100%"></span>14</span></td><td>4 (71 ln)</td><td><span class="spark"><span class="spark-bar" style="width:91%"></span>10</span></td></tr>
-<tr><td>mangrove-carbon</td><td><span class="spark"><span class="spark-bar" style="width:68%"></span>19</span></td><td><span class="spark"><span class="spark-bar" style="width:100%"></span>10</span></td><td><span class="spark"><span class="spark-bar" style="width:33%"></span>1</span></td><td><strong><span class="spark"><span class="spark-bar" style="width:100%"></span>11</span></strong></td><td><span class="spark"><span class="spark-bar" style="width:57%"></span>8</span></td><td>4 (71 ln)</td><td><span class="spark"><span class="spark-bar" style="width:100%"></span>11</span></td></tr>
-<tr><td>delta-mantine</td><td><span class="spark"><span class="spark-bar" style="width:71%"></span>20</span></td><td><span class="spark"><span class="spark-bar" style="width:70%"></span>7</span></td><td><span class="spark"><span class="spark-bar" style="width:100%"></span>3</span></td><td><strong><span class="spark"><span class="spark-bar" style="width:91%"></span>10</span></strong></td><td><span class="spark"><span class="spark-bar" style="width:79%"></span>11</span></td><td>4 (179 ln)</td><td><span class="spark"><span class="spark-bar" style="width:91%"></span>10</span></td></tr>
-<tr><td>mangrove-mantine</td><td><span class="spark"><span class="spark-bar" style="width:68%"></span>19</span></td><td><span class="spark"><span class="spark-bar" style="width:100%"></span>10</span></td><td><span class="spark"><span class="spark-bar" style="width:33%"></span>1</span></td><td><strong><span class="spark"><span class="spark-bar" style="width:100%"></span>11</span></strong></td><td><span class="spark"><span class="spark-bar" style="width:64%"></span>9</span></td><td>4 (176 ln)</td><td><span class="spark"><span class="spark-bar" style="width:82%"></span>9</span></td></tr>
-<tr><td>delta-antd</td><td><span class="spark"><span class="spark-bar" style="width:100%"></span>28</span></td><td><span class="spark"><span class="spark-bar" style="width:10%"></span>1</span></td><td><span class="spark"><span class="spark-bar" style="width:33%"></span>1</span></td><td><strong><span class="spark"><span class="spark-bar" style="width:18%"></span>2</span></strong></td><td><span class="spark"><span class="spark-bar" style="width:50%"></span>7</span></td><td>4 (128 ln)</td><td><span class="spark"><span class="spark-bar" style="width:64%"></span>7</span></td></tr>
-<tr><td>mangrove-antd</td><td><span class="spark"><span class="spark-bar" style="width:100%"></span>28</span></td><td><span class="spark"><span class="spark-bar" style="width:10%"></span>1</span></td><td><span class="spark"><span class="spark-bar" style="width:33%"></span>1</span></td><td><strong><span class="spark"><span class="spark-bar" style="width:18%"></span>2</span></strong></td><td><span class="spark"><span class="spark-bar" style="width:50%"></span>7</span></td><td>4 (128 ln)</td><td><span class="spark"><span class="spark-bar" style="width:82%"></span>9</span></td></tr>
+<tr><td>delta-react-aria</td><td><span class="spark"><span class="spark-bar" style="width:71%"></span>20</span></td><td><span class="spark"><span class="spark-bar" style="width:80%"></span>8</span></td><td><span class="spark"><span class="spark-bar" style="width:67%"></span>2</span></td><td><strong><span class="spark"><span class="spark-bar" style="width:91%"></span>10</span></strong></td><td><span class="spark"><span class="spark-bar" style="width:20%"></span>1</span></td><td>5 (104 ln)</td><td><span class="spark"><span class="spark-bar" style="width:64%"></span>7</span></td></tr>
+<tr><td>mangrove-react-aria</td><td><span class="spark"><span class="spark-bar" style="width:75%"></span>21</span></td><td><span class="spark"><span class="spark-bar" style="width:70%"></span>7</span></td><td><span class="spark"><span class="spark-bar" style="width:67%"></span>2</span></td><td><strong><span class="spark"><span class="spark-bar" style="width:82%"></span>9</span></strong></td><td><span class="spark"><span class="spark-bar" style="width:40%"></span>2</span></td><td>3 (78 ln)</td><td><span class="spark"><span class="spark-bar" style="width:64%"></span>7</span></td></tr>
+<tr><td>delta-mui</td><td><span class="spark"><span class="spark-bar" style="width:93%"></span>26</span></td><td><span class="spark"><span class="spark-bar" style="width:40%"></span>4</span></td><td><span class="spark"><span class="spark-bar" style="width:0%"></span>0</span></td><td><strong><span class="spark"><span class="spark-bar" style="width:36%"></span>4</span></strong></td><td><span class="spark"><span class="spark-bar" style="width:20%"></span>1</span></td><td>3 (62 ln)</td><td><span class="spark"><span class="spark-bar" style="width:64%"></span>7</span></td></tr>
+<tr><td>mangrove-mui</td><td><span class="spark"><span class="spark-bar" style="width:93%"></span>26</span></td><td><span class="spark"><span class="spark-bar" style="width:40%"></span>4</span></td><td><span class="spark"><span class="spark-bar" style="width:0%"></span>0</span></td><td><strong><span class="spark"><span class="spark-bar" style="width:36%"></span>4</span></strong></td><td><span class="spark"><span class="spark-bar" style="width:20%"></span>1</span></td><td>2 (53 ln)</td><td><span class="spark"><span class="spark-bar" style="width:91%"></span>10</span></td></tr>
+<tr><td>delta-carbon</td><td><span class="spark"><span class="spark-bar" style="width:68%"></span>19</span></td><td><span class="spark"><span class="spark-bar" style="width:100%"></span>10</span></td><td><span class="spark"><span class="spark-bar" style="width:33%"></span>1</span></td><td><strong><span class="spark"><span class="spark-bar" style="width:100%"></span>11</span></strong></td><td><span class="spark"><span class="spark-bar" style="width:100%"></span>5</span></td><td>4 (71 ln)</td><td><span class="spark"><span class="spark-bar" style="width:91%"></span>10</span></td></tr>
+<tr><td>mangrove-carbon</td><td><span class="spark"><span class="spark-bar" style="width:68%"></span>19</span></td><td><span class="spark"><span class="spark-bar" style="width:100%"></span>10</span></td><td><span class="spark"><span class="spark-bar" style="width:33%"></span>1</span></td><td><strong><span class="spark"><span class="spark-bar" style="width:100%"></span>11</span></strong></td><td><span class="spark"><span class="spark-bar" style="width:80%"></span>4</span></td><td>4 (71 ln)</td><td><span class="spark"><span class="spark-bar" style="width:100%"></span>11</span></td></tr>
+<tr><td>delta-mantine</td><td><span class="spark"><span class="spark-bar" style="width:71%"></span>20</span></td><td><span class="spark"><span class="spark-bar" style="width:70%"></span>7</span></td><td><span class="spark"><span class="spark-bar" style="width:100%"></span>3</span></td><td><strong><span class="spark"><span class="spark-bar" style="width:91%"></span>10</span></strong></td><td><span class="spark"><span class="spark-bar" style="width:80%"></span>4</span></td><td>4 (179 ln)</td><td><span class="spark"><span class="spark-bar" style="width:91%"></span>10</span></td></tr>
+<tr><td>mangrove-mantine</td><td><span class="spark"><span class="spark-bar" style="width:68%"></span>19</span></td><td><span class="spark"><span class="spark-bar" style="width:100%"></span>10</span></td><td><span class="spark"><span class="spark-bar" style="width:33%"></span>1</span></td><td><strong><span class="spark"><span class="spark-bar" style="width:100%"></span>11</span></strong></td><td><span class="spark"><span class="spark-bar" style="width:80%"></span>4</span></td><td>4 (176 ln)</td><td><span class="spark"><span class="spark-bar" style="width:82%"></span>9</span></td></tr>
+<tr><td>delta-antd</td><td><span class="spark"><span class="spark-bar" style="width:100%"></span>28</span></td><td><span class="spark"><span class="spark-bar" style="width:10%"></span>1</span></td><td><span class="spark"><span class="spark-bar" style="width:33%"></span>1</span></td><td><strong><span class="spark"><span class="spark-bar" style="width:18%"></span>2</span></strong></td><td><span class="spark"><span class="spark-bar" style="width:20%"></span>1</span></td><td>4 (128 ln)</td><td><span class="spark"><span class="spark-bar" style="width:64%"></span>7</span></td></tr>
+<tr><td>mangrove-antd</td><td><span class="spark"><span class="spark-bar" style="width:100%"></span>28</span></td><td><span class="spark"><span class="spark-bar" style="width:10%"></span>1</span></td><td><span class="spark"><span class="spark-bar" style="width:33%"></span>1</span></td><td><strong><span class="spark"><span class="spark-bar" style="width:18%"></span>2</span></strong></td><td><span class="spark"><span class="spark-bar" style="width:20%"></span>1</span></td><td>4 (128 ln)</td><td><span class="spark"><span class="spark-bar" style="width:82%"></span>9</span></td></tr>
 </tbody></table></div>
 
-<p>Each friction-log entry is a place the documented approach did not suffice.</p>
+<p>Each off-route entry is a place the documented approach did not suffice.</p>
 
-<details><summary>The friction log, per pairing</summary>
+<details><summary>The audited off-route log, per pairing</summary>
 
-<p><strong><code>delta-react-aria</code></strong> - 5 entries</p>
+<p><strong><code>delta-react-aria</code></strong> - 1 audited off-route overrides</p>
 
 <ul>
-<li><code>.undrr-tokens</code> is applied to every portalled overlay (Popover, ModalOverlay, Tooltip) via src/overlay-class.ts.</li>
 <li>One rule targets library-rendered markup: [data-testid="hidden-select-container"] { overflow: hidden } plus a width cap on library-rendered &lt;select&gt; elements.</li>
-<li><code>position: relative</code> on our own ResizableTableContainer wrapper, to contain ColumnResizer's visually hidden &lt;input type=range&gt;.</li>
-<li><code>overflow: hidden</code> plus text-overflow on the table's column headers.</li>
-<li>NO <code>[hidden]</code> workaround was needed, and that is worth recording as an escape hatch NOT used.</li>
 
 </ul>
-<p><strong><code>mangrove-react-aria</code></strong> - 3 entries</p>
+<p><strong><code>mangrove-react-aria</code></strong> - 2 audited off-route overrides</p>
 
 <ul>
 <li>One rule targets library-rendered markup: [data-testid="hidden-select-container"] { overflow: hidden } plus a width cap on library-rendered &lt;select&gt; elements.</li>
 <li><code>.demo [hidden] { display: none }</code> restores the hidden attribute, which the Mangrove host defeats: its <code>input[type="text"] { display: block }</code> rule (0,1,1) outranks its own <code>[hidden] { display: none }</code> (0,1,0).</li>
-<li><code>.undrr-tokens</code> is applied to every portalled overlay (Popover, ModalOverlay, Tooltip) via src/overlay-class.ts.</li>
 
 </ul>
-<p><strong><code>delta-mui</code></strong> - 5 entries</p>
+<p><strong><code>delta-mui</code></strong> - 1 audited off-route overrides</p>
 
 <ul>
-<li>cssVariables: true deliberately NOT enabled.</li>
 <li>Two CSS rules reach into library-generated class names (.MuiDataGrid-root, .MuiDataGrid-columnHeaderTitle) to cap grid width and wrap long header labels.</li>
-<li>MUI's picker prop types are not compatible with exactOptionalPropertyTypes: true.</li>
-<li>Stack no longer accepts flexWrap/alignItems as direct props in v9; they must move into sx.</li>
-<li>None needed for portalled overlays, which is a genuine advantage here.</li>
 
 </ul>
-<p><strong><code>mangrove-mui</code></strong> - 7 entries</p>
+<p><strong><code>mangrove-mui</code></strong> - 1 audited off-route overrides</p>
 
 <ul>
-<li>cssVariables: true deliberately NOT enabled.</li>
-<li>CssBaseline replaced with ScopedCssBaseline.</li>
 <li>Two CSS rules reach into library-generated class names (.MuiOutlinedInput-input / .MuiInputBase-input, .MuiDataGrid-root, .MuiDataGrid-columnHeaderTitle).</li>
-<li>MUI's picker prop types are not compatible with exactOptionalPropertyTypes: true.</li>
-<li>Stack no longer accepts flexWrap/alignItems as direct props in v9; they must move into sx.</li>
-<li>stylis-plugin-rtl was NOT added, because it is outside the candidate's ecosystem and constraint 2 forbids it.</li>
-<li>None needed for portalled overlays.</li>
 
 </ul>
-<p><strong><code>delta-carbon</code></strong> - 14 entries</p>
+<p><strong><code>delta-carbon</code></strong> - 5 audited off-route overrides</p>
 
 <ul>
 <li>@carbon/styles/css/styles.css IS NOT IMPORTED.</li>
-<li>TRAP 1, silent and consequential: <code>@carbon/styles/scss/layout</code> is REQUIRED but is not a component partial.</li>
-<li>TRAP 2, the same shape one level down: components/data-table/_index.scss includes only the CORE table mixin.</li>
 <li>A 20-line Vite plugin in vite.config.ts rewrites the one <code>:root</code> rule Carbon's layer module emits onto the token scope class, so the shipped stylesheet contains zero selectors that can match host markup.</li>
 <li>Twenty-two CSS selectors reach into .cds-- class names, each for a token Carbon's theme cannot express or a behaviour it hard-codes: corner radius (Carbon has no radius token and is square by design), list-box menu max-height, table-header ...</li>
 <li>Three of those twenty-two are the step wizard's, and they are behaviour rather than tokens.</li>
-<li>The progress indicator has no responsive behaviour at all.</li>
 <li>Carbon's published TypeScript types do not compile under exactOptionalPropertyTypes: true.</li>
-<li>@carbon/styles/scss/fonts is NOT loaded.</li>
-<li>Portals are mostly a non-issue here, and that is a finding rather than luck avoided.</li>
-<li>Spacing is unreachable at any layer.</li>
-<li>Z-index is unreachable, and carbon wins every collision.</li>
-<li>Font family is unreachable through the supported api.</li>
-<li>Type scale is fully reachable, unusually.</li>
 
 </ul>
-<p><strong><code>mangrove-carbon</code></strong> - 8 entries</p>
+<p><strong><code>mangrove-carbon</code></strong> - 4 audited off-route overrides</p>
 
 <ul>
-<li>22 of 71 tokens are UNREACHABLE and no mechanism exists to change that: all 10 z-index tokens and all 12 spacing tokens.</li>
-<li>Font FAMILY is not a Carbon token.</li>
 <li>Ten declarations re-assert Carbon's own field styling at (0,2,0) to beat Mangrove's <code>input[type=*], textarea</code> rule at (0,1,1), which was overriding <code>.cds--text-input</code> at (0,1,0) and rendering every Carbon field as a 46px box with a 2px blac...</li>
 <li>Three rules reach into Carbon-rendered class names to make SideNav sit inline instead of position: fixed at 100vh (.cds--side-nav, .cds--side-nav__navigation), and two more cap the width of .cds--data-table-container and .cds--data-table-co...</li>
 <li>One rule adds flex-wrap to .cds--radio-button-group, which Carbon does not wrap and which therefore overflows a 390px viewport with four locale labels.</li>
 <li>aria-describedby is passed by hand to the three invalid TextInputs to work around Carbon's aria-errormessage target having no role=alert.</li>
-<li>No workaround was needed for the Mangrove [hidden] specificity defect, and the rule that was there has been deleted.</li>
-<li>No escape hatch was needed for portalled overlays, which is the opposite of the React Aria result.</li>
 
 </ul>
-<p><strong><code>delta-mantine</code></strong> - 11 entries</p>
+<p><strong><code>delta-mantine</code></strong> - 4 audited off-route overrides</p>
 
 <ul>
-<li>theme.colors[name] is typed MantineColorsTuple — TEN shades.</li>
-<li>cssVariablesResolver's three buckets are written at three DIFFERENT selectors: variables at ':root, :host', light/dark at ':root[data-mantine-color-scheme="…"]'.</li>
 <li>@mantine/core/styles.css is NOT imported.</li>
 <li>The per-component import ORDER had to be lifted from Mantine's own styles.css.</li>
-<li>Mantine has no theme-level z-index scale.</li>
-<li>Table's striping, hover and border colours are props rather than theme slots, so the canvas and accentSubtle tokens are only reachable through Table defaultProps.</li>
-<li>portalProps carries the token scope class onto every portal container.</li>
 <li>portalProps also carries a direction class, and an effect in App.tsx stamps dir on .demo-portal containers after each locale change, because Mantine's Portal drops a dir prop and freezes className at mount.</li>
-<li>reuseTargetNode: false on every portal.</li>
 <li>Three CSS rules reach library-generated class names (.mantine-InputWrapper-label, .mantine-Select-label, .mantine-SegmentedControl-label) to wrap the 60+ character German fixture labels.</li>
-<li>Pagination's four edge controls and the clearable inputs' clear button ship with no accessible name.</li>
 
 </ul>
-<p><strong><code>mangrove-mantine</code></strong> - 9 entries</p>
+<p><strong><code>mangrove-mantine</code></strong> - 4 audited off-route overrides</p>
 
 <ul>
 <li>@mantine/core/styles.css was NOT imported.</li>
 <li>The per-component import order is load-bearing and undocumented.</li>
-<li>Mantine requires ten shades per colour and theme.primaryColor must be a KEY of theme.colors -- a hex string is rejected by validateMantineTheme.</li>
 <li>No focus colour in the theme.</li>
-<li>No z-index scale in the theme.</li>
 <li>Host-into-candidate collision repair: 2 rules, 4 selectors, reaching into library-generated class names (.mantine-PillsInputField-field, .mantine-TimePicker-field) at (0,3,1).</li>
-<li>Mantine's CSS is loaded by an AWAITED DYNAMIC IMPORT inside the candidate=on branch of main.tsx, not a static import.</li>
-<li>MantineProvider mutates document.documentElement, setting data-mantine-color-scheme="light" through its default getRootElement; DirectionProvider.setDirection() sets dir there too.</li>
-<li>forceColorScheme="light" is set because the token set has no dark palette and the host is light-only; without it Mantine reads localStorage and could render a dark subtree inside a light host between runs.</li>
 
 </ul>
-<p><strong><code>delta-antd</code></strong> - 7 entries</p>
+<p><strong><code>delta-antd</code></strong> - 1 audited off-route overrides</p>
 
 <ul>
 <li>antd/dist/reset.css IS NOT IMPORTED.</li>
-<li>StyleProvider layer is enabled, which wraps every antd rule in a CSS @layer.</li>
-<li>ConfigProvider getPopupContainer mounts overlays inside the candidate subtree.</li>
-<li>Finding, not a preference: antd derives its secondary, description, placeholder and label greys from colorTextBase by lowering opacity, and that derivation produced FOUR axe colour-contrast failures from a palette whose own secondary text p...</li>
-<li>Menu.itemSelectedColor and itemSelectedBg pinned for the same reason: the derived selected-item colour did not reach 4.5:1 against antd's own selected background.</li>
-<li>Tag colours come from the UNDRR tokens rather than antd's green/gold/red presets, which failed contrast as filled tags and would have been antd's hues rather than UNDRR's in any case.</li>
-<li>Form.Item label does NOT associate the label with its control unless the item also has a name, because that is what antd uses to generate the id it points for at.</li>
 
 </ul>
-<p><strong><code>mangrove-antd</code></strong> - 7 entries</p>
+<p><strong><code>mangrove-antd</code></strong> - 1 audited off-route overrides</p>
 
 <ul>
 <li>antd/dist/reset.css IS NOT IMPORTED.</li>
-<li>StyleProvider layer is enabled, which wraps every antd rule in a CSS @layer.</li>
-<li>ConfigProvider getPopupContainer mounts overlays inside the candidate subtree.</li>
-<li>Finding, not a preference: antd derives its secondary, description, placeholder and label greys from colorTextBase by lowering opacity, and that derivation produced FOUR axe colour-contrast failures from a palette whose own secondary text p...</li>
-<li>Menu.itemSelectedColor and itemSelectedBg pinned for the same reason: the derived selected-item colour did not reach 4.5:1 against antd's own selected background.</li>
-<li>Tag colours come from the UNDRR tokens rather than antd's green/gold/red presets, which failed contrast as filled tags and would have been antd's hues rather than UNDRR's in any case.</li>
-<li>Form.Item label does NOT associate the label with its control unless the item also has a name, because that is what antd uses to generate the id it points for at.</li>
 
 </details>
 
@@ -244,7 +218,7 @@
 <blockquote class="answers">
 <p><strong>None of the six UNDRR questions maps to A2 directly.</strong> It is measured because the weighted composite scores it, and because the questions were asked about living with a library rather than about building with one. See the <a href="./scores.html">ranking</a> for what it is worth there.</p>
 </blockquote>
-<div class="ax-summary"><span class="ax-chip ax-w" title="5 escape hatches off the documented theming route; 0 scoreable maintenance findings">Adobe React Aria: workable</span><span class="ax-chip ax-k" title="7 escape hatches off the documented theming route; 0 scoreable maintenance findings">MUI (Community only): weak</span><span class="ax-chip ax-k" title="14 escape hatches off the documented theming route; 0 scoreable maintenance findings">IBM Carbon: weak</span><span class="ax-chip ax-k" title="11 escape hatches off the documented theming route; 0 scoreable maintenance findings">Mantine: weak</span><span class="ax-chip ax-k" title="7 escape hatches off the documented theming route; 0 scoreable maintenance findings">Ant Design: weak</span></div>
+<div class="ax-summary"><span class="ax-chip ax-w" title="1 audited off-route overrides; 0 scoreable maintenance findings">Adobe React Aria: workable</span><span class="ax-chip ax-w" title="1 audited off-route overrides; 0 scoreable maintenance findings">MUI (Community only): workable</span><span class="ax-chip ax-w" title="5 audited off-route overrides; 0 scoreable maintenance findings">IBM Carbon: workable</span><span class="ax-chip ax-w" title="4 audited off-route overrides; 0 scoreable maintenance findings">Mantine: workable</span><span class="ax-chip ax-w" title="1 audited off-route overrides; 0 scoreable maintenance findings">Ant Design: workable</span></div>
 
 <p>Every distinct styling hook, classified by the promise behind it.</p>
 
@@ -400,7 +374,7 @@
 
 <p>Leakage is clean for every pairing except mangrove-carbon, whose global stylesheet is not containable. Ant Design loses every cascade conflict to Mangrove - which the realistic layouts showed is not a matter of taste: Mangrove's rules also cover Select's own value, so its filters render blank on the Mangrove host.</p>
 </blockquote>
-<div class="ax-summary"><span class="ax-chip ax-s" title="">Adobe React Aria: strong</span><span class="ax-chip ax-s" title="">MUI (Community only): strong</span><span class="ax-chip ax-b" title="the candidate restyled 19 computed properties on host markup outside its own subtree">IBM Carbon: blocked</span><span class="ax-chip ax-s" title="">Mantine: strong</span><span class="ax-chip ax-w" title="clean only because the documented global stylesheet was not loaded as documented">Ant Design: workable</span></div>
+<div class="ax-summary"><span class="ax-chip ax-s" title="">Adobe React Aria: strong</span><span class="ax-chip ax-s" title="">MUI (Community only): strong</span><span class="ax-chip ax-b" title="the candidate restyled 54 computed properties on host markup outside its own subtree">IBM Carbon: blocked</span><span class="ax-chip ax-s" title="">Mantine: strong</span><span class="ax-chip ax-w" title="clean only because the documented global stylesheet was not loaded as documented">Ant Design: workable</span></div>
 
 
 <div class="scroll"><table><thead>
@@ -423,7 +397,7 @@
 <blockquote class="answers">
 <p><strong>Answers: Design-token alignment</strong> - Can it be driven by UNDRR tokens, and does a token change propagate?</p>
 
-<p>React Aria and Carbon resolve tokens in the browser, so a Mangrove change is a stylesheet swap. MUI, Mantine and Ant Design bake values in, making it a rebuild of every site. Carbon leaves 21-22 of 71 tokens unreachable at all.</p>
+<p>React Aria and Carbon retain browser-resolved token references. MUI, Mantine and Ant Design bake mapped values into their themes, so bundled theme changes require each consuming site to rebuild unless the token sheet is delivered centrally. Carbon leaves 21-22 of 71 evaluated tokens unreachable.</p>
 </blockquote>
 <div class="ax-summary"><span class="ax-chip ax-s" title="">Adobe React Aria: strong</span><span class="ax-chip ax-s" title="">MUI (Community only): strong</span><span class="ax-chip ax-k" title="21 of 71 UNDRR tokens cannot be attached at all - a ceiling, not a cost">IBM Carbon: weak</span><span class="ax-chip ax-k" title="5 of 71 UNDRR tokens cannot be attached at all - a ceiling, not a cost">Mantine: weak</span><span class="ax-chip ax-s" title="">Ant Design: strong</span></div>
 
@@ -449,7 +423,7 @@
 <blockquote class="answers">
 <p><strong>Answers: Right-to-left</strong> - Does Arabic work in the components, not just the page?</p>
 
-<p>MUI Community fails on both hosts and cannot be fixed within the brief's constraints. React Aria and Ant Design are clean at zero cost; Mantine is clean only after mitigation. This needs a policy call, not a bug fix.</p>
+<p>MUI works after its documented three-step RTL setup: dir, a direction-aware theme, and its first-party stylis plugin. The prototypes implement that setup in 29 integration lines with two dependencies and a provider; omission fails silently. React Aria and Ant Design work without that extra pipeline, while Mantine is clean after mitigation.</p>
 </blockquote>
 <div class="ax-summary"><span class="ax-chip ax-s" title="">Adobe React Aria: strong</span><span class="ax-chip ax-w" title="clean, but only after 29 custom lines and 0 recorded mitigations">MUI (Community only): workable</span><span class="ax-chip ax-w" title="clean, but only after 0 custom lines and 1 recorded mitigations">IBM Carbon: workable</span><span class="ax-chip ax-w" title="clean, but only after 18 custom lines and 2 recorded mitigations">Mantine: workable</span><span class="ax-chip ax-s" title="">Ant Design: strong</span></div>
 
@@ -496,7 +470,7 @@
 </details>
 
 </ul>
-<h2 id="a7">A7 - Accessibility conformance</h2>
+<h2 id="a7">A7 - Automated accessibility signals</h2>
 
 <blockquote class="answers">
 <p><strong>Answers: Accessibility</strong> - Does it meet UNDRR's obligations in practice?</p>
@@ -543,6 +517,6 @@
 <tr><td>mangrove-antd</td><td><span class="spark"><span class="spark-bar" style="width:6%"></span>46</span></td><td>{spark:423.4:423.4}</td><td><strong><span class="spark"><span class="spark-bar" style="width:74%"></span>69</span></strong></td><td><span class="spark"><span class="spark-bar" style="width:44%"></span>69</span></td><td>Apache-2.0 1, MIT 68</td><td>{spark:1.5:4.7}</td></tr>
 </tbody></table></div>
 
-    </div>
+    </main>
   </body>
 </html>

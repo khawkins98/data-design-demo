@@ -34,7 +34,7 @@ function inline(text) {
     .replace(/\*([^*]+)\*/g, "<em>$1</em>")
     .replace(
       /\[([^\]]+)\]\(([^)]+)\)/g,
-      '<a href="$2">$1</a>',
+      (_match, label, href) => `<a href="${href.replace(/\.md(?=($|#))/, ".html")}">${label}</a>`,
     );
 }
 
@@ -277,7 +277,9 @@ function reuseComparisonHtml() {
     </tr>`;
   };
 
-  return `<section class="reuse-evidence" aria-labelledby="reuse-evidence-title">
+  return `<details class="technical-detail">
+    <summary><span class="audience-tag">Developer detail</span> Measured reuse package and controlled-change evidence</summary>
+    <div class="technical-detail__body"><section class="reuse-evidence" aria-labelledby="reuse-evidence-title">
     <div class="reuse-evidence__heading">
       <p class="reuse-card__eyebrow">Generated from reuse-results.json</p>
       <h3 id="reuse-evidence-title">What the second product actually inherits</h3>
@@ -293,7 +295,7 @@ function reuseComparisonHtml() {
         ${changeRow("RTL and localisation", "rtlAndLocalisation")}
       </tbody>
     </table></div>
-  </section>`;
+  </section></div></details>`;
 }
 
 let bodyHtml = toHtml(md);
@@ -323,8 +325,14 @@ const html = `<!doctype html>
       table { border-collapse:collapse; font-size:0.8125rem; background:var(--surface); width:100%; }
       th, td { padding:0.375rem 0.625rem; border:1px solid var(--border); text-align:left; vertical-align:top; }
       thead th { background:var(--surface); font-weight:700; }
-      .mermaid { background:var(--surface); border:1px solid var(--border); border-radius:6px;
-                 padding:1rem; text-align:center; }
+      .mermaid { box-sizing:border-box; width:min(60rem,calc(100vw - 3rem));
+                 margin:1rem 0 1.75rem; margin-inline-start:50%; padding:1.25rem;
+                 transform:translateX(-50%); overflow-x:auto; text-align:center;
+                 background:#fbfcfd; border:0; border-radius:10px;
+                 box-shadow:0 0 0 1px rgb(0 0 0 / 8%), 0 2px 8px rgb(0 0 0 / 5%); }
+      .mermaid svg { display:block; width:100% !important; max-width:100% !important; height:auto;
+                     margin-inline:auto; }
+      .mermaid .nodeLabel { line-height:1.35; }
       .mg-docs-main { max-width:88ch; }
       .mg-docs-main h1, .mg-docs-main h2, .mg-docs-main h3 { text-wrap:balance; }
       .mg-docs-main p, .mg-docs-main li { text-wrap:pretty; }
@@ -344,25 +352,49 @@ const html = `<!doctype html>
       .reuse-table { margin-bottom:0; background:var(--surface); }
       .reuse-table th[scope="row"] { white-space:nowrap; }
       .cell-note { display:block; margin-top:0.25rem; color:var(--muted); font-size:0.75rem; line-height:1.4; }
-      @media (max-width:48rem) { .reuse-grid { grid-template-columns:1fr; } .reuse-evidence { padding:1rem; } }
+      @media (max-width:48rem) {
+        .reuse-grid { grid-template-columns:1fr; }
+        .reuse-evidence { padding:1rem; }
+        .mermaid { width:calc(100vw - 2rem); padding:0.75rem; }
+      }
 ${siteNavCss}
     </style>
   </head>
   <body>
 ${siteNavHtml("architecture")}
-    <div class="mg-container mg-page-content--padded mg-docs-main">
+    <main id="main" class="mg-container mg-page-content--padded mg-docs-main">
 ${bodyHtml}
-    </div>
+    </main>
     <script type="module">
       import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
-      mermaid.initialize({ startOnLoad: true, theme: 'default' });
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'base',
+        themeVariables: {
+          fontFamily: 'Roboto, system-ui, sans-serif',
+          fontSize: '15px',
+          lineColor: '#52616d',
+          textColor: '#1a2730',
+          edgeLabelBackground: '#fbfcfd',
+          clusterBkg: '#fbfcfd',
+          clusterBorder: '#c7d0d8'
+        },
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis',
+          nodeSpacing: 34,
+          rankSpacing: 46,
+          padding: 14
+        }
+      });
     </script>
   </body>
 </html>
 `;
 
 writeFileSync(OUT, html, "utf8");
-const caseBodyHtml = toHtml(readFileSync(CASE_SRC, "utf8"));
+const caseBodyHtml = `<p class="audience-banner"><span class="audience-tag">Developer evidence</span>This implementation case study supports the architecture decision; it is not the executive summary.</p>${toHtml(readFileSync(CASE_SRC, "utf8"))}`;
 const caseHtml = html
   .replace(
     "Architecture options - UNDRR data design system evaluation",

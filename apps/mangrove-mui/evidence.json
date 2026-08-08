@@ -210,7 +210,7 @@
       "Two CSS rules reach into library-generated class names (.MuiOutlinedInput-input / .MuiInputBase-input, .MuiDataGrid-root, .MuiDataGrid-columnHeaderTitle). Recorded as overridesLibraryInternals: true. The input one is host repair, not candidate styling.",
       "MUI's picker prop types are not compatible with exactOptionalPropertyTypes: true. minDateTime/maxDateTime are typed as Date rather than Date | undefined, so a conditional spread is needed instead of `value ?? undefined`.",
       "Stack no longer accepts flexWrap/alignItems as direct props in v9; they must move into sx.",
-      "stylis-plugin-rtl was NOT added, because it is outside the candidate's ecosystem and constraint 2 forbids it. That leaves RTL incomplete -- see the rtl requirement.",
+      "MUI's documented RTL route adds an emotion CacheProvider carrying the first-party @mui/stylis-plugin-rtl package. Together with dir and a direction-aware theme, it makes RTL clean; the setup costs 29 integration lines, two dependencies and a provider.",
       "None needed for portalled overlays. MUI portals its popper and popover to document.body, outside the .undrr-tokens element, and a computed-style check confirms it sees an EMPTY --undrr-color-surface there -- yet it still renders rgb(255,255,255) correctly, because the theme resolved token values at build time and emotion emitted literal colours. The react-aria run on this same host had to apply the token scope class to every overlay to avoid transparent popovers. The same build-time inlining that prevents runtime theming is what makes MUI immune here."
     ],
     "hostTokensNotAttempted": "Mangrove 1.8.1 was not themed against, and neither was the Mangrove 2.0 preview. 1.8.1's compiled stylesheet declares zero CSS custom properties, so its palette is unreachable at runtime; the numbers above measure packages/undrr-tokens only. Even after 2.0 lands, Mangrove's font sizes, font families and breakpoints stay SCSS-only, so a candidate could not reach the type scale at runtime on this host regardless."
@@ -277,15 +277,13 @@
   "buildTimeSecondsCold": 6.5,
   "testSummary": {
     "total": 42,
-    "passed": 39,
-    "failed": 3,
-    "failing": [
-      "kitchen sink > RTL flips MUI's floating labels (mobile, tablet, desktop) -- left failing deliberately; see the rtl requirement."
-    ]
+    "passed": 42,
+    "failed": 0,
+    "failing": []
   },
   "blockers": [],
   "humanReviewRequired": [
-    "The failing RTL test needs a decision. Either UNDRR accepts stylis-plugin-rtl as part of adopting MUI -- it is maintained by the stylis project, not by MUI, and is a third-party dependency this brief forbids -- or Arabic gets misplaced field labels on any full-width TextField. This is the single most consequential unresolved item in this run.",
+    "MUI RTL is clean after its documented three-step setup: dir, a direction-aware theme and the first-party @mui/stylis-plugin-rtl package. The route adds 29 integration lines, two dependencies and a provider; omitting the third step fails silently, so the setup belongs in any shared delivery standard.",
     "axe `color-contrast` (1 serious, scoped): the helper text on the disabled TextField fails contrast. MUI applies its disabled text colour to the associated helper text, and the neutral token palette's --undrr-color-text-disabled (#8b9aa5) is roughly 2.8:1 on white. Disabled *controls* are exempt from WCAG 1.4.3, but helper text is not itself a disabled control, so this needs a ruling. Tokens are import-only so it could not be fixed here.",
     "axe reported 4 incomplete rules it could not decide across the page. `duplicate-id-aria` on a DataGrid page is worth a human look, since duplicate ARIA ids break screen-reader association.",
     "The 10 lines of CSS neutralising Mangrove's `input[type=...]` rules are a per-app workaround that every Mangrove pairing will need in some form. It should be fixed in Mangrove -- either by excluding `[hidden]` and scoping the input rules to a class, or by shipping a reset consumers can opt into -- rather than written four times.",

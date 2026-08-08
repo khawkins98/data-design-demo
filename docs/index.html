@@ -1,791 +1,467 @@
 <!doctype html>
-<!--
-  GENERATED FILE - DO NOT EDIT BY HAND.
-  Produced by scripts/build-docs-index.mjs from docs/manifest.json and
-  apps/*/evidence.json. Regenerate with: pnpm docs:index
--->
+<!-- GENERATED FILE - produced by scripts/build-scores.mjs. Regenerate: pnpm scores -->
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>UNDRR data design system evaluation</title>
+    <link rel="stylesheet" href="./mangrove.css" />
     <style>
-      :root {
-        color-scheme: light dark;
-        --bg: #f4f6f8;
-        --surface: #ffffff;
-        --text: #14232e;
-        --muted: #4a5c69;
-        --border: #c8d2da;
-        --accent: #004f91;
-        --ok: #1f6b45;
-        --bad: #a11f2c;
-        --pending: #8a6100;
-      }
-      @media (prefers-color-scheme: dark) {
-        :root {
-          --bg: #10191f;
-          --surface: #17232b;
-          --text: #e8eef2;
-          --muted: #a3b3bf;
-          --border: #2c3d48;
-          --accent: #7fb3cc;
-          --ok: #6fc79b;
-          --bad: #ef8b96;
-          --pending: #e0b458;
-        }
-      }
-      * { box-sizing: border-box; }
-      body {
-        margin: 0;
-        padding: 2rem 1.5rem 4rem;
-        background: var(--bg);
-        color: var(--text);
-        font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-        line-height: 1.5;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-      }
-      .page { max-width: 76rem; margin: 0 auto; }
-      h1, h2, h3 { text-wrap: balance; }
-      p, li, dd { text-wrap: pretty; }
-      h1 { font-size: 1.75rem; margin: 0 0 0.5rem; }
-      .subtitle { color: var(--muted); margin: 0 0 0.5rem; max-width: 60ch; }
-      /*
-       * Pairing groups: one row per candidate, its two hosts side by side.
-       *
-       * An auto-filling grid over all ten cards wrapped 4/4/2 and put each
-       * library's two hosts five cards apart. Two fixed columns keep the
-       * comparison a reader actually makes - one library, two hosts - adjacent,
-       * and collapse to one column on narrow screens.
-       */
-      .grid { display: flex; flex-direction: column; gap: 1.5rem; }
-      .pairing {
-        display: grid;
-        gap: 1rem;
-        grid-template-columns: minmax(0, 18rem) minmax(0, 3fr);
-        align-items: start;
-        padding-top: 1.5rem;
-        border-top: 1px solid var(--border);
-      }
-      .pairing:first-child { padding-top: 0; border-top: 0; }
-      /* One column on narrow screens: the meta block stacks above its two hosts. */
-      @media (max-width: 60rem) { .pairing { grid-template-columns: minmax(0, 1fr); } }
-      .pairing__title { font-size: 1.125rem; margin: 0 0 0.25rem; }
-      .pairing__licence { margin: 0 0 0.5rem; font-size: 0.75rem; color: var(--muted); }
-      .architecture-tag {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: baseline;
-        gap: 0.375rem;
-        margin: 0.75rem 0 0.375rem;
-        font-size: 0.75rem;
-        font-weight: 700;
-      }
-      .architecture-tag__type {
-        display: inline-flex;
-        align-items: center;
-        min-height: 1.5rem;
-        padding: 0.125rem 0.5rem;
-        border-radius: 999px;
-        color: var(--accent);
-        box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 45%, transparent);
-      }
-      .pairing__architecture {
-        margin: 0;
-        color: var(--muted);
-        font-size: 0.75rem;
-        line-height: 1.45;
-      }
-      .pairing__architecture-link { margin: 0.375rem 0 0; font-size: 0.75rem; }
-      .pairing__hosts {
-        display: grid;
-        gap: 1rem;
-        grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
-      }
-      /* Read in order, all six - so one column at a readable measure, not a grid. */
-      .questions { margin: 1rem 0 0; max-width: 78ch; }
-      .question { padding: 0.875rem 0; border-top: 1px solid var(--border); }
-      .question:first-child { border-top: 0; padding-top: 0.25rem; }
-      .question__title {
-        font-size: 0.9375rem;
-        margin: 0 0 0.375rem;
-        display: flex;
-        flex-wrap: wrap;
-        align-items: baseline;
-        gap: 0.5rem;
-      }
-      /* The question itself, inside the heading: one line, one thought. */
-      .question__asks { font-weight: 400; font-size: 0.8125rem; color: var(--muted); }
-      .question__answer { margin: 0 0 0.375rem; font-size: 0.875rem; }
-      .question__axis { margin: 0; font-size: 0.75rem; }
-      .start__more { margin: 1rem 0 0; font-size: 0.8125rem; max-width: 78ch; }
-      .ceiling {
-        margin: 0.25rem 0 0;
-        font-size: 0.75rem;
-        line-height: 1.35;
-      }
-      .ceiling__note { display: block; color: var(--muted); }
-      .view--missing { opacity: 0.6; }
-      .view__link--missing { font-weight: 600; text-decoration: line-through; }
-      .views { list-style: none; margin: 0.5rem 0 0; padding: 0.625rem 0 0; border-top: 1px solid var(--border); }
-      .view + .view { margin-top: 0.375rem; }
-      .view__link { font-size: 0.875rem; font-weight: 600; }
-      .view__hint { color: var(--muted); font-size: 0.75rem; display: block; }
-      .card {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-        padding: 1rem;
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: 8px;
-      }
-      .card--not-started { opacity: 0.72; }
-      .card__header { margin-bottom: 0.25rem; }
-      .card__title { font-size: 1.0625rem; margin: 0; }
-      .card__host { margin: 0.125rem 0 0; color: var(--muted); font-size: 0.875rem; }
-      .card__status { margin: 0; font-size: 0.8125rem; font-weight: 600; }
-      .card__status[data-status="complete"] { color: var(--ok); }
-      .card__status[data-status="blocked"] { color: var(--bad); }
-      .card__status[data-status="not-started"] { color: var(--pending); }
-      .card__licence { margin: 0; font-size: 0.75rem; color: var(--muted); }
-      .flags { list-style: none; margin: 0.25rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.375rem; }
-      .flag { font-size: 0.6875rem; padding: 0.125rem 0.5rem; border-radius: 999px; border: 1px solid var(--border); }
-      .flag--ok { color: var(--ok); }
-      .flag--bad { color: var(--bad); }
-      /*
-       * The badges carry an explanation on hover and on focus, so they need to look
-       * like they reward attention. A dotted underline is the long-standing
-       * convention for "there is a definition behind this" and does not imply a link.
-       */
-      .flag[data-help] {
-        cursor: help;
-        text-decoration: underline dotted;
-        text-underline-offset: 0.2em;
-        text-decoration-color: var(--muted);
-      }
-      .flag[data-help]:hover, .flag[data-help]:focus-visible {
-        background: color-mix(in srgb, var(--border) 30%, transparent);
-      }
-      .flag[data-help]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+      :root { --accent:#004f91; --bad:#c10920; --ok:#1f6b45; --muted:#5b6b77; --border:#d5d5d5; --surface:#fff; }
+      h3 { font-family:ui-monospace,monospace; }
+      table { border-collapse:collapse; width:100%; margin:0.75rem 0 1.5rem; font-size:0.875rem; }
+      th,td { border:1px solid var(--border); padding:0.4rem 0.6rem; text-align:start; vertical-align:top; }
+      th { background:var(--surface); }
+      .scroll { overflow-x:auto; }
+      details { margin:1rem 0; }
+      summary { cursor:pointer; font-weight:600; padding:0.5rem 0; }
+      summary:hover { color:var(--accent); }
+      .ov-table { font-size:0.8125rem; }
+      .ov-table th, .ov-table td { text-align:center; padding:0.35rem 0.5rem; white-space:nowrap; }
+      .ov-name { text-align:start !important; font-weight:600; }
+      .ov-score { font-size:1rem; }
+      .ov-ax { font-size:0.6875rem; }
+      .ov-ax a { text-decoration:none; color:inherit; }
+      .ov-table td a { color:inherit; text-decoration:none; display:block; }
+      .ov-ax-hint { display:block; font-size:0.5625rem; font-weight:400; color:var(--muted); line-height:1.2; }
+      .ov-demos { font-size:0.75rem; }
+      .ov-demos a + a { margin-inline-start:0.25rem; }
+      .ov-cta { display:inline-block; padding:0.2rem 0.5rem; border:1px solid var(--accent); border-radius:4px; text-decoration:none; font-weight:600; color:var(--accent); transition:background 0.15s, color 0.15s; }
+      .ov-cta:hover { background:var(--accent); color:#fff; }
+      .ov-cta-sec { border-color:var(--border); color:var(--muted); }
+      .ov-cta-sec:hover { background:var(--muted); color:#fff; border-color:var(--muted); }
+      .ov-s { background:#d4edda; color:#155724; }
+      .ov-w { background:#fff3cd; color:#856404; }
+      .ov-k { background:#ffe0b2; color:#7a4100; }
+      .ov-b { background:#f8d7da; color:#721c24; }
+      .ov-ok { color:var(--ok); font-weight:600; }
+      .ov-bad { color:var(--bad); font-weight:700; text-decoration:underline; text-underline-offset:2px; }
+      .ov-blockers { min-width:3rem; }
+      .glossary { margin:0 0 2rem; font-size:0.875rem; }
+      .glossary__summary { cursor:pointer; color:var(--accent); font-weight:600; }
+      .glossary__list { margin:0.875rem 0 0; max-width:80ch; }
+      .glossary__list dt { font-weight:700; margin-top:0.75rem; }
+      .glossary__list dd { margin:0.125rem 0 0; color:var(--muted); }
+      footer { margin-top:3rem; color:var(--muted); font-size:0.8125rem; max-width:70ch; }
 
-      /* Screen-reader-only: the shared badge descriptions aria-describedby points at. */
-      .visually-hidden {
-        position: absolute;
-        width: 1px; height: 1px;
-        margin: -1px; padding: 0;
-        overflow: hidden;
-        clip-path: inset(50%);
-        white-space: nowrap;
-        border: 0;
+      .skip-link { position:absolute; z-index:100; inset-block-start:0.5rem; inset-inline-start:0.5rem;
+        padding:0.5rem 0.75rem; background:#fff; color:#004f91; transform:translateY(-150%); }
+      .skip-link:focus { transform:translateY(0); }
+      .mg-docs-main { max-width:72ch; }
+      .mg-docs-main h1 { font-size:1.75rem; margin:2rem 0 0.5rem; }
+      .mg-docs-main h2 { margin-top:2.5rem; font-size:1.25rem; border-bottom:1px solid #d5d5d5; padding-bottom:0.25rem; }
+      .mg-docs-main h3 { margin-top:2rem; font-size:1.05rem; }
+      .mg-docs-main h4 { margin-top:1.5rem; font-size:1rem; }
+      .audience-banner {
+        margin:1rem 0 1.5rem; padding:0.75rem 1rem; border-inline-start:3px solid #64748b;
+        background:#f3f6f8; color:#334155; font-size:0.875rem;
+      }
+      .audience-tag {
+        display:inline-flex; align-items:center; min-height:1.35rem; margin-inline-end:0.45rem;
+        padding:0.05rem 0.45rem; border:1px solid #94a3b8; border-radius:999px;
+        color:#475569; background:#f8fafc; font-size:0.6875rem; font-weight:700;
+        letter-spacing:0.045em; text-transform:uppercase; vertical-align:middle;
+      }
+      details.technical-detail {
+        margin:1rem 0; border:1px solid #cbd5e1; border-radius:6px; background:#f8fafc;
+      }
+      details.technical-detail > summary {
+        padding:0.7rem 0.85rem; cursor:pointer; color:#334155; font-weight:600;
+      }
+      .technical-detail__body { padding:0 0.9rem 0.9rem; border-top:1px solid #e2e8f0; }
+      .technical-detail__body > :first-child { margin-top:0.9rem; }
+      @media print {
+        .skip-link, .mg-page-header, .mg-mega-wrapper { display:none !important; }
+        details.technical-detail > summary { display:list-item; break-after:avoid; }
+        details.technical-detail:not([open]) > *:not(summary) { display:block; }
+        details.technical-detail { break-inside:auto; }
+        .technical-detail__body > :first-child { break-before:avoid; }
+        @page { margin:1.5cm; }
       }
 
-      /*
-       * One tooltip element, moved and filled on demand rather than one per badge.
-       * Fixed positioning, because the badges sit inside cards that scroll and clip;
-       * an absolutely-positioned tooltip inside a card would be cut off by it.
-       */
-      #badge-tip {
-        position: fixed;
-        z-index: 20;
-        max-width: 30rem;
-        padding: 0.5rem 0.75rem;
-        font-size: 0.8125rem;
-        line-height: 1.4;
-        background: var(--surface);
-        color: var(--text);
-        border: 1px solid var(--border);
-        border-radius: 6px;
-        box-shadow: 0 6px 20px rgb(0 0 0 / 0.18);
-        pointer-events: none;
-        opacity: 0;
-        transition: opacity 120ms ease;
-      }
-      #badge-tip[data-open="true"] { opacity: 1; }
-      #badge-tip code { font-size: 0.9em; }
-      #badge-tip strong { display: block; margin-bottom: 0.125rem; }
-      @media (prefers-reduced-motion: reduce) {
-        #badge-tip { transition: none; }
-      }
-      .card__issue {
-        margin: 0.25rem 0 0;
-        padding: 0.5rem 0.625rem;
-        border-radius: 4px;
-        font-size: 0.75rem;
-        line-height: 1.35;
-        background: color-mix(in srgb, var(--border) 28%, transparent);
-        border-inline-start: 3px solid var(--muted);
-      }
-      .card__issue--blocker { border-inline-start-color: var(--bad); }
-      .card__issue--decision { border-inline-start-color: var(--pending); }
-      .card__issue-badge {
-        display: block;
-        font-size: 0.625rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        color: var(--muted);
-        margin-bottom: 0.125rem;
-      }
-      /* A link, so it has to look like one. It was inert text before. */
-      .card__issue-more { color: var(--accent); white-space: nowrap; }
-      .card__link { margin-top: auto; padding-top: 0.75rem; font-size: 0.875rem; color: var(--accent); }
-      .card__link--disabled { color: var(--muted); }
-      footer { margin-top: 3rem; color: var(--muted); font-size: 0.8125rem; max-width: 70ch; }
-      .start {
-        margin: 0 0 2.5rem;
-        padding: 1.25rem 1.5rem;
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        border-inline-start: 4px solid var(--accent);
-      }
-      .start__title { font-size: 1.125rem; margin: 0 0 0.5rem; }
-      .start__lead { margin: 0 0 0.75rem; max-width: 72ch; }
-      .start__verdict {
-        margin: 0 0 1rem;
-        padding: 0.875rem 1rem;
-        background: var(--bg);
-        border: 1px solid var(--accent);
-        border-radius: 6px;
-        max-width: 82ch;
-      }
-      .decision-lenses {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 0.75rem;
-        margin: 1rem 0 1.25rem;
-        max-width: 82ch;
-      }
-      .decision-lens {
-        padding: 0.875rem 1rem;
-        border-radius: 6px;
-        background: var(--bg);
-        box-shadow: 0 0 0 1px color-mix(in srgb, var(--border) 80%, transparent),
-                    0 1px 3px rgb(0 0 0 / 0.05);
-      }
-      .decision-lens__eyebrow {
-        margin: 0 0 0.25rem;
-        color: var(--accent);
-        font-size: 0.6875rem;
-        font-weight: 700;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-      }
-      .decision-lens__title { margin: 0 0 0.375rem; font-size: 1rem; }
-      .decision-lens__body { margin: 0; color: var(--muted); font-size: 0.8125rem; }
-      @media (max-width: 42rem) {
-        .decision-lenses { grid-template-columns: minmax(0, 1fr); }
-      }
-      .glossary { margin: 0 0 2rem; font-size: 0.875rem; }
-      .glossary__summary { cursor: pointer; color: var(--accent); font-weight: 600; }
-      .glossary__list { margin: 0.875rem 0 0; max-width: 80ch; }
-      .glossary__list dt { font-weight: 700; margin-top: 0.75rem; }
-      .glossary__list dd { margin: 0.125rem 0 0; color: var(--muted); }
-      .start__list { margin: 0; padding-inline-start: 1.125rem; max-width: 78ch; }
-      .start__list li + li { margin-top: 0.5rem; }
-      .grid-intro { margin: 0 0 1.25rem; max-width: 78ch; }
-      .grid-intro__title { margin: 0 0 0.375rem; font-size: 1.25rem; }
-      .grid-intro__body { margin: 0; color: var(--muted); font-size: 0.875rem; }
     </style>
   </head>
   <body>
-    <div class="page">
+
+    <a class="skip-link" href="#main">Skip to main content</a>
+    <header id="header" class="mg-page-header mg-page-header--default">
+      <div class="mg-page-header__decoration" aria-hidden="true">
+        <div></div><div></div><div></div><div></div>
+      </div>
+    </header>
+
+    <nav class="mg-mega-wrapper" aria-label="Main Navigation">
+      <ul class="mg-mega-topbar | mg-container mg-container-full-width">
+          <li class="mg-mega-topbar__item mg-mega-topbar__item--active">
+              <a class="mg-mega-topbar__item-link" href="./" aria-current="page">Ranking</a>
+            </li>
+          <li class="mg-mega-topbar__item">
+              <a class="mg-mega-topbar__item-link" href="./architecture-options.html">Architecture</a>
+            </li>
+          <li class="mg-mega-topbar__item">
+              <a class="mg-mega-topbar__item-link" href="./prototypes.html">Prototypes</a>
+            </li>
+          <li class="mg-mega-topbar__item">
+              <a class="mg-mega-topbar__item-link" href="./axes.html">Evidence axes</a>
+            </li>
+          <li class="mg-mega-topbar__item">
+              <a class="mg-mega-topbar__item-link" href="./issues.html">Technical findings</a>
+            </li>
+          <li class="mg-mega-topbar__item">
+              <a class="mg-mega-topbar__item-link" href="./comparison.html">Requirement audit</a>
+            </li>
+      </ul>
+    </nav>
+    <main id="main" class="mg-container mg-page-content--padded">
       <h1>UNDRR data design system evaluation</h1>
-      <p class="subtitle">Ten controlled proofs of concept: five candidate UI libraries against two UNDRR host shells.</p>
 
-      <section class="start" aria-labelledby="start-here">
-        <h2 class="start__title" id="start-here">Start here</h2>
-        <p class="start__lead">
-          Whatever replaces PrimeReact becomes the default front-end foundation
-          for DELTA, Mangrove properties and future data systems. All five
-          candidates meet all 300 requirements, so the requirement matrix does
-          not discriminate. The decision therefore has two layers: whether a
-          candidate can do the job, and what kind of system it creates across
-          the estate.
-        </p>
+<div class="scroll"><table class="ov-table"><thead>
+<tr><th>Candidate</th><th>Provisional score</th><th>Scored blockers</th><th class="ov-ax"><a href="./axes.html#a1" title="A1 Implementation effort">A1<span class="ov-ax-hint">Effort</span></a></th><th class="ov-ax"><a href="./axes.html#a2" title="A2 Maintainability at scale">A2<span class="ov-ax-hint">Maintain</span></a></th><th class="ov-ax"><a href="./axes.html#a3" title="A3 Reproducibility across sites">A3<span class="ov-ax-hint">Reuse</span></a></th><th class="ov-ax"><a href="./axes.html#a4" title="A4 Mangrove compatibility">A4<span class="ov-ax-hint">Mangrove</span></a></th><th class="ov-ax"><a href="./axes.html#a5" title="A5 Theming fidelity">A5<span class="ov-ax-hint">Theming</span></a></th><th class="ov-ax"><a href="./axes.html#a6" title="A6 Right-to-left">A6<span class="ov-ax-hint">RTL</span></a></th><th class="ov-ax"><a href="./axes.html#a7" title="A7 Automated accessibility signals">A7<span class="ov-ax-hint">a11y</span></a></th><th>Demos</th><th>Inventory</th></tr>
+</thead><tbody>
+<tr><td class="ov-name">Adobe React Aria</td><td class="ov-score"><strong>90</strong></td><td class="ov-blockers"><span class="ov-ok">none</span></td><td class="ov-w"><a href="./axes.html#a1" aria-label="A1 Implementation effort: workable, provisional" title="A1 Implementation effort: workable, provisional">workable</a></td><td class="ov-w"><a href="./axes.html#a2" aria-label="A2 Maintainability at scale: workable, provisional" title="A2 Maintainability at scale: workable, provisional">workable</a></td><td class="ov-s"><a href="./axes.html#a3" aria-label="A3 Reproducibility across sites: strong" title="A3 Reproducibility across sites: strong">strong</a></td><td class="ov-s"><a href="./axes.html#a4" aria-label="A4 Mangrove compatibility: strong" title="A4 Mangrove compatibility: strong">strong</a></td><td class="ov-s"><a href="./axes.html#a5" aria-label="A5 Theming fidelity: strong" title="A5 Theming fidelity: strong">strong</a></td><td class="ov-s"><a href="./axes.html#a6" aria-label="A6 Right-to-left: strong" title="A6 Right-to-left: strong">strong</a></td><td class="ov-s"><a href="./axes.html#a7" aria-label="A7 Automated accessibility signals: strong, provisional" title="A7 Automated accessibility signals: strong, provisional">strong</a></td><td class="ov-demos"><a href="./delta-react-aria/app.html" class="ov-cta">Delta</a> <a href="./mangrove-react-aria/island.html" class="ov-cta">Mangrove</a></td><td class="ov-demos"><a href="./delta-react-aria/" class="ov-cta ov-cta-sec">Delta</a> <a href="./mangrove-react-aria/" class="ov-cta ov-cta-sec">Mangrove</a></td></tr>
+<tr><td class="ov-name">Ant Design</td><td class="ov-score"><strong>82</strong></td><td class="ov-blockers"><a href="#warnings" class="ov-bad">1</a></td><td class="ov-s"><a href="./axes.html#a1" aria-label="A1 Implementation effort: strong, provisional" title="A1 Implementation effort: strong, provisional">strong</a></td><td class="ov-w"><a href="./axes.html#a2" aria-label="A2 Maintainability at scale: workable, provisional" title="A2 Maintainability at scale: workable, provisional">workable</a></td><td class="ov-s"><a href="./axes.html#a3" aria-label="A3 Reproducibility across sites: strong" title="A3 Reproducibility across sites: strong">strong</a></td><td class="ov-w"><a href="./axes.html#a4" aria-label="A4 Mangrove compatibility: workable" title="A4 Mangrove compatibility: workable">workable</a></td><td class="ov-s"><a href="./axes.html#a5" aria-label="A5 Theming fidelity: strong" title="A5 Theming fidelity: strong">strong</a></td><td class="ov-s"><a href="./axes.html#a6" aria-label="A6 Right-to-left: strong" title="A6 Right-to-left: strong">strong</a></td><td class="ov-w"><a href="./axes.html#a7" aria-label="A7 Automated accessibility signals: workable, provisional" title="A7 Automated accessibility signals: workable, provisional">workable</a></td><td class="ov-demos"><a href="./delta-antd/app.html" class="ov-cta">Delta</a> <a href="./mangrove-antd/island.html" class="ov-cta">Mangrove</a></td><td class="ov-demos"><a href="./delta-antd/" class="ov-cta ov-cta-sec">Delta</a> <a href="./mangrove-antd/" class="ov-cta ov-cta-sec">Mangrove</a></td></tr>
+<tr><td class="ov-name">MUI (Community only)</td><td class="ov-score"><strong>81</strong></td><td class="ov-blockers"><span class="ov-ok">none</span></td><td class="ov-s"><a href="./axes.html#a1" aria-label="A1 Implementation effort: strong, provisional" title="A1 Implementation effort: strong, provisional">strong</a></td><td class="ov-w"><a href="./axes.html#a2" aria-label="A2 Maintainability at scale: workable, provisional" title="A2 Maintainability at scale: workable, provisional">workable</a></td><td class="ov-s"><a href="./axes.html#a3" aria-label="A3 Reproducibility across sites: strong" title="A3 Reproducibility across sites: strong">strong</a></td><td class="ov-s"><a href="./axes.html#a4" aria-label="A4 Mangrove compatibility: strong" title="A4 Mangrove compatibility: strong">strong</a></td><td class="ov-s"><a href="./axes.html#a5" aria-label="A5 Theming fidelity: strong" title="A5 Theming fidelity: strong">strong</a></td><td class="ov-w"><a href="./axes.html#a6" aria-label="A6 Right-to-left: workable" title="A6 Right-to-left: workable">workable</a></td><td class="ov-w"><a href="./axes.html#a7" aria-label="A7 Automated accessibility signals: workable, provisional" title="A7 Automated accessibility signals: workable, provisional">workable</a></td><td class="ov-demos"><a href="./delta-mui/app.html" class="ov-cta">Delta</a> <a href="./mangrove-mui/island.html" class="ov-cta">Mangrove</a></td><td class="ov-demos"><a href="./delta-mui/" class="ov-cta ov-cta-sec">Delta</a> <a href="./mangrove-mui/" class="ov-cta ov-cta-sec">Mangrove</a></td></tr>
+<tr><td class="ov-name">Mantine</td><td class="ov-score"><strong>72</strong></td><td class="ov-blockers"><a href="#warnings" class="ov-bad">1</a></td><td class="ov-w"><a href="./axes.html#a1" aria-label="A1 Implementation effort: workable, provisional" title="A1 Implementation effort: workable, provisional">workable</a></td><td class="ov-w"><a href="./axes.html#a2" aria-label="A2 Maintainability at scale: workable, provisional" title="A2 Maintainability at scale: workable, provisional">workable</a></td><td class="ov-w"><a href="./axes.html#a3" aria-label="A3 Reproducibility across sites: workable" title="A3 Reproducibility across sites: workable">workable</a></td><td class="ov-s"><a href="./axes.html#a4" aria-label="A4 Mangrove compatibility: strong" title="A4 Mangrove compatibility: strong">strong</a></td><td class="ov-k"><a href="./axes.html#a5" aria-label="A5 Theming fidelity: weak" title="A5 Theming fidelity: weak">weak</a></td><td class="ov-w"><a href="./axes.html#a6" aria-label="A6 Right-to-left: workable" title="A6 Right-to-left: workable">workable</a></td><td class="ov-s"><a href="./axes.html#a7" aria-label="A7 Automated accessibility signals: strong, provisional" title="A7 Automated accessibility signals: strong, provisional">strong</a></td><td class="ov-demos"><a href="./delta-mantine/app.html" class="ov-cta">Delta</a> <a href="./mangrove-mantine/island.html" class="ov-cta">Mangrove</a></td><td class="ov-demos"><a href="./delta-mantine/" class="ov-cta ov-cta-sec">Delta</a> <a href="./mangrove-mantine/" class="ov-cta ov-cta-sec">Mangrove</a></td></tr>
+<tr><td class="ov-name">IBM Carbon</td><td class="ov-score"><strong>52</strong></td><td class="ov-blockers"><a href="#warnings" class="ov-bad">3</a></td><td class="ov-w"><a href="./axes.html#a1" aria-label="A1 Implementation effort: workable, provisional" title="A1 Implementation effort: workable, provisional">workable</a></td><td class="ov-w"><a href="./axes.html#a2" aria-label="A2 Maintainability at scale: workable, provisional" title="A2 Maintainability at scale: workable, provisional">workable</a></td><td class="ov-w"><a href="./axes.html#a3" aria-label="A3 Reproducibility across sites: workable" title="A3 Reproducibility across sites: workable">workable</a></td><td class="ov-b"><a href="./axes.html#a4" aria-label="A4 Mangrove compatibility: blocked" title="A4 Mangrove compatibility: blocked">blocked</a></td><td class="ov-k"><a href="./axes.html#a5" aria-label="A5 Theming fidelity: weak" title="A5 Theming fidelity: weak">weak</a></td><td class="ov-w"><a href="./axes.html#a6" aria-label="A6 Right-to-left: workable" title="A6 Right-to-left: workable">workable</a></td><td class="ov-w"><a href="./axes.html#a7" aria-label="A7 Automated accessibility signals: workable, provisional" title="A7 Automated accessibility signals: workable, provisional">workable</a></td><td class="ov-demos"><a href="./delta-carbon/app.html" class="ov-cta">Delta</a> <a href="./mangrove-carbon/island.html" class="ov-cta">Mangrove</a></td><td class="ov-demos"><a href="./delta-carbon/" class="ov-cta ov-cta-sec">Delta</a> <a href="./mangrove-carbon/" class="ov-cta ov-cta-sec">Mangrove</a></td></tr>
+</tbody></table></div>
 
-        <p class="start__verdict">
-          <strong>If you only read one thing:</strong> the evidence recommends
-          a <strong>shared UNDRR component layer on Adobe React Aria</strong>.
-          The reuse experiment proves that both React Aria and MUI can package;
-          React Aria is preferred because live tokens propagate without rebuilding
-          every site and UNDRR remains the visual authority. This is a commitment
-          to fund a design system, not a shortcut around one.
-          <a href="./architecture-options.html">Architecture, evidence and costs</a>.
-        </p>
+<details class="glossary"><summary class="glossary__summary">Glossary</summary><dl class="glossary__list"><dt>Leakage</dt><dd>A component library changing how the rest of the page looks, outside its own area. The test loads each page twice, with and without the library, and compares.</dd><dt>RTL</dt><dd>Right-to-left. Arabic reads right to left, so the whole interface mirrors. The question is whether the library's own components mirror with it.</dd><dt>Long labels</dt><dd>UNDRR's own content is not short, and translation makes it longer. The fixtures deliberately include long strings, and the check is whether anything overflows or gets clipped.</dd><dt>Kitchen sink / component inventory</dt><dd>One page showing every control. Proves the parts exist.</dd><dt>Embedded island</dt><dd>The library inside a real UNDRR Mangrove page, owning one region.</dd><dt>Portalled overlay</dt><dd>A dialog or dropdown the browser moves to the end of the page. Automated checks can miss what is inside it.</dd><dt>Escape hatch / off the documented route</dt><dd>Where the library's theming API did not reach, so styling was applied outside it. Each one risks breaking on library updates.</dd><dt>axe</dt><dd>An automated accessibility scanner. Catches a minority of problems; results here are a floor, not a pass.</dd><dt>A1 Implementation effort</dt><dd>Cost to build the first site.</dd><dt>A2 Maintainability at scale</dt><dd>Cost to keep every site working through library updates.</dd></dl></details>
 
-        <div class="decision-lenses" aria-label="The two decision questions">
-          <article class="decision-lens">
-            <p class="decision-lens__eyebrow">Question 1 · Capability fit</p>
-            <h3 class="decision-lens__title">Can it do the job?</h3>
-            <p class="decision-lens__body">
-              Requirement coverage, theming, Arabic and RTL, accessibility, and
-              clean integration inside each host. The demos and seven evidence
-              axes answer this question.
-            </p>
-          </article>
-          <article class="decision-lens">
-            <p class="decision-lens__eyebrow">Question 2 · Estate architecture</p>
-            <h3 class="decision-lens__title">Will the products stay in sync?</h3>
-            <p class="decision-lens__body">
-              How DELTA, Mangrove and content products share components and
-              policy over time. A clean integration today does not guarantee a
-              coherent system tomorrow; Types A, B and C describe that shape,
-              not a grade.
-            </p>
-          </article>
-        </div>
+      <details class="technical-detail">
+        <summary><span class="audience-tag">Developer detail</span> Scoring weights, scored blockers and per-pairing breakdowns</summary>
+        <div class="technical-detail__body"><h1>Weighted scores</h1>
 
-        <p class="start__lead">
-          <strong>Capability fit is shown three ways.</strong> A component inventory
-          proves the parts exist but hides integration defects. Two of the three
-          deciding defects are invisible in a component list and only appear
-          inside a real UNDRR page. The architecture type beside each candidate
-          answers the separate synchronization question.
-        </p>
+<p>GENERATED FILE - regenerate with <code>pnpm scores</code>.</p>
 
-        <div class="questions">
+<h2>Decisions needed</h2>
 
-          <div class="question">
-            <h3 class="question__title">
-              Repeatability
-              <span class="question__asks">Can a second team reproduce the integration without inventing their own conventions?</span>
-            </h3>
-            <p class="question__answer">Measured packages now exist for the leading alternatives: MUI shares 86% once demo-only code is excluded, while the realistic React Aria records capability shares 618 source lines and 147 CSS lines across Delta and Mangrove.</p>
-            <p class="question__axis">
-              <a href="./axes.html#a3"
-                >Evidence: A3 Reproducibility across sites</a
-              >
-            </p>
-          </div>
+<p>1. <strong>Human accessibility pass.</strong> A7 bands rest on automated scanning only - no conformance claim without screen-reader and keyboard testing. 2. <strong>MUI fallback plan.</strong> Put its documented RTL setup in the delivery standard. 3. <strong>Operating-model commitment.</strong> Fund and govern the Type C design-system family; otherwise React Aria becomes bespoke work per product.</p>
 
-          <div class="question">
-            <h3 class="question__title">
-              Standardisation
-              <span class="question__asks">One shared component vocabulary across the estate, or one dialect per project?</span>
-            </h3>
-            <p class="question__answer">React Aria, MUI and Ant Design have all been exercised as shared packages. The remaining distinction is ownership: whether the shared layer preserves UNDRR's visual and interaction authority or mainly centralises a library configuration. shadcn/ui was excluded because its copy-in distribution guarantees a fork per site.</p>
-            <p class="question__axis">
-              <a href="./axes.html#a3"
-                >Evidence: A3 Reproducibility across sites</a
-              >
-            </p>
-          </div>
+<h2>Recommendation</h2>
 
-          <div class="question">
-            <h3 class="question__title">
-              Mangrove integration
-              <span class="question__asks">Can it live inside an existing Mangrove page without fighting it?</span>
-            </h3>
-            <p class="question__answer">Leakage is clean for every pairing except mangrove-carbon, whose global stylesheet is not containable. Ant Design loses every cascade conflict to Mangrove - which the realistic layouts showed is not a matter of taste: Mangrove's rules also cover Select's own value, so its filters render blank on the Mangrove host.</p>
-            <p class="question__axis">
-              <a href="./axes.html#a4"
-                >Evidence: A4 Mangrove compatibility</a
-              >
-            </p>
-          </div>
+<p><strong>Fund a bounded Type C pilot on Adobe React Aria.</strong></p>
 
-          <div class="question">
-            <h3 class="question__title">
-              Design-token alignment
-              <span class="question__asks">Can it be driven by UNDRR tokens, and does a token change propagate?</span>
-            </h3>
-            <p class="question__answer">React Aria and Carbon resolve tokens in the browser, so a Mangrove change is a stylesheet swap. MUI, Mantine and Ant Design bake values in, making it a rebuild of every site. Carbon leaves 21-22 of 71 tokens unreachable at all.</p>
-            <p class="question__axis">
-              <a href="./axes.html#a5"
-                >Evidence: A5 Theming fidelity and propagation</a
-              >
-            </p>
-          </div>
+<p>It leads provisionally at 90 and is one of 2/5 candidates without a scored blocker. It also passed the measured RTL and host-containment checks.</p>
 
-          <div class="question">
-            <h3 class="question__title">
-              Right-to-left
-              <span class="question__asks">Does Arabic work in the components, not just the page?</span>
-            </h3>
-            <p class="question__answer">MUI Community fails on both hosts and cannot be fixed within the brief's constraints. React Aria and Ant Design are clean at zero cost; Mantine is clean only after mitigation. This needs a policy call, not a bug fix.</p>
-            <p class="question__axis">
-              <a href="./axes.html#a6"
-                >Evidence: A6 Right-to-left</a
-              >
-            </p>
-          </div>
+<p>React Aria keeps visual authority with UNDRR and supports the Type C family described on the architecture page. The cost is permanent ownership of the visual component layer: <strong>fund a design system, not save implementation work.</strong></p>
 
-          <div class="question">
-            <h3 class="question__title">
-              Accessibility
-              <span class="question__asks">Does it meet UNDRR's obligations in practice?</span>
-            </h3>
-            <p class="question__answer">Zero is a floor, not a conformance claim: no screen-reader or human keyboard pass was run on any pairing. And the floor is lower than the kitchen sinks suggested - the realistic layouts found a critical unnamed-button defect in Mantine's Modal that every scoped axe run in this repository was blind to, because portalled overlays render outside the scanned subtree.</p>
-            <p class="question__axis">
-              <a href="./axes.html#a7"
-                >Evidence: A7 Accessibility conformance</a
-              >
-            </p>
-          </div>
-        </div>
+<p>See <a href="./architecture-options.html">architecture options</a> for the operating-model trade-off, or <a href="./prototypes.html">open the prototype matrix</a>.</p>
 
-        <p class="start__more">
-          <a href="./scores.html"><strong>Weighted scores</strong></a>
-          — all five ranked, with warnings shown beside the score &middot;
-          <a href="./axes.html"><strong>Decision axes</strong></a>
-          — what is measured on each &middot;
-          <a href="https://github.com/khawkins98/data-design-demo/blob/main/docs/undrr-questions.md">the six questions in full</a>
-          &middot;
-          <a href="./architecture-options.html"><strong>Architecture
-          options</strong></a> — measured reuse, ownership and visual authority &middot;
-          <a href="./comparison.html">requirement matrix</a> — the 300 assessments
-          (audit trail, not the decision).
-        </p>
-      </section>
+<h2>Weights</h2>
 
-      <details class="glossary">
-        <summary class="glossary__summary">Glossary</summary>
-        <dl class="glossary__list">
-          <dt>Leakage</dt>
-          <dd>A component library changing how the rest of the page looks, outside its own area. If a library restyles UNDRR's own headings and buttons, every page it appears on inherits that. The test loads each page twice, with and without the library, and compares.</dd>
-          <dt>RTL</dt>
-          <dd>Right-to-left. Arabic reads right to left, so the whole interface mirrors. Setting a direction on the page is the easy half; the question is whether the library's own components mirror with it, including the ones the browser moves elsewhere to display.</dd>
-          <dt>Long labels</dt>
-          <dd>UNDRR's own content is not short, and translation makes it longer: a label that fits in English may not fit in French or Arabic. The fixtures deliberately include long strings, and the check is whether anything overflows the viewport or gets clipped rather than wrapping.</dd>
-          <dt>Kitchen sink / component inventory</dt>
-          <dd>One page showing every control. Proves the parts exist.</dd>
-          <dt>Embedded island</dt>
-          <dd>The library inside a real UNDRR Mangrove page, owning one region.</dd>
-          <dt>Portalled overlay</dt>
-          <dd>
-            A dialog or dropdown the browser moves to the end of the page.
-            Automated checks can miss what is inside it.
-          </dd>
-          <dt>Escape hatch / off the documented route</dt>
-          <dd>
-            Where the library's theming API did not reach, so styling was applied
-            outside it. Each one risks breaking on library updates.
-          </dd>
-          <dt>axe</dt>
-          <dd>
-            An automated accessibility scanner. Catches a minority of problems;
-            results here are a floor, not a pass.
-          </dd>
-          <dt>A1 Implementation effort &middot; A2 Maintainability at scale</dt>
-          <dd>
-            A1: cost to build the first site. A2: cost to keep every site working
-            through library updates.
-          </dd>
-        </dl>
+<p>A judgement, not a measurement.</p>
+
+<ul>
+<li><strong>Chosen by:</strong> Proposed by the evaluation author, not yet ratified by UNDRR</li>
+<li><strong>Date:</strong> 2026-08-06</li>
+<li><strong>Status:</strong> <strong>not ratified</strong></li>
+<li><strong>Basis:</strong> Estate continuity framing (undrr-questions.md). Multi-site axes outweigh first-site effort; A6/A7 highest as standing obligations the composite cannot gate on.</li>
+
+</ul>
+<p>The weights are proposed, not ratified. They order close alternatives but do not remove the separate adoption gates.</p>
+
+<div class="scroll"><table><thead>
+<tr><th>Axis</th><th>Weight</th></tr>
+</thead><tbody>
+<tr><td>A1 Implementation effort</td><td>8</td></tr>
+<tr><td>A2 Maintainability at scale</td><td>16</td></tr>
+<tr><td>A3 Reproducibility across sites</td><td>16</td></tr>
+<tr><td>A4 Mangrove compatibility</td><td>14</td></tr>
+<tr><td>A5 Theming fidelity</td><td>14</td></tr>
+<tr><td>A6 Right-to-left</td><td>18</td></tr>
+<tr><td>A7 Automated accessibility signals</td><td>14</td></tr>
+</tbody></table></div>
+
+<h2>Ranking</h2>
+
+<p>The provisional composite is the weighted mean of the two hosts. <strong>Scored blockers are listed beside the score, never folded into it. Adoption gates are reported separately.</strong></p>
+
+<div class="scroll"><table><thead>
+<tr><th>#</th><th>Candidate</th><th>Provisional composite</th><th>Scored library blockers</th></tr>
+</thead><tbody>
+<tr><td>1</td><td>Adobe React Aria</td><td><strong>90</strong> / 100</td><td>none</td></tr>
+<tr><td>2</td><td>Ant Design</td><td><strong>82</strong> / 100</td><td><strong>1</strong> - see below</td></tr>
+<tr><td>3</td><td>MUI (Community only)</td><td><strong>81</strong> / 100</td><td>none</td></tr>
+<tr><td>4</td><td>Mantine</td><td><strong>72</strong> / 100</td><td><strong>1</strong> - see below</td></tr>
+<tr><td>5</td><td>IBM Carbon</td><td><strong>52</strong> / 100</td><td><strong>3</strong> - see below</td></tr>
+</tbody></table></div>
+
+<p><strong>2 of 5 candidates carry no scored library blocker:</strong> Adobe React Aria, MUI (Community only).</p>
+
+<p><strong>Adobe React Aria</strong> ranks first on the composite and carries no scored blocker. Its recommendation remains conditional on the adoption gates above.</p>
+
+<p><strong>MUI (Community only)</strong> (81) carries no scored blocker and is the preferred warning-free fallback, subject to the same human-review gates and a repeatable integration standard.</p>
+
+<p>Ant Design and Mantine carry warnings that can be escaped in configuration or consuming code: see the escape-cost table below.</p>
+
+<p>IBM Carbon cannot escape its warnings without a library change or a UNDRR policy decision.</p>
+
+<h2 id="warnings">Scored blockers, in full</h2>
+
+<p>Scored blocker = axis not satisfied as shipped, typically overcomable with extra maintenance work. This list is narrower than the adoption gates and technical findings.</p>
+
+<p><strong>A finding can appear twice</strong> - once from <code>evidence.json</code>, once from the known-issues registry. Two records of one fact, kept separate to surface disagreements.</p>
+
+<p><strong>Remediability is recorded but not scored.</strong> It answers whether a candidate below the top can be brought up to it.</p>
+
+<div class="scroll"><table><thead>
+<tr><th>Candidate</th><th>Scored blockers</th><th>Cheapest escape</th><th>Hardest escape</th></tr>
+</thead><tbody>
+<tr><td>Ant Design</td><td>1</td><td>reversible per site by changing a setting</td><td>reversible per site by changing a setting</td></tr>
+<tr><td>Mantine</td><td>1</td><td>fixable in consuming code, repeated per site</td><td>fixable in consuming code, repeated per site</td></tr>
+<tr><td>IBM Carbon</td><td>3</td><td>needs a change in the library</td><td>cannot be escaped while using the library as documented</td></tr>
+</tbody></table></div>
+
+<p><strong>Ant Design</strong></p>
+
+<ul>
+<li>antd-select-value-hidden-on-mangrove: Select controls do not display their selected value (owned by pairing) [escape: reversible per site by changing a setting]</li>
+
+</ul>
+<p><strong>Mantine</strong></p>
+
+<ul>
+<li>mantine-modal-close-unnamed: Modal's close button ships with no accessible name (owned by candidate) [escape: fixable in consuming code, repeated per site]</li>
+
+</ul>
+<p><strong>IBM Carbon</strong></p>
+
+<ul>
+<li>carbon-unreachable-tokens: Carbon cannot express about 30% of the UNDRR design tokens (owned by candidate) [escape: needs a change in the library]</li>
+<li>A4 Mangrove compatibility: the candidate restyled 54 computed properties on host markup outside its own subtree</li>
+<li>carbon-leakage-failure: This pairing fails the style-containment assertion (owned by pairing) [escape: cannot be escaped while using the library as documented]</li>
+
+</ul>
+<h2>Glossary</h2>
+
+<div class="scroll"><table><thead>
+<tr><th>Term</th><th>Meaning</th></tr>
+</thead><tbody>
+<tr><td><strong>strong</strong></td><td>Full weight. Axis fully satisfied.</td></tr>
+<tr><td><strong>workable</strong></td><td>60% weight. Satisfied with caveats or extra effort.</td></tr>
+<tr><td><strong>weak</strong></td><td>30% weight. Significant gaps.</td></tr>
+<tr><td><strong>blocked</strong></td><td>0% weight. Axis not satisfied at all.</td></tr>
+<tr><td>canary</td><td>A host UI element watched for unintended style changes (leakage).</td></tr>
+<tr><td>escape hatch</td><td>A workaround used when the library's documented approach failed.</td></tr>
+<tr><td>composed</td><td>Requirement met by assembling multiple components (vs a single <code>native</code> one).</td></tr>
+<tr><td>leakage</td><td>A candidate's styles bleeding onto host markup outside its own subtree.</td></tr>
+<tr><td>portalled overlay</td><td>UI (dialogs, tooltips) rendered outside the component's DOM tree via <code>createPortal</code>.</td></tr>
+</tbody></table></div>
+
+<h2>Per pairing, per axis</h2>
+
+<p>Each cell carries the fact that assigned the band.</p>
+
+<h3><code>delta-react-aria</code> - composite 90 / 100</h3>
+
+<p>Worst open issue: <strong>caveat</strong> - React Aria is unstyled, so these pairings carry 155 to 213 CSS rules</p>
+
+<p>8 open findings. 7 fixed in our code and excluded from score.</p>
+
+<div class="scroll"><table><thead>
+<tr><th>Axis</th><th>Band</th><th>Weight</th><th>Why</th></tr>
+</thead><tbody>
+<tr><td>A1 Implementation effort</td><td><strong>workable</strong></td><td>8</td><td>10 of 30 requirements needed composition or custom code; 1 audited off-route overrides</td></tr>
+<tr><td>A2 Maintainability at scale</td><td><strong>workable</strong></td><td>16</td><td>1 audited off-route overrides; 0 scoreable maintenance findings</td></tr>
+<tr><td>A3 Reproducibility across sites</td><td>strong</td><td>16</td><td>the integration extracted into one shared package</td></tr>
+<tr><td>A4 Mangrove compatibility</td><td>strong</td><td>14</td><td>no host canary changed when the candidate mounted</td></tr>
+<tr><td>A5 Theming fidelity</td><td>strong</td><td>14</td><td>all 48 reachable tokens applied</td></tr>
+<tr><td>A6 Right-to-left</td><td>strong</td><td>18</td><td>Arabic worked from a dir attribute alone, at zero custom lines</td></tr>
+<tr><td>A7 Automated accessibility signals</td><td>strong</td><td>14</td><td>no critical or serious automated violations; 1 checks axe declined to decide, each still owed a human</td></tr>
+</tbody></table></div>
+
+<h3><code>mangrove-react-aria</code> - composite 90 / 100</h3>
+
+<p>Worst open issue: <strong>caveat</strong> - React Aria is unstyled, so these pairings carry 155 to 213 CSS rules</p>
+
+<p>10 open findings. 7 fixed in our code and excluded from score.</p>
+
+<div class="scroll"><table><thead>
+<tr><th>Axis</th><th>Band</th><th>Weight</th><th>Why</th></tr>
+</thead><tbody>
+<tr><td>A1 Implementation effort</td><td><strong>workable</strong></td><td>8</td><td>9 of 30 requirements needed composition or custom code; 2 audited off-route overrides</td></tr>
+<tr><td>A2 Maintainability at scale</td><td><strong>workable</strong></td><td>16</td><td>2 audited off-route overrides; 0 scoreable maintenance findings</td></tr>
+<tr><td>A3 Reproducibility across sites</td><td>strong</td><td>16</td><td>the integration extracted into one shared package</td></tr>
+<tr><td>A4 Mangrove compatibility</td><td>strong</td><td>14</td><td>no host canary changed when the candidate mounted</td></tr>
+<tr><td>A5 Theming fidelity</td><td>strong</td><td>14</td><td>all 47 reachable tokens applied</td></tr>
+<tr><td>A6 Right-to-left</td><td>strong</td><td>18</td><td>Arabic worked from a dir attribute alone, at zero custom lines</td></tr>
+<tr><td>A7 Automated accessibility signals</td><td>strong</td><td>14</td><td>no critical or serious automated violations; 1 checks axe declined to decide, each still owed a human</td></tr>
+</tbody></table></div>
+
+<h3><code>delta-mui</code> - composite 81 / 100</h3>
+
+<p>Worst open issue: <strong>caveat</strong> - MUI needs a third setup step for RTL, and fails silently without it</p>
+
+<p>7 open findings. 7 fixed in our code and excluded from score.</p>
+
+<div class="scroll"><table><thead>
+<tr><th>Axis</th><th>Band</th><th>Weight</th><th>Why</th></tr>
+</thead><tbody>
+<tr><td>A1 Implementation effort</td><td>strong</td><td>8</td><td>4 of 30 requirements needed composition or custom code; 1 audited off-route overrides</td></tr>
+<tr><td>A2 Maintainability at scale</td><td><strong>workable</strong></td><td>16</td><td>1 audited off-route overrides; 0 scoreable maintenance findings</td></tr>
+<tr><td>A3 Reproducibility across sites</td><td>strong</td><td>16</td><td>the integration extracted into one shared package</td></tr>
+<tr><td>A4 Mangrove compatibility</td><td>strong</td><td>14</td><td>no host canary changed when the candidate mounted</td></tr>
+<tr><td>A5 Theming fidelity</td><td>strong</td><td>14</td><td>all 29 reachable tokens applied</td></tr>
+<tr><td>A6 Right-to-left</td><td><strong>workable</strong></td><td>18</td><td>clean, but only after 29 custom lines and 0 recorded mitigations</td></tr>
+<tr><td>A7 Automated accessibility signals</td><td><strong>workable</strong></td><td>14</td><td>1 serious automated violations; 4 checks axe declined to decide, each still owed a human</td></tr>
+</tbody></table></div>
+
+<h3><code>mangrove-mui</code> - composite 81 / 100</h3>
+
+<p>Worst open issue: <strong>caveat</strong> - MUI needs a third setup step for RTL, and fails silently without it</p>
+
+<p>8 open findings. 7 fixed in our code and excluded from score.</p>
+
+<div class="scroll"><table><thead>
+<tr><th>Axis</th><th>Band</th><th>Weight</th><th>Why</th></tr>
+</thead><tbody>
+<tr><td>A1 Implementation effort</td><td>strong</td><td>8</td><td>4 of 30 requirements needed composition or custom code; 1 audited off-route overrides</td></tr>
+<tr><td>A2 Maintainability at scale</td><td><strong>workable</strong></td><td>16</td><td>1 audited off-route overrides; 0 scoreable maintenance findings</td></tr>
+<tr><td>A3 Reproducibility across sites</td><td>strong</td><td>16</td><td>the integration extracted into one shared package</td></tr>
+<tr><td>A4 Mangrove compatibility</td><td>strong</td><td>14</td><td>no host canary changed when the candidate mounted</td></tr>
+<tr><td>A5 Theming fidelity</td><td>strong</td><td>14</td><td>all 32 reachable tokens applied</td></tr>
+<tr><td>A6 Right-to-left</td><td><strong>workable</strong></td><td>18</td><td>clean, but only after 29 custom lines and 0 recorded mitigations</td></tr>
+<tr><td>A7 Automated accessibility signals</td><td><strong>workable</strong></td><td>14</td><td>1 serious automated violations; 4 checks axe declined to decide, each still owed a human</td></tr>
+</tbody></table></div>
+
+<details><summary>Remaining 6 pairings</summary>
+<h3><code>delta-carbon</code> - composite 56 / 100</h3>
+
+<p>Worst open issue: <strong>warning</strong> - Carbon cannot express about 30% of the UNDRR design tokens</p>
+
+<p>9 open findings. 7 fixed in our code and excluded from score.</p>
+
+<div class="scroll"><table><thead>
+<tr><th>Axis</th><th>Band</th><th>Weight</th><th>Why</th></tr>
+</thead><tbody>
+<tr><td>A1 Implementation effort</td><td><strong>workable</strong></td><td>8</td><td>11 of 30 requirements needed composition or custom code; 5 audited off-route overrides</td></tr>
+<tr><td>A2 Maintainability at scale</td><td><strong>workable</strong></td><td>16</td><td>5 audited off-route overrides; 0 scoreable maintenance findings</td></tr>
+<tr><td>A3 Reproducibility across sites</td><td><strong>workable</strong></td><td>16</td><td>extraction outcome recorded as unknown - confounded</td></tr>
+<tr><td>A4 Mangrove compatibility</td><td><strong>workable</strong></td><td>14</td><td>clean only because the documented global stylesheet was not loaded as documented</td></tr>
+<tr><td>A5 Theming fidelity</td><td><strong>weak</strong></td><td>14</td><td>21 of 71 UNDRR tokens cannot be attached at all - a ceiling, not a cost</td></tr>
+<tr><td>A6 Right-to-left</td><td><strong>workable</strong></td><td>18</td><td>clean, but only after 0 custom lines and 1 recorded mitigations</td></tr>
+<tr><td>A7 Automated accessibility signals</td><td><strong>workable</strong></td><td>14</td><td>2 serious automated violations; 2 checks axe declined to decide, each still owed a human</td></tr>
+</tbody></table></div>
+
+<h3><code>mangrove-carbon</code> - composite 47 / 100</h3>
+
+<p>Worst open issue: <strong>warning</strong> - Carbon cannot express about 30% of the UNDRR design tokens</p>
+
+<p>11 open findings. 7 fixed in our code and excluded from score.</p>
+
+<div class="scroll"><table><thead>
+<tr><th>Axis</th><th>Band</th><th>Weight</th><th>Why</th></tr>
+</thead><tbody>
+<tr><td>A1 Implementation effort</td><td><strong>workable</strong></td><td>8</td><td>11 of 30 requirements needed composition or custom code; 4 audited off-route overrides</td></tr>
+<tr><td>A2 Maintainability at scale</td><td><strong>workable</strong></td><td>16</td><td>4 audited off-route overrides; 0 scoreable maintenance findings</td></tr>
+<tr><td>A3 Reproducibility across sites</td><td><strong>workable</strong></td><td>16</td><td>extraction outcome recorded as unknown - confounded</td></tr>
+<tr><td>A4 Mangrove compatibility</td><td><strong>blocked</strong></td><td>14</td><td>the candidate restyled 54 computed properties on host markup outside its own subtree</td></tr>
+<tr><td>A5 Theming fidelity</td><td><strong>weak</strong></td><td>14</td><td>22 of 72 UNDRR tokens cannot be attached at all - a ceiling, not a cost</td></tr>
+<tr><td>A6 Right-to-left</td><td><strong>workable</strong></td><td>18</td><td>clean, but only after 6 custom lines and 2 recorded mitigations</td></tr>
+<tr><td>A7 Automated accessibility signals</td><td><strong>workable</strong></td><td>14</td><td>1 serious automated violations; 2 checks axe declined to decide, each still owed a human</td></tr>
+</tbody></table></div>
+
+<h3><code>delta-mantine</code> - composite 67 / 100</h3>
+
+<p>Worst open issue: <strong>warning</strong> - Modal's close button ships with no accessible name</p>
+
+<p>9 open findings. 7 fixed in our code and excluded from score.</p>
+
+<div class="scroll"><table><thead>
+<tr><th>Axis</th><th>Band</th><th>Weight</th><th>Why</th></tr>
+</thead><tbody>
+<tr><td>A1 Implementation effort</td><td><strong>workable</strong></td><td>8</td><td>10 of 30 requirements needed composition or custom code; 4 audited off-route overrides</td></tr>
+<tr><td>A2 Maintainability at scale</td><td><strong>workable</strong></td><td>16</td><td>4 audited off-route overrides; 0 scoreable maintenance findings</td></tr>
+<tr><td>A3 Reproducibility across sites</td><td><strong>workable</strong></td><td>16</td><td>extraction outcome recorded as unknown - confounded</td></tr>
+<tr><td>A4 Mangrove compatibility</td><td>strong</td><td>14</td><td>no host canary changed when the candidate mounted</td></tr>
+<tr><td>A5 Theming fidelity</td><td><strong>weak</strong></td><td>14</td><td>5 of 71 UNDRR tokens cannot be attached at all - a ceiling, not a cost</td></tr>
+<tr><td>A6 Right-to-left</td><td><strong>workable</strong></td><td>18</td><td>clean, but only after 18 custom lines and 2 recorded mitigations</td></tr>
+<tr><td>A7 Automated accessibility signals</td><td>strong</td><td>14</td><td>no critical or serious automated violations; 1 checks axe declined to decide, each still owed a human</td></tr>
+</tbody></table></div>
+
+<h3><code>mangrove-mantine</code> - composite 77 / 100</h3>
+
+<p>Worst open issue: <strong>warning</strong> - Modal's close button ships with no accessible name</p>
+
+<p>9 open findings. 7 fixed in our code and excluded from score.</p>
+
+<div class="scroll"><table><thead>
+<tr><th>Axis</th><th>Band</th><th>Weight</th><th>Why</th></tr>
+</thead><tbody>
+<tr><td>A1 Implementation effort</td><td><strong>workable</strong></td><td>8</td><td>11 of 30 requirements needed composition or custom code; 4 audited off-route overrides</td></tr>
+<tr><td>A2 Maintainability at scale</td><td><strong>workable</strong></td><td>16</td><td>4 audited off-route overrides; 0 scoreable maintenance findings</td></tr>
+<tr><td>A3 Reproducibility across sites</td><td><strong>workable</strong></td><td>16</td><td>extraction outcome recorded as unknown - confounded</td></tr>
+<tr><td>A4 Mangrove compatibility</td><td>strong</td><td>14</td><td>no host canary changed when the candidate mounted</td></tr>
+<tr><td>A5 Theming fidelity</td><td>strong</td><td>14</td><td>all 62 reachable tokens applied</td></tr>
+<tr><td>A6 Right-to-left</td><td><strong>workable</strong></td><td>18</td><td>clean, but only after 10 custom lines and 0 recorded mitigations</td></tr>
+<tr><td>A7 Automated accessibility signals</td><td>strong</td><td>14</td><td>no critical or serious automated violations; 0 checks axe declined to decide, each still owed a human</td></tr>
+</tbody></table></div>
+
+<h3><code>delta-antd</code> - composite 82 / 100</h3>
+
+<p>Worst open issue: <strong>caveat</strong> - The data table has an upstream accessibility defect</p>
+
+<p>10 open findings. 4 fixed in our code and excluded from score.</p>
+
+<div class="scroll"><table><thead>
+<tr><th>Axis</th><th>Band</th><th>Weight</th><th>Why</th></tr>
+</thead><tbody>
+<tr><td>A1 Implementation effort</td><td>strong</td><td>8</td><td>2 of 30 requirements needed composition or custom code; 1 audited off-route overrides</td></tr>
+<tr><td>A2 Maintainability at scale</td><td><strong>workable</strong></td><td>16</td><td>1 audited off-route overrides; 0 scoreable maintenance findings</td></tr>
+<tr><td>A3 Reproducibility across sites</td><td>strong</td><td>16</td><td>the integration extracted into one shared package</td></tr>
+<tr><td>A4 Mangrove compatibility</td><td><strong>workable</strong></td><td>14</td><td>clean only because the documented global stylesheet was not loaded as documented</td></tr>
+<tr><td>A5 Theming fidelity</td><td>strong</td><td>14</td><td>all 44 reachable tokens applied</td></tr>
+<tr><td>A6 Right-to-left</td><td>strong</td><td>18</td><td>Arabic worked from a dir attribute alone, at zero custom lines</td></tr>
+<tr><td>A7 Automated accessibility signals</td><td><strong>workable</strong></td><td>14</td><td>1 serious automated violations; 1 checks axe declined to decide, each still owed a human</td></tr>
+</tbody></table></div>
+
+<h3><code>mangrove-antd</code> - composite 82 / 100</h3>
+
+<p>Worst open issue: <strong>warning</strong> - Select controls do not display their selected value</p>
+
+<p>13 open findings. 4 fixed in our code and excluded from score.</p>
+
+<div class="scroll"><table><thead>
+<tr><th>Axis</th><th>Band</th><th>Weight</th><th>Why</th></tr>
+</thead><tbody>
+<tr><td>A1 Implementation effort</td><td>strong</td><td>8</td><td>2 of 30 requirements needed composition or custom code; 1 audited off-route overrides</td></tr>
+<tr><td>A2 Maintainability at scale</td><td><strong>workable</strong></td><td>16</td><td>1 audited off-route overrides; 0 scoreable maintenance findings</td></tr>
+<tr><td>A3 Reproducibility across sites</td><td>strong</td><td>16</td><td>the integration extracted into one shared package</td></tr>
+<tr><td>A4 Mangrove compatibility</td><td><strong>workable</strong></td><td>14</td><td>clean only because the documented global stylesheet was not loaded as documented</td></tr>
+<tr><td>A5 Theming fidelity</td><td>strong</td><td>14</td><td>all 44 reachable tokens applied</td></tr>
+<tr><td>A6 Right-to-left</td><td>strong</td><td>18</td><td>Arabic worked from a dir attribute alone, at zero custom lines</td></tr>
+<tr><td>A7 Automated accessibility signals</td><td><strong>workable</strong></td><td>14</td><td>1 serious automated violations; 1 checks axe declined to decide, each still owed a human</td></tr>
+</tbody></table></div>
+
+</details>
+<h2>What this cannot tell you</h2>
+
+<ul>
+<li>Where a band and the axis prose disagree, the prose is the evidence.</li>
+<li>A7 bands rest on automated checks only - <code>strong</code> means the automated floor was cleared, not that the pairing is accessible.</li>
+<li>A6 measures layout direction, not whether Arabic reads well to an Arabic reader.</li>
+<li>Changing the weights changes the ranking. A two-point gap rests on the weights, not the evidence.</li>
+
+</ul></div>
       </details>
 
-      <section class="grid-intro" aria-labelledby="candidate-overview">
-        <h2 class="grid-intro__title" id="candidate-overview">Candidate overview</h2>
-        <p class="grid-intro__body">
-          The left column identifies the estate architecture and its synchronization
-          implication. The two host cards show the separate capability question:
-          whether that candidate works cleanly in DELTA and Mangrove today.
-        </p>
-      </section>
-
-      <div class="grid">
-
-      <section class="pairing" aria-labelledby="pairing-react-aria">
-        <div class="pairing__meta">
-          <h2 class="pairing__title" id="pairing-react-aria">Adobe React Aria</h2>
-          <p class="pairing__licence">react-aria-components<br />Apache-2.0</p>
-          <p class="architecture-tag">
-            <span class="architecture-tag__type">Type C</span>
-            Foundational shared system
-          </p>
-          <p class="pairing__architecture">One UNDRR-owned component expression can serve DELTA and content products. Strongest synchronization potential; largest ongoing design-system commitment.</p>
-          <p class="pairing__architecture-link">
-            <a href="./architecture-options.html#c-foundational-adobe-react-aria">How Type C works</a>
-          </p>
-          <p class="card__issue card__issue--caveat">
-      <span class="card__issue-badge">Caveat</span>
-      React Aria is unstyled, so these pairings carry 155 to 213 CSS rules <a class="card__issue-more" href="./issues.html#react-aria">all 12 findings</a>
-    </p>
-        </div>
-        <div class="pairing__hosts">
-
-      <article class="card card--complete">
-        <header class="card__header">
-          <h3 class="card__title">Adobe React Aria</h3>
-          <p class="card__host">on <strong>Delta</strong></p>
-        </header>
-        <p class="card__status" data-status="complete">Complete</p>
-        <ul class="flags"><li class="flag flag--ok" tabindex="0" aria-describedby="help-leakage" data-help="Did the library change how the REST of the page looks, outside its own area? Measured by loading the page twice, with and without the library, and comparing UNDRR's own headings, buttons, tables and cards." data-term="Leakage">Leakage: clean</li><li class="flag flag--ok" tabindex="0" aria-describedby="help-rtl" data-help="Does Arabic work in the COMPONENTS, not just the page? A page can flip correctly while a library's own dropdowns, dialogs and date pickers stay left-to-right inside it." data-term="RTL">RTL: clean</li><li class="flag flag--ok" tabindex="0" aria-describedby="help-longLabels" data-help="UNDRR's real content includes very long strings, and its French and Arabic are longer again. &quot;Clean&quot; means nothing overflowed the viewport or was clipped when the fixture text was left untouched." data-term="Long labels">Long labels: clean</li></ul>
-        
-        <ul class="views"><li class="view"><a class="view__link" href="./delta-react-aria/app.html">A whole DELTA screen</a> <span class="view__hint">layout, navigation and a full records workflow</span></li><li class="view"><a class="view__link" href="./delta-react-aria/">Component inventory</a> <span class="view__hint">every component on one page - proves capability, not adoption</span></li></ul>
-      </article>
-
-      <article class="card card--complete">
-        <header class="card__header">
-          <h3 class="card__title">Adobe React Aria</h3>
-          <p class="card__host">on <strong>Mangrove</strong></p>
-        </header>
-        <p class="card__status" data-status="complete">Complete</p>
-        <ul class="flags"><li class="flag flag--ok" tabindex="0" aria-describedby="help-leakage" data-help="Did the library change how the REST of the page looks, outside its own area? Measured by loading the page twice, with and without the library, and comparing UNDRR's own headings, buttons, tables and cards." data-term="Leakage">Leakage: clean</li><li class="flag flag--ok" tabindex="0" aria-describedby="help-rtl" data-help="Does Arabic work in the COMPONENTS, not just the page? A page can flip correctly while a library's own dropdowns, dialogs and date pickers stay left-to-right inside it." data-term="RTL">RTL: clean</li><li class="flag flag--ok" tabindex="0" aria-describedby="help-longLabels" data-help="UNDRR's real content includes very long strings, and its French and Arabic are longer again. &quot;Clean&quot; means nothing overflowed the viewport or was clipped when the fixture text was left untouched." data-term="Long labels">Long labels: clean</li></ul>
-        
-        <ul class="views"><li class="view"><a class="view__link" href="./mangrove-react-aria/island.html">Inside a real page</a> <span class="view__hint">the candidate owns one region of a live Mangrove page</span></li><li class="view"><a class="view__link" href="./mangrove-react-aria/">Component inventory</a> <span class="view__hint">every component on one page - proves capability, not adoption</span></li></ul>
-      </article>
-        </div>
-      </section>
-
-      <section class="pairing" aria-labelledby="pairing-mui">
-        <div class="pairing__meta">
-          <h2 class="pairing__title" id="pairing-mui">MUI (Community only)</h2>
-          <p class="pairing__licence">@mui/material<br />MIT</p>
-          <p class="architecture-tag">
-            <span class="architecture-tag__type">Type A</span>
-            Ship and theme
-          </p>
-          <p class="pairing__architecture">A themed application stack runs beside Mangrove's content stack. Each can integrate cleanly, but keeping them synchronized requires a deliberate bridge.</p>
-          <p class="pairing__architecture-link">
-            <a href="./architecture-options.html#a-ship-and-theme-mui-mantine-ant-design">How Type A works</a>
-          </p>
-          <p class="card__issue card__issue--caveat">
-      <span class="card__issue-badge">Caveat</span>
-      MUI needs a third setup step for RTL, and fails silently without it <a class="card__issue-more" href="./issues.html#mui">all 9 findings</a>
-    </p>
-        </div>
-        <div class="pairing__hosts">
-
-      <article class="card card--complete">
-        <header class="card__header">
-          <h3 class="card__title">MUI (Community only)</h3>
-          <p class="card__host">on <strong>Delta</strong></p>
-        </header>
-        <p class="card__status" data-status="complete">Complete</p>
-        <ul class="flags"><li class="flag flag--ok" tabindex="0" aria-describedby="help-leakage" data-help="Did the library change how the REST of the page looks, outside its own area? Measured by loading the page twice, with and without the library, and comparing UNDRR's own headings, buttons, tables and cards." data-term="Leakage">Leakage: clean</li><li class="flag flag--ok" tabindex="0" aria-describedby="help-rtl" data-help="Does Arabic work in the COMPONENTS, not just the page? A page can flip correctly while a library's own dropdowns, dialogs and date pickers stay left-to-right inside it." data-term="RTL">RTL: clean</li><li class="flag flag--ok" tabindex="0" aria-describedby="help-longLabels" data-help="UNDRR's real content includes very long strings, and its French and Arabic are longer again. &quot;Clean&quot; means nothing overflowed the viewport or was clipped when the fixture text was left untouched." data-term="Long labels">Long labels: clean</li></ul>
-        
-        <ul class="views"><li class="view"><a class="view__link" href="./delta-mui/app.html">A whole DELTA screen</a> <span class="view__hint">layout, navigation and a full records workflow</span></li><li class="view"><a class="view__link" href="./delta-mui/">Component inventory</a> <span class="view__hint">every component on one page - proves capability, not adoption</span></li></ul>
-      </article>
-
-      <article class="card card--complete">
-        <header class="card__header">
-          <h3 class="card__title">MUI (Community only)</h3>
-          <p class="card__host">on <strong>Mangrove</strong></p>
-        </header>
-        <p class="card__status" data-status="complete">Complete</p>
-        <ul class="flags"><li class="flag flag--ok" tabindex="0" aria-describedby="help-leakage" data-help="Did the library change how the REST of the page looks, outside its own area? Measured by loading the page twice, with and without the library, and comparing UNDRR's own headings, buttons, tables and cards." data-term="Leakage">Leakage: clean</li><li class="flag flag--ok" tabindex="0" aria-describedby="help-rtl" data-help="Does Arabic work in the COMPONENTS, not just the page? A page can flip correctly while a library's own dropdowns, dialogs and date pickers stay left-to-right inside it." data-term="RTL">RTL: clean</li><li class="flag flag--ok" tabindex="0" aria-describedby="help-longLabels" data-help="UNDRR's real content includes very long strings, and its French and Arabic are longer again. &quot;Clean&quot; means nothing overflowed the viewport or was clipped when the fixture text was left untouched." data-term="Long labels">Long labels: clean</li></ul>
-        
-        <ul class="views"><li class="view"><a class="view__link" href="./mangrove-mui/island.html">Inside a real page</a> <span class="view__hint">the candidate owns one region of a live Mangrove page</span></li><li class="view"><a class="view__link" href="./mangrove-mui/">Component inventory</a> <span class="view__hint">every component on one page - proves capability, not adoption</span></li></ul>
-      </article>
-        </div>
-      </section>
-
-      <section class="pairing" aria-labelledby="pairing-carbon">
-        <div class="pairing__meta">
-          <h2 class="pairing__title" id="pairing-carbon">IBM Carbon</h2>
-          <p class="pairing__licence">@carbon/react<br />Apache-2.0</p>
-          <p class="architecture-tag">
-            <span class="architecture-tag__type">Type B</span>
-            Complete branded system
-          </p>
-          <p class="pairing__architecture">The same parallel-stack problem as Type A, with Carbon's own design language adding another source of visual and structural authority.</p>
-          <p class="pairing__architecture-link">
-            <a href="./architecture-options.html#b-complete-branded-system-ibm-carbon">How Type B works</a>
-          </p>
-          <p class="card__issue card__issue--blocker">
-      <span class="card__issue-badge">Warning</span>
-      Carbon cannot express about 30% of the UNDRR design tokens <a class="card__issue-more" href="./issues.html#carbon">all 12 findings</a>
-    </p>
-        </div>
-        <div class="pairing__hosts">
-
-      <article class="card card--complete">
-        <header class="card__header">
-          <h3 class="card__title">IBM Carbon</h3>
-          <p class="card__host">on <strong>Delta</strong></p>
-        </header>
-        <p class="card__status" data-status="complete">Complete</p>
-        <ul class="flags"><li class="flag flag--ok" tabindex="0" aria-describedby="help-leakage" data-help="Did the library change how the REST of the page looks, outside its own area? Measured by loading the page twice, with and without the library, and comparing UNDRR's own headings, buttons, tables and cards." data-term="Leakage">Leakage: clean</li><li class="flag flag--ok" tabindex="0" aria-describedby="help-rtl" data-help="Does Arabic work in the COMPONENTS, not just the page? A page can flip correctly while a library's own dropdowns, dialogs and date pickers stay left-to-right inside it." data-term="RTL">RTL: clean</li><li class="flag flag--ok" tabindex="0" aria-describedby="help-longLabels" data-help="UNDRR's real content includes very long strings, and its French and Arabic are longer again. &quot;Clean&quot; means nothing overflowed the viewport or was clipped when the fixture text was left untouched." data-term="Long labels">Long labels: clean</li></ul>
-        <p class="ceiling">
-        <strong>21</strong> of 71 UNDRR tokens unreachable
-        <span class="ceiling__note">a ceiling, not a cost: there is no hook to attach them to</span>
-      </p>
-        <ul class="views"><li class="view"><a class="view__link" href="./delta-carbon/app.html">A whole DELTA screen</a> <span class="view__hint">layout, navigation and a full records workflow</span></li><li class="view"><a class="view__link" href="./delta-carbon/">Component inventory</a> <span class="view__hint">every component on one page - proves capability, not adoption</span></li></ul>
-      </article>
-
-      <article class="card card--complete">
-        <header class="card__header">
-          <h3 class="card__title">IBM Carbon</h3>
-          <p class="card__host">on <strong>Mangrove</strong></p>
-        </header>
-        <p class="card__status" data-status="complete">Complete</p>
-        <ul class="flags"><li class="flag flag--bad" tabindex="0" aria-describedby="help-leakage" data-help="Did the library change how the REST of the page looks, outside its own area? Measured by loading the page twice, with and without the library, and comparing UNDRR's own headings, buttons, tables and cards." data-term="Leakage">Leakage: 19 differences</li><li class="flag flag--ok" tabindex="0" aria-describedby="help-rtl" data-help="Does Arabic work in the COMPONENTS, not just the page? A page can flip correctly while a library's own dropdowns, dialogs and date pickers stay left-to-right inside it." data-term="RTL">RTL: clean</li><li class="flag flag--ok" tabindex="0" aria-describedby="help-longLabels" data-help="UNDRR's real content includes very long strings, and its French and Arabic are longer again. &quot;Clean&quot; means nothing overflowed the viewport or was clipped when the fixture text was left untouched." data-term="Long labels">Long labels: clean</li></ul>
-        <p class="ceiling">
-        <strong>22</strong> of 72 UNDRR tokens unreachable
-        <span class="ceiling__note">a ceiling, not a cost: there is no hook to attach them to</span>
-      </p>
-        <ul class="views"><li class="view"><a class="view__link" href="./mangrove-carbon/island.html">Inside a real page</a> <span class="view__hint">the candidate owns one region of a live Mangrove page</span></li><li class="view"><a class="view__link" href="./mangrove-carbon/">Component inventory</a> <span class="view__hint">every component on one page - proves capability, not adoption</span></li></ul>
-      </article>
-        </div>
-      </section>
-
-      <section class="pairing" aria-labelledby="pairing-mantine">
-        <div class="pairing__meta">
-          <h2 class="pairing__title" id="pairing-mantine">Mantine</h2>
-          <p class="pairing__licence">@mantine/core<br />MIT</p>
-          <p class="architecture-tag">
-            <span class="architecture-tag__type">Type A</span>
-            Ship and theme
-          </p>
-          <p class="pairing__architecture">A themed application stack runs beside Mangrove's content stack. Each can integrate cleanly, but keeping them synchronized requires a deliberate bridge.</p>
-          <p class="pairing__architecture-link">
-            <a href="./architecture-options.html#a-ship-and-theme-mui-mantine-ant-design">How Type A works</a>
-          </p>
-          <p class="card__issue card__issue--blocker">
-      <span class="card__issue-badge">Warning</span>
-      Modal's close button ships with no accessible name <a class="card__issue-more" href="./issues.html#mantine">all 11 findings</a>
-    </p>
-        </div>
-        <div class="pairing__hosts">
-
-      <article class="card card--complete">
-        <header class="card__header">
-          <h3 class="card__title">Mantine</h3>
-          <p class="card__host">on <strong>Delta</strong></p>
-        </header>
-        <p class="card__status" data-status="complete">Complete</p>
-        <ul class="flags"><li class="flag flag--ok" tabindex="0" aria-describedby="help-leakage" data-help="Did the library change how the REST of the page looks, outside its own area? Measured by loading the page twice, with and without the library, and comparing UNDRR's own headings, buttons, tables and cards." data-term="Leakage">Leakage: clean</li><li class="flag flag--ok" tabindex="0" aria-describedby="help-rtl" data-help="Does Arabic work in the COMPONENTS, not just the page? A page can flip correctly while a library's own dropdowns, dialogs and date pickers stay left-to-right inside it." data-term="RTL">RTL: clean</li><li class="flag flag--ok" tabindex="0" aria-describedby="help-longLabels" data-help="UNDRR's real content includes very long strings, and its French and Arabic are longer again. &quot;Clean&quot; means nothing overflowed the viewport or was clipped when the fixture text was left untouched." data-term="Long labels">Long labels: clean</li></ul>
-        <p class="ceiling">
-        <strong>5</strong> of 71 UNDRR tokens unreachable
-        <span class="ceiling__note">a ceiling, not a cost: there is no hook to attach them to</span>
-      </p>
-        <ul class="views"><li class="view"><a class="view__link" href="./delta-mantine/app.html">A whole DELTA screen</a> <span class="view__hint">layout, navigation and a full records workflow</span></li><li class="view"><a class="view__link" href="./delta-mantine/">Component inventory</a> <span class="view__hint">every component on one page - proves capability, not adoption</span></li></ul>
-      </article>
-
-      <article class="card card--complete">
-        <header class="card__header">
-          <h3 class="card__title">Mantine</h3>
-          <p class="card__host">on <strong>Mangrove</strong></p>
-        </header>
-        <p class="card__status" data-status="complete">Complete</p>
-        <ul class="flags"><li class="flag flag--ok" tabindex="0" aria-describedby="help-leakage" data-help="Did the library change how the REST of the page looks, outside its own area? Measured by loading the page twice, with and without the library, and comparing UNDRR's own headings, buttons, tables and cards." data-term="Leakage">Leakage: clean</li><li class="flag flag--ok" tabindex="0" aria-describedby="help-rtl" data-help="Does Arabic work in the COMPONENTS, not just the page? A page can flip correctly while a library's own dropdowns, dialogs and date pickers stay left-to-right inside it." data-term="RTL">RTL: clean</li><li class="flag flag--ok" tabindex="0" aria-describedby="help-longLabels" data-help="UNDRR's real content includes very long strings, and its French and Arabic are longer again. &quot;Clean&quot; means nothing overflowed the viewport or was clipped when the fixture text was left untouched." data-term="Long labels">Long labels: clean</li></ul>
-        
-        <ul class="views"><li class="view"><a class="view__link" href="./mangrove-mantine/island.html">Inside a real page</a> <span class="view__hint">the candidate owns one region of a live Mangrove page</span></li><li class="view"><a class="view__link" href="./mangrove-mantine/">Component inventory</a> <span class="view__hint">every component on one page - proves capability, not adoption</span></li></ul>
-      </article>
-        </div>
-      </section>
-
-      <section class="pairing" aria-labelledby="pairing-antd">
-        <div class="pairing__meta">
-          <h2 class="pairing__title" id="pairing-antd">Ant Design</h2>
-          <p class="pairing__licence">antd<br />MIT</p>
-          <p class="architecture-tag">
-            <span class="architecture-tag__type">Type A</span>
-            Ship and theme
-          </p>
-          <p class="pairing__architecture">A themed application stack runs beside Mangrove's content stack. Each can integrate cleanly, but keeping them synchronized requires a deliberate bridge.</p>
-          <p class="pairing__architecture-link">
-            <a href="./architecture-options.html#a-ship-and-theme-mui-mantine-ant-design">How Type A works</a>
-          </p>
-          <p class="card__issue card__issue--caveat">
-      <span class="card__issue-badge">Caveat</span>
-      The data table has an upstream accessibility defect <a class="card__issue-more" href="./issues.html#antd">all 14 findings</a>
-    </p>
-        </div>
-        <div class="pairing__hosts">
-
-      <article class="card card--complete">
-        <header class="card__header">
-          <h3 class="card__title">Ant Design</h3>
-          <p class="card__host">on <strong>Delta</strong></p>
-        </header>
-        <p class="card__status" data-status="complete">Complete</p>
-        <ul class="flags"><li class="flag flag--ok" tabindex="0" aria-describedby="help-leakage" data-help="Did the library change how the REST of the page looks, outside its own area? Measured by loading the page twice, with and without the library, and comparing UNDRR's own headings, buttons, tables and cards." data-term="Leakage">Leakage: clean</li><li class="flag flag--ok" tabindex="0" aria-describedby="help-rtl" data-help="Does Arabic work in the COMPONENTS, not just the page? A page can flip correctly while a library's own dropdowns, dialogs and date pickers stay left-to-right inside it." data-term="RTL">RTL: clean</li><li class="flag flag--ok" tabindex="0" aria-describedby="help-longLabels" data-help="UNDRR's real content includes very long strings, and its French and Arabic are longer again. &quot;Clean&quot; means nothing overflowed the viewport or was clipped when the fixture text was left untouched." data-term="Long labels">Long labels: clean</li></ul>
-        
-        <ul class="views"><li class="view"><a class="view__link" href="./delta-antd/app.html">A whole DELTA screen</a> <span class="view__hint">layout, navigation and a full records workflow</span></li><li class="view"><a class="view__link" href="./delta-antd/">Component inventory</a> <span class="view__hint">every component on one page - proves capability, not adoption</span></li></ul>
-      </article>
-
-      <article class="card card--complete">
-        <header class="card__header">
-          <h3 class="card__title">Ant Design</h3>
-          <p class="card__host">on <strong>Mangrove</strong></p>
-        </header>
-        <p class="card__status" data-status="complete">Complete</p>
-        <ul class="flags"><li class="flag flag--ok" tabindex="0" aria-describedby="help-leakage" data-help="Did the library change how the REST of the page looks, outside its own area? Measured by loading the page twice, with and without the library, and comparing UNDRR's own headings, buttons, tables and cards." data-term="Leakage">Leakage: clean</li><li class="flag flag--ok" tabindex="0" aria-describedby="help-rtl" data-help="Does Arabic work in the COMPONENTS, not just the page? A page can flip correctly while a library's own dropdowns, dialogs and date pickers stay left-to-right inside it." data-term="RTL">RTL: clean</li><li class="flag flag--ok" tabindex="0" aria-describedby="help-longLabels" data-help="UNDRR's real content includes very long strings, and its French and Arabic are longer again. &quot;Clean&quot; means nothing overflowed the viewport or was clipped when the fixture text was left untouched." data-term="Long labels">Long labels: clean</li></ul>
-        
-        <ul class="views"><li class="view"><a class="view__link" href="./mangrove-antd/island.html">Inside a real page</a> <span class="view__hint">the candidate owns one region of a live Mangrove page</span></li><li class="view"><a class="view__link" href="./mangrove-antd/">Component inventory</a> <span class="view__hint">every component on one page - proves capability, not adoption</span></li></ul>
-      </article>
-        </div>
-      </section>
-      </div>
-
+      <script>
+        function openAnchor() {
+          var el = document.querySelector(location.hash);
+          if (!el) return;
+          var d = el.closest("details");
+          while (d) { d.open = true; d = d.parentElement.closest("details"); }
+          el.scrollIntoView();
+        }
+        addEventListener("hashchange", openAnchor);
+        if (location.hash) openAnchor();
+      </script>
       <footer>
         <p>
           Every demo renders identical fixture data inside a host shell it may
           not modify. Metrics come from each run's <code>evidence.json</code>.
         </p>
-        <p>
-          Host shells are derived from
-          <a href="https://github.com/PreventionWeb/delta">Delta</a> and
-          <a href="https://github.com/unisdr/undrr-mangrove">Mangrove</a>, both
-          Apache-2.0. See <code>docs/host-derivation.md</code>.
-        </p>
       </footer>
-    </div>
-
-      <div class="visually-hidden" id="help-leakage">Leakage: Did the library change how the REST of the page looks, outside its own area? Measured by loading the page twice, with and without the library, and comparing UNDRR's own headings, buttons, tables and cards.</div>
-      <div class="visually-hidden" id="help-rtl">RTL: Does Arabic work in the COMPONENTS, not just the page? A page can flip correctly while a library's own dropdowns, dialogs and date pickers stay left-to-right inside it.</div>
-      <div class="visually-hidden" id="help-longLabels">Long labels: UNDRR's real content includes very long strings, and its French and Arabic are longer again. &quot;Clean&quot; means nothing overflowed the viewport or was clipped when the fixture text was left untouched.</div>
-
-    <div id="badge-tip" role="tooltip" aria-hidden="true"></div>
-
-    <script>
-      /* Badge tooltips. One element moved on hover/focus; Escape dismisses (WCAG 1.4.13). */
-      (() => {
-        const tip = document.getElementById("badge-tip");
-        if (!tip) return;
-        let current = null;
-
-        function show(badge) {
-          current = badge;
-          const term = badge.dataset.term ?? "";
-          const help = badge.dataset.help ?? "";
-          tip.innerHTML = "";
-          if (term) {
-            const strong = document.createElement("strong");
-            strong.textContent = term;
-            tip.append(strong);
-          }
-          tip.append(document.createTextNode(help));
-
-          // Position above the badge if room, otherwise below.
-          tip.dataset.open = "true";
-          tip.setAttribute("aria-hidden", "false");
-          const anchor = badge.getBoundingClientRect();
-          const box = tip.getBoundingClientRect();
-          const margin = 8;
-          let left = anchor.left + anchor.width / 2 - box.width / 2;
-          left = Math.max(margin, Math.min(left, window.innerWidth - box.width - margin));
-          const above = anchor.top - box.height - margin;
-          const top = above >= margin ? above : anchor.bottom + margin;
-          tip.style.left = left + "px";
-          tip.style.top = top + "px";
-        }
-
-        function hide() {
-          current = null;
-          tip.dataset.open = "false";
-          tip.setAttribute("aria-hidden", "true");
-        }
-
-        for (const badge of document.querySelectorAll(".flag[data-help]")) {
-          badge.addEventListener("mouseenter", () => show(badge));
-          badge.addEventListener("mouseleave", hide);
-          badge.addEventListener("focus", () => show(badge));
-          badge.addEventListener("blur", hide);
-        }
-
-        document.addEventListener("keydown", (event) => {
-          if (event.key === "Escape" && current) hide();
-        });
-        // Dismiss on scroll/resize so the tooltip doesn't float detached.
-        window.addEventListener("scroll", () => current && hide(), { passive: true });
-        window.addEventListener("resize", () => current && hide());
-      })();
-    </script>
+    </main>
   </body>
 </html>

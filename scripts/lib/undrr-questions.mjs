@@ -47,7 +47,7 @@ export const UNDRR_QUESTIONS = [
     axis: "A5",
     axisName: "Theming fidelity and propagation",
     answer:
-      "React Aria and Carbon resolve tokens in the browser, so a Mangrove change is a stylesheet swap. MUI, Mantine and Ant Design bake values in, making it a rebuild of every site. Carbon leaves 21-22 of 71 tokens unreachable at all.",
+      "React Aria and Carbon retain browser-resolved token references. MUI, Mantine and Ant Design bake mapped values into their themes, so bundled theme changes require each consuming site to rebuild unless the token sheet is delivered centrally. Carbon leaves 21-22 of 71 evaluated tokens unreachable.",
   },
   {
     question: "Right-to-left",
@@ -55,13 +55,13 @@ export const UNDRR_QUESTIONS = [
     axis: "A6",
     axisName: "Right-to-left",
     answer:
-      "MUI Community fails on both hosts and cannot be fixed within the brief's constraints. React Aria and Ant Design are clean at zero cost; Mantine is clean only after mitigation. This needs a policy call, not a bug fix.",
+      "MUI works after its documented three-step RTL setup: dir, a direction-aware theme, and its first-party stylis plugin. The prototypes implement that setup in 29 integration lines with two dependencies and a provider; omission fails silently. React Aria and Ant Design work without that extra pipeline, while Mantine is clean after mitigation.",
   },
   {
     question: "Accessibility",
     asks: "Does it meet UNDRR's obligations in practice?",
     axis: "A7",
-    axisName: "Accessibility conformance",
+    axisName: "Automated accessibility signals",
     answer:
       "Zero is a floor, not a conformance claim: no screen-reader or human keyboard pass was run on any pairing. And the floor is lower than the kitchen sinks suggested - the realistic layouts found a critical unnamed-button defect in Mantine's Modal that every scoped axe run in this repository was blind to, because portalled overlays render outside the scanned subtree.",
   },

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Generates docs/index.html from docs/manifest.json and per-app evidence.json.
+ * Generates docs/prototypes.html from docs/manifest.json and per-app evidence.json.
  *
  *   pnpm docs:index
  */
@@ -9,12 +9,12 @@ import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { UNDRR_QUESTIONS } from "./lib/undrr-questions.mjs";
+import { siteNavHtml, siteNavCss } from "./lib/site-nav.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, "..");
 const MANIFEST = join(ROOT, "docs", "manifest.json");
-const OUT = join(ROOT, "docs", "index.html");
+const OUT = join(ROOT, "docs", "prototypes.html");
 
 /** Escapes text for safe interpolation into HTML. */
 function esc(value) {
@@ -37,7 +37,7 @@ const ARCHITECTURE_TYPES = Object.freeze({
     name: "Foundational shared system",
     anchor: "c-foundational-adobe-react-aria",
     continuity:
-      "One UNDRR-owned component expression can serve DELTA and content products. Strongest synchronization potential; largest ongoing design-system commitment.",
+      "Sibling content and data design systems share React Aria foundations, tokens and policy while retaining product-specific expression. Strong synchronization potential; substantial ongoing design-system commitment.",
   },
   mui: {
     id: "A",
@@ -69,40 +69,12 @@ const ARCHITECTURE_TYPES = Object.freeze({
   },
 });
 
-/** Where to point markdown docs, which GitHub Pages serves as plain text. */
-const DOCS_BLOB = "https://github.com/khawkins98/data-design-demo/blob/main/docs";
-
-/**
- * The six questions, sourced from scripts/lib/undrr-questions.mjs so that
- * this page and axes.html stay in sync.
- */
-
-/* Stacked full-width list: questions are read in order, not scanned. */
-const questionsHtml = UNDRR_QUESTIONS.map(
-  (q) => `
-          <div class="question">
-            <h3 class="question__title">
-              ${esc(q.question)}
-              <span class="question__asks">${esc(q.asks)}</span>
-            </h3>
-            <p class="question__answer">${esc(q.answer)}</p>
-            <p class="question__axis">
-              <a href="./axes.html#${esc(q.axis.toLowerCase())}"
-                >Evidence: ${esc(q.axis)} ${esc(q.axisName)}</a
-              >
-            </p>
-          </div>`,
-).join("\n");
-
-/** Known-issue counts per pairing, from scripts/build-known-issues-json.mjs. */
+/** Known issues per pairing, from scripts/build-known-issues-json.mjs. */
 const KNOWN_ISSUES_PATH = join(ROOT, "docs", "known-issues.json");
 const knownIssuesDoc = existsSync(KNOWN_ISSUES_PATH)
   ? JSON.parse(readFileSync(KNOWN_ISSUES_PATH, "utf8"))
   : {};
 const knownIssues = knownIssuesDoc.pairings ?? {};
-/** Candidate-level totals, so a link's count matches what the link opens. */
-const candidateCounts = knownIssuesDoc.candidates ?? {};
-
 /** Reads one pairing's evidence.json, or null if the run has not produced one. */
 function readEvidence(appDir) {
   const path = join(ROOT, "apps", appDir, "evidence.json");
@@ -166,7 +138,7 @@ for (const candidate of manifest.candidates) {
     if (evidence) {
       const blockers = Array.isArray(evidence.blockers) ? evidence.blockers : [];
       status = blockers.length > 0 ? "blocked" : "complete";
-      statusLabel = blockers.length > 0 ? `Warnings (${blockers.length})` : "Complete";
+      statusLabel = blockers.length > 0 ? "Prototype built · review findings" : "Prototype built";
     }
 
     groupCards.push({
@@ -208,11 +180,7 @@ function knownIssueNote(appDir, candidateId) {
   if (!entry || !entry.headline) return "";
   const { severity, title } = entry.headline;
   const others = entry.total - 1;
-  /* Count matches the candidate-level total the link opens. */
-  const candidateTotal = candidateCounts[candidateId]?.open ?? entry.total;
-  const more = ` <a class="card__issue-more" href="./issues.html#${esc(candidateId)}">${
-    candidateTotal > 1 ? `all ${candidateTotal} findings` : "read it in full"
-  }</a>`;
+  const more = ` <a class="card__issue-more" href="./issues.html#${esc(candidateId)}">view technical findings</a>`;
   return `<p class="card__issue card__issue--${esc(severity)}">
       <span class="card__issue-badge">${esc(
         severity === "decision" ? "Decision needed" : severity === "blocker" ? "Warning" : "Caveat",
@@ -284,7 +252,7 @@ function flags(evidence) {
     items.push(
       badge(
         "leakage",
-        `Leakage: ${passed ? "clean" : `${evidence.leakage.differences?.length ?? 0} differences`}`,
+        `Leakage: ${passed ? "clean" : `${evidence.leakage.differenceCount ?? evidence.leakage.differences?.length ?? 0} differences`}`,
         passed,
       ),
     );
@@ -332,9 +300,11 @@ function cardMarkup(card) {
           <p class="card__host">on <strong>${esc(card.host.name)}</strong></p>
         </header>
         <p class="card__status" data-status="${esc(card.status)}">${esc(card.statusLabel)}</p>
-        ${flags(card.evidence)}
-        ${metrics(card.evidence)}
         ${viewLinks(card)}
+        ${card.evidence ? `<details class="technical-detail card__technical">
+          <summary><span class="audience-tag">Developer detail</span> Automated integration signals</summary>
+          <div class="technical-detail__body">${flags(card.evidence)}${metrics(card.evidence)}</div>
+        </details>` : ""}
       </article>`;
 }
 
@@ -387,10 +357,10 @@ const html = `<!doctype html>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>${esc(manifest.title)}</title>
+    <title>Prototype matrix - ${esc(manifest.title)}</title>
+    <link rel="stylesheet" href="./mangrove.css" />
     <style>
       :root {
-        color-scheme: light dark;
         --bg: #f4f6f8;
         --surface: #ffffff;
         --text: #14232e;
@@ -401,23 +371,10 @@ const html = `<!doctype html>
         --bad: #a11f2c;
         --pending: #8a6100;
       }
-      @media (prefers-color-scheme: dark) {
-        :root {
-          --bg: #10191f;
-          --surface: #17232b;
-          --text: #e8eef2;
-          --muted: #a3b3bf;
-          --border: #2c3d48;
-          --accent: #7fb3cc;
-          --ok: #6fc79b;
-          --bad: #ef8b96;
-          --pending: #e0b458;
-        }
-      }
       * { box-sizing: border-box; }
       body {
         margin: 0;
-        padding: 2rem 1.5rem 4rem;
+        padding: 0;
         background: var(--bg);
         color: var(--text);
         font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -425,7 +382,7 @@ const html = `<!doctype html>
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
       }
-      .page { max-width: 76rem; margin: 0 auto; }
+      .page { max-width: 76rem; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
       h1, h2, h3 { text-wrap: balance; }
       p, li, dd { text-wrap: pretty; }
       h1 { font-size: 1.75rem; margin: 0 0 0.5rem; }
@@ -482,23 +439,6 @@ const html = `<!doctype html>
         gap: 1rem;
         grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
       }
-      /* Read in order, all six - so one column at a readable measure, not a grid. */
-      .questions { margin: 1rem 0 0; max-width: 78ch; }
-      .question { padding: 0.875rem 0; border-top: 1px solid var(--border); }
-      .question:first-child { border-top: 0; padding-top: 0.25rem; }
-      .question__title {
-        font-size: 0.9375rem;
-        margin: 0 0 0.375rem;
-        display: flex;
-        flex-wrap: wrap;
-        align-items: baseline;
-        gap: 0.5rem;
-      }
-      /* The question itself, inside the heading: one line, one thought. */
-      .question__asks { font-weight: 400; font-size: 0.8125rem; color: var(--muted); }
-      .question__answer { margin: 0 0 0.375rem; font-size: 0.875rem; }
-      .question__axis { margin: 0; font-size: 0.75rem; }
-      .start__more { margin: 1rem 0 0; font-size: 0.8125rem; max-width: 78ch; }
       .ceiling {
         margin: 0.25rem 0 0;
         font-size: 0.75rem;
@@ -612,136 +552,24 @@ const html = `<!doctype html>
       .card__link { margin-top: auto; padding-top: 0.75rem; font-size: 0.875rem; color: var(--accent); }
       .card__link--disabled { color: var(--muted); }
       footer { margin-top: 3rem; color: var(--muted); font-size: 0.8125rem; max-width: 70ch; }
-      .start {
-        margin: 0 0 2.5rem;
-        padding: 1.25rem 1.5rem;
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        border-inline-start: 4px solid var(--accent);
-      }
-      .start__title { font-size: 1.125rem; margin: 0 0 0.5rem; }
-      .start__lead { margin: 0 0 0.75rem; max-width: 72ch; }
-      .start__verdict {
-        margin: 0 0 1rem;
-        padding: 0.875rem 1rem;
-        background: var(--bg);
-        border: 1px solid var(--accent);
-        border-radius: 6px;
-        max-width: 82ch;
-      }
-      .decision-lenses {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 0.75rem;
-        margin: 1rem 0 1.25rem;
-        max-width: 82ch;
-      }
-      .decision-lens {
-        padding: 0.875rem 1rem;
-        border-radius: 6px;
-        background: var(--bg);
-        box-shadow: 0 0 0 1px color-mix(in srgb, var(--border) 80%, transparent),
-                    0 1px 3px rgb(0 0 0 / 0.05);
-      }
-      .decision-lens__eyebrow {
-        margin: 0 0 0.25rem;
-        color: var(--accent);
-        font-size: 0.6875rem;
-        font-weight: 700;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-      }
-      .decision-lens__title { margin: 0 0 0.375rem; font-size: 1rem; }
-      .decision-lens__body { margin: 0; color: var(--muted); font-size: 0.8125rem; }
-      @media (max-width: 42rem) {
-        .decision-lenses { grid-template-columns: minmax(0, 1fr); }
-      }
       .glossary { margin: 0 0 2rem; font-size: 0.875rem; }
       .glossary__summary { cursor: pointer; color: var(--accent); font-weight: 600; }
       .glossary__list { margin: 0.875rem 0 0; max-width: 80ch; }
       .glossary__list dt { font-weight: 700; margin-top: 0.75rem; }
       .glossary__list dd { margin: 0.125rem 0 0; color: var(--muted); }
-      .start__list { margin: 0; padding-inline-start: 1.125rem; max-width: 78ch; }
-      .start__list li + li { margin-top: 0.5rem; }
       .grid-intro { margin: 0 0 1.25rem; max-width: 78ch; }
       .grid-intro__title { margin: 0 0 0.375rem; font-size: 1.25rem; }
       .grid-intro__body { margin: 0; color: var(--muted); font-size: 0.875rem; }
+      .card__technical { margin-top:0.25rem !important; font-size:0.75rem; }
+${siteNavCss}
     </style>
   </head>
   <body>
-    <div class="page">
-      <h1>${esc(manifest.title)}</h1>
+${siteNavHtml("prototypes")}
+    <main id="main" class="page">
+      <h1>Prototype matrix</h1>
       <p class="subtitle">${esc(manifest.subtitle)}</p>
-
-      <section class="start" aria-labelledby="start-here">
-        <h2 class="start__title" id="start-here">Start here</h2>
-        <p class="start__lead">
-          Whatever replaces PrimeReact becomes the default front-end foundation
-          for DELTA, Mangrove properties and future data systems. All five
-          candidates meet all 300 requirements, so the requirement matrix does
-          not discriminate. The decision therefore has two layers: whether a
-          candidate can do the job, and what kind of system it creates across
-          the estate.
-        </p>
-
-        <p class="start__verdict">
-          <strong>If you only read one thing:</strong> the evidence recommends
-          a <strong>shared UNDRR component layer on Adobe React Aria</strong>.
-          The reuse experiment proves that both React Aria and MUI can package;
-          React Aria is preferred because live tokens propagate without rebuilding
-          every site and UNDRR remains the visual authority. This is a commitment
-          to fund a design system, not a shortcut around one.
-          <a href="./architecture-options.html">Architecture, evidence and costs</a>.
-        </p>
-
-        <div class="decision-lenses" aria-label="The two decision questions">
-          <article class="decision-lens">
-            <p class="decision-lens__eyebrow">Question 1 · Capability fit</p>
-            <h3 class="decision-lens__title">Can it do the job?</h3>
-            <p class="decision-lens__body">
-              Requirement coverage, theming, Arabic and RTL, accessibility, and
-              clean integration inside each host. The demos and seven evidence
-              axes answer this question.
-            </p>
-          </article>
-          <article class="decision-lens">
-            <p class="decision-lens__eyebrow">Question 2 · Estate architecture</p>
-            <h3 class="decision-lens__title">Will the products stay in sync?</h3>
-            <p class="decision-lens__body">
-              How DELTA, Mangrove and content products share components and
-              policy over time. A clean integration today does not guarantee a
-              coherent system tomorrow; Types A, B and C describe that shape,
-              not a grade.
-            </p>
-          </article>
-        </div>
-
-        <p class="start__lead">
-          <strong>Capability fit is shown three ways.</strong> A component inventory
-          proves the parts exist but hides integration defects. Two of the three
-          deciding defects are invisible in a component list and only appear
-          inside a real UNDRR page. The architecture type beside each candidate
-          answers the separate synchronization question.
-        </p>
-
-        <div class="questions">
-${questionsHtml}
-        </div>
-
-        <p class="start__more">
-          <a href="./scores.html"><strong>Weighted scores</strong></a>
-          — all five ranked, with warnings shown beside the score &middot;
-          <a href="./axes.html"><strong>Decision axes</strong></a>
-          — what is measured on each &middot;
-          <a href="${DOCS_BLOB}/undrr-questions.md">the six questions in full</a>
-          &middot;
-          <a href="./architecture-options.html"><strong>Architecture
-          options</strong></a> — measured reuse, ownership and visual authority &middot;
-          <a href="./comparison.html">requirement matrix</a> — the 300 assessments
-          (audit trail, not the decision).
-        </p>
-      </section>
+      <p><a href="./">Return to the ranking</a>.</p>
 
       <details class="glossary">
         <summary class="glossary__summary">Glossary</summary>
@@ -777,9 +605,7 @@ ${badgeGlossaryHtml}
       <section class="grid-intro" aria-labelledby="candidate-overview">
         <h2 class="grid-intro__title" id="candidate-overview">Candidate overview</h2>
         <p class="grid-intro__body">
-          The left column identifies the estate architecture and its synchronization
-          implication. The two host cards show the separate capability question:
-          whether that candidate works cleanly in DELTA and Mangrove today.
+          Architecture on the left; working DELTA and Mangrove demonstrations on the right.
         </p>
       </section>
 
@@ -799,7 +625,7 @@ ${cardHtml}
           Apache-2.0. See <code>docs/host-derivation.md</code>.
         </p>
       </footer>
-    </div>
+    </main>
 
 ${badgeHelpHtml}
 

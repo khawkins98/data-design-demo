@@ -216,6 +216,7 @@ const bySeverity = (a, b) =>
 function tableHtml(id, caption, issues) {
   if (issues.length === 0) return "";
   return `
+      <div class="register-scroll">
       <table class="register" id="${esc(id)}">
         <caption class="register__caption">${caption}</caption>
         <thead>
@@ -230,7 +231,7 @@ function tableHtml(id, caption, issues) {
         <tbody>
 ${issues.map(rowHtml).join("\n")}
         </tbody>
-      </table>`;
+      </table></div>`;
 }
 
 const openIssues = KNOWN_ISSUES.filter((i) => !i.resolved).sort(bySeverity);
@@ -279,7 +280,7 @@ ${Object.entries(OWNER_LABEL)
         </div>
         <button type="button" class="control__reset" id="f-reset">Clear filters</button>
       </div>
-      <p class="tallies-label">Open findings per candidate — a cross-library finding counts once for each:</p>
+      <p class="tallies-label">Open findings per candidate — useful as filters, not as a ranking; ownership and severity differ:</p>
       <div class="tallies">
 ${tallies}
       </div>
@@ -297,7 +298,6 @@ const html = `<!doctype html>
     <link rel="stylesheet" href="./mangrove.css" />
     <style>
       :root { --accent:#004f91; --muted:#5b6b77; --border:#d5d5d5; --surface:#fff; --bad:#c10920; --pending:#8a5a00; --bg:#fff; --text:#1a1a1a; }
-      .lead { color:var(--muted); max-width:72ch; }
 
       /* Controls */
       .controls { display:flex; flex-wrap:wrap; gap:0.75rem 1rem; align-items:flex-end; margin:1.5rem 0 1rem; padding:0.875rem 1rem; background:var(--surface); border:1px solid var(--border); border-radius:6px; }
@@ -317,7 +317,8 @@ const html = `<!doctype html>
       .status { font-size:0.8125rem; color:var(--muted); margin:0 0 0.75rem; }
 
       /* The register */
-      .register { width:100%; border-collapse:collapse; margin:0 0 2.5rem; font-size:0.875rem; }
+      .register-scroll { overflow-x:auto; margin:0 0 2.5rem; }
+      .register { width:100%; border-collapse:collapse; font-size:0.875rem; }
       .register__caption { text-align:start; font-size:1.0625rem; font-weight:700; padding:0 0 0.5rem; }
       .register th { text-align:start; font-size:0.6875rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--muted); border-bottom:2px solid var(--border); padding:0.4rem 0.5rem; white-space:nowrap; }
       .register td { border-bottom:1px solid var(--border); padding:0.5rem; vertical-align:top; }
@@ -346,53 +347,23 @@ const html = `<!doctype html>
       .detail__id { margin:0; font-size:0.6875rem; color:var(--muted); }
       [hidden] { display:none !important; }
 
-      /* Small screens: the five columns do not fit, so the row becomes a stack.
-         The detail cell keeps its own layout - it was never a grid of columns. */
-      @media (max-width: 44rem) {
-        .register, .register tbody, .register tr, .register td { display:block; width:auto; }
-        .register thead { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
-        .register .row { border-bottom:1px solid var(--border); padding:0.5rem 0 0.25rem; }
-        .register .row > td { border:0; padding:0.1rem 0.5rem; }
-        .row--blocker .cell-sev, .row--decision .cell-sev { border-inline-start:0; }
-        .cell-cand, .cell-owner, .cell-escape { display:inline-block; white-space:normal; }
-        .cell-owner::before { content:"belongs to "; }
-        .cell-escape::before { content:"\\00b7 escape: "; }
-        .cell-title { width:auto; }
-        .detail > td { padding-inline-start:1rem; }
+      @media (max-width: 44rem) { .register { min-width:48rem; } }
+      @media print {
+        .controls, .tallies, .tallies-label, .status, .toc { display:none !important; }
+        .register-scroll { overflow:visible; }
+        .register { font-size:7.5pt; }
+        .detail[hidden] { display:table-row !important; }
       }
 ${siteNavCss}
     </style>
   </head>
   <body>
 ${siteNavHtml("issues")}
-    <div class="mg-container mg-page-content--padded">
+    <main id="main" class="mg-container mg-page-content--padded">
       <h1>Known issues register</h1>
-      <p class="lead">
-        Every finding this evaluation recorded, in full, generated from the same
-        registry the demo pages import so the two cannot disagree. Each entry says
-        <strong>who it belongs to</strong> — which decides whether it may affect a
-        score — and, where it could remove a candidate from a shortlist, what it
-        would take to escape it.
-      </p>
-      <p class="lead">
-        The second table is defects found in our own demo code. They are kept
-        rather than deleted: a record of the bugs this evaluation found in itself
-        is what entitles it to report bugs in anyone else's, and they are excluded
-        from every score.
-      </p>
-      <p class="lead">
-        One table, every candidate, sorted by severity — because the findings that
-        matter most are the ones that recur across libraries, and five separate
-        sections hid them. Select a row to read the finding in full. Filtering and
-        disclosure need JavaScript; without it the whole register is simply open.
-      </p>
-      <ul class="toc">
-        <li><a href="./scores.html">Weighted scores</a></li>
-        <li><a href="./axes.html">Decision axes</a></li>
-        <li><a href="./">All pairings</a></li>
-      </ul>
+      <p class="audience-banner"><span class="audience-tag">Developer evidence</span>Raw candidate and demo defects. Use the overview for the business decision and this register for remediation detail.</p>
 ${sections}
-    </div>
+    </main>
     <script>
       /*
         Three behaviours, no dependencies: row disclosure, filtering, and keeping
