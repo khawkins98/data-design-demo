@@ -687,7 +687,7 @@ export const KNOWN_ISSUES: readonly KnownIssue[] = Object.freeze([
     owner: "host",
     title: "Mangrove 1.8.1 exposes no design tokens at runtime",
     detail:
-      "The published stylesheet declares zero CSS custom properties, so the candidate on this page is themed to a neutral UNDRR token set rather than to Mangrove's own palette. Matching Mangrove exactly is not reachable through any candidate's theming API until Mangrove ships custom properties. The forthcoming 2.0 work is expected to change this.",
+      "The published stylesheet declares zero CSS custom properties. The project-owned tokens now carry Mangrove's current UNDRR interactive palette, so candidates can match known values such as #004f91, but they do not inherit them from Mangrove. A future palette change can therefore desynchronise the two stacks until the bridge is updated. The forthcoming 2.0 runtime-token work is expected to replace that manual synchronization point.",
     links: [
       { label: "host derivation", href: "../host-derivation.md" },
       { label: "Mangrove tracker", href: `${REPO}/issues/4` },

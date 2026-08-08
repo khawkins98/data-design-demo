@@ -396,7 +396,7 @@ const html = `<!doctype html>
         --text: #14232e;
         --muted: #4a5c69;
         --border: #c8d2da;
-        --accent: #2f6f8f;
+        --accent: #004f91;
         --ok: #1f6b45;
         --bad: #a11f2c;
         --pending: #8a6100;

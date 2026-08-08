@@ -69,6 +69,9 @@ describe("Mangrove HostShell", () => {
     // These come from the real compiled stylesheet, so a typo here means the
     // canary silently renders unstyled and the leakage baseline is wrong.
     expect(html).toContain("mg-button mg-button-primary");
+    expect(html).toMatch(
+      /data-canary="button-disabled"[^>]*class="mg-button mg-button-primary disabled"/,
+    );
     expect(html).toContain("mg-table mg-table--striped");
     expect(html).toContain("mg-card__content");
   });

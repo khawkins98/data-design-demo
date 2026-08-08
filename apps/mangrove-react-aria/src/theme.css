@@ -11,8 +11,9 @@
  * canaries. That scoping is the reason the leakage assertion passes, and it was
  * cheap precisely because the library contributes no global styles.
  *
- * All values come from packages/undrr-tokens. Where a token does not exist the
- * fallback is noted, and those are what `theming.tokensUnreachable` counts.
+ * Reusable colour, type and shape values come from packages/undrr-tokens. Where
+ * a token does not exist the fallback is noted; the button's exact component
+ * padding and line height are one such Mangrove-specific bridge.
  */
 
 .demo {
@@ -89,18 +90,21 @@
   align-items: center;
   justify-content: center;
   gap: var(--undrr-space-2);
-  padding: var(--undrr-space-2) var(--undrr-space-4);
-  border: 1px solid var(--undrr-color-border-strong);
-  border-radius: var(--undrr-radius-md);
-  background: var(--undrr-color-surface);
-  color: var(--undrr-color-text-primary);
-  font: inherit;
+  min-block-size: 2.5rem;
+  padding: 0.625rem 0.9375rem;
+  border: 1px solid var(--undrr-color-on-accent);
+  border-radius: var(--undrr-radius-none);
+  background: var(--undrr-color-accent-active);
+  color: var(--undrr-color-on-accent);
+  font-family: var(--undrr-font-family-display);
+  font-size: var(--undrr-font-size-sm);
   font-weight: var(--undrr-font-weight-semibold);
+  line-height: 1;
   cursor: pointer;
 }
 
 .demo-button[data-hovered] {
-  background: var(--undrr-color-surface-sunken);
+  background: var(--undrr-color-accent-hover);
 }
 
 /* React Aria sets data-focus-visible only for keyboard focus, so the ring
@@ -144,13 +148,7 @@ select.demo-input:focus-visible {
 }
 
 .demo-button[data-pressed] {
-  background: var(--undrr-color-surface-sunken);
-}
-
-.demo-button[data-disabled] {
-  color: var(--undrr-color-text-disabled);
-  border-color: var(--undrr-color-border);
-  cursor: not-allowed;
+  background: var(--undrr-color-accent-active);
 }
 
 .demo-button[data-active="true"] {
@@ -182,6 +180,15 @@ select.demo-input:focus-visible {
   background: transparent;
   border-color: transparent;
   color: var(--undrr-color-accent);
+}
+
+/* Last in the variant cascade so primary, danger and ghost buttons all share
+   one unmistakable disabled treatment. */
+.demo-button[data-disabled] {
+  background: var(--undrr-color-text-secondary);
+  color: var(--undrr-color-on-accent);
+  border-color: var(--undrr-color-on-accent);
+  cursor: not-allowed;
 }
 
 .demo-link {

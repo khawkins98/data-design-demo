@@ -8,11 +8,11 @@
  * is why it is one of the four files that stayed in the app rather than moving
  * into `@undrr-eval/integration-antd`.
  *
- * The gap is wider here than on Delta, for the reason every candidate hit on this
- * host: Mangrove is strongly opinionated - square corners, heavy borders, Roboto,
- * a specific blue - and 1.8.1 exposes no runtime tokens at all, so antd is themed
- * to the neutral UNDRR palette rather than to Mangrove's own values. That is the
- * finding, and it is why this section is screenshotted rather than described.
+ * Mangrove is strongly opinionated - square corners, heavy borders, Roboto and
+ * a specific blue. The project tokens now carry its current interactive palette,
+ * so colour can match, but antd consumes a separately maintained mapping rather
+ * than inheriting values from Mangrove 1.8.1 at runtime. The remaining visual gap
+ * and that synchronization boundary are why this section is screenshotted.
  */
 
 import type { ReactElement } from "react";

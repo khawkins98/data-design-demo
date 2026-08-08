@@ -68,8 +68,8 @@
 
 .preview__toolbar-group a[aria-current],
 .preview__toolbar-group button[aria-current] {
-  background: #2f6f8f;
-  border-color: #2f6f8f;
+  background: var(--undrr-color-accent, #004f91);
+  border-color: var(--undrr-color-accent, #004f91);
 }
 
 .preview__heading {

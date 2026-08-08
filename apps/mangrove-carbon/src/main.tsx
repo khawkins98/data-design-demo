@@ -6,7 +6,7 @@
  *   1. Mangrove 1.8.1 — the host design system, 197 KB, element-level rules.
  *   2. host-mangrove/host.css — the shell's layout supplement.
  *   3. Carbon — either the global stylesheet or the scoped experiment.
- *   4. undrr-tokens — the neutral tokens, scoped to `.undrr-tokens`.
+ *   4. undrr-tokens — shared project tokens, scoped to `.undrr-tokens`.
  *   5. theme.css — ours: maps `--undrr-*` onto Carbon's `--cds-*`.
  *
  * Carbon comes AFTER Mangrove deliberately. Both are global sheets of roughly

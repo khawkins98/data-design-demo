@@ -107,7 +107,7 @@
     {
       "id": "cards",
       "status": "native",
-      "notes": "Card + CardContent exist, unlike React Aria. Matching THIS host is where it falls short: variant=outlined and elevation=0 remove MUI's shadow, but radius, type scale and border colour still come from the neutral UNDRR tokens rather than from Mangrove, and Mangrove 1.8.1 publishes no runtime tokens to point MUI at. Side-by-side in section 9 shows the residual gap; it is wider than the delta-mui equivalent.",
+      "notes": "Card + CardContent exist, unlike React Aria. variant=outlined and elevation=0 remove MUI's shadow, while radius, type scale and border colour come from the shared project tokens. The interactive colours now match Mangrove's current UNDRR palette, but Mangrove 1.8.1 publishes no runtime tokens for MUI to inherit, so synchronization remains manual. Side-by-side in section 9 shows the residual structural gap.",
       "customLinesOfCode": 0
     },
     {
@@ -185,7 +185,7 @@
     {
       "id": "side-by-side",
       "status": "composed",
-      "notes": "Host and candidate button, table, card and nav list rendered adjacent in section 9. The host column uses Mangrove's real classes (mg-button-primary, mg-table--striped, mg-card) so it is styled by the design system itself. The visual gap is the finding: MUI themed to neutral UNDRR tokens does not read as Mangrove, and 1.8.1 offers no runtime tokens to close it.",
+      "notes": "Host and candidate button, table, card and nav list rendered adjacent in section 9. The host column uses Mangrove's real classes (mg-button-primary, mg-table--striped, mg-card). MUI now receives the same current UNDRR interactive colours through project-owned tokens, making visual fit measurable; because Mangrove 1.8.1 exposes no runtime tokens, keeping that match synchronized is still separately owned bridge work.",
       "customLinesOfCode": 0
     }
   ],

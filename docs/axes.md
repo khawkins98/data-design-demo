@@ -299,16 +299,16 @@ reaches every site at once; rebuild is per site.
 
 | Pairing | tokens applied||UNDRR design tokens successfully connected | unreachable||tokens with no hook to attach to | propagation||how a token change reaches every site | live var() refs in shipped CSS||CSS custom properties surviving to production |
 | --- | --- | --- | --- | --- |
-| delta-react-aria | {spark:48:66} | 0 | **stylesheet-swap** | {spark:413:413} |
-| mangrove-react-aria | {spark:47:66} | 0 | **stylesheet-swap** | {spark:313:413} |
-| delta-mui | {spark:29:66} | 0 | **mostly-rebuild** | {spark:38:413} |
-| mangrove-mui | {spark:32:66} | 0 | **mostly-rebuild** | {spark:38:413} |
-| delta-carbon | {spark:50:66} | **{spark:21:22}** | **stylesheet-swap** | {spark:263:413} |
-| mangrove-carbon | {spark:50:66} | **{spark:22:22}** | **stylesheet-swap** | {spark:201:413} |
-| delta-mantine | {spark:66:66} | **{spark:5:22}** | **mostly-rebuild** | {spark:44:413} |
-| mangrove-mantine | {spark:62:66} | 0 | **mostly-rebuild** | {spark:44:413} |
-| delta-antd | {spark:44:66} | 0 | **mostly-rebuild** | {spark:42:413} |
-| mangrove-antd | {spark:44:66} | 0 | **mostly-rebuild** | {spark:41:413} |
+| delta-react-aria | {spark:48:66} | 0 | **stylesheet-swap** | {spark:414:414} |
+| mangrove-react-aria | {spark:47:66} | 0 | **stylesheet-swap** | {spark:314:414} |
+| delta-mui | {spark:29:66} | 0 | **mostly-rebuild** | {spark:38:414} |
+| mangrove-mui | {spark:32:66} | 0 | **mostly-rebuild** | {spark:38:414} |
+| delta-carbon | {spark:50:66} | **{spark:21:22}** | **stylesheet-swap** | {spark:263:414} |
+| mangrove-carbon | {spark:50:66} | **{spark:22:22}** | **stylesheet-swap** | {spark:201:414} |
+| delta-mantine | {spark:66:66} | **{spark:5:22}** | **mostly-rebuild** | {spark:44:414} |
+| mangrove-mantine | {spark:62:66} | 0 | **mostly-rebuild** | {spark:44:414} |
+| delta-antd | {spark:44:66} | 0 | **mostly-rebuild** | {spark:42:414} |
+| mangrove-antd | {spark:44:66} | 0 | **mostly-rebuild** | {spark:41:414} |
 
 ## A6 - Right-to-left
 
