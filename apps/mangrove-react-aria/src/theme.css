@@ -700,12 +700,23 @@ select.demo-input:focus-visible {
 }
 
 .demo-table__columnInner {
+  position: absolute;
+  inset: 0;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: var(--undrr-space-2);
-  width: 100%;
+  padding: var(--undrr-space-2) calc(var(--undrr-space-3) + 0.6875rem) var(--undrr-space-2)
+    var(--undrr-space-3);
+  box-sizing: border-box;
   min-width: 0;
+}
+
+.demo-table__columnInner > span {
+  /* The header row is a full-cell overlay; only its text is allowed to shrink. */
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /**
@@ -756,8 +767,10 @@ select.demo-input:focus-visible {
 }
 
 .demo-table__resizer {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: 0;
   width: 3px;
-  align-self: stretch;
   flex: none;
   cursor: col-resize;
   border: none;
