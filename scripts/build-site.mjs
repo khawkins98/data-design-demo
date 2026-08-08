@@ -17,7 +17,16 @@
  */
 
 import { execFileSync } from "node:child_process";
-import { copyFileSync, cpSync, existsSync, mkdirSync, readdirSync, rmSync, statSync } from "node:fs";
+import {
+  copyFileSync,
+  cpSync,
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  readdirSync,
+  rmSync,
+  statSync,
+} from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -46,6 +55,37 @@ function appDirs() {
       return statSync(path).isDirectory();
     })
     .sort();
+}
+
+/**
+ * Refuse to assemble a demo whose Vite base was overwritten by a later direct
+ * app build. `build-apps.mjs` checks this immediately after building, but dist
+ * is mutable: running `vite build` in one app afterwards resets its URLs to
+ * `/assets/...`. Without this second check, site assembly copies a successful
+ * but blank demo into `_site/`.
+ *
+ * Pages adds a repository prefix before the app name, while local preview does
+ * not, so checking for the app's own path segment works in both environments.
+ */
+function assertAppBase(name, dist) {
+  const appSegment = `/${name}/`;
+  const entries = readdirSync(dist).filter((file) => file.endsWith(".html"));
+
+  for (const entry of entries) {
+    const html = readFileSync(join(dist, entry), "utf8");
+    const absoluteRefs = [...html.matchAll(/(?:src|href)="(\/[^"]+)"/g)].map(
+      (match) => match[1],
+    );
+    const wrongBase = absoluteRefs.filter((ref) => !ref.includes(appSegment));
+
+    if (wrongBase.length > 0) {
+      throw new Error(
+        `${name}/dist/${entry} was built for the wrong base. Offending refs:\n` +
+          wrongBase.map((ref) => `  ${ref}`).join("\n") +
+          "\nRebuild with `node scripts/build-apps.mjs` before assembling the site.",
+      );
+    }
+  }
 }
 
 // Regenerate the landing page first, so it always reflects the evidence.json
@@ -91,15 +131,6 @@ execFileSync(
   { cwd: ROOT, stdio: "inherit" },
 );
 
-rmSync(SITE, { recursive: true, force: true });
-mkdirSync(SITE, { recursive: true });
-
-// docs/ carries the generated pages and markdown reference documents.
-cpSync(DOCS, SITE, { recursive: true });
-
-// scores.html is the landing page.
-copyFileSync(join(SITE, "scores.html"), join(SITE, "index.html"));
-
 const built = [];
 const missing = [];
 
@@ -109,8 +140,21 @@ for (const name of appDirs()) {
     missing.push(name);
     continue;
   }
-  cpSync(dist, join(SITE, name), { recursive: true });
+  assertAppBase(name, dist);
   built.push(name);
+}
+
+rmSync(SITE, { recursive: true, force: true });
+mkdirSync(SITE, { recursive: true });
+
+// docs/ carries the generated pages and markdown reference documents.
+cpSync(DOCS, SITE, { recursive: true });
+
+// scores.html is the landing page.
+copyFileSync(join(SITE, "scores.html"), join(SITE, "index.html"));
+
+for (const name of built) {
+  cpSync(join(APPS, name, "dist"), join(SITE, name), { recursive: true });
 }
 
 process.stdout.write(`assembled _site/\n`);
