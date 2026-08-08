@@ -150,6 +150,17 @@ export function HostCanaries(): ReactElement {
   );
 }
 
+/**
+ * Masthead navigation items. Host chrome, so they stay in English in every
+ * locale, the same rule `IslandFrame`'s topbar follows.
+ */
+const TOPBAR_ITEMS = [
+  { href: "#home", label: "Home" },
+  { href: "#data", label: "Data and statistics" },
+  { href: "#reporting", label: "National reporting" },
+  { href: "#about", label: "About" },
+];
+
 export function HostShell({
   title,
   children,
@@ -158,29 +169,48 @@ export function HostShell({
 }: HostShellProps): ReactElement {
   return (
     <div className="mg-host" dir={dir}>
-      <header className="mg-host__header">
-        <span className="mg-host__brand">UNDRR</span>
-        <h1 data-canary="heading-1">
-          {title}
-        </h1>
+      <header id="header" className="mg-page-header mg-page-header--default">
+        <div className="mg-page-header__decoration" aria-hidden="true">
+          <div />
+          <div />
+          <div />
+          <div />
+        </div>
       </header>
 
-      {/*
-       * Full width, above the body grid, so the page navigation spans the page
-       * it navigates rather than sitting in one column of it.
-       */}
+      <nav data-canary="nav" className="mg-mega-wrapper" aria-label="Main Navigation">
+        <ul
+          className="mg-mega-topbar | mg-container mg-container-full-width"
+          role="menubar"
+          aria-label="Main navigation menu"
+        >
+          {TOPBAR_ITEMS.map((item, index) => (
+            <li key={item.href} className="mg-mega-topbar__item" role="none">
+              <a
+                className="mg-mega-topbar__item-link"
+                href={item.href}
+                role="menuitem"
+                {...(index === 0 ? { "data-canary": "nav-link" } : {})}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
       {pageHeader ? <div className="mg-host__pageheader">{pageHeader}</div> : null}
 
+      <div className="mg-container mg-page-content--padded">
+        <h1 data-canary="heading-1">{title}</h1>
+      </div>
+
       <div className="mg-host__body">
-        <nav data-canary="nav" className="mg-host__nav" aria-label="Sections">
+        <nav className="mg-host__nav" aria-label="Sections">
           <ul className="mg-host__nav-list">
-            {NAV_ITEMS.map((item, index) => (
+            {NAV_ITEMS.map((item) => (
               <li key={item.href} className="mg-host__nav-item">
-                <a
-                  className="mg-host__nav-link"
-                  href={item.href}
-                  {...(index === 0 ? { "data-canary": "nav-link" } : {})}
-                >
+                <a className="mg-host__nav-link" href={item.href}>
                   {item.label}
                 </a>
               </li>
