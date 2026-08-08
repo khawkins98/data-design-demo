@@ -152,16 +152,16 @@ Every distinct styling hook, classified by the promise behind it.
 
 | Pairing | attribute||semantic selectors like [data-*], [slot] | contract||documented styling API; safe to use | off route||bypasses the library's theming; fragile | of which hashed||generated class names that change between builds | CSS rules||total rules in the demo's own stylesheets |
 | --- | --- | --- | --- | --- | --- |
-| delta-react-aria | {spark:22:22} | {spark:0:4} | **0** | 0 | {spark:210:210} |
-| mangrove-react-aria | {spark:18:22} | {spark:0:4} | **0** | 0 | {spark:152:210} |
-| delta-mui | {spark:0:22} | {spark:2:4} | **0** | 0 | {spark:3:210} |
-| mangrove-mui | {spark:0:22} | {spark:4:4} | **0** | 0 | {spark:5:210} |
-| delta-carbon | {spark:0:22} | {spark:0:4} | **{spark:19:19}** | 0 | {spark:48:210} |
-| mangrove-carbon | {spark:0:22} | {spark:0:4} | **{spark:15:19}** | 0 | {spark:53:210} |
-| delta-mantine | {spark:3:22} | {spark:3:4} | **0** | 0 | {spark:16:210} |
-| mangrove-mantine | {spark:2:22} | {spark:4:4} | **0** | 0 | {spark:22:210} |
-| delta-antd | {spark:0:22} | {spark:0:4} | **0** | 0 | {spark:8:210} |
-| mangrove-antd | {spark:0:22} | {spark:0:4} | **0** | 0 | {spark:6:210} |
+| delta-react-aria | {spark:22:22} | {spark:0:4} | **0** | 0 | {spark:211:211} |
+| mangrove-react-aria | {spark:18:22} | {spark:0:4} | **0** | 0 | {spark:153:211} |
+| delta-mui | {spark:0:22} | {spark:2:4} | **0** | 0 | {spark:3:211} |
+| mangrove-mui | {spark:0:22} | {spark:4:4} | **0** | 0 | {spark:5:211} |
+| delta-carbon | {spark:0:22} | {spark:0:4} | **{spark:19:19}** | 0 | {spark:48:211} |
+| mangrove-carbon | {spark:0:22} | {spark:0:4} | **{spark:15:19}** | 0 | {spark:53:211} |
+| delta-mantine | {spark:3:22} | {spark:3:4} | **0** | 0 | {spark:16:211} |
+| mangrove-mantine | {spark:2:22} | {spark:4:4} | **0** | 0 | {spark:22:211} |
+| delta-antd | {spark:0:22} | {spark:0:4} | **0** | 0 | {spark:8:211} |
+| mangrove-antd | {spark:0:22} | {spark:0:4} | **0** | 0 | {spark:6:211} |
 
 Mantine's `.mantine-{Component}-{element}` classes are a documented API
 (`withStaticClasses`), so they count as contract. Carbon's `cds--` classes are
@@ -291,16 +291,16 @@ reaches every site at once; rebuild is per site.
 
 | Pairing | tokens applied||UNDRR design tokens successfully connected | unreachable||tokens with no hook to attach to | propagation||how a token change reaches every site | live var() refs in shipped CSS||CSS custom properties surviving to production |
 | --- | --- | --- | --- | --- |
-| delta-react-aria | {spark:48:66} | 0 | **stylesheet-swap** | {spark:408:408} |
-| mangrove-react-aria | {spark:47:66} | 0 | **stylesheet-swap** | {spark:308:408} |
-| delta-mui | {spark:29:66} | 0 | **mostly-rebuild** | {spark:38:408} |
-| mangrove-mui | {spark:32:66} | 0 | **mostly-rebuild** | {spark:38:408} |
-| delta-carbon | {spark:50:66} | **{spark:21:22}** | **stylesheet-swap** | {spark:263:408} |
-| mangrove-carbon | {spark:50:66} | **{spark:22:22}** | **stylesheet-swap** | {spark:201:408} |
-| delta-mantine | {spark:66:66} | **{spark:5:22}** | **mostly-rebuild** | {spark:44:408} |
-| mangrove-mantine | {spark:62:66} | 0 | **mostly-rebuild** | {spark:44:408} |
-| delta-antd | {spark:44:66} | 0 | **mostly-rebuild** | {spark:42:408} |
-| mangrove-antd | {spark:44:66} | 0 | **mostly-rebuild** | {spark:41:408} |
+| delta-react-aria | {spark:48:66} | 0 | **stylesheet-swap** | {spark:409:409} |
+| mangrove-react-aria | {spark:47:66} | 0 | **stylesheet-swap** | {spark:309:409} |
+| delta-mui | {spark:29:66} | 0 | **mostly-rebuild** | {spark:38:409} |
+| mangrove-mui | {spark:32:66} | 0 | **mostly-rebuild** | {spark:38:409} |
+| delta-carbon | {spark:50:66} | **{spark:21:22}** | **stylesheet-swap** | {spark:263:409} |
+| mangrove-carbon | {spark:50:66} | **{spark:22:22}** | **stylesheet-swap** | {spark:201:409} |
+| delta-mantine | {spark:66:66} | **{spark:5:22}** | **mostly-rebuild** | {spark:44:409} |
+| mangrove-mantine | {spark:62:66} | 0 | **mostly-rebuild** | {spark:44:409} |
+| delta-antd | {spark:44:66} | 0 | **mostly-rebuild** | {spark:42:409} |
+| mangrove-antd | {spark:44:66} | 0 | **mostly-rebuild** | {spark:41:409} |
 
 ## A6 - Right-to-left
 
