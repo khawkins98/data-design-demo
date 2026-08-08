@@ -113,15 +113,29 @@
 </tbody></table></div>
 <h2 id="three-shapes-not-five">Three shapes, not five</h2>
 <h3 id="a-ship-and-theme-mui-mantine-ant-design">A. Ship-and-theme — MUI, Mantine, Ant Design</h3>
-<p>The library owns the components. You configure a theme, you consume the components, and Mangrove arrives from the side: its stylesheet loads alongside, and its tokens feed the theme object where the library's API allows.</p>
+<p>This route creates two parallel delivery paths using the same token mechanism, not necessarily the same visual theme. Mangrove can carry UNDRR defaults into content products, while DELTA or another project supplies its own palette, typography and other brand values. The relevant token set themes the component suite directly; project wrappers then compose those themed components for the application. The suite still brings its own component structure and conventions.</p>
 <pre class="mermaid">flowchart TB
-  T["UNDRR tokens"] --&gt; SI["Shared UNDRR integration&lt;br/&gt;theme + wrappers"]
-  L["Library components&lt;br/&gt;and conventions"] --&gt; SI
-  SI --&gt; D["DELTA product"]
-  SI --&gt; P["Second product"]
-  M["Mangrove"] -.-&gt;|"host repair boundary"| SI</pre>
-<p><strong>What you get.</strong> Components you do not maintain, including the accessibility work. A stepper, a data grid and a date picker arrive free and stay maintained by someone else.</p>
-<p><strong>What it costs.</strong> The dotted line is the problem, and it is what A4 measures. Mangrove is still partly <em>adjacent</em>: its CSS competes with the library at the integration boundary. Ant Design's blank filter labels and MUI's Arabic defect both live on that line. A shared package can centralise theme mapping and wrappers — the MUI extraction proves it — but it cannot make the library's structural and visual assumptions disappear.</p>
+  T["UNDRR, DELTA or project-specific&lt;br/&gt;design tokens"]
+  L["Themed MUI / Mantine / Ant Design&lt;br/&gt;components + conventions"]
+  W["Project wrappers"]
+  D["DELTA"]
+  M["Mangrove"]
+  C["UNDRR content products"]
+  B["Library-to-Mangrove bridge"]
+
+  T --&gt; L
+  L --&gt; W
+  W --&gt; D
+  T --&gt; M
+  M --&gt; C
+  L -.-&gt;|"selected components"| B
+  B -.-&gt;|"host integration"| M
+  D &lt;--&gt;|"Possible integration&lt;br/&gt;between stacks?"| C
+
+  linkStyle 7 stroke:#6b7280,stroke-dasharray:5 5</pre>
+<p><strong>What you get.</strong> Components you do not maintain, including the accessibility work. A stepper, a data grid and a date picker arrive free and stay maintained by someone else. DELTA can use that suite through shared wrappers and its own token set, while content products continue to inherit Mangrove.</p>
+<p><strong>What it costs.</strong> The two paths do not become one system merely because both are token-driven. <strong>The question-mark line is the main cohesion risk:</strong> DELTA and the content estate use different component pipelines, so moving a capability or pattern in either direction requires translation rather than simple reuse. If the two paths evolve independently, their components, interaction policy and visual conventions can desynchronise.</p>
+<p>The dotted library-to-Mangrove route is a separately owned bridge: wrappers, stylesheet ordering and host repair that make selected suite components usable inside Mangrove and therefore available to content products. Ant Design's blank filter labels and MUI's Arabic defect both live at this kind of boundary. The MUI extraction proves the application-side package can be shared; it does not prove that the package and Mangrove form one coherent component system without the bridge work.</p>
 <h3 id="b-complete-branded-system-ibm-carbon">B. Complete branded system — IBM Carbon</h3>
 <p>Structurally the same as A, but the library is not neutral. Carbon is a <em>product</em> design system: it ships a full component set and also IBM's design language — Plex typography, IBM's colour ramps, its own grid and spacing scale.</p>
 <pre class="mermaid">flowchart TB

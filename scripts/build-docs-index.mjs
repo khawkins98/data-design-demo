@@ -27,6 +27,48 @@ function esc(value) {
 
 const manifest = JSON.parse(readFileSync(MANIFEST, "utf8"));
 
+/**
+ * Editorial architecture taxonomy, separate from capability evidence and score.
+ * A type describes the estate shape a candidate creates; it is not a grade.
+ */
+const ARCHITECTURE_TYPES = Object.freeze({
+  "react-aria": {
+    id: "C",
+    name: "Foundational shared system",
+    anchor: "c-foundational-adobe-react-aria",
+    continuity:
+      "One UNDRR-owned component expression can serve DELTA and content products. Strongest synchronization potential; largest ongoing design-system commitment.",
+  },
+  mui: {
+    id: "A",
+    name: "Ship and theme",
+    anchor: "a-ship-and-theme-mui-mantine-ant-design",
+    continuity:
+      "A themed application stack runs beside Mangrove's content stack. Each can integrate cleanly, but keeping them synchronized requires a deliberate bridge.",
+  },
+  carbon: {
+    id: "B",
+    name: "Complete branded system",
+    anchor: "b-complete-branded-system-ibm-carbon",
+    continuity:
+      "The same parallel-stack problem as Type A, with Carbon's own design language adding another source of visual and structural authority.",
+  },
+  mantine: {
+    id: "A",
+    name: "Ship and theme",
+    anchor: "a-ship-and-theme-mui-mantine-ant-design",
+    continuity:
+      "A themed application stack runs beside Mangrove's content stack. Each can integrate cleanly, but keeping them synchronized requires a deliberate bridge.",
+  },
+  antd: {
+    id: "A",
+    name: "Ship and theme",
+    anchor: "a-ship-and-theme-mui-mantine-ant-design",
+    continuity:
+      "A themed application stack runs beside Mangrove's content stack. Each can integrate cleanly, but keeping them synchronized requires a deliberate bridge.",
+  },
+});
+
 /** Where to point markdown docs, which GitHub Pages serves as plain text. */
 const DOCS_BLOB = "https://github.com/khawkins98/data-design-demo/blob/main/docs";
 
@@ -299,6 +341,10 @@ function cardMarkup(card) {
 /* One row per candidate: a meta column, then its two host cards. */
 const cardHtml = groups
   .map((group) => {
+    const architecture = ARCHITECTURE_TYPES[group.candidate.id];
+    if (!architecture) {
+      throw new Error(`No architecture type for candidate ${group.candidate.id}`);
+    }
     const worst =
       group.cards.map((card) => knownIssueNote(card.appDir, group.candidate.id)).find(Boolean) ?? "";
     return `
@@ -310,6 +356,16 @@ const cardHtml = groups
           <p class="pairing__licence">${esc(group.candidate.package)}<br />${esc(
             group.candidate.licence,
           )}</p>
+          <p class="architecture-tag">
+            <span class="architecture-tag__type">Type ${esc(architecture.id)}</span>
+            ${esc(architecture.name)}
+          </p>
+          <p class="pairing__architecture">${esc(architecture.continuity)}</p>
+          <p class="pairing__architecture-link">
+            <a href="./architecture-options.html#${esc(architecture.anchor)}">How Type ${esc(
+              architecture.id,
+            )} works</a>
+          </p>
           ${worst}
         </div>
         <div class="pairing__hosts">
@@ -366,8 +422,12 @@ const html = `<!doctype html>
         color: var(--text);
         font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
         line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
       }
       .page { max-width: 76rem; margin: 0 auto; }
+      h1, h2, h3 { text-wrap: balance; }
+      p, li, dd { text-wrap: pretty; }
       h1 { font-size: 1.75rem; margin: 0 0 0.5rem; }
       .subtitle { color: var(--muted); margin: 0 0 0.5rem; max-width: 60ch; }
       /*
@@ -382,7 +442,7 @@ const html = `<!doctype html>
       .pairing {
         display: grid;
         gap: 1rem;
-        grid-template-columns: minmax(0, 14rem) minmax(0, 3fr);
+        grid-template-columns: minmax(0, 18rem) minmax(0, 3fr);
         align-items: start;
         padding-top: 1.5rem;
         border-top: 1px solid var(--border);
@@ -392,6 +452,31 @@ const html = `<!doctype html>
       @media (max-width: 60rem) { .pairing { grid-template-columns: minmax(0, 1fr); } }
       .pairing__title { font-size: 1.125rem; margin: 0 0 0.25rem; }
       .pairing__licence { margin: 0 0 0.5rem; font-size: 0.75rem; color: var(--muted); }
+      .architecture-tag {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 0.375rem;
+        margin: 0.75rem 0 0.375rem;
+        font-size: 0.75rem;
+        font-weight: 700;
+      }
+      .architecture-tag__type {
+        display: inline-flex;
+        align-items: center;
+        min-height: 1.5rem;
+        padding: 0.125rem 0.5rem;
+        border-radius: 999px;
+        color: var(--accent);
+        box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 45%, transparent);
+      }
+      .pairing__architecture {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.75rem;
+        line-height: 1.45;
+      }
+      .pairing__architecture-link { margin: 0.375rem 0 0; font-size: 0.75rem; }
       .pairing__hosts {
         display: grid;
         gap: 1rem;
@@ -545,6 +630,33 @@ const html = `<!doctype html>
         border-radius: 6px;
         max-width: 82ch;
       }
+      .decision-lenses {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.75rem;
+        margin: 1rem 0 1.25rem;
+        max-width: 82ch;
+      }
+      .decision-lens {
+        padding: 0.875rem 1rem;
+        border-radius: 6px;
+        background: var(--bg);
+        box-shadow: 0 0 0 1px color-mix(in srgb, var(--border) 80%, transparent),
+                    0 1px 3px rgb(0 0 0 / 0.05);
+      }
+      .decision-lens__eyebrow {
+        margin: 0 0 0.25rem;
+        color: var(--accent);
+        font-size: 0.6875rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+      .decision-lens__title { margin: 0 0 0.375rem; font-size: 1rem; }
+      .decision-lens__body { margin: 0; color: var(--muted); font-size: 0.8125rem; }
+      @media (max-width: 42rem) {
+        .decision-lenses { grid-template-columns: minmax(0, 1fr); }
+      }
       .glossary { margin: 0 0 2rem; font-size: 0.875rem; }
       .glossary__summary { cursor: pointer; color: var(--accent); font-weight: 600; }
       .glossary__list { margin: 0.875rem 0 0; max-width: 80ch; }
@@ -552,6 +664,9 @@ const html = `<!doctype html>
       .glossary__list dd { margin: 0.125rem 0 0; color: var(--muted); }
       .start__list { margin: 0; padding-inline-start: 1.125rem; max-width: 78ch; }
       .start__list li + li { margin-top: 0.5rem; }
+      .grid-intro { margin: 0 0 1.25rem; max-width: 78ch; }
+      .grid-intro__title { margin: 0 0 0.375rem; font-size: 1.25rem; }
+      .grid-intro__body { margin: 0; color: var(--muted); font-size: 0.875rem; }
     </style>
   </head>
   <body>
@@ -565,7 +680,9 @@ const html = `<!doctype html>
           Whatever replaces PrimeReact becomes the default front-end foundation
           for DELTA, Mangrove properties and future data systems. All five
           candidates meet all 300 requirements, so the requirement matrix does
-          not discriminate. These six questions do.
+          not discriminate. The decision therefore has two layers: whether a
+          candidate can do the job, and what kind of system it creates across
+          the estate.
         </p>
 
         <p class="start__verdict">
@@ -578,11 +695,34 @@ const html = `<!doctype html>
           <a href="./architecture-options.html">Architecture, evidence and costs</a>.
         </p>
 
+        <div class="decision-lenses" aria-label="The two decision questions">
+          <article class="decision-lens">
+            <p class="decision-lens__eyebrow">Question 1 · Capability fit</p>
+            <h3 class="decision-lens__title">Can it do the job?</h3>
+            <p class="decision-lens__body">
+              Requirement coverage, theming, Arabic and RTL, accessibility, and
+              clean integration inside each host. The demos and seven evidence
+              axes answer this question.
+            </p>
+          </article>
+          <article class="decision-lens">
+            <p class="decision-lens__eyebrow">Question 2 · Estate architecture</p>
+            <h3 class="decision-lens__title">Will the products stay in sync?</h3>
+            <p class="decision-lens__body">
+              How DELTA, Mangrove and content products share components and
+              policy over time. A clean integration today does not guarantee a
+              coherent system tomorrow; Types A, B and C describe that shape,
+              not a grade.
+            </p>
+          </article>
+        </div>
+
         <p class="start__lead">
-          <strong>Each option is shown three ways.</strong> A component inventory
+          <strong>Capability fit is shown three ways.</strong> A component inventory
           proves the parts exist but hides integration defects. Two of the three
           deciding defects are invisible in a component list and only appear
-          inside a real UNDRR page.
+          inside a real UNDRR page. The architecture type beside each candidate
+          answers the separate synchronization question.
         </p>
 
         <div class="questions">
@@ -633,6 +773,15 @@ ${badgeGlossaryHtml}
           </dd>
         </dl>
       </details>
+
+      <section class="grid-intro" aria-labelledby="candidate-overview">
+        <h2 class="grid-intro__title" id="candidate-overview">Candidate overview</h2>
+        <p class="grid-intro__body">
+          The left column identifies the estate architecture and its synchronization
+          implication. The two host cards show the separate capability question:
+          whether that candidate works cleanly in DELTA and Mangrove today.
+        </p>
+      </section>
 
       <div class="grid">
 ${cardHtml}

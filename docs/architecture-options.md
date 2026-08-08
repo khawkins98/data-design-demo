@@ -61,29 +61,54 @@ operating models below.
 
 ### A. Ship-and-theme — MUI, Mantine, Ant Design
 
-The library owns the components. You configure a theme, you consume the
-components, and Mangrove arrives from the side: its stylesheet loads alongside,
-and its tokens feed the theme object where the library's API allows.
+This route creates two parallel delivery paths using the same token mechanism,
+not necessarily the same visual theme. Mangrove can carry UNDRR defaults into
+content products, while DELTA or another project supplies its own palette,
+typography and other brand values. The relevant token set themes the component
+suite directly; project wrappers then compose those themed components for the
+application. The suite still brings its own component structure and conventions.
 
 ```mermaid
 flowchart TB
-  T["UNDRR tokens"] --> SI["Shared UNDRR integration<br/>theme + wrappers"]
-  L["Library components<br/>and conventions"] --> SI
-  SI --> D["DELTA product"]
-  SI --> P["Second product"]
-  M["Mangrove"] -.->|"host repair boundary"| SI
+  T["UNDRR, DELTA or project-specific<br/>design tokens"]
+  L["Themed MUI / Mantine / Ant Design<br/>components + conventions"]
+  W["Project wrappers"]
+  D["DELTA"]
+  M["Mangrove"]
+  C["UNDRR content products"]
+  B["Library-to-Mangrove bridge"]
+
+  T --> L
+  L --> W
+  W --> D
+  T --> M
+  M --> C
+  L -.->|"selected components"| B
+  B -.->|"host integration"| M
+  D <-->|"Possible integration<br/>between stacks?"| C
+
+  linkStyle 7 stroke:#6b7280,stroke-dasharray:5 5
 ```
 
 **What you get.** Components you do not maintain, including the accessibility
 work. A stepper, a data grid and a date picker arrive free and stay maintained by
-someone else.
+someone else. DELTA can use that suite through shared wrappers and its own token
+set, while content products continue to inherit Mangrove.
 
-**What it costs.** The dotted line is the problem, and it is what A4 measures.
-Mangrove is still partly *adjacent*: its CSS competes with the library at the
-integration boundary. Ant Design's blank filter labels and MUI's Arabic defect
-both live on that line. A shared package can centralise theme mapping and wrappers
-— the MUI extraction proves it — but it cannot make the library's structural and
-visual assumptions disappear.
+**What it costs.** The two paths do not become one system merely because both are
+token-driven. **The question-mark line is the main cohesion risk:** DELTA and the
+content estate use different component pipelines, so moving a capability or
+pattern in either direction requires translation rather than simple reuse. If
+the two paths evolve independently, their components, interaction policy and
+visual conventions can desynchronise.
+
+The dotted library-to-Mangrove route is a separately owned bridge: wrappers,
+stylesheet ordering and host repair that make selected suite components usable
+inside Mangrove and therefore available to content products. Ant Design's blank
+filter labels and MUI's Arabic defect both live at this kind of boundary. The MUI
+extraction proves the application-side package can be shared; it does not prove
+that the package and Mangrove form one coherent component system without the
+bridge work.
 
 ### B. Complete branded system — IBM Carbon
 

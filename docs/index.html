@@ -43,8 +43,12 @@
         color: var(--text);
         font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
         line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
       }
       .page { max-width: 76rem; margin: 0 auto; }
+      h1, h2, h3 { text-wrap: balance; }
+      p, li, dd { text-wrap: pretty; }
       h1 { font-size: 1.75rem; margin: 0 0 0.5rem; }
       .subtitle { color: var(--muted); margin: 0 0 0.5rem; max-width: 60ch; }
       /*
@@ -59,7 +63,7 @@
       .pairing {
         display: grid;
         gap: 1rem;
-        grid-template-columns: minmax(0, 14rem) minmax(0, 3fr);
+        grid-template-columns: minmax(0, 18rem) minmax(0, 3fr);
         align-items: start;
         padding-top: 1.5rem;
         border-top: 1px solid var(--border);
@@ -69,6 +73,31 @@
       @media (max-width: 60rem) { .pairing { grid-template-columns: minmax(0, 1fr); } }
       .pairing__title { font-size: 1.125rem; margin: 0 0 0.25rem; }
       .pairing__licence { margin: 0 0 0.5rem; font-size: 0.75rem; color: var(--muted); }
+      .architecture-tag {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 0.375rem;
+        margin: 0.75rem 0 0.375rem;
+        font-size: 0.75rem;
+        font-weight: 700;
+      }
+      .architecture-tag__type {
+        display: inline-flex;
+        align-items: center;
+        min-height: 1.5rem;
+        padding: 0.125rem 0.5rem;
+        border-radius: 999px;
+        color: var(--accent);
+        box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 45%, transparent);
+      }
+      .pairing__architecture {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.75rem;
+        line-height: 1.45;
+      }
+      .pairing__architecture-link { margin: 0.375rem 0 0; font-size: 0.75rem; }
       .pairing__hosts {
         display: grid;
         gap: 1rem;
@@ -222,6 +251,33 @@
         border-radius: 6px;
         max-width: 82ch;
       }
+      .decision-lenses {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.75rem;
+        margin: 1rem 0 1.25rem;
+        max-width: 82ch;
+      }
+      .decision-lens {
+        padding: 0.875rem 1rem;
+        border-radius: 6px;
+        background: var(--bg);
+        box-shadow: 0 0 0 1px color-mix(in srgb, var(--border) 80%, transparent),
+                    0 1px 3px rgb(0 0 0 / 0.05);
+      }
+      .decision-lens__eyebrow {
+        margin: 0 0 0.25rem;
+        color: var(--accent);
+        font-size: 0.6875rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+      .decision-lens__title { margin: 0 0 0.375rem; font-size: 1rem; }
+      .decision-lens__body { margin: 0; color: var(--muted); font-size: 0.8125rem; }
+      @media (max-width: 42rem) {
+        .decision-lenses { grid-template-columns: minmax(0, 1fr); }
+      }
       .glossary { margin: 0 0 2rem; font-size: 0.875rem; }
       .glossary__summary { cursor: pointer; color: var(--accent); font-weight: 600; }
       .glossary__list { margin: 0.875rem 0 0; max-width: 80ch; }
@@ -229,6 +285,9 @@
       .glossary__list dd { margin: 0.125rem 0 0; color: var(--muted); }
       .start__list { margin: 0; padding-inline-start: 1.125rem; max-width: 78ch; }
       .start__list li + li { margin-top: 0.5rem; }
+      .grid-intro { margin: 0 0 1.25rem; max-width: 78ch; }
+      .grid-intro__title { margin: 0 0 0.375rem; font-size: 1.25rem; }
+      .grid-intro__body { margin: 0; color: var(--muted); font-size: 0.875rem; }
     </style>
   </head>
   <body>
@@ -242,7 +301,9 @@
           Whatever replaces PrimeReact becomes the default front-end foundation
           for DELTA, Mangrove properties and future data systems. All five
           candidates meet all 300 requirements, so the requirement matrix does
-          not discriminate. These six questions do.
+          not discriminate. The decision therefore has two layers: whether a
+          candidate can do the job, and what kind of system it creates across
+          the estate.
         </p>
 
         <p class="start__verdict">
@@ -255,11 +316,34 @@
           <a href="./architecture-options.html">Architecture, evidence and costs</a>.
         </p>
 
+        <div class="decision-lenses" aria-label="The two decision questions">
+          <article class="decision-lens">
+            <p class="decision-lens__eyebrow">Question 1 · Capability fit</p>
+            <h3 class="decision-lens__title">Can it do the job?</h3>
+            <p class="decision-lens__body">
+              Requirement coverage, theming, Arabic and RTL, accessibility, and
+              clean integration inside each host. The demos and seven evidence
+              axes answer this question.
+            </p>
+          </article>
+          <article class="decision-lens">
+            <p class="decision-lens__eyebrow">Question 2 · Estate architecture</p>
+            <h3 class="decision-lens__title">Will the products stay in sync?</h3>
+            <p class="decision-lens__body">
+              How DELTA, Mangrove and content products share components and
+              policy over time. A clean integration today does not guarantee a
+              coherent system tomorrow; Types A, B and C describe that shape,
+              not a grade.
+            </p>
+          </article>
+        </div>
+
         <p class="start__lead">
-          <strong>Each option is shown three ways.</strong> A component inventory
+          <strong>Capability fit is shown three ways.</strong> A component inventory
           proves the parts exist but hides integration defects. Two of the three
           deciding defects are invisible in a component list and only appear
-          inside a real UNDRR page.
+          inside a real UNDRR page. The architecture type beside each candidate
+          answers the separate synchronization question.
         </p>
 
         <div class="questions">
@@ -393,12 +477,29 @@
         </dl>
       </details>
 
+      <section class="grid-intro" aria-labelledby="candidate-overview">
+        <h2 class="grid-intro__title" id="candidate-overview">Candidate overview</h2>
+        <p class="grid-intro__body">
+          The left column identifies the estate architecture and its synchronization
+          implication. The two host cards show the separate capability question:
+          whether that candidate works cleanly in DELTA and Mangrove today.
+        </p>
+      </section>
+
       <div class="grid">
 
       <section class="pairing" aria-labelledby="pairing-react-aria">
         <div class="pairing__meta">
           <h2 class="pairing__title" id="pairing-react-aria">Adobe React Aria</h2>
           <p class="pairing__licence">react-aria-components<br />Apache-2.0</p>
+          <p class="architecture-tag">
+            <span class="architecture-tag__type">Type C</span>
+            Foundational shared system
+          </p>
+          <p class="pairing__architecture">One UNDRR-owned component expression can serve DELTA and content products. Strongest synchronization potential; largest ongoing design-system commitment.</p>
+          <p class="pairing__architecture-link">
+            <a href="./architecture-options.html#c-foundational-adobe-react-aria">How Type C works</a>
+          </p>
           <p class="card__issue card__issue--caveat">
       <span class="card__issue-badge">Caveat</span>
       React Aria is unstyled, so these pairings carry 155 to 213 CSS rules <a class="card__issue-more" href="./issues.html#react-aria">all 12 findings</a>
@@ -434,6 +535,14 @@
         <div class="pairing__meta">
           <h2 class="pairing__title" id="pairing-mui">MUI (Community only)</h2>
           <p class="pairing__licence">@mui/material<br />MIT</p>
+          <p class="architecture-tag">
+            <span class="architecture-tag__type">Type A</span>
+            Ship and theme
+          </p>
+          <p class="pairing__architecture">A themed application stack runs beside Mangrove's content stack. Each can integrate cleanly, but keeping them synchronized requires a deliberate bridge.</p>
+          <p class="pairing__architecture-link">
+            <a href="./architecture-options.html#a-ship-and-theme-mui-mantine-ant-design">How Type A works</a>
+          </p>
           <p class="card__issue card__issue--caveat">
       <span class="card__issue-badge">Caveat</span>
       MUI needs a third setup step for RTL, and fails silently without it <a class="card__issue-more" href="./issues.html#mui">all 9 findings</a>
@@ -469,6 +578,14 @@
         <div class="pairing__meta">
           <h2 class="pairing__title" id="pairing-carbon">IBM Carbon</h2>
           <p class="pairing__licence">@carbon/react<br />Apache-2.0</p>
+          <p class="architecture-tag">
+            <span class="architecture-tag__type">Type B</span>
+            Complete branded system
+          </p>
+          <p class="pairing__architecture">The same parallel-stack problem as Type A, with Carbon's own design language adding another source of visual and structural authority.</p>
+          <p class="pairing__architecture-link">
+            <a href="./architecture-options.html#b-complete-branded-system-ibm-carbon">How Type B works</a>
+          </p>
           <p class="card__issue card__issue--blocker">
       <span class="card__issue-badge">Warning</span>
       Carbon cannot express about 30% of the UNDRR design tokens <a class="card__issue-more" href="./issues.html#carbon">all 12 findings</a>
@@ -510,6 +627,14 @@
         <div class="pairing__meta">
           <h2 class="pairing__title" id="pairing-mantine">Mantine</h2>
           <p class="pairing__licence">@mantine/core<br />MIT</p>
+          <p class="architecture-tag">
+            <span class="architecture-tag__type">Type A</span>
+            Ship and theme
+          </p>
+          <p class="pairing__architecture">A themed application stack runs beside Mangrove's content stack. Each can integrate cleanly, but keeping them synchronized requires a deliberate bridge.</p>
+          <p class="pairing__architecture-link">
+            <a href="./architecture-options.html#a-ship-and-theme-mui-mantine-ant-design">How Type A works</a>
+          </p>
           <p class="card__issue card__issue--blocker">
       <span class="card__issue-badge">Warning</span>
       Modal's close button ships with no accessible name <a class="card__issue-more" href="./issues.html#mantine">all 11 findings</a>
@@ -548,6 +673,14 @@
         <div class="pairing__meta">
           <h2 class="pairing__title" id="pairing-antd">Ant Design</h2>
           <p class="pairing__licence">antd<br />MIT</p>
+          <p class="architecture-tag">
+            <span class="architecture-tag__type">Type A</span>
+            Ship and theme
+          </p>
+          <p class="pairing__architecture">A themed application stack runs beside Mangrove's content stack. Each can integrate cleanly, but keeping them synchronized requires a deliberate bridge.</p>
+          <p class="pairing__architecture-link">
+            <a href="./architecture-options.html#a-ship-and-theme-mui-mantine-ant-design">How Type A works</a>
+          </p>
           <p class="card__issue card__issue--caveat">
       <span class="card__issue-badge">Caveat</span>
       The data table has an upstream accessibility defect <a class="card__issue-more" href="./issues.html#antd">all 14 findings</a>
