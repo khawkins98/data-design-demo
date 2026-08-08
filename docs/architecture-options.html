@@ -68,37 +68,57 @@
 <p><strong>How many components does Mangrove end up owning under each candidate?</strong></p>
 </blockquote>
 <p>That is a headcount question, it survives contact with a budget, and it has different answers per candidate in a way that "does it have a stepper" does not.</p>
+<h2 id="what-undrr-is-choosing">What UNDRR is choosing</h2>
+<p>This is not a choice between a library that can be shared and one that cannot. <strong>Every candidate can sit below a UNDRR-owned wrapper package.</strong> The question is what it costs to make Mangrove, rather than the library, the enduring product layer: who owns the visual language, which changes are inherited by a second product, and how much host-specific repair accumulates as the estate grows.</p>
+<div class="scroll"><table><thead>
+<tr><th>Decision lens</th><th>The evidence needs to answer</th></tr>
+</thead><tbody>
+<tr><td><strong>Product ownership</strong></td><td>Does a product inherit a governed UNDRR component and interaction policy, or a locally configured library component?</td></tr>
+<tr><td><strong>Reuse at the second product</strong></td><td>After DELTA builds a capability, what can another product import unchanged?</td></tr>
+<tr><td><strong>Visual sovereignty</strong></td><td>Can UNDRR change tokens, density, layout and interaction expression centrally, or does the library's design language remain the effective authority?</td></tr>
+<tr><td><strong>Host resilience</strong></td><td>When Mangrove changes, does the shared layer absorb the change or does every product need a repair?</td></tr>
+</tbody></table></div>
+<p>Accessibility and RTL remain adoption gates: no option is acceptable without a human keyboard and screen-reader pass, and Arabic must not depend on a fragile or unaccepted setup. They are not, by themselves, the strategic choice between the operating models below.</p>
+<h3 id="what-is-proved-and-what-is-proposed">What is proved, and what is proposed</h3>
+<div class="scroll"><table><thead>
+<tr><th>Claim</th><th>Status in this evaluation</th></tr>
+</thead><tbody>
+<tr><td>Every candidate implements the evaluated screens</td><td><strong>Proved</strong> by the requirement run</td></tr>
+<tr><td>MUI can share a substantial integration layer across both hosts</td><td><strong>Measured</strong> by <code>packages/integration-mui</code></td></tr>
+<tr><td>React Aria has clean containment on both hosts and live token propagation</td><td><strong>Proved</strong> by leakage and theming assertions</td></tr>
+<tr><td>A Mangrove-owned React Aria layer will be reusable across the estate</td><td><strong>Proposed architecture</strong> — consistent with the findings, but not yet extracted and consumed by a second product</td></tr>
+<tr><td>A component suite necessarily creates per-site bespoke work</td><td><strong>Not proved</strong> — this depends on wrapper architecture and governance, not the package alone</td></tr>
+</tbody></table></div>
 <h2 id="three-shapes-not-five">Three shapes, not five</h2>
 <h3 id="a-ship-and-theme-mui-mantine-ant-design">A. Ship-and-theme — MUI, Mantine, Ant Design</h3>
 <p>The library owns the components. You configure a theme, you consume the components, and Mangrove arrives from the side: its stylesheet loads alongside, and its tokens feed the theme object where the library's API allows.</p>
-<pre class="mermaid">flowchart LR
-  T["UNDRR tokens"] --&gt; TH["Thin theme layer&lt;br/&gt;library's theme API"]
-  L["Library components&lt;br/&gt;MUI / Mantine / Ant Design"] --&gt; TH
-  TH --&gt; A["DELTA app code"]
-  M["Mangrove stylesheet"] -.-&gt;|"injected alongside,&lt;br/&gt;competes in the cascade"| A
-  A --&gt; B["Browser"]</pre>
+<pre class="mermaid">flowchart TB
+  T["UNDRR tokens"] --&gt; TH["Per-product theme adapter"]
+  L["Library component&lt;br/&gt;and its conventions"] --&gt; TH
+  TH --&gt; D["DELTA product"]
+  TH --&gt; P["Second product"]
+  M["Mangrove"] -.-&gt;|"host repair / cascade negotiation"| D
+  M -.-&gt;|"host repair / cascade negotiation"| P</pre>
 <p><strong>What you get.</strong> Components you do not maintain, including the accessibility work. A stepper, a data grid and a date picker arrive free and stay maintained by someone else.</p>
 <p><strong>What it costs.</strong> The dotted line is the problem, and it is what A4 measures. Mangrove is not integrated here — it is <em>adjacent</em>, arriving as CSS that competes with the library's own in the same cascade. Ant Design's blank filter labels and MUI's Arabic defect both live on that line. And each site that adopts this shape re-does its own theme mapping: the theme layer is thin, but there is one per site, and they drift.</p>
 <h3 id="b-complete-branded-system-ibm-carbon">B. Complete branded system — IBM Carbon</h3>
 <p>Structurally the same as A, but the library is not neutral. Carbon is a <em>product</em> design system: it ships a full component set and also IBM's design language — Plex typography, IBM's colour ramps, its own grid and spacing scale.</p>
-<pre class="mermaid">flowchart LR
-  T["UNDRR tokens"] -.-&gt;|"reaches colour and spacing;&lt;br/&gt;font stack is not&lt;br/&gt;reachable via the API"| TH["Carbon theme&lt;br/&gt;Sass + CSS custom properties"]
+<pre class="mermaid">flowchart TB
+  T["UNDRR tokens"] -.-&gt;|"limited reach"| TH["Per-product Carbon adapter"]
   L["Carbon components&lt;br/&gt;+ IBM design language"] --&gt; TH
-  TH --&gt; A["DELTA app code"]
-  M["Mangrove stylesheet"] -.-&gt; A
-  A --&gt; B["Browser"]</pre>
+  TH --&gt; D["DELTA product"]
+  TH --&gt; P["Second product"]
+  M["Mangrove"] -.-&gt;|"host repair / cascade negotiation"| D
+  M -.-&gt;|"host repair / cascade negotiation"| P</pre>
 <p>Calling this "the middle" is right, but not because it is more foundational than MUI — it is <em>less</em> neutral. The middle position is that it is as complete as A while being harder to make look like UNDRR. This evaluation hit that directly: Carbon's font stacks are Sass values that <code>@carbon/styles/scss/type</code> re-forwards without exposing, so <strong>the font family cannot be set through the supported API</strong> and had to be reached another way. It happens not to matter, because 56 of Carbon's 67 <code>font-family</code> declarations are <code>inherit</code> — but "we got lucky about the shape of their Sass" is not a theming strategy.</p>
 <h3 id="c-foundational-adobe-react-aria">C. Foundational — Adobe React Aria</h3>
 <p>React Aria ships behaviour and semantics, not appearance. There is no theme layer to configure because there is nothing to theme.</p>
-<pre class="mermaid">flowchart LR
-  RA["React Aria&lt;br/&gt;behaviour + ARIA semantics"] --&gt; MG["Mangrove component layer&lt;br/&gt;UNDRR-owned, shared"]
+<pre class="mermaid">flowchart TB
+  RA["React Aria&lt;br/&gt;behaviour + ARIA semantics"] --&gt; MG["Shared Mangrove component layer&lt;br/&gt;UNDRR-owned"]
   T["UNDRR tokens"] --&gt; MG
-  MG --&gt; D["DELTA"]
+  MG --&gt; D["DELTA product"]
   MG --&gt; P["PreventionWeb"]
-  MG --&gt; O["Other UNDRR sites"]
-  D --&gt; B["Browser"]
-  P --&gt; B
-  O --&gt; B</pre>
+  MG --&gt; O["Other UNDRR product"]</pre>
 <p>Note what changed: <strong>there is no dotted line.</strong> Mangrove is not injected from the side, it <em>is</em> the component layer. This is not a workaround for React Aria's missing stepper — it is React Aria's intended architecture. Adobe expects you to build the components; that is the product.</p>
 <h2 id="what-the-wizard-actually-measured">What the wizard actually measured</h2>
 <p>One screen, built five times, and the result inverts the question. <strong>Four candidates ship a stepper. None of them marks the current step in the accessibility tree.</strong> All five demos hand-write <code>aria-current="step"</code> — the four with a real component to use included.</p>
@@ -136,7 +156,7 @@
 <p><strong>None of these moved a composite,</strong> and that is worth stating plainly rather than leaving to inference. The scores are derived from axis bands; the registry only feeds the blocker column, and all six of these are caveats. They change what a reader knows without changing what the ranking says.</p>
 <h2 id="the-reusability-argument-and-what-has-to-be-true-for-it">The reusability argument, and what has to be true for it</h2>
 <p>The case for shape C is the one worth making to UNDRR, and it is not "React Aria scored highest":</p>
-<p><strong>The libraries in shapes A and B give you more, and what they give you stops at the site boundary.</strong> A themed MUI stepper is a DELTA asset. It does not help PreventionWeb unless PreventionWeb also adopts MUI and repeats the theme mapping — and then there are two theme layers drifting apart. Shape C inverts that: the component is built once in Mangrove, and every site consuming Mangrove gets it. Where a gap exists, filling it produces shared tooling rather than local work.</p>
+<p><strong>The libraries in shapes A and B give you more at the first product.</strong> They can also be put behind a shared UNDRR wrapper; the MUI extraction demonstrates that. The unresolved question is whether the wrapper becomes the authority in practice, or whether each product continues to negotiate with the library's theme, conventions and host collisions. Shape C makes the intended authority explicit: the component is built once in Mangrove and every consuming product receives the same policy. Where a gap exists, filling it is deliberately shared work rather than local work.</p>
 <p>That is the strategic reading, and this evaluation's evidence is consistent with it: React Aria is the only candidate that stays inside its own subtree on both hosts, and Arabic works from a <code>dir</code> attribute alone. A library with no opinions cannot conflict with Mangrove — which is also, honestly, why three of the seven axes reward it.</p>
 <p><strong>Four things have to be true, and none is checked yet.</strong></p>
 <ol>
@@ -149,6 +169,17 @@
 <li><strong>Shared does not mean uniform.</strong> A stepper is visually prominent, not a</li>
 </ol>
 <p>   primitive. A Mangrove component has to inherit focus ring, density, spacing    and RTL behaviour from whatever surrounds it, or it looks foreign. Under shape    C there is only one surrounding context, which is exactly why the shape is    coherent — and why mixing C with A on the same page is the worst of both.</p>
+<h2 id="the-reuse-and-ownership-drill">The reuse and ownership drill</h2>
+<p>The next evaluation increment should test the architecture, not infer it from a single integration. Run the same exercise for the shortlisted candidates:</p>
+<ol>
+<li>Build one realistic DELTA capability, such as the records workspace or the</li>
+<p>   submission wizard.</p>
+<li>Extract its interaction, token connection, accessibility conventions and</li>
+<p>   tests into a shared package.</p>
+<li>Consume that package in a second host/product.</li>
+<li>Make three controlled changes: a Mangrove token change, a shared interaction</li>
+</ol>
+<p>   rule, and an RTL/localisation requirement. The output is not a line-count contest. Record whether each change is inherited without consumer code, the per-host adaptation and repair CSS, whether a rebuild is required, and whether the library prevents the intended visual or behavioural change. That makes "reusable design system" a demonstrated property rather than a promise attached to a library choice.</p>
 <h2 id="what-this-does-not-settle">What this does not settle</h2>
 <p>Nothing here changes a score, and it should not be read as doing so. The two conditions on the recommendation in <a href="./scores.md">scores.md</a> still stand: no human accessibility pass has been run against any candidate, and MUI's exclusion rests on a rule UNDRR has not ratified. This document only argues that if shape C is chosen, it should be chosen <em>for the reuse</em>, with the staffing named — and not because a stepper was missing.</p>
     </div>
