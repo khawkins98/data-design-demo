@@ -124,7 +124,7 @@ export function scoreA4(ev) {
   return { band: "strong", because: "no host canary changed when the candidate mounted" };
 }
 
-export function scoreA5(ev) {
+export function scoreA5(ev, candidate, themingControl) {
   const unreachable = ev.theming?.tokensUnreachable ?? 0;
   const applied = ev.theming?.tokensApplied ?? 0;
   const total = unreachable + applied;
@@ -134,7 +134,15 @@ export function scoreA5(ev) {
       because: `${unreachable} of ${total} UNDRR tokens cannot be attached at all - a ceiling, not a cost`,
     };
   }
-  return { band: "strong", because: `all ${total} reachable tokens applied` };
+  const control = themingControl?.candidates?.[candidate];
+  if (!control) {
+    return { band: "weak", because: `all ${total} reachable tokens applied, but visual authority was not assessed` };
+  }
+  const because = `all ${total} reachable tokens applied; visual authority across hosts: ${control.authorityAcrossHosts}; ${control.manualCorrections} manual alias corrections`;
+  if (control.authorityAcrossHosts === "yes" && control.manualCorrections <= 2) {
+    return { band: "strong", because };
+  }
+  return { band: "workable", because };
 }
 
 export function scoreA6(ev) {
@@ -179,7 +187,7 @@ export const AXIS_DEFS = [
   ["A2_maintainability", "A2 Estate change amplification", scoreA2],
   ["A3_reproducibility", "A3 New-product reproducibility", scoreA3],
   ["A4_mangrove", "A4 Mangrove compatibility", scoreA4],
-  ["A5_theming", "A5 Theming fidelity", scoreA5],
+  ["A5_theming", "A5 Visual control and theming fidelity", scoreA5],
   ["A6_rtl", "A6 Right-to-left", scoreA6],
   ["A7_accessibility", "A7 Automated accessibility signals", scoreA7],
 ];

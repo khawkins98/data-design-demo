@@ -31,7 +31,7 @@ export const UNDRR_QUESTIONS = [
     axis: "A2",
     axisName: "Estate change amplification",
     answer:
-      "The six-site scenario makes the architectural consequence explicit: Type C places shared policy in one governed foundation; Type A retains separate suite and Mangrove implementations; Type B can add a translation layer. These counts extrapolate measured propagation mechanisms and remain conditional on adopting the model.",
+      "The six-site scenario makes the architectural consequence explicit: Type C places shared policy in one governed foundation; Type A retains separate suite and Mangrove implementations; Type B can add a translation layer. It applies measured mechanisms where available and explicit assumptions elsewhere; the evidence basis distinguishes them.",
   },
   {
     question: "Mangrove integration",
@@ -45,9 +45,9 @@ export const UNDRR_QUESTIONS = [
     question: "Design-token alignment",
     asks: "Can it be driven by UNDRR tokens, and does a token change propagate?",
     axis: "A5",
-    axisName: "Theming fidelity and propagation",
+    axisName: "Visual control and theming fidelity",
     answer:
-      "React Aria and Carbon retain browser-resolved token references. MUI, Mantine and Ant Design bake mapped values into their themes, so bundled theme changes require each consuming site to rebuild unless the token sheet is delivered centrally. Carbon leaves 21-22 of 71 evaluated tokens unreachable.",
+      "React Aria and MUI retain visual authority across both hosts. Ant Design accepts the mapped tokens, but four derived aliases needed contrast corrections and Mangrove overrides some themed control geometry. Carbon leaves 21-22 of 71 evaluated tokens unreachable. Token change fan-out is now measured separately in A2.",
   },
   {
     question: "Right-to-left",

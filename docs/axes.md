@@ -86,11 +86,11 @@ Each off-route entry is a place the documented approach did not suffice.
 
 > **Answers: Standardisation** - One shared component vocabulary across the estate, or one dialect per project?
 >
-> The six-site scenario makes the architectural consequence explicit: Type C places shared policy in one governed foundation; Type A retains separate suite and Mangrove implementations; Type B can add a translation layer. These counts extrapolate measured propagation mechanisms and remain conditional on adopting the model.
+> The six-site scenario makes the architectural consequence explicit: Type C places shared policy in one governed foundation; Type A retains separate suite and Mangrove implementations; Type B can add a translation layer. It applies measured mechanisms where available and explicit assumptions elsewhere; the evidence basis distinguishes them.
 
 Scenario: **6 sites** - 3 data products and 3 content products.
 
-Each cell separates the authoritative implementation change from consumer source edits and rebuilds. Rebuilds are release fan-out, not six manual implementations.
+Each cell separates the authoritative implementation change from consumer source edits and rebuilds. Bands prioritise authoritative implementation locations, ownership boundaries and repeated source edits; rebuilds are release fan-out, not six manual implementations.
 
 | Candidate | Type | evidence basis||mechanism measured or modelled? | token change||authoritative source · consumer edits · rebuilds | shared policy||authoritative source · consumer edits · rebuilds | upstream upgrade||authoritative source · consumer edits · rebuilds | owners at worst||independent system boundaries |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -136,7 +136,7 @@ Each product consumes a versioned shared package or centrally delivered token st
 
 </details>
 
-The six-site counts are an explicit extrapolation from the tested propagation mechanisms, not observations of six production sites. Styling-hook fragility remains supporting evidence below; it no longer determines A2.
+The mechanism is measured where a shared-package drill exists and explicitly modelled elsewhere. The six-site counts are extrapolations, not observations of six production sites. Styling-hook fragility remains supporting evidence below; it no longer determines A2.
 
 <details><summary>Supporting evidence: implementation fragility</summary>
 
@@ -281,27 +281,35 @@ What resists extraction:
 | delta-antd | clean | **no** - global stylesheet restyles the host |
 | mangrove-antd | clean | **no** - global stylesheet restyles the host |
 
-## A5 - Theming fidelity and propagation
+## A5 - Visual control and theming fidelity
 
 > **Answers: Design-token alignment** - Can it be driven by UNDRR tokens, and does a token change propagate?
 >
-> React Aria and Carbon retain browser-resolved token references. MUI, Mantine and Ant Design bake mapped values into their themes, so bundled theme changes require each consuming site to rebuild unless the token sheet is delivered centrally. Carbon leaves 21-22 of 71 evaluated tokens unreachable.
+> React Aria and MUI retain visual authority across both hosts. Ant Design accepts the mapped tokens, but four derived aliases needed contrast corrections and Mangrove overrides some themed control geometry. Carbon leaves 21-22 of 71 evaluated tokens unreachable. Token change fan-out is now measured separately in A2.
 
-`unreachable`: tokens with no hook to attach to. `propagation`: stylesheet swap
-reaches every site at once; rebuild is per site.
+**Token count is not the score.** Candidates expose different applicable token sets. The band asks whether those tokens can be attached, whether UNDRR remains the visual authority in both hosts, and how many manual corrections are required.
 
-| Pairing | tokens applied||UNDRR design tokens successfully connected | unreachable||tokens with no hook to attach to | propagation||how a token change reaches every site | live var() refs in shipped CSS||CSS custom properties surviving to production |
-| --- | --- | --- | --- | --- |
-| delta-react-aria | {spark:48:66} | 0 | **stylesheet-swap** | {spark:414:414} |
-| mangrove-react-aria | {spark:47:66} | 0 | **stylesheet-swap** | {spark:314:414} |
-| delta-mui | {spark:29:66} | 0 | **mostly-rebuild** | {spark:38:414} |
-| mangrove-mui | {spark:32:66} | 0 | **mostly-rebuild** | {spark:38:414} |
-| delta-carbon | {spark:50:66} | **{spark:21:22}** | **stylesheet-swap** | {spark:263:414} |
-| mangrove-carbon | {spark:50:66} | **{spark:22:22}** | **stylesheet-swap** | {spark:201:414} |
-| delta-mantine | {spark:66:66} | **{spark:5:22}** | **mostly-rebuild** | {spark:44:414} |
-| mangrove-mantine | {spark:62:66} | 0 | **mostly-rebuild** | {spark:44:414} |
-| delta-antd | {spark:44:66} | 0 | **mostly-rebuild** | {spark:42:414} |
-| mangrove-antd | {spark:44:66} | 0 | **mostly-rebuild** | {spark:41:414} |
+`unreachable`: tokens with no hook to attach to. `authority`: whether the
+mapped visual system still controls the result in both hosts. Change propagation is scored in A2.
+
+| Pairing | tokens applied||UNDRR design tokens successfully connected | unreachable||tokens with no hook to attach to | visual authority||does the mapped system control both hosts? | manual corrections||derived aliases pinned by hand | propagation detail||reported here, scored in A2 |
+| --- | --- | --- | --- | --- | --- |
+| delta-react-aria | {spark:48:66} | 0 | **yes** | 0 | stylesheet-swap; {spark:414:414} live var() refs |
+| mangrove-react-aria | {spark:47:66} | 0 | **yes** | 0 | stylesheet-swap; {spark:314:414} live var() refs |
+| delta-mui | {spark:29:66} | 0 | **yes** | 0 | mostly-rebuild; {spark:38:414} live var() refs |
+| mangrove-mui | {spark:32:66} | 0 | **yes** | 0 | mostly-rebuild; {spark:38:414} live var() refs |
+| delta-carbon | {spark:50:66} | **{spark:21:22}** | **partial** | 0 | stylesheet-swap; {spark:263:414} live var() refs |
+| mangrove-carbon | {spark:50:66} | **{spark:22:22}** | **partial** | 0 | stylesheet-swap; {spark:201:414} live var() refs |
+| delta-mantine | {spark:66:66} | **{spark:5:22}** | **partial** | 3 | mostly-rebuild; {spark:44:414} live var() refs |
+| mangrove-mantine | {spark:62:66} | 0 | **partial** | 3 | mostly-rebuild; {spark:44:414} live var() refs |
+| delta-antd | {spark:44:66} | 0 | **partial** | 4 | mostly-rebuild; {spark:42:414} live var() refs |
+| mangrove-antd | {spark:44:66} | 0 | **partial** | 4 | mostly-rebuild; {spark:41:414} live var() refs |
+
+- **Adobe React Aria:** React Aria supplies behaviour and state semantics rather than an upstream visual language, so the shared UNDRR layer remains the visual authority.
+- **MUI (Community only):** The shared MUI theme reaches palette, typography, spacing, shape, z-index and focus treatment. Mangrove requires host-containment repair, but the resulting MUI controls still follow the project theme.
+- **IBM Carbon:** Roughly 30% of the evaluated tokens are unreachable, so the supported Carbon theme cannot express the complete UNDRR visual system.
+- **Mantine:** Mantine requires ten-shade ramps, has no focus-colour or z-index-scale theme fields, and needs host-specific collision repair. One pairing also records unreachable tokens.
+- **Ant Design:** Four derived text aliases failed contrast and were pinned manually. On Mangrove, unlayered host form rules override the themed Ant control height, border and radius.
 
 ## A6 - Right-to-left
 

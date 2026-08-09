@@ -320,7 +320,7 @@ function costHorizonHtml() {
         <p><strong>As the estate grows:</strong> shared components and policy are intended to lower marginal integration cost and support coherent change.</p>
       </article>
     </div>
-    <p class="cost-horizon__note"><strong>Architectural hypothesis, not a cost forecast.</strong> <a href="./axes.html#a2">A2 models its change amplification across six sites</a>; it does not measure multi-year total cost. Read the <a href="./methodology.html">methodology</a>.</p>
+    <p class="cost-horizon__note"><strong>Architectural hypothesis, not a cost forecast.</strong> <a href="./axes.html#a2">A2 models its change amplification across six sites</a>; it does not measure multi-year total cost. A pilot should report person-days per cross-estate change, independent implementation and validation touches, elapsed release time and ongoing owner capacity. Read the <a href="./methodology.html">methodology</a>.</p>
   </section>`;
 }
 
@@ -355,7 +355,7 @@ const html = `<!doctype html>
       table { border-collapse:collapse; font-size:0.8125rem; background:var(--surface); width:100%; }
       th, td { padding:0.375rem 0.625rem; border:1px solid var(--border); text-align:left; vertical-align:top; }
       thead th { background:var(--surface); font-weight:700; }
-      .mermaid { box-sizing:border-box; width:min(60rem,calc(100vw - 3rem));
+      .mermaid { box-sizing:border-box; width:min(70rem,calc(100vw - 3rem));
                  margin:1rem 0 1.75rem; margin-inline-start:50%; padding:1.25rem;
                  transform:translateX(-50%); overflow-x:auto; text-align:center;
                  background:#fbfcfd; border:0; border-radius:10px;
@@ -449,7 +449,11 @@ const caseHtml = html
   )
   .replace(bodyHtml, caseBodyHtml);
 writeFileSync(CASE_OUT, caseHtml, "utf8");
-const methodologyBodyHtml = toHtml(readFileSync(METHODOLOGY_SRC, "utf8"));
+let methodologyBodyHtml = toHtml(readFileSync(METHODOLOGY_SRC, "utf8"));
+methodologyBodyHtml = methodologyBodyHtml.replace(
+  /<h2 id="reference-models">Reference models<\/h2>([\s\S]*?)(<p>These references are guides[\s\S]*?<\/p>)/,
+  `<details class="technical-detail methodology-references"><summary>Reference models and standards</summary><div class="technical-detail__body">$1$2</div></details>`,
+);
 const methodologyHtml = html
   .replace(
     "Architecture options - UNDRR data design system evaluation",

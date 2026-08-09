@@ -26,8 +26,9 @@ import {
   readdirSync,
   rmSync,
   statSync,
+  writeFileSync,
 } from "node:fs";
-import { dirname, join } from "node:path";
+import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -45,6 +46,73 @@ const MANGROVE_CSS = join(
 );
 copyFileSync(MANGROVE_CSS, join(DOCS, "mangrove.css"));
 process.stdout.write("copied mangrove.css → docs/\n");
+
+const MANGROVE_PREVIEW_JS = join(
+  ROOT,
+  "packages/host-mangrove/node_modules/@undrr/undrr-mangrove/js/preview-access.js",
+);
+
+/** Recursively returns every HTML file under a directory. */
+function htmlFiles(dir) {
+  return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+    const file = join(dir, entry.name);
+    if (entry.isDirectory()) return htmlFiles(file);
+    return entry.isFile() && entry.name.endsWith(".html") ? [file] : [];
+  });
+}
+
+/**
+ * Apply Mangrove's soft preview gate to every published page.
+ *
+ * This is editorial signalling, not authentication: the PIN is present in the
+ * DOM by design. A shared id means entering it once unlocks the whole evaluation
+ * for the rest of the browser session.
+ */
+function addPreviewAccessGate() {
+  const mangroveCss = readFileSync(MANGROVE_CSS, "utf8");
+  const previewCssStart = mangroveCss.indexOf(
+    "body:has([data-mg-preview-access]",
+  );
+  if (previewCssStart === -1) {
+    throw new Error("Mangrove preview-access styles were not found in style.css");
+  }
+
+  writeFileSync(
+    join(SITE, "preview-access.css"),
+    `/* Extracted from the pinned Mangrove package during site assembly. */\n${mangroveCss.slice(previewCssStart)}\n`,
+    "utf8",
+  );
+  copyFileSync(MANGROVE_PREVIEW_JS, join(SITE, "preview-access.js"));
+
+  for (const file of htmlFiles(SITE)) {
+    const assetRoot = relative(dirname(file), SITE) || ".";
+    const stylesheet = `${assetRoot}/preview-access.css`;
+    const script = `${assetRoot}/preview-access.js`;
+    let html = readFileSync(file, "utf8");
+
+    if (!html.includes("</head>") || !html.includes("<body")) {
+      throw new Error(`Cannot add preview access gate to ${relative(SITE, file)}`);
+    }
+
+    html = html.replace(
+      "</head>",
+      `    <link rel="stylesheet" href="${stylesheet}" />\n  </head>`,
+    );
+    html = html.replace(
+      /(<body(?:\s[^>]*)?>)/,
+      `$1\n    <div data-mg-preview-access data-mg-preview-pin="5498" data-mg-preview-id="data-design-demo" data-mg-preview-eyebrow="UNDRR data design system evaluation · Preview" data-mg-preview-title="Stakeholder preview" data-mg-preview-message="This evaluation is still under review and is not ready for general distribution. Enter the preview PIN to continue."></div>`,
+    );
+    html = html.replace(
+      "</body>",
+      `    <script type="module" src="${script}"></script>\n  </body>`,
+    );
+    writeFileSync(file, html, "utf8");
+  }
+
+  process.stdout.write(
+    `applied Mangrove preview gate to ${htmlFiles(SITE).length} HTML pages\n`,
+  );
+}
 
 /** Directory entries under apps/ that are actual apps. */
 function appDirs() {
@@ -151,6 +219,8 @@ cpSync(DOCS, SITE, { recursive: true });
 for (const name of built) {
   cpSync(join(APPS, name, "dist"), join(SITE, name), { recursive: true });
 }
+
+addPreviewAccessGate();
 
 process.stdout.write(`assembled _site/\n`);
 process.stdout.write(`  landing page: _site/index.html\n`);

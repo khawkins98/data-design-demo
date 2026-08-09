@@ -175,6 +175,7 @@ function extraction() {
 
 const extractionResults = extraction();
 const changeAmplification = readJson(join(DOCS, "change-amplification.json"));
+const themingControl = readJson(join(DOCS, "theming-control.json"));
 
 /**
  * Production dependency counts measured by one method for all apps (`pnpm deps:count`).
@@ -240,7 +241,7 @@ const axisScorerByKey = {
   A2: (r) => scoreA2(r.candidate, changeAmplification),
   A3: (r) => scoreA3(r.candidate, extractionResults),
   A4: (r) => scoreA4(r.evidence),
-  A5: (r) => scoreA5(r.evidence),
+  A5: (r) => scoreA5(r.evidence, r.candidate, themingControl),
   A6: (r) => scoreA6(r.evidence),
   A7: (r) => scoreA7(r.evidence),
 };
@@ -362,7 +363,7 @@ lines.push(
 );
 lines.push("");
 lines.push(
-  "Each cell separates the authoritative implementation change from consumer source edits and rebuilds. Rebuilds are release fan-out, not six manual implementations.",
+  "Each cell separates the authoritative implementation change from consumer source edits and rebuilds. Bands prioritise authoritative implementation locations, ownership boundaries and repeated source edits; rebuilds are release fan-out, not six manual implementations.",
 );
 lines.push("");
 {
@@ -406,7 +407,7 @@ lines.push("");
   lines.push("");
 }
 lines.push(
-  "The six-site counts are an explicit extrapolation from the tested propagation mechanisms, not observations of six production sites. Styling-hook fragility remains supporting evidence below; it no longer determines A2.",
+  "The mechanism is measured where a shared-package drill exists and explicitly modelled elsewhere. The six-site counts are extrapolations, not observations of six production sites. Styling-hook fragility remains supporting evidence below; it no longer determines A2.",
 );
 lines.push("");
 lines.push("<details><summary>Supporting evidence: implementation fragility</summary>");
@@ -544,11 +545,15 @@ lines.push(
 );
 lines.push("");
 
-pushAxis("A5", "Theming fidelity and propagation");
+pushAxis("A5", "Visual control and theming fidelity");
 lines.push(
-  "`unreachable`: tokens with no hook to attach to. `propagation`: stylesheet swap",
+  "**Token count is not the score.** Candidates expose different applicable token sets. The band asks whether those tokens can be attached, whether UNDRR remains the visual authority in both hosts, and how many manual corrections are required.",
 );
-lines.push("reaches every site at once; rebuild is per site.");
+lines.push("");
+lines.push(
+  "`unreachable`: tokens with no hook to attach to. `authority`: whether the",
+);
+lines.push("mapped visual system still controls the result in both hosts. Change propagation is scored in A2.");
 lines.push("");
 {
   const maxApplied = Math.max(...rows.map((r) => r.tokensApplied ?? 0));
@@ -556,16 +561,26 @@ lines.push("");
   const maxVarRefs = Math.max(...rows.map((r) => r.propagation.cssVarRefs ?? 0));
   lines.push(
     table(
-      ["Pairing", "tokens applied||UNDRR design tokens successfully connected", "unreachable||tokens with no hook to attach to", "propagation||how a token change reaches every site", "live var() refs in shipped CSS||CSS custom properties surviving to production"],
-      rows.map((r) => [
-        r.app,
-        spark(r.tokensApplied ?? "?", maxApplied),
-        r.tokensUnreachable ? `**${spark(r.tokensUnreachable, maxUnreachable)}**` : "0",
-        `**${r.propagation.model}**`,
-        spark(r.propagation.cssVarRefs ?? "not built", maxVarRefs),
-      ]),
+      ["Pairing", "tokens applied||UNDRR design tokens successfully connected", "unreachable||tokens with no hook to attach to", "visual authority||does the mapped system control both hosts?", "manual corrections||derived aliases pinned by hand", "propagation detail||reported here, scored in A2"],
+      rows.map((r) => {
+        const control = themingControl.candidates[r.candidate];
+        return [
+          r.app,
+          spark(r.tokensApplied ?? "?", maxApplied),
+          r.tokensUnreachable ? `**${spark(r.tokensUnreachable, maxUnreachable)}**` : "0",
+          control?.authorityAcrossHosts === "yes" ? "**yes**" : `**${control?.authorityAcrossHosts ?? "unmeasured"}**`,
+          control?.manualCorrections ?? "?",
+          `${r.propagation.model}; ${spark(r.propagation.cssVarRefs ?? "not built", maxVarRefs)} live var() refs`,
+        ];
+      }),
     ),
   );
+}
+lines.push("");
+for (const candidate of CANDIDATE_ORDER.filter((id) => themingControl.candidates[id] && rows.some((r) => r.candidate === id))) {
+  const control = themingControl.candidates[candidate];
+  const name = rows.find((r) => r.candidate === candidate)?.name ?? candidate;
+  lines.push(`- **${name}:** ${control.evidence}`);
 }
 lines.push("");
 

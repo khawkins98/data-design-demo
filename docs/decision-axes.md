@@ -59,9 +59,13 @@ Each scenario records four different costs rather than collapsing them into
 | Site rebuilds | Release fan-out; counted separately because six automated builds are not six implementations |
 | Validation and ownership boundaries | Independent systems or teams that must coordinate and verify the result |
 
+Bands prioritise authoritative implementation locations, ownership boundaries
+and repeated source edits. Site rebuilds are release fan-out rather than
+separate implementations.
+
 The propagation mechanisms are measured where a two-host shared-package drill
-exists. The six-site values are an explicit extrapolation, not observations of
-six production sites. Type C's full-estate reach also remains a pilot hypothesis:
+exists and explicitly modelled elsewhere. The six-site values are extrapolations,
+not observations of six production sites. Type C's full-estate reach also remains a pilot hypothesis:
 the records capability proves the mechanism across two hosts, not the completed
 component family.
 
@@ -127,24 +131,28 @@ not as regression assertions.
 | Portal reach | appearance assertions | Whether tokens survive `createPortal` |
 | Mangrove 2.0 | `mangrove-2-preview.css` | Forward compatibility with channel-triplet custom properties |
 
-## A5 - Theming fidelity and propagation
+## A5 - Visual control and theming fidelity
 
-*How closely can it be made to look like Mangrove, in a way that stays coherent?*
+*Can UNDRR express its visual system, and does that system remain authoritative
+inside both hosts?*
 
-**Fidelity - what can be expressed**
+Token reach alone was too generous: Ant Design and MUI both accepted every
+mapped token, although the rendered authority of those mappings differed on
+Mangrove. A5 now combines reach with the outcome in both hosts.
+
+**Token count is not the score.** Candidates expose different applicable token
+sets. The band asks whether those tokens can be attached, whether UNDRR remains
+the visual authority in both hosts, and how many manual corrections are needed.
 
 | Signal | Source | Reading |
 | --- | --- | --- |
 | `theming.tokensApplied` | evidence | Tokens the library accepted |
 | `theming.tokensUnreachable` | evidence | Tokens it cannot accept **at all** - a ceiling, not a cost |
+| Visual authority | `theming-control.json` and realistic layouts | Whether the mapped values still control the rendered component in both hosts |
+| Manual alias corrections | `theming-control.json`, `EVIDENCE.md` | Derived library values that had to be pinned back to UNDRR values |
 
-**Propagation - what happens when Mangrove changes**
-
-| Model | Consequence for N sites |
-| --- | --- |
-| Live custom properties | A Mangrove token change reaches every site with no code change and no rebuild |
-| Build-time theme object | Values are resolved to literals at compile time, so every site must be rebuilt |
-| Hand-maintained mapping | Someone re-verifies the mapping per upgrade, per site |
+Token propagation and rebuild fan-out are now scored in A2, avoiding counting
+the same estate-maintenance consequence twice.
 
 ## A6 - Right-to-left
 

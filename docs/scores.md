@@ -35,7 +35,7 @@ The weights are proposed, not ratified. They order close alternatives but do not
 | A2 Estate change amplification | 16 |
 | A3 New-product reproducibility | 16 |
 | A4 Mangrove compatibility | 14 |
-| A5 Theming fidelity | 14 |
+| A5 Visual control and theming fidelity | 14 |
 | A6 Right-to-left | 18 |
 | A7 Automated accessibility signals | 14 |
 
@@ -46,9 +46,9 @@ The provisional composite is the weighted mean of the two hosts. **Scored blocke
 | # | Candidate | Provisional composite | Scored library blockers |
 | --- | --- | --- | --- |
 | 1 | Adobe React Aria | **97** / 100 | none |
-| 2 | Ant Design | **82** / 100 | **1** - see below |
-| 3 | MUI (Community only) | **81** / 100 | none |
-| 4 | Mantine | **72** / 100 | **1** - see below |
+| 2 | MUI (Community only) | **81** / 100 | none |
+| 3 | Ant Design | **77** / 100 | **1** - see below |
+| 4 | Mantine | **69** / 100 | **1** - see below |
 | 5 | IBM Carbon | **47** / 100 | **3** - see below |
 
 **2 of 5 candidates carry no scored library blocker:** Adobe React Aria, MUI (Community only).
@@ -119,7 +119,7 @@ Worst open issue: **caveat** - React Aria is unstyled, so these pairings carry 1
 | A2 Estate change amplification | strong | 16 | 1 authoritative change location at worst across 6 sites; 0 consumer source edits; measured mechanism, modelled at six sites |
 | A3 New-product reproducibility | strong | 16 | the integration extracted into one shared package |
 | A4 Mangrove compatibility | strong | 14 | no host canary changed when the candidate mounted |
-| A5 Theming fidelity | strong | 14 | all 48 reachable tokens applied |
+| A5 Visual control and theming fidelity | strong | 14 | all 48 reachable tokens applied; visual authority across hosts: yes; 0 manual alias corrections |
 | A6 Right-to-left | strong | 18 | Arabic worked from a dir attribute alone, at zero custom lines |
 | A7 Automated accessibility signals | strong | 14 | no critical or serious automated violations; 1 checks axe declined to decide, each still owed a human |
 
@@ -135,7 +135,7 @@ Worst open issue: **caveat** - React Aria is unstyled, so these pairings carry 1
 | A2 Estate change amplification | strong | 16 | 1 authoritative change location at worst across 6 sites; 0 consumer source edits; measured mechanism, modelled at six sites |
 | A3 New-product reproducibility | strong | 16 | the integration extracted into one shared package |
 | A4 Mangrove compatibility | strong | 14 | no host canary changed when the candidate mounted |
-| A5 Theming fidelity | strong | 14 | all 47 reachable tokens applied |
+| A5 Visual control and theming fidelity | strong | 14 | all 47 reachable tokens applied; visual authority across hosts: yes; 0 manual alias corrections |
 | A6 Right-to-left | strong | 18 | Arabic worked from a dir attribute alone, at zero custom lines |
 | A7 Automated accessibility signals | strong | 14 | no critical or serious automated violations; 1 checks axe declined to decide, each still owed a human |
 
@@ -151,7 +151,7 @@ Worst open issue: **caveat** - MUI needs a third setup step for RTL, and fails s
 | A2 Estate change amplification | **workable** | 16 | 2 authoritative change locations at worst across 6 sites; 0 consumer source edits; measured package, modelled across two parallel stacks |
 | A3 New-product reproducibility | strong | 16 | the integration extracted into one shared package |
 | A4 Mangrove compatibility | strong | 14 | no host canary changed when the candidate mounted |
-| A5 Theming fidelity | strong | 14 | all 29 reachable tokens applied |
+| A5 Visual control and theming fidelity | strong | 14 | all 29 reachable tokens applied; visual authority across hosts: yes; 0 manual alias corrections |
 | A6 Right-to-left | **workable** | 18 | clean, but only after 29 custom lines and 0 recorded mitigations |
 | A7 Automated accessibility signals | **workable** | 14 | 1 serious automated violations; 4 checks axe declined to decide, each still owed a human |
 
@@ -167,7 +167,7 @@ Worst open issue: **caveat** - MUI needs a third setup step for RTL, and fails s
 | A2 Estate change amplification | **workable** | 16 | 2 authoritative change locations at worst across 6 sites; 0 consumer source edits; measured package, modelled across two parallel stacks |
 | A3 New-product reproducibility | strong | 16 | the integration extracted into one shared package |
 | A4 Mangrove compatibility | strong | 14 | no host canary changed when the candidate mounted |
-| A5 Theming fidelity | strong | 14 | all 32 reachable tokens applied |
+| A5 Visual control and theming fidelity | strong | 14 | all 32 reachable tokens applied; visual authority across hosts: yes; 0 manual alias corrections |
 | A6 Right-to-left | **workable** | 18 | clean, but only after 29 custom lines and 0 recorded mitigations |
 | A7 Automated accessibility signals | **workable** | 14 | 1 serious automated violations; 4 checks axe declined to decide, each still owed a human |
 
@@ -183,7 +183,7 @@ Worst open issue: **warning** - Carbon cannot express about 30% of the UNDRR des
 | A2 Estate change amplification | **weak** | 16 | 3 authoritative change locations at worst across 6 sites; consumer source-edit fan-out is unmeasured; architecture model; translation path not measured |
 | A3 New-product reproducibility | **workable** | 16 | extraction outcome recorded as unknown - confounded |
 | A4 Mangrove compatibility | **workable** | 14 | clean only because the documented global stylesheet was not loaded as documented |
-| A5 Theming fidelity | **weak** | 14 | 21 of 71 UNDRR tokens cannot be attached at all - a ceiling, not a cost |
+| A5 Visual control and theming fidelity | **weak** | 14 | 21 of 71 UNDRR tokens cannot be attached at all - a ceiling, not a cost |
 | A6 Right-to-left | **workable** | 18 | clean, but only after 0 custom lines and 1 recorded mitigations |
 | A7 Automated accessibility signals | **workable** | 14 | 2 serious automated violations; 2 checks axe declined to decide, each still owed a human |
 
@@ -199,7 +199,7 @@ Worst open issue: **warning** - Carbon cannot express about 30% of the UNDRR des
 | A2 Estate change amplification | **weak** | 16 | 3 authoritative change locations at worst across 6 sites; consumer source-edit fan-out is unmeasured; architecture model; translation path not measured |
 | A3 New-product reproducibility | **workable** | 16 | extraction outcome recorded as unknown - confounded |
 | A4 Mangrove compatibility | **blocked** | 14 | the candidate restyled 54 computed properties on host markup outside its own subtree |
-| A5 Theming fidelity | **weak** | 14 | 22 of 72 UNDRR tokens cannot be attached at all - a ceiling, not a cost |
+| A5 Visual control and theming fidelity | **weak** | 14 | 22 of 72 UNDRR tokens cannot be attached at all - a ceiling, not a cost |
 | A6 Right-to-left | **workable** | 18 | clean, but only after 6 custom lines and 2 recorded mitigations |
 | A7 Automated accessibility signals | **workable** | 14 | 1 serious automated violations; 2 checks axe declined to decide, each still owed a human |
 
@@ -215,11 +215,11 @@ Worst open issue: **warning** - Modal's close button ships with no accessible na
 | A2 Estate change amplification | **workable** | 16 | 2 authoritative change locations at worst across 6 sites; consumer source-edit fan-out is unmeasured; architecture model; package propagation not measured |
 | A3 New-product reproducibility | **workable** | 16 | extraction outcome recorded as unknown - confounded |
 | A4 Mangrove compatibility | strong | 14 | no host canary changed when the candidate mounted |
-| A5 Theming fidelity | **weak** | 14 | 5 of 71 UNDRR tokens cannot be attached at all - a ceiling, not a cost |
+| A5 Visual control and theming fidelity | **weak** | 14 | 5 of 71 UNDRR tokens cannot be attached at all - a ceiling, not a cost |
 | A6 Right-to-left | **workable** | 18 | clean, but only after 18 custom lines and 2 recorded mitigations |
 | A7 Automated accessibility signals | strong | 14 | no critical or serious automated violations; 1 checks axe declined to decide, each still owed a human |
 
-### `mangrove-mantine` - composite 77 / 100
+### `mangrove-mantine` - composite 71 / 100
 
 Worst open issue: **warning** - Modal's close button ships with no accessible name
 
@@ -231,11 +231,11 @@ Worst open issue: **warning** - Modal's close button ships with no accessible na
 | A2 Estate change amplification | **workable** | 16 | 2 authoritative change locations at worst across 6 sites; consumer source-edit fan-out is unmeasured; architecture model; package propagation not measured |
 | A3 New-product reproducibility | **workable** | 16 | extraction outcome recorded as unknown - confounded |
 | A4 Mangrove compatibility | strong | 14 | no host canary changed when the candidate mounted |
-| A5 Theming fidelity | strong | 14 | all 62 reachable tokens applied |
+| A5 Visual control and theming fidelity | **workable** | 14 | all 62 reachable tokens applied; visual authority across hosts: partial; 3 manual alias corrections |
 | A6 Right-to-left | **workable** | 18 | clean, but only after 10 custom lines and 0 recorded mitigations |
 | A7 Automated accessibility signals | strong | 14 | no critical or serious automated violations; 0 checks axe declined to decide, each still owed a human |
 
-### `delta-antd` - composite 82 / 100
+### `delta-antd` - composite 77 / 100
 
 Worst open issue: **caveat** - The data table has an upstream accessibility defect
 
@@ -247,11 +247,11 @@ Worst open issue: **caveat** - The data table has an upstream accessibility defe
 | A2 Estate change amplification | **workable** | 16 | 2 authoritative change locations at worst across 6 sites; 0 consumer source edits; measured package, modelled across two parallel stacks |
 | A3 New-product reproducibility | strong | 16 | the integration extracted into one shared package |
 | A4 Mangrove compatibility | **workable** | 14 | clean only because the documented global stylesheet was not loaded as documented |
-| A5 Theming fidelity | strong | 14 | all 44 reachable tokens applied |
+| A5 Visual control and theming fidelity | **workable** | 14 | all 44 reachable tokens applied; visual authority across hosts: partial; 4 manual alias corrections |
 | A6 Right-to-left | strong | 18 | Arabic worked from a dir attribute alone, at zero custom lines |
 | A7 Automated accessibility signals | **workable** | 14 | 1 serious automated violations; 1 checks axe declined to decide, each still owed a human |
 
-### `mangrove-antd` - composite 82 / 100
+### `mangrove-antd` - composite 77 / 100
 
 Worst open issue: **warning** - Select controls do not display their selected value
 
@@ -263,7 +263,7 @@ Worst open issue: **warning** - Select controls do not display their selected va
 | A2 Estate change amplification | **workable** | 16 | 2 authoritative change locations at worst across 6 sites; 0 consumer source edits; measured package, modelled across two parallel stacks |
 | A3 New-product reproducibility | strong | 16 | the integration extracted into one shared package |
 | A4 Mangrove compatibility | **workable** | 14 | clean only because the documented global stylesheet was not loaded as documented |
-| A5 Theming fidelity | strong | 14 | all 44 reachable tokens applied |
+| A5 Visual control and theming fidelity | **workable** | 14 | all 44 reachable tokens applied; visual authority across hosts: partial; 4 manual alias corrections |
 | A6 Right-to-left | strong | 18 | Arabic worked from a dir attribute alone, at zero custom lines |
 | A7 Automated accessibility signals | **workable** | 14 | 1 serious automated violations; 1 checks axe declined to decide, each still owed a human |
 

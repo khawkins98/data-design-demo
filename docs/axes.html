@@ -221,13 +221,13 @@
 <blockquote class="answers">
 <p><strong>Answers: Standardisation</strong> - One shared component vocabulary across the estate, or one dialect per project?</p>
 
-<p>The six-site scenario makes the architectural consequence explicit: Type C places shared policy in one governed foundation; Type A retains separate suite and Mangrove implementations; Type B can add a translation layer. These counts extrapolate measured propagation mechanisms and remain conditional on adopting the model.</p>
+<p>The six-site scenario makes the architectural consequence explicit: Type C places shared policy in one governed foundation; Type A retains separate suite and Mangrove implementations; Type B can add a translation layer. It applies measured mechanisms where available and explicit assumptions elsewhere; the evidence basis distinguishes them.</p>
 </blockquote>
 <div class="ax-summary"><span class="ax-chip ax-s" title="">Adobe React Aria: strong</span><span class="ax-chip ax-w" title="2 authoritative change locations at worst across 6 sites; 0 consumer source edits; measured package, modelled across two parallel stacks">MUI (Community only): workable</span><span class="ax-chip ax-k" title="3 authoritative change locations at worst across 6 sites; consumer source-edit fan-out is unmeasured; architecture model; translation path not measured">IBM Carbon: weak</span><span class="ax-chip ax-w" title="2 authoritative change locations at worst across 6 sites; consumer source-edit fan-out is unmeasured; architecture model; package propagation not measured">Mantine: workable</span><span class="ax-chip ax-w" title="2 authoritative change locations at worst across 6 sites; 0 consumer source edits; measured package, modelled across two parallel stacks">Ant Design: workable</span></div>
 
 <p>Scenario: <strong>6 sites</strong> - 3 data products and 3 content products.</p>
 
-<p>Each cell separates the authoritative implementation change from consumer source edits and rebuilds. Rebuilds are release fan-out, not six manual implementations.</p>
+<p>Each cell separates the authoritative implementation change from consumer source edits and rebuilds. Bands prioritise authoritative implementation locations, ownership boundaries and repeated source edits; rebuilds are release fan-out, not six manual implementations.</p>
 
 <div class="scroll"><table><thead>
 <tr><th>Candidate</th><th>Type</th><th>evidence basis<span class="th-hint">mechanism measured or modelled?</span></th><th>token change<span class="th-hint">authoritative source · consumer edits · rebuilds</span></th><th>shared policy<span class="th-hint">authoritative source · consumer edits · rebuilds</span></th><th>upstream upgrade<span class="th-hint">authoritative source · consumer edits · rebuilds</span></th><th>owners at worst<span class="th-hint">independent system boundaries</span></th></tr>
@@ -285,7 +285,7 @@
 </details>
 
 </ul>
-<p>The six-site counts are an explicit extrapolation from the tested propagation mechanisms, not observations of six production sites. Styling-hook fragility remains supporting evidence below; it no longer determines A2.</p>
+<p>The mechanism is measured where a shared-package drill exists and explicitly modelled elsewhere. The six-site counts are extrapolations, not observations of six production sites. Styling-hook fragility remains supporting evidence below; it no longer determines A2.</p>
 
 <details><summary>Supporting evidence: implementation fragility</summary>
 
@@ -459,32 +459,42 @@
 <tr><td>mangrove-antd</td><td>clean</td><td><strong>no</strong> - global stylesheet restyles the host</td></tr>
 </tbody></table></div>
 
-<h2 id="a5">A5 - Theming fidelity and propagation</h2>
+<h2 id="a5">A5 - Visual control and theming fidelity</h2>
 
 <blockquote class="answers">
 <p><strong>Answers: Design-token alignment</strong> - Can it be driven by UNDRR tokens, and does a token change propagate?</p>
 
-<p>React Aria and Carbon retain browser-resolved token references. MUI, Mantine and Ant Design bake mapped values into their themes, so bundled theme changes require each consuming site to rebuild unless the token sheet is delivered centrally. Carbon leaves 21-22 of 71 evaluated tokens unreachable.</p>
+<p>React Aria and MUI retain visual authority across both hosts. Ant Design accepts the mapped tokens, but four derived aliases needed contrast corrections and Mangrove overrides some themed control geometry. Carbon leaves 21-22 of 71 evaluated tokens unreachable. Token change fan-out is now measured separately in A2.</p>
 </blockquote>
-<div class="ax-summary"><span class="ax-chip ax-s" title="">Adobe React Aria: strong</span><span class="ax-chip ax-s" title="">MUI (Community only): strong</span><span class="ax-chip ax-k" title="21 of 71 UNDRR tokens cannot be attached at all - a ceiling, not a cost">IBM Carbon: weak</span><span class="ax-chip ax-k" title="5 of 71 UNDRR tokens cannot be attached at all - a ceiling, not a cost">Mantine: weak</span><span class="ax-chip ax-s" title="">Ant Design: strong</span></div>
+<div class="ax-summary"><span class="ax-chip ax-s" title="">Adobe React Aria: strong</span><span class="ax-chip ax-s" title="">MUI (Community only): strong</span><span class="ax-chip ax-k" title="21 of 71 UNDRR tokens cannot be attached at all - a ceiling, not a cost">IBM Carbon: weak</span><span class="ax-chip ax-k" title="5 of 71 UNDRR tokens cannot be attached at all - a ceiling, not a cost">Mantine: weak</span><span class="ax-chip ax-w" title="all 44 reachable tokens applied; visual authority across hosts: partial; 4 manual alias corrections">Ant Design: workable</span></div>
 
-<p><code>unreachable</code>: tokens with no hook to attach to. <code>propagation</code>: stylesheet swap reaches every site at once; rebuild is per site.</p>
+<p><strong>Token count is not the score.</strong> Candidates expose different applicable token sets. The band asks whether those tokens can be attached, whether UNDRR remains the visual authority in both hosts, and how many manual corrections are required.</p>
+
+<p><code>unreachable</code>: tokens with no hook to attach to. <code>authority</code>: whether the mapped visual system still controls the result in both hosts. Change propagation is scored in A2.</p>
 
 <div class="scroll"><table><thead>
-<tr><th>Pairing</th><th>tokens applied<span class="th-hint">UNDRR design tokens successfully connected</span></th><th>unreachable<span class="th-hint">tokens with no hook to attach to</span></th><th>propagation<span class="th-hint">how a token change reaches every site</span></th><th>live var() refs in shipped CSS<span class="th-hint">CSS custom properties surviving to production</span></th></tr>
+<tr><th>Pairing</th><th>tokens applied<span class="th-hint">UNDRR design tokens successfully connected</span></th><th>unreachable<span class="th-hint">tokens with no hook to attach to</span></th><th>visual authority<span class="th-hint">does the mapped system control both hosts?</span></th><th>manual corrections<span class="th-hint">derived aliases pinned by hand</span></th><th>propagation detail<span class="th-hint">reported here, scored in A2</span></th></tr>
 </thead><tbody>
-<tr><td>delta-react-aria</td><td><span class="spark"><span class="spark-bar" style="width:73%"></span>48</span></td><td>0</td><td><strong>stylesheet-swap</strong></td><td><span class="spark"><span class="spark-bar" style="width:100%"></span>414</span></td></tr>
-<tr><td>mangrove-react-aria</td><td><span class="spark"><span class="spark-bar" style="width:71%"></span>47</span></td><td>0</td><td><strong>stylesheet-swap</strong></td><td><span class="spark"><span class="spark-bar" style="width:76%"></span>314</span></td></tr>
-<tr><td>delta-mui</td><td><span class="spark"><span class="spark-bar" style="width:44%"></span>29</span></td><td>0</td><td><strong>mostly-rebuild</strong></td><td><span class="spark"><span class="spark-bar" style="width:9%"></span>38</span></td></tr>
-<tr><td>mangrove-mui</td><td><span class="spark"><span class="spark-bar" style="width:48%"></span>32</span></td><td>0</td><td><strong>mostly-rebuild</strong></td><td><span class="spark"><span class="spark-bar" style="width:9%"></span>38</span></td></tr>
-<tr><td>delta-carbon</td><td><span class="spark"><span class="spark-bar" style="width:76%"></span>50</span></td><td><strong><span class="spark"><span class="spark-bar" style="width:95%"></span>21</span></strong></td><td><strong>stylesheet-swap</strong></td><td><span class="spark"><span class="spark-bar" style="width:64%"></span>263</span></td></tr>
-<tr><td>mangrove-carbon</td><td><span class="spark"><span class="spark-bar" style="width:76%"></span>50</span></td><td><strong><span class="spark"><span class="spark-bar" style="width:100%"></span>22</span></strong></td><td><strong>stylesheet-swap</strong></td><td><span class="spark"><span class="spark-bar" style="width:49%"></span>201</span></td></tr>
-<tr><td>delta-mantine</td><td><span class="spark"><span class="spark-bar" style="width:100%"></span>66</span></td><td><strong><span class="spark"><span class="spark-bar" style="width:23%"></span>5</span></strong></td><td><strong>mostly-rebuild</strong></td><td><span class="spark"><span class="spark-bar" style="width:11%"></span>44</span></td></tr>
-<tr><td>mangrove-mantine</td><td><span class="spark"><span class="spark-bar" style="width:94%"></span>62</span></td><td>0</td><td><strong>mostly-rebuild</strong></td><td><span class="spark"><span class="spark-bar" style="width:11%"></span>44</span></td></tr>
-<tr><td>delta-antd</td><td><span class="spark"><span class="spark-bar" style="width:67%"></span>44</span></td><td>0</td><td><strong>mostly-rebuild</strong></td><td><span class="spark"><span class="spark-bar" style="width:10%"></span>42</span></td></tr>
-<tr><td>mangrove-antd</td><td><span class="spark"><span class="spark-bar" style="width:67%"></span>44</span></td><td>0</td><td><strong>mostly-rebuild</strong></td><td><span class="spark"><span class="spark-bar" style="width:10%"></span>41</span></td></tr>
+<tr><td>delta-react-aria</td><td><span class="spark"><span class="spark-bar" style="width:73%"></span>48</span></td><td>0</td><td><strong>yes</strong></td><td>0</td><td>stylesheet-swap; <span class="spark"><span class="spark-bar" style="width:100%"></span>414</span> live var() refs</td></tr>
+<tr><td>mangrove-react-aria</td><td><span class="spark"><span class="spark-bar" style="width:71%"></span>47</span></td><td>0</td><td><strong>yes</strong></td><td>0</td><td>stylesheet-swap; <span class="spark"><span class="spark-bar" style="width:76%"></span>314</span> live var() refs</td></tr>
+<tr><td>delta-mui</td><td><span class="spark"><span class="spark-bar" style="width:44%"></span>29</span></td><td>0</td><td><strong>yes</strong></td><td>0</td><td>mostly-rebuild; <span class="spark"><span class="spark-bar" style="width:9%"></span>38</span> live var() refs</td></tr>
+<tr><td>mangrove-mui</td><td><span class="spark"><span class="spark-bar" style="width:48%"></span>32</span></td><td>0</td><td><strong>yes</strong></td><td>0</td><td>mostly-rebuild; <span class="spark"><span class="spark-bar" style="width:9%"></span>38</span> live var() refs</td></tr>
+<tr><td>delta-carbon</td><td><span class="spark"><span class="spark-bar" style="width:76%"></span>50</span></td><td><strong><span class="spark"><span class="spark-bar" style="width:95%"></span>21</span></strong></td><td><strong>partial</strong></td><td>0</td><td>stylesheet-swap; <span class="spark"><span class="spark-bar" style="width:64%"></span>263</span> live var() refs</td></tr>
+<tr><td>mangrove-carbon</td><td><span class="spark"><span class="spark-bar" style="width:76%"></span>50</span></td><td><strong><span class="spark"><span class="spark-bar" style="width:100%"></span>22</span></strong></td><td><strong>partial</strong></td><td>0</td><td>stylesheet-swap; <span class="spark"><span class="spark-bar" style="width:49%"></span>201</span> live var() refs</td></tr>
+<tr><td>delta-mantine</td><td><span class="spark"><span class="spark-bar" style="width:100%"></span>66</span></td><td><strong><span class="spark"><span class="spark-bar" style="width:23%"></span>5</span></strong></td><td><strong>partial</strong></td><td>3</td><td>mostly-rebuild; <span class="spark"><span class="spark-bar" style="width:11%"></span>44</span> live var() refs</td></tr>
+<tr><td>mangrove-mantine</td><td><span class="spark"><span class="spark-bar" style="width:94%"></span>62</span></td><td>0</td><td><strong>partial</strong></td><td>3</td><td>mostly-rebuild; <span class="spark"><span class="spark-bar" style="width:11%"></span>44</span> live var() refs</td></tr>
+<tr><td>delta-antd</td><td><span class="spark"><span class="spark-bar" style="width:67%"></span>44</span></td><td>0</td><td><strong>partial</strong></td><td>4</td><td>mostly-rebuild; <span class="spark"><span class="spark-bar" style="width:10%"></span>42</span> live var() refs</td></tr>
+<tr><td>mangrove-antd</td><td><span class="spark"><span class="spark-bar" style="width:67%"></span>44</span></td><td>0</td><td><strong>partial</strong></td><td>4</td><td>mostly-rebuild; <span class="spark"><span class="spark-bar" style="width:10%"></span>41</span> live var() refs</td></tr>
 </tbody></table></div>
 
+<ul>
+<li><strong>Adobe React Aria:</strong> React Aria supplies behaviour and state semantics rather than an upstream visual language, so the shared UNDRR layer remains the visual authority.</li>
+<li><strong>MUI (Community only):</strong> The shared MUI theme reaches palette, typography, spacing, shape, z-index and focus treatment. Mangrove requires host-containment repair, but the resulting MUI controls still follow the project theme.</li>
+<li><strong>IBM Carbon:</strong> Roughly 30% of the evaluated tokens are unreachable, so the supported Carbon theme cannot express the complete UNDRR visual system.</li>
+<li><strong>Mantine:</strong> Mantine requires ten-shade ramps, has no focus-colour or z-index-scale theme fields, and needs host-specific collision repair. One pairing also records unreachable tokens.</li>
+<li><strong>Ant Design:</strong> Four derived text aliases failed contrast and were pinned manually. On Mangrove, unlayered host form rules override the themed Ant control height, border and radius.</li>
+
+</ul>
 <h2 id="a6">A6 - Right-to-left</h2>
 
 <blockquote class="answers">

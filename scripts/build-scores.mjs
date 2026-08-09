@@ -76,6 +76,7 @@ const extraction = existsSync(join(DOCS, "extraction-results.json"))
   ? readJson(join(DOCS, "extraction-results.json"))
   : {};
 const changeAmplification = readJson(join(DOCS, "change-amplification.json"));
+const themingControl = readJson(join(DOCS, "theming-control.json"));
 const effortClassification = readJson(join(DOCS, "effort-classification.json")).apps;
 
 function appDirs() {
@@ -96,7 +97,7 @@ const AXES = [
   ["A2_maintainability", "A2 Estate change amplification", (ev, c) => scoreA2(c, changeAmplification)],
   ["A3_reproducibility", "A3 New-product reproducibility", (ev, c) => scoreA3(c, extraction)],
   ["A4_mangrove", "A4 Mangrove compatibility", (ev) => scoreA4(ev)],
-  ["A5_theming", "A5 Theming fidelity", (ev) => scoreA5(ev)],
+  ["A5_theming", "A5 Visual control and theming fidelity", (ev, c) => scoreA5(ev, c, themingControl)],
   ["A6_rtl", "A6 Right-to-left", (ev) => scoreA6(ev)],
   ["A7_accessibility", "A7 Automated accessibility signals", (ev) => scoreA7(ev)],
 ];
@@ -450,10 +451,18 @@ function toHtml(markdown) {
 function buildOverviewHtml() {
   const bandClass = { strong: "ov-s", workable: "ov-w", weak: "ov-k", blocked: "ov-b" };
   const bandLabel = { strong: "strong", workable: "workable", weak: "weak", blocked: "blocked" };
-  const axisKeys = AXES.map(([key]) => key);
-  const axisShort = ["A1", "A2", "A3", "A4", "A5", "A6", "A7"];
-  const axisLabel = AXES.map(([, label]) => label);
-  const axisHint = ["Effort", "Change cost", "New product", "Mangrove", "Theming", "RTL", "a11y"];
+  const axisMeta = {
+    A1_effort: ["A1", "First-site effort", "Implementation effort"],
+    A2_maintainability: ["A2", "Six-site model", "Estate change amplification"],
+    A3_reproducibility: ["A3", "New-product reuse", "New-product reproducibility"],
+    A4_mangrove: ["A4", "Mangrove", "Mangrove compatibility"],
+    A5_theming: ["A5", "Visual control", "Visual control and theming fidelity"],
+    A6_rtl: ["A6", "RTL", "Right-to-left"],
+    A7_accessibility: ["A7", "Automated only", "Automated accessibility signals"],
+  };
+  const estateKeys = ["A2_maintainability", "A3_reproducibility"];
+  const technicalKeys = ["A1_effort", "A4_mangrove", "A5_theming", "A6_rtl", "A7_accessibility"];
+  const axisKeys = [...estateKeys, ...technicalKeys];
 
   const gridRows = ranked.map((c) => {
     const deltaPairing = c.pair.find((p) => p.host === "delta");
@@ -471,8 +480,10 @@ function buildOverviewHtml() {
           BANDS[b] < BANDS[w] && (b === dBand || b === mBand) ? b : w,
           dBand,
         );
-        const accessibleBand = `${axisLabel[i]}: ${worst}${i < 2 || i === 6 ? ", provisional" : ""}`;
-        return `<td class="${bandClass[worst]}"><a href="./axes.html#${axisShort[i].toLowerCase()}" aria-label="${esc(accessibleBand)}" title="${esc(accessibleBand)}">${bandLabel[worst]}</a></td>`;
+        const [short, , label] = axisMeta[key];
+        const qualification = key === "A2_maintainability" ? ", six-site model" : key === "A7_accessibility" ? ", automated only" : "";
+        const accessibleBand = `${label}: ${worst}${qualification}`;
+        return `<td class="${bandClass[worst]}"><a href="./axes.html#${short.toLowerCase()}" aria-label="${esc(accessibleBand)}" title="${esc(accessibleBand)}">${bandLabel[worst]}</a></td>`;
       })
       .join("");
 
@@ -495,10 +506,25 @@ function buildOverviewHtml() {
       .filter(Boolean)
       .join(" ");
 
+    const architecture = changeAmplification.candidates[c.candidate];
+    const type = architecture?.architectureType ?? "-";
+    const confidence = architecture?.mechanismMeasured
+      ? "mechanism measured; estate modelled"
+      : "architecture modelled";
+    const architectureAnchor = {
+      A: "a-ship-and-theme-mui-mantine-ant-design",
+      B: "b-complete-branded-system-ibm-carbon",
+      C: "c-foundational-adobe-react-aria",
+    }[type];
+    const typeCell = architectureAnchor
+      ? `<a class="ov-type-link" href="./architecture-options.html#${architectureAnchor}"><strong>Type ${type}</strong><span>${confidence}</span></a>`
+      : type;
+
     return (
       `<tr>` +
       `<td class="ov-name">${esc(c.name)}</td>` +
-      `<td class="ov-score"><strong>${c.composite}</strong></td>` +
+      `<td class="ov-type">${typeCell}</td>` +
+      `<td class="ov-score"><strong>${c.composite}</strong><span> / 100</span></td>` +
       `<td class="ov-blockers">${blockerBadge}</td>` +
       axisCells +
       `<td class="ov-demos">${demoLinks}</td>` +
@@ -509,13 +535,76 @@ function buildOverviewHtml() {
 
   return (
     `<div class="scroll"><table class="ov-table"><thead>\n` +
-    `<tr><th>Candidate</th><th>Provisional score</th><th>Scored blockers</th>` +
-    axisShort.map((a, i) => `<th class="ov-ax"><a href="./axes.html#${a.toLowerCase()}" title="${esc(axisLabel[i])}">${a}<span class="ov-ax-hint">${axisHint[i]}</span></a></th>`).join("") +
-    `<th>Demos</th><th>Inventory</th></tr>\n` +
+    `<tr class="ov-group-row"><th rowspan="2">Candidate</th><th rowspan="2">Architecture</th><th rowspan="2">Evidence score<span class="ov-ax-hint">not compliance</span></th><th rowspan="2">Scored blockers</th>` +
+    `<th colspan="2">Estate model</th><th colspan="5">Technical fit</th><th rowspan="2">Demos</th><th rowspan="2">Inventory</th></tr>\n` +
+    `<tr>` + axisKeys.map((key) => {
+      const [short, hint, label] = axisMeta[key];
+      return `<th class="ov-ax"><a href="./axes.html#${short.toLowerCase()}" title="${esc(label)}">${short}<span class="ov-ax-hint">${hint}</span></a></th>`;
+    }).join("") + `</tr>\n` +
     `</thead><tbody>\n` +
     gridRows.join("\n") +
-    `\n</tbody></table></div>`
+    `\n</tbody></table></div>` +
+    `<p class="ranking-qualification"><strong>Read with care:</strong> A2 is a modelled six-site scenario; A7 reports automated signals only. Neither is an adoption gate or an accessibility-conformance claim.</p>`
   );
+}
+
+function buildRankingStatusHtml() {
+  return `<section class="ranking-status" aria-labelledby="ranking-status-title">
+    <h2 id="ranking-status-title">Provisional evidence ranking—not an adoption decision</h2>
+    <p>Scores combine measured prototype results with a modelled six-site estate scenario (A2), using weights proposed by the evaluation author. They do not establish accessibility conformance or choose UNDRR's operating architecture.</p>
+    <p><a href="./architecture-options.html"><strong>Choose the architecture first</strong></a>, then review the <a href="./methodology.html">method and limits</a>.</p>
+  </section>`;
+}
+
+function candidateAxisBand(candidate, key) {
+  return candidate.pair
+    .map((pairing) => pairing.axes[key]?.band ?? "blocked")
+    .reduce((worst, band) => (BANDS[band] < BANDS[worst] ? band : worst), "strong");
+}
+
+function buildCloseScoreSummaryHtml() {
+  const mui = ranked.find((candidate) => candidate.candidate === "mui");
+  const ant = ranked.find((candidate) => candidate.candidate === "antd");
+  if (!mui || !ant) return "";
+
+  const same = [];
+  const muiAdvantages = [];
+  const antAdvantages = [];
+  let muiGain = 0;
+  let antGain = 0;
+  const summaryLabels = {
+    A1_effort: "implementation effort",
+    A2_maintainability: "estate change amplification",
+    A3_reproducibility: "new-product reproducibility",
+    A4_mangrove: "Mangrove compatibility",
+    A5_theming: "visual control",
+    A6_rtl: "native RTL",
+    A7_accessibility: "automated accessibility signals",
+  };
+  for (const [key, label] of AXES) {
+    const muiBand = candidateAxisBand(mui, key);
+    const antBand = candidateAxisBand(ant, key);
+    const delta = (BANDS[muiBand] - BANDS[antBand]) * WEIGHTS[key];
+    const shortLabel = summaryLabels[key] ?? label.replace(/^A\d+\s+/, "");
+    if (delta === 0) same.push(shortLabel);
+    else if (delta > 0) {
+      muiAdvantages.push(shortLabel);
+      muiGain += delta;
+    } else {
+      antAdvantages.push(shortLabel);
+      antGain += -delta;
+    }
+  }
+  const fmt = (value) => Number(value.toFixed(1));
+  return `<section class="ranking-note" aria-labelledby="ranking-note-title">
+    <h2 id="ranking-note-title">Why MUI leads Ant Design by ${mui.composite - ant.composite} points</h2>
+    <ul>
+      <li>They tie on ${same.map((label) => Object.entries(summaryLabels).find(([, value]) => value === label)?.[0].slice(0, 2)).join(", ")}.</li>
+      <li>MUI gains ${fmt(muiGain)} weighted points from stronger ${muiAdvantages.join(" and ")}; Ant recovers ${fmt(antGain)} through ${antAdvantages.join(" and ")}, leaving MUI ${mui.composite - ant.composite} points ahead.</li>
+      <li>Ant also carries one scored blocker: its selected value disappears in the Mangrove Select unless the integration setting is changed.</li>
+      <li>React Aria's ${ranked.find((candidate) => candidate.candidate === "react-aria")?.composite ?? 97} reflects prototype evidence under these weights. A1 does not include the funded Type C team or multi-year operating cost.</li>
+    </ul>
+  </section>`;
 }
 
 // Post-process HTML: wrap per-pairing sections 3+ in <details>.
@@ -585,7 +674,12 @@ const html = `<!doctype html>
       .ov-table { font-size:0.8125rem; }
       .ov-table th, .ov-table td { text-align:center; padding:0.35rem 0.5rem; white-space:nowrap; }
       .ov-name { text-align:start !important; font-weight:600; }
-      .ov-score { font-size:1rem; }
+      .ov-score { font-size:1rem; font-variant-numeric:tabular-nums; }
+      .ov-score span { color:var(--muted); font-size:0.6875rem; font-weight:400; }
+      .ov-type { min-width:9.5rem; text-align:start !important; white-space:normal !important; }
+      .ov-type-link { text-align:start; }
+      .ov-type-link span { display:block; margin-top:0.15rem; color:var(--muted); font-size:0.625rem; line-height:1.25; }
+      .ov-group-row th { background:#f5f8fb; vertical-align:middle; }
       .ov-ax { font-size:0.6875rem; }
       .ov-ax a { text-decoration:none; color:inherit; }
       .ov-table td a { color:inherit; text-decoration:none; display:block; }
@@ -603,6 +697,18 @@ const html = `<!doctype html>
       .ov-ok { color:var(--ok); font-weight:600; }
       .ov-bad { color:var(--bad); font-weight:700; text-decoration:underline; text-underline-offset:2px; }
       .ov-blockers { min-width:3rem; }
+      .ranking-status { max-width:88ch; margin:0.5rem 0 1.25rem; padding:1rem 1.15rem;
+        border-radius:8px; background:#f5f8fb;
+        box-shadow:inset 3px 0 0 #9a6b16, 0 0 0 1px rgb(0 0 0 / 7%), 0 2px 8px rgb(0 0 0 / 4%); }
+      .ranking-status h2 { margin:0 0 0.45rem; font-size:1.125rem; text-wrap:balance; }
+      .ranking-status p { margin:0.35rem 0 0; text-wrap:pretty; }
+      .ranking-qualification { max-width:88ch; margin:-0.75rem 0 1.5rem; color:var(--muted); font-size:0.8125rem; text-wrap:pretty; }
+      .ranking-note { max-width:88ch; margin:0.25rem 0 1.5rem; padding:0.9rem 1rem;
+        border-radius:7px; background:#f5f8fb;
+        box-shadow:inset 3px 0 0 var(--accent), 0 0 0 1px rgb(0 0 0 / 7%); }
+      .ranking-note h2 { margin:0 0 0.45rem; font-size:1rem; text-wrap:balance; }
+      .ranking-note ul { margin:0; padding-inline-start:1.15rem; }
+      .ranking-note li { margin:0.25rem 0; font-size:0.875rem; text-wrap:pretty; }
       .glossary { margin:0 0 2rem; font-size:0.875rem; }
       .glossary__summary { cursor:pointer; color:var(--accent); font-weight:600; }
       .glossary__list { margin:0.875rem 0 0; max-width:80ch; }
@@ -617,7 +723,11 @@ ${siteNavHtml("scores")}
     <main id="main" class="mg-container mg-page-content--padded">
       <h1>UNDRR data design system evaluation</h1>
 
+${buildRankingStatusHtml()}
+
 ${buildOverviewHtml()}
+
+${buildCloseScoreSummaryHtml()}
 
 ${buildGlossaryHtml()}
 
