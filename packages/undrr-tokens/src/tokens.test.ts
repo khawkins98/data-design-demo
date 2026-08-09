@@ -93,6 +93,15 @@ describe("token coverage required by the brief", () => {
     expect(color.focus).not.toBe(color.accent);
   });
 
+  it("carries the shared UNDRR interactive palette", () => {
+    expect(color.accent).toBe("#004f91");
+    expect(color.accentHover).toBe("#3372a7");
+    expect(color.accentActive).toBe("#1a619c");
+    expect(color.accentSubtle).toBe("#e6edf4");
+    expect(color.info).toBe(color.accent);
+    expect(color.infoSubtle).toBe(color.accentSubtle);
+  });
+
   it("orders z-index layers so overlays sit above chrome", () => {
     const n = (v: string) => Number.parseInt(v, 10);
     expect(n(zIndex.modal)).toBeGreaterThan(n(zIndex.header));

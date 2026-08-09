@@ -1,0 +1,25 @@
+{
+  "name": "@undrr-eval/integration-react-aria",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "Apache-2.0",
+  "description": "Reuse experiment: the host-independent React Aria records capability consumed by both UNDRR hosts.",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./records.css": "./src/records.css"
+  },
+  "scripts": {
+    "build": "tsc --build"
+  },
+  "dependencies": {
+    "@undrr-eval/fixtures": "workspace:*",
+    "@undrr-eval/undrr-tokens": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": "^19.2.0",
+    "react-aria-components": "^1.20.0"
+  }
+}

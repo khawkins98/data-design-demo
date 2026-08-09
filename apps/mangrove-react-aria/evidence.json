@@ -184,7 +184,7 @@
     {
       "id": "side-by-side",
       "status": "composed",
-      "notes": "Host and candidate button, table, card and nav list rendered adjacent in section 9.",
+      "notes": "Host and candidate button, table, card and nav list rendered adjacent in section 9. React Aria's button uses the project-owned UNDRR blue family plus Mangrove's square shape, condensed type, spacing and filled secondary treatment. The close visual fit is achievable because every declaration is ours; keeping it synchronized remains bridge ownership rather than inheritance from Mangrove 1.8.1.",
       "customLinesOfCode": 0
     }
   ],

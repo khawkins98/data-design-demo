@@ -16,7 +16,6 @@ import { existsSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { UNDRR_QUESTIONS } from "./lib/undrr-questions.mjs";
 import { BANDS, scoreA1, scoreA2, scoreA3, scoreA4, scoreA5, scoreA6, scoreA7 } from "./lib/score-axis.mjs";
 import { siteNavHtml, siteNavCss } from "./lib/site-nav.mjs";
 
@@ -76,6 +75,9 @@ const knownIssues = existsSync(join(DOCS, "known-issues.json"))
 const extraction = existsSync(join(DOCS, "extraction-results.json"))
   ? readJson(join(DOCS, "extraction-results.json"))
   : {};
+const changeAmplification = readJson(join(DOCS, "change-amplification.json"));
+const themingControl = readJson(join(DOCS, "theming-control.json"));
+const effortClassification = readJson(join(DOCS, "effort-classification.json")).apps;
 
 function appDirs() {
   return readdirSync(APPS, { withFileTypes: true })
@@ -91,13 +93,13 @@ function appDirs() {
 /* ------------------------------------------------------------------ assembly -- */
 
 const AXES = [
-  ["A1_effort", "A1 Implementation effort", (ev) => scoreA1(ev)],
-  ["A2_maintainability", "A2 Maintainability at scale", (ev, c, i) => scoreA2(ev, i)],
-  ["A3_reproducibility", "A3 Reproducibility across sites", (ev, c) => scoreA3(c, extraction)],
+  ["A1_effort", "A1 Implementation effort", (ev, c, i, app) => scoreA1(ev, effortClassification[app])],
+  ["A2_maintainability", "A2 Estate change amplification", (ev, c) => scoreA2(c, changeAmplification)],
+  ["A3_reproducibility", "A3 New-product reproducibility", (ev, c) => scoreA3(c, extraction)],
   ["A4_mangrove", "A4 Mangrove compatibility", (ev) => scoreA4(ev)],
-  ["A5_theming", "A5 Theming fidelity", (ev) => scoreA5(ev)],
+  ["A5_theming", "A5 Visual control and theming fidelity", (ev, c) => scoreA5(ev, c, themingControl)],
   ["A6_rtl", "A6 Right-to-left", (ev) => scoreA6(ev)],
-  ["A7_accessibility", "A7 Accessibility conformance", (ev) => scoreA7(ev)],
+  ["A7_accessibility", "A7 Automated accessibility signals", (ev) => scoreA7(ev)],
 ];
 
 const rows = appDirs().map((app) => {
@@ -112,7 +114,7 @@ const rows = appDirs().map((app) => {
   const axes = {};
   let composite = 0;
   for (const [key, label, fn] of AXES) {
-    const result = fn(ev, candidate, scoreable);
+    const result = fn(ev, candidate, scoreable, app);
     axes[key] = { label, ...result, weight: WEIGHTS[key] };
     composite += BANDS[result.band] * WEIGHTS[key];
     // Dedupe: same blocked axis on two hosts = one blocker.
@@ -171,39 +173,36 @@ L.push("# Weighted scores");
 L.push("");
 L.push("GENERATED FILE - regenerate with `pnpm scores`.");
 L.push("");
-L.push("**Reading order.** Start here for the recommendation. [decision-axes.md](./decision-axes.md)");
-L.push("defines what was measured. Each app's `EVIDENCE.md` has the raw findings.");
-L.push("");
 L.push("## Decisions needed");
 L.push("");
 L.push("1. **Human accessibility pass.** A7 bands rest on automated scanning only - no conformance claim without screen-reader and keyboard testing.");
-L.push("2. **MUI exclusion ruling.** Its Arabic defect has a fix this evaluation's rules forbid. Relaxing that rule returns MUI to contention.");
+L.push("2. **MUI fallback plan.** Put its documented RTL setup in the delivery standard.");
+L.push("3. **Operating-model commitment.** Fund and govern the Type C design-system family; otherwise React Aria becomes bespoke work per product.");
 L.push("");
 L.push("## Recommendation");
 L.push("");
-L.push(`**Adopt ${ranked[0].name}.**`);
+L.push(`**Fund a bounded Type C pilot on ${ranked[0].name}.**`);
 L.push("");
 if (ranked[0].blockers.length === 0) {
   L.push(
-    `Composite ${ranked[0].composite} vs ${ranked[1].composite} for ${ranked[1].name}` +
+    `It leads provisionally at ${ranked[0].composite} and is ` +
       (clean.length === 1
-        ? `; only candidate without warnings of ${ranked.length}.`
-        : `; one of ${clean.length}/${ranked.length} candidates without warnings.`) +
-      " Arabic works from a `dir` attribute alone. Stays inside its own subtree on both hosts.",
+        ? `the only candidate without a scored blocker.`
+        : `one of ${clean.length}/${ranked.length} candidates without a scored blocker.`) +
+      " It also passed the measured RTL and host-containment checks.",
   );
   if (ranked[0].candidate === "react-aria") {
   L.push("");
-  L.push("**The cost.** React Aria ships behaviour, not appearance. Adopting it means UNDRR");
-  L.push('owns the visual layer permanently. **Read this as "fund a design system", not "save work".**');
+  L.push("React Aria keeps visual authority with UNDRR and supports the Type C family described on the architecture page. The cost is permanent ownership of the visual component layer: **fund a design system, not save implementation work.**");
   }
 } else {
   L.push(
     `It leads on the composite at ${ranked[0].composite}, but carries ` +
-      `${ranked[0].blockers.length} warning - recommendation conditional. See Warnings.`,
+      `${ranked[0].blockers.length} scored blocker - recommendation conditional. See Scored blockers.`,
   );
 }
 L.push("");
-L.push("See also [architecture-options.md](./architecture-options.md) for the staffing implications.");
+L.push("See [architecture options](./architecture-options.html) for the operating-model trade-off, or [open the prototype matrix](./prototypes.html).");
 L.push("");
 
 L.push("## Weights");
@@ -217,7 +216,7 @@ L.push(
 );
 L.push(`- **Basis:** ${WEIGHT_PROVENANCE.basis}`);
 L.push("");
-L.push("A6 at 18 is the weight that removes MUI from contention; at 12 the ranking would change.");
+L.push("The weights are proposed, not ratified. They order close alternatives but do not remove the separate adoption gates.");
 L.push("");
 L.push(`| Axis | Weight |`);
 L.push(`| --- | --- |`);
@@ -227,11 +226,11 @@ L.push("");
 L.push("## Ranking");
 L.push("");
 L.push(
-  "Composite is the weighted mean of the two hosts. **Warnings are listed beside the " +
-    "score, never folded into it.**",
+  "The provisional composite is the weighted mean of the two hosts. **Scored blockers are listed beside the " +
+    "score, never folded into it. Adoption gates are reported separately.**",
 );
 L.push("");
-L.push("| # | Candidate | Composite | Library-owned warnings |");
+L.push("| # | Candidate | Provisional composite | Scored library blockers |");
 L.push("| --- | --- | --- | --- |");
 ranked.forEach((c, i) => {
   L.push(
@@ -244,7 +243,7 @@ L.push("");
 
 if (clean.length > 0) {
   L.push(
-    `**${clean.length} of ${ranked.length} candidates carry no warning at all:** ` +
+    `**${clean.length} of ${ranked.length} candidates carry no scored library blocker:** ` +
       `${clean.map((c) => c.name).join(", ")}.`,
   );
   L.push("");
@@ -255,16 +254,15 @@ if (clean.length > 0) {
   const stuck = blocked.filter((c) => !escapable.includes(c));
 
   L.push(
-    `**${ranked[0].name}** ranks first on the composite and carries no warning, so it is` +
-      ` the recommendation.`,
+    `**${ranked[0].name}** ranks first on the composite and carries no scored blocker. Its recommendation remains conditional on the adoption gates above.`,
   );
   if (clean.length > 1) {
     const others = clean.slice(1);
     L.push("");
     L.push(
       `${others.map((c) => `**${c.name}** (${c.composite})`).join(", ")} ` +
-        `${others.length === 1 ? "also carries" : "also carry"} no warning - viable ` +
-        `${others.length === 1 ? "second choice" : "choices"} without a waiver.`,
+        `${others.length === 1 ? "carries" : "carry"} no scored blocker and ` +
+        `${others.length === 1 ? "is the preferred warning-free fallback" : "are the preferred warning-free fallbacks"}, subject to the same human-review gates and a repeatable integration standard.`,
     );
   }
   if (escapable.length > 0) {
@@ -285,19 +283,19 @@ if (clean.length > 0) {
   }
 } else {
   L.push("**Every candidate carries at least one blocking axis.** No shortlist is defensible");
-  L.push("from this evidence without a policy decision about which warning UNDRR will accept.");
+  L.push("from this evidence without a policy decision about which scored blocker UNDRR will accept.");
 }
 L.push("");
 
-L.push("## Warnings, in full");
+L.push("## Scored blockers, in full");
 L.push("");
-L.push("Warning = axis not satisfied as shipped, typically overcomable with extra maintenance work.");
+L.push("Scored blocker = axis not satisfied as shipped, typically overcomable with extra maintenance work. This list is narrower than the adoption gates and technical findings.");
 L.push("");
 L.push("**A finding can appear twice** - once from `evidence.json`, once from the known-issues registry. Two records of one fact, kept separate to surface disagreements.");
 L.push("");
 L.push("**Remediability is recorded but not scored.** It answers whether a candidate below the top can be brought up to it.");
 L.push("");
-L.push("| Candidate | Warnings | Cheapest escape | Hardest escape |");
+L.push("| Candidate | Scored blockers | Cheapest escape | Hardest escape |");
 L.push("| --- | --- | --- | --- |");
 for (const c of ranked.filter((x) => x.blockers.length > 0)) {
   L.push(
@@ -436,7 +434,7 @@ function toHtml(markdown) {
     if (line.startsWith("### ")) out.push(`<h3>${inline(line.slice(4))}</h3>`);
     else if (line.startsWith("## ")) {
       const text = line.slice(3);
-      const id = /^Warnings/.test(text) ? ' id="warnings"' : "";
+      const id = /^(Warnings|Scored blockers)/.test(text) ? ' id="warnings"' : "";
       out.push(`<h2${id}>${inline(text)}</h2>`);
     }
     else if (line.startsWith("# ")) out.push(`<h1>${inline(line.slice(2))}</h1>`);
@@ -452,11 +450,19 @@ function toHtml(markdown) {
 /** Overview grid: one row per candidate, axis bands as coloured cells, demo links. */
 function buildOverviewHtml() {
   const bandClass = { strong: "ov-s", workable: "ov-w", weak: "ov-k", blocked: "ov-b" };
-  const bandLabel = { strong: "S", workable: "W", weak: "Wk", blocked: "B" };
-  const axisKeys = AXES.map(([key]) => key);
-  const axisShort = ["A1", "A2", "A3", "A4", "A5", "A6", "A7"];
-  const axisLabel = AXES.map(([, label]) => label);
-  const axisHint = ["Effort", "Maintain", "Reuse", "Mangrove", "Theming", "RTL", "a11y"];
+  const bandLabel = { strong: "strong", workable: "workable", weak: "weak", blocked: "blocked" };
+  const axisMeta = {
+    A1_effort: ["A1", "First-site effort", "Implementation effort"],
+    A2_maintainability: ["A2", "Six-site model", "Estate change amplification"],
+    A3_reproducibility: ["A3", "New-product reuse", "New-product reproducibility"],
+    A4_mangrove: ["A4", "Mangrove", "Mangrove compatibility"],
+    A5_theming: ["A5", "Visual control", "Visual control and theming fidelity"],
+    A6_rtl: ["A6", "RTL", "Right-to-left"],
+    A7_accessibility: ["A7", "Automated only", "Automated accessibility signals"],
+  };
+  const estateKeys = ["A2_maintainability", "A3_reproducibility"];
+  const technicalKeys = ["A1_effort", "A4_mangrove", "A5_theming", "A6_rtl", "A7_accessibility"];
+  const axisKeys = [...estateKeys, ...technicalKeys];
 
   const gridRows = ranked.map((c) => {
     const deltaPairing = c.pair.find((p) => p.host === "delta");
@@ -474,7 +480,10 @@ function buildOverviewHtml() {
           BANDS[b] < BANDS[w] && (b === dBand || b === mBand) ? b : w,
           dBand,
         );
-        return `<td class="${bandClass[worst]}"><a href="./axes.html#${axisShort[i].toLowerCase()}" title="${esc(axisLabel[i])}: ${worst}">${bandLabel[worst]}</a></td>`;
+        const [short, , label] = axisMeta[key];
+        const qualification = key === "A2_maintainability" ? ", six-site model" : key === "A7_accessibility" ? ", automated only" : "";
+        const accessibleBand = `${label}: ${worst}${qualification}`;
+        return `<td class="${bandClass[worst]}"><a href="./axes.html#${short.toLowerCase()}" aria-label="${esc(accessibleBand)}" title="${esc(accessibleBand)}">${bandLabel[worst]}</a></td>`;
       })
       .join("");
 
@@ -497,10 +506,25 @@ function buildOverviewHtml() {
       .filter(Boolean)
       .join(" ");
 
+    const architecture = changeAmplification.candidates[c.candidate];
+    const type = architecture?.architectureType ?? "-";
+    const confidence = architecture?.mechanismMeasured
+      ? "mechanism measured; estate modelled"
+      : "architecture modelled";
+    const architectureAnchor = {
+      A: "a-ship-and-theme-mui-mantine-ant-design",
+      B: "b-complete-branded-system-ibm-carbon",
+      C: "c-foundational-adobe-react-aria",
+    }[type];
+    const typeCell = architectureAnchor
+      ? `<a class="ov-type-link" href="./architecture-options.html#${architectureAnchor}"><strong>Type ${type}</strong><span>${confidence}</span></a>`
+      : type;
+
     return (
       `<tr>` +
       `<td class="ov-name">${esc(c.name)}</td>` +
-      `<td class="ov-score"><strong>${c.composite}</strong></td>` +
+      `<td class="ov-type">${typeCell}</td>` +
+      `<td class="ov-score"><strong>${c.composite}</strong><span> / 100</span></td>` +
       `<td class="ov-blockers">${blockerBadge}</td>` +
       axisCells +
       `<td class="ov-demos">${demoLinks}</td>` +
@@ -510,22 +534,77 @@ function buildOverviewHtml() {
   });
 
   return (
-    `<div class="overview">\n` +
-    `<h2>At a glance</h2>\n` +
-    `<p>Worst band across both hosts per axis. Colour key: ` +
-    `<span class="ov-s ov-key">strong</span> ` +
-    `<span class="ov-w ov-key">workable</span> ` +
-    `<span class="ov-k ov-key">weak</span> ` +
-    `<span class="ov-b ov-key">blocked</span></p>\n` +
     `<div class="scroll"><table class="ov-table"><thead>\n` +
-    `<tr><th>Candidate</th><th>Score</th><th>Warnings</th>` +
-    axisShort.map((a, i) => `<th class="ov-ax"><a href="./axes.html#${a.toLowerCase()}" title="${esc(axisLabel[i])}">${a}<span class="ov-ax-hint">${axisHint[i]}</span></a></th>`).join("") +
-    `<th>Demos</th><th>Inventory</th></tr>\n` +
+    `<tr class="ov-group-row"><th rowspan="2">Candidate</th><th rowspan="2">Architecture</th><th rowspan="2">Evidence score<span class="ov-ax-hint">not compliance</span></th><th rowspan="2">Scored blockers</th>` +
+    `<th colspan="2">Estate model</th><th colspan="5">Technical fit</th><th rowspan="2">Demos</th><th rowspan="2">Inventory</th></tr>\n` +
+    `<tr>` + axisKeys.map((key) => {
+      const [short, hint, label] = axisMeta[key];
+      return `<th class="ov-ax"><a href="./axes.html#${short.toLowerCase()}" title="${esc(label)}">${short}<span class="ov-ax-hint">${hint}</span></a></th>`;
+    }).join("") + `</tr>\n` +
     `</thead><tbody>\n` +
     gridRows.join("\n") +
-    `\n</tbody></table></div>\n` +
-    `</div>`
+    `\n</tbody></table></div>` +
+    `<p class="ranking-qualification"><strong>Read with care:</strong> A2 is a modelled six-site scenario; A7 reports automated signals only. Neither is an adoption gate or an accessibility-conformance claim.</p>`
   );
+}
+
+function buildRankingStatusHtml() {
+  return `<section class="ranking-status" aria-labelledby="ranking-status-title">
+    <h2 id="ranking-status-title">Provisional evidence ranking—not an adoption decision</h2>
+    <p>Scores combine measured prototype results with a modelled six-site estate scenario (A2), using weights proposed by the evaluation author. They do not establish accessibility conformance or choose UNDRR's operating architecture.</p>
+    <p><a href="./architecture-options.html"><strong>Choose the architecture first</strong></a>, then review the <a href="./methodology.html">method and limits</a>.</p>
+  </section>`;
+}
+
+function candidateAxisBand(candidate, key) {
+  return candidate.pair
+    .map((pairing) => pairing.axes[key]?.band ?? "blocked")
+    .reduce((worst, band) => (BANDS[band] < BANDS[worst] ? band : worst), "strong");
+}
+
+function buildCloseScoreSummaryHtml() {
+  const mui = ranked.find((candidate) => candidate.candidate === "mui");
+  const ant = ranked.find((candidate) => candidate.candidate === "antd");
+  if (!mui || !ant) return "";
+
+  const same = [];
+  const muiAdvantages = [];
+  const antAdvantages = [];
+  let muiGain = 0;
+  let antGain = 0;
+  const summaryLabels = {
+    A1_effort: "implementation effort",
+    A2_maintainability: "estate change amplification",
+    A3_reproducibility: "new-product reproducibility",
+    A4_mangrove: "Mangrove compatibility",
+    A5_theming: "visual control",
+    A6_rtl: "native RTL",
+    A7_accessibility: "automated accessibility signals",
+  };
+  for (const [key, label] of AXES) {
+    const muiBand = candidateAxisBand(mui, key);
+    const antBand = candidateAxisBand(ant, key);
+    const delta = (BANDS[muiBand] - BANDS[antBand]) * WEIGHTS[key];
+    const shortLabel = summaryLabels[key] ?? label.replace(/^A\d+\s+/, "");
+    if (delta === 0) same.push(shortLabel);
+    else if (delta > 0) {
+      muiAdvantages.push(shortLabel);
+      muiGain += delta;
+    } else {
+      antAdvantages.push(shortLabel);
+      antGain += -delta;
+    }
+  }
+  const fmt = (value) => Number(value.toFixed(1));
+  return `<section class="ranking-note" aria-labelledby="ranking-note-title">
+    <h2 id="ranking-note-title">Why MUI leads Ant Design by ${mui.composite - ant.composite} points</h2>
+    <ul>
+      <li>They tie on ${same.map((label) => Object.entries(summaryLabels).find(([, value]) => value === label)?.[0].slice(0, 2)).join(", ")}.</li>
+      <li>MUI gains ${fmt(muiGain)} weighted points from stronger ${muiAdvantages.join(" and ")}; Ant recovers ${fmt(antGain)} through ${antAdvantages.join(" and ")}, leaving MUI ${mui.composite - ant.composite} points ahead.</li>
+      <li>Ant also carries one scored blocker: its selected value disappears in the Mangrove Select unless the integration setting is changed.</li>
+      <li>React Aria's ${ranked.find((candidate) => candidate.candidate === "react-aria")?.composite ?? 97} reflects prototype evidence under these weights. A1 does not include the funded Type C team or multi-year operating cost.</li>
+    </ul>
+  </section>`;
 }
 
 // Post-process HTML: wrap per-pairing sections 3+ in <details>.
@@ -551,20 +630,6 @@ function collapseLatePairings(bodyHtml) {
   );
 }
 
-/** The six UNDRR questions, rendered as HTML. */
-function buildQuestionsHtml() {
-  return UNDRR_QUESTIONS.map(
-    (q) =>
-      `<div class="question">` +
-      `<h3 class="question__title">${esc(q.question)} ` +
-      `<span class="question__asks">${esc(q.asks)}</span></h3>` +
-      `<p class="question__answer">${esc(q.answer)}</p>` +
-      `<p class="question__axis"><a href="./axes.html#${esc(q.axis.toLowerCase())}"` +
-      `>Evidence: ${esc(q.axis)} ${esc(q.axisName)}</a></p>` +
-      `</div>`,
-  ).join("\n");
-}
-
 /** Glossary HTML (collapsed). */
 function buildGlossaryHtml() {
   const entries = [
@@ -577,7 +642,8 @@ function buildGlossaryHtml() {
     ["Escape hatch / off the documented route", "Where the library's theming API did not reach, so styling was applied outside it. Each one risks breaking on library updates."],
     ["axe", "An automated accessibility scanner. Catches a minority of problems; results here are a floor, not a pass."],
     ["A1 Implementation effort", "Cost to build the first site."],
-    ["A2 Maintainability at scale", "Cost to keep every site working through library updates."],
+    ["A2 Estate change amplification", "How many authoritative implementations and consumer sites an estate-wide change reaches."],
+    ["A3 New-product reproducibility", "Whether another product can consume a shared integration instead of recreating it."],
   ];
   return (
     `<details class="glossary"><summary class="glossary__summary">Glossary</summary>` +
@@ -601,17 +667,19 @@ const html = `<!doctype html>
       table { border-collapse:collapse; width:100%; margin:0.75rem 0 1.5rem; font-size:0.875rem; }
       th,td { border:1px solid var(--border); padding:0.4rem 0.6rem; text-align:start; vertical-align:top; }
       th { background:var(--surface); }
-      .subtitle { color:var(--muted); margin:0 0 1.5rem; max-width:60ch; }
       .scroll { overflow-x:auto; }
       details { margin:1rem 0; }
       summary { cursor:pointer; font-weight:600; padding:0.5rem 0; }
       summary:hover { color:var(--accent); }
-      .overview { margin:1.5rem 0 2rem; }
-      .overview h2 { margin-top:0; }
       .ov-table { font-size:0.8125rem; }
       .ov-table th, .ov-table td { text-align:center; padding:0.35rem 0.5rem; white-space:nowrap; }
       .ov-name { text-align:start !important; font-weight:600; }
-      .ov-score { font-size:1rem; }
+      .ov-score { font-size:1rem; font-variant-numeric:tabular-nums; }
+      .ov-score span { color:var(--muted); font-size:0.6875rem; font-weight:400; }
+      .ov-type { min-width:9.5rem; text-align:start !important; white-space:normal !important; }
+      .ov-type-link { text-align:start; }
+      .ov-type-link span { display:block; margin-top:0.15rem; color:var(--muted); font-size:0.625rem; line-height:1.25; }
+      .ov-group-row th { background:#f5f8fb; vertical-align:middle; }
       .ov-ax { font-size:0.6875rem; }
       .ov-ax a { text-decoration:none; color:inherit; }
       .ov-table td a { color:inherit; text-decoration:none; display:block; }
@@ -626,11 +694,21 @@ const html = `<!doctype html>
       .ov-w { background:#fff3cd; color:#856404; }
       .ov-k { background:#ffe0b2; color:#7a4100; }
       .ov-b { background:#f8d7da; color:#721c24; }
-      .ov-key { display:inline-block; padding:0.1rem 0.4rem; border-radius:3px; font-size:0.75rem; }
       .ov-ok { color:var(--ok); font-weight:600; }
       .ov-bad { color:var(--bad); font-weight:700; text-decoration:underline; text-underline-offset:2px; }
       .ov-blockers { min-width:3rem; }
-      .verdict { margin:0 0 1.5rem; padding:1rem 1.25rem; background:var(--surface); border:1px solid var(--accent); border-radius:6px; max-width:82ch; }
+      .ranking-status { max-width:88ch; margin:0.5rem 0 1.25rem; padding:1rem 1.15rem;
+        border-radius:8px; background:#f5f8fb;
+        box-shadow:inset 3px 0 0 #9a6b16, 0 0 0 1px rgb(0 0 0 / 7%), 0 2px 8px rgb(0 0 0 / 4%); }
+      .ranking-status h2 { margin:0 0 0.45rem; font-size:1.125rem; text-wrap:balance; }
+      .ranking-status p { margin:0.35rem 0 0; text-wrap:pretty; }
+      .ranking-qualification { max-width:88ch; margin:-0.75rem 0 1.5rem; color:var(--muted); font-size:0.8125rem; text-wrap:pretty; }
+      .ranking-note { max-width:88ch; margin:0.25rem 0 1.5rem; padding:0.9rem 1rem;
+        border-radius:7px; background:#f5f8fb;
+        box-shadow:inset 3px 0 0 var(--accent), 0 0 0 1px rgb(0 0 0 / 7%); }
+      .ranking-note h2 { margin:0 0 0.45rem; font-size:1rem; text-wrap:balance; }
+      .ranking-note ul { margin:0; padding-inline-start:1.15rem; }
+      .ranking-note li { margin:0.25rem 0; font-size:0.875rem; text-wrap:pretty; }
       .glossary { margin:0 0 2rem; font-size:0.875rem; }
       .glossary__summary { cursor:pointer; color:var(--accent); font-weight:600; }
       .glossary__list { margin:0.875rem 0 0; max-width:80ch; }
@@ -642,25 +720,20 @@ ${siteNavCss}
   </head>
   <body>
 ${siteNavHtml("scores")}
-    <div class="mg-container mg-page-content--padded">
+    <main id="main" class="mg-container mg-page-content--padded">
       <h1>UNDRR data design system evaluation</h1>
-      <p class="subtitle">Five candidate UI libraries, two UNDRR host shells, ten controlled proofs of concept.</p>
+
+${buildRankingStatusHtml()}
 
 ${buildOverviewHtml()}
 
-      <div class="verdict">
-        <strong>Recommendation: adopt ${esc(ranked[0].name)}.</strong>
-        Composite ${ranked[0].composite} vs ${ranked[1].composite} for ${esc(ranked[1].name)};
-        ${clean.length === 1 ? `only candidate without warnings out of ${ranked.length}` : `one of ${clean.length}/${ranked.length} candidates without warnings`}.
-        Arabic works from a <code>dir</code> attribute alone. Stays inside its own subtree on both hosts.
-        ${ranked[0].candidate === "react-aria" ? '<br /><strong>The cost.</strong> React Aria ships behaviour, not appearance. Adopting it means UNDRR owns the visual layer permanently. <strong>Read this as &ldquo;fund a design system&rdquo;, not &ldquo;save work&rdquo;.</strong>' : ""}
-      </div>
+${buildCloseScoreSummaryHtml()}
 
 ${buildGlossaryHtml()}
 
-      <details>
-        <summary>Scoring detail: weights, ranking, warnings and per-pairing breakdowns</summary>
-${collapseLatePairings(toHtml(md))}
+      <details class="technical-detail">
+        <summary><span class="audience-tag">Developer detail</span> Scoring weights, scored blockers and per-pairing breakdowns</summary>
+        <div class="technical-detail__body">${collapseLatePairings(toHtml(md))}</div>
       </details>
 
       <script>
@@ -680,12 +753,12 @@ ${collapseLatePairings(toHtml(md))}
           not modify. Metrics come from each run's <code>evidence.json</code>.
         </p>
       </footer>
-    </div>
+    </main>
   </body>
 </html>
 `;
 writeFileSync(join(DOCS, "scores.html"), html, "utf8");
 
 process.stdout.write(
-  `wrote docs/scores.md and docs/scores.html (${rows.length} pairings, ${clean.length}/${ranked.length} candidates without warnings)\n`,
+  `wrote docs/scores.md and docs/scores.html (${rows.length} pairings, ${clean.length}/${ranked.length} candidates without scored blockers)\n`,
 );

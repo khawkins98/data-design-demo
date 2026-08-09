@@ -267,6 +267,9 @@ importers:
       '@undrr-eval/host-delta':
         specifier: workspace:*
         version: link:../../packages/host-delta
+      '@undrr-eval/integration-react-aria':
+        specifier: workspace:*
+        version: link:../../packages/integration-react-aria
       '@undrr-eval/known-issues':
         specifier: workspace:*
         version: link:../../packages/known-issues
@@ -521,6 +524,9 @@ importers:
       '@undrr-eval/host-mangrove':
         specifier: workspace:*
         version: link:../../packages/host-mangrove
+      '@undrr-eval/integration-react-aria':
+        specifier: workspace:*
+        version: link:../../packages/integration-react-aria
       '@undrr-eval/known-issues':
         specifier: workspace:*
         version: link:../../packages/known-issues
@@ -679,6 +685,21 @@ importers:
       react-dom:
         specifier: ^19.2.0
         version: 19.2.8(react@19.2.8)
+
+  packages/integration-react-aria:
+    dependencies:
+      '@undrr-eval/fixtures':
+        specifier: workspace:*
+        version: link:../fixtures
+      '@undrr-eval/undrr-tokens':
+        specifier: workspace:*
+        version: link:../undrr-tokens
+      react:
+        specifier: ^19.2.0
+        version: 19.2.8
+      react-aria-components:
+        specifier: ^1.20.0
+        version: 1.20.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
 
   packages/known-issues:
     dependencies:

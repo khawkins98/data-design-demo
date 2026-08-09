@@ -17,8 +17,18 @@
  */
 
 import { execFileSync } from "node:child_process";
-import { copyFileSync, cpSync, existsSync, mkdirSync, readdirSync, rmSync, statSync } from "node:fs";
-import { dirname, join } from "node:path";
+import {
+  copyFileSync,
+  cpSync,
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  readdirSync,
+  rmSync,
+  statSync,
+  writeFileSync,
+} from "node:fs";
+import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -37,6 +47,73 @@ const MANGROVE_CSS = join(
 copyFileSync(MANGROVE_CSS, join(DOCS, "mangrove.css"));
 process.stdout.write("copied mangrove.css → docs/\n");
 
+const MANGROVE_PREVIEW_JS = join(
+  ROOT,
+  "packages/host-mangrove/node_modules/@undrr/undrr-mangrove/js/preview-access.js",
+);
+
+/** Recursively returns every HTML file under a directory. */
+function htmlFiles(dir) {
+  return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+    const file = join(dir, entry.name);
+    if (entry.isDirectory()) return htmlFiles(file);
+    return entry.isFile() && entry.name.endsWith(".html") ? [file] : [];
+  });
+}
+
+/**
+ * Apply Mangrove's soft preview gate to every published page.
+ *
+ * This is editorial signalling, not authentication: the PIN is present in the
+ * DOM by design. A shared id means entering it once unlocks the whole evaluation
+ * for the rest of the browser session.
+ */
+function addPreviewAccessGate() {
+  const mangroveCss = readFileSync(MANGROVE_CSS, "utf8");
+  const previewCssStart = mangroveCss.indexOf(
+    "body:has([data-mg-preview-access]",
+  );
+  if (previewCssStart === -1) {
+    throw new Error("Mangrove preview-access styles were not found in style.css");
+  }
+
+  writeFileSync(
+    join(SITE, "preview-access.css"),
+    `/* Extracted from the pinned Mangrove package during site assembly. */\n${mangroveCss.slice(previewCssStart)}\n`,
+    "utf8",
+  );
+  copyFileSync(MANGROVE_PREVIEW_JS, join(SITE, "preview-access.js"));
+
+  for (const file of htmlFiles(SITE)) {
+    const assetRoot = relative(dirname(file), SITE) || ".";
+    const stylesheet = `${assetRoot}/preview-access.css`;
+    const script = `${assetRoot}/preview-access.js`;
+    let html = readFileSync(file, "utf8");
+
+    if (!html.includes("</head>") || !html.includes("<body")) {
+      throw new Error(`Cannot add preview access gate to ${relative(SITE, file)}`);
+    }
+
+    html = html.replace(
+      "</head>",
+      `    <link rel="stylesheet" href="${stylesheet}" />\n  </head>`,
+    );
+    html = html.replace(
+      /(<body(?:\s[^>]*)?>)/,
+      `$1\n    <div data-mg-preview-access data-mg-preview-pin="5498" data-mg-preview-id="data-design-demo" data-mg-preview-eyebrow="UNDRR data design system evaluation · Preview" data-mg-preview-title="Stakeholder preview" data-mg-preview-message="This evaluation is still under review and is not ready for general distribution. Enter the preview PIN to continue."></div>`,
+    );
+    html = html.replace(
+      "</body>",
+      `    <script type="module" src="${script}"></script>\n  </body>`,
+    );
+    writeFileSync(file, html, "utf8");
+  }
+
+  process.stdout.write(
+    `applied Mangrove preview gate to ${htmlFiles(SITE).length} HTML pages\n`,
+  );
+}
+
 /** Directory entries under apps/ that are actual apps. */
 function appDirs() {
   if (!existsSync(APPS)) return [];
@@ -48,10 +125,39 @@ function appDirs() {
     .sort();
 }
 
-// Regenerate the landing page first, so it always reflects the evidence.json
-// files present on this commit. This used to be a separate `docs:index` step
-// that both `pnpm site` and CI had to remember to call; folding it in here means
-// the site can never be assembled around a stale index.
+/**
+ * Refuse to assemble a demo whose Vite base was overwritten by a later direct
+ * app build. `build-apps.mjs` checks this immediately after building, but dist
+ * is mutable: running `vite build` in one app afterwards resets its URLs to
+ * `/assets/...`. Without this second check, site assembly copies a successful
+ * but blank demo into `_site/`.
+ *
+ * Pages adds a repository prefix before the app name, while local preview does
+ * not, so checking for the app's own path segment works in both environments.
+ */
+function assertAppBase(name, dist) {
+  const appSegment = `/${name}/`;
+  const entries = readdirSync(dist).filter((file) => file.endsWith(".html"));
+
+  for (const entry of entries) {
+    const html = readFileSync(join(dist, entry), "utf8");
+    const absoluteRefs = [...html.matchAll(/(?:src|href)="(\/[^"]+)"/g)].map(
+      (match) => match[1],
+    );
+    const wrongBase = absoluteRefs.filter((ref) => !ref.includes(appSegment));
+
+    if (wrongBase.length > 0) {
+      throw new Error(
+        `${name}/dist/${entry} was built for the wrong base. Offending refs:\n` +
+          wrongBase.map((ref) => `  ${ref}`).join("\n") +
+          "\nRebuild with `node scripts/build-apps.mjs` before assembling the site.",
+      );
+    }
+  }
+}
+
+// Regenerate the prototype matrix first, so it always reflects the evidence.json
+// files present on this commit.
 // The known-issues JSON first, because the landing page reads it. It is
 // transcribed from the TypeScript registry the demo pages import, so the cards
 // and the box on each demo cannot disagree about what is known.
@@ -83,22 +189,13 @@ execFileSync(
   { cwd: ROOT, stdio: "inherit" },
 );
 
-// Scores page doubles as the landing page since it carries the overview grid,
-// recommendation, and the six framing questions.
+// Ranking is the decision entry point and therefore also the site homepage.
 execFileSync(
   "node",
   ["--experimental-strip-types", join(HERE, "build-scores.mjs")],
   { cwd: ROOT, stdio: "inherit" },
 );
-
-rmSync(SITE, { recursive: true, force: true });
-mkdirSync(SITE, { recursive: true });
-
-// docs/ carries the generated pages and markdown reference documents.
-cpSync(DOCS, SITE, { recursive: true });
-
-// scores.html is the landing page.
-copyFileSync(join(SITE, "scores.html"), join(SITE, "index.html"));
+copyFileSync(join(DOCS, "scores.html"), join(DOCS, "index.html"));
 
 const built = [];
 const missing = [];
@@ -109,9 +206,21 @@ for (const name of appDirs()) {
     missing.push(name);
     continue;
   }
-  cpSync(dist, join(SITE, name), { recursive: true });
+  assertAppBase(name, dist);
   built.push(name);
 }
+
+rmSync(SITE, { recursive: true, force: true });
+mkdirSync(SITE, { recursive: true });
+
+// docs/ carries the generated pages and markdown reference documents.
+cpSync(DOCS, SITE, { recursive: true });
+
+for (const name of built) {
+  cpSync(join(APPS, name, "dist"), join(SITE, name), { recursive: true });
+}
+
+addPreviewAccessGate();
 
 process.stdout.write(`assembled _site/\n`);
 process.stdout.write(`  landing page: _site/index.html\n`);

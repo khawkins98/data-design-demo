@@ -52,6 +52,13 @@ import { LOCALES } from "@undrr-eval/fixtures";
 import type { LocaleCode, LossRecord } from "@undrr-eval/fixtures";
 import { AppFrame, ViewSwitcher } from "@undrr-eval/host-delta";
 import type { DeltaMenu, DeltaMenuEntry } from "@undrr-eval/host-delta";
+import {
+  RecordsFilters,
+  RecordsPagination,
+  RecordsTable,
+  useOverlayDir,
+  useRecordsView,
+} from "@undrr-eval/integration-react-aria";
 import { KnownIssues } from "@undrr-eval/known-issues";
 import { viewLinks } from "@undrr-eval/test-harness/views";
 import { TOKEN_SCOPE_CLASS } from "@undrr-eval/undrr-tokens";
@@ -61,10 +68,6 @@ import type { DemoContextValue } from "./demo-state.js";
 import { MODAL_OVERLAY_CLASS } from "./overlay-class.js";
 import { EventWizard } from "./views/EventWizard.js";
 import { NavMenu, ProfileMenu } from "./views/NavMenu.js";
-import { RecordsFilters } from "./views/RecordsFilters.js";
-import { RecordsPagination } from "./views/RecordsPagination.js";
-import { RecordsTable } from "./views/RecordsTable.js";
-import { useOverlayDir, useRecordsView } from "./views/records-state.js";
 
 const params = new URLSearchParams(window.location.search);
 

@@ -21,17 +21,17 @@ export const UNDRR_QUESTIONS = [
     question: "Repeatability",
     asks: "Can a second team reproduce the integration without inventing their own conventions?",
     axis: "A3",
-    axisName: "Reproducibility across sites",
+    axisName: "New-product reproducibility",
     answer:
-      "Measured by extraction for MUI: 86% of the integration shares across sites. React Aria's is fully portable but has no package to hold it, so it is shared by duplication.",
+      "Measured packages now exist for the leading alternatives: MUI shares 86% once demo-only code is excluded, while the realistic React Aria records capability shares 618 source lines and 147 CSS lines across Delta and Mangrove.",
   },
   {
     question: "Standardisation",
     asks: "One shared component vocabulary across the estate, or one dialect per project?",
-    axis: "A3",
-    axisName: "Reproducibility across sites",
+    axis: "A2",
+    axisName: "Estate change amplification",
     answer:
-      "shadcn/ui was excluded outright for guaranteeing a fork per site. Among the five built, the theme and token layer extracts; kitchen-sink section components do not.",
+      "The six-site scenario makes the architectural consequence explicit: Type C places shared policy in one governed foundation; Type A retains separate suite and Mangrove implementations; Type B can add a translation layer. It applies measured mechanisms where available and explicit assumptions elsewhere; the evidence basis distinguishes them.",
   },
   {
     question: "Mangrove integration",
@@ -45,9 +45,9 @@ export const UNDRR_QUESTIONS = [
     question: "Design-token alignment",
     asks: "Can it be driven by UNDRR tokens, and does a token change propagate?",
     axis: "A5",
-    axisName: "Theming fidelity and propagation",
+    axisName: "Visual control and theming fidelity",
     answer:
-      "React Aria and Carbon resolve tokens in the browser, so a Mangrove change is a stylesheet swap. MUI, Mantine and Ant Design bake values in, making it a rebuild of every site. Carbon leaves 21-22 of 71 tokens unreachable at all.",
+      "React Aria and MUI retain visual authority across both hosts. Ant Design accepts the mapped tokens, but four derived aliases needed contrast corrections and Mangrove overrides some themed control geometry. Carbon leaves 21-22 of 71 evaluated tokens unreachable. Token change fan-out is now measured separately in A2.",
   },
   {
     question: "Right-to-left",
@@ -55,13 +55,13 @@ export const UNDRR_QUESTIONS = [
     axis: "A6",
     axisName: "Right-to-left",
     answer:
-      "MUI Community fails on both hosts and cannot be fixed within the brief's constraints. React Aria and Ant Design are clean at zero cost; Mantine is clean only after mitigation. This needs a policy call, not a bug fix.",
+      "MUI works after its documented three-step RTL setup: dir, a direction-aware theme, and its first-party stylis plugin. The prototypes implement that setup in 29 integration lines with two dependencies and a provider; omission fails silently. React Aria and Ant Design work without that extra pipeline, while Mantine is clean after mitigation.",
   },
   {
     question: "Accessibility",
     asks: "Does it meet UNDRR's obligations in practice?",
     axis: "A7",
-    axisName: "Accessibility conformance",
+    axisName: "Automated accessibility signals",
     answer:
       "Zero is a floor, not a conformance claim: no screen-reader or human keyboard pass was run on any pairing. And the floor is lower than the kitchen sinks suggested - the realistic layouts found a critical unnamed-button defect in Mantine's Modal that every scoped axe run in this repository was blind to, because portalled overlays render outside the scanned subtree.",
   },

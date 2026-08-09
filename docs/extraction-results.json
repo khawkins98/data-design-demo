@@ -1,15 +1,23 @@
 {
   "$comment": "Axis A3 (docs/decision-axes.md). `basis` is load-bearing. MUI was extracted after the fact and both host apps rewired onto the package; antd was built shared-first, which is the arrangement a multi-site deployment would use but carries its own caveat (see its notes). Carbon and Mantine are `analysed`, not measured, because unifying their pairs would mean discarding one of two independent implementations - a rewrite, which cannot measure whether an integration is shareable.",
   "react-aria": {
-    "basis": "analysed",
-    "verdict": "likely packaged",
-    "sharedLines": null,
+    "basis": "measured",
+    "verdict": "packaged",
+    "package": "packages/integration-react-aria",
+    "sharedLines": 765,
     "perSiteLines": null,
     "resists": [
-      "SectionDataTable and SectionForms diverged between the two runs and would need reconciling first",
-      "theme.css differs, though it consumes only var(--undrr-*) so it is host-independent by construction"
+      "theme.css still differs because Delta Preflight and Mangrove's element rules require different reset repair",
+      "Delta's wizard and navigation are product-specific rather than part of the records capability",
+      "host frames and page composition remain in each app"
     ],
-    "notes": "5 of 13 files are already code-identical (517 code lines), and the styling is CSS custom properties read from the shared tokens, which is host-independent by construction and needs no rebuild to retarget. Not extracted, so no measured figure is offered."
+    "verification": [
+      "618 non-comment TypeScript lines and 147 CSS lines moved into packages/integration-react-aria",
+      "both realistic views now import the same filters, table, pagination, data derivation, announcement policy and records layout",
+      "root typecheck passes for all ten apps",
+      "the package build passes under the repository's strict TypeScript configuration"
+    ],
+    "notes": "This is deliberately narrower than integration-mui: it extracts one realistic cross-host capability rather than the whole kitchen sink. That makes the reuse claim concrete without pretending the host reset and product frame are shareable. Token references remain live CSS custom properties, so changing the UNDRR token stylesheet does not require rebuilding either consumer."
   },
   "mui": {
     "basis": "measured",

@@ -12,17 +12,19 @@
       table { border-collapse:collapse; width:100%; margin:0.75rem 0 1.5rem; font-size:0.875rem; }
       th,td { border:1px solid var(--border); padding:0.4rem 0.6rem; text-align:start; vertical-align:top; }
       th { background:var(--surface); }
-      .subtitle { color:var(--muted); margin:0 0 1.5rem; max-width:60ch; }
       .scroll { overflow-x:auto; }
       details { margin:1rem 0; }
       summary { cursor:pointer; font-weight:600; padding:0.5rem 0; }
       summary:hover { color:var(--accent); }
-      .overview { margin:1.5rem 0 2rem; }
-      .overview h2 { margin-top:0; }
       .ov-table { font-size:0.8125rem; }
       .ov-table th, .ov-table td { text-align:center; padding:0.35rem 0.5rem; white-space:nowrap; }
       .ov-name { text-align:start !important; font-weight:600; }
-      .ov-score { font-size:1rem; }
+      .ov-score { font-size:1rem; font-variant-numeric:tabular-nums; }
+      .ov-score span { color:var(--muted); font-size:0.6875rem; font-weight:400; }
+      .ov-type { min-width:9.5rem; text-align:start !important; white-space:normal !important; }
+      .ov-type-link { text-align:start; }
+      .ov-type-link span { display:block; margin-top:0.15rem; color:var(--muted); font-size:0.625rem; line-height:1.25; }
+      .ov-group-row th { background:#f5f8fb; vertical-align:middle; }
       .ov-ax { font-size:0.6875rem; }
       .ov-ax a { text-decoration:none; color:inherit; }
       .ov-table td a { color:inherit; text-decoration:none; display:block; }
@@ -37,11 +39,21 @@
       .ov-w { background:#fff3cd; color:#856404; }
       .ov-k { background:#ffe0b2; color:#7a4100; }
       .ov-b { background:#f8d7da; color:#721c24; }
-      .ov-key { display:inline-block; padding:0.1rem 0.4rem; border-radius:3px; font-size:0.75rem; }
       .ov-ok { color:var(--ok); font-weight:600; }
       .ov-bad { color:var(--bad); font-weight:700; text-decoration:underline; text-underline-offset:2px; }
       .ov-blockers { min-width:3rem; }
-      .verdict { margin:0 0 1.5rem; padding:1rem 1.25rem; background:var(--surface); border:1px solid var(--accent); border-radius:6px; max-width:82ch; }
+      .ranking-status { max-width:88ch; margin:0.5rem 0 1.25rem; padding:1rem 1.15rem;
+        border-radius:8px; background:#f5f8fb;
+        box-shadow:inset 3px 0 0 #9a6b16, 0 0 0 1px rgb(0 0 0 / 7%), 0 2px 8px rgb(0 0 0 / 4%); }
+      .ranking-status h2 { margin:0 0 0.45rem; font-size:1.125rem; text-wrap:balance; }
+      .ranking-status p { margin:0.35rem 0 0; text-wrap:pretty; }
+      .ranking-qualification { max-width:88ch; margin:-0.75rem 0 1.5rem; color:var(--muted); font-size:0.8125rem; text-wrap:pretty; }
+      .ranking-note { max-width:88ch; margin:0.25rem 0 1.5rem; padding:0.9rem 1rem;
+        border-radius:7px; background:#f5f8fb;
+        box-shadow:inset 3px 0 0 var(--accent), 0 0 0 1px rgb(0 0 0 / 7%); }
+      .ranking-note h2 { margin:0 0 0.45rem; font-size:1rem; text-wrap:balance; }
+      .ranking-note ul { margin:0; padding-inline-start:1.15rem; }
+      .ranking-note li { margin:0.25rem 0; font-size:0.875rem; text-wrap:pretty; }
       .glossary { margin:0 0 2rem; font-size:0.875rem; }
       .glossary__summary { cursor:pointer; color:var(--accent); font-weight:600; }
       .glossary__list { margin:0.875rem 0 0; max-width:80ch; }
@@ -49,16 +61,46 @@
       .glossary__list dd { margin:0.125rem 0 0; color:var(--muted); }
       footer { margin-top:3rem; color:var(--muted); font-size:0.8125rem; max-width:70ch; }
 
+      .skip-link { position:absolute; z-index:100; inset-block-start:0.5rem; inset-inline-start:0.5rem;
+        padding:0.5rem 0.75rem; background:#fff; color:#004f91; transform:translateY(-150%); }
+      .skip-link:focus { transform:translateY(0); }
       .mg-docs-main { max-width:72ch; }
       .mg-docs-main h1 { font-size:1.75rem; margin:2rem 0 0.5rem; }
       .mg-docs-main h2 { margin-top:2.5rem; font-size:1.25rem; border-bottom:1px solid #d5d5d5; padding-bottom:0.25rem; }
       .mg-docs-main h3 { margin-top:2rem; font-size:1.05rem; }
       .mg-docs-main h4 { margin-top:1.5rem; font-size:1rem; }
+      .audience-banner {
+        margin:1rem 0 1.5rem; padding:0.75rem 1rem; border-inline-start:3px solid #64748b;
+        background:#f3f6f8; color:#334155; font-size:0.875rem;
+      }
+      .audience-tag {
+        display:inline-flex; align-items:center; min-height:1.35rem; margin-inline-end:0.45rem;
+        padding:0.05rem 0.45rem; border:1px solid #94a3b8; border-radius:999px;
+        color:#475569; background:#f8fafc; font-size:0.6875rem; font-weight:700;
+        letter-spacing:0.045em; text-transform:uppercase; vertical-align:middle;
+      }
+      details.technical-detail {
+        margin:1rem 0; border:1px solid #cbd5e1; border-radius:6px; background:#f8fafc;
+      }
+      details.technical-detail > summary {
+        padding:0.7rem 0.85rem; cursor:pointer; color:#334155; font-weight:600;
+      }
+      .technical-detail__body { padding:0 0.9rem 0.9rem; border-top:1px solid #e2e8f0; }
+      .technical-detail__body > :first-child { margin-top:0.9rem; }
+      @media print {
+        .skip-link, .mg-page-header, .mg-mega-wrapper { display:none !important; }
+        details.technical-detail > summary { display:list-item; break-after:avoid; }
+        details.technical-detail:not([open]) > *:not(summary) { display:block; }
+        details.technical-detail { break-inside:auto; }
+        .technical-detail__body > :first-child { break-before:avoid; }
+        @page { margin:1.5cm; }
+      }
 
     </style>
   </head>
   <body>
 
+    <a class="skip-link" href="#main">Skip to main content</a>
     <header id="header" class="mg-page-header mg-page-header--default">
       <div class="mg-page-header__decoration" aria-hidden="true">
         <div></div><div></div><div></div><div></div>
@@ -66,74 +108,81 @@
     </header>
 
     <nav class="mg-mega-wrapper" aria-label="Main Navigation">
-      <ul class="mg-mega-topbar | mg-container mg-container-full-width"
-          role="menubar" aria-label="Main navigation menu">
-          <li class="mg-mega-topbar__item mg-mega-topbar__item--active" role="none">
-              <a class="mg-mega-topbar__item-link" href="./" role="menuitem">Ranking</a>
+      <ul class="mg-mega-topbar | mg-container mg-container-full-width">
+          <li class="mg-mega-topbar__item mg-mega-topbar__item--active">
+              <a class="mg-mega-topbar__item-link" href="./" aria-current="page">Ranking</a>
             </li>
-          <li class="mg-mega-topbar__item" role="none">
-              <a class="mg-mega-topbar__item-link" href="./axes.html" role="menuitem">Decision axes</a>
+          <li class="mg-mega-topbar__item">
+              <a class="mg-mega-topbar__item-link" href="./architecture-options.html">Architecture</a>
             </li>
-          <li class="mg-mega-topbar__item" role="none">
-              <a class="mg-mega-topbar__item-link" href="./comparison.html" role="menuitem">Requirement matrix</a>
+          <li class="mg-mega-topbar__item">
+              <a class="mg-mega-topbar__item-link" href="./methodology.html">Methodology</a>
             </li>
-          <li class="mg-mega-topbar__item" role="none">
-              <a class="mg-mega-topbar__item-link" href="./issues.html" role="menuitem">Findings</a>
+          <li class="mg-mega-topbar__item">
+              <a class="mg-mega-topbar__item-link" href="./prototypes.html">Prototypes</a>
             </li>
-          <li class="mg-mega-topbar__item" role="none">
-              <a class="mg-mega-topbar__item-link" href="./architecture-options.html" role="menuitem">Architecture</a>
+          <li class="mg-mega-topbar__item">
+              <a class="mg-mega-topbar__item-link" href="./axes.html">Evidence axes</a>
+            </li>
+          <li class="mg-mega-topbar__item">
+              <a class="mg-mega-topbar__item-link" href="./issues.html">Technical findings</a>
+            </li>
+          <li class="mg-mega-topbar__item">
+              <a class="mg-mega-topbar__item-link" href="./comparison.html">Requirement audit</a>
             </li>
       </ul>
     </nav>
-    <div class="mg-container mg-page-content--padded">
+    <main id="main" class="mg-container mg-page-content--padded">
       <h1>UNDRR data design system evaluation</h1>
-      <p class="subtitle">Five candidate UI libraries, two UNDRR host shells, ten controlled proofs of concept.</p>
 
-<div class="overview">
-<h2>At a glance</h2>
-<p>Worst band across both hosts per axis. Colour key: <span class="ov-s ov-key">strong</span> <span class="ov-w ov-key">workable</span> <span class="ov-k ov-key">weak</span> <span class="ov-b ov-key">blocked</span></p>
+<section class="ranking-status" aria-labelledby="ranking-status-title">
+    <h2 id="ranking-status-title">Provisional evidence ranking—not an adoption decision</h2>
+    <p>Scores combine measured prototype results with a modelled six-site estate scenario (A2), using weights proposed by the evaluation author. They do not establish accessibility conformance or choose UNDRR's operating architecture.</p>
+    <p><a href="./architecture-options.html"><strong>Choose the architecture first</strong></a>, then review the <a href="./methodology.html">method and limits</a>.</p>
+  </section>
+
 <div class="scroll"><table class="ov-table"><thead>
-<tr><th>Candidate</th><th>Score</th><th>Warnings</th><th class="ov-ax"><a href="./axes.html#a1" title="A1 Implementation effort">A1<span class="ov-ax-hint">Effort</span></a></th><th class="ov-ax"><a href="./axes.html#a2" title="A2 Maintainability at scale">A2<span class="ov-ax-hint">Maintain</span></a></th><th class="ov-ax"><a href="./axes.html#a3" title="A3 Reproducibility across sites">A3<span class="ov-ax-hint">Reuse</span></a></th><th class="ov-ax"><a href="./axes.html#a4" title="A4 Mangrove compatibility">A4<span class="ov-ax-hint">Mangrove</span></a></th><th class="ov-ax"><a href="./axes.html#a5" title="A5 Theming fidelity">A5<span class="ov-ax-hint">Theming</span></a></th><th class="ov-ax"><a href="./axes.html#a6" title="A6 Right-to-left">A6<span class="ov-ax-hint">RTL</span></a></th><th class="ov-ax"><a href="./axes.html#a7" title="A7 Accessibility conformance">A7<span class="ov-ax-hint">a11y</span></a></th><th>Demos</th><th>Inventory</th></tr>
+<tr class="ov-group-row"><th rowspan="2">Candidate</th><th rowspan="2">Architecture</th><th rowspan="2">Evidence score<span class="ov-ax-hint">not compliance</span></th><th rowspan="2">Scored blockers</th><th colspan="2">Estate model</th><th colspan="5">Technical fit</th><th rowspan="2">Demos</th><th rowspan="2">Inventory</th></tr>
+<tr><th class="ov-ax"><a href="./axes.html#a2" title="Estate change amplification">A2<span class="ov-ax-hint">Six-site model</span></a></th><th class="ov-ax"><a href="./axes.html#a3" title="New-product reproducibility">A3<span class="ov-ax-hint">New-product reuse</span></a></th><th class="ov-ax"><a href="./axes.html#a1" title="Implementation effort">A1<span class="ov-ax-hint">First-site effort</span></a></th><th class="ov-ax"><a href="./axes.html#a4" title="Mangrove compatibility">A4<span class="ov-ax-hint">Mangrove</span></a></th><th class="ov-ax"><a href="./axes.html#a5" title="Visual control and theming fidelity">A5<span class="ov-ax-hint">Visual control</span></a></th><th class="ov-ax"><a href="./axes.html#a6" title="Right-to-left">A6<span class="ov-ax-hint">RTL</span></a></th><th class="ov-ax"><a href="./axes.html#a7" title="Automated accessibility signals">A7<span class="ov-ax-hint">Automated only</span></a></th></tr>
 </thead><tbody>
-<tr><td class="ov-name">Adobe React Aria</td><td class="ov-score"><strong>84</strong></td><td class="ov-blockers"><span class="ov-ok">none</span></td><td class="ov-w"><a href="./axes.html#a1" title="A1 Implementation effort: workable">W</a></td><td class="ov-w"><a href="./axes.html#a2" title="A2 Maintainability at scale: workable">W</a></td><td class="ov-w"><a href="./axes.html#a3" title="A3 Reproducibility across sites: workable">W</a></td><td class="ov-s"><a href="./axes.html#a4" title="A4 Mangrove compatibility: strong">S</a></td><td class="ov-s"><a href="./axes.html#a5" title="A5 Theming fidelity: strong">S</a></td><td class="ov-s"><a href="./axes.html#a6" title="A6 Right-to-left: strong">S</a></td><td class="ov-s"><a href="./axes.html#a7" title="A7 Accessibility conformance: strong">S</a></td><td class="ov-demos"><a href="./delta-react-aria/app.html" class="ov-cta">Delta</a> <a href="./mangrove-react-aria/island.html" class="ov-cta">Mangrove</a></td><td class="ov-demos"><a href="./delta-react-aria/" class="ov-cta ov-cta-sec">Delta</a> <a href="./mangrove-react-aria/" class="ov-cta ov-cta-sec">Mangrove</a></td></tr>
-<tr><td class="ov-name">MUI (Community only)</td><td class="ov-score"><strong>69</strong></td><td class="ov-blockers"><span class="ov-ok">none</span></td><td class="ov-w"><a href="./axes.html#a1" title="A1 Implementation effort: workable">W</a></td><td class="ov-k"><a href="./axes.html#a2" title="A2 Maintainability at scale: weak">Wk</a></td><td class="ov-w"><a href="./axes.html#a3" title="A3 Reproducibility across sites: workable">W</a></td><td class="ov-s"><a href="./axes.html#a4" title="A4 Mangrove compatibility: strong">S</a></td><td class="ov-s"><a href="./axes.html#a5" title="A5 Theming fidelity: strong">S</a></td><td class="ov-w"><a href="./axes.html#a6" title="A6 Right-to-left: workable">W</a></td><td class="ov-w"><a href="./axes.html#a7" title="A7 Accessibility conformance: workable">W</a></td><td class="ov-demos"><a href="./delta-mui/app.html" class="ov-cta">Delta</a> <a href="./mangrove-mui/island.html" class="ov-cta">Mangrove</a></td><td class="ov-demos"><a href="./delta-mui/" class="ov-cta ov-cta-sec">Delta</a> <a href="./mangrove-mui/" class="ov-cta ov-cta-sec">Mangrove</a></td></tr>
-<tr><td class="ov-name">Ant Design</td><td class="ov-score"><strong>68</strong></td><td class="ov-blockers"><a href="#warnings" class="ov-bad">1</a></td><td class="ov-w"><a href="./axes.html#a1" title="A1 Implementation effort: workable">W</a></td><td class="ov-k"><a href="./axes.html#a2" title="A2 Maintainability at scale: weak">Wk</a></td><td class="ov-w"><a href="./axes.html#a3" title="A3 Reproducibility across sites: workable">W</a></td><td class="ov-w"><a href="./axes.html#a4" title="A4 Mangrove compatibility: workable">W</a></td><td class="ov-s"><a href="./axes.html#a5" title="A5 Theming fidelity: strong">S</a></td><td class="ov-s"><a href="./axes.html#a6" title="A6 Right-to-left: strong">S</a></td><td class="ov-w"><a href="./axes.html#a7" title="A7 Accessibility conformance: workable">W</a></td><td class="ov-demos"><a href="./delta-antd/app.html" class="ov-cta">Delta</a> <a href="./mangrove-antd/island.html" class="ov-cta">Mangrove</a></td><td class="ov-demos"><a href="./delta-antd/" class="ov-cta ov-cta-sec">Delta</a> <a href="./mangrove-antd/" class="ov-cta ov-cta-sec">Mangrove</a></td></tr>
-<tr><td class="ov-name">Mantine</td><td class="ov-score"><strong>65</strong></td><td class="ov-blockers"><a href="#warnings" class="ov-bad">1</a></td><td class="ov-k"><a href="./axes.html#a1" title="A1 Implementation effort: weak">Wk</a></td><td class="ov-k"><a href="./axes.html#a2" title="A2 Maintainability at scale: weak">Wk</a></td><td class="ov-w"><a href="./axes.html#a3" title="A3 Reproducibility across sites: workable">W</a></td><td class="ov-s"><a href="./axes.html#a4" title="A4 Mangrove compatibility: strong">S</a></td><td class="ov-k"><a href="./axes.html#a5" title="A5 Theming fidelity: weak">Wk</a></td><td class="ov-w"><a href="./axes.html#a6" title="A6 Right-to-left: workable">W</a></td><td class="ov-s"><a href="./axes.html#a7" title="A7 Accessibility conformance: strong">S</a></td><td class="ov-demos"><a href="./delta-mantine/app.html" class="ov-cta">Delta</a> <a href="./mangrove-mantine/island.html" class="ov-cta">Mangrove</a></td><td class="ov-demos"><a href="./delta-mantine/" class="ov-cta ov-cta-sec">Delta</a> <a href="./mangrove-mantine/" class="ov-cta ov-cta-sec">Mangrove</a></td></tr>
-<tr><td class="ov-name">IBM Carbon</td><td class="ov-score"><strong>46</strong></td><td class="ov-blockers"><a href="#warnings" class="ov-bad">3</a></td><td class="ov-k"><a href="./axes.html#a1" title="A1 Implementation effort: weak">Wk</a></td><td class="ov-k"><a href="./axes.html#a2" title="A2 Maintainability at scale: weak">Wk</a></td><td class="ov-w"><a href="./axes.html#a3" title="A3 Reproducibility across sites: workable">W</a></td><td class="ov-b"><a href="./axes.html#a4" title="A4 Mangrove compatibility: blocked">B</a></td><td class="ov-k"><a href="./axes.html#a5" title="A5 Theming fidelity: weak">Wk</a></td><td class="ov-w"><a href="./axes.html#a6" title="A6 Right-to-left: workable">W</a></td><td class="ov-w"><a href="./axes.html#a7" title="A7 Accessibility conformance: workable">W</a></td><td class="ov-demos"><a href="./delta-carbon/app.html" class="ov-cta">Delta</a> <a href="./mangrove-carbon/island.html" class="ov-cta">Mangrove</a></td><td class="ov-demos"><a href="./delta-carbon/" class="ov-cta ov-cta-sec">Delta</a> <a href="./mangrove-carbon/" class="ov-cta ov-cta-sec">Mangrove</a></td></tr>
-</tbody></table></div>
-</div>
+<tr><td class="ov-name">Adobe React Aria</td><td class="ov-type"><a class="ov-type-link" href="./architecture-options.html#c-foundational-adobe-react-aria"><strong>Type C</strong><span>mechanism measured; estate modelled</span></a></td><td class="ov-score"><strong>97</strong><span> / 100</span></td><td class="ov-blockers"><span class="ov-ok">none</span></td><td class="ov-s"><a href="./axes.html#a2" aria-label="Estate change amplification: strong, six-site model" title="Estate change amplification: strong, six-site model">strong</a></td><td class="ov-s"><a href="./axes.html#a3" aria-label="New-product reproducibility: strong" title="New-product reproducibility: strong">strong</a></td><td class="ov-w"><a href="./axes.html#a1" aria-label="Implementation effort: workable" title="Implementation effort: workable">workable</a></td><td class="ov-s"><a href="./axes.html#a4" aria-label="Mangrove compatibility: strong" title="Mangrove compatibility: strong">strong</a></td><td class="ov-s"><a href="./axes.html#a5" aria-label="Visual control and theming fidelity: strong" title="Visual control and theming fidelity: strong">strong</a></td><td class="ov-s"><a href="./axes.html#a6" aria-label="Right-to-left: strong" title="Right-to-left: strong">strong</a></td><td class="ov-s"><a href="./axes.html#a7" aria-label="Automated accessibility signals: strong, automated only" title="Automated accessibility signals: strong, automated only">strong</a></td><td class="ov-demos"><a href="./delta-react-aria/app.html" class="ov-cta">Delta</a> <a href="./mangrove-react-aria/island.html" class="ov-cta">Mangrove</a></td><td class="ov-demos"><a href="./delta-react-aria/" class="ov-cta ov-cta-sec">Delta</a> <a href="./mangrove-react-aria/" class="ov-cta ov-cta-sec">Mangrove</a></td></tr>
+<tr><td class="ov-name">MUI (Community only)</td><td class="ov-type"><a class="ov-type-link" href="./architecture-options.html#a-ship-and-theme-mui-mantine-ant-design"><strong>Type A</strong><span>mechanism measured; estate modelled</span></a></td><td class="ov-score"><strong>81</strong><span> / 100</span></td><td class="ov-blockers"><span class="ov-ok">none</span></td><td class="ov-w"><a href="./axes.html#a2" aria-label="Estate change amplification: workable, six-site model" title="Estate change amplification: workable, six-site model">workable</a></td><td class="ov-s"><a href="./axes.html#a3" aria-label="New-product reproducibility: strong" title="New-product reproducibility: strong">strong</a></td><td class="ov-s"><a href="./axes.html#a1" aria-label="Implementation effort: strong" title="Implementation effort: strong">strong</a></td><td class="ov-s"><a href="./axes.html#a4" aria-label="Mangrove compatibility: strong" title="Mangrove compatibility: strong">strong</a></td><td class="ov-s"><a href="./axes.html#a5" aria-label="Visual control and theming fidelity: strong" title="Visual control and theming fidelity: strong">strong</a></td><td class="ov-w"><a href="./axes.html#a6" aria-label="Right-to-left: workable" title="Right-to-left: workable">workable</a></td><td class="ov-w"><a href="./axes.html#a7" aria-label="Automated accessibility signals: workable, automated only" title="Automated accessibility signals: workable, automated only">workable</a></td><td class="ov-demos"><a href="./delta-mui/app.html" class="ov-cta">Delta</a> <a href="./mangrove-mui/island.html" class="ov-cta">Mangrove</a></td><td class="ov-demos"><a href="./delta-mui/" class="ov-cta ov-cta-sec">Delta</a> <a href="./mangrove-mui/" class="ov-cta ov-cta-sec">Mangrove</a></td></tr>
+<tr><td class="ov-name">Ant Design</td><td class="ov-type"><a class="ov-type-link" href="./architecture-options.html#a-ship-and-theme-mui-mantine-ant-design"><strong>Type A</strong><span>mechanism measured; estate modelled</span></a></td><td class="ov-score"><strong>77</strong><span> / 100</span></td><td class="ov-blockers"><a href="#warnings" class="ov-bad">1</a></td><td class="ov-w"><a href="./axes.html#a2" aria-label="Estate change amplification: workable, six-site model" title="Estate change amplification: workable, six-site model">workable</a></td><td class="ov-s"><a href="./axes.html#a3" aria-label="New-product reproducibility: strong" title="New-product reproducibility: strong">strong</a></td><td class="ov-s"><a href="./axes.html#a1" aria-label="Implementation effort: strong" title="Implementation effort: strong">strong</a></td><td class="ov-w"><a href="./axes.html#a4" aria-label="Mangrove compatibility: workable" title="Mangrove compatibility: workable">workable</a></td><td class="ov-w"><a href="./axes.html#a5" aria-label="Visual control and theming fidelity: workable" title="Visual control and theming fidelity: workable">workable</a></td><td class="ov-s"><a href="./axes.html#a6" aria-label="Right-to-left: strong" title="Right-to-left: strong">strong</a></td><td class="ov-w"><a href="./axes.html#a7" aria-label="Automated accessibility signals: workable, automated only" title="Automated accessibility signals: workable, automated only">workable</a></td><td class="ov-demos"><a href="./delta-antd/app.html" class="ov-cta">Delta</a> <a href="./mangrove-antd/island.html" class="ov-cta">Mangrove</a></td><td class="ov-demos"><a href="./delta-antd/" class="ov-cta ov-cta-sec">Delta</a> <a href="./mangrove-antd/" class="ov-cta ov-cta-sec">Mangrove</a></td></tr>
+<tr><td class="ov-name">Mantine</td><td class="ov-type"><a class="ov-type-link" href="./architecture-options.html#a-ship-and-theme-mui-mantine-ant-design"><strong>Type A</strong><span>architecture modelled</span></a></td><td class="ov-score"><strong>69</strong><span> / 100</span></td><td class="ov-blockers"><a href="#warnings" class="ov-bad">1</a></td><td class="ov-w"><a href="./axes.html#a2" aria-label="Estate change amplification: workable, six-site model" title="Estate change amplification: workable, six-site model">workable</a></td><td class="ov-w"><a href="./axes.html#a3" aria-label="New-product reproducibility: workable" title="New-product reproducibility: workable">workable</a></td><td class="ov-w"><a href="./axes.html#a1" aria-label="Implementation effort: workable" title="Implementation effort: workable">workable</a></td><td class="ov-s"><a href="./axes.html#a4" aria-label="Mangrove compatibility: strong" title="Mangrove compatibility: strong">strong</a></td><td class="ov-k"><a href="./axes.html#a5" aria-label="Visual control and theming fidelity: weak" title="Visual control and theming fidelity: weak">weak</a></td><td class="ov-w"><a href="./axes.html#a6" aria-label="Right-to-left: workable" title="Right-to-left: workable">workable</a></td><td class="ov-s"><a href="./axes.html#a7" aria-label="Automated accessibility signals: strong, automated only" title="Automated accessibility signals: strong, automated only">strong</a></td><td class="ov-demos"><a href="./delta-mantine/app.html" class="ov-cta">Delta</a> <a href="./mangrove-mantine/island.html" class="ov-cta">Mangrove</a></td><td class="ov-demos"><a href="./delta-mantine/" class="ov-cta ov-cta-sec">Delta</a> <a href="./mangrove-mantine/" class="ov-cta ov-cta-sec">Mangrove</a></td></tr>
+<tr><td class="ov-name">IBM Carbon</td><td class="ov-type"><a class="ov-type-link" href="./architecture-options.html#b-complete-branded-system-ibm-carbon"><strong>Type B</strong><span>architecture modelled</span></a></td><td class="ov-score"><strong>47</strong><span> / 100</span></td><td class="ov-blockers"><a href="#warnings" class="ov-bad">3</a></td><td class="ov-k"><a href="./axes.html#a2" aria-label="Estate change amplification: weak, six-site model" title="Estate change amplification: weak, six-site model">weak</a></td><td class="ov-w"><a href="./axes.html#a3" aria-label="New-product reproducibility: workable" title="New-product reproducibility: workable">workable</a></td><td class="ov-w"><a href="./axes.html#a1" aria-label="Implementation effort: workable" title="Implementation effort: workable">workable</a></td><td class="ov-b"><a href="./axes.html#a4" aria-label="Mangrove compatibility: blocked" title="Mangrove compatibility: blocked">blocked</a></td><td class="ov-k"><a href="./axes.html#a5" aria-label="Visual control and theming fidelity: weak" title="Visual control and theming fidelity: weak">weak</a></td><td class="ov-w"><a href="./axes.html#a6" aria-label="Right-to-left: workable" title="Right-to-left: workable">workable</a></td><td class="ov-w"><a href="./axes.html#a7" aria-label="Automated accessibility signals: workable, automated only" title="Automated accessibility signals: workable, automated only">workable</a></td><td class="ov-demos"><a href="./delta-carbon/app.html" class="ov-cta">Delta</a> <a href="./mangrove-carbon/island.html" class="ov-cta">Mangrove</a></td><td class="ov-demos"><a href="./delta-carbon/" class="ov-cta ov-cta-sec">Delta</a> <a href="./mangrove-carbon/" class="ov-cta ov-cta-sec">Mangrove</a></td></tr>
+</tbody></table></div><p class="ranking-qualification"><strong>Read with care:</strong> A2 is a modelled six-site scenario; A7 reports automated signals only. Neither is an adoption gate or an accessibility-conformance claim.</p>
 
-      <div class="verdict">
-        <strong>Recommendation: adopt Adobe React Aria.</strong>
-        Composite 84 vs 69 for MUI (Community only);
-        one of 2/5 candidates without warnings.
-        Arabic works from a <code>dir</code> attribute alone. Stays inside its own subtree on both hosts.
-        <br /><strong>The cost.</strong> React Aria ships behaviour, not appearance. Adopting it means UNDRR owns the visual layer permanently. <strong>Read this as &ldquo;fund a design system&rdquo;, not &ldquo;save work&rdquo;.</strong>
-      </div>
+<section class="ranking-note" aria-labelledby="ranking-note-title">
+    <h2 id="ranking-note-title">Why MUI leads Ant Design by 4 points</h2>
+    <ul>
+      <li>They tie on A1, A2, A3, A7.</li>
+      <li>MUI gains 11.2 weighted points from stronger Mangrove compatibility and visual control; Ant recovers 7.2 through native RTL, leaving MUI 4 points ahead.</li>
+      <li>Ant also carries one scored blocker: its selected value disappears in the Mangrove Select unless the integration setting is changed.</li>
+      <li>React Aria's 97 reflects prototype evidence under these weights. A1 does not include the funded Type C team or multi-year operating cost.</li>
+    </ul>
+  </section>
 
-<details class="glossary"><summary class="glossary__summary">Glossary</summary><dl class="glossary__list"><dt>Leakage</dt><dd>A component library changing how the rest of the page looks, outside its own area. The test loads each page twice, with and without the library, and compares.</dd><dt>RTL</dt><dd>Right-to-left. Arabic reads right to left, so the whole interface mirrors. The question is whether the library's own components mirror with it.</dd><dt>Long labels</dt><dd>UNDRR's own content is not short, and translation makes it longer. The fixtures deliberately include long strings, and the check is whether anything overflows or gets clipped.</dd><dt>Kitchen sink / component inventory</dt><dd>One page showing every control. Proves the parts exist.</dd><dt>Embedded island</dt><dd>The library inside a real UNDRR Mangrove page, owning one region.</dd><dt>Portalled overlay</dt><dd>A dialog or dropdown the browser moves to the end of the page. Automated checks can miss what is inside it.</dd><dt>Escape hatch / off the documented route</dt><dd>Where the library's theming API did not reach, so styling was applied outside it. Each one risks breaking on library updates.</dd><dt>axe</dt><dd>An automated accessibility scanner. Catches a minority of problems; results here are a floor, not a pass.</dd><dt>A1 Implementation effort</dt><dd>Cost to build the first site.</dd><dt>A2 Maintainability at scale</dt><dd>Cost to keep every site working through library updates.</dd></dl></details>
+<details class="glossary"><summary class="glossary__summary">Glossary</summary><dl class="glossary__list"><dt>Leakage</dt><dd>A component library changing how the rest of the page looks, outside its own area. The test loads each page twice, with and without the library, and compares.</dd><dt>RTL</dt><dd>Right-to-left. Arabic reads right to left, so the whole interface mirrors. The question is whether the library's own components mirror with it.</dd><dt>Long labels</dt><dd>UNDRR's own content is not short, and translation makes it longer. The fixtures deliberately include long strings, and the check is whether anything overflows or gets clipped.</dd><dt>Kitchen sink / component inventory</dt><dd>One page showing every control. Proves the parts exist.</dd><dt>Embedded island</dt><dd>The library inside a real UNDRR Mangrove page, owning one region.</dd><dt>Portalled overlay</dt><dd>A dialog or dropdown the browser moves to the end of the page. Automated checks can miss what is inside it.</dd><dt>Escape hatch / off the documented route</dt><dd>Where the library's theming API did not reach, so styling was applied outside it. Each one risks breaking on library updates.</dd><dt>axe</dt><dd>An automated accessibility scanner. Catches a minority of problems; results here are a floor, not a pass.</dd><dt>A1 Implementation effort</dt><dd>Cost to build the first site.</dd><dt>A2 Estate change amplification</dt><dd>How many authoritative implementations and consumer sites an estate-wide change reaches.</dd><dt>A3 New-product reproducibility</dt><dd>Whether another product can consume a shared integration instead of recreating it.</dd></dl></details>
 
-      <details>
-        <summary>Scoring detail: weights, ranking, warnings and per-pairing breakdowns</summary>
-<h1>Weighted scores</h1>
+      <details class="technical-detail">
+        <summary><span class="audience-tag">Developer detail</span> Scoring weights, scored blockers and per-pairing breakdowns</summary>
+        <div class="technical-detail__body"><h1>Weighted scores</h1>
 
 <p>GENERATED FILE - regenerate with <code>pnpm scores</code>.</p>
 
-<p><strong>Reading order.</strong> Start here for the recommendation. <a href="https://github.com/khawkins98/data-design-demo/blob/main/docs/decision-axes.md">decision-axes.md</a> defines what was measured. Each app's <code>EVIDENCE.md</code> has the raw findings.</p>
-
 <h2>Decisions needed</h2>
 
-<p>1. <strong>Human accessibility pass.</strong> A7 bands rest on automated scanning only - no conformance claim without screen-reader and keyboard testing. 2. <strong>MUI exclusion ruling.</strong> Its Arabic defect has a fix this evaluation's rules forbid. Relaxing that rule returns MUI to contention.</p>
+<p>1. <strong>Human accessibility pass.</strong> A7 bands rest on automated scanning only - no conformance claim without screen-reader and keyboard testing. 2. <strong>MUI fallback plan.</strong> Put its documented RTL setup in the delivery standard. 3. <strong>Operating-model commitment.</strong> Fund and govern the Type C design-system family; otherwise React Aria becomes bespoke work per product.</p>
 
 <h2>Recommendation</h2>
 
-<p><strong>Adopt Adobe React Aria.</strong></p>
+<p><strong>Fund a bounded Type C pilot on Adobe React Aria.</strong></p>
 
-<p>Composite 84 vs 69 for MUI (Community only); one of 2/5 candidates without warnings. Arabic works from a <code>dir</code> attribute alone. Stays inside its own subtree on both hosts.</p>
+<p>It leads provisionally at 97 and is one of 2/5 candidates without a scored blocker. It also passed the measured RTL and host-containment checks.</p>
 
-<p><strong>The cost.</strong> React Aria ships behaviour, not appearance. Adopting it means UNDRR owns the visual layer permanently. <strong>Read this as "fund a design system", not "save work".</strong></p>
+<p>React Aria keeps visual authority with UNDRR and supports the Type C family described on the architecture page. The cost is permanent ownership of the visual component layer: <strong>fund a design system, not save implementation work.</strong></p>
 
-<p>See also <a href="https://github.com/khawkins98/data-design-demo/blob/main/docs/architecture-options.md">architecture-options.md</a> for the staffing implications.</p>
+<p>See <a href="./architecture-options.html">architecture options</a> for the operating-model trade-off, or <a href="./prototypes.html">open the prototype matrix</a>.</p>
 
 <h2>Weights</h2>
 
@@ -146,54 +195,54 @@
 <li><strong>Basis:</strong> Estate continuity framing (undrr-questions.md). Multi-site axes outweigh first-site effort; A6/A7 highest as standing obligations the composite cannot gate on.</li>
 
 </ul>
-<p>A6 at 18 is the weight that removes MUI from contention; at 12 the ranking would change.</p>
+<p>The weights are proposed, not ratified. They order close alternatives but do not remove the separate adoption gates.</p>
 
 <div class="scroll"><table><thead>
 <tr><th>Axis</th><th>Weight</th></tr>
 </thead><tbody>
 <tr><td>A1 Implementation effort</td><td>8</td></tr>
-<tr><td>A2 Maintainability at scale</td><td>16</td></tr>
-<tr><td>A3 Reproducibility across sites</td><td>16</td></tr>
+<tr><td>A2 Estate change amplification</td><td>16</td></tr>
+<tr><td>A3 New-product reproducibility</td><td>16</td></tr>
 <tr><td>A4 Mangrove compatibility</td><td>14</td></tr>
-<tr><td>A5 Theming fidelity</td><td>14</td></tr>
+<tr><td>A5 Visual control and theming fidelity</td><td>14</td></tr>
 <tr><td>A6 Right-to-left</td><td>18</td></tr>
-<tr><td>A7 Accessibility conformance</td><td>14</td></tr>
+<tr><td>A7 Automated accessibility signals</td><td>14</td></tr>
 </tbody></table></div>
 
 <h2>Ranking</h2>
 
-<p>Composite is the weighted mean of the two hosts. <strong>Warnings are listed beside the score, never folded into it.</strong></p>
+<p>The provisional composite is the weighted mean of the two hosts. <strong>Scored blockers are listed beside the score, never folded into it. Adoption gates are reported separately.</strong></p>
 
 <div class="scroll"><table><thead>
-<tr><th>#</th><th>Candidate</th><th>Composite</th><th>Library-owned warnings</th></tr>
+<tr><th>#</th><th>Candidate</th><th>Provisional composite</th><th>Scored library blockers</th></tr>
 </thead><tbody>
-<tr><td>1</td><td>Adobe React Aria</td><td><strong>84</strong> / 100</td><td>none</td></tr>
-<tr><td>2</td><td>MUI (Community only)</td><td><strong>69</strong> / 100</td><td>none</td></tr>
-<tr><td>3</td><td>Ant Design</td><td><strong>68</strong> / 100</td><td><strong>1</strong> - see below</td></tr>
-<tr><td>4</td><td>Mantine</td><td><strong>65</strong> / 100</td><td><strong>1</strong> - see below</td></tr>
-<tr><td>5</td><td>IBM Carbon</td><td><strong>46</strong> / 100</td><td><strong>3</strong> - see below</td></tr>
+<tr><td>1</td><td>Adobe React Aria</td><td><strong>97</strong> / 100</td><td>none</td></tr>
+<tr><td>2</td><td>MUI (Community only)</td><td><strong>81</strong> / 100</td><td>none</td></tr>
+<tr><td>3</td><td>Ant Design</td><td><strong>77</strong> / 100</td><td><strong>1</strong> - see below</td></tr>
+<tr><td>4</td><td>Mantine</td><td><strong>69</strong> / 100</td><td><strong>1</strong> - see below</td></tr>
+<tr><td>5</td><td>IBM Carbon</td><td><strong>47</strong> / 100</td><td><strong>3</strong> - see below</td></tr>
 </tbody></table></div>
 
-<p><strong>2 of 5 candidates carry no warning at all:</strong> Adobe React Aria, MUI (Community only).</p>
+<p><strong>2 of 5 candidates carry no scored library blocker:</strong> Adobe React Aria, MUI (Community only).</p>
 
-<p><strong>Adobe React Aria</strong> ranks first on the composite and carries no warning, so it is the recommendation.</p>
+<p><strong>Adobe React Aria</strong> ranks first on the composite and carries no scored blocker. Its recommendation remains conditional on the adoption gates above.</p>
 
-<p><strong>MUI (Community only)</strong> (69) also carries no warning - viable second choice without a waiver.</p>
+<p><strong>MUI (Community only)</strong> (81) carries no scored blocker and is the preferred warning-free fallback, subject to the same human-review gates and a repeatable integration standard.</p>
 
 <p>Ant Design and Mantine carry warnings that can be escaped in configuration or consuming code: see the escape-cost table below.</p>
 
 <p>IBM Carbon cannot escape its warnings without a library change or a UNDRR policy decision.</p>
 
-<h2 id="warnings">Warnings, in full</h2>
+<h2 id="warnings">Scored blockers, in full</h2>
 
-<p>Warning = axis not satisfied as shipped, typically overcomable with extra maintenance work.</p>
+<p>Scored blocker = axis not satisfied as shipped, typically overcomable with extra maintenance work. This list is narrower than the adoption gates and technical findings.</p>
 
 <p><strong>A finding can appear twice</strong> - once from <code>evidence.json</code>, once from the known-issues registry. Two records of one fact, kept separate to surface disagreements.</p>
 
 <p><strong>Remediability is recorded but not scored.</strong> It answers whether a candidate below the top can be brought up to it.</p>
 
 <div class="scroll"><table><thead>
-<tr><th>Candidate</th><th>Warnings</th><th>Cheapest escape</th><th>Hardest escape</th></tr>
+<tr><th>Candidate</th><th>Scored blockers</th><th>Cheapest escape</th><th>Hardest escape</th></tr>
 </thead><tbody>
 <tr><td>Ant Design</td><td>1</td><td>reversible per site by changing a setting</td><td>reversible per site by changing a setting</td></tr>
 <tr><td>Mantine</td><td>1</td><td>fixable in consuming code, repeated per site</td><td>fixable in consuming code, repeated per site</td></tr>
@@ -216,7 +265,7 @@
 
 <ul>
 <li>carbon-unreachable-tokens: Carbon cannot express about 30% of the UNDRR design tokens (owned by candidate) [escape: needs a change in the library]</li>
-<li>A4 Mangrove compatibility: the candidate restyled 19 computed properties on host markup outside its own subtree</li>
+<li>A4 Mangrove compatibility: the candidate restyled 54 computed properties on host markup outside its own subtree</li>
 <li>carbon-leakage-failure: This pairing fails the style-containment assertion (owned by pairing) [escape: cannot be escaped while using the library as documented]</li>
 
 </ul>
@@ -240,7 +289,7 @@
 
 <p>Each cell carries the fact that assigned the band.</p>
 
-<h3><code>delta-react-aria</code> - composite 84 / 100</h3>
+<h3><code>delta-react-aria</code> - composite 97 / 100</h3>
 
 <p>Worst open issue: <strong>caveat</strong> - React Aria is unstyled, so these pairings carry 155 to 213 CSS rules</p>
 
@@ -249,16 +298,16 @@
 <div class="scroll"><table><thead>
 <tr><th>Axis</th><th>Band</th><th>Weight</th><th>Why</th></tr>
 </thead><tbody>
-<tr><td>A1 Implementation effort</td><td><strong>workable</strong></td><td>8</td><td>10 of 30 requirements needed more than a documented component; 5 documented approaches failed and needed working around</td></tr>
-<tr><td>A2 Maintainability at scale</td><td><strong>workable</strong></td><td>16</td><td>5 escape hatches off the documented theming route; 0 scoreable maintenance findings</td></tr>
-<tr><td>A3 Reproducibility across sites</td><td><strong>workable</strong></td><td>16</td><td>extraction outcome recorded as analysed</td></tr>
+<tr><td>A1 Implementation effort</td><td><strong>workable</strong></td><td>8</td><td>10 of 30 requirements needed composition or custom code; 1 audited off-route overrides</td></tr>
+<tr><td>A2 Estate change amplification</td><td>strong</td><td>16</td><td>1 authoritative change location at worst across 6 sites; 0 consumer source edits; measured mechanism, modelled at six sites</td></tr>
+<tr><td>A3 New-product reproducibility</td><td>strong</td><td>16</td><td>the integration extracted into one shared package</td></tr>
 <tr><td>A4 Mangrove compatibility</td><td>strong</td><td>14</td><td>no host canary changed when the candidate mounted</td></tr>
-<tr><td>A5 Theming fidelity</td><td>strong</td><td>14</td><td>all 48 reachable tokens applied</td></tr>
+<tr><td>A5 Visual control and theming fidelity</td><td>strong</td><td>14</td><td>all 48 reachable tokens applied; visual authority across hosts: yes; 0 manual alias corrections</td></tr>
 <tr><td>A6 Right-to-left</td><td>strong</td><td>18</td><td>Arabic worked from a dir attribute alone, at zero custom lines</td></tr>
-<tr><td>A7 Accessibility conformance</td><td>strong</td><td>14</td><td>no critical or serious automated violations; 1 checks axe declined to decide, each still owed a human</td></tr>
+<tr><td>A7 Automated accessibility signals</td><td>strong</td><td>14</td><td>no critical or serious automated violations; 1 checks axe declined to decide, each still owed a human</td></tr>
 </tbody></table></div>
 
-<h3><code>mangrove-react-aria</code> - composite 84 / 100</h3>
+<h3><code>mangrove-react-aria</code> - composite 97 / 100</h3>
 
 <p>Worst open issue: <strong>caveat</strong> - React Aria is unstyled, so these pairings carry 155 to 213 CSS rules</p>
 
@@ -267,16 +316,16 @@
 <div class="scroll"><table><thead>
 <tr><th>Axis</th><th>Band</th><th>Weight</th><th>Why</th></tr>
 </thead><tbody>
-<tr><td>A1 Implementation effort</td><td><strong>workable</strong></td><td>8</td><td>9 of 30 requirements needed more than a documented component; 3 documented approaches failed and needed working around</td></tr>
-<tr><td>A2 Maintainability at scale</td><td><strong>workable</strong></td><td>16</td><td>3 escape hatches off the documented theming route; 0 scoreable maintenance findings</td></tr>
-<tr><td>A3 Reproducibility across sites</td><td><strong>workable</strong></td><td>16</td><td>extraction outcome recorded as analysed</td></tr>
+<tr><td>A1 Implementation effort</td><td><strong>workable</strong></td><td>8</td><td>9 of 30 requirements needed composition or custom code; 2 audited off-route overrides</td></tr>
+<tr><td>A2 Estate change amplification</td><td>strong</td><td>16</td><td>1 authoritative change location at worst across 6 sites; 0 consumer source edits; measured mechanism, modelled at six sites</td></tr>
+<tr><td>A3 New-product reproducibility</td><td>strong</td><td>16</td><td>the integration extracted into one shared package</td></tr>
 <tr><td>A4 Mangrove compatibility</td><td>strong</td><td>14</td><td>no host canary changed when the candidate mounted</td></tr>
-<tr><td>A5 Theming fidelity</td><td>strong</td><td>14</td><td>all 47 reachable tokens applied</td></tr>
+<tr><td>A5 Visual control and theming fidelity</td><td>strong</td><td>14</td><td>all 47 reachable tokens applied; visual authority across hosts: yes; 0 manual alias corrections</td></tr>
 <tr><td>A6 Right-to-left</td><td>strong</td><td>18</td><td>Arabic worked from a dir attribute alone, at zero custom lines</td></tr>
-<tr><td>A7 Accessibility conformance</td><td>strong</td><td>14</td><td>no critical or serious automated violations; 1 checks axe declined to decide, each still owed a human</td></tr>
+<tr><td>A7 Automated accessibility signals</td><td>strong</td><td>14</td><td>no critical or serious automated violations; 1 checks axe declined to decide, each still owed a human</td></tr>
 </tbody></table></div>
 
-<h3><code>delta-mui</code> - composite 71 / 100</h3>
+<h3><code>delta-mui</code> - composite 81 / 100</h3>
 
 <p>Worst open issue: <strong>caveat</strong> - MUI needs a third setup step for RTL, and fails silently without it</p>
 
@@ -285,16 +334,16 @@
 <div class="scroll"><table><thead>
 <tr><th>Axis</th><th>Band</th><th>Weight</th><th>Why</th></tr>
 </thead><tbody>
-<tr><td>A1 Implementation effort</td><td><strong>workable</strong></td><td>8</td><td>4 of 30 requirements needed more than a documented component; 5 documented approaches failed and needed working around</td></tr>
-<tr><td>A2 Maintainability at scale</td><td><strong>workable</strong></td><td>16</td><td>5 escape hatches off the documented theming route; 0 scoreable maintenance findings</td></tr>
-<tr><td>A3 Reproducibility across sites</td><td><strong>workable</strong></td><td>16</td><td>extraction outcome recorded as measured</td></tr>
+<tr><td>A1 Implementation effort</td><td>strong</td><td>8</td><td>4 of 30 requirements needed composition or custom code; 1 audited off-route overrides</td></tr>
+<tr><td>A2 Estate change amplification</td><td><strong>workable</strong></td><td>16</td><td>2 authoritative change locations at worst across 6 sites; 0 consumer source edits; measured package, modelled across two parallel stacks</td></tr>
+<tr><td>A3 New-product reproducibility</td><td>strong</td><td>16</td><td>the integration extracted into one shared package</td></tr>
 <tr><td>A4 Mangrove compatibility</td><td>strong</td><td>14</td><td>no host canary changed when the candidate mounted</td></tr>
-<tr><td>A5 Theming fidelity</td><td>strong</td><td>14</td><td>all 29 reachable tokens applied</td></tr>
+<tr><td>A5 Visual control and theming fidelity</td><td>strong</td><td>14</td><td>all 29 reachable tokens applied; visual authority across hosts: yes; 0 manual alias corrections</td></tr>
 <tr><td>A6 Right-to-left</td><td><strong>workable</strong></td><td>18</td><td>clean, but only after 29 custom lines and 0 recorded mitigations</td></tr>
-<tr><td>A7 Accessibility conformance</td><td><strong>workable</strong></td><td>14</td><td>1 serious automated violations; 4 checks axe declined to decide, each still owed a human</td></tr>
+<tr><td>A7 Automated accessibility signals</td><td><strong>workable</strong></td><td>14</td><td>1 serious automated violations; 4 checks axe declined to decide, each still owed a human</td></tr>
 </tbody></table></div>
 
-<h3><code>mangrove-mui</code> - composite 66 / 100</h3>
+<h3><code>mangrove-mui</code> - composite 81 / 100</h3>
 
 <p>Worst open issue: <strong>caveat</strong> - MUI needs a third setup step for RTL, and fails silently without it</p>
 
@@ -303,17 +352,17 @@
 <div class="scroll"><table><thead>
 <tr><th>Axis</th><th>Band</th><th>Weight</th><th>Why</th></tr>
 </thead><tbody>
-<tr><td>A1 Implementation effort</td><td><strong>workable</strong></td><td>8</td><td>4 of 30 requirements needed more than a documented component; 7 documented approaches failed and needed working around</td></tr>
-<tr><td>A2 Maintainability at scale</td><td><strong>weak</strong></td><td>16</td><td>7 escape hatches off the documented theming route; 0 scoreable maintenance findings</td></tr>
-<tr><td>A3 Reproducibility across sites</td><td><strong>workable</strong></td><td>16</td><td>extraction outcome recorded as measured</td></tr>
+<tr><td>A1 Implementation effort</td><td>strong</td><td>8</td><td>4 of 30 requirements needed composition or custom code; 1 audited off-route overrides</td></tr>
+<tr><td>A2 Estate change amplification</td><td><strong>workable</strong></td><td>16</td><td>2 authoritative change locations at worst across 6 sites; 0 consumer source edits; measured package, modelled across two parallel stacks</td></tr>
+<tr><td>A3 New-product reproducibility</td><td>strong</td><td>16</td><td>the integration extracted into one shared package</td></tr>
 <tr><td>A4 Mangrove compatibility</td><td>strong</td><td>14</td><td>no host canary changed when the candidate mounted</td></tr>
-<tr><td>A5 Theming fidelity</td><td>strong</td><td>14</td><td>all 32 reachable tokens applied</td></tr>
+<tr><td>A5 Visual control and theming fidelity</td><td>strong</td><td>14</td><td>all 32 reachable tokens applied; visual authority across hosts: yes; 0 manual alias corrections</td></tr>
 <tr><td>A6 Right-to-left</td><td><strong>workable</strong></td><td>18</td><td>clean, but only after 29 custom lines and 0 recorded mitigations</td></tr>
-<tr><td>A7 Accessibility conformance</td><td><strong>workable</strong></td><td>14</td><td>1 serious automated violations; 4 checks axe declined to decide, each still owed a human</td></tr>
+<tr><td>A7 Automated accessibility signals</td><td><strong>workable</strong></td><td>14</td><td>1 serious automated violations; 4 checks axe declined to decide, each still owed a human</td></tr>
 </tbody></table></div>
 
 <details><summary>Remaining 6 pairings</summary>
-<h3><code>delta-carbon</code> - composite 49 / 100</h3>
+<h3><code>delta-carbon</code> - composite 51 / 100</h3>
 
 <p>Worst open issue: <strong>warning</strong> - Carbon cannot express about 30% of the UNDRR design tokens</p>
 
@@ -322,13 +371,13 @@
 <div class="scroll"><table><thead>
 <tr><th>Axis</th><th>Band</th><th>Weight</th><th>Why</th></tr>
 </thead><tbody>
-<tr><td>A1 Implementation effort</td><td><strong>weak</strong></td><td>8</td><td>11 of 30 requirements needed more than a documented component; 14 documented approaches failed and needed working around</td></tr>
-<tr><td>A2 Maintainability at scale</td><td><strong>weak</strong></td><td>16</td><td>14 escape hatches off the documented theming route; 0 scoreable maintenance findings</td></tr>
-<tr><td>A3 Reproducibility across sites</td><td><strong>workable</strong></td><td>16</td><td>extraction outcome recorded as analysed</td></tr>
+<tr><td>A1 Implementation effort</td><td><strong>workable</strong></td><td>8</td><td>11 of 30 requirements needed composition or custom code; 5 audited off-route overrides</td></tr>
+<tr><td>A2 Estate change amplification</td><td><strong>weak</strong></td><td>16</td><td>3 authoritative change locations at worst across 6 sites; consumer source-edit fan-out is unmeasured; architecture model; translation path not measured</td></tr>
+<tr><td>A3 New-product reproducibility</td><td><strong>workable</strong></td><td>16</td><td>extraction outcome recorded as unknown - confounded</td></tr>
 <tr><td>A4 Mangrove compatibility</td><td><strong>workable</strong></td><td>14</td><td>clean only because the documented global stylesheet was not loaded as documented</td></tr>
-<tr><td>A5 Theming fidelity</td><td><strong>weak</strong></td><td>14</td><td>21 of 71 UNDRR tokens cannot be attached at all - a ceiling, not a cost</td></tr>
+<tr><td>A5 Visual control and theming fidelity</td><td><strong>weak</strong></td><td>14</td><td>21 of 71 UNDRR tokens cannot be attached at all - a ceiling, not a cost</td></tr>
 <tr><td>A6 Right-to-left</td><td><strong>workable</strong></td><td>18</td><td>clean, but only after 0 custom lines and 1 recorded mitigations</td></tr>
-<tr><td>A7 Accessibility conformance</td><td><strong>workable</strong></td><td>14</td><td>2 serious automated violations; 2 checks axe declined to decide, each still owed a human</td></tr>
+<tr><td>A7 Automated accessibility signals</td><td><strong>workable</strong></td><td>14</td><td>2 serious automated violations; 2 checks axe declined to decide, each still owed a human</td></tr>
 </tbody></table></div>
 
 <h3><code>mangrove-carbon</code> - composite 43 / 100</h3>
@@ -340,16 +389,16 @@
 <div class="scroll"><table><thead>
 <tr><th>Axis</th><th>Band</th><th>Weight</th><th>Why</th></tr>
 </thead><tbody>
-<tr><td>A1 Implementation effort</td><td><strong>workable</strong></td><td>8</td><td>11 of 30 requirements needed more than a documented component; 8 documented approaches failed and needed working around</td></tr>
-<tr><td>A2 Maintainability at scale</td><td><strong>weak</strong></td><td>16</td><td>8 escape hatches off the documented theming route; 0 scoreable maintenance findings</td></tr>
-<tr><td>A3 Reproducibility across sites</td><td><strong>workable</strong></td><td>16</td><td>extraction outcome recorded as analysed</td></tr>
-<tr><td>A4 Mangrove compatibility</td><td><strong>blocked</strong></td><td>14</td><td>the candidate restyled 19 computed properties on host markup outside its own subtree</td></tr>
-<tr><td>A5 Theming fidelity</td><td><strong>weak</strong></td><td>14</td><td>22 of 72 UNDRR tokens cannot be attached at all - a ceiling, not a cost</td></tr>
+<tr><td>A1 Implementation effort</td><td><strong>workable</strong></td><td>8</td><td>11 of 30 requirements needed composition or custom code; 4 audited off-route overrides</td></tr>
+<tr><td>A2 Estate change amplification</td><td><strong>weak</strong></td><td>16</td><td>3 authoritative change locations at worst across 6 sites; consumer source-edit fan-out is unmeasured; architecture model; translation path not measured</td></tr>
+<tr><td>A3 New-product reproducibility</td><td><strong>workable</strong></td><td>16</td><td>extraction outcome recorded as unknown - confounded</td></tr>
+<tr><td>A4 Mangrove compatibility</td><td><strong>blocked</strong></td><td>14</td><td>the candidate restyled 54 computed properties on host markup outside its own subtree</td></tr>
+<tr><td>A5 Visual control and theming fidelity</td><td><strong>weak</strong></td><td>14</td><td>22 of 72 UNDRR tokens cannot be attached at all - a ceiling, not a cost</td></tr>
 <tr><td>A6 Right-to-left</td><td><strong>workable</strong></td><td>18</td><td>clean, but only after 6 custom lines and 2 recorded mitigations</td></tr>
-<tr><td>A7 Accessibility conformance</td><td><strong>workable</strong></td><td>14</td><td>1 serious automated violations; 2 checks axe declined to decide, each still owed a human</td></tr>
+<tr><td>A7 Automated accessibility signals</td><td><strong>workable</strong></td><td>14</td><td>1 serious automated violations; 2 checks axe declined to decide, each still owed a human</td></tr>
 </tbody></table></div>
 
-<h3><code>delta-mantine</code> - composite 60 / 100</h3>
+<h3><code>delta-mantine</code> - composite 67 / 100</h3>
 
 <p>Worst open issue: <strong>warning</strong> - Modal's close button ships with no accessible name</p>
 
@@ -358,16 +407,16 @@
 <div class="scroll"><table><thead>
 <tr><th>Axis</th><th>Band</th><th>Weight</th><th>Why</th></tr>
 </thead><tbody>
-<tr><td>A1 Implementation effort</td><td><strong>weak</strong></td><td>8</td><td>10 of 30 requirements needed more than a documented component; 11 documented approaches failed and needed working around</td></tr>
-<tr><td>A2 Maintainability at scale</td><td><strong>weak</strong></td><td>16</td><td>11 escape hatches off the documented theming route; 0 scoreable maintenance findings</td></tr>
-<tr><td>A3 Reproducibility across sites</td><td><strong>workable</strong></td><td>16</td><td>extraction outcome recorded as analysed</td></tr>
+<tr><td>A1 Implementation effort</td><td><strong>workable</strong></td><td>8</td><td>10 of 30 requirements needed composition or custom code; 4 audited off-route overrides</td></tr>
+<tr><td>A2 Estate change amplification</td><td><strong>workable</strong></td><td>16</td><td>2 authoritative change locations at worst across 6 sites; consumer source-edit fan-out is unmeasured; architecture model; package propagation not measured</td></tr>
+<tr><td>A3 New-product reproducibility</td><td><strong>workable</strong></td><td>16</td><td>extraction outcome recorded as unknown - confounded</td></tr>
 <tr><td>A4 Mangrove compatibility</td><td>strong</td><td>14</td><td>no host canary changed when the candidate mounted</td></tr>
-<tr><td>A5 Theming fidelity</td><td><strong>weak</strong></td><td>14</td><td>5 of 71 UNDRR tokens cannot be attached at all - a ceiling, not a cost</td></tr>
+<tr><td>A5 Visual control and theming fidelity</td><td><strong>weak</strong></td><td>14</td><td>5 of 71 UNDRR tokens cannot be attached at all - a ceiling, not a cost</td></tr>
 <tr><td>A6 Right-to-left</td><td><strong>workable</strong></td><td>18</td><td>clean, but only after 18 custom lines and 2 recorded mitigations</td></tr>
-<tr><td>A7 Accessibility conformance</td><td>strong</td><td>14</td><td>no critical or serious automated violations; 1 checks axe declined to decide, each still owed a human</td></tr>
+<tr><td>A7 Automated accessibility signals</td><td>strong</td><td>14</td><td>no critical or serious automated violations; 1 checks axe declined to decide, each still owed a human</td></tr>
 </tbody></table></div>
 
-<h3><code>mangrove-mantine</code> - composite 70 / 100</h3>
+<h3><code>mangrove-mantine</code> - composite 71 / 100</h3>
 
 <p>Worst open issue: <strong>warning</strong> - Modal's close button ships with no accessible name</p>
 
@@ -376,16 +425,16 @@
 <div class="scroll"><table><thead>
 <tr><th>Axis</th><th>Band</th><th>Weight</th><th>Why</th></tr>
 </thead><tbody>
-<tr><td>A1 Implementation effort</td><td><strong>weak</strong></td><td>8</td><td>11 of 30 requirements needed more than a documented component; 9 documented approaches failed and needed working around</td></tr>
-<tr><td>A2 Maintainability at scale</td><td><strong>weak</strong></td><td>16</td><td>9 escape hatches off the documented theming route; 0 scoreable maintenance findings</td></tr>
-<tr><td>A3 Reproducibility across sites</td><td><strong>workable</strong></td><td>16</td><td>extraction outcome recorded as analysed</td></tr>
+<tr><td>A1 Implementation effort</td><td><strong>workable</strong></td><td>8</td><td>11 of 30 requirements needed composition or custom code; 4 audited off-route overrides</td></tr>
+<tr><td>A2 Estate change amplification</td><td><strong>workable</strong></td><td>16</td><td>2 authoritative change locations at worst across 6 sites; consumer source-edit fan-out is unmeasured; architecture model; package propagation not measured</td></tr>
+<tr><td>A3 New-product reproducibility</td><td><strong>workable</strong></td><td>16</td><td>extraction outcome recorded as unknown - confounded</td></tr>
 <tr><td>A4 Mangrove compatibility</td><td>strong</td><td>14</td><td>no host canary changed when the candidate mounted</td></tr>
-<tr><td>A5 Theming fidelity</td><td>strong</td><td>14</td><td>all 62 reachable tokens applied</td></tr>
+<tr><td>A5 Visual control and theming fidelity</td><td><strong>workable</strong></td><td>14</td><td>all 62 reachable tokens applied; visual authority across hosts: partial; 3 manual alias corrections</td></tr>
 <tr><td>A6 Right-to-left</td><td><strong>workable</strong></td><td>18</td><td>clean, but only after 10 custom lines and 0 recorded mitigations</td></tr>
-<tr><td>A7 Accessibility conformance</td><td>strong</td><td>14</td><td>no critical or serious automated violations; 0 checks axe declined to decide, each still owed a human</td></tr>
+<tr><td>A7 Automated accessibility signals</td><td>strong</td><td>14</td><td>no critical or serious automated violations; 0 checks axe declined to decide, each still owed a human</td></tr>
 </tbody></table></div>
 
-<h3><code>delta-antd</code> - composite 68 / 100</h3>
+<h3><code>delta-antd</code> - composite 77 / 100</h3>
 
 <p>Worst open issue: <strong>caveat</strong> - The data table has an upstream accessibility defect</p>
 
@@ -394,16 +443,16 @@
 <div class="scroll"><table><thead>
 <tr><th>Axis</th><th>Band</th><th>Weight</th><th>Why</th></tr>
 </thead><tbody>
-<tr><td>A1 Implementation effort</td><td><strong>workable</strong></td><td>8</td><td>2 of 30 requirements needed more than a documented component; 7 documented approaches failed and needed working around</td></tr>
-<tr><td>A2 Maintainability at scale</td><td><strong>weak</strong></td><td>16</td><td>7 escape hatches off the documented theming route; 0 scoreable maintenance findings</td></tr>
-<tr><td>A3 Reproducibility across sites</td><td><strong>workable</strong></td><td>16</td><td>extraction outcome recorded as measured</td></tr>
+<tr><td>A1 Implementation effort</td><td>strong</td><td>8</td><td>2 of 30 requirements needed composition or custom code; 1 audited off-route overrides</td></tr>
+<tr><td>A2 Estate change amplification</td><td><strong>workable</strong></td><td>16</td><td>2 authoritative change locations at worst across 6 sites; 0 consumer source edits; measured package, modelled across two parallel stacks</td></tr>
+<tr><td>A3 New-product reproducibility</td><td>strong</td><td>16</td><td>the integration extracted into one shared package</td></tr>
 <tr><td>A4 Mangrove compatibility</td><td><strong>workable</strong></td><td>14</td><td>clean only because the documented global stylesheet was not loaded as documented</td></tr>
-<tr><td>A5 Theming fidelity</td><td>strong</td><td>14</td><td>all 44 reachable tokens applied</td></tr>
+<tr><td>A5 Visual control and theming fidelity</td><td><strong>workable</strong></td><td>14</td><td>all 44 reachable tokens applied; visual authority across hosts: partial; 4 manual alias corrections</td></tr>
 <tr><td>A6 Right-to-left</td><td>strong</td><td>18</td><td>Arabic worked from a dir attribute alone, at zero custom lines</td></tr>
-<tr><td>A7 Accessibility conformance</td><td><strong>workable</strong></td><td>14</td><td>1 serious automated violations; 1 checks axe declined to decide, each still owed a human</td></tr>
+<tr><td>A7 Automated accessibility signals</td><td><strong>workable</strong></td><td>14</td><td>1 serious automated violations; 1 checks axe declined to decide, each still owed a human</td></tr>
 </tbody></table></div>
 
-<h3><code>mangrove-antd</code> - composite 68 / 100</h3>
+<h3><code>mangrove-antd</code> - composite 77 / 100</h3>
 
 <p>Worst open issue: <strong>warning</strong> - Select controls do not display their selected value</p>
 
@@ -412,13 +461,13 @@
 <div class="scroll"><table><thead>
 <tr><th>Axis</th><th>Band</th><th>Weight</th><th>Why</th></tr>
 </thead><tbody>
-<tr><td>A1 Implementation effort</td><td><strong>workable</strong></td><td>8</td><td>2 of 30 requirements needed more than a documented component; 7 documented approaches failed and needed working around</td></tr>
-<tr><td>A2 Maintainability at scale</td><td><strong>weak</strong></td><td>16</td><td>7 escape hatches off the documented theming route; 0 scoreable maintenance findings</td></tr>
-<tr><td>A3 Reproducibility across sites</td><td><strong>workable</strong></td><td>16</td><td>extraction outcome recorded as measured</td></tr>
+<tr><td>A1 Implementation effort</td><td>strong</td><td>8</td><td>2 of 30 requirements needed composition or custom code; 1 audited off-route overrides</td></tr>
+<tr><td>A2 Estate change amplification</td><td><strong>workable</strong></td><td>16</td><td>2 authoritative change locations at worst across 6 sites; 0 consumer source edits; measured package, modelled across two parallel stacks</td></tr>
+<tr><td>A3 New-product reproducibility</td><td>strong</td><td>16</td><td>the integration extracted into one shared package</td></tr>
 <tr><td>A4 Mangrove compatibility</td><td><strong>workable</strong></td><td>14</td><td>clean only because the documented global stylesheet was not loaded as documented</td></tr>
-<tr><td>A5 Theming fidelity</td><td>strong</td><td>14</td><td>all 44 reachable tokens applied</td></tr>
+<tr><td>A5 Visual control and theming fidelity</td><td><strong>workable</strong></td><td>14</td><td>all 44 reachable tokens applied; visual authority across hosts: partial; 4 manual alias corrections</td></tr>
 <tr><td>A6 Right-to-left</td><td>strong</td><td>18</td><td>Arabic worked from a dir attribute alone, at zero custom lines</td></tr>
-<tr><td>A7 Accessibility conformance</td><td><strong>workable</strong></td><td>14</td><td>1 serious automated violations; 1 checks axe declined to decide, each still owed a human</td></tr>
+<tr><td>A7 Automated accessibility signals</td><td><strong>workable</strong></td><td>14</td><td>1 serious automated violations; 1 checks axe declined to decide, each still owed a human</td></tr>
 </tbody></table></div>
 
 </details>
@@ -430,7 +479,7 @@
 <li>A6 measures layout direction, not whether Arabic reads well to an Arabic reader.</li>
 <li>Changing the weights changes the ranking. A two-point gap rests on the weights, not the evidence.</li>
 
-</ul>
+</ul></div>
       </details>
 
       <script>
@@ -450,6 +499,6 @@
           not modify. Metrics come from each run's <code>evidence.json</code>.
         </p>
       </footer>
-    </div>
+    </main>
   </body>
 </html>

@@ -23,6 +23,7 @@ import "@undrr-eval/host-delta/host.css";
 import "@undrr-eval/undrr-tokens/tokens.css";
 import "@undrr-eval/known-issues/known-issues.css";
 import "./theme.css";
+import "@undrr-eval/integration-react-aria/records.css";
 import "./views/views.css";
 
 import { AppView } from "./AppView.js";

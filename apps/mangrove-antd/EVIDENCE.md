@@ -53,8 +53,9 @@ mode would make it live but puts antd's palette in the host's global scope; left
 off.
 
 Mangrove 1.8.1 declares **zero** CSS custom properties (`docs/host-derivation.md`
-finding 1), so its palette is unreachable at runtime. antd is themed to the
-neutral UNDRR tokens instead.
+finding 1). The project tokens carry its current UNDRR interactive palette, but
+antd consumes a separately maintained mapping rather than inheriting future
+changes from Mangrove at runtime.
 
 ### Seed tokens do not carry contrast
 
@@ -129,9 +130,9 @@ Host column uses: `mg-button`, `mg-button-primary`, `mg-table`,
 `mg-table--striped`, `mg-card`, `mg-card__content`. All six verified present in
 the published 1.8.1 stylesheet. A unit test forbids unaccounted-for `mg-` classes.
 
-The visual gap between columns is wider here than on Delta. Mangrove's opinionated
-styles (square corners, heavy borders, Roboto) diverge from the neutral UNDRR
-palette antd is themed to, since 1.8.1 exposes nothing at runtime.
+The remaining visual gap comes from Mangrove's opinionated structure — square
+corners, heavy borders and typography. Its current interactive colours can match,
+but 1.8.1 exposes nothing at runtime to keep that match synchronized.
 
 ## Dependencies
 

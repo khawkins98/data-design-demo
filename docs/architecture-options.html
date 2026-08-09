@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="./mangrove.css" />
     <style>
       :root { --accent:#004f91; --muted:#4a5c69; --border:#d5d5d5; --surface:#fff; }
+      html { -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
       pre { background:var(--surface); border:1px solid var(--border); border-radius:6px;
             padding:1rem; overflow-x:auto; font-size:0.8125rem; }
       pre code { background:none; border:none; padding:0; }
@@ -18,19 +19,96 @@
       table { border-collapse:collapse; font-size:0.8125rem; background:var(--surface); width:100%; }
       th, td { padding:0.375rem 0.625rem; border:1px solid var(--border); text-align:left; vertical-align:top; }
       thead th { background:var(--surface); font-weight:700; }
-      .mermaid { background:var(--surface); border:1px solid var(--border); border-radius:6px;
-                 padding:1rem; text-align:center; }
+      .mermaid { box-sizing:border-box; width:min(70rem,calc(100vw - 3rem));
+                 margin:1rem 0 1.75rem; margin-inline-start:50%; padding:1.25rem;
+                 transform:translateX(-50%); overflow-x:auto; text-align:center;
+                 background:#fbfcfd; border:0; border-radius:10px;
+                 box-shadow:0 0 0 1px rgb(0 0 0 / 8%), 0 2px 8px rgb(0 0 0 / 5%); }
+      .mermaid svg { display:block; width:100% !important; max-width:100% !important; height:auto;
+                     margin-inline:auto; }
+      .mermaid .nodeLabel { line-height:1.35; }
+      .mg-docs-main { max-width:88ch; }
+      .mg-docs-main h1, .mg-docs-main h2, .mg-docs-main h3 { text-wrap:balance; }
+      .mg-docs-main p, .mg-docs-main li { text-wrap:pretty; }
+      .cost-horizon { margin:1.5rem 0 2rem; padding:1.25rem; border-radius:10px; background:#f5f8fb;
+        box-shadow:0 0 0 1px rgb(0 0 0 / 7%), 0 2px 8px rgb(0 0 0 / 5%); }
+      .cost-horizon__heading { display:grid; grid-template-columns:minmax(11rem,0.55fr) minmax(18rem,1.45fr);
+        gap:1.25rem; align-items:baseline; margin-bottom:1rem; }
+      .cost-horizon__heading h2 { margin:0; padding:0; border:0; font-size:1.25rem; text-wrap:balance; }
+      .cost-horizon__heading p { margin:0; color:var(--muted); text-wrap:pretty; }
+      .cost-horizon__grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem; }
+      .cost-horizon__card { padding:1rem; border-radius:7px; background:var(--surface);
+        box-shadow:0 0 0 1px rgb(0 0 0 / 7%), 0 1px 3px rgb(0 0 0 / 5%); }
+      .cost-horizon__card--owned { box-shadow:inset 3px 0 0 var(--accent), 0 0 0 1px rgb(0 0 0 / 7%), 0 1px 3px rgb(0 0 0 / 5%); }
+      .cost-horizon__card h3 { margin:0.2rem 0 0.7rem; font-family:inherit; font-size:1rem; text-wrap:balance; }
+      .cost-horizon__card p { margin:0.45rem 0; font-size:0.875rem; text-wrap:pretty; }
+      .cost-horizon__type { color:var(--accent); font-size:0.6875rem !important; font-weight:700;
+        letter-spacing:0.055em; text-transform:uppercase; }
+      .cost-horizon__note { margin:0.9rem 0 0; color:var(--muted); font-size:0.8125rem; text-wrap:pretty; }
+      .reuse-evidence { margin:1rem 0 2.5rem; padding:1.25rem; border-radius:10px;
+                        background:#f5f8fb; box-shadow:0 0 0 1px rgb(0 0 0 / 6%), 0 2px 8px rgb(0 0 0 / 5%); }
+      .reuse-evidence__heading h3 { margin:0.125rem 0 0.375rem; font-size:1.125rem; }
+      .reuse-evidence__heading p:last-child { margin:0; color:var(--muted); }
+      .reuse-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem; margin:1rem 0; }
+      .reuse-card { padding:1rem; border-radius:8px; background:var(--surface);
+                    box-shadow:0 0 0 1px rgb(0 0 0 / 6%), 0 1px 3px rgb(0 0 0 / 5%); }
+      .reuse-card h3 { margin:0.125rem 0 0.75rem; }
+      .reuse-card p { margin:0.375rem 0; font-size:0.875rem; }
+      .reuse-card__eyebrow { color:var(--accent); font-size:0.6875rem !important; font-weight:700;
+                             letter-spacing:0.06em; text-transform:uppercase; }
+      .reuse-card__metric { font-variant-numeric:tabular-nums; }
+      .reuse-card__metric strong { font-size:1.5rem; color:var(--accent); }
+      .reuse-table { margin-bottom:0; background:var(--surface); }
+      .reuse-table th[scope="row"] { white-space:nowrap; }
+      .cell-note { display:block; margin-top:0.25rem; color:var(--muted); font-size:0.75rem; line-height:1.4; }
+      @media (max-width:48rem) {
+        .cost-horizon__heading, .cost-horizon__grid { grid-template-columns:1fr; }
+        .cost-horizon__heading { gap:0.35rem; }
+        .reuse-grid { grid-template-columns:1fr; }
+        .reuse-evidence { padding:1rem; }
+        .mermaid { width:calc(100vw - 2rem); padding:0.75rem; }
+      }
 
+      .skip-link { position:absolute; z-index:100; inset-block-start:0.5rem; inset-inline-start:0.5rem;
+        padding:0.5rem 0.75rem; background:#fff; color:#004f91; transform:translateY(-150%); }
+      .skip-link:focus { transform:translateY(0); }
       .mg-docs-main { max-width:72ch; }
       .mg-docs-main h1 { font-size:1.75rem; margin:2rem 0 0.5rem; }
       .mg-docs-main h2 { margin-top:2.5rem; font-size:1.25rem; border-bottom:1px solid #d5d5d5; padding-bottom:0.25rem; }
       .mg-docs-main h3 { margin-top:2rem; font-size:1.05rem; }
       .mg-docs-main h4 { margin-top:1.5rem; font-size:1rem; }
+      .audience-banner {
+        margin:1rem 0 1.5rem; padding:0.75rem 1rem; border-inline-start:3px solid #64748b;
+        background:#f3f6f8; color:#334155; font-size:0.875rem;
+      }
+      .audience-tag {
+        display:inline-flex; align-items:center; min-height:1.35rem; margin-inline-end:0.45rem;
+        padding:0.05rem 0.45rem; border:1px solid #94a3b8; border-radius:999px;
+        color:#475569; background:#f8fafc; font-size:0.6875rem; font-weight:700;
+        letter-spacing:0.045em; text-transform:uppercase; vertical-align:middle;
+      }
+      details.technical-detail {
+        margin:1rem 0; border:1px solid #cbd5e1; border-radius:6px; background:#f8fafc;
+      }
+      details.technical-detail > summary {
+        padding:0.7rem 0.85rem; cursor:pointer; color:#334155; font-weight:600;
+      }
+      .technical-detail__body { padding:0 0.9rem 0.9rem; border-top:1px solid #e2e8f0; }
+      .technical-detail__body > :first-child { margin-top:0.9rem; }
+      @media print {
+        .skip-link, .mg-page-header, .mg-mega-wrapper { display:none !important; }
+        details.technical-detail > summary { display:list-item; break-after:avoid; }
+        details.technical-detail:not([open]) > *:not(summary) { display:block; }
+        details.technical-detail { break-inside:auto; }
+        .technical-detail__body > :first-child { break-before:avoid; }
+        @page { margin:1.5cm; }
+      }
 
     </style>
   </head>
   <body>
 
+    <a class="skip-link" href="#main">Skip to main content</a>
     <header id="header" class="mg-page-header mg-page-header--default">
       <div class="mg-page-header__decoration" aria-hidden="true">
         <div></div><div></div><div></div><div></div>
@@ -38,123 +116,228 @@
     </header>
 
     <nav class="mg-mega-wrapper" aria-label="Main Navigation">
-      <ul class="mg-mega-topbar | mg-container mg-container-full-width"
-          role="menubar" aria-label="Main navigation menu">
-          <li class="mg-mega-topbar__item" role="none">
-              <a class="mg-mega-topbar__item-link" href="./" role="menuitem">Ranking</a>
+      <ul class="mg-mega-topbar | mg-container mg-container-full-width">
+          <li class="mg-mega-topbar__item">
+              <a class="mg-mega-topbar__item-link" href="./">Ranking</a>
             </li>
-          <li class="mg-mega-topbar__item" role="none">
-              <a class="mg-mega-topbar__item-link" href="./axes.html" role="menuitem">Decision axes</a>
+          <li class="mg-mega-topbar__item mg-mega-topbar__item--active">
+              <a class="mg-mega-topbar__item-link" href="./architecture-options.html" aria-current="page">Architecture</a>
             </li>
-          <li class="mg-mega-topbar__item" role="none">
-              <a class="mg-mega-topbar__item-link" href="./comparison.html" role="menuitem">Requirement matrix</a>
+          <li class="mg-mega-topbar__item">
+              <a class="mg-mega-topbar__item-link" href="./methodology.html">Methodology</a>
             </li>
-          <li class="mg-mega-topbar__item" role="none">
-              <a class="mg-mega-topbar__item-link" href="./issues.html" role="menuitem">Findings</a>
+          <li class="mg-mega-topbar__item">
+              <a class="mg-mega-topbar__item-link" href="./prototypes.html">Prototypes</a>
             </li>
-          <li class="mg-mega-topbar__item mg-mega-topbar__item--active" role="none">
-              <a class="mg-mega-topbar__item-link" href="./architecture-options.html" role="menuitem">Architecture</a>
+          <li class="mg-mega-topbar__item">
+              <a class="mg-mega-topbar__item-link" href="./axes.html">Evidence axes</a>
+            </li>
+          <li class="mg-mega-topbar__item">
+              <a class="mg-mega-topbar__item-link" href="./issues.html">Technical findings</a>
+            </li>
+          <li class="mg-mega-topbar__item">
+              <a class="mg-mega-topbar__item-link" href="./comparison.html">Requirement audit</a>
             </li>
       </ul>
     </nav>
-    <div class="mg-container mg-page-content--padded">
-<h1 id="architecture-options-what-adopting-each-candidate-does-to-design-system-cohesion-at-undrr">Architecture options — what adopting each candidate does to design system cohesion at UNDRR</h1>
-<p>HAND-WRITTEN. This is a framing for a decision, not a measurement, and it is kept out of the generated pages for that reason. Every number quoted here is traceable to <a href="./scores.md">scores.md</a>, <a href="./axes.md">axes.md</a> or a candidate's <code>evidence.json</code>; the argument built on top of them is the author's, and UNDRR is free to reject it without touching a single score.</p>
-<h2 id="the-question-a-component-inventory-cannot-ask">The question a component inventory cannot ask</h2>
-<p><a href="./comparison.md">comparison.md</a> records 300 assessments and finds that all five candidates cover DELTA's components. That is a real result and a useless one for choosing between them, because every serious React library ships buttons, inputs, selects and tables. It discriminates between nothing.</p>
-<p>The wizard changes that. PrimeReact — the incumbent being replaced — ships <code>Stepper</code>, and DELTA's add-disaster-event screen uses one, so a step indicator is not a nice-to-have on this estate: it is existing functionality that has to survive the migration. Four candidates ship a stepper of their own. React Aria ships nothing of the kind, and the demo has to build one.</p>
-<p>The instinct is to score that as a gap. It is more useful as a different question:</p>
-<blockquote>
-<p><strong>How many components does Mangrove end up owning under each candidate?</strong></p>
-</blockquote>
-<p>That is a headcount question, it survives contact with a budget, and it has different answers per candidate in a way that "does it have a stepper" does not.</p>
+    <main id="main" class="mg-container mg-page-content--padded mg-docs-main">
+<h1 id="architecture-options">Architecture options</h1>
+<p>UNDRR is not choosing only a component library. It is choosing an operating model: either two product stacks connected by a maintained bridge (Types A and B), or a coordinated family of UNDRR-owned systems sharing foundations (Type C). All candidates cover the tested screens. The decision is who owns the component expression, how changes propagate, and where synchronization can fail.</p>
+<h2 id="what-undrr-is-choosing">What UNDRR is choosing</h2>
+<p>Any candidate can sit behind a UNDRR wrapper. The question is whether shared UNDRR foundations become the enduring product layer or remain an adapter around an upstream library.</p>
+<section class="cost-horizon" aria-labelledby="cost-horizon-title">
+    <div class="cost-horizon__heading">
+      <h2 id="cost-horizon-title">Where the cost falls</h2>
+      <p>The architecture changes when UNDRR pays for coordination—and what the organisation can change coherently as the estate grows.</p>
+    </div>
+    <div class="cost-horizon__grid">
+      <article class="cost-horizon__card">
+        <p class="cost-horizon__type">Types A and B</p>
+        <h3>Faster start, accumulating coordination</h3>
+        <p><strong>Now:</strong> adopt more upstream structure; Type A in particular offers the easier on-ramp.</p>
+        <p><strong>As the estate grows:</strong> parallel stacks require continuing translation and synchronisation, making organisation-wide change harder.</p>
+      </article>
+      <article class="cost-horizon__card cost-horizon__card--owned">
+        <p class="cost-horizon__type">Type C</p>
+        <h3>Higher shared investment, compounding reuse</h3>
+        <p><strong>Now:</strong> coordinate content and data teams, establish ownership and complete the shared foundation.</p>
+        <p><strong>As the estate grows:</strong> shared components and policy are intended to lower marginal integration cost and support coherent change.</p>
+      </article>
+    </div>
+    <p class="cost-horizon__note"><strong>Architectural hypothesis, not a cost forecast.</strong> <a href="./axes.html#a2">A2 models its change amplification across six sites</a>; it does not measure multi-year total cost. A pilot should report person-days per cross-estate change, independent implementation and validation touches, elapsed release time and ongoing owner capacity. Read the <a href="./methodology.html">methodology</a>.</p>
+  </section>
 <h2 id="three-shapes-not-five">Three shapes, not five</h2>
 <h3 id="a-ship-and-theme-mui-mantine-ant-design">A. Ship-and-theme — MUI, Mantine, Ant Design</h3>
-<p>The library owns the components. You configure a theme, you consume the components, and Mangrove arrives from the side: its stylesheet loads alongside, and its tokens feed the theme object where the library's API allows.</p>
+<p>Two parallel paths use the same token mechanism but different component stacks: Mangrove for content products and a themed suite for DELTA.</p>
 <pre class="mermaid">flowchart LR
-  T["UNDRR tokens"] --&gt; TH["Thin theme layer&lt;br/&gt;library's theme API"]
-  L["Library components&lt;br/&gt;MUI / Mantine / Ant Design"] --&gt; TH
-  TH --&gt; A["DELTA app code"]
-  M["Mangrove stylesheet"] -.-&gt;|"injected alongside,&lt;br/&gt;competes in the cascade"| A
-  A --&gt; B["Browser"]</pre>
-<p><strong>What you get.</strong> Components you do not maintain, including the accessibility work. A stepper, a data grid and a date picker arrive free and stay maintained by someone else.</p>
-<p><strong>What it costs.</strong> The dotted line is the problem, and it is what A4 measures. Mangrove is not integrated here — it is <em>adjacent</em>, arriving as CSS that competes with the library's own in the same cascade. Ant Design's blank filter labels and MUI's Arabic defect both live on that line. And each site that adopts this shape re-does its own theme mapping: the theme layer is thin, but there is one per site, and they drift.</p>
+  T["UNDRR, DELTA or project-specific&lt;br/&gt;design tokens"]:::input
+  L["MUI / Mantine / Ant Design&lt;br/&gt;components + conventions"]:::upstream
+  W["Project theme + wrappers"]:::integration
+  D["DELTA application stack"]:::product
+  M["Mangrove component stack"]:::integration
+  C["UNDRR content products"]:::product
+  B["Maintained translation bridge"]:::risk
+
+  T --&gt;|"theme values"| L
+  L --&gt;|"suite structure"| W
+  W --&gt; D
+  T --&gt;|"theme values"| M
+  M --&gt; C
+  L -.-&gt;|"selected components"| B
+  B -.-&gt;|"host repair"| M
+  D &lt;-.-&gt;|"possible reuse?&lt;br/&gt;synchronisation risk"| C
+
+  classDef input fill:#e9f3fb,stroke:#527fa4,color:#102a43,stroke-width:1.5px
+  classDef upstream fill:#f0edfb,stroke:#7562ad,color:#2d2547,stroke-width:1.5px
+  classDef integration fill:#dcecf8,stroke:#2871a9,color:#102a43,stroke-width:1.75px
+  classDef product fill:#ffffff,stroke:#82919d,color:#1f2933,stroke-width:1.25px
+  classDef risk fill:#fff2dc,stroke:#a55d00,color:#603600,stroke-width:2px,stroke-dasharray:5 4
+  linkStyle 5,6,7 stroke:#a55d00,stroke-width:2px,stroke-dasharray:5 4</pre>
+<p><strong>What you get.</strong> Upstream-maintained components and behaviour for DELTA, while content products continue to inherit Mangrove.</p>
+<p><strong>What it costs.</strong> The two paths do not become one system merely because both are token-driven. Moving a component or policy between them requires a maintained translation bridge, creating the main synchronization risk.</p>
 <h3 id="b-complete-branded-system-ibm-carbon">B. Complete branded system — IBM Carbon</h3>
-<p>Structurally the same as A, but the library is not neutral. Carbon is a <em>product</em> design system: it ships a full component set and also IBM's design language — Plex typography, IBM's colour ramps, its own grid and spacing scale.</p>
+<p>Structurally the same as A, but Carbon also brings IBM's design language.</p>
 <pre class="mermaid">flowchart LR
-  T["UNDRR tokens"] -.-&gt;|"reaches colour and spacing;&lt;br/&gt;font stack is not&lt;br/&gt;reachable via the API"| TH["Carbon theme&lt;br/&gt;Sass + CSS custom properties"]
-  L["Carbon components&lt;br/&gt;+ IBM design language"] --&gt; TH
-  TH --&gt; A["DELTA app code"]
-  M["Mangrove stylesheet"] -.-&gt; A
-  A --&gt; B["Browser"]</pre>
-<p>Calling this "the middle" is right, but not because it is more foundational than MUI — it is <em>less</em> neutral. The middle position is that it is as complete as A while being harder to make look like UNDRR. This evaluation hit that directly: Carbon's font stacks are Sass values that <code>@carbon/styles/scss/type</code> re-forwards without exposing, so <strong>the font family cannot be set through the supported API</strong> and had to be reached another way. It happens not to matter, because 56 of Carbon's 67 <code>font-family</code> declarations are <code>inherit</code> — but "we got lucky about the shape of their Sass" is not a theming strategy.</p>
+  T["UNDRR or project-specific&lt;br/&gt;design tokens"]:::input
+  L["Carbon components&lt;br/&gt;+ IBM design language"]:::upstream
+  B["Carbon-to-Mangrove&lt;br/&gt;adapter"]:::risk
+  M["Mangrove component stack"]:::integration
+  W["Project Carbon theme&lt;br/&gt;+ wrappers"]:::integration
+  C["UNDRR content applications"]:::product
+  D["DELTA data application"]:::product
+
+  T --&gt;|"UNDRR visual language"| M
+  M --&gt; C
+  T --&gt;|"supported Carbon theming&lt;br/&gt;incomplete token coverage"| W
+  L --&gt;|"components + conventions"| W
+  W --&gt; D
+  L -.-&gt;|"selected components"| B
+  B -.-&gt;|"host integration"| M
+  M -.-&gt;|"optional Mangrove mix-in"| D
+
+  classDef input fill:#e9f3fb,stroke:#527fa4,color:#102a43,stroke-width:1.5px
+  classDef upstream fill:#f0edfb,stroke:#7562ad,color:#2d2547,stroke-width:1.5px
+  classDef integration fill:#dcecf8,stroke:#2871a9,color:#102a43,stroke-width:1.75px
+  classDef risk fill:#fff2dc,stroke:#a55d00,color:#603600,stroke-width:2px,stroke-dasharray:5 4
+  classDef product fill:#ffffff,stroke:#82919d,color:#1f2933,stroke-width:1.25px
+  linkStyle 5,6,7 stroke:#a55d00,stroke-width:2px,stroke-dasharray:5 4</pre>
+<p>Carbon supports direct token mapping, but roughly 30% of the evaluated UNDRR tokens were unreachable and IBM defaults still shape the result. Cross-stack reuse therefore needs translation and does not naturally create one system.</p>
 <h3 id="c-foundational-adobe-react-aria">C. Foundational — Adobe React Aria</h3>
 <p>React Aria ships behaviour and semantics, not appearance. There is no theme layer to configure because there is nothing to theme.</p>
 <pre class="mermaid">flowchart LR
-  RA["React Aria&lt;br/&gt;behaviour + ARIA semantics"] --&gt; MG["Mangrove component layer&lt;br/&gt;UNDRR-owned, shared"]
-  T["UNDRR tokens"] --&gt; MG
-  MG --&gt; D["DELTA"]
-  MG --&gt; P["PreventionWeb"]
-  MG --&gt; O["Other UNDRR sites"]
-  D --&gt; B["Browser"]
-  P --&gt; B
-  O --&gt; B</pre>
-<p>Note what changed: <strong>there is no dotted line.</strong> Mangrove is not injected from the side, it <em>is</em> the component layer. This is not a workaround for React Aria's missing stepper — it is React Aria's intended architecture. Adobe expects you to build the components; that is the product.</p>
-<h2 id="what-the-wizard-actually-measured">What the wizard actually measured</h2>
-<p>One screen, built five times, and the result inverts the question. <strong>Four candidates ship a stepper. None of them marks the current step in the accessibility tree.</strong> All five demos hand-write <code>aria-current="step"</code> — the four with a real component to use included.</p>
-<div class="scroll"><table><thead>
-<tr><th>Candidate</th><th>Stepper?</th><th>What it emits for "current"</th><th>Hand-written style</th></tr>
-</thead><tbody>
-<tr><td>Mantine</td><td><code>Stepper</code></td><td><code>data-progress="true"</code> — a data attribute</td><td><strong>0 rules</strong></td></tr>
-<tr><td>Ant Design</td><td><code>Steps</code></td><td>a CSS class; a disabled step gets no role at all</td><td>1 rule</td></tr>
-<tr><td>IBM Carbon</td><td><code>ProgressIndicator</code></td><td>hidden English text "Current", folded into the accessible name</td><td>14 rules</td></tr>
-<tr><td>MUI</td><td><code>Stepper</code></td><td><code>aria-selected</code> — the <em>wrong</em> state, see below</td><td>0 rules, 2 <code>sx</code> repairs</td></tr>
-<tr><td>React Aria</td><td><strong>none</strong></td><td>nothing to emit; the component is yours</td><td><strong>26 rules, 221 lines</strong></td></tr>
-</tbody></table></div>
-<p>Counts are every hand-written CSS rule for the whole wizard, review cards included, so they compare like with like. Three of Carbon's fourteen reach into <code>.cds--</code> internals rather than its theming API, which is the more expensive kind. MUI writes no stylesheet at all — it uses <code>sx</code> throughout, as that demo does everywhere — so its number is the two <code>sx</code> blocks that exist to <em>repair</em> the component, not the twelve doing ordinary layout.</p>
-<p><strong>MUI does not merely omit it — it asserts something false.</strong> <code>Stepper</code> sniffs its children, finds <code>StepButton</code>, and silently switches into tab-list mode: <code>role="tablist"</code> on the root, <code>role="tab"</code> + <code>aria-selected</code> + <code>aria-posinset</code>/<code>aria-setsize</code> on each step, and <code>role="presentation"</code> on the list items. There is no opt-out prop. A tab set tells a screen-reader user the panels are peers they may visit in any order, in a form that gates them. Six attributes are overridden by hand — and only because both components spread <code>...other</code> after their own <code>role</code>, which is an accident of implementation, not an extension point. The roving tab index installed by the same flag cannot be removed at all.</p>
-<p><strong>And this is a position, not a bug — one MUI argued itself into.</strong> v5 through v7 emitted <code>aria-current="step"</code>, the value this document calls correct. PR <a href="https://github.com/mui/material-ui/pull/47687">#47687</a>, merged 12 March 2026 and shipped in v9.0.0, replaced it; the <a href="https://mui.com/material-ui/migration/upgrade-to-v9/">v9 migration guide</a> lists <em>"the <code>aria-current</code> changed to <code>aria-selected</code>"</em> among a set of accessibility improvements, and the change does fix two real complaints that the stepper announced too little.</p>
-<p>The part worth reading is the thread. On issue <a href="https://github.com/mui/material-ui/issues/43689">#43689</a>, 27 January 2026, a MUI maintainer asked of the proposal:</p>
-<blockquote>
-<p>Wouldn't it be a bit odd if Stepper provides all the <code>tab</code> roles except</p>
-<p><code>tabpanel</code>?</p>
-</blockquote>
-<p>The PR's own author agreed the same day:</p>
-<blockquote>
-<p>I'm currently hesitant in turning the stepper into a tab list. I think the</p>
-<p>ordered list markup, combined with the <code>aria-current</code> and step buttons pointing</p>
-<p>to the content area is enough.</p>
-</blockquote>
-<p><strong>That is the last human comment on the thread.</strong> Two weeks later a commit titled <code>refactor as tablist</code> landed; the issue was closed by a bot on merge. A second reviewer raised the same doubt inside the PR — <em>"Since this isn't a tablist, I'm not sure"</em> — and got an answer about keyboard mechanics, not about the role. No public rationale for the reversal exists in the PR, the issue, the commit messages or any RFC.</p>
-<p>So the objection in this document is not an outside opinion MUI has never heard. It is MUI's own, raised twice, conceded once, and then shipped past without being answered.</p>
-<p><strong>Nobody outside MUI has filed against it, and there is a reason.</strong> Four months after release, v9 is <strong>11.4% of <code>@mui/material</code> installs</strong>; v5 — which emits <code>aria-current="step"</code> — is still 40%. MUI's screen-reader/browser test matrix was drafted a month <em>after</em> v9.0.0 and does not include Stepper. And their axe CI asserts on two rules only (<code>color-contrast</code>, <code>link-in-text-block</code>), which would not catch this even if it asserted on everything: <code>ol[role=tablist] &gt; li[role=presentation] &gt; button[role=tab]</code> is a structurally valid tab list. Read the silence as <em>nobody has pointed a screen reader at a v9 gated wizard yet</em> — not as review and approval.</p>
-<p><strong>How much this actually matters, stated conservatively.</strong> It is <strong>not</strong> a WCAG 2.1 AA failure — a structurally valid tab list satisfies 4.1.2, and no conformance audit would flag it. Nor is it novel: <strong>Angular Material has treated its stepper as a tab list for roughly nine years</strong>, documented and uncontested, which is a fair argument that the wider accessibility community does not regard this as serious.</p>
-<p>The measurable harm is narrower and more concrete than the role argument. Per <a href="https://a11ysupport.io/tech/aria/aria-selected_attribute">a11ysupport.io</a>, <code>aria-selected="true"</code> is <strong>not conveyed by NVDA on either browser, nor by VoiceOver on macOS or iOS</strong> — only JAWS announces it — whereas <a href="https://a11ysupport.io/tech/aria/aria-current_attribute"><code>aria-current="step"</code></a> is supported by all five combinations. So for most screen-reader users the change means the current step is no longer announced at all. That is a comprehension regression against v7, not a barrier: the form still works, and the step count is still visible.</p>
-<p>So: <strong>a note to be aware of, not a reason to strike MUI off.</strong> What it does tell you is a maintenance fact rather than a compliance one — the correction is permanent, it recurs in every wizard on the estate, and the people best placed to remove the need for it already raised the objection and shipped past it.</p>
-<p><strong>So what a shipped stepper saves is the CSS, not the semantics.</strong> That is the sentence to carry into the decision, because it is the opposite of the intuition, and because the accessibility layer is the part Mangrove ends up owning under <em>every</em> candidate. Under shape C you own it deliberately, once. Under A and B you own it too — scattered across five component wrappers, while believing the library handled it.</p>
-<p>Two further library-owned defects, both consistent with what the rest of this evaluation already found: MUI's step connector is positioned with physical <code>left</code>/<code>right</code> and in Arabic leaves one gap with no line while hanging another 94px off the page; and Carbon truncates step names by design, so German renders "Zusätzliche Ein…", with a hover tooltip as the documented remedy that a touch user cannot reach. Both are in the known-issues registry with measurements.</p>
-<p><strong>None of these moved a composite,</strong> and that is worth stating plainly rather than leaving to inference. The scores are derived from axis bands; the registry only feeds the blocker column, and all six of these are caveats. They change what a reader knows without changing what the ranking says.</p>
-<h2 id="the-reusability-argument-and-what-has-to-be-true-for-it">The reusability argument, and what has to be true for it</h2>
-<p>The case for shape C is the one worth making to UNDRR, and it is not "React Aria scored highest":</p>
-<p><strong>The libraries in shapes A and B give you more, and what they give you stops at the site boundary.</strong> A themed MUI stepper is a DELTA asset. It does not help PreventionWeb unless PreventionWeb also adopts MUI and repeats the theme mapping — and then there are two theme layers drifting apart. Shape C inverts that: the component is built once in Mangrove, and every site consuming Mangrove gets it. Where a gap exists, filling it produces shared tooling rather than local work.</p>
-<p>That is the strategic reading, and this evaluation's evidence is consistent with it: React Aria is the only candidate that stays inside its own subtree on both hosts, and Arabic works from a <code>dir</code> attribute alone. A library with no opinions cannot conflict with Mangrove — which is also, honestly, why three of the seven axes reward it.</p>
-<p><strong>Four things have to be true, and none is checked yet.</strong></p>
+  subgraph S["Shared UNDRR design-system family"]
+    direction LR
+    T["UNDRR or project-specific&lt;br/&gt;design tokens"]:::input
+    RA["React Aria foundation&lt;br/&gt;behaviour + accessible primitives"]:::owned
+    M["Mangrove&lt;br/&gt;content-system half"]:::flavor
+    DS["UNDRR data&lt;br/&gt;design-system half"]:::flavor
+
+    T --&gt; RA
+    T --&gt; M
+    RA --&gt; M
+    RA --&gt; DS
+    M &lt;--&gt;|"direct component reuse"| DS
+  end
+
+  C["UNDRR content sites"]:::product
+  D["DELTA + data applications"]:::product
+
+  M --&gt; C
+  DS --&gt; D
+  DS -.-&gt;|"can plug in"| C
+  M -.-&gt;|"can plug in"| D
+
+  classDef input fill:#e9f3fb,stroke:#527fa4,color:#102a43,stroke-width:1.5px
+  classDef owned fill:#cfe6f6,stroke:#004f91,color:#0b263a,stroke-width:2.5px,font-weight:bold
+  classDef flavor fill:#e8f2f9,stroke:#2871a9,color:#102a43,stroke-width:1.75px
+  classDef product fill:#ffffff,stroke:#82919d,color:#1f2933,stroke-width:1.25px
+  style S fill:#f5f9fc,stroke:#7fa6c3,stroke-width:1.5px
+  linkStyle 4 stroke:#004f91,stroke-width:2.5px
+  linkStyle 7,8 stroke:#2871a9,stroke-width:2px,stroke-dasharray:6 4</pre>
+<p>There is no upstream visual system to bridge or repair. “React Aria foundation” means UNDRR's styled integration around the headless library. Tokens, accessible primitives and behaviour can be governed together.</p>
+<p>Mangrove and the data design system become two halves of one governed family. Each keeps its product flavour, but components can move directly between them or plug into either product family.</p>
+<p>The diagrams now hold reuse intent constant while allowing different operating models. Under A and B, shared packages configure and repair component systems whose structure and design language remain upstream. Under C, UNDRR governs one design-system family with a shared React Aria foundation and two deliberately different product-facing halves.</p>
+<h2 id="what-type-c-requires">What Type C requires</h2>
+<p>Type C is <em>fund a design system</em>, not <em>save implementation work</em>. The pilot must establish:</p>
 <ol>
-<li><strong>The component layer gets funded and staffed.</strong> The stepper in</li>
-<p>   <code>apps/delta-react-aria/src/views/EventWizard.tsx</code> is the price tag for one    component on one screen: the markup, the states, the connector, the    number-to-check swap, <code>aria-current="step"</code>, a live region, and roughly 180    lines of CSS. Multiply by DELTA's component inventory. Shape C is    <em>adopt this and fund a design system</em>, not <em>adopt this and save work</em>.</p>
-<li><strong>Mangrove takes on the accessibility ownership.</strong> Under A and B, when a</li>
-<p>   library fixes a keyboard trap in its stepper, you get the fix. Under C, you are    the one who has to notice. React Aria carries the ARIA plumbing, which is most    of the risk — but not the composition.</p>
-<li><strong>The <code>owner</code> field has to stay honest.</strong> Today a defect owned by a candidate</li>
-<p>   scores against that candidate; a host defect scores against nobody. A    Mangrove-owned stepper reclassifies its defects as UNDRR's, which makes the    composite look better while the work is unchanged — just relocated onto your    team. If shape C is adopted, that reclassification must be visible, not    silent.</p>
-<li><strong>Shared does not mean uniform.</strong> A stepper is visually prominent, not a</li>
+<li><strong>A funded owner</strong> for the shared foundation and both product-facing halves.</li>
+<li><strong>Human accessibility validation</strong> for critical journeys.</li>
+<li><strong>A governed release and backlog model</strong> so fixes propagate across the family.</li>
 </ol>
-<p>   primitive. A Mangrove component has to inherit focus ring, density, spacing    and RTL behaviour from whatever surrounds it, or it looks foreign. Under shape    C there is only one surrounding context, which is exactly why the shape is    coherent — and why mixing C with A on the same page is the worst of both.</p>
-<h2 id="what-this-does-not-settle">What this does not settle</h2>
-<p>Nothing here changes a score, and it should not be read as doing so. The two conditions on the recommendation in <a href="./scores.md">scores.md</a> still stand: no human accessibility pass has been run against any candidate, and MUI's exclusion rests on a rule UNDRR has not ratified. This document only argues that if shape C is chosen, it should be chosen <em>for the reuse</em>, with the staffing named — and not because a stepper was missing.</p>
+<p>The experiment proves that a substantial React Aria foundation can be packaged across both hosts. It does not prove the complete component family or fund its ongoing operation.</p>
+<h2 id="the-reuse-and-ownership-result">The reuse and ownership result</h2>
+<details class="technical-detail">
+    <summary><span class="audience-tag">Developer detail</span> Measured reuse package and controlled-change evidence</summary>
+    <div class="technical-detail__body"><section class="reuse-evidence" aria-labelledby="reuse-evidence-title">
+    <div class="reuse-evidence__heading">
+      <p class="reuse-card__eyebrow">Generated from reuse-results.json</p>
+      <h3 id="reuse-evidence-title">What the second product actually inherits</h3>
+      <p>Realistic records workspace: filters, faceting, sorting, selection, pagination, locale-aware formatting and result announcements</p>
     </div>
+    <div class="reuse-grid">
+    <article class="reuse-card">
+      <p class="reuse-card__eyebrow">Measured shared package</p>
+      <h3>Adobe React Aria</h3>
+      <p class="reuse-card__metric"><strong>618</strong> shared source lines + 147 CSS</p>
+      <p><strong>Visual authority: high</strong></p>
+      <p>The shared records layer owns layout and consumes UNDRR custom properties directly. Host-specific theme files still repair each host reset, so the experiment proves a shared product layer, not zero host adaptation.</p>
+    </article>
+    <article class="reuse-card">
+      <p class="reuse-card__eyebrow">Measured shared package</p>
+      <h3>MUI</h3>
+      <p class="reuse-card__metric"><strong>809</strong> shared source lines</p>
+      <p><strong>Visual authority: medium</strong></p>
+      <p>UNDRR can centralise a theme and wrappers, but MUI retains component structure, state semantics and physical-layout choices; host repair remains per site.</p>
+    </article>
+    </div>
+    <div class="scroll reuse-table"><table>
+      <thead><tr><th>Controlled change</th><th>React Aria shared layer</th><th>MUI shared integration</th></tr></thead>
+      <tbody>
+        <tr>
+      <th scope="row">UNDRR token</th>
+      <td><strong>inherited</strong><span class="cell-note">Shipped CSS retains var(--undrr-*) references; a token stylesheet swap reaches both consumers.</span></td>
+      <td><strong>inherited-after-every-site-rebuild</strong><span class="cell-note">The shared theme centralises mapping, but token values are resolved into bundle output rather than remaining live custom-property references.</span></td>
+    </tr>
+        <tr>
+      <th scope="row">Interaction policy</th>
+      <td><strong>inherited-from-one-package</strong><span class="cell-note">Filtering, reset-to-first-page, settled announcements, sorting and pagination now have one implementation imported by both hosts.</span></td>
+      <td><strong>inherited-from-one-package</strong><span class="cell-note">Both hosts import the same integration package; a shared component or default changes once and is rebuilt into each site.</span></td>
+    </tr>
+        <tr>
+      <th scope="row">RTL and localisation</th>
+      <td><strong>clean</strong><span class="cell-note">Both consumers pass the locale through one shared context; logical CSS and React Aria locale behaviour handle direction.</span></td>
+      <td><strong>unresolved-under-evaluation-constraints</strong><span class="cell-note">Shared configuration cannot flip physical offsets already emitted by Emotion; the documented remedy adds a third-party RTL transform forbidden by the evaluation.</span></td>
+    </tr>
+      </tbody>
+    </table></div>
+  </section></div></details>
+<p>React Aria and MUI both produced a substantial package consumed by two hosts. The generated developer evidence below retains the exact measurements; the architectural difference is who owns component structure and change propagation.</p>
+<h2 id="what-this-does-not-settle">What this does not settle</h2>
+<p>The pilot still needs human accessibility validation, a named operating owner, and second-product reuse. If Type A is chosen instead, MUI's documented RTL setup must become part of the delivery standard.</p>
+    </main>
     <script type="module">
       import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
-      mermaid.initialize({ startOnLoad: true, theme: 'default' });
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'base',
+        themeVariables: {
+          fontFamily: 'Roboto, system-ui, sans-serif',
+          fontSize: '15px',
+          lineColor: '#52616d',
+          textColor: '#1a2730',
+          edgeLabelBackground: '#fbfcfd',
+          clusterBkg: '#fbfcfd',
+          clusterBorder: '#c7d0d8'
+        },
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis',
+          nodeSpacing: 34,
+          rankSpacing: 46,
+          padding: 14
+        }
+      });
     </script>
   </body>
 </html>

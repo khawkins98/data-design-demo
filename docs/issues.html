@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="./mangrove.css" />
     <style>
       :root { --accent:#004f91; --muted:#5b6b77; --border:#d5d5d5; --surface:#fff; --bad:#c10920; --pending:#8a5a00; --bg:#fff; --text:#1a1a1a; }
-      .lead { color:var(--muted); max-width:72ch; }
 
       /* Controls */
       .controls { display:flex; flex-wrap:wrap; gap:0.75rem 1rem; align-items:flex-end; margin:1.5rem 0 1rem; padding:0.875rem 1rem; background:var(--surface); border:1px solid var(--border); border-radius:6px; }
@@ -28,7 +27,8 @@
       .status { font-size:0.8125rem; color:var(--muted); margin:0 0 0.75rem; }
 
       /* The register */
-      .register { width:100%; border-collapse:collapse; margin:0 0 2.5rem; font-size:0.875rem; }
+      .register-scroll { overflow-x:auto; margin:0 0 2.5rem; }
+      .register { width:100%; border-collapse:collapse; font-size:0.875rem; }
       .register__caption { text-align:start; font-size:1.0625rem; font-weight:700; padding:0 0 0.5rem; }
       .register th { text-align:start; font-size:0.6875rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--muted); border-bottom:2px solid var(--border); padding:0.4rem 0.5rem; white-space:nowrap; }
       .register td { border-bottom:1px solid var(--border); padding:0.5rem; vertical-align:top; }
@@ -57,31 +57,54 @@
       .detail__id { margin:0; font-size:0.6875rem; color:var(--muted); }
       [hidden] { display:none !important; }
 
-      /* Small screens: the five columns do not fit, so the row becomes a stack.
-         The detail cell keeps its own layout - it was never a grid of columns. */
-      @media (max-width: 44rem) {
-        .register, .register tbody, .register tr, .register td { display:block; width:auto; }
-        .register thead { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
-        .register .row { border-bottom:1px solid var(--border); padding:0.5rem 0 0.25rem; }
-        .register .row > td { border:0; padding:0.1rem 0.5rem; }
-        .row--blocker .cell-sev, .row--decision .cell-sev { border-inline-start:0; }
-        .cell-cand, .cell-owner, .cell-escape { display:inline-block; white-space:normal; }
-        .cell-owner::before { content:"belongs to "; }
-        .cell-escape::before { content:"\00b7 escape: "; }
-        .cell-title { width:auto; }
-        .detail > td { padding-inline-start:1rem; }
+      @media (max-width: 44rem) { .register { min-width:48rem; } }
+      @media print {
+        .controls, .tallies, .tallies-label, .status, .toc { display:none !important; }
+        .register-scroll { overflow:visible; }
+        .register { font-size:7.5pt; }
+        .detail[hidden] { display:table-row !important; }
       }
 
+      .skip-link { position:absolute; z-index:100; inset-block-start:0.5rem; inset-inline-start:0.5rem;
+        padding:0.5rem 0.75rem; background:#fff; color:#004f91; transform:translateY(-150%); }
+      .skip-link:focus { transform:translateY(0); }
       .mg-docs-main { max-width:72ch; }
       .mg-docs-main h1 { font-size:1.75rem; margin:2rem 0 0.5rem; }
       .mg-docs-main h2 { margin-top:2.5rem; font-size:1.25rem; border-bottom:1px solid #d5d5d5; padding-bottom:0.25rem; }
       .mg-docs-main h3 { margin-top:2rem; font-size:1.05rem; }
       .mg-docs-main h4 { margin-top:1.5rem; font-size:1rem; }
+      .audience-banner {
+        margin:1rem 0 1.5rem; padding:0.75rem 1rem; border-inline-start:3px solid #64748b;
+        background:#f3f6f8; color:#334155; font-size:0.875rem;
+      }
+      .audience-tag {
+        display:inline-flex; align-items:center; min-height:1.35rem; margin-inline-end:0.45rem;
+        padding:0.05rem 0.45rem; border:1px solid #94a3b8; border-radius:999px;
+        color:#475569; background:#f8fafc; font-size:0.6875rem; font-weight:700;
+        letter-spacing:0.045em; text-transform:uppercase; vertical-align:middle;
+      }
+      details.technical-detail {
+        margin:1rem 0; border:1px solid #cbd5e1; border-radius:6px; background:#f8fafc;
+      }
+      details.technical-detail > summary {
+        padding:0.7rem 0.85rem; cursor:pointer; color:#334155; font-weight:600;
+      }
+      .technical-detail__body { padding:0 0.9rem 0.9rem; border-top:1px solid #e2e8f0; }
+      .technical-detail__body > :first-child { margin-top:0.9rem; }
+      @media print {
+        .skip-link, .mg-page-header, .mg-mega-wrapper { display:none !important; }
+        details.technical-detail > summary { display:list-item; break-after:avoid; }
+        details.technical-detail:not([open]) > *:not(summary) { display:block; }
+        details.technical-detail { break-inside:auto; }
+        .technical-detail__body > :first-child { break-before:avoid; }
+        @page { margin:1.5cm; }
+      }
 
     </style>
   </head>
   <body>
 
+    <a class="skip-link" href="#main">Skip to main content</a>
     <header id="header" class="mg-page-header mg-page-header--default">
       <div class="mg-page-header__decoration" aria-hidden="true">
         <div></div><div></div><div></div><div></div>
@@ -89,51 +112,33 @@
     </header>
 
     <nav class="mg-mega-wrapper" aria-label="Main Navigation">
-      <ul class="mg-mega-topbar | mg-container mg-container-full-width"
-          role="menubar" aria-label="Main navigation menu">
-          <li class="mg-mega-topbar__item" role="none">
-              <a class="mg-mega-topbar__item-link" href="./" role="menuitem">Ranking</a>
+      <ul class="mg-mega-topbar | mg-container mg-container-full-width">
+          <li class="mg-mega-topbar__item">
+              <a class="mg-mega-topbar__item-link" href="./">Ranking</a>
             </li>
-          <li class="mg-mega-topbar__item" role="none">
-              <a class="mg-mega-topbar__item-link" href="./axes.html" role="menuitem">Decision axes</a>
+          <li class="mg-mega-topbar__item">
+              <a class="mg-mega-topbar__item-link" href="./architecture-options.html">Architecture</a>
             </li>
-          <li class="mg-mega-topbar__item" role="none">
-              <a class="mg-mega-topbar__item-link" href="./comparison.html" role="menuitem">Requirement matrix</a>
+          <li class="mg-mega-topbar__item">
+              <a class="mg-mega-topbar__item-link" href="./methodology.html">Methodology</a>
             </li>
-          <li class="mg-mega-topbar__item mg-mega-topbar__item--active" role="none">
-              <a class="mg-mega-topbar__item-link" href="./issues.html" role="menuitem">Findings</a>
+          <li class="mg-mega-topbar__item">
+              <a class="mg-mega-topbar__item-link" href="./prototypes.html">Prototypes</a>
             </li>
-          <li class="mg-mega-topbar__item" role="none">
-              <a class="mg-mega-topbar__item-link" href="./architecture-options.html" role="menuitem">Architecture</a>
+          <li class="mg-mega-topbar__item">
+              <a class="mg-mega-topbar__item-link" href="./axes.html">Evidence axes</a>
+            </li>
+          <li class="mg-mega-topbar__item mg-mega-topbar__item--active">
+              <a class="mg-mega-topbar__item-link" href="./issues.html" aria-current="page">Technical findings</a>
+            </li>
+          <li class="mg-mega-topbar__item">
+              <a class="mg-mega-topbar__item-link" href="./comparison.html">Requirement audit</a>
             </li>
       </ul>
     </nav>
-    <div class="mg-container mg-page-content--padded">
+    <main id="main" class="mg-container mg-page-content--padded">
       <h1>Known issues register</h1>
-      <p class="lead">
-        Every finding this evaluation recorded, in full, generated from the same
-        registry the demo pages import so the two cannot disagree. Each entry says
-        <strong>who it belongs to</strong> — which decides whether it may affect a
-        score — and, where it could remove a candidate from a shortlist, what it
-        would take to escape it.
-      </p>
-      <p class="lead">
-        The second table is defects found in our own demo code. They are kept
-        rather than deleted: a record of the bugs this evaluation found in itself
-        is what entitles it to report bugs in anyone else's, and they are excluded
-        from every score.
-      </p>
-      <p class="lead">
-        One table, every candidate, sorted by severity — because the findings that
-        matter most are the ones that recur across libraries, and five separate
-        sections hid them. Select a row to read the finding in full. Filtering and
-        disclosure need JavaScript; without it the whole register is simply open.
-      </p>
-      <ul class="toc">
-        <li><a href="./scores.html">Weighted scores</a></li>
-        <li><a href="./axes.html">Decision axes</a></li>
-        <li><a href="./">All pairings</a></li>
-      </ul>
+      <p class="audience-banner"><span class="audience-tag">Developer evidence</span>Raw candidate and demo defects. Use the overview for the business decision and this register for remediation detail.</p>
 
       <div class="controls">
         <div class="control">
@@ -175,7 +180,7 @@
         </div>
         <button type="button" class="control__reset" id="f-reset">Clear filters</button>
       </div>
-      <p class="tallies-label">Open findings per candidate — a cross-library finding counts once for each:</p>
+      <p class="tallies-label">Open findings per candidate — useful as filters, not as a ranking; ownership and severity differ:</p>
       <div class="tallies">
         <button type="button" class="tally" data-filter-candidate="react-aria">
           <span class="tally__name">Adobe React Aria</span>
@@ -200,6 +205,7 @@
       </div>
       <p class="status" id="status" role="status">35 open findings shown.</p>
 
+      <div class="register-scroll">
       <table class="register" id="open">
         <caption class="register__caption">Open findings (35)</caption>
         <thead>
@@ -1355,7 +1361,7 @@
             </tr>
             <tr class="detail" id="detail-mangrove-no-runtime-tokens">
               <td colspan="5">
-                <p class="detail__text">The published stylesheet declares zero CSS custom properties, so the candidate on this page is themed to a neutral UNDRR token set rather than to Mangrove's own palette. Matching Mangrove exactly is not reachable through any candidate's theming API until Mangrove ships custom properties. The forthcoming 2.0 work is expected to change this.</p>
+                <p class="detail__text">The published stylesheet declares zero CSS custom properties. The project-owned tokens now carry Mangrove's current UNDRR interactive palette, so candidates can match known values such as #004f91, but they do not inherit them from Mangrove. A future palette change can therefore desynchronise the two stacks until the bridge is updated. The forthcoming 2.0 runtime-token work is expected to replace that manual synchronization point.</p>
                 
                 <p class="detail__meta">
                   Belongs to <strong>the host design system</strong>
@@ -1438,8 +1444,9 @@
               </td>
             </tr>
         </tbody>
-      </table>
+      </table></div>
 
+      <div class="register-scroll">
       <table class="register" id="fixed">
         <caption class="register__caption">Fixed in our own demo code, kept on the record (14)</caption>
         <thead>
@@ -1943,8 +1950,8 @@
               </td>
             </tr>
         </tbody>
-      </table>
-    </div>
+      </table></div>
+    </main>
     <script>
       /*
         Three behaviours, no dependencies: row disclosure, filtering, and keeping

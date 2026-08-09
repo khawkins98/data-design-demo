@@ -106,7 +106,7 @@
     {
       "id": "cards",
       "status": "native",
-      "notes": "Card variant=\"outlined\". Matching Mangrove's mg-card is easier than it was for MUI because antd's card is already flat and square-ish, but Mangrove 1.8.1 exposes no runtime tokens at all, so antd is themed to the neutral UNDRR palette rather than to Mangrove's own values.",
+      "notes": "Card variant=\"outlined\". Matching Mangrove's mg-card is easier than it was for MUI because antd's card is already flat and square-ish. The project tokens now carry Mangrove's current UNDRR interactive palette, but Mangrove 1.8.1 exposes no runtime tokens, so antd consumes a separately maintained mapping rather than inheriting future changes.",
       "customLinesOfCode": 0
     },
     {

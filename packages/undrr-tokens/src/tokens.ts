@@ -1,15 +1,13 @@
 /**
- * Neutral design tokens for the evaluation.
+ * Shared UNDRR/project design tokens for the evaluation.
  *
- * These are deliberately NOT final UNDRR brand values. They exist as a fixed
- * target so that "how deep could you theme this library" is answerable and
- * comparable across eight demos. A candidate that can reach every token scores
- * differently from one that can only reach colour.
+ * They exist as a fixed target so that "how deep could you theme this library"
+ * is answerable and comparable across the demos. A candidate that can reach
+ * every token scores differently from one that can only reach colour.
  *
- * Values are intentionally distinctive (not any library's defaults) so that an
- * unthemed component is obvious on sight rather than subtly wrong.
- *
- * Import only. Brief 1 forbids modifying this package.
+ * The interactive family follows Mangrove's published UNDRR palette. Keeping
+ * these values in the project-owned layer lets DELTA or another product replace
+ * the palette without changing the semantic contract consumed by components.
  */
 
 export const TOKEN_SCOPE_CLASS = "undrr-tokens";
@@ -34,11 +32,11 @@ export const color = Object.freeze({
   border: "#c8d2da",
   borderStrong: "#8b9aa5",
 
-  /** Brand-ish accents. Neutral placeholders, not UNDRR blue. */
-  accent: "#2f6f8f",
-  accentHover: "#255a74",
-  accentActive: "#1c4459",
-  accentSubtle: "#e3eef3",
+  /** UNDRR interactive blue family: Mangrove blue 900, 700, 800 and 50. */
+  accent: "#004f91",
+  accentHover: "#3372a7",
+  accentActive: "#1a619c",
+  accentSubtle: "#e6edf4",
   onAccent: "#ffffff",
 
   /** Focus ring. Kept distinct from accent so focus is never ambiguous. */
@@ -52,8 +50,8 @@ export const color = Object.freeze({
   warningSubtle: "#fdf3dc",
   success: "#1f6b45",
   successSubtle: "#e4f2ea",
-  info: "#2f6f8f",
-  infoSubtle: "#e3eef3",
+  info: "#004f91",
+  infoSubtle: "#e6edf4",
 });
 
 /** Spacing scale in rem. Four-point base, so 1 = 4px at a 16px root. */

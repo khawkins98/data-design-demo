@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Generates docs/index.html from docs/manifest.json and per-app evidence.json.
+ * Generates docs/prototypes.html from docs/manifest.json and per-app evidence.json.
  *
  *   pnpm docs:index
  */
@@ -9,12 +9,12 @@ import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { UNDRR_QUESTIONS } from "./lib/undrr-questions.mjs";
+import { siteNavHtml, siteNavCss } from "./lib/site-nav.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, "..");
 const MANIFEST = join(ROOT, "docs", "manifest.json");
-const OUT = join(ROOT, "docs", "index.html");
+const OUT = join(ROOT, "docs", "prototypes.html");
 
 /** Escapes text for safe interpolation into HTML. */
 function esc(value) {
@@ -27,40 +27,54 @@ function esc(value) {
 
 const manifest = JSON.parse(readFileSync(MANIFEST, "utf8"));
 
-/** Where to point markdown docs, which GitHub Pages serves as plain text. */
-const DOCS_BLOB = "https://github.com/khawkins98/data-design-demo/blob/main/docs";
-
 /**
- * The six questions, sourced from scripts/lib/undrr-questions.mjs so that
- * this page and axes.html stay in sync.
+ * Editorial architecture taxonomy, separate from capability evidence and score.
+ * A type describes the estate shape a candidate creates; it is not a grade.
  */
+const ARCHITECTURE_TYPES = Object.freeze({
+  "react-aria": {
+    id: "C",
+    name: "Foundational shared system",
+    anchor: "c-foundational-adobe-react-aria",
+    continuity:
+      "Sibling content and data design systems share React Aria foundations, tokens and policy while retaining product-specific expression. Strong synchronization potential; substantial ongoing design-system commitment.",
+  },
+  mui: {
+    id: "A",
+    name: "Ship and theme",
+    anchor: "a-ship-and-theme-mui-mantine-ant-design",
+    continuity:
+      "A themed application stack runs beside Mangrove's content stack. Each can integrate cleanly, but keeping them synchronized requires a deliberate bridge.",
+  },
+  carbon: {
+    id: "B",
+    name: "Complete branded system",
+    anchor: "b-complete-branded-system-ibm-carbon",
+    continuity:
+      "The same parallel-stack problem as Type A, with Carbon's own design language adding another source of visual and structural authority.",
+  },
+  mantine: {
+    id: "A",
+    name: "Ship and theme",
+    anchor: "a-ship-and-theme-mui-mantine-ant-design",
+    continuity:
+      "A themed application stack runs beside Mangrove's content stack. Each can integrate cleanly, but keeping them synchronized requires a deliberate bridge.",
+  },
+  antd: {
+    id: "A",
+    name: "Ship and theme",
+    anchor: "a-ship-and-theme-mui-mantine-ant-design",
+    continuity:
+      "A themed application stack runs beside Mangrove's content stack. Each can integrate cleanly, but keeping them synchronized requires a deliberate bridge.",
+  },
+});
 
-/* Stacked full-width list: questions are read in order, not scanned. */
-const questionsHtml = UNDRR_QUESTIONS.map(
-  (q) => `
-          <div class="question">
-            <h3 class="question__title">
-              ${esc(q.question)}
-              <span class="question__asks">${esc(q.asks)}</span>
-            </h3>
-            <p class="question__answer">${esc(q.answer)}</p>
-            <p class="question__axis">
-              <a href="./axes.html#${esc(q.axis.toLowerCase())}"
-                >Evidence: ${esc(q.axis)} ${esc(q.axisName)}</a
-              >
-            </p>
-          </div>`,
-).join("\n");
-
-/** Known-issue counts per pairing, from scripts/build-known-issues-json.mjs. */
+/** Known issues per pairing, from scripts/build-known-issues-json.mjs. */
 const KNOWN_ISSUES_PATH = join(ROOT, "docs", "known-issues.json");
 const knownIssuesDoc = existsSync(KNOWN_ISSUES_PATH)
   ? JSON.parse(readFileSync(KNOWN_ISSUES_PATH, "utf8"))
   : {};
 const knownIssues = knownIssuesDoc.pairings ?? {};
-/** Candidate-level totals, so a link's count matches what the link opens. */
-const candidateCounts = knownIssuesDoc.candidates ?? {};
-
 /** Reads one pairing's evidence.json, or null if the run has not produced one. */
 function readEvidence(appDir) {
   const path = join(ROOT, "apps", appDir, "evidence.json");
@@ -124,7 +138,7 @@ for (const candidate of manifest.candidates) {
     if (evidence) {
       const blockers = Array.isArray(evidence.blockers) ? evidence.blockers : [];
       status = blockers.length > 0 ? "blocked" : "complete";
-      statusLabel = blockers.length > 0 ? `Warnings (${blockers.length})` : "Complete";
+      statusLabel = blockers.length > 0 ? "Prototype built · review findings" : "Prototype built";
     }
 
     groupCards.push({
@@ -166,11 +180,7 @@ function knownIssueNote(appDir, candidateId) {
   if (!entry || !entry.headline) return "";
   const { severity, title } = entry.headline;
   const others = entry.total - 1;
-  /* Count matches the candidate-level total the link opens. */
-  const candidateTotal = candidateCounts[candidateId]?.open ?? entry.total;
-  const more = ` <a class="card__issue-more" href="./issues.html#${esc(candidateId)}">${
-    candidateTotal > 1 ? `all ${candidateTotal} findings` : "read it in full"
-  }</a>`;
+  const more = ` <a class="card__issue-more" href="./issues.html#${esc(candidateId)}">view technical findings</a>`;
   return `<p class="card__issue card__issue--${esc(severity)}">
       <span class="card__issue-badge">${esc(
         severity === "decision" ? "Decision needed" : severity === "blocker" ? "Warning" : "Caveat",
@@ -242,7 +252,7 @@ function flags(evidence) {
     items.push(
       badge(
         "leakage",
-        `Leakage: ${passed ? "clean" : `${evidence.leakage.differences?.length ?? 0} differences`}`,
+        `Leakage: ${passed ? "clean" : `${evidence.leakage.differenceCount ?? evidence.leakage.differences?.length ?? 0} differences`}`,
         passed,
       ),
     );
@@ -290,15 +300,21 @@ function cardMarkup(card) {
           <p class="card__host">on <strong>${esc(card.host.name)}</strong></p>
         </header>
         <p class="card__status" data-status="${esc(card.status)}">${esc(card.statusLabel)}</p>
-        ${flags(card.evidence)}
-        ${metrics(card.evidence)}
         ${viewLinks(card)}
+        ${card.evidence ? `<details class="technical-detail card__technical">
+          <summary><span class="audience-tag">Developer detail</span> Automated integration signals</summary>
+          <div class="technical-detail__body">${flags(card.evidence)}${metrics(card.evidence)}</div>
+        </details>` : ""}
       </article>`;
 }
 
 /* One row per candidate: a meta column, then its two host cards. */
 const cardHtml = groups
   .map((group) => {
+    const architecture = ARCHITECTURE_TYPES[group.candidate.id];
+    if (!architecture) {
+      throw new Error(`No architecture type for candidate ${group.candidate.id}`);
+    }
     const worst =
       group.cards.map((card) => knownIssueNote(card.appDir, group.candidate.id)).find(Boolean) ?? "";
     return `
@@ -310,6 +326,16 @@ const cardHtml = groups
           <p class="pairing__licence">${esc(group.candidate.package)}<br />${esc(
             group.candidate.licence,
           )}</p>
+          <p class="architecture-tag">
+            <span class="architecture-tag__type">Type ${esc(architecture.id)}</span>
+            ${esc(architecture.name)}
+          </p>
+          <p class="pairing__architecture">${esc(architecture.continuity)}</p>
+          <p class="pairing__architecture-link">
+            <a href="./architecture-options.html#${esc(architecture.anchor)}">How Type ${esc(
+              architecture.id,
+            )} works</a>
+          </p>
           ${worst}
         </div>
         <div class="pairing__hosts">
@@ -331,43 +357,34 @@ const html = `<!doctype html>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>${esc(manifest.title)}</title>
+    <title>Prototype matrix - ${esc(manifest.title)}</title>
+    <link rel="stylesheet" href="./mangrove.css" />
     <style>
       :root {
-        color-scheme: light dark;
         --bg: #f4f6f8;
         --surface: #ffffff;
         --text: #14232e;
         --muted: #4a5c69;
         --border: #c8d2da;
-        --accent: #2f6f8f;
+        --accent: #004f91;
         --ok: #1f6b45;
         --bad: #a11f2c;
         --pending: #8a6100;
       }
-      @media (prefers-color-scheme: dark) {
-        :root {
-          --bg: #10191f;
-          --surface: #17232b;
-          --text: #e8eef2;
-          --muted: #a3b3bf;
-          --border: #2c3d48;
-          --accent: #7fb3cc;
-          --ok: #6fc79b;
-          --bad: #ef8b96;
-          --pending: #e0b458;
-        }
-      }
       * { box-sizing: border-box; }
       body {
         margin: 0;
-        padding: 2rem 1.5rem 4rem;
+        padding: 0;
         background: var(--bg);
         color: var(--text);
         font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
         line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
       }
-      .page { max-width: 76rem; margin: 0 auto; }
+      .page { max-width: 76rem; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+      h1, h2, h3 { text-wrap: balance; }
+      p, li, dd { text-wrap: pretty; }
       h1 { font-size: 1.75rem; margin: 0 0 0.5rem; }
       .subtitle { color: var(--muted); margin: 0 0 0.5rem; max-width: 60ch; }
       /*
@@ -382,7 +399,7 @@ const html = `<!doctype html>
       .pairing {
         display: grid;
         gap: 1rem;
-        grid-template-columns: minmax(0, 14rem) minmax(0, 3fr);
+        grid-template-columns: minmax(0, 18rem) minmax(0, 3fr);
         align-items: start;
         padding-top: 1.5rem;
         border-top: 1px solid var(--border);
@@ -392,28 +409,36 @@ const html = `<!doctype html>
       @media (max-width: 60rem) { .pairing { grid-template-columns: minmax(0, 1fr); } }
       .pairing__title { font-size: 1.125rem; margin: 0 0 0.25rem; }
       .pairing__licence { margin: 0 0 0.5rem; font-size: 0.75rem; color: var(--muted); }
+      .architecture-tag {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 0.375rem;
+        margin: 0.75rem 0 0.375rem;
+        font-size: 0.75rem;
+        font-weight: 700;
+      }
+      .architecture-tag__type {
+        display: inline-flex;
+        align-items: center;
+        min-height: 1.5rem;
+        padding: 0.125rem 0.5rem;
+        border-radius: 999px;
+        color: var(--accent);
+        box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 45%, transparent);
+      }
+      .pairing__architecture {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.75rem;
+        line-height: 1.45;
+      }
+      .pairing__architecture-link { margin: 0.375rem 0 0; font-size: 0.75rem; }
       .pairing__hosts {
         display: grid;
         gap: 1rem;
         grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
       }
-      /* Read in order, all six - so one column at a readable measure, not a grid. */
-      .questions { margin: 1rem 0 0; max-width: 78ch; }
-      .question { padding: 0.875rem 0; border-top: 1px solid var(--border); }
-      .question:first-child { border-top: 0; padding-top: 0.25rem; }
-      .question__title {
-        font-size: 0.9375rem;
-        margin: 0 0 0.375rem;
-        display: flex;
-        flex-wrap: wrap;
-        align-items: baseline;
-        gap: 0.5rem;
-      }
-      /* The question itself, inside the heading: one line, one thought. */
-      .question__asks { font-weight: 400; font-size: 0.8125rem; color: var(--muted); }
-      .question__answer { margin: 0 0 0.375rem; font-size: 0.875rem; }
-      .question__axis { margin: 0; font-size: 0.75rem; }
-      .start__more { margin: 1rem 0 0; font-size: 0.8125rem; max-width: 78ch; }
       .ceiling {
         margin: 0.25rem 0 0;
         font-size: 0.75rem;
@@ -527,80 +552,24 @@ const html = `<!doctype html>
       .card__link { margin-top: auto; padding-top: 0.75rem; font-size: 0.875rem; color: var(--accent); }
       .card__link--disabled { color: var(--muted); }
       footer { margin-top: 3rem; color: var(--muted); font-size: 0.8125rem; max-width: 70ch; }
-      .start {
-        margin: 0 0 2.5rem;
-        padding: 1.25rem 1.5rem;
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        border-inline-start: 4px solid var(--accent);
-      }
-      .start__title { font-size: 1.125rem; margin: 0 0 0.5rem; }
-      .start__lead { margin: 0 0 0.75rem; max-width: 72ch; }
-      .start__verdict {
-        margin: 0 0 1rem;
-        padding: 0.875rem 1rem;
-        background: var(--bg);
-        border: 1px solid var(--accent);
-        border-radius: 6px;
-        max-width: 82ch;
-      }
       .glossary { margin: 0 0 2rem; font-size: 0.875rem; }
       .glossary__summary { cursor: pointer; color: var(--accent); font-weight: 600; }
       .glossary__list { margin: 0.875rem 0 0; max-width: 80ch; }
       .glossary__list dt { font-weight: 700; margin-top: 0.75rem; }
       .glossary__list dd { margin: 0.125rem 0 0; color: var(--muted); }
-      .start__list { margin: 0; padding-inline-start: 1.125rem; max-width: 78ch; }
-      .start__list li + li { margin-top: 0.5rem; }
+      .grid-intro { margin: 0 0 1.25rem; max-width: 78ch; }
+      .grid-intro__title { margin: 0 0 0.375rem; font-size: 1.25rem; }
+      .grid-intro__body { margin: 0; color: var(--muted); font-size: 0.875rem; }
+      .card__technical { margin-top:0.25rem !important; font-size:0.75rem; }
+${siteNavCss}
     </style>
   </head>
   <body>
-    <div class="page">
-      <h1>${esc(manifest.title)}</h1>
+${siteNavHtml("prototypes")}
+    <main id="main" class="page">
+      <h1>Prototype matrix</h1>
       <p class="subtitle">${esc(manifest.subtitle)}</p>
-
-      <section class="start" aria-labelledby="start-here">
-        <h2 class="start__title" id="start-here">Start here</h2>
-        <p class="start__lead">
-          Whatever replaces PrimeReact becomes the default front-end foundation
-          for DELTA, Mangrove properties and future data systems. All five
-          candidates meet all 300 requirements, so the requirement matrix does
-          not discriminate. These six questions do.
-        </p>
-
-        <p class="start__verdict">
-          <strong>If you only read one thing:</strong> the evidence recommends
-          <strong>Adobe React Aria</strong> — the only candidate with no blocking
-          defect, and Arabic works without custom code. But it ships behaviour,
-          not appearance: adopting it means UNDRR builds and owns the visual
-          layer permanently.
-          <a href="./scores.html">Ranking, weights and costs</a>.
-        </p>
-
-        <p class="start__lead">
-          <strong>Each option is shown three ways.</strong> A component inventory
-          proves the parts exist but hides integration defects. Two of the three
-          deciding defects are invisible in a component list and only appear
-          inside a real UNDRR page.
-        </p>
-
-        <div class="questions">
-${questionsHtml}
-        </div>
-
-        <p class="start__more">
-          <a href="./scores.html"><strong>Weighted scores</strong></a>
-          — all five ranked, with warnings shown beside the score &middot;
-          <a href="./axes.html"><strong>Decision axes</strong></a>
-          — what is measured on each &middot;
-          <a href="${DOCS_BLOB}/undrr-questions.md">the six questions in full</a>
-          &middot;
-          <a href="${DOCS_BLOB}/architecture-options.md"><strong>Architecture
-          options</strong></a> — what each candidate does to Mangrove &middot;
-          <a href="./comparison.html">requirement matrix</a> — the 300 assessments
-          (audit trail, not the decision).
-        </p>
-      </section>
+      <p><a href="./">Return to the ranking</a>.</p>
 
       <details class="glossary">
         <summary class="glossary__summary">Glossary</summary>
@@ -625,13 +594,20 @@ ${badgeGlossaryHtml}
             An automated accessibility scanner. Catches a minority of problems;
             results here are a floor, not a pass.
           </dd>
-          <dt>A1 Implementation effort &middot; A2 Maintainability at scale</dt>
+          <dt>A1 Implementation effort &middot; A2 Estate change amplification</dt>
           <dd>
-            A1: cost to build the first site. A2: cost to keep every site working
-            through library updates.
+            A1: cost to build the first site. A2: how many maintained systems and
+            consumer products an estate-wide change reaches.
           </dd>
         </dl>
       </details>
+
+      <section class="grid-intro" aria-labelledby="candidate-overview">
+        <h2 class="grid-intro__title" id="candidate-overview">Candidate overview</h2>
+        <p class="grid-intro__body">
+          Architecture on the left; working DELTA and Mangrove demonstrations on the right.
+        </p>
+      </section>
 
       <div class="grid">
 ${cardHtml}
@@ -649,7 +625,7 @@ ${cardHtml}
           Apache-2.0. See <code>docs/host-derivation.md</code>.
         </p>
       </footer>
-    </div>
+    </main>
 
 ${badgeHelpHtml}
 

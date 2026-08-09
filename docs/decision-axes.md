@@ -37,29 +37,48 @@ is a supporting figure under A1, not a headline.
 hour figures would be meaningless. The friction log (escape hatches, dead ends)
 is the proxy.
 
-## A2 - Maintainability at scale
+## A2 - Estate change amplification
 
-*How hard is this to keep working across multiple sites, over upgrades?*
+*When a shared requirement changes, how much work fans out across the estate?*
 
-**Measured.** Every distinct styling hook, classified by the promise behind it.
+The scenario models six products: three data applications and three
+Mangrove-based content products. Three controlled changes represent different
+maintenance paths:
 
-| Tier | What it is | Examples |
-| --- | --- | --- |
-| `attribute` | Semantic state selectors. Survive DOM restructuring, because they are not tied to structure | React Aria `[data-selected]`, `[slot=…]` |
-| `contract` | Class names the library documents as a styling API | Mantine `.mantine-{Component}-{element}`, gated behind `withStaticClasses`; MUI's documented global classes |
-| `off route` | Styling achieved by going around the library's own theming mechanism | Carbon `.cds--*`, documented as internal BEM with a prefix consumers may reconfigure, while Carbon points at `--cds-*` custom properties for theming |
-| `hashed` | Build-generated class names, unambiguously internal | Mantine `.m_8fb7ebe7`, Emotion `.css-1q2w3e` |
+1. a shared design-token value;
+2. a component interaction or accessibility policy used across the estate;
+3. an upstream foundation upgrade.
 
-`off route` counts the places the supported theming route did not reach.
-Also measured: token propagation (see A5).
+Each scenario records four different costs rather than collapsing them into
+"maintenance":
 
-**Judgement.** Whether a given off-route override is load-bearing or cosmetic.
-Listed per pairing, not scored.
+| Signal | Meaning |
+| --- | --- |
+| Authoritative locations | Independent implementations in which the requirement must change |
+| Consumer source edits | Products needing bespoke code changes rather than consuming the shared result |
+| Site rebuilds | Release fan-out; counted separately because six automated builds are not six implementations |
+| Validation and ownership boundaries | Independent systems or teams that must coordinate and verify the result |
 
-## A3 - Reproducibility across sites
+Bands prioritise authoritative implementation locations, ownership boundaries
+and repeated source edits. Site rebuilds are release fan-out rather than
+separate implementations.
 
-*If every site has to recreate the implementation, that compounds everything
-else.*
+The propagation mechanisms are measured where a two-host shared-package drill
+exists and explicitly modelled elsewhere. The six-site values are extrapolations,
+not observations of six production sites. Type C's full-estate reach also remains a pilot hypothesis:
+the records capability proves the mechanism across two hosts, not the completed
+component family.
+
+The resulting band is conditional on the associated architecture being adopted
+and governed. It is not an architecture-neutral property of the npm package.
+
+Styling hooks and off-route overrides remain useful evidence of upgrade
+fragility, but no longer determine this axis. They overlap with A1 and did not
+discriminate between the candidates.
+
+## A3 - New-product reproducibility
+
+*Can another product consume the integration, or must it recreate it?*
 
 **Measured by experiment.** The host-independent part of the integration is
 extracted into a shared package and both host apps consume it. What remains in
@@ -71,9 +90,10 @@ each app is the per-site cost; what refuses to move is recorded with the reason.
 | `partial` | A shared core exists but each site re-authors a named part, for a stated reason |
 | `fork-per-site` | The library's distribution model requires each site to own a copy of the source |
 
-**Done for MUI only, and the results say `basis: measured` or `analysed`
-accordingly.** `packages/integration-mui` holds 809 code lines - the entire token
-mapping and seven of the eight page sections - and both MUI apps now import it.
+**Measured for MUI, Ant Design and one realistic React Aria capability; the
+results distinguish `basis: measured` from `analysed`.**
+`packages/integration-mui` holds 809 code lines - the entire token mapping and
+seven of the eight page sections - and both MUI apps now import it.
 809 shared against 273-281 per site, and 135-149 of that residue is
 `SectionSideBySide`, which renders host markup beside candidate markup and so
 exists only because this is an evaluation. Excluding it, 86% is shared.
@@ -81,6 +101,13 @@ exists only because this is an evaluation. Excluding it, 86% is shared.
 The residue is mostly wiring (3 of 4 items); the fourth is host repair that
 scales with how aggressively the host styles bare elements (11 lines on Delta,
 27 on Mangrove).
+
+`packages/integration-react-aria` tests a narrower but more realistic unit: the
+records workspace used by the DELTA application and Mangrove island. It holds
+618 non-comment TypeScript lines and 147 CSS lines for filters, sorting,
+selection, pagination, announcement policy and layout. Both hosts import it;
+their frame, page composition and reset repair remain local. The controlled
+change results are in `reuse-results.json` and rendered on the architecture page.
 
 **Not done for Carbon or Mantine** — zero files are code-identical across hosts,
 so unifying would be a rewrite, not a measurement.
@@ -104,24 +131,28 @@ not as regression assertions.
 | Portal reach | appearance assertions | Whether tokens survive `createPortal` |
 | Mangrove 2.0 | `mangrove-2-preview.css` | Forward compatibility with channel-triplet custom properties |
 
-## A5 - Theming fidelity and propagation
+## A5 - Visual control and theming fidelity
 
-*How closely can it be made to look like Mangrove, in a way that stays coherent?*
+*Can UNDRR express its visual system, and does that system remain authoritative
+inside both hosts?*
 
-**Fidelity - what can be expressed**
+Token reach alone was too generous: Ant Design and MUI both accepted every
+mapped token, although the rendered authority of those mappings differed on
+Mangrove. A5 now combines reach with the outcome in both hosts.
+
+**Token count is not the score.** Candidates expose different applicable token
+sets. The band asks whether those tokens can be attached, whether UNDRR remains
+the visual authority in both hosts, and how many manual corrections are needed.
 
 | Signal | Source | Reading |
 | --- | --- | --- |
 | `theming.tokensApplied` | evidence | Tokens the library accepted |
 | `theming.tokensUnreachable` | evidence | Tokens it cannot accept **at all** - a ceiling, not a cost |
+| Visual authority | `theming-control.json` and realistic layouts | Whether the mapped values still control the rendered component in both hosts |
+| Manual alias corrections | `theming-control.json`, `EVIDENCE.md` | Derived library values that had to be pinned back to UNDRR values |
 
-**Propagation - what happens when Mangrove changes**
-
-| Model | Consequence for N sites |
-| --- | --- |
-| Live custom properties | A Mangrove token change reaches every site with no code change and no rebuild |
-| Build-time theme object | Values are resolved to literals at compile time, so every site must be rebuilt |
-| Hand-maintained mapping | Someone re-verifies the mapping per upgrade, per site |
+Token propagation and rebuild fan-out are now scored in A2, avoiding counting
+the same estate-maintenance consequence twice.
 
 ## A6 - Right-to-left
 
@@ -149,7 +180,7 @@ values already emitted.
 **Not measured.** Whether Arabic reads correctly to an Arabic reader — these
 tests cover layout direction only, not typography or translation quality.
 
-## A7 - Accessibility conformance
+## A7 - Automated accessibility signals
 
 *Does it meet UNDRR's accessibility commitments in practice?*
 

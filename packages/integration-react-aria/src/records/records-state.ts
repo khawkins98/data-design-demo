@@ -1,13 +1,10 @@
 /**
  * State and derivations shared by the island and application views.
  *
- * WHY THIS FILE EXISTS TWICE. React Aria has no extracted
- * `packages/integration-react-aria`, unlike MUI, so `apps/delta-react-aria` and
- * `apps/mangrove-react-aria` each carry a byte-identical copy of this file and
- * of the three `views/Records*.tsx` components beside it. Nothing in here is
- * host-specific — that is the point, and it is the A3 measurement: the code
- * *could* move to one package, it just has not been given one, so today the two
- * hosts share it by duplication rather than by import.
+ * This used to exist byte-for-byte in both React Aria apps. The reuse experiment
+ * moved it, with the three Records components, into one package consumed by both
+ * hosts. Nothing in here is host-specific; the remaining app code is composition
+ * and host framing rather than a second implementation of this capability.
  *
  * Everything here is application code, not library code, and that is itself the
  * finding for these two views. React Aria supplies the table, the filter

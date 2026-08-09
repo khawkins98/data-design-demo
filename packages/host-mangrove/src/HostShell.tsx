@@ -5,8 +5,6 @@
  * than reimplement Mangrove's CSS, this shell loads the design system's real
  * published stylesheet and uses its real class names, so the canary elements
  * are styled by Mangrove itself. See docs/host-derivation.md.
- *
- * Import only. Brief 1 forbids modifying this package.
  */
 
 import type { ReactElement, ReactNode } from "react";
@@ -99,7 +97,7 @@ export function HostCanaries(): ReactElement {
         <button
           data-canary="button-disabled"
           type="button"
-          className="mg-button mg-button-primary"
+          className="mg-button mg-button-primary disabled"
           disabled
         >
           Disabled action

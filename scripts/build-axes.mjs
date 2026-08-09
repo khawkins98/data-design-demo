@@ -85,7 +85,13 @@ function ownStylesheets(app) {
       if (d.isDirectory()) return walk(p);
       return d.name.endsWith(".css") || d.name.endsWith(".scss") ? [p] : [];
     });
-  return walk(src)
+  const paths = walk(src);
+  // Shared integration CSS remains part of each product's styling surface even
+  // after extraction. Omitting it would make packaging look like CSS vanished.
+  if (app.endsWith("react-aria")) {
+    paths.push(join(ROOT, "packages", "integration-react-aria", "src", "records.css"));
+  }
+  return paths
     .map((p) => readFileSync(p, "utf8"))
     .join("\n");
 }
@@ -168,6 +174,8 @@ function extraction() {
 }
 
 const extractionResults = extraction();
+const changeAmplification = readJson(join(DOCS, "change-amplification.json"));
+const themingControl = readJson(join(DOCS, "theming-control.json"));
 
 /**
  * Production dependency counts measured by one method for all apps (`pnpm deps:count`).
@@ -176,6 +184,7 @@ const extractionResults = extraction();
 const dependencyCounts = existsSync(join(DOCS, "dependency-counts.json"))
   ? readJson(join(DOCS, "dependency-counts.json")).apps
   : {};
+const effortClassification = readJson(join(DOCS, "effort-classification.json")).apps;
 
 const rows = appDirs().map((app) => {
   const evidence = readJson(join(APPS, app, "evidence.json"));
@@ -183,6 +192,12 @@ const rows = appDirs().map((app) => {
   const mix = requirementMix(evidence);
   const prop = propagation(app);
   const candidate = CANDIDATE_ORDER.find((c) => app.endsWith(c)) ?? app;
+  const effort = effortClassification[app];
+  const allEffortIndexes = Object.values(effort).flat();
+  const noteCount = (evidence.theming?.escapeHatchesUsed ?? []).length;
+  if (new Set(allEffortIndexes).size !== noteCount || allEffortIndexes.some((i) => i < 1 || i > noteCount)) {
+    throw new Error(`effort-classification.json is not exhaustive and disjoint for ${app}`);
+  }
 
   return {
     app,
@@ -193,8 +208,9 @@ const rows = appDirs().map((app) => {
     mix,
     beyondNative: mix.composed + mix.custom,
     wrappers: evidence.wrappers ?? {},
-    escapeHatches: (evidence.theming?.escapeHatchesUsed ?? []).length,
-    escapeHatchText: evidence.theming?.escapeHatchesUsed ?? [],
+    effort,
+    escapeHatches: effort.offRouteOverrides.length,
+    escapeHatchText: effort.offRouteOverrides.map((i) => evidence.theming.escapeHatchesUsed[i - 1]),
     humanReview: (evidence.humanReviewRequired ?? []).length,
     hooks,
     declaredOverridesInternals: evidence.customCss?.overridesLibraryInternals ?? null,
@@ -221,11 +237,11 @@ const rows = appDirs().map((app) => {
 const BAND_RANK = { strong: 0, workable: 1, weak: 2, blocked: 3 };
 const BAND_BY_RANK = ["strong", "workable", "weak", "blocked"];
 const axisScorerByKey = {
-  A1: (r) => scoreA1(r.evidence),
-  A2: (r) => scoreA2(r.evidence, []),
+  A1: (r) => scoreA1(r.evidence, r.effort),
+  A2: (r) => scoreA2(r.candidate, changeAmplification),
   A3: (r) => scoreA3(r.candidate, extractionResults),
   A4: (r) => scoreA4(r.evidence),
-  A5: (r) => scoreA5(r.evidence),
+  A5: (r) => scoreA5(r.evidence, r.candidate, themingControl),
   A6: (r) => scoreA6(r.evidence),
   A7: (r) => scoreA7(r.evidence),
 };
@@ -288,25 +304,14 @@ function pushAxis(axis, title) {
 
 lines.push("# Axis scores");
 lines.push("");
-lines.push("GENERATED FILE - regenerate with `pnpm axes`. Axis definitions and");
-lines.push("measurement rules are in [decision-axes.md](./decision-axes.md).");
-lines.push("");
-lines.push("**This is the evidence layer.** Each section shows the UNDRR question");
-lines.push("it answers, then the measurements behind it.");
-lines.push("");
-lines.push(
-  "- For the recommendation, read the [ranking](./scores.html) first.",
-);
-lines.push(
-  "- For per-requirement coverage, see the [requirement matrix](./comparison.html) (all 300 assessments).",
-);
+lines.push("Detailed measurements behind the [ranking](./scores.html). The [requirement matrix](./comparison.html) retains all 300 assessments.");
 lines.push("");
 
 pushAxis("A1", "Implementation effort");
 lines.push(
   "`beyond native` counts requirements needing more than a documented component.",
 );
-lines.push("`traps` counts documented approaches that failed and needed workarounds.");
+lines.push("`off-route overrides` counts only audited unsupported/internal workarounds. Documented integration work, product design decisions and explicit non-events are excluded; the exhaustive classification is in `effort-classification.json`.");
 lines.push("");
 {
   const maxNative = Math.max(...rows.map((r) => r.mix.native));
@@ -317,7 +322,7 @@ lines.push("");
   const maxReview = Math.max(...rows.map((r) => r.humanReview));
   lines.push(
     table(
-      ["Pairing", "native||one documented component did it", "composed||assembled from multiple components", "custom||built from scratch", "beyond native||composed + custom; lower is easier", "traps||documented approach failed, needed a workaround", "wrappers||glue components the demo had to write", "flagged for review||may need a human judgement call"],
+      ["Pairing", "native||one documented component did it", "composed||assembled from multiple components", "custom||built from scratch", "beyond native||composed + custom; lower is easier", "off-route overrides||audited unsupported or internal workarounds", "wrappers||glue components the demo had to write", "flagged for review||may need a human judgement call"],
       rows.map((r) => [
         r.app,
         spark(r.mix.native, maxNative),
@@ -332,12 +337,12 @@ lines.push("");
   );
 }
 lines.push("");
-lines.push("Each friction-log entry is a place the documented approach did not suffice.");
+lines.push("Each off-route entry is a place the documented approach did not suffice.");
 lines.push("");
-lines.push("<details><summary>The friction log, per pairing</summary>");
+lines.push("<details><summary>The audited off-route log, per pairing</summary>");
 lines.push("");
 for (const r of rows.filter((x) => x.escapeHatchText.length > 0)) {
-  lines.push(`**\`${r.app}\`** - ${r.escapeHatches} entries`);
+  lines.push(`**\`${r.app}\`** - ${r.escapeHatches} audited off-route overrides`);
   lines.push("");
   for (const h of r.escapeHatchText) {
     const first = String(h).split(/(?<=\.)\s+/)[0];
@@ -352,7 +357,61 @@ for (const r of rows.filter((x) => x.escapeHatchText.length > 0)) {
 lines.push("</details>");
 lines.push("");
 
-pushAxis("A2", "Maintainability at scale");
+pushAxis("A2", "Estate change amplification");
+lines.push(
+  `Scenario: **${changeAmplification.scenario.siteCount} sites** - ${changeAmplification.scenario.dataSites} data products and ${changeAmplification.scenario.contentSites} content products.`,
+);
+lines.push("");
+lines.push(
+  "Each cell separates the authoritative implementation change from consumer source edits and rebuilds. Bands prioritise authoritative implementation locations, ownership boundaries and repeated source edits; rebuilds are release fan-out, not six manual implementations.",
+);
+lines.push("");
+{
+  const scenarioCell = (scenario) => {
+    const edits = scenario.consumerSourceEdits === null
+      ? "site edits unmeasured"
+      : `${scenario.consumerSourceEdits} site edits`;
+    return `**${scenario.authoritativeLocations} source${scenario.authoritativeLocations === 1 ? "" : "s"}** · ${edits} · ${scenario.siteRebuilds} rebuilds`;
+  };
+  const entries = CANDIDATE_ORDER
+    .filter((candidate) => changeAmplification.candidates[candidate] && rows.some((r) => r.candidate === candidate))
+    .map((candidate) => [candidate, changeAmplification.candidates[candidate]]);
+  lines.push(
+    table(
+      ["Candidate", "Type", "evidence basis||mechanism measured or modelled?", "token change||authoritative source · consumer edits · rebuilds", "shared policy||authoritative source · consumer edits · rebuilds", "upstream upgrade||authoritative source · consumer edits · rebuilds", "owners at worst||independent system boundaries"],
+      entries.map(([candidate, evidence]) => [
+        rows.find((r) => r.candidate === candidate)?.name ?? candidate,
+        evidence.architectureType,
+        evidence.mechanismMeasured ? `**${evidence.basis}**` : evidence.basis,
+        scenarioCell(evidence.scenarios.token),
+        scenarioCell(evidence.scenarios.interactionPolicy),
+        scenarioCell(evidence.scenarios.upstreamUpgrade),
+        Math.max(...Object.values(evidence.scenarios).map((scenario) => scenario.ownershipBoundaries)),
+      ]),
+    ),
+  );
+  lines.push("");
+  lines.push("<details><summary>Scenario assumptions and evidence</summary>");
+  lines.push("");
+  lines.push(changeAmplification.scenario.assumption);
+  lines.push("");
+  for (const [candidate, evidence] of entries) {
+    lines.push(`**${rows.find((r) => r.candidate === candidate)?.name ?? candidate}** - ${evidence.notes}`);
+    lines.push("");
+    for (const [key, scenario] of Object.entries(evidence.scenarios)) {
+      lines.push(`- ${changeAmplification.changes[key]} ${scenario.evidence}`);
+    }
+    lines.push("");
+  }
+  lines.push("</details>");
+  lines.push("");
+}
+lines.push(
+  "The mechanism is measured where a shared-package drill exists and explicitly modelled elsewhere. The six-site counts are extrapolations, not observations of six production sites. Styling-hook fragility remains supporting evidence below; it no longer determines A2.",
+);
+lines.push("");
+lines.push("<details><summary>Supporting evidence: implementation fragility</summary>");
+lines.push("");
 lines.push("Every distinct styling hook, classified by the promise behind it.");
 lines.push("");
 lines.push(
@@ -422,8 +481,10 @@ if (withHooks.length > 0) {
   lines.push("</details>");
   lines.push("");
 }
+lines.push("</details>");
+lines.push("");
 
-pushAxis("A3", "Reproducibility across sites");
+pushAxis("A3", "New-product reproducibility");
 if (!extractionResults) {
   lines.push(
     "**Not yet measured.** The extraction experiment has not been run.",
@@ -434,7 +495,7 @@ if (!extractionResults) {
     extractionResults[c],
   ]);
   lines.push(
-    "`basis`: only MUI was actually extracted; other entries are analysis.",
+    "`basis`: React Aria, MUI and Ant Design are measured package integrations; Carbon and Mantine remain analysis because consolidating two independently authored implementations would measure a rewrite rather than portability.",
   );
   lines.push("");
   lines.push(
@@ -484,11 +545,15 @@ lines.push(
 );
 lines.push("");
 
-pushAxis("A5", "Theming fidelity and propagation");
+pushAxis("A5", "Visual control and theming fidelity");
 lines.push(
-  "`unreachable`: tokens with no hook to attach to. `propagation`: stylesheet swap",
+  "**Token count is not the score.** Candidates expose different applicable token sets. The band asks whether those tokens can be attached, whether UNDRR remains the visual authority in both hosts, and how many manual corrections are required.",
 );
-lines.push("reaches every site at once; rebuild is per site.");
+lines.push("");
+lines.push(
+  "`unreachable`: tokens with no hook to attach to. `authority`: whether the",
+);
+lines.push("mapped visual system still controls the result in both hosts. Change propagation is scored in A2.");
 lines.push("");
 {
   const maxApplied = Math.max(...rows.map((r) => r.tokensApplied ?? 0));
@@ -496,16 +561,26 @@ lines.push("");
   const maxVarRefs = Math.max(...rows.map((r) => r.propagation.cssVarRefs ?? 0));
   lines.push(
     table(
-      ["Pairing", "tokens applied||UNDRR design tokens successfully connected", "unreachable||tokens with no hook to attach to", "propagation||how a token change reaches every site", "live var() refs in shipped CSS||CSS custom properties surviving to production"],
-      rows.map((r) => [
-        r.app,
-        spark(r.tokensApplied ?? "?", maxApplied),
-        r.tokensUnreachable ? `**${spark(r.tokensUnreachable, maxUnreachable)}**` : "0",
-        `**${r.propagation.model}**`,
-        spark(r.propagation.cssVarRefs ?? "not built", maxVarRefs),
-      ]),
+      ["Pairing", "tokens applied||UNDRR design tokens successfully connected", "unreachable||tokens with no hook to attach to", "visual authority||does the mapped system control both hosts?", "manual corrections||derived aliases pinned by hand", "propagation detail||reported here, scored in A2"],
+      rows.map((r) => {
+        const control = themingControl.candidates[r.candidate];
+        return [
+          r.app,
+          spark(r.tokensApplied ?? "?", maxApplied),
+          r.tokensUnreachable ? `**${spark(r.tokensUnreachable, maxUnreachable)}**` : "0",
+          control?.authorityAcrossHosts === "yes" ? "**yes**" : `**${control?.authorityAcrossHosts ?? "unmeasured"}**`,
+          control?.manualCorrections ?? "?",
+          `${r.propagation.model}; ${spark(r.propagation.cssVarRefs ?? "not built", maxVarRefs)} live var() refs`,
+        ];
+      }),
     ),
   );
+}
+lines.push("");
+for (const candidate of CANDIDATE_ORDER.filter((id) => themingControl.candidates[id] && rows.some((r) => r.candidate === id))) {
+  const control = themingControl.candidates[candidate];
+  const name = rows.find((r) => r.candidate === candidate)?.name ?? candidate;
+  lines.push(`- **${name}:** ${control.evidence}`);
 }
 lines.push("");
 
@@ -548,7 +623,7 @@ for (const r of rows.filter((x) => x.rtlIssues.length > 0)) {
 lines.push("</details>");
 lines.push("");
 
-pushAxis("A7", "Accessibility conformance");
+pushAxis("A7", "Automated accessibility signals");
 lines.push(
   "`incomplete` counts checks axe declined to decide. Nine of ten runs ran axe",
 );
@@ -784,9 +859,10 @@ ${siteNavCss}
   </head>
   <body>
 ${siteNavHtml("axes")}
-    <div class="mg-container mg-page-content--padded">
+    <main id="main" class="mg-container mg-page-content--padded">
+      <p class="audience-banner"><span class="audience-tag">Developer evidence</span>Measurement definitions and per-pairing signals. Automated accessibility results are not a conformance claim.</p>
 ${injectBandSummaries(toHtml(md))}
-    </div>
+    </main>
   </body>
 </html>
 `;

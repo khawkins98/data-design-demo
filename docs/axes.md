@@ -1,149 +1,144 @@
 # Axis scores
 
-GENERATED FILE - regenerate with `pnpm axes`. Axis definitions and
-measurement rules are in [decision-axes.md](./decision-axes.md).
-
-**This is the evidence layer.** Each section shows the UNDRR question
-it answers, then the measurements behind it.
-
-- For the recommendation, read the [ranking](./scores.html) first.
-- For per-requirement coverage, see the [requirement matrix](./comparison.html) (all 300 assessments).
+Detailed measurements behind the [ranking](./scores.html). The [requirement matrix](./comparison.html) retains all 300 assessments.
 
 ## A1 - Implementation effort
 
 > **None of the six UNDRR questions maps to A1 directly.** It is measured because the weighted composite scores it, and because the questions were asked about living with a library rather than about building with one. See the [ranking](./scores.html) for what it is worth there.
 
 `beyond native` counts requirements needing more than a documented component.
-`traps` counts documented approaches that failed and needed workarounds.
+`off-route overrides` counts only audited unsupported/internal workarounds. Documented integration work, product design decisions and explicit non-events are excluded; the exhaustive classification is in `effort-classification.json`.
 
-| Pairing | native||one documented component did it | composed||assembled from multiple components | custom||built from scratch | beyond native||composed + custom; lower is easier | traps||documented approach failed, needed a workaround | wrappers||glue components the demo had to write | flagged for review||may need a human judgement call |
+| Pairing | native||one documented component did it | composed||assembled from multiple components | custom||built from scratch | beyond native||composed + custom; lower is easier | off-route overrides||audited unsupported or internal workarounds | wrappers||glue components the demo had to write | flagged for review||may need a human judgement call |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| delta-react-aria | {spark:20:28} | {spark:8:10} | {spark:2:3} | **{spark:10:11}** | {spark:5:14} | 5 (104 ln) | {spark:7:11} |
-| mangrove-react-aria | {spark:21:28} | {spark:7:10} | {spark:2:3} | **{spark:9:11}** | {spark:3:14} | 3 (78 ln) | {spark:7:11} |
-| delta-mui | {spark:26:28} | {spark:4:10} | {spark:0:3} | **{spark:4:11}** | {spark:5:14} | 3 (62 ln) | {spark:7:11} |
-| mangrove-mui | {spark:26:28} | {spark:4:10} | {spark:0:3} | **{spark:4:11}** | {spark:7:14} | 2 (53 ln) | {spark:10:11} |
-| delta-carbon | {spark:19:28} | {spark:10:10} | {spark:1:3} | **{spark:11:11}** | {spark:14:14} | 4 (71 ln) | {spark:10:11} |
-| mangrove-carbon | {spark:19:28} | {spark:10:10} | {spark:1:3} | **{spark:11:11}** | {spark:8:14} | 4 (71 ln) | {spark:11:11} |
-| delta-mantine | {spark:20:28} | {spark:7:10} | {spark:3:3} | **{spark:10:11}** | {spark:11:14} | 4 (179 ln) | {spark:10:11} |
-| mangrove-mantine | {spark:19:28} | {spark:10:10} | {spark:1:3} | **{spark:11:11}** | {spark:9:14} | 4 (176 ln) | {spark:9:11} |
-| delta-antd | {spark:28:28} | {spark:1:10} | {spark:1:3} | **{spark:2:11}** | {spark:7:14} | 4 (128 ln) | {spark:7:11} |
-| mangrove-antd | {spark:28:28} | {spark:1:10} | {spark:1:3} | **{spark:2:11}** | {spark:7:14} | 4 (128 ln) | {spark:9:11} |
+| delta-react-aria | {spark:20:28} | {spark:8:10} | {spark:2:3} | **{spark:10:11}** | {spark:1:5} | 5 (104 ln) | {spark:7:11} |
+| mangrove-react-aria | {spark:21:28} | {spark:7:10} | {spark:2:3} | **{spark:9:11}** | {spark:2:5} | 3 (78 ln) | {spark:7:11} |
+| delta-mui | {spark:26:28} | {spark:4:10} | {spark:0:3} | **{spark:4:11}** | {spark:1:5} | 3 (62 ln) | {spark:7:11} |
+| mangrove-mui | {spark:26:28} | {spark:4:10} | {spark:0:3} | **{spark:4:11}** | {spark:1:5} | 2 (53 ln) | {spark:10:11} |
+| delta-carbon | {spark:19:28} | {spark:10:10} | {spark:1:3} | **{spark:11:11}** | {spark:5:5} | 4 (71 ln) | {spark:10:11} |
+| mangrove-carbon | {spark:19:28} | {spark:10:10} | {spark:1:3} | **{spark:11:11}** | {spark:4:5} | 4 (71 ln) | {spark:11:11} |
+| delta-mantine | {spark:20:28} | {spark:7:10} | {spark:3:3} | **{spark:10:11}** | {spark:4:5} | 4 (179 ln) | {spark:10:11} |
+| mangrove-mantine | {spark:19:28} | {spark:10:10} | {spark:1:3} | **{spark:11:11}** | {spark:4:5} | 4 (176 ln) | {spark:9:11} |
+| delta-antd | {spark:28:28} | {spark:1:10} | {spark:1:3} | **{spark:2:11}** | {spark:1:5} | 4 (128 ln) | {spark:7:11} |
+| mangrove-antd | {spark:28:28} | {spark:1:10} | {spark:1:3} | **{spark:2:11}** | {spark:1:5} | 4 (128 ln) | {spark:9:11} |
 
-Each friction-log entry is a place the documented approach did not suffice.
+Each off-route entry is a place the documented approach did not suffice.
 
-<details><summary>The friction log, per pairing</summary>
+<details><summary>The audited off-route log, per pairing</summary>
 
-**`delta-react-aria`** - 5 entries
+**`delta-react-aria`** - 1 audited off-route overrides
 
-- `.undrr-tokens` is applied to every portalled overlay (Popover, ModalOverlay, Tooltip) via src/overlay-class.ts.
 - One rule targets library-rendered markup: [data-testid="hidden-select-container"] { overflow: hidden } plus a width cap on library-rendered <select> elements.
-- `position: relative` on our own ResizableTableContainer wrapper, to contain ColumnResizer's visually hidden <input type=range>.
-- `overflow: hidden` plus text-overflow on the table's column headers.
-- NO `[hidden]` workaround was needed, and that is worth recording as an escape hatch NOT used.
 
-**`mangrove-react-aria`** - 3 entries
+**`mangrove-react-aria`** - 2 audited off-route overrides
 
 - One rule targets library-rendered markup: [data-testid="hidden-select-container"] { overflow: hidden } plus a width cap on library-rendered <select> elements.
 - `.demo [hidden] { display: none }` restores the hidden attribute, which the Mangrove host defeats: its `input[type="text"] { display: block }` rule (0,1,1) outranks its own `[hidden] { display: none }` (0,1,0).
-- `.undrr-tokens` is applied to every portalled overlay (Popover, ModalOverlay, Tooltip) via src/overlay-class.ts.
 
-**`delta-mui`** - 5 entries
+**`delta-mui`** - 1 audited off-route overrides
 
-- cssVariables: true deliberately NOT enabled.
 - Two CSS rules reach into library-generated class names (.MuiDataGrid-root, .MuiDataGrid-columnHeaderTitle) to cap grid width and wrap long header labels.
-- MUI's picker prop types are not compatible with exactOptionalPropertyTypes: true.
-- Stack no longer accepts flexWrap/alignItems as direct props in v9; they must move into sx.
-- None needed for portalled overlays, which is a genuine advantage here.
 
-**`mangrove-mui`** - 7 entries
+**`mangrove-mui`** - 1 audited off-route overrides
 
-- cssVariables: true deliberately NOT enabled.
-- CssBaseline replaced with ScopedCssBaseline.
 - Two CSS rules reach into library-generated class names (.MuiOutlinedInput-input / .MuiInputBase-input, .MuiDataGrid-root, .MuiDataGrid-columnHeaderTitle).
-- MUI's picker prop types are not compatible with exactOptionalPropertyTypes: true.
-- Stack no longer accepts flexWrap/alignItems as direct props in v9; they must move into sx.
-- stylis-plugin-rtl was NOT added, because it is outside the candidate's ecosystem and constraint 2 forbids it.
-- None needed for portalled overlays.
 
-**`delta-carbon`** - 14 entries
+**`delta-carbon`** - 5 audited off-route overrides
 
 - @carbon/styles/css/styles.css IS NOT IMPORTED.
-- TRAP 1, silent and consequential: `@carbon/styles/scss/layout` is REQUIRED but is not a component partial.
-- TRAP 2, the same shape one level down: components/data-table/_index.scss includes only the CORE table mixin.
 - A 20-line Vite plugin in vite.config.ts rewrites the one `:root` rule Carbon's layer module emits onto the token scope class, so the shipped stylesheet contains zero selectors that can match host markup.
 - Twenty-two CSS selectors reach into .cds-- class names, each for a token Carbon's theme cannot express or a behaviour it hard-codes: corner radius (Carbon has no radius token and is square by design), list-box menu max-height, table-header ...
 - Three of those twenty-two are the step wizard's, and they are behaviour rather than tokens.
-- The progress indicator has no responsive behaviour at all.
 - Carbon's published TypeScript types do not compile under exactOptionalPropertyTypes: true.
-- @carbon/styles/scss/fonts is NOT loaded.
-- Portals are mostly a non-issue here, and that is a finding rather than luck avoided.
-- Spacing is unreachable at any layer.
-- Z-index is unreachable, and carbon wins every collision.
-- Font family is unreachable through the supported api.
-- Type scale is fully reachable, unusually.
 
-**`mangrove-carbon`** - 8 entries
+**`mangrove-carbon`** - 4 audited off-route overrides
 
-- 22 of 71 tokens are UNREACHABLE and no mechanism exists to change that: all 10 z-index tokens and all 12 spacing tokens.
-- Font FAMILY is not a Carbon token.
 - Ten declarations re-assert Carbon's own field styling at (0,2,0) to beat Mangrove's `input[type=*], textarea` rule at (0,1,1), which was overriding `.cds--text-input` at (0,1,0) and rendering every Carbon field as a 46px box with a 2px blac...
 - Three rules reach into Carbon-rendered class names to make SideNav sit inline instead of position: fixed at 100vh (.cds--side-nav, .cds--side-nav__navigation), and two more cap the width of .cds--data-table-container and .cds--data-table-co...
 - One rule adds flex-wrap to .cds--radio-button-group, which Carbon does not wrap and which therefore overflows a 390px viewport with four locale labels.
 - aria-describedby is passed by hand to the three invalid TextInputs to work around Carbon's aria-errormessage target having no role=alert.
-- No workaround was needed for the Mangrove [hidden] specificity defect, and the rule that was there has been deleted.
-- No escape hatch was needed for portalled overlays, which is the opposite of the React Aria result.
 
-**`delta-mantine`** - 11 entries
+**`delta-mantine`** - 4 audited off-route overrides
 
-- theme.colors[name] is typed MantineColorsTuple — TEN shades.
-- cssVariablesResolver's three buckets are written at three DIFFERENT selectors: variables at ':root, :host', light/dark at ':root[data-mantine-color-scheme="…"]'.
 - @mantine/core/styles.css is NOT imported.
 - The per-component import ORDER had to be lifted from Mantine's own styles.css.
-- Mantine has no theme-level z-index scale.
-- Table's striping, hover and border colours are props rather than theme slots, so the canvas and accentSubtle tokens are only reachable through Table defaultProps.
-- portalProps carries the token scope class onto every portal container.
 - portalProps also carries a direction class, and an effect in App.tsx stamps dir on .demo-portal containers after each locale change, because Mantine's Portal drops a dir prop and freezes className at mount.
-- reuseTargetNode: false on every portal.
 - Three CSS rules reach library-generated class names (.mantine-InputWrapper-label, .mantine-Select-label, .mantine-SegmentedControl-label) to wrap the 60+ character German fixture labels.
-- Pagination's four edge controls and the clearable inputs' clear button ship with no accessible name.
 
-**`mangrove-mantine`** - 9 entries
+**`mangrove-mantine`** - 4 audited off-route overrides
 
 - @mantine/core/styles.css was NOT imported.
 - The per-component import order is load-bearing and undocumented.
-- Mantine requires ten shades per colour and theme.primaryColor must be a KEY of theme.colors -- a hex string is rejected by validateMantineTheme.
 - No focus colour in the theme.
-- No z-index scale in the theme.
 - Host-into-candidate collision repair: 2 rules, 4 selectors, reaching into library-generated class names (.mantine-PillsInputField-field, .mantine-TimePicker-field) at (0,3,1).
-- Mantine's CSS is loaded by an AWAITED DYNAMIC IMPORT inside the candidate=on branch of main.tsx, not a static import.
-- MantineProvider mutates document.documentElement, setting data-mantine-color-scheme="light" through its default getRootElement; DirectionProvider.setDirection() sets dir there too.
-- forceColorScheme="light" is set because the token set has no dark palette and the host is light-only; without it Mantine reads localStorage and could render a dark subtree inside a light host between runs.
 
-**`delta-antd`** - 7 entries
+**`delta-antd`** - 1 audited off-route overrides
 
 - antd/dist/reset.css IS NOT IMPORTED.
-- StyleProvider layer is enabled, which wraps every antd rule in a CSS @layer.
-- ConfigProvider getPopupContainer mounts overlays inside the candidate subtree.
-- Finding, not a preference: antd derives its secondary, description, placeholder and label greys from colorTextBase by lowering opacity, and that derivation produced FOUR axe colour-contrast failures from a palette whose own secondary text p...
-- Menu.itemSelectedColor and itemSelectedBg pinned for the same reason: the derived selected-item colour did not reach 4.5:1 against antd's own selected background.
-- Tag colours come from the UNDRR tokens rather than antd's green/gold/red presets, which failed contrast as filled tags and would have been antd's hues rather than UNDRR's in any case.
-- Form.Item label does NOT associate the label with its control unless the item also has a name, because that is what antd uses to generate the id it points for at.
 
-**`mangrove-antd`** - 7 entries
+**`mangrove-antd`** - 1 audited off-route overrides
 
 - antd/dist/reset.css IS NOT IMPORTED.
-- StyleProvider layer is enabled, which wraps every antd rule in a CSS @layer.
-- ConfigProvider getPopupContainer mounts overlays inside the candidate subtree.
-- Finding, not a preference: antd derives its secondary, description, placeholder and label greys from colorTextBase by lowering opacity, and that derivation produced FOUR axe colour-contrast failures from a palette whose own secondary text p...
-- Menu.itemSelectedColor and itemSelectedBg pinned for the same reason: the derived selected-item colour did not reach 4.5:1 against antd's own selected background.
-- Tag colours come from the UNDRR tokens rather than antd's green/gold/red presets, which failed contrast as filled tags and would have been antd's hues rather than UNDRR's in any case.
-- Form.Item label does NOT associate the label with its control unless the item also has a name, because that is what antd uses to generate the id it points for at.
 
 </details>
 
-## A2 - Maintainability at scale
+## A2 - Estate change amplification
 
-> **None of the six UNDRR questions maps to A2 directly.** It is measured because the weighted composite scores it, and because the questions were asked about living with a library rather than about building with one. See the [ranking](./scores.html) for what it is worth there.
+> **Answers: Standardisation** - One shared component vocabulary across the estate, or one dialect per project?
+>
+> The six-site scenario makes the architectural consequence explicit: Type C places shared policy in one governed foundation; Type A retains separate suite and Mangrove implementations; Type B can add a translation layer. It applies measured mechanisms where available and explicit assumptions elsewhere; the evidence basis distinguishes them.
+
+Scenario: **6 sites** - 3 data products and 3 content products.
+
+Each cell separates the authoritative implementation change from consumer source edits and rebuilds. Bands prioritise authoritative implementation locations, ownership boundaries and repeated source edits; rebuilds are release fan-out, not six manual implementations.
+
+| Candidate | Type | evidence basis||mechanism measured or modelled? | token change||authoritative source · consumer edits · rebuilds | shared policy||authoritative source · consumer edits · rebuilds | upstream upgrade||authoritative source · consumer edits · rebuilds | owners at worst||independent system boundaries |
+| --- | --- | --- | --- | --- | --- | --- |
+| Adobe React Aria | C | **measured mechanism, modelled at six sites** | **1 source** · 0 site edits · 0 rebuilds | **1 source** · 0 site edits · 6 rebuilds | **1 source** · 0 site edits · 6 rebuilds | 1 |
+| MUI (Community only) | A | **measured package, modelled across two parallel stacks** | **1 source** · 0 site edits · 3 rebuilds | **2 sources** · 0 site edits · 6 rebuilds | **1 source** · 0 site edits · 3 rebuilds | 2 |
+| IBM Carbon | B | architecture model; translation path not measured | **1 source** · site edits unmeasured · 0 rebuilds | **3 sources** · site edits unmeasured · 6 rebuilds | **2 sources** · site edits unmeasured · 3 rebuilds | 2 |
+| Mantine | A | architecture model; package propagation not measured | **1 source** · site edits unmeasured · 3 rebuilds | **2 sources** · site edits unmeasured · 6 rebuilds | **1 source** · site edits unmeasured · 3 rebuilds | 2 |
+| Ant Design | A | **measured package, modelled across two parallel stacks** | **1 source** · 0 site edits · 3 rebuilds | **2 sources** · 0 site edits · 6 rebuilds | **1 source** · 0 site edits · 3 rebuilds | 2 |
+
+<details><summary>Scenario assumptions and evidence</summary>
+
+Each product consumes a versioned shared package or centrally delivered token stylesheet where the evaluated architecture supports one. A rebuild is counted separately from a source edit.
+
+**Adobe React Aria** - The records capability is consumed by both hosts from one package. The six-site model assumes the same governed foundation is adopted by both product-system halves.
+
+- Change one shared colour, typography or spacing value. Live UNDRR custom-property references remain in shipped CSS; both hosts inherit a token-sheet change.
+- Change one shared component behaviour or accessibility policy needed by all six products. Filtering, sorting, pagination and announcement policy have one shared implementation consumed by both hosts.
+- Upgrade the candidate foundation without changing product requirements. The model places the React Aria dependency behind one governed foundation; breadth beyond the measured records capability remains a pilot assumption.
+
+**MUI (Community only)** - The MUI integration is shared, but Mangrove remains a separate component system. Estate-wide policy therefore has two authoritative implementations.
+
+- Change one shared colour, typography or spacing value. One UNDRR token source feeds both paths, but MUI resolves mapped values into bundles while Mangrove consumes its own path.
+- Change one shared component behaviour or accessibility policy needed by all six products. The shared MUI integration and the Mangrove component stack must implement the same policy separately.
+- Upgrade the candidate foundation without changing product requirements. The extracted MUI package centralises the suite dependency; only the three modelled data products consume that upgrade.
+
+**IBM Carbon** - Carbon and Mangrove remain separate visual and component authorities, with an additional translation layer for cross-stack use.
+
+- Change one shared colour, typography or spacing value. The canonical token changes once, but both the Mangrove and Carbon routes need validation because evaluated Carbon coverage is incomplete.
+- Change one shared component behaviour or accessibility policy needed by all six products. Carbon, Mangrove and the proposed translation layer can each carry part of an estate-wide component policy.
+- Upgrade the candidate foundation without changing product requirements. A Carbon upgrade must be reconciled with the project theme and any Carbon-to-Mangrove translation path; extraction was not measured.
+
+**Mantine** - A shared theme is feasible, but no cross-host extraction drill was completed and the two implementations currently differ.
+
+- Change one shared colour, typography or spacing value. Mantine bakes theme values into each bundle; the absence of a measured shared package leaves consumer edit cost unproved.
+- Change one shared component behaviour or accessibility policy needed by all six products. Type A requires separate Mantine and Mangrove implementations; shared-package propagation was not measured.
+- Upgrade the candidate foundation without changing product requirements. Upgrade fan-out is modelled because the current pair was not extracted into one maintained package.
+
+**Ant Design** - Ant Design was tested shared-first, but the application and Mangrove paths still express policy through different component systems.
+
+- Change one shared colour, typography or spacing value. One UNDRR token source feeds both paths, while Ant Design theme values are bundled into the data products.
+- Change one shared component behaviour or accessibility policy needed by all six products. The shared Ant integration and Mangrove must implement and validate the policy independently.
+- Upgrade the candidate foundation without changing product requirements. The shared Ant package centralises the suite dependency for the three modelled data products.
+
+</details>
+
+The mechanism is measured where a shared-package drill exists and explicitly modelled elsewhere. The six-site counts are extrapolations, not observations of six production sites. Styling-hook fragility remains supporting evidence below; it no longer determines A2.
+
+<details><summary>Supporting evidence: implementation fragility</summary>
 
 Every distinct styling hook, classified by the promise behind it.
 
@@ -153,7 +148,7 @@ Every distinct styling hook, classified by the promise behind it.
 | Pairing | attribute||semantic selectors like [data-*], [slot] | contract||documented styling API; safe to use | off route||bypasses the library's theming; fragile | of which hashed||generated class names that change between builds | CSS rules||total rules in the demo's own stylesheets |
 | --- | --- | --- | --- | --- | --- |
 | delta-react-aria | {spark:22:22} | {spark:0:4} | **0** | 0 | {spark:211:211} |
-| mangrove-react-aria | {spark:18:22} | {spark:0:4} | **0** | 0 | {spark:153:211} |
+| mangrove-react-aria | {spark:18:22} | {spark:0:4} | **0** | 0 | {spark:155:211} |
 | delta-mui | {spark:0:22} | {spark:2:4} | **0** | 0 | {spark:3:211} |
 | mangrove-mui | {spark:0:22} | {spark:4:4} | **0** | 0 | {spark:5:211} |
 | delta-carbon | {spark:0:22} | {spark:0:4} | **{spark:19:19}** | 0 | {spark:48:211} |
@@ -180,33 +175,39 @@ stable but off the documented theming route (`--cds-*` custom properties).
 
 </details>
 
-## A3 - Reproducibility across sites
+</details>
+
+## A3 - New-product reproducibility
 
 > **Answers: Repeatability** - Can a second team reproduce the integration without inventing their own conventions?
 >
-> Measured by extraction for MUI: 86% of the integration shares across sites. React Aria's is fully portable but has no package to hold it, so it is shared by duplication.
->
-> **Answers: Standardisation** - One shared component vocabulary across the estate, or one dialect per project?
->
-> shadcn/ui was excluded outright for guaranteeing a fork per site. Among the five built, the theme and token layer extracts; kitchen-sink section components do not.
+> Measured packages now exist for the leading alternatives: MUI shares 86% once demo-only code is excluded, while the realistic React Aria records capability shares 618 source lines and 147 CSS lines across Delta and Mangrove.
 
-`basis`: only MUI was actually extracted; other entries are analysis.
+`basis`: React Aria, MUI and Ant Design are measured package integrations; Carbon and Mantine remain analysis because consolidating two independently authored implementations would measure a rewrite rather than portability.
 
 | Candidate | basis||measured or analysed? | verdict||can it be shared across sites? | shared||code lines reusable across sites | per site||code lines each site must own | shared %||proportion that is reusable |
 | --- | --- | --- | --- | --- | --- |
-| react-aria | analysed | **likely packaged** | - | - | - |
+| react-aria | **measured** | **packaged** | 765 ln | - | - |
 | mui | **measured** | **packaged** | 809 ln | 277 ln | 74% |
 | carbon | analysed | **unknown - confounded** | - | - | - |
 | mantine | analysed | **unknown - confounded** | - | - | - |
 | antd | **measured** | **packaged** | 868 ln | 248 ln | 78% |
 | shadcn | not-run | **fork-per-site** | - | - | - |
 
-**react-aria** - 5 of 13 files are already code-identical (517 code lines), and the styling is CSS custom properties read from the shared tokens, which is host-independent by construction and needs no rebuild to retarget. Not extracted, so no measured figure is offered.
+**react-aria** - This is deliberately narrower than integration-mui: it extracts one realistic cross-host capability rather than the whole kitchen sink. That makes the reuse claim concrete without pretending the host reset and product frame are shareable. Token references remain live CSS custom properties, so changing the UNDRR token stylesheet does not require rebuilding either consumer.
 
 What resists extraction:
 
-- SectionDataTable and SectionForms diverged between the two runs and would need reconciling first
-- theme.css differs, though it consumes only var(--undrr-*) so it is host-independent by construction
+- theme.css still differs because Delta Preflight and Mangrove's element rules require different reset repair
+- Delta's wizard and navigation are product-specific rather than part of the records capability
+- host frames and page composition remain in each app
+
+Verified by:
+
+- 618 non-comment TypeScript lines and 147 CSS lines moved into packages/integration-react-aria
+- both realistic views now import the same filters, table, pagination, data derivation, announcement policy and records layout
+- root typecheck passes for all ten apps
+- the package build passes under the repository's strict TypeScript configuration
 
 **mui** - The residue's shape matters more than its size. Three of the four items are wiring. The fourth, demo.css, is the only one that is real per-site work, and it is a function of how aggressively the host styles bare elements rather than of MUI: 11 lines against Delta, 27 against Mangrove, because Mangrove styles input[type=...] at (0,1,1) and beats MUI's own slot class at (0,1,0).
 
@@ -280,33 +281,41 @@ What resists extraction:
 | delta-antd | clean | **no** - global stylesheet restyles the host |
 | mangrove-antd | clean | **no** - global stylesheet restyles the host |
 
-## A5 - Theming fidelity and propagation
+## A5 - Visual control and theming fidelity
 
 > **Answers: Design-token alignment** - Can it be driven by UNDRR tokens, and does a token change propagate?
 >
-> React Aria and Carbon resolve tokens in the browser, so a Mangrove change is a stylesheet swap. MUI, Mantine and Ant Design bake values in, making it a rebuild of every site. Carbon leaves 21-22 of 71 tokens unreachable at all.
+> React Aria and MUI retain visual authority across both hosts. Ant Design accepts the mapped tokens, but four derived aliases needed contrast corrections and Mangrove overrides some themed control geometry. Carbon leaves 21-22 of 71 evaluated tokens unreachable. Token change fan-out is now measured separately in A2.
 
-`unreachable`: tokens with no hook to attach to. `propagation`: stylesheet swap
-reaches every site at once; rebuild is per site.
+**Token count is not the score.** Candidates expose different applicable token sets. The band asks whether those tokens can be attached, whether UNDRR remains the visual authority in both hosts, and how many manual corrections are required.
 
-| Pairing | tokens applied||UNDRR design tokens successfully connected | unreachable||tokens with no hook to attach to | propagation||how a token change reaches every site | live var() refs in shipped CSS||CSS custom properties surviving to production |
-| --- | --- | --- | --- | --- |
-| delta-react-aria | {spark:48:66} | 0 | **stylesheet-swap** | {spark:409:409} |
-| mangrove-react-aria | {spark:47:66} | 0 | **stylesheet-swap** | {spark:309:409} |
-| delta-mui | {spark:29:66} | 0 | **mostly-rebuild** | {spark:38:409} |
-| mangrove-mui | {spark:32:66} | 0 | **mostly-rebuild** | {spark:38:409} |
-| delta-carbon | {spark:50:66} | **{spark:21:22}** | **stylesheet-swap** | {spark:263:409} |
-| mangrove-carbon | {spark:50:66} | **{spark:22:22}** | **stylesheet-swap** | {spark:201:409} |
-| delta-mantine | {spark:66:66} | **{spark:5:22}** | **mostly-rebuild** | {spark:44:409} |
-| mangrove-mantine | {spark:62:66} | 0 | **mostly-rebuild** | {spark:44:409} |
-| delta-antd | {spark:44:66} | 0 | **mostly-rebuild** | {spark:42:409} |
-| mangrove-antd | {spark:44:66} | 0 | **mostly-rebuild** | {spark:41:409} |
+`unreachable`: tokens with no hook to attach to. `authority`: whether the
+mapped visual system still controls the result in both hosts. Change propagation is scored in A2.
+
+| Pairing | tokens applied||UNDRR design tokens successfully connected | unreachable||tokens with no hook to attach to | visual authority||does the mapped system control both hosts? | manual corrections||derived aliases pinned by hand | propagation detail||reported here, scored in A2 |
+| --- | --- | --- | --- | --- | --- |
+| delta-react-aria | {spark:48:66} | 0 | **yes** | 0 | stylesheet-swap; {spark:414:414} live var() refs |
+| mangrove-react-aria | {spark:47:66} | 0 | **yes** | 0 | stylesheet-swap; {spark:314:414} live var() refs |
+| delta-mui | {spark:29:66} | 0 | **yes** | 0 | mostly-rebuild; {spark:38:414} live var() refs |
+| mangrove-mui | {spark:32:66} | 0 | **yes** | 0 | mostly-rebuild; {spark:38:414} live var() refs |
+| delta-carbon | {spark:50:66} | **{spark:21:22}** | **partial** | 0 | stylesheet-swap; {spark:263:414} live var() refs |
+| mangrove-carbon | {spark:50:66} | **{spark:22:22}** | **partial** | 0 | stylesheet-swap; {spark:201:414} live var() refs |
+| delta-mantine | {spark:66:66} | **{spark:5:22}** | **partial** | 3 | mostly-rebuild; {spark:44:414} live var() refs |
+| mangrove-mantine | {spark:62:66} | 0 | **partial** | 3 | mostly-rebuild; {spark:44:414} live var() refs |
+| delta-antd | {spark:44:66} | 0 | **partial** | 4 | mostly-rebuild; {spark:42:414} live var() refs |
+| mangrove-antd | {spark:44:66} | 0 | **partial** | 4 | mostly-rebuild; {spark:41:414} live var() refs |
+
+- **Adobe React Aria:** React Aria supplies behaviour and state semantics rather than an upstream visual language, so the shared UNDRR layer remains the visual authority.
+- **MUI (Community only):** The shared MUI theme reaches palette, typography, spacing, shape, z-index and focus treatment. Mangrove requires host-containment repair, but the resulting MUI controls still follow the project theme.
+- **IBM Carbon:** Roughly 30% of the evaluated tokens are unreachable, so the supported Carbon theme cannot express the complete UNDRR visual system.
+- **Mantine:** Mantine requires ten-shade ramps, has no focus-colour or z-index-scale theme fields, and needs host-specific collision repair. One pairing also records unreachable tokens.
+- **Ant Design:** Four derived text aliases failed contrast and were pinned manually. On Mangrove, unlayered host form rules override the themed Ant control height, border and radius.
 
 ## A6 - Right-to-left
 
 > **Answers: Right-to-left** - Does Arabic work in the components, not just the page?
 >
-> MUI Community fails on both hosts and cannot be fixed within the brief's constraints. React Aria and Ant Design are clean at zero cost; Mantine is clean only after mitigation. This needs a policy call, not a bug fix.
+> MUI works after its documented three-step RTL setup: dir, a direction-aware theme, and its first-party stylis plugin. The prototypes implement that setup in 29 integration lines with two dependencies and a provider; omission fails silently. React Aria and Ant Design work without that extra pipeline, while Mantine is clean after mitigation.
 
 Read `status` against `setup`: `clean` at `native`/0 lines means a `dir` attribute
 sufficed; `clean` at `composed`/18 lines means the library needed mitigation.
@@ -345,7 +354,7 @@ Recorded issues are reproduced verbatim below.
 
 </details>
 
-## A7 - Accessibility conformance
+## A7 - Automated accessibility signals
 
 > **Answers: Accessibility** - Does it meet UNDRR's obligations in practice?
 >

@@ -19,10 +19,10 @@
   --undrr-color-text-disabled: #8b9aa5;
   --undrr-color-border: #c8d2da;
   --undrr-color-border-strong: #8b9aa5;
-  --undrr-color-accent: #2f6f8f;
-  --undrr-color-accent-hover: #255a74;
-  --undrr-color-accent-active: #1c4459;
-  --undrr-color-accent-subtle: #e3eef3;
+  --undrr-color-accent: #004f91;
+  --undrr-color-accent-hover: #3372a7;
+  --undrr-color-accent-active: #1a619c;
+  --undrr-color-accent-subtle: #e6edf4;
   --undrr-color-on-accent: #ffffff;
   --undrr-color-focus: #b8531f;
   --undrr-color-focus-ring-offset: #ffffff;
@@ -32,8 +32,8 @@
   --undrr-color-warning-subtle: #fdf3dc;
   --undrr-color-success: #1f6b45;
   --undrr-color-success-subtle: #e4f2ea;
-  --undrr-color-info: #2f6f8f;
-  --undrr-color-info-subtle: #e3eef3;
+  --undrr-color-info: #004f91;
+  --undrr-color-info-subtle: #e6edf4;
   --undrr-space-0: 0;
   --undrr-space-1: 0.25rem;
   --undrr-space-2: 0.5rem;

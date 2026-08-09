@@ -269,7 +269,8 @@ test.describe("full application", () => {
     await page.goto(`${URL}?candidate=on`);
 
     const collator = new Intl.Collator("en");
-    const countryColumn = page.locator("[data-candidate-root] tbody tr td:first-child");
+    // The first cell is the selection checkbox; Country is the first data column.
+    const countryColumn = page.locator("[data-candidate-root] tbody tr td:nth-child(2)");
 
     /** Reads the visible page's first column and asserts it is ordered. */
     const readOrdered = async (direction: "ascending" | "descending") => {
@@ -326,7 +327,7 @@ test.describe("full application", () => {
     await page.locator(".demo-select__trigger").first().click();
     await page.getByRole("option", { name: "Drought", exact: true }).click();
 
-    const firstColumn = page.locator("[data-candidate-root] tbody tr td:first-child");
+    const firstColumn = page.locator("[data-candidate-root] tbody tr td:nth-child(2)");
     const header = page.getByRole("columnheader", { name: "Hazard type" });
 
     await header.click();
@@ -362,7 +363,9 @@ test.describe("full application", () => {
 
     const readIndicator = (name: string) =>
       page.getByRole("columnheader", { name }).evaluate((el) => {
-        const cs = getComputedStyle(el, "::after");
+        const inner = el.querySelector(".demo-table__columnInner");
+        if (!inner) throw new Error("sortable header has no inner layout element");
+        const cs = getComputedStyle(inner, "::after");
         return {
           content: cs.content,
           opacity: Number.parseFloat(cs.opacity),

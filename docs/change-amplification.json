@@ -1,0 +1,176 @@
+{
+  "$comment": "A2 estate change-amplification scenario. The mechanisms are taken from the two-host prototypes and extraction experiments; six-site values are explicit extrapolations, not observations of six production sites.",
+  "scenario": {
+    "siteCount": 6,
+    "dataSites": 3,
+    "contentSites": 3,
+    "assumption": "Each product consumes a versioned shared package or centrally delivered token stylesheet where the evaluated architecture supports one. A rebuild is counted separately from a source edit."
+  },
+  "changes": {
+    "token": "Change one shared colour, typography or spacing value.",
+    "interactionPolicy": "Change one shared component behaviour or accessibility policy needed by all six products.",
+    "upstreamUpgrade": "Upgrade the candidate foundation without changing product requirements."
+  },
+  "candidates": {
+    "react-aria": {
+      "architectureType": "C",
+      "basis": "measured mechanism, modelled at six sites",
+      "mechanismMeasured": true,
+      "notes": "The records capability is consumed by both hosts from one package. The six-site model assumes the same governed foundation is adopted by both product-system halves.",
+      "scenarios": {
+        "token": {
+          "authoritativeLocations": 1,
+          "consumerSourceEdits": 0,
+          "siteRebuilds": 0,
+          "validationSurfaces": 2,
+          "ownershipBoundaries": 1,
+          "evidence": "Live UNDRR custom-property references remain in shipped CSS; both hosts inherit a token-sheet change."
+        },
+        "interactionPolicy": {
+          "authoritativeLocations": 1,
+          "consumerSourceEdits": 0,
+          "siteRebuilds": 6,
+          "validationSurfaces": 2,
+          "ownershipBoundaries": 1,
+          "evidence": "Filtering, sorting, pagination and announcement policy have one shared implementation consumed by both hosts."
+        },
+        "upstreamUpgrade": {
+          "authoritativeLocations": 1,
+          "consumerSourceEdits": 0,
+          "siteRebuilds": 6,
+          "validationSurfaces": 2,
+          "ownershipBoundaries": 1,
+          "evidence": "The model places the React Aria dependency behind one governed foundation; breadth beyond the measured records capability remains a pilot assumption."
+        }
+      }
+    },
+    "mui": {
+      "architectureType": "A",
+      "basis": "measured package, modelled across two parallel stacks",
+      "mechanismMeasured": true,
+      "notes": "The MUI integration is shared, but Mangrove remains a separate component system. Estate-wide policy therefore has two authoritative implementations.",
+      "scenarios": {
+        "token": {
+          "authoritativeLocations": 1,
+          "consumerSourceEdits": 0,
+          "siteRebuilds": 3,
+          "validationSurfaces": 2,
+          "ownershipBoundaries": 2,
+          "evidence": "One UNDRR token source feeds both paths, but MUI resolves mapped values into bundles while Mangrove consumes its own path."
+        },
+        "interactionPolicy": {
+          "authoritativeLocations": 2,
+          "consumerSourceEdits": 0,
+          "siteRebuilds": 6,
+          "validationSurfaces": 2,
+          "ownershipBoundaries": 2,
+          "evidence": "The shared MUI integration and the Mangrove component stack must implement the same policy separately."
+        },
+        "upstreamUpgrade": {
+          "authoritativeLocations": 1,
+          "consumerSourceEdits": 0,
+          "siteRebuilds": 3,
+          "validationSurfaces": 1,
+          "ownershipBoundaries": 1,
+          "evidence": "The extracted MUI package centralises the suite dependency; only the three modelled data products consume that upgrade."
+        }
+      }
+    },
+    "antd": {
+      "architectureType": "A",
+      "basis": "measured package, modelled across two parallel stacks",
+      "mechanismMeasured": true,
+      "notes": "Ant Design was tested shared-first, but the application and Mangrove paths still express policy through different component systems.",
+      "scenarios": {
+        "token": {
+          "authoritativeLocations": 1,
+          "consumerSourceEdits": 0,
+          "siteRebuilds": 3,
+          "validationSurfaces": 2,
+          "ownershipBoundaries": 2,
+          "evidence": "One UNDRR token source feeds both paths, while Ant Design theme values are bundled into the data products."
+        },
+        "interactionPolicy": {
+          "authoritativeLocations": 2,
+          "consumerSourceEdits": 0,
+          "siteRebuilds": 6,
+          "validationSurfaces": 2,
+          "ownershipBoundaries": 2,
+          "evidence": "The shared Ant integration and Mangrove must implement and validate the policy independently."
+        },
+        "upstreamUpgrade": {
+          "authoritativeLocations": 1,
+          "consumerSourceEdits": 0,
+          "siteRebuilds": 3,
+          "validationSurfaces": 1,
+          "ownershipBoundaries": 1,
+          "evidence": "The shared Ant package centralises the suite dependency for the three modelled data products."
+        }
+      }
+    },
+    "mantine": {
+      "architectureType": "A",
+      "basis": "architecture model; package propagation not measured",
+      "mechanismMeasured": false,
+      "notes": "A shared theme is feasible, but no cross-host extraction drill was completed and the two implementations currently differ.",
+      "scenarios": {
+        "token": {
+          "authoritativeLocations": 1,
+          "consumerSourceEdits": null,
+          "siteRebuilds": 3,
+          "validationSurfaces": 2,
+          "ownershipBoundaries": 2,
+          "evidence": "Mantine bakes theme values into each bundle; the absence of a measured shared package leaves consumer edit cost unproved."
+        },
+        "interactionPolicy": {
+          "authoritativeLocations": 2,
+          "consumerSourceEdits": null,
+          "siteRebuilds": 6,
+          "validationSurfaces": 2,
+          "ownershipBoundaries": 2,
+          "evidence": "Type A requires separate Mantine and Mangrove implementations; shared-package propagation was not measured."
+        },
+        "upstreamUpgrade": {
+          "authoritativeLocations": 1,
+          "consumerSourceEdits": null,
+          "siteRebuilds": 3,
+          "validationSurfaces": 1,
+          "ownershipBoundaries": 1,
+          "evidence": "Upgrade fan-out is modelled because the current pair was not extracted into one maintained package."
+        }
+      }
+    },
+    "carbon": {
+      "architectureType": "B",
+      "basis": "architecture model; translation path not measured",
+      "mechanismMeasured": false,
+      "notes": "Carbon and Mangrove remain separate visual and component authorities, with an additional translation layer for cross-stack use.",
+      "scenarios": {
+        "token": {
+          "authoritativeLocations": 1,
+          "consumerSourceEdits": null,
+          "siteRebuilds": 0,
+          "validationSurfaces": 2,
+          "ownershipBoundaries": 2,
+          "evidence": "The canonical token changes once, but both the Mangrove and Carbon routes need validation because evaluated Carbon coverage is incomplete."
+        },
+        "interactionPolicy": {
+          "authoritativeLocations": 3,
+          "consumerSourceEdits": null,
+          "siteRebuilds": 6,
+          "validationSurfaces": 3,
+          "ownershipBoundaries": 2,
+          "evidence": "Carbon, Mangrove and the proposed translation layer can each carry part of an estate-wide component policy."
+        },
+        "upstreamUpgrade": {
+          "authoritativeLocations": 2,
+          "consumerSourceEdits": null,
+          "siteRebuilds": 3,
+          "validationSurfaces": 2,
+          "ownershipBoundaries": 2,
+          "evidence": "A Carbon upgrade must be reconciled with the project theme and any Carbon-to-Mangrove translation path; extraction was not measured."
+        }
+      }
+    }
+  }
+}

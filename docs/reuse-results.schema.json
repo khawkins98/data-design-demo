@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "UNDRR reuse and ownership evidence",
+  "type": "object",
+  "required": ["measuredAt", "capability", "candidates"],
+  "properties": {
+    "measuredAt": { "type": "string", "format": "date" },
+    "capability": { "type": "string" },
+    "candidates": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["basis", "package", "consumers", "ownership", "changes", "visualAuthority"],
+        "properties": {
+          "basis": { "enum": ["measured", "analysed", "proposed"] },
+          "package": { "type": "string" },
+          "consumers": { "type": "array", "minItems": 2, "items": { "type": "string" } },
+          "ownership": { "type": "object" },
+          "changes": { "type": "object" },
+          "visualAuthority": { "enum": ["high", "medium", "low"] }
+        }
+      }
+    }
+  }
+}

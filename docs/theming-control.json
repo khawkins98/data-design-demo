@@ -1,0 +1,35 @@
+{
+  "$comment": "Candidate-level evidence for A5 visual control and theming fidelity. Token reach remains pairing-level in evidence.json; this file records whether the mapped visual system stays authoritative across both hosts and how much corrective alias work was required.",
+  "candidates": {
+    "react-aria": {
+      "authorityAcrossHosts": "yes",
+      "manualCorrections": 0,
+      "basis": "UNDRR-owned component CSS consumes the tokens directly in both hosts",
+      "evidence": "React Aria supplies behaviour and state semantics rather than an upstream visual language, so the shared UNDRR layer remains the visual authority."
+    },
+    "mui": {
+      "authorityAcrossHosts": "yes",
+      "manualCorrections": 0,
+      "basis": "one supported createTheme mapping is shared by both hosts",
+      "evidence": "The shared MUI theme reaches palette, typography, spacing, shape, z-index and focus treatment. Mangrove requires host-containment repair, but the resulting MUI controls still follow the project theme."
+    },
+    "antd": {
+      "authorityAcrossHosts": "partial",
+      "manualCorrections": 4,
+      "basis": "seed tokens reach the suite, but derived aliases and host cascade limit authority",
+      "evidence": "Four derived text aliases failed contrast and were pinned manually. On Mangrove, unlayered host form rules override the themed Ant control height, border and radius."
+    },
+    "mantine": {
+      "authorityAcrossHosts": "partial",
+      "manualCorrections": 3,
+      "basis": "theme mapping works after colour-ramp, focus and host-collision correction",
+      "evidence": "Mantine requires ten-shade ramps, has no focus-colour or z-index-scale theme fields, and needs host-specific collision repair. One pairing also records unreachable tokens."
+    },
+    "carbon": {
+      "authorityAcrossHosts": "partial",
+      "manualCorrections": 0,
+      "basis": "Carbon retains IBM visual conventions and has incomplete UNDRR token reach",
+      "evidence": "Roughly 30% of the evaluated tokens are unreachable, so the supported Carbon theme cannot express the complete UNDRR visual system."
+    }
+  }
+}
