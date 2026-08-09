@@ -61,12 +61,21 @@ export function SectionStates(): ReactElement {
         7. Loading, empty, error and success states
       </h3>
 
+      {/*
+        * `aria-pressed` is ours. Carbon's `kind="primary" | "tertiary"` is the only
+        * thing distinguishing the selected state button from the other three, and a
+        * `kind` change is COLOUR ONLY — nothing in the accessibility tree says which
+        * of the four is active, so the group reads as four identical buttons. Carbon
+        * has no toggle-button variant (`ContentSwitcher` is the nearest, and it is a
+        * tablist, not a set of buttons).
+        */}
       <div className="demo-row" role="group" aria-label="Table state">
         {LOAD_STATES.map((state) => (
           <Button
             key={state}
             size="sm"
             kind={state === tableState ? "primary" : "tertiary"}
+            aria-pressed={state === tableState}
             onClick={() => setTableState(state)}
           >
             table: {state}
@@ -76,7 +85,16 @@ export function SectionStates(): ReactElement {
 
       <div className="demo-statebox">
         {tableState === "loading" ? (
-          <DataTableSkeleton columnCount={3} rowCount={3} showHeader={false} showToolbar={false} />
+          /* `aria-label` because the skeleton replaces the table entirely: without
+             it the loading state is an unnamed block of grey bars. The delta twin
+             passes one; this one did not. */
+          <DataTableSkeleton
+            columnCount={3}
+            rowCount={3}
+            showHeader={false}
+            showToolbar={false}
+            aria-label={labels.stateLoading}
+          />
         ) : null}
 
         {tableState === "error" ? (
@@ -136,6 +154,7 @@ export function SectionStates(): ReactElement {
             key={state}
             size="sm"
             kind={state === formState ? "primary" : "tertiary"}
+            aria-pressed={state === formState}
             onClick={() => setFormState(state)}
           >
             form: {state}

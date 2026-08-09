@@ -118,13 +118,29 @@ test.describe("kitchen sink", () => {
     const dropdown = page.locator(".demo-overlay").filter({ has: page.locator("table") });
     await expect(dropdown.first()).toBeVisible();
 
-    // Two time inputs inside ONE popover: start and end.
-    await expect(page.locator(".mantine-DateTimePicker-timeInput")).toHaveCount(0);
-    const timeInputs = page.locator('.demo-overlay input[type="time"], .demo-overlay [role="textbox"]');
+    /*
+     * TWO TIME INPUTS INSIDE ONE POPOVER: start and end. Counted, not merely
+     * probed for existence — this assertion used to fall back through an `.or()`
+     * chain to "any input exists inside the overlay", which the calendar's own
+     * hidden input satisfies and which would pass on a single-endpoint picker,
+     * i.e. on the exact arrangement the finding says Mantine does NOT need.
+     *
+     * `.mantine-TimePicker-root` is the whole control; each one renders two
+     * `role="spinbutton"` fields (hours and minutes), so four spinbuttons is the
+     * corroborating count. Measured against the live DOM, and the range-only class
+     * `rangeTimeInput` is asserted too, because that is what proves these are the
+     * range picker's two endpoints rather than two separate pickers.
+     */
+    const popover = dropdown.first();
+    await expect(popover.locator(".mantine-TimePicker-root")).toHaveCount(2);
+    await expect(popover.locator(".mantine-DateTimePicker-rangeTimeInput")).toHaveCount(2);
+    await expect(popover.locator('[role="spinbutton"]')).toHaveCount(4);
+    for (const index of [0, 1]) {
+      await expect(popover.locator(".mantine-TimePicker-root").nth(index)).toBeVisible();
+    }
     // The range calendar highlights the intervening days; a two-picker fallback
     // could not do this.
     await expect(page.locator(".demo-overlay [data-in-range]").first()).toBeVisible();
-    await expect(timeInputs.first().or(page.locator(".demo-overlay input")).first()).toBeVisible();
 
     // The open dropdown is the evidence for the headline finding, so it gets its
     // own screenshot rather than only living in a passing assertion.

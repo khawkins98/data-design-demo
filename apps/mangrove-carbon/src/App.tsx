@@ -22,7 +22,8 @@ import { RadioButton, RadioButtonGroup } from "@carbon/react";
 
 import { LOCALES } from "@undrr-eval/fixtures";
 import type { LocaleCode } from "@undrr-eval/fixtures";
-import { HostShell } from "@undrr-eval/host-mangrove";
+import { HostShell, ViewSwitcher } from "@undrr-eval/host-mangrove";
+import { viewLinks } from "@undrr-eval/test-harness/views";
 import { TOKEN_SCOPE_CLASS } from "@undrr-eval/undrr-tokens";
 import { KnownIssues } from "@undrr-eval/known-issues";
 
@@ -90,7 +91,24 @@ export function App(): ReactElement {
   }, [locale]);
 
   return (
-    <HostShell title={demo.labels.appTitle} dir={demo.dir}>
+    <HostShell
+      title="Demo: Mangrove + Carbon"
+      dir={demo.dir}
+      pageHeader={
+        /*
+         * Cross-view navigation, in the frame's page-header slot. Host chrome on the
+         * same terms as the known-issues box below: outside the candidate wrapper, present in both
+         * candidate states. `"application"` is absent from `available` because the
+         * whole-DELTA-screen view belongs to the Delta host and this app ships no
+         * `app.html`.
+         */
+        <ViewSwitcher
+          views={viewLinks(["island", "inventory"], "inventory")}
+          pairingName="IBM Carbon on Mangrove"
+          otherHost={{ label: "Carbon on Delta", href: "../delta-carbon/" }}
+        />
+      }
+    >
       {/*
         * Rendered OUTSIDE the candidate wrapper and in BOTH candidate states.
         * Outside, so no candidate stylesheet restyles the warning box and every
@@ -98,6 +116,7 @@ export function App(): ReactElement {
         * leakage baseline as well as the candidate render and therefore cannot
         * itself register as a difference.
         */}
+
       <KnownIssues candidate="carbon" host="mangrove" candidateName="IBM Carbon" />
 
       {CANDIDATE_ON ? (
@@ -127,13 +146,32 @@ export function App(): ReactElement {
             <SectionChrome />
             <SectionDataTable />
             <SectionStates />
-            <SectionSideBySide />
 
-            <p className="demo__footnote">
-              Section 8 is the locale switcher above, which drives every other
-              section. Arabic sets <code>dir=&quot;rtl&quot;</code> on this
-              wrapper and on the host shell.
-            </p>
+            {/*
+              THE 7-TO-9 JUMP IN THE HEADINGS IS DELIBERATE, AND SAYING SO HERE
+              IS THE POINT. Requirements section 8 is Locale, and it is met — by
+              the switcher in the header, which every section above consumes. It
+              gets no numbered block because it is a page-level control, not a
+              specimen. Renumbering would hide that a specified section exists;
+              a note only at the foot of the page arrives long after the reader
+              has read the jump as a mistake. So it sits where 8 would be.
+            */}
+            <div className="demo-section" id="section-8-note">
+              <h3 className="demo-section__title">
+                8. Locale — no numbered section of its own
+              </h3>
+              <p className="demo__footnote">
+                Section 8 of the requirements (locale switcher, RTL, long labels)
+                is exercised by the locale switcher at the top of this page,
+                which drives every section above; Arabic sets{" "}
+                <code>dir=&quot;rtl&quot;</code> on this wrapper and on the host
+                shell. It gets no block here because it is page-wide rather than
+                one specimen. The headings run 7 to 9 for that reason — nothing
+                was dropped or hidden.
+              </p>
+            </div>
+
+            <SectionSideBySide />
           </div>
         </DemoContext.Provider>
       ) : null}

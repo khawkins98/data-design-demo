@@ -1,0 +1,10 @@
+{
+  "error": null,
+  "direction": "rtl",
+  "insideCandidateRoot": false,
+  "insideDirWrapper": false,
+  "hasRtlWrap": true,
+  "tokensResolve": "#14232e",
+  "tokenScopeAncestor": true,
+  "note": "The Modal is deliberately NOT retargeted into `.demo`: it would be clipped by the table's own overflow scroll container. So it is a genuine document.body portal outside the frame's dir wrapper, and antd still gets direction right from ConfigProvider. The token scope class is passed on the Modal's own className to keep var(--undrr-*) resolving."
+}

@@ -1,0 +1,78 @@
+{
+  "$schema": "./reuse-results.schema.json",
+  "$comment": "Architecture evidence for the two leading contrasting operating models. Counts exclude blank lines and comments. Change drills record the propagation mechanism already exercised by the paired builds; they do not claim elapsed implementation time.",
+  "measuredAt": "2026-08-08",
+  "capability": "Realistic records workspace: filters, faceting, sorting, selection, pagination, locale-aware formatting and result announcements",
+  "candidates": {
+    "react-aria": {
+      "basis": "measured",
+      "package": "packages/integration-react-aria",
+      "consumers": ["apps/delta-react-aria", "apps/mangrove-react-aria"],
+      "sharedSourceLines": 618,
+      "sharedCssLines": 147,
+      "ownership": {
+        "behaviour": "shared-package",
+        "recordsLayout": "shared-package",
+        "componentAppearance": "host-adapted token CSS",
+        "hostResidue": "frame, page composition, Delta-only wizard/menu, and host reset repair"
+      },
+      "changes": {
+        "token": {
+          "consumerSourceFilesChanged": 0,
+          "siteRebuildRequired": false,
+          "result": "inherited",
+          "evidence": "Shipped CSS retains var(--undrr-*) references; a token stylesheet swap reaches both consumers."
+        },
+        "interactionPolicy": {
+          "consumerSourceFilesChanged": 0,
+          "siteRebuildRequired": true,
+          "result": "inherited-from-one-package",
+          "evidence": "Filtering, reset-to-first-page, settled announcements, sorting and pagination now have one implementation imported by both hosts."
+        },
+        "rtlAndLocalisation": {
+          "consumerSourceFilesChanged": 0,
+          "siteRebuildRequired": false,
+          "result": "clean",
+          "evidence": "Both consumers pass the locale through one shared context; logical CSS and React Aria locale behaviour handle direction."
+        }
+      },
+      "visualAuthority": "high",
+      "visualAuthorityNote": "The shared records layer owns layout and consumes UNDRR custom properties directly. Host-specific theme files still repair each host reset, so the experiment proves a shared product layer, not zero host adaptation."
+    },
+    "mui": {
+      "basis": "measured",
+      "package": "packages/integration-mui",
+      "consumers": ["apps/delta-mui", "apps/mangrove-mui"],
+      "sharedSourceLines": 809,
+      "sharedPercentExcludingDemoOnly": 86,
+      "ownership": {
+        "behaviour": "shared-package",
+        "recordsLayout": "shared-package",
+        "componentAppearance": "shared MUI theme plus per-host repair",
+        "hostResidue": "host frame, stylesheet order and 11-27 lines of host repair CSS"
+      },
+      "changes": {
+        "token": {
+          "consumerSourceFilesChanged": 0,
+          "siteRebuildRequired": true,
+          "result": "inherited-after-every-site-rebuild",
+          "evidence": "The shared theme centralises mapping, but token values are resolved into bundle output rather than remaining live custom-property references."
+        },
+        "interactionPolicy": {
+          "consumerSourceFilesChanged": 0,
+          "siteRebuildRequired": true,
+          "result": "inherited-from-one-package",
+          "evidence": "Both hosts import the same integration package; a shared component or default changes once and is rebuilt into each site."
+        },
+        "rtlAndLocalisation": {
+          "consumerSourceFilesChanged": 0,
+          "siteRebuildRequired": true,
+          "result": "unresolved-under-evaluation-constraints",
+          "evidence": "Shared configuration cannot flip physical offsets already emitted by Emotion; the documented remedy adds a third-party RTL transform forbidden by the evaluation."
+        }
+      },
+      "visualAuthority": "medium",
+      "visualAuthorityNote": "UNDRR can centralise a theme and wrappers, but MUI retains component structure, state semantics and physical-layout choices; host repair remains per site."
+    }
+  }
+}

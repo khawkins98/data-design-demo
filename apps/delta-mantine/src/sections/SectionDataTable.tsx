@@ -121,12 +121,17 @@ export function SectionDataTable(): ReactElement {
         timeStyle: "short",
         timeZone: "UTC",
       }),
+      /* The comparator's collator, from the SELECTED locale. See `sortRecords`. */
+      collator: new Intl.Collator(bcp47),
     }),
     [bcp47],
   );
 
   const filtered = useMemo(() => filterRecords(LOSS_RECORDS, filter), [filter]);
-  const sorted = useMemo(() => sortRecords(filtered, sort), [filtered, sort]);
+  const sorted = useMemo(
+    () => sortRecords(filtered, sort, formatters.collator),
+    [filtered, sort, formatters],
+  );
   const totalPages = pageCount(sorted.length, pageSize);
   const safePage = Math.min(page, totalPages);
   const visible = useMemo(() => pageSlice(sorted, safePage, pageSize), [sorted, safePage, pageSize]);
@@ -242,7 +247,7 @@ export function SectionDataTable(): ReactElement {
                     className="demo-sort"
                     data-testid={`sort-${column.key}`}
                   >
-                    <span>{labels[column.labelKey]}</span>
+                    <span className="demo-sort__label">{labels[column.labelKey]}</span>
                     <span aria-hidden="true" className="demo-sort__indicator">
                       {sort?.key === column.key ? (sort.direction === "asc" ? "▲" : "▼") : "↕"}
                     </span>

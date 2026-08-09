@@ -10,7 +10,7 @@
 
 import { describe, expect, it } from "vitest";
 
-import { KNOWN_ISSUES, SEVERITY_ORDER, issuesFor } from "./issues.js";
+import { KNOWN_ISSUES, SCOREABLE_OWNERS, SEVERITY_ORDER, issuesFor } from "./issues.js";
 
 const CANDIDATES = ["react-aria", "mui", "carbon", "mantine", "antd"] as const;
 const HOSTS = ["delta", "mangrove"] as const;
@@ -133,9 +133,45 @@ describe("known issues registry", () => {
     // is the field most likely to be forgotten when adding an entry.
     for (const issue of KNOWN_ISSUES) {
       expect(
-        ["candidate", "host", "pairing", "this evaluation"],
+        [
+          "candidate",
+          "pairing",
+          "third party",
+          "host",
+          "our implementation",
+          "this evaluation",
+        ],
         `${issue.id} has no valid owner`,
       ).toContain(issue.owner);
     }
+  });
+
+  it("states what it would take to escape every blocker and decision", () => {
+    // The scoring layer can rank severity but not cost of escape, and a flat list of
+    // blockers implies four very different propositions are equivalent: a setting, a
+    // prop, an upstream release, a rule this evaluation imposed, and a defect with no
+    // exit at all. Required on anything that could remove a candidate from a
+    // shortlist, so the distinction cannot be lost by omission.
+    const decisive = KNOWN_ISSUES.filter(
+      (issue) => !issue.resolved && (issue.severity === "blocker" || issue.severity === "decision"),
+    );
+    expect(decisive.length, "no blockers or decisions found; this guard would be vacuous").toBeGreaterThan(0);
+    for (const issue of decisive) {
+      expect(issue.remediability, `${issue.id} must state its remediability`).toBeDefined();
+    }
+  });
+
+  it("keeps our own bugs out of what can be scored", () => {
+    // The scoring layer must only count defects belonging to the thing being
+    // chosen. If an "our implementation" or harness finding ever leaks into the
+    // scoreable set, a candidate gets ranked down for a bug we wrote.
+    const scoreable = KNOWN_ISSUES.filter((issue) => SCOREABLE_OWNERS.includes(issue.owner));
+    for (const issue of scoreable) {
+      expect(issue.owner, `${issue.id} must not be scoreable`).not.toBe("our implementation");
+      expect(issue.owner, `${issue.id} must not be scoreable`).not.toBe("this evaluation");
+      expect(issue.owner, `${issue.id} must not be scoreable`).not.toBe("host");
+    }
+    // And the classification must actually be in use, or the guard above is vacuous.
+    expect(KNOWN_ISSUES.some((issue) => issue.owner === "our implementation")).toBe(true);
   });
 });

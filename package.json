@@ -27,8 +27,10 @@
     "mangrove2:tokens": "node scripts/fetch-mangrove-2-tokens.mjs",
     "comparison": "node scripts/build-comparison.mjs",
     "axes": "node scripts/build-axes.mjs",
+    "scores": "node --experimental-strip-types scripts/build-scores.mjs",
     "deps:count": "node scripts/count-dependencies.mjs",
-    "known-issues:json": "node --experimental-strip-types scripts/build-known-issues-json.mjs"
+    "known-issues:json": "node --experimental-strip-types scripts/build-known-issues-json.mjs",
+    "issues:page": "node --experimental-strip-types scripts/build-issues-page.mjs"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.10.2",

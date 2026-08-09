@@ -1,0 +1,52 @@
+{
+  "resting": [
+    {
+      "id": "app-country",
+      "text": "Country"
+    },
+    {
+      "id": "app-hazard",
+      "text": "Hazard type"
+    },
+    {
+      "id": "app-status",
+      "text": "Verification status"
+    }
+  ],
+  "clearFiltersLabel": "Clear filters",
+  "restingInk": {
+    "error": null,
+    "text": "Hazard type",
+    "state": "placeholder",
+    "textNodeZIndex": "1",
+    "textNodePosition": "static",
+    "contentDisplay": "flex",
+    "overlayBackgroundColor": "rgba(0, 0, 0, 0)",
+    "overlayHeightPx": 24,
+    "contentHeightPx": 24,
+    "topmostAtText": "input.ant-select-input:rgba(0, 0, 0, 0)",
+    "textIsCovered": true,
+    "opaqueLayersAboveText": [],
+    "inkWithText": 433,
+    "inkWithoutText": 0,
+    "inkFromText": 433
+  },
+  "chosenInk": {
+    "error": null,
+    "text": "Drought",
+    "state": "value",
+    "textNodeZIndex": "auto",
+    "textNodePosition": "relative",
+    "contentDisplay": "block",
+    "overlayBackgroundColor": "rgba(0, 0, 0, 0)",
+    "overlayHeightPx": 24,
+    "contentHeightPx": 24,
+    "topmostAtText": "input.ant-select-input:rgba(0, 0, 0, 0)",
+    "textIsCovered": true,
+    "opaqueLayersAboveText": [],
+    "inkWithText": 302,
+    "inkWithoutText": 0,
+    "inkFromText": 302
+  },
+  "note": "Resting text is each field's own localised name, via antd's `placeholder` plus `allowClear`, not a sentinel option labelled 'Clear filters'. The ink blocks are the Delta-side counterpart of island-filter-resting-text.json — same probe — so the known-issues claim that the Delta host is unaffected by the value-hiding defect can be read off a measurement rather than a cascade argument. NOTE textIsCovered: true on BOTH hosts, because antd's overlay input is the hit-test target by design. It is not the discriminator; inkFromText is."
+}

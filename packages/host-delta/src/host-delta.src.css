@@ -12,3 +12,30 @@
 @import "tailwindcss";
 
 @source "./HostShell.tsx";
+
+/*
+ * The other two host-chrome components, declared explicitly.
+ *
+ * REDUNDANT TODAY, AND KEPT ON PURPOSE - measured, because the obvious assumption
+ * about this file is wrong and has now misled two readers.
+ *
+ * The assumption is that `@source` RESTRICTS what Tailwind scans, so a utility used
+ * only outside HostShell.tsx would emit nothing, silently: the class lands in the
+ * markup, matches no rule, the element renders unstyled, and every test still
+ * passes. That is a real failure mode. It is just not this file's behaviour.
+ * Tailwind 4's automatic content detection already scans the package, and `@source`
+ * ADDS to that rather than narrowing it.
+ *
+ * Verified rather than reasoned: building with the ViewSwitcher line deleted still
+ * emits its most exotic utilities - the arbitrary `content-['›']` breadcrumb
+ * separator and the negative margin that lets the active tab break the container
+ * border. Both present, count 1 each, with the line gone.
+ *
+ * So these two lines change nothing about today's output. They are kept because
+ * they state which files are host chrome, and because if automatic detection is
+ * ever narrowed the failure they would prevent is invisible. The comment above
+ * `@source "./HostShell.tsx"` says scanning is "restricted to this package's own
+ * sources", which reads as if the restriction were doing the work; it is not.
+ */
+@source "./ViewSwitcher.tsx";
+@source "./AppFrame.tsx";

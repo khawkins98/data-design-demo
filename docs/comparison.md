@@ -6,96 +6,88 @@
 
 # Candidate comparison
 
-10 of 10 pairings have reported. Every figure below comes
-from a run's own `evidence.json`; nothing here is entered by hand.
-
-Read this alongside each run's `EVIDENCE.md`, which carries the reasoning the
-numbers cannot.
+All 10 demos implemented the 30 evaluated requirements; none recorded `unsupported`. This audit trail shows how they integrated. See [scores](./scores.html) for the recommendation.
 
 ## Headline
 
 | | Adobe React Aria<br>Delta | MUI<br>Delta | IBM Carbon<br>Delta | Mantine<br>Delta | Ant Design<br>Delta | Adobe React Aria<br>Mangrove | MUI<br>Mangrove | IBM Carbon<br>Mangrove | Mantine<br>Mangrove | Ant Design<br>Mangrove |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| **Native** | 20 | 26 | 19 | 20 | 28 | 21 | 26 | 19 | 19 | 28 |
-| **Composed** | 8 | 4 | 10 | 7 | 1 | 7 | 4 | 10 | 10 | 1 |
-| **Custom** | 2 | 0 | 1 | 3 | 1 | 2 | 0 | 1 | 1 | 1 |
+| **Native** | {spark:71:20} | {spark:93:26} | {spark:68:19} | {spark:71:20} | {spark:100:28} | {spark:75:21} | {spark:93:26} | {spark:68:19} | {spark:68:19} | {spark:100:28} |
+| **Composed** | {spark:80:8} | {spark:40:4} | {spark:100:10} | {spark:70:7} | {spark:10:1} | {spark:70:7} | {spark:40:4} | {spark:100:10} | {spark:100:10} | {spark:10:1} |
+| **Custom** | {spark:67:2} | {spark:0:0} | {spark:33:1} | {spark:100:3} | {spark:33:1} | {spark:67:2} | {spark:0:0} | {spark:33:1} | {spark:33:1} | {spark:33:1} |
 | **Unsupported** | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| Custom lines of code | 128 | 54 | 171 | 411 | 95 | 122 | 54 | 171 | 293 | 95 |
-| Custom CSS lines | 715 | 14 | 300 | 72 | 46 | 661 | 27 | 351 | 103 | 46 |
-| CSS selectors | 156 | 3 | 34 | 17 | 6 | 120 | 7 | 48 | 44 | 6 |
-| Wrappers | 5 | 3 | 4 | 4 | 4 | 3 | 2 | 4 | 4 | 4 |
-| Tokens applied | 48 | 29 | 50 | 66 | 44 | 47 | 32 | 50 | 62 | 44 |
-| Tokens unreachable | 0 | 0 | 21 | 5 | 0 | 0 | 0 | 22 | 0 | 0 |
-| Bundle (kB gzipped) | 238.8 | 387.4 | 261.5 | 238.8 | 392.3 | 237.6 | 397.6 | 207.8 | 270.9 | 423.4 |
-| Dependencies | 19 | 142 | 145 | 112 | 68 | 20 | 158 | 146 | 113 | 69 |
-| Build time (s) | 2 | 2.4 | 2.8 | 2.6 | 1.5 | 1.2 | 1.7 | 4.7 | 3.58 | 1.5 |
+| Custom lines of code | {spark:31:128} | {spark:19:77} | {spark:42:171} | {spark:100:411} | {spark:23:95} | {spark:30:122} | {spark:19:77} | {spark:42:171} | {spark:71:293} | {spark:23:95} |
+| Custom CSS lines | {spark:100:715} | {spark:2:14} | {spark:42:300} | {spark:10:72} | {spark:6:46} | {spark:92:661} | {spark:4:27} | {spark:49:351} | {spark:14:103} | {spark:6:46} |
+| CSS selectors | {spark:100:156} | {spark:2:3} | {spark:22:34} | {spark:11:17} | {spark:4:6} | {spark:77:120} | {spark:4:7} | {spark:31:48} | {spark:28:44} | {spark:4:6} |
+| Wrappers | {spark:100:5} | {spark:60:3} | {spark:80:4} | {spark:80:4} | {spark:80:4} | {spark:60:3} | {spark:40:2} | {spark:80:4} | {spark:80:4} | {spark:80:4} |
+| Tokens applied | {spark:73:48} | {spark:44:29} | {spark:76:50} | {spark:100:66} | {spark:67:44} | {spark:71:47} | {spark:48:32} | {spark:76:50} | {spark:94:62} | {spark:67:44} |
+| Tokens unreachable | {spark:0:0} | {spark:0:0} | {spark:95:21} | {spark:23:5} | {spark:0:0} | {spark:0:0} | {spark:0:0} | {spark:100:22} | {spark:0:0} | {spark:0:0} |
+| Bundle (kB gzipped) | {spark:56:238.8} | {spark:91:387.4} | {spark:62:261.5} | {spark:56:238.8} | {spark:93:392.3} | {spark:56:237.6} | {spark:94:397.6} | {spark:49:207.8} | {spark:64:270.9} | {spark:100:423.4} |
+| Build time (s) | {spark:43:2} | {spark:51:2.4} | {spark:60:2.8} | {spark:55:2.6} | {spark:32:1.5} | {spark:26:1.2} | {spark:36:1.7} | {spark:100:4.7} | {spark:76:3.58} | {spark:32:1.5} |
 
 ## Conformance signals
 
-Leakage is the load-bearing one: it says whether the candidate stayed inside
-its own subtree and left the host's own elements alone. axe counts are scoped
-to the candidate subtree, so host baseline violations are excluded.
+Leakage measures whether candidate styles changed host elements. axe scopes vary, so counts are directional rather than directly comparable.
 
 | | Adobe React Aria<br>Delta | MUI<br>Delta | IBM Carbon<br>Delta | Mantine<br>Delta | Ant Design<br>Delta | Adobe React Aria<br>Mangrove | MUI<br>Mangrove | IBM Carbon<br>Mangrove | Mantine<br>Mangrove | Ant Design<br>Mangrove |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Leakage | clean | clean | clean | clean | clean | clean | clean | **FAILED** | clean | clean |
-| axe violations | 0 | 1 | 3 | 0 | 1 | 0 | 1 | 1 | 0 | 1 |
-| axe critical | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| axe violations | 0 | 1 | 2 | 0 | 1 | 0 | 1 | 1 | 0 | 1 |
+| axe critical | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | axe serious | 0 | 1 | 2 | 0 | 1 | 0 | 1 | 1 | 0 | 1 |
 | axe incomplete | 1 | 4 | 2 | 1 | 1 | 1 | 4 | 2 | 0 | 1 |
-| RTL | clean | issues | clean | clean | clean | clean | issues | clean | clean | clean |
+| RTL | clean | clean | clean | clean | clean | clean | clean | clean | clean | clean |
 | Long labels | clean | clean | clean | clean | clean | clean | clean | clean | clean | clean |
-| Blockers | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| Adoption warnings | 0 | 0 | 1 | 1 | 0 | 0 | 0 | 2 | 1 | 1 |
+
+Warning counts are remediation signals, not a ranking; ownership and severity differ.
 
 ## Requirement matrix
 
-`N` native · `C` composed · `X` custom · **`U`** unsupported · `·` not started
+`N` native · `COM` composed · `CUS` custom · **`U`** unsupported · `·` not started
 
 | | Adobe React Aria<br>Delta | MUI<br>Delta | IBM Carbon<br>Delta | Mantine<br>Delta | Ant Design<br>Delta | Adobe React Aria<br>Mangrove | MUI<br>Mangrove | IBM Carbon<br>Mangrove | Mantine<br>Mangrove | Ant Design<br>Mangrove |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `buttons` | N | N | N | N | N | N | N | N | N | N |
 | `links` | N | N | N | N | N | N | N | N | N | N |
 | `text-input` | N | N | N | N | N | N | N | N | N | N |
-| `validation-states` | N | C | C | C | N | N | C | C | C | N |
+| `validation-states` | N | COM | COM | COM | N | N | COM | COM | COM | N |
 | `disabled-states` | N | N | N | N | N | N | N | N | N | N |
 | `select-small` | N | N | N | N | N | N | N | N | N | N |
 | `select-medium` | N | N | N | N | N | N | N | N | N | N |
 | `select-large` | N | N | N | N | N | N | N | N | N | N |
-| `multiselect` | C | N | C | N | N | C | N | C | N | N |
-| `combobox-searchable` | N | N | C | N | N | N | N | N | N | N |
+| `multiselect` | COM | N | COM | N | N | COM | N | COM | N | N |
+| `combobox-searchable` | N | N | COM | N | N | N | N | N | N | N |
 | `date-picker` | N | N | N | N | N | N | N | N | N | N |
-| `datetime-range-picker` | N | C | C | N | N | N | C | C | N | N |
+| `datetime-range-picker` | N | COM | COM | N | N | N | COM | COM | N | N |
 | `modal` | N | N | N | N | N | N | N | N | N | N |
 | `tooltip` | N | N | N | N | N | N | N | N | N | N |
-| `popover` | N | N | N | N | N | N | N | C | N | N |
+| `popover` | N | N | N | N | N | N | N | COM | N | N |
 | `accordion` | N | N | N | N | N | N | N | N | N | N |
-| `cards` | X | N | N | N | N | X | N | N | N | N |
-| `left-nav` | N | N | C | N | N | N | N | N | N | N |
-| `table-render` | N | N | C | C | N | N | N | N | C | N |
-| `table-sort` | C | N | N | X | N | C | N | N | C | N |
-| `table-multiselect` | C | N | N | X | N | C | N | N | C | N |
-| `table-filter` | C | N | N | C | N | C | N | N | C | N |
-| `table-paginate` | X | N | C | C | N | X | N | C | C | N |
-| `table-column-resize-or-reorder` | N | N | X | X | X | N | N | X | X | X |
-| `table-states` | C | N | C | C | N | C | N | C | C | N |
-| `form-states` | C | N | N | N | N | C | N | C | C | N |
+| `cards` | CUS | N | N | N | N | CUS | N | N | N | N |
+| `left-nav` | N | N | COM | N | N | N | N | N | N | N |
+| `table-render` | N | N | COM | COM | N | N | N | N | COM | N |
+| `table-sort` | COM | N | N | CUS | N | COM | N | N | COM | N |
+| `table-multiselect` | COM | N | N | CUS | N | COM | N | N | COM | N |
+| `table-filter` | COM | N | N | COM | N | COM | N | N | COM | N |
+| `table-paginate` | CUS | N | COM | COM | N | CUS | N | COM | COM | N |
+| `table-column-resize-or-reorder` | N | N | CUS | CUS | CUS | N | N | CUS | CUS | CUS |
+| `table-states` | COM | N | COM | COM | N | COM | N | COM | COM | N |
+| `form-states` | COM | N | N | N | N | COM | N | COM | COM | N |
 | `locale-switcher` | N | N | N | N | N | N | N | N | N | N |
-| `rtl` | N | C | N | C | N | N | C | C | C | N |
-| `long-labels` | C | N | C | N | N | N | N | C | N | N |
-| `side-by-side` | C | C | C | C | C | C | C | C | C | C |
-
-## Unsupported requirements
-
-None. Every requirement was met natively, by composition, or with custom code.
-
-## Blockers
-
-None reported.
+| `rtl` | N | COM | N | COM | N | N | COM | COM | COM | N |
+| `long-labels` | COM | N | COM | N | N | N | N | COM | N | N |
+| `side-by-side` | COM | COM | COM | COM | COM | COM | COM | COM | COM | COM |
+| **Native** | {spark:71:20} | {spark:93:26} | {spark:68:19} | {spark:71:20} | {spark:100:28} | {spark:75:21} | {spark:93:26} | {spark:68:19} | {spark:68:19} | {spark:100:28} |
+| **Composed** | {spark:80:8} | {spark:40:4} | {spark:100:10} | {spark:70:7} | {spark:10:1} | {spark:70:7} | {spark:40:4} | {spark:100:10} | {spark:100:10} | {spark:10:1} |
+| **Custom** | {spark:67:2} | {spark:0:0} | {spark:33:1} | {spark:100:3} | {spark:33:1} | {spark:67:2} | {spark:0:0} | {spark:33:1} | {spark:33:1} | {spark:33:1} |
 
 ## Still needs human review
 
-No run claims accessibility conformance. These are the items each run flagged
-as needing a person, and they do not appear in any count above.
+**87 items across 10 pairings** need a person.
+No run claims accessibility conformance.
+
+<details><summary>Full list</summary>
 
 ### delta-react-aria
 
@@ -109,7 +101,7 @@ as needing a person, and they do not appear in any count above.
 
 ### delta-mui
 
-- RTL floating labels are broken and cannot be fixed within the rules. MUI's remedy is stylis-plugin-rtl, which constraint 2 forbids as a third-party package. UNDRR needs to decide whether that is acceptable for an Arabic-serving service, or whether it disqualifies MUI Community. Confirmed to affect both MUI pairings, so it is the candidate and not the host.
+- MUI RTL is clean after its documented three-step setup: dir, a direction-aware theme and @mui/stylis-plugin-rtl. The route adds 29 integration lines, two dependencies and a provider; omitting the third step fails silently, so the setup belongs in any shared delivery standard.
 - axe `color-contrast` (1 serious): the helper text on the disabled TextField fails contrast. MUI applies its disabled text colour to the associated helper text, and the neutral token palette's --undrr-color-text-disabled (#8b9aa5) is roughly 2.8:1 on white. Disabled *controls* are exempt from WCAG 1.4.3, but helper text is not itself a disabled control, so this needs a ruling. Tokens are import-only so it could not be fixed here.
 - axe reported 4 incomplete rules it could not decide: aria-prohibited-attr, aria-valid-attr-value, color-contrast, duplicate-id-aria. `duplicate-id-aria` on a DataGrid page is worth a human look, since duplicate ARIA ids break screen-reader association.
 - The 400-option Select renders all 400 MenuItems. MUI Select has no built-in virtualisation; Autocomplete was capped at 100 rendered options instead. Whether the plain Select is acceptable at that size is a performance decision not taken here.
@@ -119,7 +111,7 @@ as needing a person, and they do not appear in any count above.
 
 ### delta-carbon
 
-- axe `aria-valid-attr-value` (1 CRITICAL), on #form-required and #form-format. Carbon's invalid TextInput sets aria-errormessage pointing at its `.cds--form-requirement` div, which carries no role=alert, no aria-live and is not referenced by aria-describedby. axe verbatim: "aria-errormessage value `form-required-error-msg` must use a technique to announce the message (e.g., aria-live, aria-describedby, role=alert, etc.)". The div is Carbon's internal render and is not reachable through props, so this cannot be fixed from the consuming side. Needs confirmation against a real screen reader and, if upheld, an upstream issue — it would affect every invalid Carbon input in every Carbon application.
+- CORRECTED. This entry previously recorded axe `aria-valid-attr-value` as 1 CRITICAL on #form-required and #form-format, and stated that it "cannot be fixed from the consuming side". The second half was wrong, and the mangrove-carbon pairing had already disproved it against the same @carbon/react version: passing an explicit `aria-describedby="${id}-error-msg"` gives axe the announcement technique it is looking for, and the violation goes to 0. The count above is now 0 critical / 2 serious. THE UNDERLYING CARBON GAP IS STILL REAL and still needs an upstream issue: on an invalid field Carbon sets `aria-errormessage` pointing at a `.cds--form-requirement` div that carries no role=alert, no aria-live and no aria-describedby, Carbon exposes no prop for it, and the workaround only works because `...rest` is spread last in `sharedTextInputProps` and because the caller knows the id is derived as `${id}-error-msg`. Both are internals. Every invalid Carbon input in every Carbon application needs the same three-word patch. Still needs confirmation against a real screen reader.
 - axe `aria-hidden-focus` (1 serious), on `.cds--batch-actions`. Carbon's own batch-action bar sets aria-hidden while inactive but leaves its buttons in the tab order. axe verbatim: "Focusable content should be disabled or be removed from the DOM". Again Carbon's internal markup, again not reachable from props. Appeared only once TableBatchActions was rendered.
 - axe `color-contrast` (1 serious), on #form-disabled-helper-text: 2.76:1 for #8b9aa5 on #f8fafc at 12px. Carbon applies its disabled text colour to the helper text of a disabled field, and --undrr-color-text-disabled is #8b9aa5. Disabled CONTROLS are exempt from WCAG 1.4.3 but helper text is not itself a disabled control, so this needs a ruling. Identical in cause to the delta-mui finding, and tokens are import-only so it could not be fixed here.
 - axe reported 2 incomplete rules. `aria-valid-attr-value` on the three ComboBoxes and a downshift toggle button: "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup" — downshift sets aria-controls to a menu id that only exists while the menu is open, which is a known pattern but worth a screen-reader check. `color-contrast` on 24 elements where "Element's background color could not be determined due to a pseudo element" — Carbon draws button and switch backgrounds with ::before layers, which defeats automated contrast checking on the ContentSwitcher, the tooltip trigger and every column-reorder button. Those 24 elements therefore have NO automated contrast coverage at all and need manual measurement.
@@ -165,7 +157,7 @@ as needing a person, and they do not appear in any count above.
 
 ### mangrove-mui
 
-- The failing RTL test needs a decision. Either UNDRR accepts stylis-plugin-rtl as part of adopting MUI -- it is maintained by the stylis project, not by MUI, and is a third-party dependency this brief forbids -- or Arabic gets misplaced field labels on any full-width TextField. This is the single most consequential unresolved item in this run.
+- MUI RTL is clean after its documented three-step setup: dir, a direction-aware theme and the first-party @mui/stylis-plugin-rtl package. The route adds 29 integration lines, two dependencies and a provider; omitting the third step fails silently, so the setup belongs in any shared delivery standard.
 - axe `color-contrast` (1 serious, scoped): the helper text on the disabled TextField fails contrast. MUI applies its disabled text colour to the associated helper text, and the neutral token palette's --undrr-color-text-disabled (#8b9aa5) is roughly 2.8:1 on white. Disabled *controls* are exempt from WCAG 1.4.3, but helper text is not itself a disabled control, so this needs a ruling. Tokens are import-only so it could not be fixed here.
 - axe reported 4 incomplete rules it could not decide across the page. `duplicate-id-aria` on a DataGrid page is worth a human look, since duplicate ARIA ids break screen-reader association.
 - The 10 lines of CSS neutralising Mangrove's `input[type=...]` rules are a per-app workaround that every Mangrove pairing will need in some form. It should be fixed in Mangrove -- either by excluding `[hidden]` and scoping the input rules to a class, or by shipping a reset consumers can opt into -- rather than written four times.
@@ -213,3 +205,5 @@ as needing a person, and they do not appear in any count above.
 - Typography.Link does not underline by default, which is a WCAG 1.4.1 question for inline links in body text. Not fixed here because the same question applies to Mangrove's own link styling and the two should be settled together.
 - Column resize is ours, so it is ours to maintain: 95 lines including RTL direction handling and keyboard support. Mantine has the same gap. React Aria, MUI and Carbon do not.
 - demo-state.ts is byte-identical to the copy in integration-mui. It is candidate-independent as well as host-independent and belongs in the scaffold, but packages/ is import-only for demo runs so it was left duplicated rather than churning six other apps.
+
+</details>

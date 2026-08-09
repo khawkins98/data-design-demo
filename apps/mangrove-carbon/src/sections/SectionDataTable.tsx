@@ -32,13 +32,7 @@
  */
 
 import { useMemo, useState } from "react";
-import type {
-  ComponentProps,
-  DragEvent,
-  ElementType,
-  KeyboardEvent,
-  ReactElement,
-} from "react";
+import type { DragEvent, KeyboardEvent, ReactElement } from "react";
 import {
   DataTable,
   Pagination,
@@ -60,6 +54,7 @@ import {
 import { LOSS_RECORDS } from "@undrr-eval/fixtures";
 import type { LabelSet, LossRecord } from "@undrr-eval/fixtures";
 
+import { asProps } from "../carbon-props.js";
 import { STATUS_TAG_COLOUR, useDemo } from "../demo-state.js";
 
 const PAGE_SIZES = [10, 25, 50];
@@ -130,9 +125,11 @@ const ROWS: readonly TableRowData[] = LOSS_RECORDS.map((record) => ({
  * not involve loosening the project's compiler settings, which would affect every
  * other app in the workspace. Recorded as a DX finding in EVIDENCE.md.
  */
-function asProps<C extends ElementType>(props: object): ComponentProps<C> {
-  return props as ComponentProps<C>;
-}
+/*
+ * Moved to `../carbon-props.ts` when the realistic island layout needed the same
+ * cast, so the two views share one documented escape hatch instead of two copies
+ * of it. The explanation above is unchanged and still applies.
+ */
 
 export function SectionDataTable(): ReactElement {
   const { labels, bcp47 } = useDemo();
@@ -239,7 +236,11 @@ export function SectionDataTable(): ReactElement {
   return (
     <section className="demo-section" id="section-6" aria-labelledby="s6">
       <h3 className="demo-section__title" id="s6">
-        6. Data table, {LOSS_RECORDS.length} rows
+        {/* `numberFormat`, not a bare `{LOSS_RECORDS.length}`. Every count in this
+            section sits beside cells that ARE Intl-formatted, so an unformatted one
+            makes the same page show "1.234.567" in a cell and "1234567" in the
+            caption in German. */}
+        6. Data table, {numberFormat.format(LOSS_RECORDS.length)} rows
       </h3>
 
       <p className="demo-hint">
@@ -269,7 +270,10 @@ export function SectionDataTable(): ReactElement {
           return (
             <TableContainer
               title={labels.navRecords}
-              description={`${total} / ${LOSS_RECORDS.length} rows · ${selectedRows.length} selected`}
+              description={
+                `${numberFormat.format(total)} / ${numberFormat.format(LOSS_RECORDS.length)} ` +
+                `rows · ${numberFormat.format(selectedRows.length)} selected`
+              }
               className="demo-tablewrap"
               {...getTableContainerProps()}
             >

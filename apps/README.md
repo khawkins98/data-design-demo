@@ -77,6 +77,77 @@ If a run finds something, add it to `packages/known-issues/src/issues.ts` with a
 link to the file that measured it, rather than describing it only in prose. See
 that package's README.
 
+## The three views
+
+A pairing ships three pages, each an HTML entry point at the app root. They
+answer different questions and are not substitutes for one another.
+
+| Entry | View | Frame | Question it answers |
+| --- | --- | --- | --- |
+| `index.html` | Kitchen sink | `HostShell` | Do the components exist, and do tokens reach them? |
+| `island.html` | Embedded island | `IslandFrame` (Mangrove host) | What happens when the library arrives inside a page that already exists? |
+| `app.html` | Full application | `AppFrame` (Delta host) | Can the library carry a whole DELTA screen, including layout and navigation? |
+
+The kitchen sink came first and proves capability. It also hands the entire
+content column to the candidate, which is not how either host actually adopts a
+library - hence the other two.
+
+**Island** (`@undrr-eval/host-mangrove` → `IslandFrame`) reproduces the real
+published UNDRR page frame: four-colour decoration bar, masthead, `mg-mega-topbar`
+navigation with `role="menubar"`, and a `mg-container mg-page-content--padded`
+content region. The candidate owns ONE embedded region, with host prose above and
+below. Read this view for coexistence: leakage in both directions against real
+neighbouring content, font and scale mismatch at the boundary, focus-ring
+conflicts, vertical rhythm across the seam.
+
+**Full application** (`@undrr-eval/host-delta` → `AppFrame`) gives the candidate
+the viewport: page header, filter card, data table with row actions and status
+pills, pagination, and one modal flow, modelled on DELTA's real records screen.
+Its toolbar deliberately mixes Tailwind utilities with a genuine `mg-button`,
+because real DELTA runs both cascades in one page. Read this view for layout
+coverage - **not** for leakage, since a candidate that owns the viewport has
+almost no host markup left to leak onto, and a clean result would mean the target
+shrank rather than the candidate improved.
+
+Both frames are **import-only, exactly like `HostShell`**. If a frame cannot
+express what your run needs, that is a finding for `EVIDENCE.md` and
+`evidence.json.blockers`, not an edit.
+
+### Declaring the extra entries
+
+Vite emits only the entries an app lists. Omit this and the build still succeeds,
+still produces a valid `dist/index.html`, and silently drops two thirds of the
+demo - so `scripts/build-apps.mjs` fails the build if a root `.html` file has no
+`dist` counterpart.
+
+```ts
+build: {
+  rollupOptions: {
+    input: {
+      index: resolve(__dirname, "index.html"),
+      island: resolve(__dirname, "island.html"),
+      app: resolve(__dirname, "app.html"),
+    },
+  },
+},
+```
+
+Every view must honour `?candidate=off` the same way the kitchen sink does.
+
+### The known-issues box in the new views
+
+`HostShell` demos render `<KnownIssues>` as the first child of the shell, outside
+the candidate wrapper, so no candidate stylesheet can restyle it. The frames take
+it as a **`notices` prop** instead, which they render outside
+`data-candidate-root`:
+
+```tsx
+<IslandFrame title={…} dir={demo.dir} notices={<KnownIssues … />}>
+```
+
+Do not render it inside `children`. That subtree must be empty under
+`?candidate=off`, and anything in it is restylable by the candidate.
+
 ## What a Brief 1 run owns
 
 Everything inside its own directory, and nothing else:
@@ -90,7 +161,10 @@ apps/{host}-{candidate}/
   test-results/      axe JSON per section, unit and Playwright output
   screenshots/       one set per viewport, per section, plus an RTL set
   e2e/               Playwright specs
-  src/               the kitchen-sink page
+  index.html         kitchen-sink entry
+  island.html        embedded-island entry
+  app.html           full-application entry
+  src/               all three views
 ```
 
 ## What a run must not touch

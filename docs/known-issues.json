@@ -1,123 +1,207 @@
 {
   "$comment": "GENERATED from packages/known-issues/src/issues.ts by scripts/build-known-issues-json.mjs. Do not edit: add issues to the TypeScript registry, which the demo pages also import.",
-  "issueCount": 19,
+  "issueCount": 49,
   "pairings": {
     "delta-react-aria": {
-      "total": 3,
+      "total": 8,
       "counts": {
-        "caveat": 2,
+        "caveat": 7,
         "info": 1
       },
+      "resolvedCount": 7,
+      "scoreableBlockers": [],
       "headline": {
         "severity": "caveat",
-        "title": "React Aria is unstyled, so this page carries 121 to 133 CSS rules"
+        "title": "React Aria is unstyled, so these pairings carry 155 to 213 CSS rules"
       }
     },
     "delta-mui": {
-      "total": 3,
+      "total": 7,
       "counts": {
-        "blocker": 1,
-        "caveat": 1,
+        "caveat": 6,
         "info": 1
       },
+      "resolvedCount": 7,
+      "scoreableBlockers": [],
       "headline": {
-        "severity": "blocker",
-        "title": "RTL is not achievable in the MUI Community tier"
+        "severity": "caveat",
+        "title": "MUI needs a third setup step for RTL, and fails silently without it"
       }
     },
     "delta-carbon": {
-      "total": 5,
+      "total": 9,
       "counts": {
         "blocker": 1,
         "decision": 1,
-        "caveat": 2,
+        "caveat": 6,
         "info": 1
       },
+      "resolvedCount": 7,
+      "scoreableBlockers": [
+        {
+          "id": "carbon-unreachable-tokens",
+          "title": "Carbon cannot express about 30% of the UNDRR design tokens",
+          "owner": "candidate",
+          "remediability": "upstream-only"
+        }
+      ],
       "headline": {
         "severity": "blocker",
         "title": "Carbon cannot express about 30% of the UNDRR design tokens"
       }
     },
     "delta-mantine": {
-      "total": 3,
+      "total": 9,
       "counts": {
-        "caveat": 2,
+        "blocker": 1,
+        "caveat": 7,
         "info": 1
       },
+      "resolvedCount": 7,
+      "scoreableBlockers": [
+        {
+          "id": "mantine-modal-close-unnamed",
+          "title": "Modal's close button ships with no accessible name",
+          "owner": "candidate",
+          "remediability": "per-site-code"
+        }
+      ],
       "headline": {
-        "severity": "caveat",
-        "title": "Column resizing does not exist in the library and is implemented here"
+        "severity": "blocker",
+        "title": "Modal's close button ships with no accessible name"
       }
     },
     "delta-antd": {
-      "total": 5,
+      "total": 10,
       "counts": {
-        "caveat": 4,
+        "caveat": 9,
         "info": 1
       },
+      "resolvedCount": 4,
+      "scoreableBlockers": [],
       "headline": {
         "severity": "caveat",
         "title": "The data table has an upstream accessibility defect"
       }
     },
     "mangrove-react-aria": {
-      "total": 6,
+      "total": 10,
       "counts": {
-        "caveat": 3,
+        "caveat": 7,
         "info": 3
       },
+      "resolvedCount": 7,
+      "scoreableBlockers": [],
       "headline": {
         "severity": "caveat",
-        "title": "React Aria is unstyled, so this page carries 121 to 133 CSS rules"
+        "title": "React Aria is unstyled, so these pairings carry 155 to 213 CSS rules"
       }
     },
     "mangrove-mui": {
-      "total": 5,
+      "total": 8,
       "counts": {
-        "blocker": 1,
-        "caveat": 1,
+        "caveat": 5,
         "info": 3
       },
+      "resolvedCount": 7,
+      "scoreableBlockers": [],
       "headline": {
-        "severity": "blocker",
-        "title": "RTL is not achievable in the MUI Community tier"
+        "severity": "caveat",
+        "title": "MUI needs a third setup step for RTL, and fails silently without it"
       }
     },
     "mangrove-carbon": {
-      "total": 8,
+      "total": 11,
       "counts": {
         "blocker": 2,
         "decision": 1,
-        "caveat": 2,
+        "caveat": 5,
         "info": 3
       },
+      "resolvedCount": 7,
+      "scoreableBlockers": [
+        {
+          "id": "carbon-unreachable-tokens",
+          "title": "Carbon cannot express about 30% of the UNDRR design tokens",
+          "owner": "candidate",
+          "remediability": "upstream-only"
+        },
+        {
+          "id": "carbon-leakage-failure",
+          "title": "This pairing fails the style-containment assertion",
+          "owner": "pairing",
+          "remediability": "inherent"
+        }
+      ],
       "headline": {
         "severity": "blocker",
         "title": "Carbon cannot express about 30% of the UNDRR design tokens"
       }
     },
     "mangrove-mantine": {
-      "total": 5,
+      "total": 9,
       "counts": {
-        "caveat": 2,
+        "blocker": 1,
+        "caveat": 5,
         "info": 3
       },
+      "resolvedCount": 7,
+      "scoreableBlockers": [
+        {
+          "id": "mantine-modal-close-unnamed",
+          "title": "Modal's close button ships with no accessible name",
+          "owner": "candidate",
+          "remediability": "per-site-code"
+        }
+      ],
       "headline": {
-        "severity": "caveat",
-        "title": "Column resizing does not exist in the library and is implemented here"
+        "severity": "blocker",
+        "title": "Modal's close button ships with no accessible name"
       }
     },
     "mangrove-antd": {
-      "total": 8,
+      "total": 13,
       "counts": {
+        "blocker": 1,
         "decision": 1,
-        "caveat": 4,
+        "caveat": 8,
         "info": 3
       },
+      "resolvedCount": 4,
+      "scoreableBlockers": [
+        {
+          "id": "antd-select-value-hidden-on-mangrove",
+          "title": "Select controls do not display their selected value",
+          "owner": "pairing",
+          "remediability": "config"
+        }
+      ],
       "headline": {
-        "severity": "decision",
-        "title": "Mangrove overrides Ant Design entirely, because Mangrove has no cascade layers"
+        "severity": "blocker",
+        "title": "Select controls do not display their selected value"
       }
+    }
+  },
+  "candidates": {
+    "react-aria": {
+      "open": 12,
+      "resolved": 7
+    },
+    "mui": {
+      "open": 9,
+      "resolved": 7
+    },
+    "carbon": {
+      "open": 12,
+      "resolved": 7
+    },
+    "mantine": {
+      "open": 11,
+      "resolved": 7
+    },
+    "antd": {
+      "open": 14,
+      "resolved": 4
     }
   }
 }

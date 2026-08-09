@@ -32,7 +32,9 @@
  * canaries. That scoping is the reason the leakage assertion passes, and it was
  * cheap precisely because the library contributes no global styles.
  *
- * All values come from packages/undrr-tokens.
+ * Reusable colour, type and shape values come from packages/undrr-tokens. The
+ * button's exact component padding and line height mirror Mangrove because the
+ * current semantic token contract has no component-level aliases for them.
  */
 
 .demo {
@@ -134,18 +136,21 @@
   align-items: center;
   justify-content: center;
   gap: var(--undrr-space-2);
-  padding: var(--undrr-space-2) var(--undrr-space-4);
-  border: 1px solid var(--undrr-color-border-strong);
-  border-radius: var(--undrr-radius-md);
-  background: var(--undrr-color-surface);
-  color: var(--undrr-color-text-primary);
-  font: inherit;
+  min-block-size: 2.5rem;
+  padding: 0.625rem 0.9375rem;
+  border: 1px solid var(--undrr-color-on-accent);
+  border-radius: var(--undrr-radius-none);
+  background: var(--undrr-color-accent-active);
+  color: var(--undrr-color-on-accent);
+  font-family: var(--undrr-font-family-display);
+  font-size: var(--undrr-font-size-sm);
   font-weight: var(--undrr-font-weight-semibold);
+  line-height: 1;
   cursor: pointer;
 }
 
 .demo-button[data-hovered] {
-  background: var(--undrr-color-surface-sunken);
+  background: var(--undrr-color-accent-hover);
 }
 
 /* React Aria sets data-focus-visible only for keyboard focus, so the ring
@@ -164,14 +169,34 @@
   outline-offset: 2px;
 }
 
-.demo-button[data-pressed] {
-  background: var(--undrr-color-surface-sunken);
+/**
+ * THE CONTROLS THE RULE ABOVE COULD NOT REACH.
+ *
+ * `data-focus-visible` is React Aria's attribute, so it only ever appears on
+ * React Aria's elements. Two controls in these apps are deliberately native
+ * `<select class="demo-input">` — the rows-per-page pickers in
+ * `sections/SectionDataTable.tsx` and `views/RecordsPagination.tsx`, both chosen
+ * so a third portalled listbox would not be built for no extra evidence. A native
+ * element never receives that attribute, so both fell through every focus rule in
+ * this file and showed the browser's default outline instead of
+ * `--undrr-color-focus`. Neither app had a single `:focus-visible` rule.
+ *
+ * Worth recording rather than merely fixing: "style the library's data
+ * attributes" is a complete styling API only for as long as every control is the
+ * library's. The moment one is not, the native selector is needed too, and
+ * nothing warns you — the control still has A focus ring, just not yours.
+ *
+ * Scoped to `select` on purpose. `.demo-input:focus-visible` would also match the
+ * text inputs, where browsers report `:focus-visible` on a mouse click as well,
+ * and that would contradict the keyboard-only behaviour documented above.
+ */
+select.demo-input:focus-visible {
+  outline: 2px solid var(--undrr-color-focus);
+  outline-offset: 2px;
 }
 
-.demo-button[data-disabled] {
-  color: var(--undrr-color-text-disabled);
-  border-color: var(--undrr-color-border);
-  cursor: not-allowed;
+.demo-button[data-pressed] {
+  background: var(--undrr-color-accent-active);
 }
 
 .demo-button[data-active="true"] {
@@ -203,6 +228,15 @@
   background: transparent;
   border-color: transparent;
   color: var(--undrr-color-accent);
+}
+
+/* Last in the variant cascade so primary, danger and ghost buttons all share
+   one unmistakable disabled treatment. */
+.demo-button[data-disabled] {
+  background: var(--undrr-color-text-secondary);
+  color: var(--undrr-color-on-accent);
+  border-color: var(--undrr-color-on-accent);
+  cursor: not-allowed;
 }
 
 /* PREFLIGHT RECOVERY: `a { color: inherit; text-decoration: inherit }`, so a
@@ -499,9 +533,15 @@
   background: transparent;
   cursor: pointer;
   font: inherit;
-  /* PREFLIGHT RECOVERY: without a declared line-height the emoji trigger sits
+  /* PREFLIGHT RECOVERY: without a declared line-height the trigger glyph sits
      off-baseline once `font: inherit` has flattened the button's metrics. */
   line-height: 1;
+}
+
+/* `display: block` so the inline SVG does not sit on the text baseline and leave
+   a descender gap under it. */
+.demo-dateinput__icon {
+  display: block;
 }
 
 .demo-dateinput__dash {
@@ -848,31 +888,104 @@
  * candidate offering column resize will face the same trade.
  */
 .demo-table__columnInner {
+  position: absolute;
+  inset: 0;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: var(--undrr-space-2);
+  padding: var(--undrr-space-2) calc(var(--undrr-space-3) + 0.6875rem) var(--undrr-space-2)
+    var(--undrr-space-3);
+  box-sizing: border-box;
   min-width: 0;
 }
 
 .demo-table__column {
+  position: relative;
   overflow: hidden;
 }
 
 .demo-table__columnInner > span {
+  /* The header row is a full-cell overlay; only its text is allowed to shrink. */
+  flex: 0 1 auto;
+  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
+/**
+ * SORT STATE ON A SORTABLE HEADER, from the library's own documented selectors.
+ *
+ * `Column` stamps its render state onto the `<th>` and documents the attributes
+ * as the styling API: `react-aria-components@1.20.0`
+ * `dist/types/src/Table.d.ts:170` declares `@selector [data-allows-sorting]`,
+ * `:176` declares `@selector [data-sort-direction="ascending | descending"]`, and
+ * `dist/private/Table.mjs:753-754` emits both. We styled `[data-focus-visible]`
+ * from the same list and skipped these, so `aria-sort` reached screen readers
+ * while sighted users saw nothing — no hint a header was clickable, and no way to
+ * tell which column was sorted or which way. Our omission, not a library gap.
+ *
+ * Drawn with borders on an EMPTY `::after`, not a glyph in `content`: generated
+ * text is announced by some screen readers and would duplicate `aria-sort`, and
+ * the `content: "▲" / ""` alt-text form that silences it has uneven support —
+ * where unsupported the declaration drops and the indicator disappears entirely.
+ *
+ * It goes on the inner flex row rather than the `<th>` because the header's
+ * contents are a block-level flex container here; an inline `::after` on the cell
+ * itself would start a new line box and sit under the label. `margin-inline-end:
+ * auto` keeps it beside the label instead of being spread apart by the row's
+ * `justify-content: space-between`. `flex: none` is declared because the row's
+ * items shrink under `table-layout: fixed` and a shrunk triangle is no triangle.
+ */
+.demo-table__column[data-allows-sorting] .demo-table__columnInner::after {
+  content: "";
+  flex: none;
+  width: 0;
+  height: 0;
+  margin-inline-end: auto;
+  /* Symmetric, so the triangle needs no RTL mirror. */
+  border-right: 0.25rem solid transparent;
+  border-bottom: 0.3rem solid currentcolor;
+  border-left: 0.25rem solid transparent;
+  /* Dimmed: "this column can be sorted", not "this column is sorted". */
+  opacity: 0.35;
+}
+
+.demo-table__column[data-sort-direction="ascending"] .demo-table__columnInner::after {
+  opacity: 1;
+}
+
+.demo-table__column[data-sort-direction="descending"] .demo-table__columnInner::after {
+  border-top: 0.3rem solid currentcolor;
+  border-bottom: 0;
+  opacity: 1;
+}
+
 .demo-table__resizer {
-  width: 8px;
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: 0;
+  width: 3px;
+  flex: none;
   cursor: col-resize;
-  background: var(--undrr-color-border);
+  border: none;
   border-radius: var(--undrr-radius-pill);
+  padding: 0;
+  box-sizing: content-box;
+  border-inline: 4px solid transparent;
+  background-color: var(--undrr-color-border);
+  background-clip: content-box;
+  touch-action: none;
+}
+
+.demo-table__resizer[data-hovered],
+.demo-table__resizer[data-focus-visible] {
+  background-color: var(--undrr-color-border-strong);
+  background-clip: content-box;
 }
 
 .demo-table__resizer[data-resizing] {
-  background: var(--undrr-color-accent);
+  background-color: var(--undrr-color-accent);
+  background-clip: content-box;
 }
 
 .demo-table__row[data-selected] {

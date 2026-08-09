@@ -7,6 +7,7 @@
 import { useMemo, useState } from "react";
 import type { ReactElement } from "react";
 import {
+  Box,
   ScopedCssBaseline,
   ThemeProvider,
   ToggleButton,
@@ -20,7 +21,8 @@ import { createTheme } from "@mui/material/styles";
 
 import { LOCALES } from "@undrr-eval/fixtures";
 import type { LocaleCode } from "@undrr-eval/fixtures";
-import { HostShell } from "@undrr-eval/host-mangrove";
+import { HostShell, ViewSwitcher } from "@undrr-eval/host-mangrove";
+import { viewLinks } from "@undrr-eval/test-harness/views";
 import { TOKEN_SCOPE_CLASS } from "@undrr-eval/undrr-tokens";
 
 import {
@@ -33,11 +35,13 @@ import {
   SectionSelection,
   SectionStates,
   labelsFor,
+  MUI_LOCALES,
   undrrMuiTheme,
 } from "@undrr-eval/integration-mui";
 import type { DemoContextValue } from "@undrr-eval/integration-mui";
 import { KnownIssues } from "@undrr-eval/known-issues";
 
+import { DirectionProvider } from "./direction.js";
 import { SectionSideBySide } from "./sections/SectionSideBySide.js";
 
 const params = new URLSearchParams(window.location.search);
@@ -70,12 +74,35 @@ export function App(): ReactElement {
    * Unlike React Aria's I18nProvider, this is a theme rebuild per locale.
    */
   const theme = useMemo(
-    () => createTheme(undrrMuiTheme, { direction: demo.dir }),
-    [demo.dir],
+    // Locale pack LAST, so the direction patch cannot overwrite it. See the twin
+    // in apps/delta-mui/src/App.tsx for why all three views must be configured
+    // the same way.
+    () => createTheme(undrrMuiTheme, { direction: demo.dir }, MUI_LOCALES[locale]),
+    // `locale` too: en, fr and de share ltr, so direction alone would never
+    // rebuild the theme between them.
+    [demo.dir, locale],
   );
 
   return (
-    <HostShell title={demo.labels.appTitle} dir={demo.dir}>
+    <HostShell
+      title="Demo: Mangrove + MUI"
+      dir={demo.dir}
+      pageHeader={
+        /*
+         * Cross-view navigation, in the frame's page-header slot, on the same terms as
+         * the known-issues box below: outside the candidate wrapper, in both candidate states. This
+         * page is the inventory, so it is the one flagged `current`. `"application"`
+         * is not listed — that view belongs to the Delta host, and the link to it
+         * goes through `otherHost` instead.
+         */
+        <ViewSwitcher
+          views={viewLinks(["island", "inventory"], "inventory")}
+          pairingName="MUI Community on Mangrove"
+          otherHost={{ label: "MUI on Delta", href: "../delta-mui/" }}
+        />
+      }
+    >
+
       {/*
         * Rendered OUTSIDE the candidate wrapper and in BOTH candidate states.
         * Outside, so no candidate stylesheet restyles the warning box and every
@@ -86,6 +113,8 @@ export function App(): ReactElement {
       <KnownIssues candidate="mui" host="mangrove" candidateName="MUI Community" />
 
       {candidateEnabled ? (
+        /* MUI's documented RTL step 3; see direction.tsx. */
+        <DirectionProvider dir={demo.dir}>
         <ThemeProvider theme={theme}>
           {/* Scoped, not global: see the note in main.tsx. */}
           <ScopedCssBaseline className={`${TOKEN_SCOPE_CLASS} demo`}>
@@ -127,17 +156,38 @@ export function App(): ReactElement {
                 <SectionChrome />
                 <SectionDataTable />
                 <SectionStates />
-                <SectionSideBySide />
 
-                <Typography variant="caption" component="p" color="text.secondary">
-                  Section 8 is the locale switcher above, which drives every other
-                  section. Arabic applies RTL through the theme&apos;s{" "}
-                  <code>direction</code>.
-                </Typography>
+                {/*
+                  THE 7-TO-9 JUMP IN THE HEADINGS IS DELIBERATE, AND SAYING SO
+                  HERE IS THE POINT. Requirements section 8 is Locale, and it is
+                  met — by the switcher above, which every section consumes. It
+                  gets no numbered block because it is a page-level control, not
+                  a specimen. Renumbering would hide that a specified section
+                  exists, and a note at the foot of the page arrives long after
+                  the reader has read the jump as a mistake. So it sits where 8
+                  would be.
+                */}
+                <Box component="section" id="section-8-note" sx={{ mb: 8 }}>
+                  <Typography variant="h3" component="h3" sx={{ mb: 2 }}>
+                    8. Locale — no numbered section of its own
+                  </Typography>
+                  <Typography color="text.secondary" sx={{ maxWidth: "68ch" }}>
+                    Section 8 of the requirements (locale switcher, RTL, long
+                    labels) is exercised by the locale switcher at the top of
+                    this page, which drives every section above; Arabic applies
+                    RTL through the theme&apos;s <code>direction</code>. It gets
+                    no block here because it is page-wide rather than one
+                    specimen. The headings run 7 to 9 for that reason — nothing
+                    was dropped or hidden.
+                  </Typography>
+                </Box>
+
+                <SectionSideBySide />
               </DemoContext.Provider>
             </LocalizationProvider>
           </ScopedCssBaseline>
         </ThemeProvider>
+        </DirectionProvider>
       ) : null}
     </HostShell>
   );

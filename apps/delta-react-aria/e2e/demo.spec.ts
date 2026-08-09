@@ -67,8 +67,33 @@ test.describe("kitchen sink", () => {
     await expect(page.locator(".demo-tabletools__status")).not.toContainText("250 / 250");
 
     await filter.fill("");
-    await page.locator('.demo-table__column:has-text("Country")').first().click();
-    await expect(page.locator(".demo-table__row").first()).toBeVisible();
+
+    /*
+      SORTING, ASSERTED ON THE ROW ORDER.
+
+      This step used to click the Country header and then assert that a row was
+      `toBeVisible()`. A row was visible before the click and would still be
+      visible with `onSortChange` unwired or `sortRecords` returning its input
+      untouched, so the assertion could not fail for the thing it was testing.
+      `aria-sort` is no better on its own: React Aria derives it from the
+      `sortDescriptor` we hand back, not from the ordering.
+     */
+    const header = page.locator('#section-6 .demo-table__column:has-text("Country")').first();
+    const countries = () =>
+      page.locator("#section-6 .demo-table__row .demo-table__cell:nth-child(2)").allInnerTexts();
+
+    await header.click();
+    await expect(header).toHaveAttribute("aria-sort", "ascending");
+    const ascending = await countries();
+    expect(ascending.length).toBe(10);
+    expect([...ascending].sort((a, b) => a.localeCompare(b, "en"))).toEqual(ascending);
+
+    await header.click();
+    await expect(header).toHaveAttribute("aria-sort", "descending");
+    const descending = await countries();
+    expect(descending.length).toBe(10);
+    expect([...descending].sort((a, b) => b.localeCompare(a, "en"))).toEqual(descending);
+    expect(descending[0], "reversing the direction changed nothing").not.toBe(ascending[0]);
 
     /*
       Select-all. Two things this had to learn the hard way:

@@ -1,0 +1,32 @@
+{
+  "labelsMeasured": 4,
+  "maxOffsetPx": -7,
+  "minOffsetPx": -7,
+  "fields": [
+    {
+      "label": "البلد",
+      "inlineStartOffsetPx": -7,
+      "fieldWidthPx": 349,
+      "labelCssLeft": "322.266px"
+    },
+    {
+      "label": "نوع الخطر",
+      "inlineStartOffsetPx": -7,
+      "fieldWidthPx": 349,
+      "labelCssLeft": "283.328px"
+    },
+    {
+      "label": "حالة التحقق",
+      "inlineStartOffsetPx": -7,
+      "fieldWidthPx": 349,
+      "labelCssLeft": "274.875px"
+    },
+    {
+      "label": "مصدر البيانات",
+      "inlineStartOffsetPx": -7,
+      "fieldWidthPx": 349,
+      "labelCssLeft": "256.344px"
+    }
+  ],
+  "note": "Every label must sit within 16px of its field's logical start - the 14px MUI reserves for the outline notch. Before @mui/stylis-plugin-rtl was wired, these offsets were bounded only by the filter grid's column width."
+}

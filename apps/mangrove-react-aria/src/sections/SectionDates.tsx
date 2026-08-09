@@ -50,6 +50,38 @@ const TODAY = parseDate(TODAY_ISO.slice(0, 10));
 const RANGE_START = parseAbsolute(DEFAULT_RANGE.startIso, FIXED_TIME_ZONE);
 const RANGE_END = parseAbsolute(DEFAULT_RANGE.endIso, FIXED_TIME_ZONE);
 
+/**
+ * The calendar glyph on the picker triggers, as inline SVG.
+ *
+ * This was a 📅 emoji, which rendered as a full-colour vendor glyph that ignores
+ * every design token and matched no other pairing's trigger.
+ *
+ * SAFE TO SWAP, AND MEASURED BEFORE SWAPPING. The emoji was never the button's
+ * accessible name — `useDatePicker` puts a localised `aria-label` on the trigger
+ * (see the note at the call site), and an `aria-label` overrides text content in
+ * the name computation. Measured on the built page: the trigger's computed name
+ * is "Calendar Event date" in English and "التقويم تاريخ الحدث" in Arabic, with
+ * the emoji contributing nothing. So this is decorative and marked as such.
+ */
+const CALENDAR_PATH =
+  "M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z";
+
+function CalendarIcon(): ReactElement {
+  return (
+    <svg
+      className="demo-dateinput__icon"
+      viewBox="0 0 24 24"
+      width="1.125em"
+      height="1.125em"
+      fill="currentColor"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d={CALENDAR_PATH} />
+    </svg>
+  );
+}
+
 export function SectionDates(): ReactElement {
   const { labels } = useDemo();
 
@@ -66,8 +98,22 @@ export function SectionDates(): ReactElement {
             <DateInput className="demo-dateinput__segments">
               {(segment) => <DateSegment segment={segment} className="demo-datesegment" />}
             </DateInput>
-            <Button className="demo-dateinput__button" aria-label="Open calendar">
-              📅
+            {/*
+              NO aria-label HERE ON PURPOSE, and it used to say "Open calendar".
+
+              `DatePicker` gives its trigger button the props `useDatePicker`
+              builds, and those already include a localised name:
+              `react-aria/dist/private/datepicker/useDatePicker.mjs:147` sets
+              `'aria-label': stringFormatter.format('calendar')`, which
+              `react-aria-components/i18n/ar-AE.mjs` renders as `التقويم`. Our
+              explicit prop won that merge and put English back in Arabic.
+
+              Same reason the `slot="previous"`/`slot="next"` buttons below are
+              unlabelled. The rule for this library: if the component supplies the
+              props, it supplies the name too.
+            */}
+            <Button className="demo-dateinput__button">
+              <CalendarIcon />
             </Button>
           </Group>
           <Text slot="description" className="demo-hint">
@@ -118,8 +164,11 @@ export function SectionDates(): ReactElement {
             <DateInput slot="end" className="demo-dateinput__segments">
               {(segment) => <DateSegment segment={segment} className="demo-datesegment" />}
             </DateInput>
-            <Button className="demo-dateinput__button" aria-label="Open range calendar">
-              📅
+            {/* Unlabelled for the same reason as the single picker above:
+                `useDateRangePicker` names this trigger from the translation
+                bundle (`useDateRangePicker.mjs:149`). */}
+            <Button className="demo-dateinput__button">
+              <CalendarIcon />
             </Button>
           </Group>
           <Text slot="description" className="demo-hint">

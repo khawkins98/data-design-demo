@@ -162,8 +162,14 @@ export function SectionForms(): ReactElement {
         }}
       >
         <Stack gap={5}>
+          {/*
+            Same `aria-describedby` fix as the three fields above, but CONDITIONAL:
+            the `.cds--form-requirement` only exists while `invalid` is true, so an
+            unconditional reference would point at an unmounted node.
+          */}
           <TextInput
             id="forms-server"
+            {...(serverRejected ? { "aria-describedby": "forms-server-error-msg" } : {})}
             name="dataSource"
             labelText={labels.fieldDataSource}
             defaultValue={server?.input ?? ""}

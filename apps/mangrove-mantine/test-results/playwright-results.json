@@ -2,11 +2,11 @@
   "config": {
     "argv": [
       "/Users/khawkins/.nvm/versions/node/v24.18.0/bin/node",
-      "/Users/khawkins/Documents/git/data-design-demo/node_modules/.pnpm/@playwright+test@1.62.1/node_modules/@playwright/test/cli.js",
+      "/Users/khawkins/Documents/git/data-design-demo/.claude/worktrees/feat-continuity-framing/node_modules/.pnpm/@playwright+test@1.62.1/node_modules/@playwright/test/cli.js",
       "test"
     ],
-    "configFile": "/Users/khawkins/Documents/git/data-design-demo/apps/mangrove-mantine/playwright.config.ts",
-    "rootDir": "/Users/khawkins/Documents/git/data-design-demo/apps/mangrove-mantine/e2e",
+    "configFile": "/Users/khawkins/Documents/git/data-design-demo/.claude/worktrees/feat-continuity-framing/apps/mangrove-mantine/playwright.config.ts",
+    "rootDir": "/Users/khawkins/Documents/git/data-design-demo/.claude/worktrees/feat-continuity-framing/apps/mangrove-mantine/e2e",
     "failOnFlakyTests": false,
     "forbidOnly": false,
     "fullyParallel": false,
@@ -22,7 +22,7 @@
     "preserveOutput": "always",
     "projects": [
       {
-        "outputDir": "/Users/khawkins/Documents/git/data-design-demo/apps/mangrove-mantine/test-results/playwright",
+        "outputDir": "/Users/khawkins/Documents/git/data-design-demo/.claude/worktrees/feat-continuity-framing/apps/mangrove-mantine/test-results/playwright",
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
@@ -30,7 +30,7 @@
         },
         "id": "mobile",
         "name": "mobile",
-        "testDir": "/Users/khawkins/Documents/git/data-design-demo/apps/mangrove-mantine/e2e",
+        "testDir": "/Users/khawkins/Documents/git/data-design-demo/.claude/worktrees/feat-continuity-framing/apps/mangrove-mantine/e2e",
         "testIgnore": [],
         "testMatch": [
           "**/*.@(spec|test).?(c|m)[jt]s?(x)"
@@ -38,7 +38,7 @@
         "timeout": 30000
       },
       {
-        "outputDir": "/Users/khawkins/Documents/git/data-design-demo/apps/mangrove-mantine/test-results/playwright",
+        "outputDir": "/Users/khawkins/Documents/git/data-design-demo/.claude/worktrees/feat-continuity-framing/apps/mangrove-mantine/test-results/playwright",
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
@@ -46,7 +46,7 @@
         },
         "id": "tablet",
         "name": "tablet",
-        "testDir": "/Users/khawkins/Documents/git/data-design-demo/apps/mangrove-mantine/e2e",
+        "testDir": "/Users/khawkins/Documents/git/data-design-demo/.claude/worktrees/feat-continuity-framing/apps/mangrove-mantine/e2e",
         "testIgnore": [],
         "testMatch": [
           "**/*.@(spec|test).?(c|m)[jt]s?(x)"
@@ -54,7 +54,7 @@
         "timeout": 30000
       },
       {
-        "outputDir": "/Users/khawkins/Documents/git/data-design-demo/apps/mangrove-mantine/test-results/playwright",
+        "outputDir": "/Users/khawkins/Documents/git/data-design-demo/.claude/worktrees/feat-continuity-framing/apps/mangrove-mantine/test-results/playwright",
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
@@ -62,7 +62,7 @@
         },
         "id": "desktop",
         "name": "desktop",
-        "testDir": "/Users/khawkins/Documents/git/data-design-demo/apps/mangrove-mantine/e2e",
+        "testDir": "/Users/khawkins/Documents/git/data-design-demo/.claude/worktrees/feat-continuity-framing/apps/mangrove-mantine/e2e",
         "testIgnore": [],
         "testMatch": [
           "**/*.@(spec|test).?(c|m)[jt]s?(x)"
@@ -130,12 +130,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 996,
+                      "duration": 265,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-05T20:45:08.386Z",
+                      "startTime": "2026-08-07T13:39:51.160Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -164,12 +164,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 886,
+                      "duration": 474,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-05T20:45:09.716Z",
+                      "startTime": "2026-08-07T13:39:51.512Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -198,12 +198,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 568,
+                      "duration": 332,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-05T20:45:10.610Z",
+                      "startTime": "2026-08-07T13:39:51.989Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -232,12 +232,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 8799,
+                      "duration": 474,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-05T20:45:11.184Z",
+                      "startTime": "2026-08-07T13:39:52.328Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -266,12 +266,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 559,
+                      "duration": 666,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-05T20:45:19.988Z",
+                      "startTime": "2026-08-07T13:39:52.807Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -281,7 +281,7 @@
               ],
               "id": "05384557491ebd602dd7-4d6421ab66a7ae01087d",
               "file": "demo.spec.ts",
-              "line": 136,
+              "line": 152,
               "column": 3
             },
             {
@@ -300,12 +300,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 654,
+                      "duration": 715,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-05T20:45:20.551Z",
+                      "startTime": "2026-08-07T13:39:53.477Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -321,7 +321,7 @@
               ],
               "id": "05384557491ebd602dd7-d412d863af8262e0f296",
               "file": "demo.spec.ts",
-              "line": 150,
+              "line": 166,
               "column": 3
             },
             {
@@ -340,12 +340,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 78,
+                      "duration": 86,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-05T20:45:21.208Z",
+                      "startTime": "2026-08-07T13:39:54.196Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -355,7 +355,7 @@
               ],
               "id": "05384557491ebd602dd7-25cf021d88917514540c",
               "file": "demo.spec.ts",
-              "line": 198,
+              "line": 214,
               "column": 3
             },
             {
@@ -374,12 +374,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 6573,
+                      "duration": 1335,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-05T20:45:21.289Z",
+                      "startTime": "2026-08-07T13:39:54.285Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -395,7 +395,7 @@
               ],
               "id": "05384557491ebd602dd7-be8d2ad32475841b58db",
               "file": "demo.spec.ts",
-              "line": 208,
+              "line": 224,
               "column": 3
             },
             {
@@ -414,7 +414,7 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 99,
+                      "duration": 105,
                       "errors": [],
                       "stdout": [
                         {
@@ -423,7 +423,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-05T20:45:27.865Z",
+                      "startTime": "2026-08-07T13:39:55.624Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -439,7 +439,7 @@
               ],
               "id": "05384557491ebd602dd7-7f4f305b76ece1d534de",
               "file": "demo.spec.ts",
-              "line": 229,
+              "line": 245,
               "column": 3
             },
             {
@@ -458,7 +458,7 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 740,
+                      "duration": 796,
                       "errors": [],
                       "stdout": [
                         {
@@ -467,13 +467,13 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-05T20:45:27.967Z",
+                      "startTime": "2026-08-07T13:39:55.733Z",
                       "annotations": [],
                       "attachments": [
                         {
                           "name": "host-collision.json",
                           "contentType": "application/json",
-                          "body": "ewogICJpbnZlbnRvcnkiOiB7CiAgICAic2NvcGVzQ2hlY2tlZCI6IDEyLAogICAgImNhbmRpZGF0ZUlucHV0cyI6IDUwLAogICAgImlucHV0c1dpdGhBVHlwZUF0dHJpYnV0ZSI6IDMzLAogICAgImlucHV0VHlwZXNQcmVzZW50IjogWwogICAgICAiKGFic2VudCkiLAogICAgICAiY2hlY2tib3giLAogICAgICAiaGlkZGVuIiwKICAgICAgInJhZGlvIiwKICAgICAgInRleHQiCiAgICBdLAogICAgIm1hdGNoZXNNYW5ncm92ZUZvcm1TZWxlY3RvciI6IDUsCiAgICAibWF0Y2hpbmdDb21wb25lbnRzIjogWwogICAgICAibWFudGluZS1NdWx0aVNlbGVjdC1pbnB1dEZpZWxkIiwKICAgICAgIm1hbnRpbmUtVGltZVBpY2tlci1maWVsZCIKICAgIF0KICB9LAogICJ1bnJlcGFpcmVkIjogewogICAgInBpbGxzSW5wdXRGaWVsZCI6IHsKICAgICAgImJvcmRlci10b3Atd2lkdGgiOiAiMnB4IiwKICAgICAgImJvcmRlci10b3AtY29sb3IiOiAicmdiKDI2LCAyNiwgMjYpIiwKICAgICAgImJvcmRlci1yYWRpdXMiOiAiMHB4IiwKICAgICAgImhlaWdodCI6ICI0NnB4IiwKICAgICAgIndpZHRoIjogIjI0NHB4IiwKICAgICAgInBhZGRpbmctbGVmdCI6ICI2LjI1cHgiLAogICAgICAiZm9udC1mYW1pbHkiOiAiUm9ib3RvLCBzYW5zLXNlcmlmIiwKICAgICAgImZvbnQtc2l6ZSI6ICIxNnB4IiwKICAgICAgImJhY2tncm91bmQtY29sb3IiOiAicmdiKDI1NSwgMjU1LCAyNTUpIgogICAgfSwKICAgICJ0ZXh0YXJlYSI6IHsKICAgICAgImJvcmRlci10b3Atd2lkdGgiOiAiMXB4IiwKICAgICAgImJvcmRlci10b3AtY29sb3IiOiAicmdiKDIwMCwgMjEwLCAyMTgpIiwKICAgICAgImJvcmRlci1yYWRpdXMiOiAiNHB4IiwKICAgICAgImhlaWdodCI6ICI3NnB4IiwKICAgICAgIndpZHRoIjogIjM0MnB4IiwKICAgICAgInBhZGRpbmctbGVmdCI6ICIxMnB4IiwKICAgICAgImZvbnQtZmFtaWx5IjogIlJvYm90bywgXCJOb3RvIFNhbnMgQXJhYmljXCIsIFwiU2Vnb2UgVUlcIiwgc3lzdGVtLXVpLCAtYXBwbGUtc3lzdGVtLCBzYW5zLXNlcmlmIiwKICAgICAgImZvbnQtc2l6ZSI6ICIxNHB4IiwKICAgICAgImJhY2tncm91bmQtY29sb3IiOiAicmdiKDI1NSwgMjU1LCAyNTUpIgogICAgfSwKICAgICJ0aW1lUGlja2VyRmllbGQiOiB7CiAgICAgICJib3JkZXItdG9wLXdpZHRoIjogIjJweCIsCiAgICAgICJib3JkZXItdG9wLWNvbG9yIjogInJnYigyNiwgMjYsIDI2KSIsCiAgICAgICJib3JkZXItcmFkaXVzIjogIjBweCIsCiAgICAgICJoZWlnaHQiOiAiNDZweCIsCiAgICAgICJ3aWR0aCI6ICIxODIuNXB4IiwKICAgICAgInBhZGRpbmctbGVmdCI6ICI2LjI1cHgiLAogICAgICAiZm9udC1mYW1pbHkiOiAiUm9ib3RvLCBzYW5zLXNlcmlmIiwKICAgICAgImZvbnQtc2l6ZSI6ICIxNnB4IiwKICAgICAgImJhY2tncm91bmQtY29sb3IiOiAicmdiKDI1NSwgMjU1LCAyNTUpIgogICAgfSwKICAgICJwbGFpblRleHRJbnB1dCI6IHsKICAgICAgImJvcmRlci10b3Atd2lkdGgiOiAiMXB4IiwKICAgICAgImJvcmRlci10b3AtY29sb3IiOiAicmdiKDIwMCwgMjEwLCAyMTgpIiwKICAgICAgImJvcmRlci1yYWRpdXMiOiAiNHB4IiwKICAgICAgImhlaWdodCI6ICIzNnB4IiwKICAgICAgIndpZHRoIjogIjM0MnB4IiwKICAgICAgInBhZGRpbmctbGVmdCI6ICIxMnB4IiwKICAgICAgImZvbnQtZmFtaWx5IjogIlJvYm90bywgXCJOb3RvIFNhbnMgQXJhYmljXCIsIFwiU2Vnb2UgVUlcIiwgc3lzdGVtLXVpLCAtYXBwbGUtc3lzdGVtLCBzYW5zLXNlcmlmIiwKICAgICAgImZvbnQtc2l6ZSI6ICIxNHB4IiwKICAgICAgImJhY2tncm91bmQtY29sb3IiOiAicmdiKDI1NSwgMjU1LCAyNTUpIgogICAgfQogIH0sCiAgInJlcGFpcmVkIjogewogICAgInBpbGxzSW5wdXRGaWVsZCI6IHsKICAgICAgImJvcmRlci10b3Atd2lkdGgiOiAiMHB4IiwKICAgICAgImJvcmRlci10b3AtY29sb3IiOiAicmdiKDIwLCAzNSwgNDYpIiwKICAgICAgImJvcmRlci1yYWRpdXMiOiAiMHB4IiwKICAgICAgImhlaWdodCI6ICIyMi4zOTA2cHgiLAogICAgICAid2lkdGgiOiAiMjQ0cHgiLAogICAgICAicGFkZGluZy1sZWZ0IjogIjBweCIsCiAgICAgICJmb250LWZhbWlseSI6ICJSb2JvdG8sIFwiTm90byBTYW5zIEFyYWJpY1wiLCBcIlNlZ29lIFVJXCIsIHN5c3RlbS11aSwgLWFwcGxlLXN5c3RlbSwgc2Fucy1zZXJpZiIsCiAgICAgICJmb250LXNpemUiOiAiMTRweCIsCiAgICAgICJiYWNrZ3JvdW5kLWNvbG9yIjogInJnYmEoMCwgMCwgMCwgMCkiCiAgICB9LAogICAgInRleHRhcmVhIjogewogICAgICAiYm9yZGVyLXRvcC13aWR0aCI6ICIxcHgiLAogICAgICAiYm9yZGVyLXRvcC1jb2xvciI6ICJyZ2IoMjAwLCAyMTAsIDIxOCkiLAogICAgICAiYm9yZGVyLXJhZGl1cyI6ICI0cHgiLAogICAgICAiaGVpZ2h0IjogIjc2cHgiLAogICAgICAid2lkdGgiOiAiMzQycHgiLAogICAgICAicGFkZGluZy1sZWZ0IjogIjEycHgiLAogICAgICAiZm9udC1mYW1pbHkiOiAiUm9ib3RvLCBcIk5vdG8gU2FucyBBcmFiaWNcIiwgXCJTZWdvZSBVSVwiLCBzeXN0ZW0tdWksIC1hcHBsZS1zeXN0ZW0sIHNhbnMtc2VyaWYiLAogICAgICAiZm9udC1zaXplIjogIjE0cHgiLAogICAgICAiYmFja2dyb3VuZC1jb2xvciI6ICJyZ2IoMjU1LCAyNTUsIDI1NSkiCiAgICB9LAogICAgInRpbWVQaWNrZXJGaWVsZCI6IHsKICAgICAgImJvcmRlci10b3Atd2lkdGgiOiAiMHB4IiwKICAgICAgImJvcmRlci10b3AtY29sb3IiOiAicmdiKDIwLCAzNSwgNDYpIiwKICAgICAgImJvcmRlci1yYWRpdXMiOiAiMnB4IiwKICAgICAgImhlaWdodCI6ICIyMXB4IiwKICAgICAgIndpZHRoIjogIjIxLjgyODFweCIsCiAgICAgICJwYWRkaW5nLWxlZnQiOiAiMi4xcHgiLAogICAgICAiZm9udC1mYW1pbHkiOiAiUm9ib3RvLCBcIk5vdG8gU2FucyBBcmFiaWNcIiwgXCJTZWdvZSBVSVwiLCBzeXN0ZW0tdWksIC1hcHBsZS1zeXN0ZW0sIHNhbnMtc2VyaWYiLAogICAgICAiZm9udC1zaXplIjogIjE0cHgiLAogICAgICAiYmFja2dyb3VuZC1jb2xvciI6ICJyZ2JhKDAsIDAsIDAsIDApIgogICAgfSwKICAgICJwbGFpblRleHRJbnB1dCI6IHsKICAgICAgImJvcmRlci10b3Atd2lkdGgiOiAiMXB4IiwKICAgICAgImJvcmRlci10b3AtY29sb3IiOiAicmdiKDIwMCwgMjEwLCAyMTgpIiwKICAgICAgImJvcmRlci1yYWRpdXMiOiAiNHB4IiwKICAgICAgImhlaWdodCI6ICIzNnB4IiwKICAgICAgIndpZHRoIjogIjM0MnB4IiwKICAgICAgInBhZGRpbmctbGVmdCI6ICIxMnB4IiwKICAgICAgImZvbnQtZmFtaWx5IjogIlJvYm90bywgXCJOb3RvIFNhbnMgQXJhYmljXCIsIFwiU2Vnb2UgVUlcIiwgc3lzdGVtLXVpLCAtYXBwbGUtc3lzdGVtLCBzYW5zLXNlcmlmIiwKICAgICAgImZvbnQtc2l6ZSI6ICIxNHB4IiwKICAgICAgImJhY2tncm91bmQtY29sb3IiOiAicmdiKDI1NSwgMjU1LCAyNTUpIgogICAgfQogIH0KfQ=="
+                          "body": "ewogICJpbnZlbnRvcnkiOiB7CiAgICAic2NvcGVzQ2hlY2tlZCI6IDEyLAogICAgImNhbmRpZGF0ZUlucHV0cyI6IDUwLAogICAgImlucHV0c1dpdGhBVHlwZUF0dHJpYnV0ZSI6IDMzLAogICAgImlucHV0VHlwZXNQcmVzZW50IjogWwogICAgICAiKGFic2VudCkiLAogICAgICAiY2hlY2tib3giLAogICAgICAiaGlkZGVuIiwKICAgICAgInJhZGlvIiwKICAgICAgInRleHQiCiAgICBdLAogICAgIm1hdGNoZXNNYW5ncm92ZUZvcm1TZWxlY3RvciI6IDUsCiAgICAibWF0Y2hpbmdDb21wb25lbnRzIjogWwogICAgICAibWFudGluZS1NdWx0aVNlbGVjdC1pbnB1dEZpZWxkIiwKICAgICAgIm1hbnRpbmUtVGltZVBpY2tlci1maWVsZCIKICAgIF0KICB9LAogICJ1bnJlcGFpcmVkIjogewogICAgInBpbGxzSW5wdXRGaWVsZCI6IHsKICAgICAgImJvcmRlci10b3Atd2lkdGgiOiAiMnB4IiwKICAgICAgImJvcmRlci10b3AtY29sb3IiOiAicmdiKDI2LCAyNiwgMjYpIiwKICAgICAgImJvcmRlci1yYWRpdXMiOiAiMHB4IiwKICAgICAgImhlaWdodCI6ICI0NnB4IiwKICAgICAgIndpZHRoIjogIjI0NHB4IiwKICAgICAgInBhZGRpbmctbGVmdCI6ICI2LjI1cHgiLAogICAgICAiZm9udC1mYW1pbHkiOiAiUm9ib3RvLCBzYW5zLXNlcmlmIiwKICAgICAgImZvbnQtc2l6ZSI6ICIxNnB4IiwKICAgICAgImJhY2tncm91bmQtY29sb3IiOiAicmdiKDI1NSwgMjU1LCAyNTUpIgogICAgfSwKICAgICJ0ZXh0YXJlYSI6IHsKICAgICAgImJvcmRlci10b3Atd2lkdGgiOiAiMXB4IiwKICAgICAgImJvcmRlci10b3AtY29sb3IiOiAicmdiKDIwMCwgMjEwLCAyMTgpIiwKICAgICAgImJvcmRlci1yYWRpdXMiOiAiNHB4IiwKICAgICAgImhlaWdodCI6ICI3NnB4IiwKICAgICAgIndpZHRoIjogIjM0MnB4IiwKICAgICAgInBhZGRpbmctbGVmdCI6ICIxMnB4IiwKICAgICAgImZvbnQtZmFtaWx5IjogIlJvYm90bywgXCJOb3RvIFNhbnMgQXJhYmljXCIsIFwiU2Vnb2UgVUlcIiwgc3lzdGVtLXVpLCAtYXBwbGUtc3lzdGVtLCBzYW5zLXNlcmlmIiwKICAgICAgImZvbnQtc2l6ZSI6ICIxNHB4IiwKICAgICAgImJhY2tncm91bmQtY29sb3IiOiAicmdiKDI1NSwgMjU1LCAyNTUpIgogICAgfSwKICAgICJ0aW1lUGlja2VyRmllbGQiOiB7CiAgICAgICJib3JkZXItdG9wLXdpZHRoIjogIjJweCIsCiAgICAgICJib3JkZXItdG9wLWNvbG9yIjogInJnYigyNiwgMjYsIDI2KSIsCiAgICAgICJib3JkZXItcmFkaXVzIjogIjBweCIsCiAgICAgICJoZWlnaHQiOiAiNDZweCIsCiAgICAgICJ3aWR0aCI6ICIxODMuNXB4IiwKICAgICAgInBhZGRpbmctbGVmdCI6ICI2LjI1cHgiLAogICAgICAiZm9udC1mYW1pbHkiOiAiUm9ib3RvLCBzYW5zLXNlcmlmIiwKICAgICAgImZvbnQtc2l6ZSI6ICIxNnB4IiwKICAgICAgImJhY2tncm91bmQtY29sb3IiOiAicmdiKDI1NSwgMjU1LCAyNTUpIgogICAgfSwKICAgICJwbGFpblRleHRJbnB1dCI6IHsKICAgICAgImJvcmRlci10b3Atd2lkdGgiOiAiMXB4IiwKICAgICAgImJvcmRlci10b3AtY29sb3IiOiAicmdiKDIwMCwgMjEwLCAyMTgpIiwKICAgICAgImJvcmRlci1yYWRpdXMiOiAiNHB4IiwKICAgICAgImhlaWdodCI6ICIzNnB4IiwKICAgICAgIndpZHRoIjogIjM0MnB4IiwKICAgICAgInBhZGRpbmctbGVmdCI6ICIxMnB4IiwKICAgICAgImZvbnQtZmFtaWx5IjogIlJvYm90bywgXCJOb3RvIFNhbnMgQXJhYmljXCIsIFwiU2Vnb2UgVUlcIiwgc3lzdGVtLXVpLCAtYXBwbGUtc3lzdGVtLCBzYW5zLXNlcmlmIiwKICAgICAgImZvbnQtc2l6ZSI6ICIxNHB4IiwKICAgICAgImJhY2tncm91bmQtY29sb3IiOiAicmdiKDI1NSwgMjU1LCAyNTUpIgogICAgfQogIH0sCiAgInJlcGFpcmVkIjogewogICAgInBpbGxzSW5wdXRGaWVsZCI6IHsKICAgICAgImJvcmRlci10b3Atd2lkdGgiOiAiMHB4IiwKICAgICAgImJvcmRlci10b3AtY29sb3IiOiAicmdiKDIwLCAzNSwgNDYpIiwKICAgICAgImJvcmRlci1yYWRpdXMiOiAiMHB4IiwKICAgICAgImhlaWdodCI6ICIyMi4zOTA2cHgiLAogICAgICAid2lkdGgiOiAiMjQ0cHgiLAogICAgICAicGFkZGluZy1sZWZ0IjogIjBweCIsCiAgICAgICJmb250LWZhbWlseSI6ICJSb2JvdG8sIFwiTm90byBTYW5zIEFyYWJpY1wiLCBcIlNlZ29lIFVJXCIsIHN5c3RlbS11aSwgLWFwcGxlLXN5c3RlbSwgc2Fucy1zZXJpZiIsCiAgICAgICJmb250LXNpemUiOiAiMTRweCIsCiAgICAgICJiYWNrZ3JvdW5kLWNvbG9yIjogInJnYmEoMCwgMCwgMCwgMCkiCiAgICB9LAogICAgInRleHRhcmVhIjogewogICAgICAiYm9yZGVyLXRvcC13aWR0aCI6ICIxcHgiLAogICAgICAiYm9yZGVyLXRvcC1jb2xvciI6ICJyZ2IoMjAwLCAyMTAsIDIxOCkiLAogICAgICAiYm9yZGVyLXJhZGl1cyI6ICI0cHgiLAogICAgICAiaGVpZ2h0IjogIjc2cHgiLAogICAgICAid2lkdGgiOiAiMzQycHgiLAogICAgICAicGFkZGluZy1sZWZ0IjogIjEycHgiLAogICAgICAiZm9udC1mYW1pbHkiOiAiUm9ib3RvLCBcIk5vdG8gU2FucyBBcmFiaWNcIiwgXCJTZWdvZSBVSVwiLCBzeXN0ZW0tdWksIC1hcHBsZS1zeXN0ZW0sIHNhbnMtc2VyaWYiLAogICAgICAiZm9udC1zaXplIjogIjE0cHgiLAogICAgICAiYmFja2dyb3VuZC1jb2xvciI6ICJyZ2IoMjU1LCAyNTUsIDI1NSkiCiAgICB9LAogICAgInRpbWVQaWNrZXJGaWVsZCI6IHsKICAgICAgImJvcmRlci10b3Atd2lkdGgiOiAiMHB4IiwKICAgICAgImJvcmRlci10b3AtY29sb3IiOiAicmdiKDIwLCAzNSwgNDYpIiwKICAgICAgImJvcmRlci1yYWRpdXMiOiAiMnB4IiwKICAgICAgImhlaWdodCI6ICIyMXB4IiwKICAgICAgIndpZHRoIjogIjE5LjkyMTlweCIsCiAgICAgICJwYWRkaW5nLWxlZnQiOiAiMi4xcHgiLAogICAgICAiZm9udC1mYW1pbHkiOiAiUm9ib3RvLCBcIk5vdG8gU2FucyBBcmFiaWNcIiwgXCJTZWdvZSBVSVwiLCBzeXN0ZW0tdWksIC1hcHBsZS1zeXN0ZW0sIHNhbnMtc2VyaWYiLAogICAgICAiZm9udC1zaXplIjogIjE0cHgiLAogICAgICAiYmFja2dyb3VuZC1jb2xvciI6ICJyZ2JhKDAsIDAsIDAsIDApIgogICAgfSwKICAgICJwbGFpblRleHRJbnB1dCI6IHsKICAgICAgImJvcmRlci10b3Atd2lkdGgiOiAiMXB4IiwKICAgICAgImJvcmRlci10b3AtY29sb3IiOiAicmdiKDIwMCwgMjEwLCAyMTgpIiwKICAgICAgImJvcmRlci1yYWRpdXMiOiAiNHB4IiwKICAgICAgImhlaWdodCI6ICIzNnB4IiwKICAgICAgIndpZHRoIjogIjM0MnB4IiwKICAgICAgInBhZGRpbmctbGVmdCI6ICIxMnB4IiwKICAgICAgImZvbnQtZmFtaWx5IjogIlJvYm90bywgXCJOb3RvIFNhbnMgQXJhYmljXCIsIFwiU2Vnb2UgVUlcIiwgc3lzdGVtLXVpLCAtYXBwbGUtc3lzdGVtLCBzYW5zLXNlcmlmIiwKICAgICAgImZvbnQtc2l6ZSI6ICIxNHB4IiwKICAgICAgImJhY2tncm91bmQtY29sb3IiOiAicmdiKDI1NSwgMjU1LCAyNTUpIgogICAgfQogIH0KfQ=="
                         }
                       ]
                     }
@@ -483,7 +483,7 @@
               ],
               "id": "05384557491ebd602dd7-32ab17beecf2164ef210",
               "file": "demo.spec.ts",
-              "line": 302,
+              "line": 318,
               "column": 3
             },
             {
@@ -507,7 +507,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-05T20:45:28.711Z",
+                      "startTime": "2026-08-07T13:39:56.531Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -517,7 +517,7 @@
               ],
               "id": "05384557491ebd602dd7-fead6feb14f40249ea68",
               "file": "demo.spec.ts",
-              "line": 471,
+              "line": 487,
               "column": 3
             },
             {
@@ -536,12 +536,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 300,
+                      "duration": 328,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-05T20:45:28.894Z",
+                      "startTime": "2026-08-07T13:39:56.716Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -551,7 +551,7 @@
               ],
               "id": "05384557491ebd602dd7-d8f865adac21312611ed",
               "file": "demo.spec.ts",
-              "line": 493,
+              "line": 509,
               "column": 3
             },
             {
@@ -570,7 +570,7 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 4108,
+                      "duration": 4209,
                       "errors": [],
                       "stdout": [
                         {
@@ -589,7 +589,7 @@
                           "text": "axe 05-chrome: 0 violations (0 critical, 0 serious), 0 incomplete\n"
                         },
                         {
-                          "text": "axe 06-data-table: 0 violations (0 critical, 0 serious), 0 incomplete\n"
+                          "text": "axe 06-data-table: 0 violations (0 critical, 0 serious), 1 incomplete\n"
                         },
                         {
                           "text": "axe 07-states: 0 violations (0 critical, 0 serious), 0 incomplete\n"
@@ -603,13 +603,13 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-05T20:45:29.197Z",
+                      "startTime": "2026-08-07T13:39:57.046Z",
                       "annotations": [],
                       "attachments": [
                         {
                           "name": "axe-summary.json",
                           "contentType": "application/json",
-                          "body": "ewogICJzY29wZWQiOiB7CiAgICAic2VjdGlvbiI6ICJjYW5kaWRhdGUtc3VidHJlZSIsCiAgICAidXJsIjogImh0dHA6Ly9sb2NhbGhvc3Q6NTIwNS8/Y2FuZGlkYXRlPW9uIiwKICAgICJ0YWdzIjogWwogICAgICAid2NhZzJhIiwKICAgICAgIndjYWcyYWEiLAogICAgICAid2NhZzIxYSIsCiAgICAgICJ3Y2FnMjFhYSIsCiAgICAgICJ3Y2FnMjJhYSIKICAgIF0sCiAgICAidmlvbGF0aW9ucyI6IFtdLAogICAgImNvdW50cyI6IHsKICAgICAgInZpb2xhdGlvbnMiOiAwLAogICAgICAic2VyaW91cyI6IDAsCiAgICAgICJjcml0aWNhbCI6IDAsCiAgICAgICJpbmNvbXBsZXRlIjogMAogICAgfSwKICAgICJpbmNvbXBsZXRlUnVsZUlkcyI6IFtdCiAgfSwKICAid2hvbGVQYWdlIjogewogICAgInNlY3Rpb24iOiAid2hvbGUtcGFnZSIsCiAgICAidXJsIjogImh0dHA6Ly9sb2NhbGhvc3Q6NTIwNS8/Y2FuZGlkYXRlPW9uIiwKICAgICJ0YWdzIjogWwogICAgICAid2NhZzJhIiwKICAgICAgIndjYWcyYWEiLAogICAgICAid2NhZzIxYSIsCiAgICAgICJ3Y2FnMjFhYSIsCiAgICAgICJ3Y2FnMjJhYSIKICAgIF0sCiAgICAidmlvbGF0aW9ucyI6IFsKICAgICAgewogICAgICAgICJpZCI6ICJsaW5rLWluLXRleHQtYmxvY2siLAogICAgICAgICJpbXBhY3QiOiAic2VyaW91cyIsCiAgICAgICAgImhlbHAiOiAiTGlua3MgbXVzdCBiZSBkaXN0aW5ndWlzaGFibGUgd2l0aG91dCByZWx5aW5nIG9uIGNvbG9yIiwKICAgICAgICAiaGVscFVybCI6ICJodHRwczovL2RlcXVldW5pdmVyc2l0eS5jb20vcnVsZXMvYXhlLzQuMTIvbGluay1pbi10ZXh0LWJsb2NrP2FwcGxpY2F0aW9uPXBsYXl3cmlnaHQiLAogICAgICAgICJub2RlcyI6IFsKICAgICAgICAgICJhW2RhdGEtY2FuYXJ5PVwibGlua1wiXSIKICAgICAgICBdCiAgICAgIH0KICAgIF0sCiAgICAiY291bnRzIjogewogICAgICAidmlvbGF0aW9ucyI6IDEsCiAgICAgICJzZXJpb3VzIjogMSwKICAgICAgImNyaXRpY2FsIjogMCwKICAgICAgImluY29tcGxldGUiOiAwCiAgICB9LAogICAgImluY29tcGxldGVSdWxlSWRzIjogW10KICB9Cn0="
+                          "body": "ewogICJzY29wZWQiOiB7CiAgICAic2VjdGlvbiI6ICJjYW5kaWRhdGUtc3VidHJlZSIsCiAgICAidXJsIjogImh0dHA6Ly9sb2NhbGhvc3Q6NTIwNS8/Y2FuZGlkYXRlPW9uIiwKICAgICJ0YWdzIjogWwogICAgICAid2NhZzJhIiwKICAgICAgIndjYWcyYWEiLAogICAgICAid2NhZzIxYSIsCiAgICAgICJ3Y2FnMjFhYSIsCiAgICAgICJ3Y2FnMjJhYSIKICAgIF0sCiAgICAidmlvbGF0aW9ucyI6IFtdLAogICAgImNvdW50cyI6IHsKICAgICAgInZpb2xhdGlvbnMiOiAwLAogICAgICAic2VyaW91cyI6IDAsCiAgICAgICJjcml0aWNhbCI6IDAsCiAgICAgICJpbmNvbXBsZXRlIjogMQogICAgfSwKICAgICJpbmNvbXBsZXRlUnVsZUlkcyI6IFsKICAgICAgImNvbG9yLWNvbnRyYXN0IgogICAgXQogIH0sCiAgIndob2xlUGFnZSI6IHsKICAgICJzZWN0aW9uIjogIndob2xlLXBhZ2UiLAogICAgInVybCI6ICJodHRwOi8vbG9jYWxob3N0OjUyMDUvP2NhbmRpZGF0ZT1vbiIsCiAgICAidGFncyI6IFsKICAgICAgIndjYWcyYSIsCiAgICAgICJ3Y2FnMmFhIiwKICAgICAgIndjYWcyMWEiLAogICAgICAid2NhZzIxYWEiLAogICAgICAid2NhZzIyYWEiCiAgICBdLAogICAgInZpb2xhdGlvbnMiOiBbCiAgICAgIHsKICAgICAgICAiaWQiOiAibGluay1pbi10ZXh0LWJsb2NrIiwKICAgICAgICAiaW1wYWN0IjogInNlcmlvdXMiLAogICAgICAgICJoZWxwIjogIkxpbmtzIG11c3QgYmUgZGlzdGluZ3Vpc2hhYmxlIHdpdGhvdXQgcmVseWluZyBvbiBjb2xvciIsCiAgICAgICAgImhlbHBVcmwiOiAiaHR0cHM6Ly9kZXF1ZXVuaXZlcnNpdHkuY29tL3J1bGVzL2F4ZS80LjEyL2xpbmstaW4tdGV4dC1ibG9jaz9hcHBsaWNhdGlvbj1wbGF5d3JpZ2h0IiwKICAgICAgICAibm9kZXMiOiBbCiAgICAgICAgICAiYVtkYXRhLWNhbmFyeT1cImxpbmtcIl0iLAogICAgICAgICAgImFbaHJlZiQ9XCJkZWx0YS1tYW50aW5lL1wiXSIKICAgICAgICBdCiAgICAgIH0KICAgIF0sCiAgICAiY291bnRzIjogewogICAgICAidmlvbGF0aW9ucyI6IDEsCiAgICAgICJzZXJpb3VzIjogMSwKICAgICAgImNyaXRpY2FsIjogMCwKICAgICAgImluY29tcGxldGUiOiAxCiAgICB9LAogICAgImluY29tcGxldGVSdWxlSWRzIjogWwogICAgICAiY29sb3ItY29udHJhc3QiCiAgICBdCiAgfQp9"
                         }
                       ]
                     }
@@ -619,7 +619,7 @@
               ],
               "id": "05384557491ebd602dd7-1980d02eaccf7eea8be9",
               "file": "demo.spec.ts",
-              "line": 502,
+              "line": 518,
               "column": 3
             },
             {
@@ -638,12 +638,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 10076,
+                      "duration": 850,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-05T20:45:33.310Z",
+                      "startTime": "2026-08-07T13:40:01.258Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -653,7 +653,7 @@
               ],
               "id": "05384557491ebd602dd7-ae9c4d140cf8c6afa141",
               "file": "demo.spec.ts",
-              "line": 537,
+              "line": 553,
               "column": 3
             },
             {
@@ -672,12 +672,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 7564,
+                      "duration": 914,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-05T20:45:43.391Z",
+                      "startTime": "2026-08-07T13:40:02.111Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -687,7 +687,7 @@
               ],
               "id": "05384557491ebd602dd7-0bc6793cd50ac9327048",
               "file": "demo.spec.ts",
-              "line": 546,
+              "line": 562,
               "column": 3
             },
             {
@@ -706,12 +706,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 272,
+                      "duration": 293,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-05T20:45:50.957Z",
+                      "startTime": "2026-08-07T13:40:03.028Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -721,7 +721,7 @@
               ],
               "id": "05384557491ebd602dd7-75eda521932150a862a4",
               "file": "demo.spec.ts",
-              "line": 558,
+              "line": 574,
               "column": 3
             },
             {
@@ -740,12 +740,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 238,
+                      "duration": 259,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-05T20:45:51.449Z",
+                      "startTime": "2026-08-07T13:40:10.552Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -774,12 +774,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 517,
+                      "duration": 502,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-05T20:45:51.766Z",
+                      "startTime": "2026-08-07T13:40:10.920Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -808,12 +808,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 337,
+                      "duration": 362,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-05T20:45:52.289Z",
+                      "startTime": "2026-08-07T13:40:11.428Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -842,12 +842,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 6907,
+                      "duration": 427,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-05T20:45:52.630Z",
+                      "startTime": "2026-08-07T13:40:11.794Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -876,12 +876,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 557,
+                      "duration": 682,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-05T20:45:59.541Z",
+                      "startTime": "2026-08-07T13:40:12.225Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -891,7 +891,7 @@
               ],
               "id": "05384557491ebd602dd7-f361a2cf5b7e4e93772f",
               "file": "demo.spec.ts",
-              "line": 136,
+              "line": 152,
               "column": 3
             },
             {
@@ -910,12 +910,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 653,
+                      "duration": 764,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-05T20:46:00.101Z",
+                      "startTime": "2026-08-07T13:40:12.911Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -931,7 +931,7 @@
               ],
               "id": "05384557491ebd602dd7-54d12e9b27a4599b59ca",
               "file": "demo.spec.ts",
-              "line": 150,
+              "line": 166,
               "column": 3
             },
             {
@@ -950,12 +950,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 78,
+                      "duration": 84,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-05T20:46:00.757Z",
+                      "startTime": "2026-08-07T13:40:13.679Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -965,7 +965,7 @@
               ],
               "id": "05384557491ebd602dd7-6ddd242900a8e752209b",
               "file": "demo.spec.ts",
-              "line": 198,
+              "line": 214,
               "column": 3
             },
             {
@@ -984,12 +984,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2493,
+                      "duration": 1321,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-05T20:46:00.837Z",
+                      "startTime": "2026-08-07T13:40:13.767Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -1005,7 +1005,7 @@
               ],
               "id": "05384557491ebd602dd7-848800ee9d00e628b492",
               "file": "demo.spec.ts",
-              "line": 208,
+              "line": 224,
               "column": 3
             },
             {
@@ -1024,7 +1024,7 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 106,
+                      "duration": 122,
                       "errors": [],
                       "stdout": [
                         {
@@ -1033,7 +1033,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-05T20:46:03.334Z",
+                      "startTime": "2026-08-07T13:40:15.094Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -1049,7 +1049,7 @@
               ],
               "id": "05384557491ebd602dd7-7e4c86923b45213e564e",
               "file": "demo.spec.ts",
-              "line": 229,
+              "line": 245,
               "column": 3
             },
             {
@@ -1068,7 +1068,7 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 706,
+                      "duration": 789,
                       "errors": [],
                       "stdout": [
                         {
@@ -1077,13 +1077,13 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-05T20:46:03.443Z",
+                      "startTime": "2026-08-07T13:40:15.220Z",
                       "annotations": [],
                       "attachments": [
                         {
                           "name": "host-collision.json",
                           "contentType": "application/json",
-                          "body": "ewogICJpbnZlbnRvcnkiOiB7CiAgICAic2NvcGVzQ2hlY2tlZCI6IDEyLAogICAgImNhbmRpZGF0ZUlucHV0cyI6IDUwLAogICAgImlucHV0c1dpdGhBVHlwZUF0dHJpYnV0ZSI6IDMzLAogICAgImlucHV0VHlwZXNQcmVzZW50IjogWwogICAgICAiKGFic2VudCkiLAogICAgICAiY2hlY2tib3giLAogICAgICAiaGlkZGVuIiwKICAgICAgInJhZGlvIiwKICAgICAgInRleHQiCiAgICBdLAogICAgIm1hdGNoZXNNYW5ncm92ZUZvcm1TZWxlY3RvciI6IDUsCiAgICAibWF0Y2hpbmdDb21wb25lbnRzIjogWwogICAgICAibWFudGluZS1NdWx0aVNlbGVjdC1pbnB1dEZpZWxkIiwKICAgICAgIm1hbnRpbmUtVGltZVBpY2tlci1maWVsZCIKICAgIF0KICB9LAogICJ1bnJlcGFpcmVkIjogewogICAgInBpbGxzSW5wdXRGaWVsZCI6IHsKICAgICAgImJvcmRlci10b3Atd2lkdGgiOiAiMnB4IiwKICAgICAgImJvcmRlci10b3AtY29sb3IiOiAicmdiKDI2LCAyNiwgMjYpIiwKICAgICAgImJvcmRlci1yYWRpdXMiOiAiMHB4IiwKICAgICAgImhlaWdodCI6ICI0NnB4IiwKICAgICAgIndpZHRoIjogIjQ0Mi4yNjZweCIsCiAgICAgICJwYWRkaW5nLWxlZnQiOiAiNi4yNXB4IiwKICAgICAgImZvbnQtZmFtaWx5IjogIlJvYm90bywgc2Fucy1zZXJpZiIsCiAgICAgICJmb250LXNpemUiOiAiMTZweCIsCiAgICAgICJiYWNrZ3JvdW5kLWNvbG9yIjogInJnYigyNTUsIDI1NSwgMjU1KSIKICAgIH0sCiAgICAidGV4dGFyZWEiOiB7CiAgICAgICJib3JkZXItdG9wLXdpZHRoIjogIjFweCIsCiAgICAgICJib3JkZXItdG9wLWNvbG9yIjogInJnYigyMDAsIDIxMCwgMjE4KSIsCiAgICAgICJib3JkZXItcmFkaXVzIjogIjRweCIsCiAgICAgICJoZWlnaHQiOiAiNTVweCIsCiAgICAgICJ3aWR0aCI6ICI2OTZweCIsCiAgICAgICJwYWRkaW5nLWxlZnQiOiAiMTJweCIsCiAgICAgICJmb250LWZhbWlseSI6ICJSb2JvdG8sIFwiTm90byBTYW5zIEFyYWJpY1wiLCBcIlNlZ29lIFVJXCIsIHN5c3RlbS11aSwgLWFwcGxlLXN5c3RlbSwgc2Fucy1zZXJpZiIsCiAgICAgICJmb250LXNpemUiOiAiMTRweCIsCiAgICAgICJiYWNrZ3JvdW5kLWNvbG9yIjogInJnYigyNTUsIDI1NSwgMjU1KSIKICAgIH0sCiAgICAidGltZVBpY2tlckZpZWxkIjogewogICAgICAiYm9yZGVyLXRvcC13aWR0aCI6ICIycHgiLAogICAgICAiYm9yZGVyLXRvcC1jb2xvciI6ICJyZ2IoMjYsIDI2LCAyNikiLAogICAgICAiYm9yZGVyLXJhZGl1cyI6ICIwcHgiLAogICAgICAiaGVpZ2h0IjogIjQ2cHgiLAogICAgICAid2lkdGgiOiAiMTgzLjVweCIsCiAgICAgICJwYWRkaW5nLWxlZnQiOiAiNi4yNXB4IiwKICAgICAgImZvbnQtZmFtaWx5IjogIlJvYm90bywgc2Fucy1zZXJpZiIsCiAgICAgICJmb250LXNpemUiOiAiMTZweCIsCiAgICAgICJiYWNrZ3JvdW5kLWNvbG9yIjogInJnYigyNTUsIDI1NSwgMjU1KSIKICAgIH0sCiAgICAicGxhaW5UZXh0SW5wdXQiOiB7CiAgICAgICJib3JkZXItdG9wLXdpZHRoIjogIjFweCIsCiAgICAgICJib3JkZXItdG9wLWNvbG9yIjogInJnYigyMDAsIDIxMCwgMjE4KSIsCiAgICAgICJib3JkZXItcmFkaXVzIjogIjRweCIsCiAgICAgICJoZWlnaHQiOiAiMzZweCIsCiAgICAgICJ3aWR0aCI6ICI2OTZweCIsCiAgICAgICJwYWRkaW5nLWxlZnQiOiAiMTJweCIsCiAgICAgICJmb250LWZhbWlseSI6ICJSb2JvdG8sIFwiTm90byBTYW5zIEFyYWJpY1wiLCBcIlNlZ29lIFVJXCIsIHN5c3RlbS11aSwgLWFwcGxlLXN5c3RlbSwgc2Fucy1zZXJpZiIsCiAgICAgICJmb250LXNpemUiOiAiMTRweCIsCiAgICAgICJiYWNrZ3JvdW5kLWNvbG9yIjogInJnYigyNTUsIDI1NSwgMjU1KSIKICAgIH0KICB9LAogICJyZXBhaXJlZCI6IHsKICAgICJwaWxsc0lucHV0RmllbGQiOiB7CiAgICAgICJib3JkZXItdG9wLXdpZHRoIjogIjBweCIsCiAgICAgICJib3JkZXItdG9wLWNvbG9yIjogInJnYigyMCwgMzUsIDQ2KSIsCiAgICAgICJib3JkZXItcmFkaXVzIjogIjBweCIsCiAgICAgICJoZWlnaHQiOiAiMjIuMzkwNnB4IiwKICAgICAgIndpZHRoIjogIjQ0Mi4yNjZweCIsCiAgICAgICJwYWRkaW5nLWxlZnQiOiAiMHB4IiwKICAgICAgImZvbnQtZmFtaWx5IjogIlJvYm90bywgXCJOb3RvIFNhbnMgQXJhYmljXCIsIFwiU2Vnb2UgVUlcIiwgc3lzdGVtLXVpLCAtYXBwbGUtc3lzdGVtLCBzYW5zLXNlcmlmIiwKICAgICAgImZvbnQtc2l6ZSI6ICIxNHB4IiwKICAgICAgImJhY2tncm91bmQtY29sb3IiOiAicmdiYSgwLCAwLCAwLCAwKSIKICAgIH0sCiAgICAidGV4dGFyZWEiOiB7CiAgICAgICJib3JkZXItdG9wLXdpZHRoIjogIjFweCIsCiAgICAgICJib3JkZXItdG9wLWNvbG9yIjogInJnYigyMDAsIDIxMCwgMjE4KSIsCiAgICAgICJib3JkZXItcmFkaXVzIjogIjRweCIsCiAgICAgICJoZWlnaHQiOiAiNzZweCIsCiAgICAgICJ3aWR0aCI6ICIzNDBweCIsCiAgICAgICJwYWRkaW5nLWxlZnQiOiAiMTJweCIsCiAgICAgICJmb250LWZhbWlseSI6ICJSb2JvdG8sIFwiTm90byBTYW5zIEFyYWJpY1wiLCBcIlNlZ29lIFVJXCIsIHN5c3RlbS11aSwgLWFwcGxlLXN5c3RlbSwgc2Fucy1zZXJpZiIsCiAgICAgICJmb250LXNpemUiOiAiMTRweCIsCiAgICAgICJiYWNrZ3JvdW5kLWNvbG9yIjogInJnYigyNTUsIDI1NSwgMjU1KSIKICAgIH0sCiAgICAidGltZVBpY2tlckZpZWxkIjogewogICAgICAiYm9yZGVyLXRvcC13aWR0aCI6ICIwcHgiLAogICAgICAiYm9yZGVyLXRvcC1jb2xvciI6ICJyZ2IoMjAsIDM1LCA0NikiLAogICAgICAiYm9yZGVyLXJhZGl1cyI6ICIycHgiLAogICAgICAiaGVpZ2h0IjogIjIxcHgiLAogICAgICAid2lkdGgiOiAiMTkuOTIxOXB4IiwKICAgICAgInBhZGRpbmctbGVmdCI6ICIyLjFweCIsCiAgICAgICJmb250LWZhbWlseSI6ICJSb2JvdG8sIFwiTm90byBTYW5zIEFyYWJpY1wiLCBcIlNlZ29lIFVJXCIsIHN5c3RlbS11aSwgLWFwcGxlLXN5c3RlbSwgc2Fucy1zZXJpZiIsCiAgICAgICJmb250LXNpemUiOiAiMTRweCIsCiAgICAgICJiYWNrZ3JvdW5kLWNvbG9yIjogInJnYmEoMCwgMCwgMCwgMCkiCiAgICB9LAogICAgInBsYWluVGV4dElucHV0IjogewogICAgICAiYm9yZGVyLXRvcC13aWR0aCI6ICIxcHgiLAogICAgICAiYm9yZGVyLXRvcC1jb2xvciI6ICJyZ2IoMjAwLCAyMTAsIDIxOCkiLAogICAgICAiYm9yZGVyLXJhZGl1cyI6ICI0cHgiLAogICAgICAiaGVpZ2h0IjogIjM2cHgiLAogICAgICAid2lkdGgiOiAiMzQwcHgiLAogICAgICAicGFkZGluZy1sZWZ0IjogIjEycHgiLAogICAgICAiZm9udC1mYW1pbHkiOiAiUm9ib3RvLCBcIk5vdG8gU2FucyBBcmFiaWNcIiwgXCJTZWdvZSBVSVwiLCBzeXN0ZW0tdWksIC1hcHBsZS1zeXN0ZW0sIHNhbnMtc2VyaWYiLAogICAgICAiZm9udC1zaXplIjogIjE0cHgiLAogICAgICAiYmFja2dyb3VuZC1jb2xvciI6ICJyZ2IoMjU1LCAyNTUsIDI1NSkiCiAgICB9CiAgfQp9"
+                          "body": "ewogICJpbnZlbnRvcnkiOiB7CiAgICAic2NvcGVzQ2hlY2tlZCI6IDEyLAogICAgImNhbmRpZGF0ZUlucHV0cyI6IDUwLAogICAgImlucHV0c1dpdGhBVHlwZUF0dHJpYnV0ZSI6IDMzLAogICAgImlucHV0VHlwZXNQcmVzZW50IjogWwogICAgICAiKGFic2VudCkiLAogICAgICAiY2hlY2tib3giLAogICAgICAiaGlkZGVuIiwKICAgICAgInJhZGlvIiwKICAgICAgInRleHQiCiAgICBdLAogICAgIm1hdGNoZXNNYW5ncm92ZUZvcm1TZWxlY3RvciI6IDUsCiAgICAibWF0Y2hpbmdDb21wb25lbnRzIjogWwogICAgICAibWFudGluZS1NdWx0aVNlbGVjdC1pbnB1dEZpZWxkIiwKICAgICAgIm1hbnRpbmUtVGltZVBpY2tlci1maWVsZCIKICAgIF0KICB9LAogICJ1bnJlcGFpcmVkIjogewogICAgInBpbGxzSW5wdXRGaWVsZCI6IHsKICAgICAgImJvcmRlci10b3Atd2lkdGgiOiAiMnB4IiwKICAgICAgImJvcmRlci10b3AtY29sb3IiOiAicmdiKDI2LCAyNiwgMjYpIiwKICAgICAgImJvcmRlci1yYWRpdXMiOiAiMHB4IiwKICAgICAgImhlaWdodCI6ICI0NnB4IiwKICAgICAgIndpZHRoIjogIjQ0Mi4yNjZweCIsCiAgICAgICJwYWRkaW5nLWxlZnQiOiAiNi4yNXB4IiwKICAgICAgImZvbnQtZmFtaWx5IjogIlJvYm90bywgc2Fucy1zZXJpZiIsCiAgICAgICJmb250LXNpemUiOiAiMTZweCIsCiAgICAgICJiYWNrZ3JvdW5kLWNvbG9yIjogInJnYigyNTUsIDI1NSwgMjU1KSIKICAgIH0sCiAgICAidGV4dGFyZWEiOiB7CiAgICAgICJib3JkZXItdG9wLXdpZHRoIjogIjFweCIsCiAgICAgICJib3JkZXItdG9wLWNvbG9yIjogInJnYigyMDAsIDIxMCwgMjE4KSIsCiAgICAgICJib3JkZXItcmFkaXVzIjogIjRweCIsCiAgICAgICJoZWlnaHQiOiAiNTVweCIsCiAgICAgICJ3aWR0aCI6ICI2OTZweCIsCiAgICAgICJwYWRkaW5nLWxlZnQiOiAiMTJweCIsCiAgICAgICJmb250LWZhbWlseSI6ICJSb2JvdG8sIFwiTm90byBTYW5zIEFyYWJpY1wiLCBcIlNlZ29lIFVJXCIsIHN5c3RlbS11aSwgLWFwcGxlLXN5c3RlbSwgc2Fucy1zZXJpZiIsCiAgICAgICJmb250LXNpemUiOiAiMTRweCIsCiAgICAgICJiYWNrZ3JvdW5kLWNvbG9yIjogInJnYigyNTUsIDI1NSwgMjU1KSIKICAgIH0sCiAgICAidGltZVBpY2tlckZpZWxkIjogewogICAgICAiYm9yZGVyLXRvcC13aWR0aCI6ICIycHgiLAogICAgICAiYm9yZGVyLXRvcC1jb2xvciI6ICJyZ2IoMjYsIDI2LCAyNikiLAogICAgICAiYm9yZGVyLXJhZGl1cyI6ICIwcHgiLAogICAgICAiaGVpZ2h0IjogIjQ2cHgiLAogICAgICAid2lkdGgiOiAiMTAwJSIsCiAgICAgICJwYWRkaW5nLWxlZnQiOiAiNi4yNXB4IiwKICAgICAgImZvbnQtZmFtaWx5IjogIlJvYm90bywgc2Fucy1zZXJpZiIsCiAgICAgICJmb250LXNpemUiOiAiMTZweCIsCiAgICAgICJiYWNrZ3JvdW5kLWNvbG9yIjogInJnYigyNTUsIDI1NSwgMjU1KSIKICAgIH0sCiAgICAicGxhaW5UZXh0SW5wdXQiOiB7CiAgICAgICJib3JkZXItdG9wLXdpZHRoIjogIjFweCIsCiAgICAgICJib3JkZXItdG9wLWNvbG9yIjogInJnYigyMDAsIDIxMCwgMjE4KSIsCiAgICAgICJib3JkZXItcmFkaXVzIjogIjRweCIsCiAgICAgICJoZWlnaHQiOiAiMzZweCIsCiAgICAgICJ3aWR0aCI6ICI2OTZweCIsCiAgICAgICJwYWRkaW5nLWxlZnQiOiAiMTJweCIsCiAgICAgICJmb250LWZhbWlseSI6ICJSb2JvdG8sIFwiTm90byBTYW5zIEFyYWJpY1wiLCBcIlNlZ29lIFVJXCIsIHN5c3RlbS11aSwgLWFwcGxlLXN5c3RlbSwgc2Fucy1zZXJpZiIsCiAgICAgICJmb250LXNpemUiOiAiMTRweCIsCiAgICAgICJiYWNrZ3JvdW5kLWNvbG9yIjogInJnYigyNTUsIDI1NSwgMjU1KSIKICAgIH0KICB9LAogICJyZXBhaXJlZCI6IHsKICAgICJwaWxsc0lucHV0RmllbGQiOiB7CiAgICAgICJib3JkZXItdG9wLXdpZHRoIjogIjBweCIsCiAgICAgICJib3JkZXItdG9wLWNvbG9yIjogInJnYigyMCwgMzUsIDQ2KSIsCiAgICAgICJib3JkZXItcmFkaXVzIjogIjBweCIsCiAgICAgICJoZWlnaHQiOiAiMjIuMzkwNnB4IiwKICAgICAgIndpZHRoIjogIjQ0Mi4yNjZweCIsCiAgICAgICJwYWRkaW5nLWxlZnQiOiAiMHB4IiwKICAgICAgImZvbnQtZmFtaWx5IjogIlJvYm90bywgXCJOb3RvIFNhbnMgQXJhYmljXCIsIFwiU2Vnb2UgVUlcIiwgc3lzdGVtLXVpLCAtYXBwbGUtc3lzdGVtLCBzYW5zLXNlcmlmIiwKICAgICAgImZvbnQtc2l6ZSI6ICIxNHB4IiwKICAgICAgImJhY2tncm91bmQtY29sb3IiOiAicmdiYSgwLCAwLCAwLCAwKSIKICAgIH0sCiAgICAidGV4dGFyZWEiOiB7CiAgICAgICJib3JkZXItdG9wLXdpZHRoIjogIjFweCIsCiAgICAgICJib3JkZXItdG9wLWNvbG9yIjogInJnYigyMDAsIDIxMCwgMjE4KSIsCiAgICAgICJib3JkZXItcmFkaXVzIjogIjRweCIsCiAgICAgICJoZWlnaHQiOiAiNzZweCIsCiAgICAgICJ3aWR0aCI6ICIzNDBweCIsCiAgICAgICJwYWRkaW5nLWxlZnQiOiAiMTJweCIsCiAgICAgICJmb250LWZhbWlseSI6ICJSb2JvdG8sIFwiTm90byBTYW5zIEFyYWJpY1wiLCBcIlNlZ29lIFVJXCIsIHN5c3RlbS11aSwgLWFwcGxlLXN5c3RlbSwgc2Fucy1zZXJpZiIsCiAgICAgICJmb250LXNpemUiOiAiMTRweCIsCiAgICAgICJiYWNrZ3JvdW5kLWNvbG9yIjogInJnYigyNTUsIDI1NSwgMjU1KSIKICAgIH0sCiAgICAidGltZVBpY2tlckZpZWxkIjogewogICAgICAiYm9yZGVyLXRvcC13aWR0aCI6ICIwcHgiLAogICAgICAiYm9yZGVyLXRvcC1jb2xvciI6ICJyZ2IoMjAsIDM1LCA0NikiLAogICAgICAiYm9yZGVyLXJhZGl1cyI6ICIycHgiLAogICAgICAiaGVpZ2h0IjogIjIxcHgiLAogICAgICAid2lkdGgiOiAiMTkuOTIxOXB4IiwKICAgICAgInBhZGRpbmctbGVmdCI6ICIyLjFweCIsCiAgICAgICJmb250LWZhbWlseSI6ICJSb2JvdG8sIFwiTm90byBTYW5zIEFyYWJpY1wiLCBcIlNlZ29lIFVJXCIsIHN5c3RlbS11aSwgLWFwcGxlLXN5c3RlbSwgc2Fucy1zZXJpZiIsCiAgICAgICJmb250LXNpemUiOiAiMTRweCIsCiAgICAgICJiYWNrZ3JvdW5kLWNvbG9yIjogInJnYmEoMCwgMCwgMCwgMCkiCiAgICB9LAogICAgInBsYWluVGV4dElucHV0IjogewogICAgICAiYm9yZGVyLXRvcC13aWR0aCI6ICIxcHgiLAogICAgICAiYm9yZGVyLXRvcC1jb2xvciI6ICJyZ2IoMjAwLCAyMTAsIDIxOCkiLAogICAgICAiYm9yZGVyLXJhZGl1cyI6ICI0cHgiLAogICAgICAiaGVpZ2h0IjogIjM2cHgiLAogICAgICAid2lkdGgiOiAiMzQwcHgiLAogICAgICAicGFkZGluZy1sZWZ0IjogIjEycHgiLAogICAgICAiZm9udC1mYW1pbHkiOiAiUm9ib3RvLCBcIk5vdG8gU2FucyBBcmFiaWNcIiwgXCJTZWdvZSBVSVwiLCBzeXN0ZW0tdWksIC1hcHBsZS1zeXN0ZW0sIHNhbnMtc2VyaWYiLAogICAgICAiZm9udC1zaXplIjogIjE0cHgiLAogICAgICAiYmFja2dyb3VuZC1jb2xvciI6ICJyZ2IoMjU1LCAyNTUsIDI1NSkiCiAgICB9CiAgfQp9"
                         }
                       ]
                     }
@@ -1093,7 +1093,7 @@
               ],
               "id": "05384557491ebd602dd7-ee10c323bcc47c6802f9",
               "file": "demo.spec.ts",
-              "line": 302,
+              "line": 318,
               "column": 3
             },
             {
@@ -1112,12 +1112,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 176,
+                      "duration": 181,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-05T20:46:04.151Z",
+                      "startTime": "2026-08-07T13:40:16.012Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1127,7 +1127,7 @@
               ],
               "id": "05384557491ebd602dd7-8d6a0b0666f3b162d8f1",
               "file": "demo.spec.ts",
-              "line": 471,
+              "line": 487,
               "column": 3
             },
             {
@@ -1146,12 +1146,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 300,
+                      "duration": 329,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-05T20:46:04.330Z",
+                      "startTime": "2026-08-07T13:40:16.196Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1161,7 +1161,7 @@
               ],
               "id": "05384557491ebd602dd7-8e50155fecc1d7092df5",
               "file": "demo.spec.ts",
-              "line": 493,
+              "line": 509,
               "column": 3
             },
             {
@@ -1180,7 +1180,7 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 4132,
+                      "duration": 3459,
                       "errors": [],
                       "stdout": [
                         {
@@ -1199,7 +1199,7 @@
                           "text": "axe 05-chrome: 0 violations (0 critical, 0 serious), 0 incomplete\n"
                         },
                         {
-                          "text": "axe 06-data-table: 0 violations (0 critical, 0 serious), 0 incomplete\n"
+                          "text": "axe 06-data-table: 0 violations (0 critical, 0 serious), 1 incomplete\n"
                         },
                         {
                           "text": "axe 07-states: 0 violations (0 critical, 0 serious), 0 incomplete\n"
@@ -1213,13 +1213,13 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-05T20:46:04.635Z",
+                      "startTime": "2026-08-07T13:40:16.528Z",
                       "annotations": [],
                       "attachments": [
                         {
                           "name": "axe-summary.json",
                           "contentType": "application/json",
-                          "body": "ewogICJzY29wZWQiOiB7CiAgICAic2VjdGlvbiI6ICJjYW5kaWRhdGUtc3VidHJlZSIsCiAgICAidXJsIjogImh0dHA6Ly9sb2NhbGhvc3Q6NTIwNS8/Y2FuZGlkYXRlPW9uIiwKICAgICJ0YWdzIjogWwogICAgICAid2NhZzJhIiwKICAgICAgIndjYWcyYWEiLAogICAgICAid2NhZzIxYSIsCiAgICAgICJ3Y2FnMjFhYSIsCiAgICAgICJ3Y2FnMjJhYSIKICAgIF0sCiAgICAidmlvbGF0aW9ucyI6IFtdLAogICAgImNvdW50cyI6IHsKICAgICAgInZpb2xhdGlvbnMiOiAwLAogICAgICAic2VyaW91cyI6IDAsCiAgICAgICJjcml0aWNhbCI6IDAsCiAgICAgICJpbmNvbXBsZXRlIjogMAogICAgfSwKICAgICJpbmNvbXBsZXRlUnVsZUlkcyI6IFtdCiAgfSwKICAid2hvbGVQYWdlIjogewogICAgInNlY3Rpb24iOiAid2hvbGUtcGFnZSIsCiAgICAidXJsIjogImh0dHA6Ly9sb2NhbGhvc3Q6NTIwNS8/Y2FuZGlkYXRlPW9uIiwKICAgICJ0YWdzIjogWwogICAgICAid2NhZzJhIiwKICAgICAgIndjYWcyYWEiLAogICAgICAid2NhZzIxYSIsCiAgICAgICJ3Y2FnMjFhYSIsCiAgICAgICJ3Y2FnMjJhYSIKICAgIF0sCiAgICAidmlvbGF0aW9ucyI6IFsKICAgICAgewogICAgICAgICJpZCI6ICJsaW5rLWluLXRleHQtYmxvY2siLAogICAgICAgICJpbXBhY3QiOiAic2VyaW91cyIsCiAgICAgICAgImhlbHAiOiAiTGlua3MgbXVzdCBiZSBkaXN0aW5ndWlzaGFibGUgd2l0aG91dCByZWx5aW5nIG9uIGNvbG9yIiwKICAgICAgICAiaGVscFVybCI6ICJodHRwczovL2RlcXVldW5pdmVyc2l0eS5jb20vcnVsZXMvYXhlLzQuMTIvbGluay1pbi10ZXh0LWJsb2NrP2FwcGxpY2F0aW9uPXBsYXl3cmlnaHQiLAogICAgICAgICJub2RlcyI6IFsKICAgICAgICAgICJhW2RhdGEtY2FuYXJ5PVwibGlua1wiXSIKICAgICAgICBdCiAgICAgIH0KICAgIF0sCiAgICAiY291bnRzIjogewogICAgICAidmlvbGF0aW9ucyI6IDEsCiAgICAgICJzZXJpb3VzIjogMSwKICAgICAgImNyaXRpY2FsIjogMCwKICAgICAgImluY29tcGxldGUiOiAwCiAgICB9LAogICAgImluY29tcGxldGVSdWxlSWRzIjogW10KICB9Cn0="
+                          "body": "ewogICJzY29wZWQiOiB7CiAgICAic2VjdGlvbiI6ICJjYW5kaWRhdGUtc3VidHJlZSIsCiAgICAidXJsIjogImh0dHA6Ly9sb2NhbGhvc3Q6NTIwNS8/Y2FuZGlkYXRlPW9uIiwKICAgICJ0YWdzIjogWwogICAgICAid2NhZzJhIiwKICAgICAgIndjYWcyYWEiLAogICAgICAid2NhZzIxYSIsCiAgICAgICJ3Y2FnMjFhYSIsCiAgICAgICJ3Y2FnMjJhYSIKICAgIF0sCiAgICAidmlvbGF0aW9ucyI6IFtdLAogICAgImNvdW50cyI6IHsKICAgICAgInZpb2xhdGlvbnMiOiAwLAogICAgICAic2VyaW91cyI6IDAsCiAgICAgICJjcml0aWNhbCI6IDAsCiAgICAgICJpbmNvbXBsZXRlIjogMQogICAgfSwKICAgICJpbmNvbXBsZXRlUnVsZUlkcyI6IFsKICAgICAgImNvbG9yLWNvbnRyYXN0IgogICAgXQogIH0sCiAgIndob2xlUGFnZSI6IHsKICAgICJzZWN0aW9uIjogIndob2xlLXBhZ2UiLAogICAgInVybCI6ICJodHRwOi8vbG9jYWxob3N0OjUyMDUvP2NhbmRpZGF0ZT1vbiIsCiAgICAidGFncyI6IFsKICAgICAgIndjYWcyYSIsCiAgICAgICJ3Y2FnMmFhIiwKICAgICAgIndjYWcyMWEiLAogICAgICAid2NhZzIxYWEiLAogICAgICAid2NhZzIyYWEiCiAgICBdLAogICAgInZpb2xhdGlvbnMiOiBbCiAgICAgIHsKICAgICAgICAiaWQiOiAibGluay1pbi10ZXh0LWJsb2NrIiwKICAgICAgICAiaW1wYWN0IjogInNlcmlvdXMiLAogICAgICAgICJoZWxwIjogIkxpbmtzIG11c3QgYmUgZGlzdGluZ3Vpc2hhYmxlIHdpdGhvdXQgcmVseWluZyBvbiBjb2xvciIsCiAgICAgICAgImhlbHBVcmwiOiAiaHR0cHM6Ly9kZXF1ZXVuaXZlcnNpdHkuY29tL3J1bGVzL2F4ZS80LjEyL2xpbmstaW4tdGV4dC1ibG9jaz9hcHBsaWNhdGlvbj1wbGF5d3JpZ2h0IiwKICAgICAgICAibm9kZXMiOiBbCiAgICAgICAgICAiYVtkYXRhLWNhbmFyeT1cImxpbmtcIl0iLAogICAgICAgICAgImFbaHJlZiQ9XCJkZWx0YS1tYW50aW5lL1wiXSIKICAgICAgICBdCiAgICAgIH0KICAgIF0sCiAgICAiY291bnRzIjogewogICAgICAidmlvbGF0aW9ucyI6IDEsCiAgICAgICJzZXJpb3VzIjogMSwKICAgICAgImNyaXRpY2FsIjogMCwKICAgICAgImluY29tcGxldGUiOiAxCiAgICB9LAogICAgImluY29tcGxldGVSdWxlSWRzIjogWwogICAgICAiY29sb3ItY29udHJhc3QiCiAgICBdCiAgfQp9"
                         }
                       ]
                     }
@@ -1229,7 +1229,7 @@
               ],
               "id": "05384557491ebd602dd7-bd11210157393f04834c",
               "file": "demo.spec.ts",
-              "line": 502,
+              "line": 518,
               "column": 3
             },
             {
@@ -1248,12 +1248,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1154,
+                      "duration": 1041,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-05T20:46:08.771Z",
+                      "startTime": "2026-08-07T13:40:19.990Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1263,7 +1263,7 @@
               ],
               "id": "05384557491ebd602dd7-68493275ddb31b41c792",
               "file": "demo.spec.ts",
-              "line": 537,
+              "line": 553,
               "column": 3
             },
             {
@@ -1282,12 +1282,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1013,
+                      "duration": 1012,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-05T20:46:09.929Z",
+                      "startTime": "2026-08-07T13:40:21.034Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1297,7 +1297,7 @@
               ],
               "id": "05384557491ebd602dd7-302ba73148e09367fba1",
               "file": "demo.spec.ts",
-              "line": 546,
+              "line": 562,
               "column": 3
             },
             {
@@ -1316,12 +1316,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 318,
+                      "duration": 323,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-05T20:46:10.945Z",
+                      "startTime": "2026-08-07T13:40:22.050Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1331,7 +1331,7 @@
               ],
               "id": "05384557491ebd602dd7-e27229652d26b3ac106b",
               "file": "demo.spec.ts",
-              "line": 558,
+              "line": 574,
               "column": 3
             },
             {
@@ -1350,12 +1350,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 302,
+                      "duration": 344,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-05T20:46:11.523Z",
+                      "startTime": "2026-08-07T13:40:29.503Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1384,12 +1384,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 609,
+                      "duration": 582,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-05T20:46:11.920Z",
+                      "startTime": "2026-08-07T13:40:29.960Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1418,12 +1418,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 377,
+                      "duration": 328,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-05T20:46:12.537Z",
+                      "startTime": "2026-08-07T13:40:30.546Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1452,12 +1452,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1906,
+                      "duration": 463,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-05T20:46:12.918Z",
+                      "startTime": "2026-08-07T13:40:30.881Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1486,12 +1486,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 571,
+                      "duration": 610,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-05T20:46:14.828Z",
+                      "startTime": "2026-08-07T13:40:31.347Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1501,7 +1501,7 @@
               ],
               "id": "05384557491ebd602dd7-3fdbb3628825cdfc681f",
               "file": "demo.spec.ts",
-              "line": 136,
+              "line": 152,
               "column": 3
             },
             {
@@ -1520,12 +1520,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 670,
+                      "duration": 731,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-05T20:46:15.403Z",
+                      "startTime": "2026-08-07T13:40:31.960Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -1541,7 +1541,7 @@
               ],
               "id": "05384557491ebd602dd7-d4dc5e890870a2d113af",
               "file": "demo.spec.ts",
-              "line": 150,
+              "line": 166,
               "column": 3
             },
             {
@@ -1560,12 +1560,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 79,
+                      "duration": 87,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-05T20:46:16.076Z",
+                      "startTime": "2026-08-07T13:40:32.694Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1575,7 +1575,7 @@
               ],
               "id": "05384557491ebd602dd7-4b12171d28cd5f18048f",
               "file": "demo.spec.ts",
-              "line": 198,
+              "line": 214,
               "column": 3
             },
             {
@@ -1594,12 +1594,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 4468,
+                      "duration": 1324,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-05T20:46:16.158Z",
+                      "startTime": "2026-08-07T13:40:32.785Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -1615,7 +1615,7 @@
               ],
               "id": "05384557491ebd602dd7-e872c54e17efdeb48a73",
               "file": "demo.spec.ts",
-              "line": 208,
+              "line": 224,
               "column": 3
             },
             {
@@ -1634,7 +1634,7 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 96,
+                      "duration": 111,
                       "errors": [],
                       "stdout": [
                         {
@@ -1643,7 +1643,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-05T20:46:20.630Z",
+                      "startTime": "2026-08-07T13:40:34.112Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -1659,7 +1659,7 @@
               ],
               "id": "05384557491ebd602dd7-eb669c732ce801c7b9ae",
               "file": "demo.spec.ts",
-              "line": 229,
+              "line": 245,
               "column": 3
             },
             {
@@ -1678,7 +1678,7 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 713,
+                      "duration": 741,
                       "errors": [],
                       "stdout": [
                         {
@@ -1687,7 +1687,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-05T20:46:20.729Z",
+                      "startTime": "2026-08-07T13:40:34.227Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -1703,7 +1703,7 @@
               ],
               "id": "05384557491ebd602dd7-7eac039ae7d938e7d3a7",
               "file": "demo.spec.ts",
-              "line": 302,
+              "line": 318,
               "column": 3
             },
             {
@@ -1727,7 +1727,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-05T20:46:21.445Z",
+                      "startTime": "2026-08-07T13:40:34.971Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1737,7 +1737,7 @@
               ],
               "id": "05384557491ebd602dd7-d795ebf802cca69ef8b2",
               "file": "demo.spec.ts",
-              "line": 471,
+              "line": 487,
               "column": 3
             },
             {
@@ -1756,12 +1756,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 303,
+                      "duration": 310,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-05T20:46:21.624Z",
+                      "startTime": "2026-08-07T13:40:35.149Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1771,7 +1771,7 @@
               ],
               "id": "05384557491ebd602dd7-f4f430657d8a792d360e",
               "file": "demo.spec.ts",
-              "line": 493,
+              "line": 509,
               "column": 3
             },
             {
@@ -1790,7 +1790,7 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 4229,
+                      "duration": 3937,
                       "errors": [],
                       "stdout": [
                         {
@@ -1809,7 +1809,7 @@
                           "text": "axe 05-chrome: 0 violations (0 critical, 0 serious), 0 incomplete\n"
                         },
                         {
-                          "text": "axe 06-data-table: 0 violations (0 critical, 0 serious), 0 incomplete\n"
+                          "text": "axe 06-data-table: 0 violations (0 critical, 0 serious), 1 incomplete\n"
                         },
                         {
                           "text": "axe 07-states: 0 violations (0 critical, 0 serious), 0 incomplete\n"
@@ -1823,13 +1823,13 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-05T20:46:21.930Z",
+                      "startTime": "2026-08-07T13:40:35.462Z",
                       "annotations": [],
                       "attachments": [
                         {
                           "name": "axe-summary.json",
                           "contentType": "application/json",
-                          "body": "ewogICJzY29wZWQiOiB7CiAgICAic2VjdGlvbiI6ICJjYW5kaWRhdGUtc3VidHJlZSIsCiAgICAidXJsIjogImh0dHA6Ly9sb2NhbGhvc3Q6NTIwNS8/Y2FuZGlkYXRlPW9uIiwKICAgICJ0YWdzIjogWwogICAgICAid2NhZzJhIiwKICAgICAgIndjYWcyYWEiLAogICAgICAid2NhZzIxYSIsCiAgICAgICJ3Y2FnMjFhYSIsCiAgICAgICJ3Y2FnMjJhYSIKICAgIF0sCiAgICAidmlvbGF0aW9ucyI6IFtdLAogICAgImNvdW50cyI6IHsKICAgICAgInZpb2xhdGlvbnMiOiAwLAogICAgICAic2VyaW91cyI6IDAsCiAgICAgICJjcml0aWNhbCI6IDAsCiAgICAgICJpbmNvbXBsZXRlIjogMAogICAgfSwKICAgICJpbmNvbXBsZXRlUnVsZUlkcyI6IFtdCiAgfSwKICAid2hvbGVQYWdlIjogewogICAgInNlY3Rpb24iOiAid2hvbGUtcGFnZSIsCiAgICAidXJsIjogImh0dHA6Ly9sb2NhbGhvc3Q6NTIwNS8/Y2FuZGlkYXRlPW9uIiwKICAgICJ0YWdzIjogWwogICAgICAid2NhZzJhIiwKICAgICAgIndjYWcyYWEiLAogICAgICAid2NhZzIxYSIsCiAgICAgICJ3Y2FnMjFhYSIsCiAgICAgICJ3Y2FnMjJhYSIKICAgIF0sCiAgICAidmlvbGF0aW9ucyI6IFsKICAgICAgewogICAgICAgICJpZCI6ICJsaW5rLWluLXRleHQtYmxvY2siLAogICAgICAgICJpbXBhY3QiOiAic2VyaW91cyIsCiAgICAgICAgImhlbHAiOiAiTGlua3MgbXVzdCBiZSBkaXN0aW5ndWlzaGFibGUgd2l0aG91dCByZWx5aW5nIG9uIGNvbG9yIiwKICAgICAgICAiaGVscFVybCI6ICJodHRwczovL2RlcXVldW5pdmVyc2l0eS5jb20vcnVsZXMvYXhlLzQuMTIvbGluay1pbi10ZXh0LWJsb2NrP2FwcGxpY2F0aW9uPXBsYXl3cmlnaHQiLAogICAgICAgICJub2RlcyI6IFsKICAgICAgICAgICJhW2RhdGEtY2FuYXJ5PVwibGlua1wiXSIKICAgICAgICBdCiAgICAgIH0KICAgIF0sCiAgICAiY291bnRzIjogewogICAgICAidmlvbGF0aW9ucyI6IDEsCiAgICAgICJzZXJpb3VzIjogMSwKICAgICAgImNyaXRpY2FsIjogMCwKICAgICAgImluY29tcGxldGUiOiAwCiAgICB9LAogICAgImluY29tcGxldGVSdWxlSWRzIjogW10KICB9Cn0="
+                          "body": "ewogICJzY29wZWQiOiB7CiAgICAic2VjdGlvbiI6ICJjYW5kaWRhdGUtc3VidHJlZSIsCiAgICAidXJsIjogImh0dHA6Ly9sb2NhbGhvc3Q6NTIwNS8/Y2FuZGlkYXRlPW9uIiwKICAgICJ0YWdzIjogWwogICAgICAid2NhZzJhIiwKICAgICAgIndjYWcyYWEiLAogICAgICAid2NhZzIxYSIsCiAgICAgICJ3Y2FnMjFhYSIsCiAgICAgICJ3Y2FnMjJhYSIKICAgIF0sCiAgICAidmlvbGF0aW9ucyI6IFtdLAogICAgImNvdW50cyI6IHsKICAgICAgInZpb2xhdGlvbnMiOiAwLAogICAgICAic2VyaW91cyI6IDAsCiAgICAgICJjcml0aWNhbCI6IDAsCiAgICAgICJpbmNvbXBsZXRlIjogMQogICAgfSwKICAgICJpbmNvbXBsZXRlUnVsZUlkcyI6IFsKICAgICAgImNvbG9yLWNvbnRyYXN0IgogICAgXQogIH0sCiAgIndob2xlUGFnZSI6IHsKICAgICJzZWN0aW9uIjogIndob2xlLXBhZ2UiLAogICAgInVybCI6ICJodHRwOi8vbG9jYWxob3N0OjUyMDUvP2NhbmRpZGF0ZT1vbiIsCiAgICAidGFncyI6IFsKICAgICAgIndjYWcyYSIsCiAgICAgICJ3Y2FnMmFhIiwKICAgICAgIndjYWcyMWEiLAogICAgICAid2NhZzIxYWEiLAogICAgICAid2NhZzIyYWEiCiAgICBdLAogICAgInZpb2xhdGlvbnMiOiBbCiAgICAgIHsKICAgICAgICAiaWQiOiAibGluay1pbi10ZXh0LWJsb2NrIiwKICAgICAgICAiaW1wYWN0IjogInNlcmlvdXMiLAogICAgICAgICJoZWxwIjogIkxpbmtzIG11c3QgYmUgZGlzdGluZ3Vpc2hhYmxlIHdpdGhvdXQgcmVseWluZyBvbiBjb2xvciIsCiAgICAgICAgImhlbHBVcmwiOiAiaHR0cHM6Ly9kZXF1ZXVuaXZlcnNpdHkuY29tL3J1bGVzL2F4ZS80LjEyL2xpbmstaW4tdGV4dC1ibG9jaz9hcHBsaWNhdGlvbj1wbGF5d3JpZ2h0IiwKICAgICAgICAibm9kZXMiOiBbCiAgICAgICAgICAiYVtkYXRhLWNhbmFyeT1cImxpbmtcIl0iLAogICAgICAgICAgImFbaHJlZiQ9XCJkZWx0YS1tYW50aW5lL1wiXSIKICAgICAgICBdCiAgICAgIH0KICAgIF0sCiAgICAiY291bnRzIjogewogICAgICAidmlvbGF0aW9ucyI6IDEsCiAgICAgICJzZXJpb3VzIjogMSwKICAgICAgImNyaXRpY2FsIjogMCwKICAgICAgImluY29tcGxldGUiOiAxCiAgICB9LAogICAgImluY29tcGxldGVSdWxlSWRzIjogWwogICAgICAiY29sb3ItY29udHJhc3QiCiAgICBdCiAgfQp9"
                         }
                       ]
                     }
@@ -1839,7 +1839,7 @@
               ],
               "id": "05384557491ebd602dd7-f9c2bb908f17fccfa522",
               "file": "demo.spec.ts",
-              "line": 502,
+              "line": 518,
               "column": 3
             },
             {
@@ -1858,12 +1858,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1833,
+                      "duration": 1133,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-05T20:46:26.163Z",
+                      "startTime": "2026-08-07T13:40:39.402Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1873,7 +1873,7 @@
               ],
               "id": "05384557491ebd602dd7-26bdd8667776d40a9477",
               "file": "demo.spec.ts",
-              "line": 537,
+              "line": 553,
               "column": 3
             },
             {
@@ -1892,12 +1892,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3462,
+                      "duration": 1112,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-05T20:46:28.000Z",
+                      "startTime": "2026-08-07T13:40:40.539Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1907,7 +1907,7 @@
               ],
               "id": "05384557491ebd602dd7-f37631c4a4b951b215ab",
               "file": "demo.spec.ts",
-              "line": 546,
+              "line": 562,
               "column": 3
             },
             {
@@ -1926,12 +1926,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 266,
+                      "duration": 320,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-05T20:46:31.466Z",
+                      "startTime": "2026-08-07T13:40:41.654Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1941,7 +1941,2040 @@
               ],
               "id": "05384557491ebd602dd7-4a3027c7ff2507b74cd6",
               "file": "demo.spec.ts",
-              "line": 558,
+              "line": 574,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "island.spec.ts",
+      "file": "island.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "embedded island",
+          "file": "island.spec.ts",
+          "line": 121,
+          "column": 6,
+          "specs": [
+            {
+              "title": "renders the candidate region inside the host frame",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 147,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:03.337Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-95c6e15524aec3884bc9",
+              "file": "island.spec.ts",
+              "line": 122,
+              "column": 3
+            },
+            {
+              "title": "the candidate subtree is empty with candidate=off, and Mantine's CSS is absent",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 94,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:03.488Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-f0bf60befc4b0d2c8674",
+              "file": "island.spec.ts",
+              "line": 153,
+              "column": 3
+            },
+            {
+              "title": "renders every host canary and every frame canary",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 162,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:03.584Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-cdb01a0930e6cb0df872",
+              "file": "island.spec.ts",
+              "line": 187,
+              "column": 3
+            },
+            {
+              "title": "passes the leakage assertion",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1268,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:03.750Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "island-leakage.json",
+                          "contentType": "application/json",
+                          "body": "ewogICJhc3NlcnRpb25QYXNzZWQiOiB0cnVlLAogICJkaWZmZXJlbmNlcyI6IFtdLAogICJjYW5hcmllc0NoZWNrZWQiOiAxNAp9"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-dca1e9f336e2e5cc78ea",
+              "file": "island.spec.ts",
+              "line": 204,
+              "column": 3
+            },
+            {
+              "title": "filters the table from the controls above it",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 392,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:05.021Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-42ac899ec4546ba9d447",
+              "file": "island.spec.ts",
+              "line": 226,
+              "column": 3
+            },
+            {
+              "title": "resets to page one when a filter changes",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 301,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:05.417Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-657de8e40204202fc504",
+              "file": "island.spec.ts",
+              "line": 246,
+              "column": 3
+            },
+            {
+              "title": "paginates the filtered result",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 342,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:05.723Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-5f477acd960399fde7ee",
+              "file": "island.spec.ts",
+              "line": 258,
+              "column": 3
+            },
+            {
+              "title": "sorts from a column header",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 332,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:06.068Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-777eb2849a00d67d3214",
+              "file": "island.spec.ts",
+              "line": 277,
+              "column": 3
+            },
+            {
+              "title": "every header carries a styled sort indicator",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 154,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:06.404Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-cae43bf1af6d7346da0e",
+              "file": "island.spec.ts",
+              "line": 311,
+              "column": 3
+            },
+            {
+              "title": "a descending sort is the true inverse of ascending, inside tie groups too",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 286,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:06.562Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-8f8ebff1ac7df958630f",
+              "file": "island.spec.ts",
+              "line": 374,
+              "column": 3
+            },
+            {
+              "title": "orders by the selected locale's collation in German",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 337,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:06.852Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-a6efef83e9ec740d3f74",
+              "file": "island.spec.ts",
+              "line": 421,
+              "column": 3
+            },
+            {
+              "title": "status pills read the record's status and their colour tracks it",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 133,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:07.193Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-b1c77f279c79bb03639c",
+              "file": "island.spec.ts",
+              "line": 448,
+              "column": 3
+            },
+            {
+              "title": "applies RTL for Arabic",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 242,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:07.330Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-bfb1bacfb9c8cd33a5e3",
+              "file": "island.spec.ts",
+              "line": 493,
+              "column": 3
+            },
+            {
+              "title": "portalled dropdowns follow the page direction",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 268,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:07.575Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-04dabf343e86a3dd03cd",
+              "file": "island.spec.ts",
+              "line": 517,
+              "column": 3
+            },
+            {
+              "title": "axe on the candidate region and the whole page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 850,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "axe island scoped: 0 violations (0 critical, 0 serious), 1 incomplete | whole page: 1 violations (rules: link-in-text-block)\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:07.847Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "axe-island-summary.json",
+                          "contentType": "application/json",
+                          "body": "ewogICJzY29wZWQiOiB7CiAgICAic2VjdGlvbiI6ICJpc2xhbmQtY2FuZGlkYXRlLXN1YnRyZWUiLAogICAgInVybCI6ICJodHRwOi8vbG9jYWxob3N0OjUyMDUvaXNsYW5kLmh0bWw/Y2FuZGlkYXRlPW9uIiwKICAgICJ0YWdzIjogWwogICAgICAid2NhZzJhIiwKICAgICAgIndjYWcyYWEiLAogICAgICAid2NhZzIxYSIsCiAgICAgICJ3Y2FnMjFhYSIsCiAgICAgICJ3Y2FnMjJhYSIKICAgIF0sCiAgICAidmlvbGF0aW9ucyI6IFtdLAogICAgImNvdW50cyI6IHsKICAgICAgInZpb2xhdGlvbnMiOiAwLAogICAgICAic2VyaW91cyI6IDAsCiAgICAgICJjcml0aWNhbCI6IDAsCiAgICAgICJpbmNvbXBsZXRlIjogMQogICAgfSwKICAgICJpbmNvbXBsZXRlUnVsZUlkcyI6IFsKICAgICAgImNvbG9yLWNvbnRyYXN0IgogICAgXQogIH0sCiAgIndob2xlUGFnZSI6IHsKICAgICJzZWN0aW9uIjogImlzbGFuZC13aG9sZS1wYWdlIiwKICAgICJ1cmwiOiAiaHR0cDovL2xvY2FsaG9zdDo1MjA1L2lzbGFuZC5odG1sP2NhbmRpZGF0ZT1vbiIsCiAgICAidGFncyI6IFsKICAgICAgIndjYWcyYSIsCiAgICAgICJ3Y2FnMmFhIiwKICAgICAgIndjYWcyMWEiLAogICAgICAid2NhZzIxYWEiLAogICAgICAid2NhZzIyYWEiCiAgICBdLAogICAgInZpb2xhdGlvbnMiOiBbCiAgICAgIHsKICAgICAgICAiaWQiOiAibGluay1pbi10ZXh0LWJsb2NrIiwKICAgICAgICAiaW1wYWN0IjogInNlcmlvdXMiLAogICAgICAgICJoZWxwIjogIkxpbmtzIG11c3QgYmUgZGlzdGluZ3Vpc2hhYmxlIHdpdGhvdXQgcmVseWluZyBvbiBjb2xvciIsCiAgICAgICAgImhlbHBVcmwiOiAiaHR0cHM6Ly9kZXF1ZXVuaXZlcnNpdHkuY29tL3J1bGVzL2F4ZS80LjEyL2xpbmstaW4tdGV4dC1ibG9jaz9hcHBsaWNhdGlvbj1wbGF5d3JpZ2h0IiwKICAgICAgICAibm9kZXMiOiBbCiAgICAgICAgICAiYVtkYXRhLWNhbmFyeT1cImxpbmtcIl0iLAogICAgICAgICAgImFbaHJlZiQ9XCJkZWx0YS1tYW50aW5lL1wiXSIKICAgICAgICBdCiAgICAgIH0KICAgIF0sCiAgICAiY291bnRzIjogewogICAgICAidmlvbGF0aW9ucyI6IDEsCiAgICAgICJzZXJpb3VzIjogMSwKICAgICAgImNyaXRpY2FsIjogMCwKICAgICAgImluY29tcGxldGUiOiAxCiAgICB9LAogICAgImluY29tcGxldGVSdWxlSWRzIjogWwogICAgICAiY29sb3ItY29udHJhc3QiCiAgICBdCiAgfQp9"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-233abba4d66242009936",
+              "file": "island.spec.ts",
+              "line": 555,
+              "column": 3
+            },
+            {
+              "title": "axe on an open portalled dropdown",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 417,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "axe island dropdown: 0 violations (0 critical, 0 serious), 0 incomplete\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:08.700Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "axe-island-dropdown.json",
+                          "contentType": "application/json",
+                          "body": "ewogICJzZWN0aW9uIjogImlzbGFuZC1kcm9wZG93biIsCiAgInVybCI6ICJodHRwOi8vbG9jYWxob3N0OjUyMDUvaXNsYW5kLmh0bWw/Y2FuZGlkYXRlPW9uIiwKICAidGFncyI6IFsKICAgICJ3Y2FnMmEiLAogICAgIndjYWcyYWEiLAogICAgIndjYWcyMWEiLAogICAgIndjYWcyMWFhIiwKICAgICJ3Y2FnMjJhYSIKICBdLAogICJ2aW9sYXRpb25zIjogW10sCiAgImNvdW50cyI6IHsKICAgICJ2aW9sYXRpb25zIjogMCwKICAgICJzZXJpb3VzIjogMCwKICAgICJjcml0aWNhbCI6IDAsCiAgICAiaW5jb21wbGV0ZSI6IDAKICB9LAogICJpbmNvbXBsZXRlUnVsZUlkcyI6IFtdCn0="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-2185d826e02cbb72c449",
+              "file": "island.spec.ts",
+              "line": 595,
+              "column": 3
+            },
+            {
+              "title": "screenshots",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 554,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:09.121Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-0ac6fb5b17ccbdc4e35e",
+              "file": "island.spec.ts",
+              "line": 623,
+              "column": 3
+            },
+            {
+              "title": "screenshots in RTL",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 463,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:09.678Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-582c1b995f1772c2b628",
+              "file": "island.spec.ts",
+              "line": 640,
+              "column": 3
+            },
+            {
+              "title": "long labels do not overflow the viewport",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 151,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:10.144Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-354664fe0f1f1e4ae7d8",
+              "file": "island.spec.ts",
+              "line": 657,
+              "column": 3
+            },
+            {
+              "title": "renders the candidate region inside the host frame",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 146,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:22.389Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-13a0161603284f0febfb",
+              "file": "island.spec.ts",
+              "line": 122,
+              "column": 3
+            },
+            {
+              "title": "the candidate subtree is empty with candidate=off, and Mantine's CSS is absent",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 90,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:22.538Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-9f74d90d509d111a8352",
+              "file": "island.spec.ts",
+              "line": 153,
+              "column": 3
+            },
+            {
+              "title": "renders every host canary and every frame canary",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 174,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:22.631Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-51d95aa5b59fd752f633",
+              "file": "island.spec.ts",
+              "line": 187,
+              "column": 3
+            },
+            {
+              "title": "passes the leakage assertion",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1274,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:22.809Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "island-leakage.json",
+                          "contentType": "application/json",
+                          "body": "ewogICJhc3NlcnRpb25QYXNzZWQiOiB0cnVlLAogICJkaWZmZXJlbmNlcyI6IFtdLAogICJjYW5hcmllc0NoZWNrZWQiOiAxNAp9"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-66d9d60e17854e47c631",
+              "file": "island.spec.ts",
+              "line": 204,
+              "column": 3
+            },
+            {
+              "title": "filters the table from the controls above it",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 355,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:24.087Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-b6c1c7b3f6426451a193",
+              "file": "island.spec.ts",
+              "line": 226,
+              "column": 3
+            },
+            {
+              "title": "resets to page one when a filter changes",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 250,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:24.446Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-ed21077433f8db2143fc",
+              "file": "island.spec.ts",
+              "line": 246,
+              "column": 3
+            },
+            {
+              "title": "paginates the filtered result",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 276,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:24.699Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-d493ea50b762fba4ffa4",
+              "file": "island.spec.ts",
+              "line": 258,
+              "column": 3
+            },
+            {
+              "title": "sorts from a column header",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 249,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:24.978Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-2c69956940f5dd526e76",
+              "file": "island.spec.ts",
+              "line": 277,
+              "column": 3
+            },
+            {
+              "title": "every header carries a styled sort indicator",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 125,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:25.231Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-166ffb8fd0cd00334083",
+              "file": "island.spec.ts",
+              "line": 311,
+              "column": 3
+            },
+            {
+              "title": "a descending sort is the true inverse of ascending, inside tie groups too",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 223,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:25.359Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-3e4fc6df07a95e7a197b",
+              "file": "island.spec.ts",
+              "line": 374,
+              "column": 3
+            },
+            {
+              "title": "orders by the selected locale's collation in German",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 224,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:25.586Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-475403833c016415539f",
+              "file": "island.spec.ts",
+              "line": 421,
+              "column": 3
+            },
+            {
+              "title": "status pills read the record's status and their colour tracks it",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 123,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:25.814Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-210257e6a3991bed199d",
+              "file": "island.spec.ts",
+              "line": 448,
+              "column": 3
+            },
+            {
+              "title": "applies RTL for Arabic",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 210,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:25.939Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-eb7bd908768bdcc0dece",
+              "file": "island.spec.ts",
+              "line": 493,
+              "column": 3
+            },
+            {
+              "title": "portalled dropdowns follow the page direction",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 240,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:26.152Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-d1cf45a81620bb9abfa5",
+              "file": "island.spec.ts",
+              "line": 517,
+              "column": 3
+            },
+            {
+              "title": "axe on the candidate region and the whole page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 831,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "axe island scoped: 0 violations (0 critical, 0 serious), 1 incomplete | whole page: 1 violations (rules: link-in-text-block)\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:26.396Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "axe-island-summary.json",
+                          "contentType": "application/json",
+                          "body": "ewogICJzY29wZWQiOiB7CiAgICAic2VjdGlvbiI6ICJpc2xhbmQtY2FuZGlkYXRlLXN1YnRyZWUiLAogICAgInVybCI6ICJodHRwOi8vbG9jYWxob3N0OjUyMDUvaXNsYW5kLmh0bWw/Y2FuZGlkYXRlPW9uIiwKICAgICJ0YWdzIjogWwogICAgICAid2NhZzJhIiwKICAgICAgIndjYWcyYWEiLAogICAgICAid2NhZzIxYSIsCiAgICAgICJ3Y2FnMjFhYSIsCiAgICAgICJ3Y2FnMjJhYSIKICAgIF0sCiAgICAidmlvbGF0aW9ucyI6IFtdLAogICAgImNvdW50cyI6IHsKICAgICAgInZpb2xhdGlvbnMiOiAwLAogICAgICAic2VyaW91cyI6IDAsCiAgICAgICJjcml0aWNhbCI6IDAsCiAgICAgICJpbmNvbXBsZXRlIjogMQogICAgfSwKICAgICJpbmNvbXBsZXRlUnVsZUlkcyI6IFsKICAgICAgImNvbG9yLWNvbnRyYXN0IgogICAgXQogIH0sCiAgIndob2xlUGFnZSI6IHsKICAgICJzZWN0aW9uIjogImlzbGFuZC13aG9sZS1wYWdlIiwKICAgICJ1cmwiOiAiaHR0cDovL2xvY2FsaG9zdDo1MjA1L2lzbGFuZC5odG1sP2NhbmRpZGF0ZT1vbiIsCiAgICAidGFncyI6IFsKICAgICAgIndjYWcyYSIsCiAgICAgICJ3Y2FnMmFhIiwKICAgICAgIndjYWcyMWEiLAogICAgICAid2NhZzIxYWEiLAogICAgICAid2NhZzIyYWEiCiAgICBdLAogICAgInZpb2xhdGlvbnMiOiBbCiAgICAgIHsKICAgICAgICAiaWQiOiAibGluay1pbi10ZXh0LWJsb2NrIiwKICAgICAgICAiaW1wYWN0IjogInNlcmlvdXMiLAogICAgICAgICJoZWxwIjogIkxpbmtzIG11c3QgYmUgZGlzdGluZ3Vpc2hhYmxlIHdpdGhvdXQgcmVseWluZyBvbiBjb2xvciIsCiAgICAgICAgImhlbHBVcmwiOiAiaHR0cHM6Ly9kZXF1ZXVuaXZlcnNpdHkuY29tL3J1bGVzL2F4ZS80LjEyL2xpbmstaW4tdGV4dC1ibG9jaz9hcHBsaWNhdGlvbj1wbGF5d3JpZ2h0IiwKICAgICAgICAibm9kZXMiOiBbCiAgICAgICAgICAiYVtkYXRhLWNhbmFyeT1cImxpbmtcIl0iLAogICAgICAgICAgImFbaHJlZiQ9XCJkZWx0YS1tYW50aW5lL1wiXSIKICAgICAgICBdCiAgICAgIH0KICAgIF0sCiAgICAiY291bnRzIjogewogICAgICAidmlvbGF0aW9ucyI6IDEsCiAgICAgICJzZXJpb3VzIjogMSwKICAgICAgImNyaXRpY2FsIjogMCwKICAgICAgImluY29tcGxldGUiOiAxCiAgICB9LAogICAgImluY29tcGxldGVSdWxlSWRzIjogWwogICAgICAiY29sb3ItY29udHJhc3QiCiAgICBdCiAgfQp9"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-6be8cce9413496559bb8",
+              "file": "island.spec.ts",
+              "line": 555,
+              "column": 3
+            },
+            {
+              "title": "axe on an open portalled dropdown",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 465,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "axe island dropdown: 0 violations (0 critical, 0 serious), 0 incomplete\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:27.230Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "axe-island-dropdown.json",
+                          "contentType": "application/json",
+                          "body": "ewogICJzZWN0aW9uIjogImlzbGFuZC1kcm9wZG93biIsCiAgInVybCI6ICJodHRwOi8vbG9jYWxob3N0OjUyMDUvaXNsYW5kLmh0bWw/Y2FuZGlkYXRlPW9uIiwKICAidGFncyI6IFsKICAgICJ3Y2FnMmEiLAogICAgIndjYWcyYWEiLAogICAgIndjYWcyMWEiLAogICAgIndjYWcyMWFhIiwKICAgICJ3Y2FnMjJhYSIKICBdLAogICJ2aW9sYXRpb25zIjogW10sCiAgImNvdW50cyI6IHsKICAgICJ2aW9sYXRpb25zIjogMCwKICAgICJzZXJpb3VzIjogMCwKICAgICJjcml0aWNhbCI6IDAsCiAgICAiaW5jb21wbGV0ZSI6IDAKICB9LAogICJpbmNvbXBsZXRlUnVsZUlkcyI6IFtdCn0="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-f31954acc78f22ecab79",
+              "file": "island.spec.ts",
+              "line": 595,
+              "column": 3
+            },
+            {
+              "title": "screenshots",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 716,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:27.700Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-f71a0b2a4968214b9035",
+              "file": "island.spec.ts",
+              "line": 623,
+              "column": 3
+            },
+            {
+              "title": "screenshots in RTL",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 544,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:28.419Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-a59ba763f0f61831897d",
+              "file": "island.spec.ts",
+              "line": 640,
+              "column": 3
+            },
+            {
+              "title": "long labels do not overflow the viewport",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 231,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:28.967Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-f6bf3fc84651a58e4128",
+              "file": "island.spec.ts",
+              "line": 657,
+              "column": 3
+            },
+            {
+              "title": "renders the candidate region inside the host frame",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 138,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:41.991Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-bb13c50e3ba8afa378ed",
+              "file": "island.spec.ts",
+              "line": 122,
+              "column": 3
+            },
+            {
+              "title": "the candidate subtree is empty with candidate=off, and Mantine's CSS is absent",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 94,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:42.134Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-6d9453c5a4f8041b11fb",
+              "file": "island.spec.ts",
+              "line": 153,
+              "column": 3
+            },
+            {
+              "title": "renders every host canary and every frame canary",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 175,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:42.231Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-86a0fe237b4eb269778e",
+              "file": "island.spec.ts",
+              "line": 187,
+              "column": 3
+            },
+            {
+              "title": "passes the leakage assertion",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1279,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:42.410Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "island-leakage.json",
+                          "contentType": "application/json",
+                          "body": "ewogICJhc3NlcnRpb25QYXNzZWQiOiB0cnVlLAogICJkaWZmZXJlbmNlcyI6IFtdLAogICJjYW5hcmllc0NoZWNrZWQiOiAxNAp9"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-05ffeb80a42b414ac024",
+              "file": "island.spec.ts",
+              "line": 204,
+              "column": 3
+            },
+            {
+              "title": "filters the table from the controls above it",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 365,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:43.694Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-666e0c108a7c7541cbe1",
+              "file": "island.spec.ts",
+              "line": 226,
+              "column": 3
+            },
+            {
+              "title": "resets to page one when a filter changes",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 233,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:44.063Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-c53581a49320a0bb3ef6",
+              "file": "island.spec.ts",
+              "line": 246,
+              "column": 3
+            },
+            {
+              "title": "paginates the filtered result",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 276,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:44.300Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-ec5f834fa494761d625b",
+              "file": "island.spec.ts",
+              "line": 258,
+              "column": 3
+            },
+            {
+              "title": "sorts from a column header",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 299,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:44.578Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-78ee50d84c25b1d5dfe9",
+              "file": "island.spec.ts",
+              "line": 277,
+              "column": 3
+            },
+            {
+              "title": "every header carries a styled sort indicator",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 123,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:44.880Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-2e6d9ab699ebfadbb251",
+              "file": "island.spec.ts",
+              "line": 311,
+              "column": 3
+            },
+            {
+              "title": "a descending sort is the true inverse of ascending, inside tie groups too",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 220,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:45.006Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-2b029f5994ed2014dba1",
+              "file": "island.spec.ts",
+              "line": 374,
+              "column": 3
+            },
+            {
+              "title": "orders by the selected locale's collation in German",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 214,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:45.230Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-cec5335f169608f76336",
+              "file": "island.spec.ts",
+              "line": 421,
+              "column": 3
+            },
+            {
+              "title": "status pills read the record's status and their colour tracks it",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 125,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:45.448Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-da4f9cb838da0a8243ce",
+              "file": "island.spec.ts",
+              "line": 448,
+              "column": 3
+            },
+            {
+              "title": "applies RTL for Arabic",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 210,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:45.576Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-9df48fc11e984660ae23",
+              "file": "island.spec.ts",
+              "line": 493,
+              "column": 3
+            },
+            {
+              "title": "portalled dropdowns follow the page direction",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 255,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:45.789Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-9ae315d2c02558823291",
+              "file": "island.spec.ts",
+              "line": 517,
+              "column": 3
+            },
+            {
+              "title": "axe on the candidate region and the whole page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 932,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "axe island scoped: 0 violations (0 critical, 0 serious), 1 incomplete | whole page: 1 violations (rules: link-in-text-block)\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:46.047Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "axe-island-summary.json",
+                          "contentType": "application/json",
+                          "body": "ewogICJzY29wZWQiOiB7CiAgICAic2VjdGlvbiI6ICJpc2xhbmQtY2FuZGlkYXRlLXN1YnRyZWUiLAogICAgInVybCI6ICJodHRwOi8vbG9jYWxob3N0OjUyMDUvaXNsYW5kLmh0bWw/Y2FuZGlkYXRlPW9uIiwKICAgICJ0YWdzIjogWwogICAgICAid2NhZzJhIiwKICAgICAgIndjYWcyYWEiLAogICAgICAid2NhZzIxYSIsCiAgICAgICJ3Y2FnMjFhYSIsCiAgICAgICJ3Y2FnMjJhYSIKICAgIF0sCiAgICAidmlvbGF0aW9ucyI6IFtdLAogICAgImNvdW50cyI6IHsKICAgICAgInZpb2xhdGlvbnMiOiAwLAogICAgICAic2VyaW91cyI6IDAsCiAgICAgICJjcml0aWNhbCI6IDAsCiAgICAgICJpbmNvbXBsZXRlIjogMQogICAgfSwKICAgICJpbmNvbXBsZXRlUnVsZUlkcyI6IFsKICAgICAgImNvbG9yLWNvbnRyYXN0IgogICAgXQogIH0sCiAgIndob2xlUGFnZSI6IHsKICAgICJzZWN0aW9uIjogImlzbGFuZC13aG9sZS1wYWdlIiwKICAgICJ1cmwiOiAiaHR0cDovL2xvY2FsaG9zdDo1MjA1L2lzbGFuZC5odG1sP2NhbmRpZGF0ZT1vbiIsCiAgICAidGFncyI6IFsKICAgICAgIndjYWcyYSIsCiAgICAgICJ3Y2FnMmFhIiwKICAgICAgIndjYWcyMWEiLAogICAgICAid2NhZzIxYWEiLAogICAgICAid2NhZzIyYWEiCiAgICBdLAogICAgInZpb2xhdGlvbnMiOiBbCiAgICAgIHsKICAgICAgICAiaWQiOiAibGluay1pbi10ZXh0LWJsb2NrIiwKICAgICAgICAiaW1wYWN0IjogInNlcmlvdXMiLAogICAgICAgICJoZWxwIjogIkxpbmtzIG11c3QgYmUgZGlzdGluZ3Vpc2hhYmxlIHdpdGhvdXQgcmVseWluZyBvbiBjb2xvciIsCiAgICAgICAgImhlbHBVcmwiOiAiaHR0cHM6Ly9kZXF1ZXVuaXZlcnNpdHkuY29tL3J1bGVzL2F4ZS80LjEyL2xpbmstaW4tdGV4dC1ibG9jaz9hcHBsaWNhdGlvbj1wbGF5d3JpZ2h0IiwKICAgICAgICAibm9kZXMiOiBbCiAgICAgICAgICAiYVtkYXRhLWNhbmFyeT1cImxpbmtcIl0iLAogICAgICAgICAgImFbaHJlZiQ9XCJkZWx0YS1tYW50aW5lL1wiXSIKICAgICAgICBdCiAgICAgIH0KICAgIF0sCiAgICAiY291bnRzIjogewogICAgICAidmlvbGF0aW9ucyI6IDEsCiAgICAgICJzZXJpb3VzIjogMSwKICAgICAgImNyaXRpY2FsIjogMCwKICAgICAgImluY29tcGxldGUiOiAxCiAgICB9LAogICAgImluY29tcGxldGVSdWxlSWRzIjogWwogICAgICAiY29sb3ItY29udHJhc3QiCiAgICBdCiAgfQp9"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-fd9b93a8dcada6fb8822",
+              "file": "island.spec.ts",
+              "line": 555,
+              "column": 3
+            },
+            {
+              "title": "axe on an open portalled dropdown",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 464,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "axe island dropdown: 0 violations (0 critical, 0 serious), 0 incomplete\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:46.983Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "axe-island-dropdown.json",
+                          "contentType": "application/json",
+                          "body": "ewogICJzZWN0aW9uIjogImlzbGFuZC1kcm9wZG93biIsCiAgInVybCI6ICJodHRwOi8vbG9jYWxob3N0OjUyMDUvaXNsYW5kLmh0bWw/Y2FuZGlkYXRlPW9uIiwKICAidGFncyI6IFsKICAgICJ3Y2FnMmEiLAogICAgIndjYWcyYWEiLAogICAgIndjYWcyMWEiLAogICAgIndjYWcyMWFhIiwKICAgICJ3Y2FnMjJhYSIKICBdLAogICJ2aW9sYXRpb25zIjogW10sCiAgImNvdW50cyI6IHsKICAgICJ2aW9sYXRpb25zIjogMCwKICAgICJzZXJpb3VzIjogMCwKICAgICJjcml0aWNhbCI6IDAsCiAgICAiaW5jb21wbGV0ZSI6IDAKICB9LAogICJpbmNvbXBsZXRlUnVsZUlkcyI6IFtdCn0="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-7c1e5d29a28d281ce07e",
+              "file": "island.spec.ts",
+              "line": 595,
+              "column": 3
+            },
+            {
+              "title": "screenshots",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 615,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:47.452Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-d70374e846759412ce81",
+              "file": "island.spec.ts",
+              "line": 623,
+              "column": 3
+            },
+            {
+              "title": "screenshots in RTL",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 496,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:48.071Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-d26dff632eea6747c76b",
+              "file": "island.spec.ts",
+              "line": 640,
+              "column": 3
+            },
+            {
+              "title": "long labels do not overflow the viewport",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 159,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-07T13:40:48.570Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "151e2ac1b06ef54fe07f-147545a5755ad22d148b",
+              "file": "island.spec.ts",
+              "line": 657,
               "column": 3
             }
           ]
@@ -1951,9 +3984,9 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-08-05T20:45:07.025Z",
-    "duration": 84749.154,
-    "expected": 48,
+    "startTime": "2026-08-07T13:39:50.587Z",
+    "duration": 58189.169,
+    "expected": 105,
     "skipped": 0,
     "unexpected": 0,
     "flaky": 0

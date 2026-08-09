@@ -24,6 +24,7 @@
  */
 
 import { createTheme } from "@mui/material/styles";
+import { arEG, deDE, enUS, frFR } from "@mui/material/locale";
 import type { ThemeOptions } from "@mui/material/styles";
 
 import { color, fontFamily, fontSize, radius, space, zIndex } from "@undrr-eval/undrr-tokens";
@@ -119,3 +120,28 @@ const options: ThemeOptions = {
 };
 
 export const undrrMuiTheme = createTheme(options);
+
+/**
+ * MUI's own locale bundles, keyed to the fixture locales.
+ *
+ * These translate MUI's COMPONENT CHROME - "Rows per page", the pager buttons'
+ * accessible names, the row-count line - which the fixture label set does not
+ * carry and was never meant to. The fixtures remain the only source for
+ * application strings, so nothing is translated twice.
+ *
+ * This was previously left unwired and recorded as a finding: that MUI ships
+ * locale bundles which amount to a second translation source parallel to the
+ * fixtures. That was our omission dressed up as a limitation, and it was scored
+ * asymmetrically, because the Ant Design pairings wire antd's equivalent packs and
+ * were credited for doing so. The objection applied to both pairings or to
+ * neither. It applies to neither.
+ *
+ * `enUS` is `{}` upstream - English is MUI's built-in default - so wiring this
+ * changes no English behaviour.
+ *
+ * Consume as the LAST argument, so a locale pack cannot be overwritten by the
+ * direction patch:
+ *
+ *   createTheme(undrrMuiTheme, { direction }, MUI_LOCALES[locale])
+ */
+export const MUI_LOCALES = Object.freeze({ en: enUS, fr: frFR, de: deDE, ar: arEG });

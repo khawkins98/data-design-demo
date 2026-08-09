@@ -25,7 +25,8 @@ import "dayjs/locale/ar";
 
 import { LOCALES } from "@undrr-eval/fixtures";
 import type { LocaleCode } from "@undrr-eval/fixtures";
-import { HostShell } from "@undrr-eval/host-mangrove";
+import { HostShell, ViewSwitcher } from "@undrr-eval/host-mangrove";
+import { viewLinks } from "@undrr-eval/test-harness/views";
 import { TOKEN_SCOPE_CLASS } from "@undrr-eval/undrr-tokens";
 import { KnownIssues } from "@undrr-eval/known-issues";
 
@@ -138,14 +139,34 @@ export function App({
                   <SectionChrome />
                   <SectionDataTable />
                   <SectionStates />
+
+                  {/*
+                    THE 7-TO-9 JUMP IN THE HEADINGS IS DELIBERATE, AND SAYING SO
+                    HERE IS THE POINT. Requirements section 8 is Locale, and it
+                    is met — by the switcher above, which every section consumes.
+                    It gets no numbered block because it is a page-level control,
+                    not a specimen. Renumbering would hide that a specified
+                    section exists, and a note at the foot of the page arrives
+                    long after the reader has read the jump as a mistake. So it
+                    sits where 8 would be.
+                  */}
+                  <section id="section-8-note">
+                    <Title order={3} mb="md">
+                      8. Locale — no numbered section of its own
+                    </Title>
+                    <Text size="sm" c="dimmed" maw="68ch">
+                      Section 8 of the requirements (locale switcher, RTL, long
+                      labels) is exercised by the locale switcher at the top of
+                      this page, which drives every section above; Arabic applies
+                      RTL through Mantine&apos;s <code>DirectionProvider</code>.
+                      It gets no block here because it is page-wide rather than
+                      one specimen. The headings run 7 to 9 for that reason —
+                      nothing was dropped or hidden.
+                    </Text>
+                  </section>
+
                   <SectionSideBySide />
                 </Stack>
-
-                <Text size="sm" c="dimmed" mt="16">
-                  Section 8 is the locale switcher above, which drives every
-                  other section. Arabic applies RTL through Mantine&apos;s
-                  <code> DirectionProvider</code>.
-                </Text>
               </div>
             </DemoContext.Provider>
           </DatesProvider>
@@ -155,7 +176,26 @@ export function App({
   }
 
   return (
-    <HostShell title={demo.labels.appTitle} dir={demo.dir}>
+    <HostShell
+      title="Demo: Mangrove + Mantine"
+      dir={demo.dir}
+      pageHeader={
+        /*
+         * Cross-view navigation, in the frame's page-header slot and outside the
+         * candidate wrapper for the same reason the known-issues box is.
+         * `"application"` is deliberately absent from
+         * `available`: the whole-DELTA-screen view is a Delta view and this is the
+         * Mangrove host, so listing it would produce a dead link to an `app.html`
+         * this app does not ship.
+         */
+        <ViewSwitcher
+          views={viewLinks(["island", "inventory"], "inventory")}
+          pairingName="Mantine on Mangrove"
+          otherHost={{ label: "Mantine on Delta", href: "../delta-mantine/" }}
+        />
+      }
+    >
+
       {/*
         * Rendered OUTSIDE the candidate wrapper and in BOTH candidate states.
         * Outside, so no candidate stylesheet restyles the warning box and every

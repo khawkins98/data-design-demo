@@ -34,14 +34,27 @@ import type { SelectOption } from "@undrr-eval/fixtures";
 
 import { useDemo } from "../demo-state.js";
 
+/*
+ * `countOf` rather than a bare `${options.length}`. These counts sit on the same
+ * page as Intl-formatted table cells, so leaving them raw makes German show
+ * "1.234.567" in a cell and an unseparated integer in a field's helper text.
+ * `bcp47` therefore has to reach both helpers as a prop: Carbon has no formatting
+ * hook to hang it on.
+ */
+function countOf(bcp47: string, value: number): string {
+  return new Intl.NumberFormat(bcp47).format(value);
+}
+
 function OptionSelect({
   id,
   label,
   options,
+  bcp47,
 }: {
   readonly id: string;
   readonly label: string;
   readonly options: readonly SelectOption[];
+  readonly bcp47: string;
 }): ReactElement {
   const [value, setValue] = useState("");
   return (
@@ -50,7 +63,7 @@ function OptionSelect({
       labelText={label}
       value={value}
       onChange={(event) => setValue(event.target.value)}
-      helperText={`${options.length} options`}
+      helperText={`${countOf(bcp47, options.length)} options`}
     >
       <SelectItem value="" text="" />
       {options.map((option) => (
@@ -64,10 +77,12 @@ function OptionCombo({
   id,
   label,
   options,
+  bcp47,
 }: {
   readonly id: string;
   readonly label: string;
   readonly options: readonly SelectOption[];
+  readonly bcp47: string;
 }): ReactElement {
   const items = useMemo(() => [...options], [options]);
   return (
@@ -85,7 +100,7 @@ function OptionCombo({
         if (!query) return true;
         return item.label.toLocaleLowerCase().includes(query);
       }}
-      helperText={`${options.length} options, type to filter`}
+      helperText={`${countOf(bcp47, options.length)} options, type to filter`}
       /* Required by the types even for an uncontrolled ComboBox. */
       onChange={() => undefined}
     />
@@ -93,7 +108,7 @@ function OptionCombo({
 }
 
 export function SectionSelection(): ReactElement {
-  const { labels } = useDemo();
+  const { labels, bcp47 } = useDemo();
 
   const smallItems = useMemo(() => [...OPTIONS_SMALL], []);
   const [selected, setSelected] = useState<SelectOption[]>(() =>
@@ -105,22 +120,44 @@ export function SectionSelection(): ReactElement {
       <h3 className="demo__heading">2. Select, multiselect and searchable combobox</h3>
 
       <div className="demo__grid">
-        <OptionSelect id="sel-8" label={`${labels.fieldHazard} (8)`} options={OPTIONS_SMALL} />
+        <OptionSelect
+          id="sel-8"
+          label={`${labels.fieldHazard} (8)`}
+          options={OPTIONS_SMALL}
+          bcp47={bcp47}
+        />
         <OptionSelect
           id="sel-40"
           label={`${labels.fieldDataSource} (40)`}
           options={OPTIONS_MEDIUM}
+          bcp47={bcp47}
         />
-        <OptionSelect id="sel-400" label={`${labels.fieldCountry} (400)`} options={OPTIONS_LARGE} />
+        <OptionSelect
+          id="sel-400"
+          label={`${labels.fieldCountry} (400)`}
+          options={OPTIONS_LARGE}
+          bcp47={bcp47}
+        />
       </div>
 
       <div className="demo__grid">
-        <OptionCombo id="combo-8" label={`${labels.actionFilter} (8)`} options={OPTIONS_SMALL} />
-        <OptionCombo id="combo-40" label={`${labels.actionFilter} (40)`} options={OPTIONS_MEDIUM} />
+        <OptionCombo
+          id="combo-8"
+          label={`${labels.actionFilter} (8)`}
+          options={OPTIONS_SMALL}
+          bcp47={bcp47}
+        />
+        <OptionCombo
+          id="combo-40"
+          label={`${labels.actionFilter} (40)`}
+          options={OPTIONS_MEDIUM}
+          bcp47={bcp47}
+        />
         <OptionCombo
           id="combo-400"
           label={`${labels.actionFilter} (400)`}
           options={OPTIONS_LARGE}
+          bcp47={bcp47}
         />
       </div>
 

@@ -24,7 +24,8 @@ import "dayjs/locale/en-gb";
 
 import { LOCALES } from "@undrr-eval/fixtures";
 import type { LocaleCode } from "@undrr-eval/fixtures";
-import { HostShell } from "@undrr-eval/host-delta";
+import { HostShell, ViewSwitcher } from "@undrr-eval/host-delta";
+import { viewLinks } from "@undrr-eval/test-harness/views";
 import { TOKEN_SCOPE_CLASS } from "@undrr-eval/undrr-tokens";
 import {
   DemoContext,
@@ -69,7 +70,26 @@ export function App(): ReactElement {
   useMemo(() => dayjs.locale(DAYJS_LOCALES[locale]), [locale]);
 
   return (
-    <HostShell title={demo.labels.appTitle} dir={demo.dir}>
+    <HostShell
+      title="Demo: Delta + Ant Design"
+      dir={demo.dir}
+      pageHeader={
+        /*
+         * Cross-view navigation, in the frame's page-header slot. Host chrome on the
+         * same terms as the known-issues box below: outside the candidate wrapper, present in
+         * both candidate states. This page is the inventory, so it is the one
+         * flagged `current`. `"island"` is NOT listed — that view belongs to the
+         * Mangrove host, and the link to it goes through `otherHost` instead. This
+         * host ships no `island.html`, so listing it would be a dead link.
+         */
+        <ViewSwitcher
+          views={viewLinks(["application", "inventory"], "inventory")}
+          pairingName="Ant Design on Delta"
+          otherHost={{ label: "Ant Design on Mangrove", href: "../mangrove-antd/" }}
+        />
+      }
+    >
+
       {/*
         * Rendered OUTSIDE the candidate wrapper and in BOTH candidate states.
         * Outside, so no candidate stylesheet restyles the warning box and every
@@ -129,6 +149,41 @@ export function App(): ReactElement {
                 <SectionChrome />
                 <SectionDataTable />
                 <SectionStates />
+
+                {/*
+                  THE 7-TO-9 JUMP IN THE HEADINGS IS DELIBERATE, AND SAYING SO
+                  HERE IS THE POINT. Requirements section 8 is Locale
+                  (`docs/requirements.md`: locale-switcher, rtl, long-labels) and
+                  it is met — by the Segmented switcher above, which every section
+                  below consumes. It gets no numbered block because it is a
+                  page-level control rather than a specimen. Renumbering would
+                  hide that a specified section exists, and a note at the foot of
+                  the page arrives long after the reader has read the jump as a
+                  mistake. So it sits where 8 would be.
+
+                  Structure matches the numbered sections deliberately — a
+                  `<section>` and a `Typography.Title level={3}`, as in
+                  `packages/integration-antd/src/sections/*` — so it lands in the
+                  heading outline a reader is scanning rather than beside it. The
+                  id is `section-8-note`, NOT `section-8`: it is not a specimen
+                  block and must not be picked up as one.
+                */}
+                <section id="section-8-note" style={{ marginBottom: "4rem" }}>
+                  <Typography.Title level={3} style={{ marginBottom: "1.5rem" }}>
+                    8. Locale — no numbered section of its own
+                  </Typography.Title>
+                  <Typography.Paragraph type="secondary" style={{ maxWidth: "68ch" }}>
+                    Section 8 of the requirements (locale switcher, RTL, long labels) is
+                    exercised by the locale switcher at the top of this page, which drives
+                    every section above; Arabic applies RTL through{" "}
+                    <Typography.Text code>ConfigProvider</Typography.Text>&apos;s{" "}
+                    <Typography.Text code>direction</Typography.Text> prop, which carries it
+                    into component internals as well. It gets no block here because it is
+                    page-wide rather than one specimen. The headings run 7 to 9 for that
+                    reason — nothing was dropped or hidden.
+                  </Typography.Paragraph>
+                </section>
+
                 <SectionSideBySide />
               </DemoContext.Provider>
             </div>

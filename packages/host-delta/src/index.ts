@@ -11,8 +11,27 @@
  * collisions with a candidate library's own base styles.
  */
 
-export { HostShell, CANARY_IDS } from "./HostShell.js";
+export { HostShell, HostCanaries, CANARY_IDS } from "./HostShell.js";
 export type { HostShellProps } from "./HostShell.js";
+
+/**
+ * The realistic application layout, where the candidate owns the viewport.
+ * See AppFrame.tsx for why it carries Mangrove classes as well as Tailwind.
+ */
+export { AppFrame, DELTA_FRAME_CANARY_IDS } from "./AppFrame.js";
+export type { AppFrameProps } from "./AppFrame.js";
+
+/**
+ * DELTA's real menu bar contents, for the AppFrame `navMenu` slot. Data rather
+ * than markup, because five candidates have five menu APIs.
+ */
+export { DELTA_MENUS, DELTA_PROFILE_MENU } from "./menu-model.js";
+export { NavIcon as DeltaNavIcon, Caret as DeltaCaret } from "./AppFrame.js";
+export type { DeltaMenu, DeltaMenuEntry } from "./menu-model.js";
+
+/** Cross-view navigation. Pass through a frame's `notices` slot. */
+export { ViewSwitcher } from "./ViewSwitcher.js";
+export type { ViewSwitcherProps } from "./ViewSwitcher.js";
 
 /** Identifies which host a demo was built against, for evidence.json. */
 export const HOST_NAME = "delta" as const;

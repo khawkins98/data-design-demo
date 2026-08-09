@@ -149,52 +149,52 @@ export function SectionDataTable(): ReactElement {
                 checkboxes and gives no select-all: React Aria supplies the
                 behaviour and the accessible name via slot="selection", but the
                 markup and appearance are ours. Hence `composed`, not `native`. */}
-            <Column className="demo-table__column demo-table__column--select">
+            <Column minWidth={48} className="demo-table__column demo-table__column--select">
               <SelectionCheckbox />
             </Column>
-            <Column id="country" isRowHeader allowsSorting className="demo-table__column">
+            <Column id="country" isRowHeader allowsSorting minWidth={120} className="demo-table__column">
               <div className="demo-table__columnInner">
                 <span>{labels.colCountry}</span>
                 <ColumnResizerControl />
               </div>
             </Column>
-            <Column id="hazardType" allowsSorting className="demo-table__column">
+            <Column id="hazardType" allowsSorting minWidth={120} className="demo-table__column">
               <div className="demo-table__columnInner">
                 <span>{labels.colHazard}</span>
                 <ColumnResizerControl />
               </div>
             </Column>
-            <Column id="eventDate" allowsSorting className="demo-table__column">
+            <Column id="eventDate" allowsSorting minWidth={120} className="demo-table__column">
               <div className="demo-table__columnInner">
                 <span>{labels.colEventDate}</span>
                 <ColumnResizerControl />
               </div>
             </Column>
-            <Column id="reportedAt" allowsSorting className="demo-table__column">
+            <Column id="reportedAt" allowsSorting minWidth={150} className="demo-table__column">
               <div className="demo-table__columnInner">
                 <span>{labels.colReportedAt}</span>
                 <ColumnResizerControl />
               </div>
             </Column>
-            <Column id="peopleAffected" allowsSorting className="demo-table__column">
+            <Column id="peopleAffected" allowsSorting minWidth={110} className="demo-table__column">
               <div className="demo-table__columnInner">
                 <span>{labels.colPeopleAffected}</span>
                 <ColumnResizerControl />
               </div>
             </Column>
-            <Column id="economicLossUsdMillions" allowsSorting className="demo-table__column">
+            <Column id="economicLossUsdMillions" allowsSorting minWidth={140} className="demo-table__column">
               <div className="demo-table__columnInner">
                 <span>{labels.colEconomicLoss}</span>
                 <ColumnResizerControl />
               </div>
             </Column>
-            <Column id="verificationStatus" allowsSorting className="demo-table__column">
+            <Column id="verificationStatus" allowsSorting minWidth={120} className="demo-table__column">
               <div className="demo-table__columnInner">
                 <span>{labels.colStatus}</span>
                 <ColumnResizerControl />
               </div>
             </Column>
-            <Column id="reviewNote" className="demo-table__column">
+            <Column id="reviewNote" minWidth={200} className="demo-table__column">
               {labels.colReviewNote}
             </Column>
           </TableHeader>

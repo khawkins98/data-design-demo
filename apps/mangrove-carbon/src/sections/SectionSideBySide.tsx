@@ -128,8 +128,15 @@ export function SectionSideBySide(): ReactElement {
               className="demo-sidenav"
             >
               <SideNavItems>
+                {/* `aria-current` is ours: Carbon's `isActive` only paints a class.
+                    See the note in sections/SectionChrome.tsx. */}
                 {navItems.map((item, index) => (
-                  <SideNavLink key={item.id} href="#section-9" isActive={index === 1}>
+                  <SideNavLink
+                    key={item.id}
+                    href="#section-9"
+                    isActive={index === 1}
+                    {...(index === 1 ? { "aria-current": "page" as const } : {})}
+                  >
                     {item.label}
                   </SideNavLink>
                 ))}

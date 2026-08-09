@@ -1,0 +1,242 @@
+/**
+ * Layout CSS the two realistic views need on top of `theme.css`.
+ *
+ * `theme.css` already styles every React Aria component these views use —
+ * buttons, inputs, selects and their portalled listboxes, the table, the status
+ * badges, the modal and dialog, the disclosure trigger. What is missing from it
+ * is everything the kitchen sink never needed, because a component inventory has
+ * no page header, no filter card, no icon-button row and no split pagination bar.
+ * That is what this file is, and its length is the honest answer to "how much
+ * custom CSS does a whole screen cost on top of a component inventory".
+ *
+ * IT IS IDENTICAL IN BOTH APPS, and deliberately so. `theme.css` diverged
+ * between the two hosts by roughly 200 lines because it was written per host and
+ * leans on inherited defaults, which Tailwind Preflight removes on Delta and
+ * Mangrove's stylesheet redefines. Every rule below instead declares what it
+ * needs outright — font size AND weight on headings, border, background, padding
+ * and font on anything button-shaped — so nothing depends on which reset is
+ * underneath. Writing defensively is what made these rules portable; it is not
+ * free, but it is cheaper than two files.
+ *
+ * All values come from packages/undrr-tokens.
+ */
+
+/* ------------------------------------------------------------ view wrapper */
+
+.demo-view {
+  /* Same reason as `.demo`: without it the table's intrinsic width propagates up
+     and scrolls the document rather than the table's own container. */
+  min-width: 0;
+}
+
+/* Icon-only controls still need accessible names, and a table column header
+   needs one even when it renders nothing. */
+.demo-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ------------------------------------------------------------- page header */
+
+.demo-pageheader {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--undrr-space-4);
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: var(--undrr-space-5);
+}
+
+.demo-pageheader__text {
+  min-width: 0;
+}
+
+.demo-pageheader__title {
+  margin: 0 0 var(--undrr-space-2);
+  font-family: var(--undrr-font-family-display);
+  font-size: var(--undrr-font-size-2xl);
+  font-weight: var(--undrr-font-weight-bold);
+  line-height: var(--undrr-line-height-tight);
+}
+
+.demo-pageheader__summary {
+  max-width: 68ch;
+  margin: 0;
+  color: var(--undrr-color-text-secondary);
+  font-size: var(--undrr-font-size-sm);
+  line-height: var(--undrr-line-height-relaxed);
+}
+
+.demo-pageheader__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--undrr-space-2);
+  align-items: center;
+}
+
+/* ------------------------------------------------------------ filter card */
+
+.demo-filters {
+  padding: var(--undrr-space-4);
+  margin-bottom: var(--undrr-space-4);
+  border: 1px solid var(--undrr-color-border);
+  border-radius: var(--undrr-radius-md);
+  background: var(--undrr-color-surface);
+}
+
+/* The collapsible variant owns no padding: the disclosure trigger spans the
+   full card and the panel supplies its own. */
+.demo-filters--collapsible {
+  padding: 0;
+  overflow: hidden;
+}
+
+.demo-filters__panel {
+  padding: var(--undrr-space-4);
+  border-top: 1px solid var(--undrr-color-border);
+}
+
+/**
+ * A COLLAPSED PANEL KEEPS ITS BOX. This one cost a real visual bug.
+ *
+ * React Aria's `DisclosurePanel` does not collapse with `display: none`. It sets
+ * `hidden="until-found"` so browser find-in-page can still reveal the content —
+ * good behaviour, and more than a hand-rolled accordion usually gets. But
+ * `hidden="until-found"` resolves to `content-visibility: hidden`, which hides the
+ * panel's CONTENTS while leaving the element's own box in the layout. The padding
+ * and top border above therefore stayed on screen when the card was collapsed: an
+ * empty ~33px strip with a rule across it, hanging under the filter trigger.
+ *
+ * Nothing warns you and no behavioural test can see it. `aria-expanded` flips
+ * correctly, the fields really are hidden from assistive technology, and the
+ * content really is unreachable. It shows up only in a screenshot or by asserting
+ * the panel's box, which is why `e2e/app.spec.ts` asserts `toBeHidden()` on the
+ * panel rather than trusting `aria-expanded` alone.
+ *
+ * The kitchen sink's `.demo-accordion__panel` carries the same latent strip and
+ * its spec only ever checked `aria-expanded`, which is how this went unnoticed
+ * until the application view wrapped a bordered card around a disclosure. Left
+ * unchanged there deliberately: that is the kitchen sink's evidence to re-measure,
+ * not this view's to quietly alter.
+ */
+.demo-filters__panel[hidden] {
+  padding: 0;
+  border-top-width: 0;
+}
+
+.demo-filters__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: var(--undrr-space-4);
+}
+
+.demo-filters__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--undrr-space-3);
+  align-items: center;
+  margin-top: var(--undrr-space-4);
+}
+
+.demo-filters__count {
+  margin: 0;
+  color: var(--undrr-color-text-secondary);
+  font-size: var(--undrr-font-size-sm);
+}
+
+/* ------------------------------------------------------------ row actions */
+
+.demo-table__column--actions,
+.demo-table__cell--actions {
+  /* `text-align: end` rather than `right`, so the column mirrors under RTL
+     without a second rule. */
+  text-align: end;
+  white-space: nowrap;
+}
+
+.demo-rowactions {
+  display: inline-flex;
+  gap: var(--undrr-space-1);
+}
+
+.demo-iconbutton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: 1px solid var(--undrr-color-border);
+  border-radius: var(--undrr-radius-md);
+  background: var(--undrr-color-surface);
+  color: var(--undrr-color-text-primary);
+  font: inherit;
+  /* Declared, because `font: inherit` flattens the button's own metrics and the
+     glyph then sits off-baseline. */
+  line-height: 1;
+  cursor: pointer;
+}
+
+/* `display: block` because an inline SVG otherwise sits on the text baseline and
+   leaves a descender gap under it inside the fixed-height button. */
+.demo-iconbutton__icon {
+  display: block;
+  flex: none;
+}
+
+.demo-iconbutton[data-hovered] {
+  background: var(--undrr-color-surface-sunken);
+}
+
+.demo-iconbutton[data-focus-visible] {
+  outline: 2px solid var(--undrr-color-focus);
+  outline-offset: 2px;
+}
+
+.demo-iconbutton--danger[data-hovered] {
+  border-color: var(--undrr-color-error);
+  background: var(--undrr-color-error-subtle);
+  color: var(--undrr-color-error);
+}
+
+/* ------------------------------------------------------------- pagination */
+
+.demo-pagination--split {
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.demo-pagination__group {
+  display: flex;
+  gap: var(--undrr-space-2);
+  align-items: center;
+}
+
+.demo-input--compact {
+  padding: var(--undrr-space-1) var(--undrr-space-2);
+}
+
+/* ----------------------------------------------------------- delete dialog */
+
+.demo-dialog__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--undrr-space-3);
+  align-items: center;
+  margin-top: var(--undrr-space-4);
+}
+
+.demo-dialog__detail {
+  padding: var(--undrr-space-3);
+  margin: var(--undrr-space-3) 0 0;
+  border-inline-start: 3px solid var(--undrr-color-border-strong);
+  background: var(--undrr-color-surface-sunken);
+  font-size: var(--undrr-font-size-sm);
+}

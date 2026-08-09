@@ -1,0 +1,56 @@
+{
+  "resting": [
+    {
+      "id": "island-country",
+      "text": "Country"
+    },
+    {
+      "id": "island-hazard",
+      "text": "Hazard type"
+    },
+    {
+      "id": "island-status",
+      "text": "Verification status"
+    }
+  ],
+  "clearFiltersLabel": "Clear filters",
+  "restingInk": {
+    "error": null,
+    "text": "Hazard type",
+    "state": "placeholder",
+    "textNodeZIndex": "1",
+    "textNodePosition": "static",
+    "contentDisplay": "flex",
+    "overlayBackgroundColor": "rgb(255, 255, 255)",
+    "overlayHeightPx": 46,
+    "contentHeightPx": 24,
+    "topmostAtText": "input.ant-select-input:rgb(255, 255, 255)",
+    "textIsCovered": true,
+    "opaqueLayersAboveText": [
+      "input.ant-select-input:rgb(255, 255, 255)"
+    ],
+    "inkWithText": 383,
+    "inkWithoutText": 32,
+    "inkFromText": 351
+  },
+  "chosenInk": {
+    "error": null,
+    "text": "Drought",
+    "state": "value",
+    "textNodeZIndex": "auto",
+    "textNodePosition": "relative",
+    "contentDisplay": "block",
+    "overlayBackgroundColor": "rgb(255, 255, 255)",
+    "overlayHeightPx": 46,
+    "contentHeightPx": 24,
+    "topmostAtText": "input.ant-select-input:rgb(255, 255, 255)",
+    "textIsCovered": true,
+    "opaqueLayersAboveText": [
+      "input.ant-select-input:rgb(255, 255, 255)"
+    ],
+    "inkWithText": 96,
+    "inkWithoutText": 96,
+    "inkFromText": 0
+  },
+  "note": "Resting text is each field's own localised name, via antd's `placeholder` plus `allowClear`. THE TWO STATES DO NOT FARE THE SAME ON THIS HOST, which is the finding: the PLACEHOLDER reaches the reader (inkFromText > 0) because antd renders it in its own flex item with z-index 1, above the input Mangrove painted opaque white; a CHOSEN VALUE is a bare text node with no box and no z-index, so it paints under that input and the field goes blank (inkFromText == 0). Both are > 0 on the Delta host — see app-filter-resting-text.json — which is the measured form of the known-issues claim that Delta is unaffected by the value-hiding defect. textIsCovered is true on BOTH hosts and is not the discriminator."
+}

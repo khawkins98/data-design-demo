@@ -1,16 +1,7 @@
 #!/usr/bin/env node
 /**
- * Scores every pairing on the seven decision axes and writes docs/axes.md
- * and docs/axes.html.
- *
- * See docs/decision-axes.md for what each axis means and why lines of code is
- * demoted to a supporting figure.
- *
- * Everything here is either measured from source and build output, or read from
- * a run's own evidence.json. Where a number is a run's self-declaration rather
- * than a measurement, it is labelled as such: the two disagree in at least one
- * place (see overridesLibraryInternals below) and the disagreement is
- * informative.
+ * Scores every pairing on seven decision axes; writes docs/axes.md and
+ * docs/axes.html. Axis definitions: docs/decision-axes.md.
  *
  *   pnpm axes
  */
@@ -19,30 +10,20 @@ import { existsSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { axisPreamble } from "./lib/undrr-questions.mjs";
+import { scoreA1, scoreA2, scoreA3, scoreA4, scoreA5, scoreA6, scoreA7 } from "./lib/score-axis.mjs";
+import { siteNavHtml, siteNavCss } from "./lib/site-nav.mjs";
+
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, "..");
 const APPS = join(ROOT, "apps");
 const DOCS = join(ROOT, "docs");
 
 /**
- * Styling hooks, classified by what kind of promise the library makes about them.
- *
- * A binary safe/fragile split turned out to be the wrong shape, because the four
- * libraries make genuinely different promises and checking the documentation
- * moved two of them:
- *
- * - Mantine documents `.mantine-{Component}-{element}` static classes as a
- *   supported way to style components from plain CSS, and gates them behind a
- *   `withStaticClasses` provider prop. That is an API, not an internal.
- * - Carbon documents `cds--` as an internal BEM authoring convention whose
- *   prefix consumers may *reconfigure* via `<ClassPrefix>`, and points consumers
- *   at `--cds-*` custom properties for theming instead. Targeting the classes
- *   works, but it is off the documented path.
- * - Mantine's `m_*` hashed classes are unambiguously internal.
- *
- * `convention` is therefore not "will break on upgrade" - Carbon's class names
- * are stable in practice. It is "achieved by going around the library's own
- * theming route", which is the thing that accumulates across sites and upgrades.
+ * Styling hooks, classified by the library's documented promise:
+ * - contract: documented styling API (Mantine static classes, MUI globals)
+ * - convention: stable but off the documented theming route (Carbon BEM, Ant BEM)
+ * - generated: hashed internal classes (Mantine CSS-module, Emotion)
  */
 const HOOK_TIERS = [
   {
@@ -72,11 +53,7 @@ const HOOK_TIERS = [
   },
 ];
 
-/**
- * Attribute selectors that are a semantic contract rather than a class name at
- * all. React Aria publishes `data-*` render state and `slot`; these survive DOM
- * restructuring in a way any class-based hook cannot.
- */
+/** Attribute selectors (`data-*`, `slot`) that survive DOM restructuring. */
 const ATTRIBUTE_HOOK_PATTERN = /\[(?:data-[a-z-]+|slot)(?:[~^$*|]?=[^\]]*)?\]/g;
 
 /** Candidate id -> display name, in the order the comparison uses. */
@@ -108,20 +85,18 @@ function ownStylesheets(app) {
       if (d.isDirectory()) return walk(p);
       return d.name.endsWith(".css") || d.name.endsWith(".scss") ? [p] : [];
     });
-  return walk(src)
+  const paths = walk(src);
+  // Shared integration CSS remains part of each product's styling surface even
+  // after extraction. Omitting it would make packaging look like CSS vanished.
+  if (app.endsWith("react-aria")) {
+    paths.push(join(ROOT, "packages", "integration-react-aria", "src", "records.css"));
+  }
+  return paths
     .map((p) => readFileSync(p, "utf8"))
     .join("\n");
 }
 
-/**
- * Strips CSS comments before any selector counting.
- *
- * These stylesheets are heavily commented, and the comments discuss the very
- * class names being counted - `mangrove-mantine/demo.css` explains a specificity
- * conflict by naming Mantine's `.m_8fb7ebe7` in prose. Counting comment text as
- * a styling hook overstated the fragile-hook figure for every pairing that
- * documents its reasoning, which is to say the careful ones.
- */
+/** Strips CSS comments so class names mentioned in prose are not counted as hooks. */
 function stripComments(css) {
   return css.replace(/\/\*[\s\S]*?\*\//g, "");
 }
@@ -163,16 +138,7 @@ function stylingHooks(rawCss) {
 
 /**
  * A5: how a Mangrove token change reaches a built site.
- *
- * `var(--undrr-*)` surviving into the shipped CSS means the value is resolved in
- * the browser against the token stylesheet, so changing tokens is a stylesheet
- * swap. A theme object instead reads the token module at build/run time and
- * emits its own values, so the token values live inside each site's JS bundle
- * and a change means rebuilding every site.
- *
- * Note: token hex literals appear in every bundle at an identical count,
- * because all pairings import the shared TypeScript token module. That count is
- * therefore NOT evidence of a baked theme and is not used.
+ * `var(--undrr-*)` in shipped CSS = stylesheet swap; baked values = rebuild per site.
  */
 function propagation(app) {
   const dist = join(APPS, app, "dist", "assets");
@@ -208,19 +174,17 @@ function extraction() {
 }
 
 const extractionResults = extraction();
+const changeAmplification = readJson(join(DOCS, "change-amplification.json"));
+const themingControl = readJson(join(DOCS, "theming-control.json"));
 
 /**
- * Production dependency counts measured by ONE method for all apps.
- *
- * The per-run `bundle.dependencyCount` values are not comparable with each
- * other: each run measured however it chose, and the disagreement reorders the
- * candidates. Mantine recorded 112-113 where a production-only count gives
- * 27-28. Both are reported, because a metric that changes the ranking depending
- * on who measured it should be shown disagreeing rather than quietly replaced.
+ * Production dependency counts measured by one method for all apps (`pnpm deps:count`).
+ * Per-run self-reported counts disagree and reorder candidates; both are shown.
  */
 const dependencyCounts = existsSync(join(DOCS, "dependency-counts.json"))
   ? readJson(join(DOCS, "dependency-counts.json")).apps
   : {};
+const effortClassification = readJson(join(DOCS, "effort-classification.json")).apps;
 
 const rows = appDirs().map((app) => {
   const evidence = readJson(join(APPS, app, "evidence.json"));
@@ -228,17 +192,25 @@ const rows = appDirs().map((app) => {
   const mix = requirementMix(evidence);
   const prop = propagation(app);
   const candidate = CANDIDATE_ORDER.find((c) => app.endsWith(c)) ?? app;
+  const effort = effortClassification[app];
+  const allEffortIndexes = Object.values(effort).flat();
+  const noteCount = (evidence.theming?.escapeHatchesUsed ?? []).length;
+  if (new Set(allEffortIndexes).size !== noteCount || allEffortIndexes.some((i) => i < 1 || i > noteCount)) {
+    throw new Error(`effort-classification.json is not exhaustive and disjoint for ${app}`);
+  }
 
   return {
     app,
     candidate,
     host: evidence.host,
     name: evidence.candidate,
+    evidence,
     mix,
     beyondNative: mix.composed + mix.custom,
     wrappers: evidence.wrappers ?? {},
-    escapeHatches: (evidence.theming?.escapeHatchesUsed ?? []).length,
-    escapeHatchText: evidence.theming?.escapeHatchesUsed ?? [],
+    effort,
+    escapeHatches: effort.offRouteOverrides.length,
+    escapeHatchText: effort.offRouteOverrides.map((i) => evidence.theming.escapeHatchesUsed[i - 1]),
     humanReview: (evidence.humanReviewRequired ?? []).length,
     hooks,
     declaredOverridesInternals: evidence.customCss?.overridesLibraryInternals ?? null,
@@ -251,8 +223,7 @@ const rows = appDirs().map((app) => {
     globalProbe: evidence.leakage?.globalStylesheetProbe ?? null,
     rtl: evidence.rtl?.status ?? null,
     rtlIssues: evidence.rtl?.issues ?? [],
-    // A6: `clean` spans "a dir attribute sufficed" and "clean after 18 lines of
-    // mitigation". The status field alone hides that, so carry the setup cost.
+    // A6: carry setup cost alongside status.
     rtlRequirement: (evidence.requirements ?? []).find(
       (r) => (typeof r === "string" ? r : r.id) === "rtl",
     ) ?? null,
@@ -262,7 +233,56 @@ const rows = appDirs().map((app) => {
   };
 });
 
+/** Per-candidate, per-axis band (worst of two hosts). Used for summary strips. */
+const BAND_RANK = { strong: 0, workable: 1, weak: 2, blocked: 3 };
+const BAND_BY_RANK = ["strong", "workable", "weak", "blocked"];
+const axisScorerByKey = {
+  A1: (r) => scoreA1(r.evidence, r.effort),
+  A2: (r) => scoreA2(r.candidate, changeAmplification),
+  A3: (r) => scoreA3(r.candidate, extractionResults),
+  A4: (r) => scoreA4(r.evidence),
+  A5: (r) => scoreA5(r.evidence, r.candidate, themingControl),
+  A6: (r) => scoreA6(r.evidence),
+  A7: (r) => scoreA7(r.evidence),
+};
+
+function candidateBands(axisKey) {
+  const result = [];
+  for (const candidate of CANDIDATE_ORDER) {
+    const pairings = rows.filter((r) => r.candidate === candidate);
+    if (pairings.length === 0) continue;
+    let worstRank = 0;
+    let worstBecause = "";
+    for (const p of pairings) {
+      const score = axisScorerByKey[axisKey](p);
+      const rank = BAND_RANK[score.band] ?? 0;
+      if (rank > worstRank) {
+        worstRank = rank;
+        worstBecause = score.because;
+      }
+    }
+    result.push({
+      candidate,
+      name: pairings[0].name,
+      band: BAND_BY_RANK[worstRank],
+      because: worstBecause,
+    });
+  }
+  return result;
+}
+
 /* ---------------------------------------------------------------- markdown -- */
+
+/**
+ * Wraps a numeric value with a bar marker for the HTML renderer.
+ * Format: {spark:VALUE:MAX} — inline() converts it to a CSS bar.
+ * Non-numeric or zero-max values pass through unchanged.
+ */
+function spark(value, max) {
+  const n = typeof value === "number" ? value : parseInt(String(value), 10);
+  if (Number.isNaN(n) || !max) return value;
+  return `{spark:${n}:${max}}`;
+}
 
 function table(headers, bodyRows) {
   const head = `| ${headers.join(" | ")} |`;
@@ -271,122 +291,166 @@ function table(headers, bodyRows) {
 }
 
 const lines = [];
+
+/**
+ * Opens an axis section: heading, then the UNDRR question and answer from
+ * axisPreamble, before any measurement table.
+ */
+function pushAxis(axis, title) {
+  lines.push(`## ${axis} - ${title}`);
+  lines.push("");
+  lines.push(...axisPreamble(axis));
+}
+
 lines.push("# Axis scores");
 lines.push("");
-lines.push("GENERATED FILE - regenerate with `pnpm axes`. Axis definitions and");
-lines.push("measurement rules are in [decision-axes.md](./decision-axes.md).");
-lines.push("");
-lines.push(
-  "Read this instead of the requirement matrix when choosing. The matrix says every",
-);
-lines.push(
-  "candidate can do the job; these axes say what each one costs to live with.",
-);
+lines.push("Detailed measurements behind the [ranking](./scores.html). The [requirement matrix](./comparison.html) retains all 300 assessments.");
 lines.push("");
 
-lines.push("## A1 - Implementation effort");
+pushAxis("A1", "Implementation effort");
+lines.push(
+  "`beyond native` counts requirements needing more than a documented component.",
+);
+lines.push("`off-route overrides` counts only audited unsupported/internal workarounds. Documented integration work, product design decisions and explicit non-events are excluded; the exhaustive classification is in `effort-classification.json`.");
 lines.push("");
-lines.push(
-  "`beyond native` is the count of the 30 requirements needing more than dropping in",
-);
-lines.push(
-  "a documented component. `traps` counts documented approaches that failed and",
-);
-lines.push("needed working around. Neither is a time estimate; see the axis definition.");
+{
+  const maxNative = Math.max(...rows.map((r) => r.mix.native));
+  const maxComposed = Math.max(...rows.map((r) => r.mix.composed));
+  const maxCustom = Math.max(...rows.map((r) => r.mix.custom));
+  const maxBeyond = Math.max(...rows.map((r) => r.beyondNative));
+  const maxTraps = Math.max(...rows.map((r) => r.escapeHatches));
+  const maxReview = Math.max(...rows.map((r) => r.humanReview));
+  lines.push(
+    table(
+      ["Pairing", "native||one documented component did it", "composed||assembled from multiple components", "custom||built from scratch", "beyond native||composed + custom; lower is easier", "off-route overrides||audited unsupported or internal workarounds", "wrappers||glue components the demo had to write", "flagged for review||may need a human judgement call"],
+      rows.map((r) => [
+        r.app,
+        spark(r.mix.native, maxNative),
+        spark(r.mix.composed, maxComposed),
+        spark(r.mix.custom, maxCustom),
+        `**${spark(r.beyondNative, maxBeyond)}**`,
+        spark(r.escapeHatches, maxTraps),
+        `${r.wrappers.count ?? "?"} (${r.wrappers.totalLines ?? "?"} ln)`,
+        spark(r.humanReview, maxReview),
+      ]),
+    ),
+  );
+}
 lines.push("");
-lines.push(
-  table(
-    ["Pairing", "native", "composed", "custom", "beyond native", "traps", "wrappers", "flagged for review"],
-    rows.map((r) => [
-      r.app,
-      r.mix.native,
-      r.mix.composed,
-      r.mix.custom,
-      `**${r.beyondNative}**`,
-      r.escapeHatches,
-      `${r.wrappers.count ?? "?"} (${r.wrappers.totalLines ?? "?"} ln)`,
-      r.humanReview,
-    ]),
-  ),
-);
+lines.push("Each off-route entry is a place the documented approach did not suffice.");
 lines.push("");
-lines.push(
-  "The friction log is the honest proxy for time: implementation time goes on dead",
-);
-lines.push(
-  "ends, not on typing. Each entry below is a place the documented approach did not",
-);
-lines.push("suffice, recorded by the run that hit it.");
-lines.push("");
-lines.push("<details><summary>The friction log, per pairing</summary>");
+lines.push("<details><summary>The audited off-route log, per pairing</summary>");
 lines.push("");
 for (const r of rows.filter((x) => x.escapeHatchText.length > 0)) {
-  lines.push(`**\`${r.app}\`** - ${r.escapeHatches} entries`);
+  lines.push(`**\`${r.app}\`** - ${r.escapeHatches} audited off-route overrides`);
   lines.push("");
   for (const h of r.escapeHatchText) {
-    // These are long prose notes; keep the first sentence, which states the trap.
     const first = String(h).split(/(?<=\.)\s+/)[0];
-    lines.push(`- ${first.length > 240 ? `${first.slice(0, 240)}...` : first}`);
+    // Normalize ALL-CAPS sentences to sentence case.
+    const normalized = first.replace(/^([A-Z][A-Z\s,'-]{8,}\.?)/, (m) =>
+      m.charAt(0) + m.slice(1).toLowerCase(),
+    );
+    lines.push(`- ${normalized.length > 240 ? `${normalized.slice(0, 240)}...` : normalized}`);
   }
   lines.push("");
 }
 lines.push("</details>");
 lines.push("");
 
-lines.push("## A2 - Maintainability at scale");
+pushAxis("A2", "Estate change amplification");
+lines.push(
+  `Scenario: **${changeAmplification.scenario.siteCount} sites** - ${changeAmplification.scenario.dataSites} data products and ${changeAmplification.scenario.contentSites} content products.`,
+);
+lines.push("");
+lines.push(
+  "Each cell separates the authoritative implementation change from consumer source edits and rebuilds. Bands prioritise authoritative implementation locations, ownership boundaries and repeated source edits; rebuilds are release fan-out, not six manual implementations.",
+);
+lines.push("");
+{
+  const scenarioCell = (scenario) => {
+    const edits = scenario.consumerSourceEdits === null
+      ? "site edits unmeasured"
+      : `${scenario.consumerSourceEdits} site edits`;
+    return `**${scenario.authoritativeLocations} source${scenario.authoritativeLocations === 1 ? "" : "s"}** · ${edits} · ${scenario.siteRebuilds} rebuilds`;
+  };
+  const entries = CANDIDATE_ORDER
+    .filter((candidate) => changeAmplification.candidates[candidate] && rows.some((r) => r.candidate === candidate))
+    .map((candidate) => [candidate, changeAmplification.candidates[candidate]]);
+  lines.push(
+    table(
+      ["Candidate", "Type", "evidence basis||mechanism measured or modelled?", "token change||authoritative source · consumer edits · rebuilds", "shared policy||authoritative source · consumer edits · rebuilds", "upstream upgrade||authoritative source · consumer edits · rebuilds", "owners at worst||independent system boundaries"],
+      entries.map(([candidate, evidence]) => [
+        rows.find((r) => r.candidate === candidate)?.name ?? candidate,
+        evidence.architectureType,
+        evidence.mechanismMeasured ? `**${evidence.basis}**` : evidence.basis,
+        scenarioCell(evidence.scenarios.token),
+        scenarioCell(evidence.scenarios.interactionPolicy),
+        scenarioCell(evidence.scenarios.upstreamUpgrade),
+        Math.max(...Object.values(evidence.scenarios).map((scenario) => scenario.ownershipBoundaries)),
+      ]),
+    ),
+  );
+  lines.push("");
+  lines.push("<details><summary>Scenario assumptions and evidence</summary>");
+  lines.push("");
+  lines.push(changeAmplification.scenario.assumption);
+  lines.push("");
+  for (const [candidate, evidence] of entries) {
+    lines.push(`**${rows.find((r) => r.candidate === candidate)?.name ?? candidate}** - ${evidence.notes}`);
+    lines.push("");
+    for (const [key, scenario] of Object.entries(evidence.scenarios)) {
+      lines.push(`- ${changeAmplification.changes[key]} ${scenario.evidence}`);
+    }
+    lines.push("");
+  }
+  lines.push("</details>");
+  lines.push("");
+}
+lines.push(
+  "The mechanism is measured where a shared-package drill exists and explicitly modelled elsewhere. The six-site counts are extrapolations, not observations of six production sites. Styling-hook fragility remains supporting evidence below; it no longer determines A2.",
+);
+lines.push("");
+lines.push("<details><summary>Supporting evidence: implementation fragility</summary>");
 lines.push("");
 lines.push("Every distinct styling hook, classified by the promise behind it.");
 lines.push("");
 lines.push(
-  "`attribute` hooks are semantic (`[data-*]`, `[slot]`) and survive DOM restructuring.",
+  "`attribute`: semantic selectors (`[data-*]`, `[slot]`). `contract`: documented styling API.",
 );
 lines.push(
-  "`contract` hooks are class names the library documents as a styling API. `off route`",
-);
-lines.push(
-  "hooks are the ones that matter: styling achieved by going around the library's own",
-);
-lines.push(
-  "theming mechanism, which is what accumulates across sites and across upgrades.",
+  "`off route`: styling that bypasses the library's own theming mechanism.",
 );
 lines.push("");
-lines.push(
-  table(
-    ["Pairing", "attribute", "contract", "off route", "of which hashed", "CSS rules"],
-    rows.map((r) => [
-      r.app,
-      r.hooks.attributes,
-      r.hooks.contract,
-      r.hooks.offRoute === 0 ? "**0**" : `**${r.hooks.offRoute}**`,
-      r.hooks.generated,
-      r.hooks.rules,
-    ]),
-  ),
-);
+{
+  const maxAttr = Math.max(...rows.map((r) => r.hooks.attributes));
+  const maxContract = Math.max(...rows.map((r) => r.hooks.contract));
+  const maxOff = Math.max(...rows.map((r) => r.hooks.offRoute));
+  const maxHashed = Math.max(...rows.map((r) => r.hooks.generated));
+  const maxRules = Math.max(...rows.map((r) => r.hooks.rules));
+  lines.push(
+    table(
+      ["Pairing", "attribute||semantic selectors like [data-*], [slot]", "contract||documented styling API; safe to use", "off route||bypasses the library's theming; fragile", "of which hashed||generated class names that change between builds", "CSS rules||total rules in the demo's own stylesheets"],
+      rows.map((r) => [
+        r.app,
+        spark(r.hooks.attributes, maxAttr),
+        spark(r.hooks.contract, maxContract),
+        r.hooks.offRoute === 0 ? "**0**" : `**${spark(r.hooks.offRoute, maxOff)}**`,
+        spark(r.hooks.generated, maxHashed),
+        spark(r.hooks.rules, maxRules),
+      ]),
+    ),
+  );
+}
 lines.push("");
 lines.push(
-  "Checking the documentation moved two libraries here, and both moves were away from",
+  "Mantine's `.mantine-{Component}-{element}` classes are a documented API",
 );
 lines.push(
-  "my first reading. Mantine's `.mantine-{Component}-{element}` classes are a",
+  "(`withStaticClasses`), so they count as contract. Carbon's `cds--` classes are",
 );
 lines.push(
-  "documented styling API gated behind a `withStaticClasses` provider prop, not an",
+  "stable but off the documented theming route (`--cds-*` custom properties).",
 );
-lines.push(
-  "internal - so Mantine's overrides are contract hooks. Carbon's `cds--` classes are",
-);
-lines.push(
-  "documented as an internal BEM authoring convention with a *reconfigurable* prefix,",
-);
-lines.push(
-  "while Carbon points consumers at `--cds-*` custom properties for theming - so",
-);
-lines.push(
-  "Carbon's overrides are off-route. That is not a prediction that they will break;",
-);
-lines.push("Carbon's class names are stable in practice. It is a count of the places the");
-lines.push("supported theming route did not reach.");
 lines.push("");
 const disagreements = rows.filter(
   (r) => r.declaredOverridesInternals === true && r.hooks.offRoute === 0,
@@ -395,8 +459,7 @@ if (disagreements.length > 0) {
   lines.push(
     `**Every run declared \`overridesLibraryInternals: true\`, including ${disagreements.length} ` +
       `with no off-route hook at all** (${disagreements.map((r) => r.app).join(", ")}). ` +
-      "Self-assessment of this collapsed to a constant and carries no information, " +
-      "which is why the field is reported but not scored.",
+      "The field collapsed to a constant and is reported but not scored.",
   );
   lines.push("");
 }
@@ -418,32 +481,26 @@ if (withHooks.length > 0) {
   lines.push("</details>");
   lines.push("");
 }
-
-lines.push("## A3 - Reproducibility across sites");
+lines.push("</details>");
 lines.push("");
+
+pushAxis("A3", "New-product reproducibility");
 if (!extractionResults) {
   lines.push(
-    "**Not yet measured.** The extraction experiment has not been run, so this axis is",
+    "**Not yet measured.** The extraction experiment has not been run.",
   );
-  lines.push(
-    "blank rather than guessed. Divergence between the two host apps is not a valid",
-  );
-  lines.push("substitute - see the caveat in the axis definition.");
 } else {
   const entries = CANDIDATE_ORDER.filter((c) => extractionResults[c]).map((c) => [
     c,
     extractionResults[c],
   ]);
   lines.push(
-    "`basis` is the most important column. Only MUI was actually extracted and both",
-  );
-  lines.push(
-    "host apps rewired onto the package; everything else is analysis and says so.",
+    "`basis`: React Aria, MUI and Ant Design are measured package integrations; Carbon and Mantine remain analysis because consolidating two independently authored implementations would measure a rewrite rather than portability.",
   );
   lines.push("");
   lines.push(
     table(
-      ["Candidate", "basis", "verdict", "shared", "per site", "shared %"],
+      ["Candidate", "basis||measured or analysed?", "verdict||can it be shared across sites?", "shared||code lines reusable across sites", "per site||code lines each site must own", "shared %||proportion that is reusable"],
       entries.map(([c, e]) => [
         c,
         e.basis === "measured" ? "**measured**" : e.basis,
@@ -474,19 +531,11 @@ if (!extractionResults) {
 }
 lines.push("");
 
-lines.push("## A4 - Mangrove compatibility");
-lines.push("");
-lines.push(
-  "RTL and accessibility used to be two columns here. They are now A6 and A7: both are",
-);
-lines.push(
-  "estate-wide obligations rather than symptoms of host coexistence, and both were too",
-);
-lines.push("consequential to leave as columns in someone else's table.");
+pushAxis("A4", "Mangrove compatibility");
 lines.push("");
 lines.push(
   table(
-    ["Pairing", "leakage", "documented setup loadable as-is"],
+    ["Pairing", "leakage||does the library restyle the host page outside its own area?", "documented setup loadable as-is||can the library's default setup load without fighting Mangrove?"],
     rows.map((r) => [
       r.app,
       r.leakagePassed ? "clean" : `**FAILED** (${r.leakageDiffs} diffs)`,
@@ -496,65 +545,72 @@ lines.push(
 );
 lines.push("");
 
-lines.push("## A5 - Theming fidelity and propagation");
+pushAxis("A5", "Visual control and theming fidelity");
+lines.push(
+  "**Token count is not the score.** Candidates expose different applicable token sets. The band asks whether those tokens can be attached, whether UNDRR remains the visual authority in both hosts, and how many manual corrections are required.",
+);
 lines.push("");
 lines.push(
-  "`unreachable` tokens are a ceiling, not a cost: there is no hook to attach them to.",
+  "`unreachable`: tokens with no hook to attach to. `authority`: whether the",
 );
-lines.push(
-  "`propagation` is how a Mangrove token change reaches a built site - a stylesheet",
-);
-lines.push("swap reaches every site at once; a rebuild is per site, forever.");
+lines.push("mapped visual system still controls the result in both hosts. Change propagation is scored in A2.");
 lines.push("");
-lines.push(
-  table(
-    ["Pairing", "tokens applied", "unreachable", "propagation", "live var() refs in shipped CSS"],
-    rows.map((r) => [
-      r.app,
-      r.tokensApplied ?? "?",
-      r.tokensUnreachable ? `**${r.tokensUnreachable}**` : "0",
-      `**${r.propagation.model}**`,
-      r.propagation.cssVarRefs ?? "not built",
-    ]),
-  ),
-);
+{
+  const maxApplied = Math.max(...rows.map((r) => r.tokensApplied ?? 0));
+  const maxUnreachable = Math.max(...rows.map((r) => r.tokensUnreachable ?? 0));
+  const maxVarRefs = Math.max(...rows.map((r) => r.propagation.cssVarRefs ?? 0));
+  lines.push(
+    table(
+      ["Pairing", "tokens applied||UNDRR design tokens successfully connected", "unreachable||tokens with no hook to attach to", "visual authority||does the mapped system control both hosts?", "manual corrections||derived aliases pinned by hand", "propagation detail||reported here, scored in A2"],
+      rows.map((r) => {
+        const control = themingControl.candidates[r.candidate];
+        return [
+          r.app,
+          spark(r.tokensApplied ?? "?", maxApplied),
+          r.tokensUnreachable ? `**${spark(r.tokensUnreachable, maxUnreachable)}**` : "0",
+          control?.authorityAcrossHosts === "yes" ? "**yes**" : `**${control?.authorityAcrossHosts ?? "unmeasured"}**`,
+          control?.manualCorrections ?? "?",
+          `${r.propagation.model}; ${spark(r.propagation.cssVarRefs ?? "not built", maxVarRefs)} live var() refs`,
+        ];
+      }),
+    ),
+  );
+}
+lines.push("");
+for (const candidate of CANDIDATE_ORDER.filter((id) => themingControl.candidates[id] && rows.some((r) => r.candidate === id))) {
+  const control = themingControl.candidates[candidate];
+  const name = rows.find((r) => r.candidate === candidate)?.name ?? candidate;
+  lines.push(`- **${name}:** ${control.evidence}`);
+}
 lines.push("");
 
-lines.push("## A6 - Right-to-left");
+pushAxis("A6", "Right-to-left");
+lines.push(
+  "Read `status` against `setup`: `clean` at `native`/0 lines means a `dir` attribute",
+);
+lines.push("sufficed; `clean` at `composed`/18 lines means the library needed mitigation.");
+lines.push("");
+{
+  const maxLines = Math.max(...rows.map((r) => r.rtlRequirement?.customLinesOfCode ?? 0));
+  const maxIssues = Math.max(...rows.map((r) => r.rtlIssues.length));
+  lines.push(
+    table(
+      ["Pairing", "status||does Arabic render correctly?", "setup||native (dir attribute) or composed (extra code)?", "custom lines||lines of code needed to make RTL work", "recorded issues||defects found during RTL testing"],
+      rows.map((r) => [
+        r.app,
+        r.rtl === "clean" ? "clean" : `**${r.rtl}**`,
+        r.rtlRequirement?.status ?? "?",
+        spark(r.rtlRequirement?.customLinesOfCode ?? "?", maxLines),
+        spark(r.rtlIssues.length, maxIssues),
+      ]),
+    ),
+  );
+}
 lines.push("");
 lines.push(
-  "Read `status` against `setup`. `clean` at `native`/0 lines means a `dir` attribute",
+  "Two hosts agreeing implicates the candidate; disagreeing implicates the host.",
 );
-lines.push(
-  "sufficed. `clean` at `composed`/18 lines means the library needed configuring and",
-);
-lines.push(
-  "mitigating first. Both print as clean; they are not the same purchase.",
-);
-lines.push("");
-lines.push(
-  table(
-    ["Pairing", "status", "setup", "custom lines", "recorded issues"],
-    rows.map((r) => [
-      r.app,
-      r.rtl === "clean" ? "clean" : `**${r.rtl}**`,
-      r.rtlRequirement?.status ?? "?",
-      r.rtlRequirement?.customLinesOfCode ?? "?",
-      r.rtlIssues.length,
-    ]),
-  ),
-);
-lines.push("");
-lines.push(
-  "A candidate whose two hosts disagree implicates the host; one whose two hosts agree",
-);
-lines.push(
-  "implicates the candidate. Every recorded issue is reproduced verbatim below, because",
-);
-lines.push(
-  "ownership - candidate, third-party dependency, or mitigated - decides what it means,",
-);
-lines.push("and that is judgement rather than a number.");
+lines.push("Recorded issues are reproduced verbatim below.");
 lines.push("");
 lines.push("<details><summary>Recorded RTL issues, per pairing</summary>");
 lines.push("");
@@ -567,89 +623,75 @@ for (const r of rows.filter((x) => x.rtlIssues.length > 0)) {
 lines.push("</details>");
 lines.push("");
 
-lines.push("## A7 - Accessibility conformance");
+pushAxis("A7", "Automated accessibility signals");
+lines.push(
+  "`incomplete` counts checks axe declined to decide. Nine of ten runs ran axe",
+);
+lines.push("unscoped, so counts are directional, not exact.");
 lines.push("");
-lines.push(
-  "`incomplete` is not a pass: it counts checks axe declined to decide, each of which is",
-);
-lines.push(
-  "work a human still owes. Nine of the ten runs ran axe unscoped, so these counts are",
-);
-lines.push(
-  "sound at the level of *zero versus some* and unsound at the level of exact numbers.",
-);
-lines.push("");
-lines.push(
-  table(
-    ["Pairing", "critical", "serious", "incomplete", "scope"],
-    rows.map((r) => [
-      r.app,
-      r.axe.critical ? `**${r.axe.critical}**` : (r.axe.critical ?? "?"),
-      r.axe.serious ?? "?",
-      r.axe.incomplete ?? "?",
-      r.axe.scope ? "candidate subtree" : "whole page, unscoped",
-    ]),
-  ),
-);
+{
+  const maxCrit = Math.max(...rows.map((r) => r.axe.critical ?? 0));
+  const maxSerious = Math.max(...rows.map((r) => r.axe.serious ?? 0));
+  const maxInc = Math.max(...rows.map((r) => r.axe.incomplete ?? 0));
+  lines.push(
+    table(
+      ["Pairing", "critical||must-fix violations (axe automated scan)", "serious||should-fix violations", "incomplete||axe could not decide; needs a human", "scope||what part of the page was scanned"],
+      rows.map((r) => [
+        r.app,
+        r.axe.critical ? `**${spark(r.axe.critical, maxCrit)}**` : (r.axe.critical ?? "?"),
+        spark(r.axe.serious ?? "?", maxSerious),
+        spark(r.axe.incomplete ?? "?", maxInc),
+        r.axe.scope ? "candidate subtree" : "whole page, unscoped",
+      ]),
+    ),
+  );
+}
 lines.push("");
 lines.push(
   "**Zero automated violations is a floor, not a conformance claim.** No screen-reader",
 );
 lines.push(
-  "pass, no human keyboard-only walkthrough and no plain-language review was run on any",
+  "or keyboard-only walkthrough was run. A row of zeroes means the automated subset passed.",
 );
-lines.push(
-  "pairing. Automated tooling reaches a minority of WCAG criteria, so a row of zeroes",
-);
-lines.push(
-  "means the automated subset passed - not that the pairing is accessible. See",
-);
-lines.push("[decision-axes.md](./decision-axes.md) for what ownership does to these numbers.");
 lines.push("");
 
 lines.push("## Supporting figures");
 lines.push("");
-lines.push("Reported because they are asked for, not because they decide anything.");
+lines.push(
+  "`prod pkgs` is measured uniformly (`pnpm deps:count`). `as recorded` is each run's",
+);
+lines.push("self-reported figure; the two disagree and only `prod pkgs` is comparable across rows.");
 lines.push("");
-lines.push(
-  "The two dependency columns disagree, and the disagreement is the point. `prod pkgs`",
-);
-lines.push(
-  "is the production tree measured for every app by one method (`pnpm deps:count`).",
-);
-lines.push(
-  "`as recorded` is whatever each run put in its own `evidence.json`. Those figures",
-);
-lines.push(
-  "were each measured differently and they reorder the candidates - Mantine was",
-);
-lines.push(
-  "recorded at 112 where a production count gives 27 - so only the first column is",
-);
-lines.push("safe to compare across rows.");
-lines.push("");
-lines.push(
-  table(
-    ["Pairing", "custom CSS lines", "bundle kB gz", "prod pkgs", "as recorded", "licences", "build s"],
-    rows.map((r) => {
-      const deps = dependencyCounts[r.app];
-      const licences = deps?.licences
-        ? Object.entries(deps.licences)
-            .map(([name, count]) => `${name} ${count}`)
-            .join(", ")
-        : "?";
-      return [
-        r.app,
-        r.cssLines ?? "?",
-        r.bundle.gzippedKb ?? "?",
-        deps ? `**${deps.productionPackages}**` : "?",
-        r.bundle.dependencyCount ?? "?",
-        licences,
-        readJson(join(APPS, r.app, "evidence.json")).buildTimeSeconds ?? "?",
-      ];
-    }),
-  ),
-);
+{
+  const maxCss = Math.max(...rows.map((r) => r.cssLines ?? 0));
+  const maxBundle = Math.max(...rows.map((r) => r.bundle.gzippedKb ?? 0));
+  const maxProd = Math.max(...rows.map((r) => dependencyCounts[r.app]?.productionPackages ?? 0));
+  const maxDeps = Math.max(...rows.map((r) => r.bundle.dependencyCount ?? 0));
+  const buildTimes = rows.map((r) => readJson(join(APPS, r.app, "evidence.json")).buildTimeSeconds ?? 0);
+  const maxBuild = Math.max(...buildTimes);
+  lines.push(
+    table(
+      ["Pairing", "custom CSS lines||written by the demo, not the library", "bundle kB gz||shipped JavaScript size, gzipped", "prod pkgs||production npm packages (uniform method)", "as recorded||self-reported by each run; not comparable", "licences||licence families across dependencies", "build s||seconds to build from clean"],
+      rows.map((r, i) => {
+        const deps = dependencyCounts[r.app];
+        const licences = deps?.licences
+          ? Object.entries(deps.licences)
+              .map(([name, count]) => `${name} ${count}`)
+              .join(", ")
+          : "?";
+        return [
+          r.app,
+          spark(r.cssLines ?? "?", maxCss),
+          spark(r.bundle.gzippedKb ?? "?", maxBundle),
+          deps ? `**${spark(deps.productionPackages, maxProd)}**` : "?",
+          spark(r.bundle.dependencyCount ?? "?", maxDeps),
+          licences,
+          spark(buildTimes[i], maxBuild),
+        ];
+      }),
+    ),
+  );
+}
 lines.push("");
 
 const md = lines.join("\n");
@@ -666,6 +708,8 @@ function toHtml(markdown) {
   const out = [];
   let inTable = false;
   let inDetails = false;
+  let inQuote = false;
+  let inList = false;
   for (const raw of markdown.split("\n")) {
     const line = raw.trimEnd();
     if (line.startsWith("<details") || line.startsWith("</details")) {
@@ -678,7 +722,12 @@ function toHtml(markdown) {
       if (/^-+$/.test(cells[0] ?? "")) continue;
       if (!inTable) {
         out.push("<div class=\"scroll\"><table><thead>");
-        out.push(`<tr>${cells.map((c) => `<th>${inline(c)}</th>`).join("")}</tr>`);
+        out.push(`<tr>${cells.map((c) => {
+          const [name, hint] = c.split("||");
+          return hint
+            ? `<th>${inline(name)}<span class="th-hint">${esc(hint)}</span></th>`
+            : `<th>${inline(name)}</th>`;
+        }).join("")}</tr>`);
         out.push("</thead><tbody>");
         inTable = true;
       } else {
@@ -690,23 +739,83 @@ function toHtml(markdown) {
       out.push("</tbody></table></div>");
       inTable = false;
     }
-    if (line.startsWith("## ")) out.push(`<h2>${inline(line.slice(3))}</h2>`);
+    /* Blockquote: each `> ` line becomes a <p>; bare `>` becomes a blank line. */
+    if (line.startsWith(">")) {
+      if (!inQuote) {
+        out.push('<blockquote class="answers">');
+        inQuote = true;
+      }
+      const content = line.replace(/^>\s?/, "");
+      out.push(content === "" ? "" : `<p>${inline(content)}</p>`);
+      continue;
+    }
+    if (inQuote) {
+      out.push("</blockquote>");
+      inQuote = false;
+    }
+    /* Axis headings carry an id for deep-linking from the landing page. */
+    if (inList && !line.startsWith("- ") && line !== "") {
+      out.push("</ul>");
+      inList = false;
+    }
+    if (line.startsWith("## ")) {
+      const text = line.slice(3);
+      const axis = /^(A[1-7])\b/.exec(text);
+      const id = axis ? ` id="${axis[1].toLowerCase()}"` : "";
+      out.push(`<h2${id}>${inline(text)}</h2>`);
+    }
     else if (line.startsWith("# ")) out.push(`<h1>${inline(line.slice(2))}</h1>`);
-    else if (line.startsWith("- ")) out.push(`<li>${inline(line.slice(2))}</li>`);
+    else if (line.startsWith("- ")) {
+      if (!inList) {
+        out.push("<ul>");
+        inList = true;
+      }
+      out.push(`<li>${inline(line.slice(2))}</li>`);
+    }
     else if (line === "") out.push("");
     else if (inDetails) out.push(`<p>${inline(line)}</p>`);
     else out.push(`<p>${inline(line)}</p>`);
   }
   if (inTable) out.push("</tbody></table></div>");
+  if (inQuote) out.push("</blockquote>");
+  if (inList) out.push("</ul>");
   // Merge consecutive paragraphs that were really one wrapped sentence.
   return out.join("\n").replace(/<\/p>\n<p>/g, " ");
 }
 
 function inline(text) {
   return esc(text)
+    .replace(/\{spark:(\d+):(\d+)\}/g, (_, v, m) => {
+      const pct = Math.round((parseInt(v, 10) / parseInt(m, 10)) * 100);
+      return `<span class="spark"><span class="spark-bar" style="width:${pct}%"></span>${v}</span>`;
+    })
     .replace(/`([^`]+)`/g, "<code>$1</code>")
     .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
     .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+}
+
+/** Builds a colored band-summary strip for one axis. */
+function buildBandSummary(axisKey) {
+  const bandClass = { strong: "ax-s", workable: "ax-w", weak: "ax-k", blocked: "ax-b" };
+  const bands = candidateBands(axisKey);
+  const cells = bands
+    .map(
+      (b) =>
+        `<span class="ax-chip ${bandClass[b.band]}" title="${esc(b.because)}">${esc(b.name)}: ${b.band}</span>`,
+    )
+    .join("");
+  return `<div class="ax-summary">${cells}</div>`;
+}
+
+/** Injects band summaries after each axis heading's preamble in the HTML. */
+function injectBandSummaries(bodyHtml) {
+  return bodyHtml.replace(
+    /(<h2 id="(a[1-7])">[^<]*<\/h2>\s*(?:<blockquote class="answers">[\s\S]*?<\/blockquote>)?)/g,
+    (match, full, axisId) => {
+      const axisKey = axisId.toUpperCase();
+      return full + "\n" + buildBandSummary(axisKey);
+    },
+  );
 }
 
 const html = `<!doctype html>
@@ -716,46 +825,43 @@ const html = `<!doctype html>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Axis scores - UNDRR data design system evaluation</title>
+    <link rel="stylesheet" href="./mangrove.css" />
     <style>
-      :root {
-        color-scheme: light dark;
-        --bg: #f4f6f8; --surface: #fff; --text: #14232e; --muted: #4a5c69;
-        --border: #c8d2da; --accent: #2f6f8f; --bad: #a11f2c;
-      }
-      @media (prefers-color-scheme: dark) {
-        :root {
-          --bg: #10191f; --surface: #17232b; --text: #e8eef2; --muted: #a3b3bf;
-          --border: #2c3d48; --accent: #7fb3cc; --bad: #ef8b96;
-        }
-      }
-      * { box-sizing: border-box; }
-      body {
-        margin: 0; padding: 2rem 1.5rem 4rem; background: var(--bg); color: var(--text);
-        font-family: system-ui, -apple-system, "Segoe UI", sans-serif; line-height: 1.55;
-      }
-      main { max-width: 74rem; margin: 0 auto; }
-      h1 { font-size: 1.75rem; margin: 0 0 1rem; }
+      :root { --accent: #004f91; --muted: #4a5c69; --border: #d5d5d5; --surface: #fff; --bad: #c10920; }
       h2 { font-size: 1.1875rem; margin: 2.5rem 0 0.5rem; padding-top: 1rem; border-top: 1px solid var(--border); }
-      p { margin: 0 0 0.75rem; max-width: 68ch; color: var(--text); }
-      code { font-size: 0.875em; background: color-mix(in srgb, var(--border) 35%, transparent); padding: 0.1em 0.35em; border-radius: 3px; }
-      strong { color: var(--text); }
+      p { max-width: 68ch; }
       .scroll { overflow-x: auto; margin: 0 0 1rem; border: 1px solid var(--border); border-radius: 6px; background: var(--surface); }
       table { border-collapse: collapse; width: 100%; font-size: 0.8125rem; }
       th, td { text-align: left; padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); white-space: nowrap; }
-      th { background: color-mix(in srgb, var(--border) 30%, transparent); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; }
+      th { background: #f5f5f5; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; vertical-align: bottom; }
+      .th-hint { display: block; font-weight: 400; text-transform: none; letter-spacing: 0; font-size: 0.6875rem; color: var(--muted); line-height: 1.3; margin-top: 0.125rem; white-space: normal; }
+      .spark { position: relative; display: inline-block; min-width: 3rem; }
+      .spark-bar { position: absolute; inset: 0; border-radius: 2px; background: rgba(0,79,145,0.12); pointer-events: none; }
       tbody tr:last-child td { border-bottom: 0; }
       td:first-child { font-family: ui-monospace, monospace; font-size: 0.75rem; }
       li { max-width: 68ch; font-size: 0.875rem; }
       details { margin: 0 0 1rem; }
       summary { cursor: pointer; color: var(--accent); font-size: 0.875rem; }
-      a { color: var(--accent); }
-      nav { margin-bottom: 1.5rem; font-size: 0.875rem; }
+      blockquote.answers {
+        margin: 0 0 1.25rem; padding: 0.875rem 1.125rem;
+        border-inline-start: 4px solid var(--accent); background: var(--surface); border-radius: 0 6px 6px 0;
+      }
+      blockquote.answers p { margin: 0 0 0.5rem; font-size: 0.9375rem; }
+      blockquote.answers p:last-child { margin-bottom: 0; }
+      .ax-summary { display: flex; flex-wrap: wrap; gap: 0.375rem; margin: 0 0 1.25rem; }
+      .ax-chip { display: inline-block; padding: 0.25rem 0.625rem; border-radius: 4px; font-size: 0.8125rem; font-weight: 600; cursor: default; }
+      .ax-s { background: #d4edda; color: #155724; }
+      .ax-w { background: #fff3cd; color: #856404; }
+      .ax-k { background: #ffe0b2; color: #7a4100; }
+      .ax-b { background: #f8d7da; color: #721c24; }
+${siteNavCss}
     </style>
   </head>
   <body>
-    <main>
-      <nav><a href="./">Back to the demos</a> &middot; <a href="./comparison.html">Requirement matrix</a></nav>
-${toHtml(md)}
+${siteNavHtml("axes")}
+    <main id="main" class="mg-container mg-page-content--padded">
+      <p class="audience-banner"><span class="audience-tag">Developer evidence</span>Measurement definitions and per-pairing signals. Automated accessibility results are not a conformance claim.</p>
+${injectBandSummaries(toHtml(md))}
     </main>
   </body>
 </html>

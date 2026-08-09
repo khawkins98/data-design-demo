@@ -20,7 +20,8 @@ import { ContentSwitcher, Switch } from "@carbon/react";
 
 import { LOCALES } from "@undrr-eval/fixtures";
 import type { LocaleCode } from "@undrr-eval/fixtures";
-import { HostShell } from "@undrr-eval/host-delta";
+import { HostShell, ViewSwitcher } from "@undrr-eval/host-delta";
+import { viewLinks } from "@undrr-eval/test-harness/views";
 import { TOKEN_SCOPE_CLASS } from "@undrr-eval/undrr-tokens";
 import { KnownIssues } from "@undrr-eval/known-issues";
 
@@ -54,7 +55,24 @@ export function App(): ReactElement {
   const selectedIndex = LOCALES.findIndex((entry) => entry.code === locale);
 
   return (
-    <HostShell title={demo.labels.appTitle} dir={demo.dir}>
+    <HostShell
+      title="Demo: Delta + Carbon"
+      dir={demo.dir}
+      pageHeader={
+        /*
+         * Cross-view navigation, in the frame's page-header slot. Host chrome on the
+         * same terms as the known-issues box below: outside the candidate wrapper, present in both
+         * candidate states. `"island"` is absent from `available` because the
+         * embedded-island view belongs to the Mangrove host and this app ships no
+         * `island.html`.
+         */
+        <ViewSwitcher
+          views={viewLinks(["application", "inventory"], "inventory")}
+          pairingName="IBM Carbon on Delta"
+          otherHost={{ label: "Carbon on Mangrove", href: "../mangrove-carbon/" }}
+        />
+      }
+    >
       {/*
         * Rendered OUTSIDE the candidate wrapper and in BOTH candidate states.
         * Outside, so no candidate stylesheet restyles the warning box and every
@@ -62,6 +80,7 @@ export function App(): ReactElement {
         * leakage baseline as well as the candidate render and therefore cannot
         * itself register as a difference.
         */}
+
       <KnownIssues candidate="carbon" host="delta" candidateName="IBM Carbon" />
 
       {candidateEnabled ? (
@@ -106,6 +125,31 @@ export function App(): ReactElement {
             <SectionChrome />
             <SectionDataTable />
             <SectionStates />
+
+            {/*
+              THE 7-TO-9 JUMP IN THE HEADINGS IS DELIBERATE, AND SAYING SO HERE
+              IS THE POINT. Requirements section 8 is Locale, and it is met — by
+              the switcher above, which every section consumes. It gets no
+              numbered block because it is a page-level control, not a specimen.
+              Renumbering would hide that a specified section exists, and a note
+              at the foot of the page arrives long after the reader has read the
+              jump as a mistake. So it sits where 8 would be.
+            */}
+            <div className="demo__section" id="section-8-note">
+              <h3 className="demo__heading">
+                8. Locale — no numbered section of its own
+              </h3>
+              <p className="demo__prose">
+                Section 8 of the requirements (locale switcher, RTL, long labels)
+                is exercised by the locale switcher at the top of this page,
+                which drives every section above; Arabic sets{" "}
+                <code>dir=&quot;rtl&quot;</code> on this wrapper. It gets no
+                block here because it is page-wide rather than one specimen. The
+                headings run 7 to 9 for that reason — nothing was dropped or
+                hidden.
+              </p>
+            </div>
+
             <SectionSideBySide />
           </DemoContext.Provider>
         </div>

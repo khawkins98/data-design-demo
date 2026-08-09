@@ -75,22 +75,56 @@ for (const name of names) {
     continue;
   }
 
-  const html = readFileSync(indexHtml, "utf8");
-  const assetRefs = [...html.matchAll(/(?:src|href)="([^"]+)"/g)].map((m) => m[1]);
-  const localRefs = assetRefs.filter((ref) => ref?.startsWith("/"));
-  const wrongBase = localRefs.filter((ref) => !ref?.startsWith(base));
-
-  if (localRefs.length === 0) {
-    process.stderr.write(`\nno absolute asset refs found in ${name}/dist/index.html\n`);
-    failed += 1;
-  } else if (wrongBase.length > 0) {
+  /*
+   * Every HTML entry the app declares must survive the build, not just
+   * index.html.
+   *
+   * A demo now ships up to three views - the kitchen sink, the embedded island
+   * and the full application layout - and Vite only emits the extra ones if the
+   * app lists them in `build.rollupOptions.input`. Omit that and the build still
+   * succeeds, still produces a valid dist/index.html, and silently drops two
+   * thirds of the demo. Checking source entries against dist entries is what
+   * makes that failure loud.
+   */
+  const sourceEntries = readdirSync(join(APPS, name)).filter((f) => f.endsWith(".html"));
+  const missing = sourceEntries.filter((f) => !existsSync(join(APPS, name, "dist", f)));
+  if (missing.length > 0) {
     process.stderr.write(
-      `\nbase "${base}" did not apply to ${name}. Offending refs:\n` +
-        wrongBase.map((r) => `  ${r}\n`).join(""),
+      `\n${name} declares ${sourceEntries.length} HTML entries but dist is missing:\n` +
+        missing.map((f) => `  ${f} - add it to build.rollupOptions.input\n`).join(""),
     );
     failed += 1;
+    continue;
+  }
+
+  // Verify the base applied in every entry, not only the first.
+  let refsChecked = 0;
+  let baseFailed = false;
+  for (const entry of sourceEntries) {
+    const html = readFileSync(join(APPS, name, "dist", entry), "utf8");
+    const assetRefs = [...html.matchAll(/(?:src|href)="([^"]+)"/g)].map((m) => m[1]);
+    const localRefs = assetRefs.filter((ref) => ref?.startsWith("/"));
+    const wrongBase = localRefs.filter((ref) => !ref?.startsWith(base));
+
+    if (localRefs.length === 0) {
+      process.stderr.write(`\nno absolute asset refs found in ${name}/dist/${entry}\n`);
+      baseFailed = true;
+    } else if (wrongBase.length > 0) {
+      process.stderr.write(
+        `\nbase "${base}" did not apply to ${name}/dist/${entry}. Offending refs:\n` +
+          wrongBase.map((r) => `  ${r}\n`).join(""),
+      );
+      baseFailed = true;
+    }
+    refsChecked += localRefs.length;
+  }
+
+  if (baseFailed) {
+    failed += 1;
   } else {
-    process.stdout.write(`  base verified on ${localRefs.length} asset ref(s)\n`);
+    process.stdout.write(
+      `  base verified on ${refsChecked} asset ref(s) across ${sourceEntries.length} entry point(s)\n`,
+    );
   }
 }
 

@@ -5,8 +5,6 @@
  * than reimplement Mangrove's CSS, this shell loads the design system's real
  * published stylesheet and uses its real class names, so the canary elements
  * are styled by Mangrove itself. See docs/host-derivation.md.
- *
- * Import only. Brief 1 forbids modifying this package.
  */
 
 import type { ReactElement, ReactNode } from "react";
@@ -20,6 +18,22 @@ export interface HostShellProps {
   readonly children: ReactNode;
   /** Document direction, driven by the demo's locale switcher. */
   readonly dir?: "ltr" | "rtl";
+  /**
+   * Page-level chrome, rendered full width directly beneath the masthead and
+   * ABOVE the body — the `ViewSwitcher`, in practice.
+   *
+   * A slot rather than `children` because position is the whole point. Passed as
+   * a child, the switcher landed inside `<main>` below the canary block, so the
+   * navigation for the page appeared a screen down, after a wall of host
+   * reference markup, reading as something belonging to the content rather than
+   * as the frame around it. Navigation that frames a page has to sit where the
+   * frame is.
+   *
+   * Outside `data-candidate-root`, like `HostCanaries`, so no candidate
+   * stylesheet can restyle it and it cannot pollute the `?candidate=off`
+   * baseline.
+   */
+  readonly pageHeader?: ReactNode;
 }
 
 /** Nav items are host chrome, so they stay in English in every locale. */
@@ -50,7 +64,7 @@ const TABLE_ROWS = [
  * earlier version invented those classes; they were inert and implied an API
  * Mangrove does not have.
  */
-function Canaries(): ReactElement {
+export function HostCanaries(): ReactElement {
   return (
     <section className="mg-host-canaries" aria-labelledby="canary-heading">
       <h2 id="canary-heading" data-canary="heading-2">
@@ -83,7 +97,7 @@ function Canaries(): ReactElement {
         <button
           data-canary="button-disabled"
           type="button"
-          className="mg-button mg-button-primary"
+          className="mg-button mg-button-primary disabled"
           disabled
         >
           Disabled action
@@ -134,26 +148,69 @@ function Canaries(): ReactElement {
   );
 }
 
-export function HostShell({ title, children, dir = "ltr" }: HostShellProps): ReactElement {
+/**
+ * Masthead navigation. Links to the real sibling pages so the topbar is
+ * functional navigation, not decoration. Every demo app sits one directory
+ * below the site root, so `../` reaches the doc pages.
+ */
+const TOPBAR_ITEMS = [
+  { href: "../", label: "Ranking" },
+  { href: "../axes.html", label: "Decision axes" },
+  { href: "../comparison.html", label: "Requirement matrix" },
+  { href: "../issues.html", label: "Findings" },
+  { href: "../architecture-options.html", label: "Architecture" },
+];
+
+export function HostShell({
+  title,
+  children,
+  dir = "ltr",
+  pageHeader,
+}: HostShellProps): ReactElement {
   return (
     <div className="mg-host" dir={dir}>
-      <header className="mg-host__header">
-        <span className="mg-host__brand">UNDRR</span>
-        <h1 data-canary="heading-1">
-          {title}
-        </h1>
+      <header id="header" className="mg-page-header mg-page-header--default">
+        <div className="mg-page-header__decoration" aria-hidden="true">
+          <div />
+          <div />
+          <div />
+          <div />
+        </div>
       </header>
 
+      <nav data-canary="nav" className="mg-mega-wrapper" aria-label="Main Navigation">
+        <ul
+          className="mg-mega-topbar | mg-container mg-container-full-width"
+          role="menubar"
+          aria-label="Main navigation menu"
+        >
+          {TOPBAR_ITEMS.map((item, index) => (
+            <li key={item.href} className="mg-mega-topbar__item" role="none">
+              <a
+                className="mg-mega-topbar__item-link"
+                href={item.href}
+                role="menuitem"
+                {...(index === 0 ? { "data-canary": "nav-link" } : {})}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      {pageHeader ? <div className="mg-host__pageheader">{pageHeader}</div> : null}
+
+      <div className="mg-container mg-page-content--padded">
+        <h1 data-canary="heading-1">{title}</h1>
+      </div>
+
       <div className="mg-host__body">
-        <nav data-canary="nav" className="mg-host__nav" aria-label="Sections">
+        <nav className="mg-host__nav" aria-label="Sections">
           <ul className="mg-host__nav-list">
-            {NAV_ITEMS.map((item, index) => (
+            {NAV_ITEMS.map((item) => (
               <li key={item.href} className="mg-host__nav-item">
-                <a
-                  className="mg-host__nav-link"
-                  href={item.href}
-                  {...(index === 0 ? { "data-canary": "nav-link" } : {})}
-                >
+                <a className="mg-host__nav-link" href={item.href}>
                   {item.label}
                 </a>
               </li>
@@ -162,7 +219,7 @@ export function HostShell({ title, children, dir = "ltr" }: HostShellProps): Rea
         </nav>
 
         <main className="mg-host__main">
-          <Canaries />
+          <HostCanaries />
           {/* The candidate library renders here, and nowhere else. */}
           <section className="mg-host__candidate" data-candidate-root="">
             {children}

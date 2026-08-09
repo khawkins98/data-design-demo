@@ -27,6 +27,31 @@
  *
  * Reported here rather than worked around silently because it is the kind of
  * friction UNDRR would hit on day one.
+ *
+ * ONE MORE PIECE OF THE SAME API, previously missing from this inventory and from
+ * every usage in both Carbon apps: `DataTable` and `TableHeader` BOTH accept a
+ * `translateWithId(messageId, args)` hook, and it is the documented way to localise
+ * the strings they generate themselves. Verified against the installed 1.113.0:
+ *
+ *   DataTable.js:55-72     `carbon.table.all.select` → "Select all rows"
+ *                          `carbon.table.all.unselect` → "Unselect all rows"
+ *                          `carbon.table.row.select` → "Select row"
+ *                          `carbon.table.row.unselect` → "Unselect row"
+ *                          plus the four expand/collapse ids
+ *   TableHeader.js:49,186  `carbon.table.header.icon.description` →
+ *                          "Click to sort rows by header in ascending order"
+ *
+ * Those strings are the accessible names of the select-all checkbox, every row
+ * checkbox and every sortable header, and they are ENGLISH IN ALL FOUR LOCALES in
+ * both apps because the hook is never passed. That is a genuine fixture gap, not a
+ * Carbon one: `LabelSet` has no sort or selection vocabulary, and inventing four
+ * locales' worth is out of bounds. It is recorded here so the next reader knows the
+ * hook exists — the earlier version of this file inventoried the DataTable API in
+ * detail and never mentioned it, while comments elsewhere credited
+ * `translateWithId` to `Pagination`, which does not have it at all.
+ *
+ * The fixture keys this would need: `a11ySortAscending`, `a11ySortDescending`,
+ * `a11ySortNone`, `a11ySelectRow`, `a11ySelectAllRows` and their unselect pairs.
  */
 
 /** Reinterprets a Carbon render-prop object as the component's own prop type. */

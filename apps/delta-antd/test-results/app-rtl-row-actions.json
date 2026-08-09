@@ -1,0 +1,8 @@
+{
+  "error": null,
+  "actionCellTextAlign": "end",
+  "actionCellIsLeftOfFirstCell": true,
+  "firstCellTextAlign": "start",
+  "buttonsInLeftHalfOfCell": true,
+  "note": "antd column `align` is logical (start/center/end), so the row-action column follows the reading direction. Zero custom RTL lines in this view: the column definitions carry `align: \"end\"` and nothing else."
+}

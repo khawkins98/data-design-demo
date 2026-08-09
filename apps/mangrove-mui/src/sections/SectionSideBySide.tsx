@@ -6,13 +6,12 @@
  * is styled by the design system itself rather than by an approximation. Right is
  * MUI, themed to the UNDRR tokens.
  *
- * The gap is wider here than in the delta-mui run. Mangrove is a strongly
- * opinionated visual system: square corners, heavy borders, Roboto, a specific
- * blue. The token palette MUI is themed to is neutral, so "themed to match the
- * host" is not reachable through the token mapping alone — matching Mangrove
- * would mean theming MUI against Mangrove's own values, which 1.8.1 does not
- * expose at runtime at all. That is the finding, and it is why this section is
- * worth screenshotting rather than describing.
+ * Mangrove is a strongly opinionated visual system: square corners, heavy
+ * borders, Roboto and a specific blue. The project tokens now carry its current
+ * interactive palette, so colour can match. The remaining gap — and the
+ * architecture finding — is that MUI consumes a separately maintained mapping,
+ * not values inherited from Mangrove 1.8.1 at runtime. This section makes both
+ * the visual fit and that synchronization boundary concrete.
  */
 
 import type { ReactElement } from "react";

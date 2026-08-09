@@ -118,11 +118,20 @@
   --cds-support-warning: var(--undrr-color-warning);
   --cds-support-info: var(--undrr-color-info);
 
-  /* Tags, used for the verification-status column. */
+  /*
+   * Tags, used for the verification-status column.
+   *
+   * `warm-gray` carries `pending`, and the mapping below is the reason it can:
+   * Carbon's Tag palette has no yellow or amber (see STATUS_TAG_COLOUR in
+   * demo-state.ts), so the nearest warm neutral is re-pointed at the UNDRR warning
+   * tokens rather than accepting IBM's warm grey. Identical to the same three
+   * declarations in apps/delta-carbon/src/demo.css.
+   */
   --cds-tag-background-green: var(--undrr-color-success-subtle);
   --cds-tag-color-green: var(--undrr-color-success);
-  --cds-tag-background-blue: var(--undrr-color-accent-subtle);
-  --cds-tag-color-blue: var(--undrr-color-accent);
+  --cds-tag-background-warm-gray: var(--undrr-color-warning-subtle);
+  --cds-tag-color-warm-gray: var(--undrr-color-warning);
+  --cds-tag-border-warm-gray: var(--undrr-color-warning);
   --cds-tag-background-red: var(--undrr-color-error-subtle);
   --cds-tag-color-red: var(--undrr-color-error);
   --cds-tag-background-gray: var(--undrr-color-surface-sunken);
@@ -453,6 +462,50 @@
 
 .demo .cds--data-table th[draggable="true"] {
   cursor: grab;
+}
+
+/* ------------------------------------------------------------------ *
+ * The embedded-island view (island.html)
+ *
+ * Layout only, and NO new `.cds--` hook: the island reuses `.demo-tablewrap`,
+ * `.demo-hint` and the field re-assertions further down this file exactly as the
+ * kitchen sink uses them. That was the target — Carbon already carries the worst
+ * off-route-hook count of the five candidates on axis A2, so a realistic layout
+ * that needed more would have been the finding.
+ * ------------------------------------------------------------------ */
+
+.island {
+  min-width: 0;
+}
+
+.island__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--undrr-space-3);
+  align-items: center;
+  margin-block-end: var(--undrr-space-4);
+}
+
+/*
+ * `ContentSwitcher` is a non-wrapping flex row with an intrinsic width, the same
+ * shape as the `RadioButtonGroup` problem above: four locale labels are wider
+ * than a 390px viewport. Bounding the switcher rather than reaching into
+ * `.cds--content-switcher` keeps this off the hook count.
+ */
+.island__locale {
+  max-width: 100%;
+}
+
+.island__filters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(13rem, 100%), 1fr));
+  gap: var(--undrr-space-4);
+  align-items: end;
+  margin-block-end: var(--undrr-space-4);
+}
+
+.island__count {
+  margin-block-end: var(--undrr-space-2);
 }
 
 /* ------------------------------------------------------------------ *

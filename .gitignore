@@ -4,20 +4,20 @@ dist-ssr/
 *.tsbuildinfo
 .DS_Store
 
-# Playwright working files. Note that apps/*/screenshots and apps/*/test-results
-# ARE committed on purpose: they are the evaluation evidence.
+# Playwright working files.
 playwright-report/
 .playwright/
 blob-report/
 test-results-tmp/
 
+# Screenshots are regenerable from test runs — not committed.
+apps/*/screenshots/
+
 # Local env
 .env
 .env.local
 
-# The preview is a scratch control, not evidence: its screenshots and results
-# are regenerated on demand and would only add churn. The eight real demos DO
-# commit theirs.
+# Preview scratch.
 packages/host-preview/screenshots/
 packages/host-preview/test-results/
 
@@ -25,5 +25,9 @@ packages/host-preview/test-results/
 # written alongside it in test-results/ ARE evidence and stay committed.
 apps/*/test-results/playwright/
 
+# Mangrove CSS copied from node_modules during site build.
+docs/mangrove.css
+
 # Assembled comparison site, rebuilt by `pnpm site`.
 _site/
+.gstack/

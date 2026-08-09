@@ -100,3 +100,144 @@
 .mg-host__candidate {
   min-width: 0;
 }
+
+/**
+ * Island frame.
+ *
+ * Almost nothing is needed here, and that is the point: the island frame uses
+ * Mangrove's own published page components (`mg-page-header`, `mg-mega-topbar`,
+ * `mg-container`, `mg-page-content--padded`), so Mangrove lays the page out. The
+ * two rules below only give the embedded candidate region room to scroll and
+ * enough separation to read as a distinct region on the page.
+ *
+ * `.mg-island` deliberately does not reset the flex column `.mg-host` sets, since
+ * the frame carries both classes: `mg-host` for the shared canary appearance
+ * rules above, `mg-island` for this.
+ */
+.mg-island__candidate {
+  min-width: 0;
+  margin: 2rem 0;
+}
+
+/**
+ * Page header. Host chrome, so it is styled here and not by any candidate.
+ *
+ * Everything is logical (`inline-start`, `inline-end`) rather than physical, so the
+ * header mirrors in Arabic without a second rule. The tab underline in particular:
+ * a physical `border-left` on the active tab would stay on the wrong side in RTL.
+ */
+.mg-pageheader {
+  margin: 0;
+  border-bottom: 1px solid #d5d5d5;
+}
+
+/*
+ * The bands the two frames place it in. The header carries no vertical margin
+ * of its own: it spans the full page width directly under the masthead, and the
+ * space beneath its rule is the content region's own top padding, so the rule
+ * lands between the two rather than floating inside either.
+ */
+.mg-host__pageheader {
+  padding: 1rem 1.5rem 0;
+}
+
+.mg-island__pageheader {
+  padding-top: 1rem;
+}
+
+.mg-pageheader__crumbs {
+  font-size: 0.8125rem;
+}
+
+.mg-pageheader__crumblist {
+  list-style: none;
+  margin: 0 0 0.5rem;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.5rem;
+  color: #575757;
+}
+
+/*
+ * The separator.
+ *
+ * `margin-inline-end` places it correctly in both directions, but the GLYPH does
+ * not mirror on its own: CSS does not flip generated content, so an Arabic
+ * breadcrumb would read right-to-left with an arrow still pointing right, i.e.
+ * back the way the reader came. Logical properties handle boxes, not semantics.
+ *
+ * Worth getting right in our own chrome specifically. This evaluation scores five
+ * libraries on exactly this class of defect, and shipping one in the header that
+ * frames those scores would be a poor advertisement for the measurement.
+ */
+.mg-pageheader__crumb + .mg-pageheader__crumb::before {
+  content: "›";
+  margin-inline-end: 0.5rem;
+  color: #949494;
+}
+
+[dir="rtl"] .mg-pageheader__crumb + .mg-pageheader__crumb::before {
+  content: "‹";
+}
+
+.mg-pageheader__crumb[aria-current="page"] {
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.mg-pageheader__nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+}
+
+.mg-pageheader__tabs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.mg-pageheader__tablink {
+  display: block;
+  padding: 0.5rem 0.875rem;
+  font-size: 0.875rem;
+  text-decoration: none;
+  border: 1px solid transparent;
+  border-bottom: 0;
+  /* Sits on the container's bottom border, so the active tab can break it. */
+  margin-bottom: -1px;
+}
+
+.mg-pageheader__tablink:hover {
+  background: #f0f0f0;
+}
+
+/*
+ * The current tab. Joined to the page below by a white strip over the container
+ * border, which is what makes a tab read as selected rather than merely bold.
+ */
+.mg-pageheader__tablink--current {
+  font-weight: 700;
+  color: #1a1a1a;
+  background: #fff;
+  border-color: #d5d5d5;
+  border-bottom: 1px solid #fff;
+}
+
+.mg-pageheader__otherhost {
+  margin: 0 0 0.5rem;
+  font-size: 0.8125rem;
+  color: #575757;
+}
+
+.mg-pageheader__hint {
+  margin: 0.625rem 0 0.75rem;
+  font-size: 0.8125rem;
+  color: #575757;
+}

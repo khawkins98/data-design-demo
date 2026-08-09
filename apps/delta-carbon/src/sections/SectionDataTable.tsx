@@ -205,7 +205,13 @@ export function SectionDataTable(): ReactElement {
 
   return (
     <section id="section-6" className="demo__section">
-      <h3 className="demo__heading">6. Data table, {ROWS.length} rows</h3>
+      {/* `formatters.integer`, not a bare `{ROWS.length}`. Every count in this
+          section sits beside cells that ARE Intl-formatted, so an unformatted one
+          makes the same page show "1.234.567" in a cell and "1234567" in the heading
+          in German. */}
+      <h3 className="demo__heading">
+        6. Data table, {formatters.integer.format(ROWS.length)} rows
+      </h3>
 
       {/* Column reorder controls: custom, because Carbon has neither reorder
           nor resize. Buttons rather than drag, so keyboard users get it too. */}
@@ -271,7 +277,7 @@ export function SectionDataTable(): ReactElement {
           return (
             <TableContainer
               title={labels.navRecords}
-              description={`${total} ${labels.navRecords.toLocaleLowerCase(bcp47)}`}
+              description={`${formatters.integer.format(total)} ${labels.navRecords.toLocaleLowerCase(bcp47)}`}
               {...getTableContainerProps()}
             >
               <TableToolbar {...asProps<ComponentProps<typeof TableToolbar>>(getToolbarProps())}>
@@ -338,12 +344,26 @@ export function SectionDataTable(): ReactElement {
                 </Table>
               </div>
 
+              {/*
+                * `itemsPerPageText` is deliberately NOT passed. It used to carry
+                * `labels.navRecords`, which made the rows-per-page selector read
+                * "Loss records" — it labels a control rather than naming a thing, so
+                * Carbon's untouched "Items per page:" is more correct than the
+                * substitution was. `itemRangeText` IS wired: the fixture set supplies
+                * the noun it needs, and wiring it routes the numbers through `Intl`.
+                * See AppView.tsx for the full list of nine text props Carbon uses
+                * here in place of the `translateWithId` this component does not have.
+                */}
               <Pagination
                 page={page}
                 pageSize={pageSize}
                 pageSizes={[10, 25, 50]}
                 totalItems={total}
-                itemsPerPageText={labels.navRecords}
+                itemRangeText={(min, max, totalItems) =>
+                  `${formatters.integer.format(min)}–${formatters.integer.format(max)} / ` +
+                  `${formatters.integer.format(totalItems)} ` +
+                  `${labels.navRecords.toLocaleLowerCase(bcp47)}`
+                }
                 onChange={({ page: nextPage, pageSize: nextPageSize }) => {
                   setPage(nextPage);
                   setPageSize(nextPageSize);

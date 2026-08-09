@@ -8,14 +8,26 @@
     "wcag21aa",
     "wcag22aa"
   ],
-  "violations": [],
+  "violations": [
+    {
+      "id": "color-contrast",
+      "impact": "serious",
+      "help": "Elements must meet minimum color contrast ratio thresholds",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright",
+      "nodes": [
+        ".ant-form-item-has-error.ant-form-item-with-help.ant-form-item:nth-child(2) > .ant-row.ant-form-item-row.css-var-_r_0_ > .ant-form-item-control.ant-col.css-var-_r_0_ > .ant-form-item-additional > .ant-form-item-explain.ant-form-show-help-appear.ant-form-show-help-appear-active > .ant-form-item-explain-error.ant-form-show-help-item-appear.ant-form-show-help-item-appear-active",
+        ".ant-form-item-has-error.ant-form-item-with-help.ant-form-item:nth-child(3) > .ant-row.ant-form-item-row.css-var-_r_0_ > .ant-form-item-control.ant-col.css-var-_r_0_ > .ant-form-item-additional > .ant-form-item-explain.ant-form-show-help-appear.ant-form-show-help-appear-active > .ant-form-item-explain-error.ant-form-show-help-item-appear.ant-form-show-help-item-appear-active",
+        ".ant-form-item-has-error.ant-form-item-with-help.ant-form-item:nth-child(4) > .ant-row.ant-form-item-row.css-var-_r_0_ > .ant-form-item-control.ant-col.css-var-_r_0_ > .ant-form-item-additional > .ant-form-item-explain.ant-form-show-help-appear.ant-form-show-help-appear-active > .ant-form-item-explain-error.ant-form-show-help-item-appear.ant-form-show-help-item-appear-active",
+        ".ant-form-item-with-help.ant-form-item.ant-form-item-vertical:nth-child(5) > .ant-row.ant-form-item-row.css-var-_r_0_ > .ant-form-item-control.ant-col.css-var-_r_0_ > .ant-form-item-additional > .ant-form-item-explain.ant-form-show-help-appear.ant-form-show-help-appear-active > .ant-form-show-help-item-appear.ant-form-show-help-item-appear-active.ant-form-show-help-item",
+        "form:nth-child(4) > .ant-form-item-with-help.ant-form-item.ant-form-item-vertical:nth-child(1) > .ant-row.ant-form-item-row.css-var-_r_0_ > .ant-form-item-control.ant-col.css-var-_r_0_ > .ant-form-item-additional > .ant-form-item-explain.ant-form-show-help-appear.ant-form-show-help-appear-active > .ant-form-show-help-item-appear.ant-form-show-help-item-appear-active.ant-form-show-help-item"
+      ]
+    }
+  ],
   "counts": {
-    "violations": 0,
-    "serious": 0,
+    "violations": 1,
+    "serious": 1,
     "critical": 0,
-    "incomplete": 1
+    "incomplete": 0
   },
-  "incompleteRuleIds": [
-    "color-contrast"
-  ]
+  "incompleteRuleIds": []
 }

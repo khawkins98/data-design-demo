@@ -1,0 +1,439 @@
+
+/* --------------------------------------------------------- wizard, stepper */
+/*
+ * ALL OF THIS IS THE COST OF REACT ARIA HAVING NO STEPPER.
+ *
+ * Every other block in this file styles a React Aria component. This one styles
+ * a component that does not exist in the library, so the markup in
+ * EventWizard.tsx is ours as well as the appearance. PrimeReact ships `Stepper`
+ * and DELTA's add-event screen uses it, so this is not a flourish - it is
+ * existing functionality being rebuilt to keep parity.
+ *
+ * Everything directional is logical, and the connector line in particular: a
+ * physical `left` would leave the Arabic stepper connected the wrong way.
+ */
+
+.demo-wizard {
+  margin-top: var(--undrr-space-6);
+  padding: var(--undrr-space-5);
+  border: 1px solid var(--undrr-color-border);
+  border-radius: var(--undrr-radius-md);
+  background: var(--undrr-color-surface);
+}
+
+.demo-wizard__title {
+  margin: 0 0 var(--undrr-space-4);
+  font-size: var(--undrr-font-size-lg);
+  font-weight: 700;
+  color: var(--undrr-color-text-primary);
+}
+
+.demo-stepper__list {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.demo-stepper__item {
+  position: relative;
+  /* Equal columns, so the connectors between markers are all the same length. */
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+/*
+ * The connector.
+ *
+ * Runs from this step's marker centre BACK to the previous one, which is what
+ * `inset-inline-end: 50%` plus `width: 100%` describes: start at my centre, extend
+ * one column backwards. Drawn backwards rather than forwards so no line ever
+ * trails off the end of the row, and stated logically rather than with `right` so
+ * Arabic connects the same steps rather than the mirror-image ones.
+ *
+ * `top` is half the marker's height, so the line meets the circles' centres. It
+ * passes BEHIND them: the markers carry z-index 1.
+ */
+.demo-stepper__item + .demo-stepper__item::before {
+  content: "";
+  position: absolute;
+  inset-inline-end: 50%;
+  top: 1.125rem;
+  width: 100%;
+  height: 2px;
+  background: var(--undrr-color-border-strong);
+}
+
+/*
+ * Marker above, label below, as the DLDTS screens have it. The first version put
+ * the marker beside the label, which is a legitimate compact stepper but not the
+ * one the design file shows, and it left the connector as a 0.5rem stub between
+ * columns that read as a hyphen rather than a line.
+ */
+.demo-stepper__button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--undrr-space-2);
+  width: 100%;
+  padding: var(--undrr-space-2);
+  border: 0;
+  border-radius: var(--undrr-radius-sm);
+  background: none;
+  font-family: inherit;
+  font-size: var(--undrr-font-size-sm);
+  text-align: center;
+  cursor: pointer;
+}
+
+.demo-stepper__button[data-hovered] {
+  background: var(--undrr-color-surface-sunken);
+}
+
+.demo-stepper__button[data-focus-visible] {
+  outline: 2px solid var(--undrr-color-focus);
+  outline-offset: 2px;
+}
+
+/* Not `cursor: not-allowed`: the step is simply not reachable yet, not refused. */
+.demo-stepper__button[data-disabled] {
+  cursor: default;
+  opacity: 0.55;
+}
+
+.demo-stepper__marker {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  /* Sits above the connector, and opaque, so the line passes behind the circle. */
+  position: relative;
+  z-index: 1;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 2px solid var(--undrr-color-border-strong);
+  border-radius: 50%;
+  background: var(--undrr-color-surface);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--undrr-color-text-secondary);
+}
+
+.demo-stepper__text {
+  display: flex;
+  min-width: 0;
+  max-width: 100%;
+  flex-direction: column;
+  align-items: center;
+}
+
+.demo-stepper__label {
+  font-weight: 600;
+  color: var(--undrr-color-text-primary);
+  /* German's "Zusätzliche Einzelheiten" is why this wraps rather than truncates:
+     a step whose name is clipped is a step the reader cannot identify. */
+  overflow-wrap: break-word;
+}
+
+.demo-stepper__optionality {
+  font-size: var(--undrr-font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--undrr-color-text-secondary);
+}
+
+.demo-stepper__item[data-state="current"] .demo-stepper__marker {
+  border-color: var(--undrr-color-accent);
+  background: var(--undrr-color-accent);
+  color: var(--undrr-color-surface);
+}
+
+.demo-stepper__item[data-state="complete"] .demo-stepper__marker {
+  border-color: var(--undrr-color-accent);
+  color: var(--undrr-color-accent);
+}
+
+/*
+ * Only a COMPLETED step accents the connector leading away from it. Including the
+ * current step accented the line into the next, unreached step - so on step 1 of 4
+ * the indicator claimed progress into step 2 that had not happened. The design
+ * file is explicit: blue behind you, grey ahead.
+ */
+.demo-stepper__item[data-state="complete"] + .demo-stepper__item::before {
+  background: var(--undrr-color-accent);
+}
+
+.demo-wizard__panel {
+  margin-top: var(--undrr-space-5);
+  padding-top: var(--undrr-space-4);
+  border-top: 1px solid var(--undrr-color-border);
+}
+
+.demo-wizard__panel-title {
+  margin: 0 0 var(--undrr-space-3);
+  font-size: var(--undrr-font-size-base);
+  font-weight: 700;
+  color: var(--undrr-color-text-primary);
+}
+
+.demo-wizard__placeholder {
+  margin: 0;
+  max-width: 60ch;
+  font-size: var(--undrr-font-size-sm);
+  color: var(--undrr-color-text-secondary);
+}
+
+.demo-wizard__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--undrr-space-3);
+  align-items: center;
+  margin-top: var(--undrr-space-5);
+}
+
+/* --------------------------------------------------------- review and save */
+
+.demo-review {
+  display: grid;
+  gap: var(--undrr-space-4);
+}
+
+.demo-review__card {
+  padding: var(--undrr-space-4);
+  border: 1px solid var(--undrr-color-border);
+  border-radius: var(--undrr-radius-md);
+  background: var(--undrr-color-surface);
+}
+
+.demo-review__title {
+  margin: 0 0 var(--undrr-space-3);
+  font-size: var(--undrr-font-size-base);
+  font-weight: 700;
+  color: var(--undrr-color-text-primary);
+}
+
+.demo-review__grid {
+  display: grid;
+  gap: var(--undrr-space-3) var(--undrr-space-5);
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  margin: 0;
+}
+
+.demo-review__label {
+  margin: 0;
+  font-size: var(--undrr-font-size-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--undrr-color-text-secondary);
+}
+
+.demo-review__value {
+  margin: var(--undrr-space-1) 0 0;
+  font-size: var(--undrr-font-size-sm);
+  color: var(--undrr-color-text-primary);
+  overflow-wrap: break-word;
+}
+
+/* ------------------------------------------------------------------ menus -- */
+/*
+ * THE MENU BAR, AND THIS BLOCK IS THE FINDING. React Aria ships the whole
+ * behavioural contract for a menu - roles, focus movement, roving arrow keys with
+ * wrap, type-ahead, Escape, click-outside, overlay flipping, RTL placement - and
+ * not one pixel of appearance. Every rule below exists because the library
+ * deliberately has no opinion, which is the same trade this pairing makes on every
+ * other component; it is simply most visible on a component with this much
+ * surface. Four other candidates write between 0 and a handful of rules here.
+ *
+ * All logical properties, so Arabic needs no second code path: the popover's own
+ * placement is mirrored by React Aria from the I18nProvider locale.
+ */
+
+.demo-navmenu__trigger {
+  display: flex;
+  align-items: center;
+  gap: var(--undrr-space-1);
+  padding: var(--undrr-space-2) 0.625rem;
+  border: 0;
+  border-block-end: 2px solid transparent;
+  background: none;
+  color: #475569;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+}
+
+.demo-navmenu__trigger:hover {
+  color: #004f91;
+}
+
+.demo-navmenu__trigger--current {
+  border-block-end-color: #004f91;
+  color: #004f91;
+}
+
+/* React Aria sets data-focus-visible; it does not style it. */
+/*
+ * Triggers only. The menu ITEM gets a filled row plus an inline-start bar instead
+ * (see below): an outline-offset ring on a row inside a panel with
+ * `overflow: hidden` is clipped on three sides and reads as a rendering fault.
+ */
+.demo-navmenu__trigger[data-focus-visible],
+.demo-navmenu__avatar[data-focus-visible] {
+  outline: 2px solid #004f91;
+  outline-offset: 2px;
+}
+
+/*
+ * A CSS triangle rather than the host's `Caret` SVG, because this one sits inside
+ * a flex trigger whose gap is set in the same rule - and a 0x0 element needs its
+ * own inline start margin, since the flex `gap` measures from the border box and
+ * the triangle's visual mass is entirely border.
+ */
+.demo-navmenu__caret {
+  inline-size: 0;
+  block-size: 0;
+  margin-inline-start: 0.125rem;
+  border-inline: 0.25rem solid transparent;
+  border-block-start: 0.3rem solid currentcolor;
+  opacity: 0.7;
+}
+
+.demo-navmenu__avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 2.25rem;
+  block-size: 2.25rem;
+  flex-shrink: 0;
+  border: 1px solid #cbd5e1;
+  border-radius: 50%;
+  background: #f8fafc;
+  color: #475569;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/*
+ * The panel. DELTA's own submenu box is 16rem minimum and caps at 21.25rem, from
+ * `RegularMenuBar`'s `pt.submenu` classes, so those numbers are DELTA's rather
+ * than chosen here.
+ *
+ * `overflow: hidden` so the first and last items' hover fills cannot square off
+ * the rounded corners - the alternative is a radius on the items themselves, which
+ * then has to be undone for every item that is not first or last.
+ */
+.demo-navmenu__popover {
+  min-inline-size: 16rem;
+  inline-size: min(21.25rem, calc(100vw - 2rem));
+  max-inline-size: calc(100vw - 2rem);
+  overflow: hidden;
+  border: 1px solid var(--undrr-color-border);
+  border-radius: var(--undrr-radius-md);
+  background: #fff;
+  box-shadow:
+    0 1px 2px rgb(15 35 46 / 8%),
+    0 12px 28px rgb(15 35 46 / 14%);
+}
+
+/* React Aria animates nothing by itself; entry is ours, and it respects the
+   reduced-motion preference because a menu appearing is not information. */
+.demo-navmenu__popover[data-entering] {
+  animation: demo-navmenu-in 120ms ease-out;
+}
+
+@keyframes demo-navmenu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-0.25rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .demo-navmenu__popover[data-entering] {
+    animation: none;
+  }
+}
+
+.demo-navmenu__menu {
+  padding: var(--undrr-space-1) 0;
+  margin: 0;
+  outline: none;
+}
+
+/*
+ * The row. `data-hovered` and `data-focused` are both needed and are not the same
+ * thing: React Aria drives keyboard navigation through `data-focused`, so styling
+ * hover alone would leave an arrow-key user with no visible position at all. The
+ * inline-start bar is what distinguishes the two - focus gets the bar, hover does
+ * not - because a mouse user already knows where the pointer is.
+ */
+.demo-navmenu__item {
+  display: block;
+  padding: var(--undrr-space-2) var(--undrr-space-3);
+  border-inline-start: 3px solid transparent;
+  cursor: pointer;
+  outline: none;
+}
+
+.demo-navmenu__item[data-hovered] {
+  background: #f1f6fb;
+}
+
+.demo-navmenu__item[data-focused] {
+  border-inline-start-color: #004f91;
+  background: #eff6ff;
+}
+
+/*
+ * `isDisabled` gives `aria-disabled` and a data attribute, and leaves the item
+ * FOCUSABLE - the APG-correct behaviour for a menu item, and the opposite of what
+ * a native `disabled` button does. Only the appearance is ours.
+ */
+.demo-navmenu__item[data-disabled] {
+  color: var(--undrr-color-text-secondary);
+  cursor: default;
+}
+
+.demo-navmenu__item[data-disabled][data-hovered] {
+  background: none;
+}
+
+.demo-navmenu__label {
+  display: block;
+  color: #004f91;
+  font-size: var(--undrr-font-size-sm, 0.875rem);
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.demo-navmenu__item[data-disabled] .demo-navmenu__label {
+  color: var(--undrr-color-text-secondary);
+}
+
+.demo-navmenu__description {
+  display: block;
+  margin-block-start: 0.125rem;
+  color: var(--undrr-color-text-secondary);
+  font-size: var(--undrr-font-size-xs, 0.75rem);
+  line-height: 1.35;
+}
+
+/*
+ * The separator rule, drawn on the item that follows it. It has to reach the panel
+ * edges to read as a divider rather than as an underline on one row, and the item
+ * has a 3px focus bar plus horizontal padding - so the rule is pulled out to the
+ * full width with negative margins and the padding is given back.
+ */
+.demo-navmenu__item .demo-navmenu__label--after-rule {
+  padding-block-start: var(--undrr-space-2);
+  border-block-start: 1px solid var(--undrr-color-border);
+  margin-block-start: var(--undrr-space-1);
+  margin-inline: calc(var(--undrr-space-3) * -1);
+  padding-inline: var(--undrr-space-3);
+}

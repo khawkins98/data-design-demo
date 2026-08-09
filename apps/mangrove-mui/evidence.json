@@ -107,7 +107,7 @@
     {
       "id": "cards",
       "status": "native",
-      "notes": "Card + CardContent exist, unlike React Aria. Matching THIS host is where it falls short: variant=outlined and elevation=0 remove MUI's shadow, but radius, type scale and border colour still come from the neutral UNDRR tokens rather than from Mangrove, and Mangrove 1.8.1 publishes no runtime tokens to point MUI at. Side-by-side in section 9 shows the residual gap; it is wider than the delta-mui equivalent.",
+      "notes": "Card + CardContent exist, unlike React Aria. variant=outlined and elevation=0 remove MUI's shadow, while radius, type scale and border colour come from the shared project tokens. The interactive colours now match Mangrove's current UNDRR palette, but Mangrove 1.8.1 publishes no runtime tokens for MUI to inherit, so synchronization remains manual. Side-by-side in section 9 shows the residual structural gap.",
       "customLinesOfCode": 0
     },
     {
@@ -173,8 +173,8 @@
     {
       "id": "rtl",
       "status": "composed",
-      "notes": "INCOMPLETE, and this run does not call it clean. `direction` must be set on the MUI theme itself, not just a dir attribute, so the theme is rebuilt per locale with createTheme(base, { direction }); adapterLocale must also be threaded into LocalizationProvider for the pickers. React Aria needed only I18nProvider. Layout, component internals and the pickers do flip. What does NOT flip is emotion's already-emitted physical offsets: MuiInputLabel-outlined uses `left: 0` plus translate(14px,-9px), so a TextField whose FormControl is wider than its input renders the floating label pinned to the physical left edge -- measured 870px away from its field in Arabic. MUI's documented fix is a stylis RTL plugin (stylis-plugin-rtl) in the emotion cache, a third-party package outside the candidate's ecosystem that constraint 2 forbids. The e2e assertion for this is LEFT FAILING (3 of 42 tests). Reproduced identically in apps/delta-mui, so it is the candidate, not this host: the delta-mui run recorded rtl clean and missed it.",
-      "customLinesOfCode": 6
+      "notes": "THREE steps: dir, direction on the theme (rebuilt per locale via createTheme(base, { direction }), with adapterLocale threaded into LocalizationProvider), and an emotion CacheProvider carrying @mui/stylis-plugin-rtl - MUI first-party, Community tier, released in lockstep with @mui/material. Step 3 is what flips emitted CSS; without it MuiInputLabel-outlined keeps left: 0 plus translate(14px,-9px) and floating labels pin to the physical left edge, measured 710px from their field. That was recorded as an unfixable blocker and it was our incomplete setup. Measured after wiring step 3: every label within 15px of its field logical start, and the two e2e assertions written to fail on a fix duly failed and were inverted. React Aria needed only I18nProvider.",
+      "customLinesOfCode": 29
     },
     {
       "id": "long-labels",
@@ -185,7 +185,7 @@
     {
       "id": "side-by-side",
       "status": "composed",
-      "notes": "Host and candidate button, table, card and nav list rendered adjacent in section 9. The host column uses Mangrove's real classes (mg-button-primary, mg-table--striped, mg-card) so it is styled by the design system itself. The visual gap is the finding: MUI themed to neutral UNDRR tokens does not read as Mangrove, and 1.8.1 offers no runtime tokens to close it.",
+      "notes": "Host and candidate button, table, card and nav list rendered adjacent in section 9. The host column uses Mangrove's real classes (mg-button-primary, mg-table--striped, mg-card). MUI now receives the same current UNDRR interactive colours through project-owned tokens, making visual fit measurable; because Mangrove 1.8.1 exposes no runtime tokens, keeping that match synchronized is still separately owned bridge work.",
       "customLinesOfCode": 0
     }
   ],
@@ -210,7 +210,7 @@
       "Two CSS rules reach into library-generated class names (.MuiOutlinedInput-input / .MuiInputBase-input, .MuiDataGrid-root, .MuiDataGrid-columnHeaderTitle). Recorded as overridesLibraryInternals: true. The input one is host repair, not candidate styling.",
       "MUI's picker prop types are not compatible with exactOptionalPropertyTypes: true. minDateTime/maxDateTime are typed as Date rather than Date | undefined, so a conditional spread is needed instead of `value ?? undefined`.",
       "Stack no longer accepts flexWrap/alignItems as direct props in v9; they must move into sx.",
-      "stylis-plugin-rtl was NOT added, because it is outside the candidate's ecosystem and constraint 2 forbids it. That leaves RTL incomplete -- see the rtl requirement.",
+      "MUI's documented RTL route adds an emotion CacheProvider carrying the first-party @mui/stylis-plugin-rtl package. Together with dir and a direction-aware theme, it makes RTL clean; the setup costs 29 integration lines, two dependencies and a provider.",
       "None needed for portalled overlays. MUI portals its popper and popover to document.body, outside the .undrr-tokens element, and a computed-style check confirms it sees an EMPTY --undrr-color-surface there -- yet it still renders rgb(255,255,255) correctly, because the theme resolved token values at build time and emotion emitted literal colours. The react-aria run on this same host had to apply the token scope class to every overlay to avoid transparent popovers. The same build-time inlining that prevents runtime theming is what makes MUI immune here."
     ],
     "hostTokensNotAttempted": "Mangrove 1.8.1 was not themed against, and neither was the Mangrove 2.0 preview. 1.8.1's compiled stylesheet declares zero CSS custom properties, so its palette is unreachable at runtime; the numbers above measure packages/undrr-tokens only. Even after 2.0 lands, Mangrove's font sizes, font families and breakpoints stay SCSS-only, so a candidate could not reach the type scale at runtime on this host regardless."
@@ -232,23 +232,39 @@
       "serious": 2,
       "critical": 0,
       "incomplete": 4,
-      "rules": ["color-contrast", "link-in-text-block"],
+      "rules": [
+        "color-contrast",
+        "link-in-text-block"
+      ],
       "notes": "link-in-text-block is the known Mangrove host baseline on its own canary paragraph (docs/requirements.md). It is not caused by MUI and is excluded from the scoped counts above."
     }
   },
   "rtl": {
-    "status": "issues",
-    "issues": [
-      "MuiInputLabel-outlined is positioned with a physical `left: 0` that theme direction does not flip. A TextField whose FormControl is wider than its input renders its floating label at the physical left edge: measured label x=51, input x=921, gap 870px, at all three viewports. Fix requires stylis-plugin-rtl, which constraint 2 forbids. The e2e assertion is left failing."
-    ]
+    "status": "clean",
+    "issues": []
   },
   "longLabels": {
     "status": "clean",
     "issues": [],
     "measurements": [
-      { "viewport": "mobile", "scrollWidth": 390, "clientWidth": 390, "overflowPx": 0 },
-      { "viewport": "tablet", "scrollWidth": 1024, "clientWidth": 1024, "overflowPx": 0 },
-      { "viewport": "desktop", "scrollWidth": 1440, "clientWidth": 1440, "overflowPx": 0 }
+      {
+        "viewport": "mobile",
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "overflowPx": 0
+      },
+      {
+        "viewport": "tablet",
+        "scrollWidth": 1024,
+        "clientWidth": 1024,
+        "overflowPx": 0
+      },
+      {
+        "viewport": "desktop",
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "overflowPx": 0
+      }
     ]
   },
   "bundle": {
@@ -261,15 +277,13 @@
   "buildTimeSecondsCold": 6.5,
   "testSummary": {
     "total": 42,
-    "passed": 39,
-    "failed": 3,
-    "failing": [
-      "kitchen sink > RTL flips MUI's floating labels (mobile, tablet, desktop) -- left failing deliberately; see the rtl requirement."
-    ]
+    "passed": 42,
+    "failed": 0,
+    "failing": []
   },
   "blockers": [],
   "humanReviewRequired": [
-    "The failing RTL test needs a decision. Either UNDRR accepts stylis-plugin-rtl as part of adopting MUI -- it is maintained by the stylis project, not by MUI, and is a third-party dependency this brief forbids -- or Arabic gets misplaced field labels on any full-width TextField. This is the single most consequential unresolved item in this run.",
+    "MUI RTL is clean after its documented three-step setup: dir, a direction-aware theme and the first-party @mui/stylis-plugin-rtl package. The route adds 29 integration lines, two dependencies and a provider; omitting the third step fails silently, so the setup belongs in any shared delivery standard.",
     "axe `color-contrast` (1 serious, scoped): the helper text on the disabled TextField fails contrast. MUI applies its disabled text colour to the associated helper text, and the neutral token palette's --undrr-color-text-disabled (#8b9aa5) is roughly 2.8:1 on white. Disabled *controls* are exempt from WCAG 1.4.3, but helper text is not itself a disabled control, so this needs a ruling. Tokens are import-only so it could not be fixed here.",
     "axe reported 4 incomplete rules it could not decide across the page. `duplicate-id-aria` on a DataGrid page is worth a human look, since duplicate ARIA ids break screen-reader association.",
     "The 10 lines of CSS neutralising Mangrove's `input[type=...]` rules are a per-app workaround that every Mangrove pairing will need in some form. It should be fixed in Mangrove -- either by excluding `[hidden]` and scoping the input rules to a class, or by shipping a reset consumers can opt into -- rather than written four times.",

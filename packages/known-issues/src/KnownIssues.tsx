@@ -25,20 +25,29 @@ import type { ReactElement } from "react";
 
 import { TOKEN_SCOPE_CLASS } from "@undrr-eval/undrr-tokens";
 
-import { issuesFor } from "./issues.js";
+import { openIssuesFor } from "./issues.js";
 import type { IssueSeverity, KnownIssue } from "./issues.js";
 
 const SEVERITY_LABEL: Record<IssueSeverity, string> = {
-  blocker: "Blocker",
+  blocker: "Warning",
   decision: "Decision needed",
   caveat: "Caveat",
   info: "Context",
 };
 
+/**
+ * Owner labels, written for a reader whose first question is whose problem it is.
+ *
+ * "our own demo code" is deliberately blunt. A finding we caused must not be
+ * mistaken for a property of the library on the page it appears on, and hedged
+ * wording is how that mistake happens.
+ */
 const OWNER_LABEL: Record<KnownIssue["owner"], string> = {
   candidate: "the library",
-  host: "the host design system",
   pairing: "this combination",
+  "third party": "a dependency the library pulls in",
+  host: "the host design system",
+  "our implementation": "our own demo code, not the library",
   "this evaluation": "this evaluation's method",
 };
 
@@ -52,13 +61,17 @@ export interface KnownIssuesProps {
 }
 
 export function KnownIssues({ candidate, host, candidateName }: KnownIssuesProps): ReactElement | null {
-  const issues = issuesFor(candidate, host);
+  // Open issues only. Findings we fixed stay in the registry as the audit trail;
+  // see openIssuesFor for why they do not belong in the box on a demo page.
+  const issues = openIssuesFor(candidate, host);
   if (issues.length === 0) return null;
 
   const counts = issues.reduce<Record<string, number>>((acc, issue) => {
     acc[issue.severity] = (acc[issue.severity] ?? 0) + 1;
     return acc;
   }, {});
+
+  const hasBlocker = issues.some((issue) => issue.severity === "blocker");
 
   // Ordered worst-first by issuesFor, so the summary reads in the same order.
   const summaryBits = (["blocker", "decision", "caveat", "info"] as const)
@@ -83,7 +96,22 @@ export function KnownIssues({ candidate, host, candidateName }: KnownIssuesProps
       className={`${TOKEN_SCOPE_CLASS} undrr-known-issues`}
       aria-labelledby="known-issues-heading"
     >
-      <details className="undrr-known-issues__details">
+      {/*
+       * OPEN WHEN THERE IS A BLOCKER, collapsed otherwise.
+       *
+       * It used to be collapsed unconditionally, on the reasoning that `open` would
+       * change every screenshot's framing. True, and it lost to a worse problem: a
+       * reviewer looking at mangrove-antd sees three filter controls rendering
+       * blank, and the explanation of why - which is the difference between "Ant
+       * Design is broken" and "one cascade-layer setting is doing this, reversibly" -
+       * was hidden behind a summary they had no reason to click. A project manager
+       * reviewing the site reached the wrong conclusion for exactly this reason.
+       *
+       * So the framing cost is now paid only on the pairings that have a blocker,
+       * which are the pairings where a reader most needs the text, and the screenshot
+       * shows what a reader actually sees.
+       */}
+      <details className="undrr-known-issues__details" open={hasBlocker}>
         <summary className="undrr-known-issues__summary">
           <span id="known-issues-heading" className="undrr-known-issues__title">
             Known issues with this integration

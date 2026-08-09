@@ -32,7 +32,7 @@
 export { DemoContext, LOAD_STATES, labelsFor, recordsForState, useDemo } from "./demo-state.js";
 export type { DemoContextValue, LoadState } from "./demo-state.js";
 
-export { undrrMuiTheme } from "./theme.js";
+export { undrrMuiTheme, MUI_LOCALES } from "./theme.js";
 
 export { SectionChrome } from "./sections/SectionChrome.js";
 export { SectionDataTable } from "./sections/SectionDataTable.js";
