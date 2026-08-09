@@ -12,7 +12,7 @@ GENERATED FILE - regenerate with `pnpm scores`.
 
 **Fund a bounded Type C pilot on Adobe React Aria.**
 
-It leads provisionally at 90 and is one of 2/5 candidates without a scored blocker. It also passed the measured RTL and host-containment checks.
+It leads provisionally at 97 and is one of 2/5 candidates without a scored blocker. It also passed the measured RTL and host-containment checks.
 
 React Aria keeps visual authority with UNDRR and supports the Type C family described on the architecture page. The cost is permanent ownership of the visual component layer: **fund a design system, not save implementation work.**
 
@@ -32,8 +32,8 @@ The weights are proposed, not ratified. They order close alternatives but do not
 | Axis | Weight |
 | --- | --- |
 | A1 Implementation effort | 8 |
-| A2 Maintainability at scale | 16 |
-| A3 Reproducibility across sites | 16 |
+| A2 Estate change amplification | 16 |
+| A3 New-product reproducibility | 16 |
 | A4 Mangrove compatibility | 14 |
 | A5 Theming fidelity | 14 |
 | A6 Right-to-left | 18 |
@@ -45,11 +45,11 @@ The provisional composite is the weighted mean of the two hosts. **Scored blocke
 
 | # | Candidate | Provisional composite | Scored library blockers |
 | --- | --- | --- | --- |
-| 1 | Adobe React Aria | **90** / 100 | none |
+| 1 | Adobe React Aria | **97** / 100 | none |
 | 2 | Ant Design | **82** / 100 | **1** - see below |
 | 3 | MUI (Community only) | **81** / 100 | none |
 | 4 | Mantine | **72** / 100 | **1** - see below |
-| 5 | IBM Carbon | **52** / 100 | **3** - see below |
+| 5 | IBM Carbon | **47** / 100 | **3** - see below |
 
 **2 of 5 candidates carry no scored library blocker:** Adobe React Aria, MUI (Community only).
 
@@ -107,7 +107,7 @@ Scored blocker = axis not satisfied as shipped, typically overcomable with extra
 
 Each cell carries the fact that assigned the band.
 
-### `delta-react-aria` - composite 90 / 100
+### `delta-react-aria` - composite 97 / 100
 
 Worst open issue: **caveat** - React Aria is unstyled, so these pairings carry 155 to 213 CSS rules
 
@@ -116,14 +116,14 @@ Worst open issue: **caveat** - React Aria is unstyled, so these pairings carry 1
 | Axis | Band | Weight | Why |
 | --- | --- | --- | --- |
 | A1 Implementation effort | **workable** | 8 | 10 of 30 requirements needed composition or custom code; 1 audited off-route overrides |
-| A2 Maintainability at scale | **workable** | 16 | 1 audited off-route overrides; 0 scoreable maintenance findings |
-| A3 Reproducibility across sites | strong | 16 | the integration extracted into one shared package |
+| A2 Estate change amplification | strong | 16 | 1 authoritative change location at worst across 6 sites; 0 consumer source edits; measured mechanism, modelled at six sites |
+| A3 New-product reproducibility | strong | 16 | the integration extracted into one shared package |
 | A4 Mangrove compatibility | strong | 14 | no host canary changed when the candidate mounted |
 | A5 Theming fidelity | strong | 14 | all 48 reachable tokens applied |
 | A6 Right-to-left | strong | 18 | Arabic worked from a dir attribute alone, at zero custom lines |
 | A7 Automated accessibility signals | strong | 14 | no critical or serious automated violations; 1 checks axe declined to decide, each still owed a human |
 
-### `mangrove-react-aria` - composite 90 / 100
+### `mangrove-react-aria` - composite 97 / 100
 
 Worst open issue: **caveat** - React Aria is unstyled, so these pairings carry 155 to 213 CSS rules
 
@@ -132,8 +132,8 @@ Worst open issue: **caveat** - React Aria is unstyled, so these pairings carry 1
 | Axis | Band | Weight | Why |
 | --- | --- | --- | --- |
 | A1 Implementation effort | **workable** | 8 | 9 of 30 requirements needed composition or custom code; 2 audited off-route overrides |
-| A2 Maintainability at scale | **workable** | 16 | 2 audited off-route overrides; 0 scoreable maintenance findings |
-| A3 Reproducibility across sites | strong | 16 | the integration extracted into one shared package |
+| A2 Estate change amplification | strong | 16 | 1 authoritative change location at worst across 6 sites; 0 consumer source edits; measured mechanism, modelled at six sites |
+| A3 New-product reproducibility | strong | 16 | the integration extracted into one shared package |
 | A4 Mangrove compatibility | strong | 14 | no host canary changed when the candidate mounted |
 | A5 Theming fidelity | strong | 14 | all 47 reachable tokens applied |
 | A6 Right-to-left | strong | 18 | Arabic worked from a dir attribute alone, at zero custom lines |
@@ -148,8 +148,8 @@ Worst open issue: **caveat** - MUI needs a third setup step for RTL, and fails s
 | Axis | Band | Weight | Why |
 | --- | --- | --- | --- |
 | A1 Implementation effort | strong | 8 | 4 of 30 requirements needed composition or custom code; 1 audited off-route overrides |
-| A2 Maintainability at scale | **workable** | 16 | 1 audited off-route overrides; 0 scoreable maintenance findings |
-| A3 Reproducibility across sites | strong | 16 | the integration extracted into one shared package |
+| A2 Estate change amplification | **workable** | 16 | 2 authoritative change locations at worst across 6 sites; 0 consumer source edits; measured package, modelled across two parallel stacks |
+| A3 New-product reproducibility | strong | 16 | the integration extracted into one shared package |
 | A4 Mangrove compatibility | strong | 14 | no host canary changed when the candidate mounted |
 | A5 Theming fidelity | strong | 14 | all 29 reachable tokens applied |
 | A6 Right-to-left | **workable** | 18 | clean, but only after 29 custom lines and 0 recorded mitigations |
@@ -164,14 +164,14 @@ Worst open issue: **caveat** - MUI needs a third setup step for RTL, and fails s
 | Axis | Band | Weight | Why |
 | --- | --- | --- | --- |
 | A1 Implementation effort | strong | 8 | 4 of 30 requirements needed composition or custom code; 1 audited off-route overrides |
-| A2 Maintainability at scale | **workable** | 16 | 1 audited off-route overrides; 0 scoreable maintenance findings |
-| A3 Reproducibility across sites | strong | 16 | the integration extracted into one shared package |
+| A2 Estate change amplification | **workable** | 16 | 2 authoritative change locations at worst across 6 sites; 0 consumer source edits; measured package, modelled across two parallel stacks |
+| A3 New-product reproducibility | strong | 16 | the integration extracted into one shared package |
 | A4 Mangrove compatibility | strong | 14 | no host canary changed when the candidate mounted |
 | A5 Theming fidelity | strong | 14 | all 32 reachable tokens applied |
 | A6 Right-to-left | **workable** | 18 | clean, but only after 29 custom lines and 0 recorded mitigations |
 | A7 Automated accessibility signals | **workable** | 14 | 1 serious automated violations; 4 checks axe declined to decide, each still owed a human |
 
-### `delta-carbon` - composite 56 / 100
+### `delta-carbon` - composite 51 / 100
 
 Worst open issue: **warning** - Carbon cannot express about 30% of the UNDRR design tokens
 
@@ -180,14 +180,14 @@ Worst open issue: **warning** - Carbon cannot express about 30% of the UNDRR des
 | Axis | Band | Weight | Why |
 | --- | --- | --- | --- |
 | A1 Implementation effort | **workable** | 8 | 11 of 30 requirements needed composition or custom code; 5 audited off-route overrides |
-| A2 Maintainability at scale | **workable** | 16 | 5 audited off-route overrides; 0 scoreable maintenance findings |
-| A3 Reproducibility across sites | **workable** | 16 | extraction outcome recorded as unknown - confounded |
+| A2 Estate change amplification | **weak** | 16 | 3 authoritative change locations at worst across 6 sites; consumer source-edit fan-out is unmeasured; architecture model; translation path not measured |
+| A3 New-product reproducibility | **workable** | 16 | extraction outcome recorded as unknown - confounded |
 | A4 Mangrove compatibility | **workable** | 14 | clean only because the documented global stylesheet was not loaded as documented |
 | A5 Theming fidelity | **weak** | 14 | 21 of 71 UNDRR tokens cannot be attached at all - a ceiling, not a cost |
 | A6 Right-to-left | **workable** | 18 | clean, but only after 0 custom lines and 1 recorded mitigations |
 | A7 Automated accessibility signals | **workable** | 14 | 2 serious automated violations; 2 checks axe declined to decide, each still owed a human |
 
-### `mangrove-carbon` - composite 47 / 100
+### `mangrove-carbon` - composite 43 / 100
 
 Worst open issue: **warning** - Carbon cannot express about 30% of the UNDRR design tokens
 
@@ -196,8 +196,8 @@ Worst open issue: **warning** - Carbon cannot express about 30% of the UNDRR des
 | Axis | Band | Weight | Why |
 | --- | --- | --- | --- |
 | A1 Implementation effort | **workable** | 8 | 11 of 30 requirements needed composition or custom code; 4 audited off-route overrides |
-| A2 Maintainability at scale | **workable** | 16 | 4 audited off-route overrides; 0 scoreable maintenance findings |
-| A3 Reproducibility across sites | **workable** | 16 | extraction outcome recorded as unknown - confounded |
+| A2 Estate change amplification | **weak** | 16 | 3 authoritative change locations at worst across 6 sites; consumer source-edit fan-out is unmeasured; architecture model; translation path not measured |
+| A3 New-product reproducibility | **workable** | 16 | extraction outcome recorded as unknown - confounded |
 | A4 Mangrove compatibility | **blocked** | 14 | the candidate restyled 54 computed properties on host markup outside its own subtree |
 | A5 Theming fidelity | **weak** | 14 | 22 of 72 UNDRR tokens cannot be attached at all - a ceiling, not a cost |
 | A6 Right-to-left | **workable** | 18 | clean, but only after 6 custom lines and 2 recorded mitigations |
@@ -212,8 +212,8 @@ Worst open issue: **warning** - Modal's close button ships with no accessible na
 | Axis | Band | Weight | Why |
 | --- | --- | --- | --- |
 | A1 Implementation effort | **workable** | 8 | 10 of 30 requirements needed composition or custom code; 4 audited off-route overrides |
-| A2 Maintainability at scale | **workable** | 16 | 4 audited off-route overrides; 0 scoreable maintenance findings |
-| A3 Reproducibility across sites | **workable** | 16 | extraction outcome recorded as unknown - confounded |
+| A2 Estate change amplification | **workable** | 16 | 2 authoritative change locations at worst across 6 sites; consumer source-edit fan-out is unmeasured; architecture model; package propagation not measured |
+| A3 New-product reproducibility | **workable** | 16 | extraction outcome recorded as unknown - confounded |
 | A4 Mangrove compatibility | strong | 14 | no host canary changed when the candidate mounted |
 | A5 Theming fidelity | **weak** | 14 | 5 of 71 UNDRR tokens cannot be attached at all - a ceiling, not a cost |
 | A6 Right-to-left | **workable** | 18 | clean, but only after 18 custom lines and 2 recorded mitigations |
@@ -228,8 +228,8 @@ Worst open issue: **warning** - Modal's close button ships with no accessible na
 | Axis | Band | Weight | Why |
 | --- | --- | --- | --- |
 | A1 Implementation effort | **workable** | 8 | 11 of 30 requirements needed composition or custom code; 4 audited off-route overrides |
-| A2 Maintainability at scale | **workable** | 16 | 4 audited off-route overrides; 0 scoreable maintenance findings |
-| A3 Reproducibility across sites | **workable** | 16 | extraction outcome recorded as unknown - confounded |
+| A2 Estate change amplification | **workable** | 16 | 2 authoritative change locations at worst across 6 sites; consumer source-edit fan-out is unmeasured; architecture model; package propagation not measured |
+| A3 New-product reproducibility | **workable** | 16 | extraction outcome recorded as unknown - confounded |
 | A4 Mangrove compatibility | strong | 14 | no host canary changed when the candidate mounted |
 | A5 Theming fidelity | strong | 14 | all 62 reachable tokens applied |
 | A6 Right-to-left | **workable** | 18 | clean, but only after 10 custom lines and 0 recorded mitigations |
@@ -244,8 +244,8 @@ Worst open issue: **caveat** - The data table has an upstream accessibility defe
 | Axis | Band | Weight | Why |
 | --- | --- | --- | --- |
 | A1 Implementation effort | strong | 8 | 2 of 30 requirements needed composition or custom code; 1 audited off-route overrides |
-| A2 Maintainability at scale | **workable** | 16 | 1 audited off-route overrides; 0 scoreable maintenance findings |
-| A3 Reproducibility across sites | strong | 16 | the integration extracted into one shared package |
+| A2 Estate change amplification | **workable** | 16 | 2 authoritative change locations at worst across 6 sites; 0 consumer source edits; measured package, modelled across two parallel stacks |
+| A3 New-product reproducibility | strong | 16 | the integration extracted into one shared package |
 | A4 Mangrove compatibility | **workable** | 14 | clean only because the documented global stylesheet was not loaded as documented |
 | A5 Theming fidelity | strong | 14 | all 44 reachable tokens applied |
 | A6 Right-to-left | strong | 18 | Arabic worked from a dir attribute alone, at zero custom lines |
@@ -260,8 +260,8 @@ Worst open issue: **warning** - Select controls do not display their selected va
 | Axis | Band | Weight | Why |
 | --- | --- | --- | --- |
 | A1 Implementation effort | strong | 8 | 2 of 30 requirements needed composition or custom code; 1 audited off-route overrides |
-| A2 Maintainability at scale | **workable** | 16 | 1 audited off-route overrides; 0 scoreable maintenance findings |
-| A3 Reproducibility across sites | strong | 16 | the integration extracted into one shared package |
+| A2 Estate change amplification | **workable** | 16 | 2 authoritative change locations at worst across 6 sites; 0 consumer source edits; measured package, modelled across two parallel stacks |
+| A3 New-product reproducibility | strong | 16 | the integration extracted into one shared package |
 | A4 Mangrove compatibility | **workable** | 14 | clean only because the documented global stylesheet was not loaded as documented |
 | A5 Theming fidelity | strong | 14 | all 44 reachable tokens applied |
 | A6 Right-to-left | strong | 18 | Arabic worked from a dir attribute alone, at zero custom lines |

@@ -90,6 +90,9 @@
               <a class="mg-mega-topbar__item-link" href="./architecture-options.html">Architecture</a>
             </li>
           <li class="mg-mega-topbar__item">
+              <a class="mg-mega-topbar__item-link" href="./methodology.html">Methodology</a>
+            </li>
+          <li class="mg-mega-topbar__item">
               <a class="mg-mega-topbar__item-link" href="./prototypes.html">Prototypes</a>
             </li>
           <li class="mg-mega-topbar__item mg-mega-topbar__item--active">
@@ -213,12 +216,78 @@
 </details>
 
 </ul>
-<h2 id="a2">A2 - Maintainability at scale</h2>
+<h2 id="a2">A2 - Estate change amplification</h2>
 
 <blockquote class="answers">
-<p><strong>None of the six UNDRR questions maps to A2 directly.</strong> It is measured because the weighted composite scores it, and because the questions were asked about living with a library rather than about building with one. See the <a href="./scores.html">ranking</a> for what it is worth there.</p>
+<p><strong>Answers: Standardisation</strong> - One shared component vocabulary across the estate, or one dialect per project?</p>
+
+<p>The six-site scenario makes the architectural consequence explicit: Type C places shared policy in one governed foundation; Type A retains separate suite and Mangrove implementations; Type B can add a translation layer. These counts extrapolate measured propagation mechanisms and remain conditional on adopting the model.</p>
 </blockquote>
-<div class="ax-summary"><span class="ax-chip ax-w" title="1 audited off-route overrides; 0 scoreable maintenance findings">Adobe React Aria: workable</span><span class="ax-chip ax-w" title="1 audited off-route overrides; 0 scoreable maintenance findings">MUI (Community only): workable</span><span class="ax-chip ax-w" title="5 audited off-route overrides; 0 scoreable maintenance findings">IBM Carbon: workable</span><span class="ax-chip ax-w" title="4 audited off-route overrides; 0 scoreable maintenance findings">Mantine: workable</span><span class="ax-chip ax-w" title="1 audited off-route overrides; 0 scoreable maintenance findings">Ant Design: workable</span></div>
+<div class="ax-summary"><span class="ax-chip ax-s" title="">Adobe React Aria: strong</span><span class="ax-chip ax-w" title="2 authoritative change locations at worst across 6 sites; 0 consumer source edits; measured package, modelled across two parallel stacks">MUI (Community only): workable</span><span class="ax-chip ax-k" title="3 authoritative change locations at worst across 6 sites; consumer source-edit fan-out is unmeasured; architecture model; translation path not measured">IBM Carbon: weak</span><span class="ax-chip ax-w" title="2 authoritative change locations at worst across 6 sites; consumer source-edit fan-out is unmeasured; architecture model; package propagation not measured">Mantine: workable</span><span class="ax-chip ax-w" title="2 authoritative change locations at worst across 6 sites; 0 consumer source edits; measured package, modelled across two parallel stacks">Ant Design: workable</span></div>
+
+<p>Scenario: <strong>6 sites</strong> - 3 data products and 3 content products.</p>
+
+<p>Each cell separates the authoritative implementation change from consumer source edits and rebuilds. Rebuilds are release fan-out, not six manual implementations.</p>
+
+<div class="scroll"><table><thead>
+<tr><th>Candidate</th><th>Type</th><th>evidence basis<span class="th-hint">mechanism measured or modelled?</span></th><th>token change<span class="th-hint">authoritative source · consumer edits · rebuilds</span></th><th>shared policy<span class="th-hint">authoritative source · consumer edits · rebuilds</span></th><th>upstream upgrade<span class="th-hint">authoritative source · consumer edits · rebuilds</span></th><th>owners at worst<span class="th-hint">independent system boundaries</span></th></tr>
+</thead><tbody>
+<tr><td>Adobe React Aria</td><td>C</td><td><strong>measured mechanism, modelled at six sites</strong></td><td><strong>1 source</strong> · 0 site edits · 0 rebuilds</td><td><strong>1 source</strong> · 0 site edits · 6 rebuilds</td><td><strong>1 source</strong> · 0 site edits · 6 rebuilds</td><td>1</td></tr>
+<tr><td>MUI (Community only)</td><td>A</td><td><strong>measured package, modelled across two parallel stacks</strong></td><td><strong>1 source</strong> · 0 site edits · 3 rebuilds</td><td><strong>2 sources</strong> · 0 site edits · 6 rebuilds</td><td><strong>1 source</strong> · 0 site edits · 3 rebuilds</td><td>2</td></tr>
+<tr><td>IBM Carbon</td><td>B</td><td>architecture model; translation path not measured</td><td><strong>1 source</strong> · site edits unmeasured · 0 rebuilds</td><td><strong>3 sources</strong> · site edits unmeasured · 6 rebuilds</td><td><strong>2 sources</strong> · site edits unmeasured · 3 rebuilds</td><td>2</td></tr>
+<tr><td>Mantine</td><td>A</td><td>architecture model; package propagation not measured</td><td><strong>1 source</strong> · site edits unmeasured · 3 rebuilds</td><td><strong>2 sources</strong> · site edits unmeasured · 6 rebuilds</td><td><strong>1 source</strong> · site edits unmeasured · 3 rebuilds</td><td>2</td></tr>
+<tr><td>Ant Design</td><td>A</td><td><strong>measured package, modelled across two parallel stacks</strong></td><td><strong>1 source</strong> · 0 site edits · 3 rebuilds</td><td><strong>2 sources</strong> · 0 site edits · 6 rebuilds</td><td><strong>1 source</strong> · 0 site edits · 3 rebuilds</td><td>2</td></tr>
+</tbody></table></div>
+
+<details><summary>Scenario assumptions and evidence</summary>
+
+<p>Each product consumes a versioned shared package or centrally delivered token stylesheet where the evaluated architecture supports one. A rebuild is counted separately from a source edit.</p>
+
+<p><strong>Adobe React Aria</strong> - The records capability is consumed by both hosts from one package. The six-site model assumes the same governed foundation is adopted by both product-system halves.</p>
+
+<ul>
+<li>Change one shared colour, typography or spacing value. Live UNDRR custom-property references remain in shipped CSS; both hosts inherit a token-sheet change.</li>
+<li>Change one shared component behaviour or accessibility policy needed by all six products. Filtering, sorting, pagination and announcement policy have one shared implementation consumed by both hosts.</li>
+<li>Upgrade the candidate foundation without changing product requirements. The model places the React Aria dependency behind one governed foundation; breadth beyond the measured records capability remains a pilot assumption.</li>
+
+</ul>
+<p><strong>MUI (Community only)</strong> - The MUI integration is shared, but Mangrove remains a separate component system. Estate-wide policy therefore has two authoritative implementations.</p>
+
+<ul>
+<li>Change one shared colour, typography or spacing value. One UNDRR token source feeds both paths, but MUI resolves mapped values into bundles while Mangrove consumes its own path.</li>
+<li>Change one shared component behaviour or accessibility policy needed by all six products. The shared MUI integration and the Mangrove component stack must implement the same policy separately.</li>
+<li>Upgrade the candidate foundation without changing product requirements. The extracted MUI package centralises the suite dependency; only the three modelled data products consume that upgrade.</li>
+
+</ul>
+<p><strong>IBM Carbon</strong> - Carbon and Mangrove remain separate visual and component authorities, with an additional translation layer for cross-stack use.</p>
+
+<ul>
+<li>Change one shared colour, typography or spacing value. The canonical token changes once, but both the Mangrove and Carbon routes need validation because evaluated Carbon coverage is incomplete.</li>
+<li>Change one shared component behaviour or accessibility policy needed by all six products. Carbon, Mangrove and the proposed translation layer can each carry part of an estate-wide component policy.</li>
+<li>Upgrade the candidate foundation without changing product requirements. A Carbon upgrade must be reconciled with the project theme and any Carbon-to-Mangrove translation path; extraction was not measured.</li>
+
+</ul>
+<p><strong>Mantine</strong> - A shared theme is feasible, but no cross-host extraction drill was completed and the two implementations currently differ.</p>
+
+<ul>
+<li>Change one shared colour, typography or spacing value. Mantine bakes theme values into each bundle; the absence of a measured shared package leaves consumer edit cost unproved.</li>
+<li>Change one shared component behaviour or accessibility policy needed by all six products. Type A requires separate Mantine and Mangrove implementations; shared-package propagation was not measured.</li>
+<li>Upgrade the candidate foundation without changing product requirements. Upgrade fan-out is modelled because the current pair was not extracted into one maintained package.</li>
+
+</ul>
+<p><strong>Ant Design</strong> - Ant Design was tested shared-first, but the application and Mangrove paths still express policy through different component systems.</p>
+
+<ul>
+<li>Change one shared colour, typography or spacing value. One UNDRR token source feeds both paths, while Ant Design theme values are bundled into the data products.</li>
+<li>Change one shared component behaviour or accessibility policy needed by all six products. The shared Ant integration and Mangrove must implement and validate the policy independently.</li>
+<li>Upgrade the candidate foundation without changing product requirements. The shared Ant package centralises the suite dependency for the three modelled data products.</li>
+
+</details>
+
+</ul>
+<p>The six-site counts are an explicit extrapolation from the tested propagation mechanisms, not observations of six production sites. Styling-hook fragility remains supporting evidence below; it no longer determines A2.</p>
+
+<details><summary>Supporting evidence: implementation fragility</summary>
 
 <p>Every distinct styling hook, classified by the promise behind it.</p>
 
@@ -255,17 +324,15 @@
 
 </details>
 
+</details>
+
 </ul>
-<h2 id="a3">A3 - Reproducibility across sites</h2>
+<h2 id="a3">A3 - New-product reproducibility</h2>
 
 <blockquote class="answers">
 <p><strong>Answers: Repeatability</strong> - Can a second team reproduce the integration without inventing their own conventions?</p>
 
 <p>Measured packages now exist for the leading alternatives: MUI shares 86% once demo-only code is excluded, while the realistic React Aria records capability shares 618 source lines and 147 CSS lines across Delta and Mangrove.</p>
-
-<p><strong>Answers: Standardisation</strong> - One shared component vocabulary across the estate, or one dialect per project?</p>
-
-<p>React Aria, MUI and Ant Design have all been exercised as shared packages. The remaining distinction is ownership: whether the shared layer preserves UNDRR's visual and interaction authority or mainly centralises a library configuration. shadcn/ui was excluded because its copy-in distribution guarantees a fork per site.</p>
 </blockquote>
 <div class="ax-summary"><span class="ax-chip ax-s" title="">Adobe React Aria: strong</span><span class="ax-chip ax-s" title="">MUI (Community only): strong</span><span class="ax-chip ax-w" title="extraction outcome recorded as unknown - confounded">IBM Carbon: workable</span><span class="ax-chip ax-w" title="extraction outcome recorded as unknown - confounded">Mantine: workable</span><span class="ax-chip ax-s" title="">Ant Design: strong</span></div>
 

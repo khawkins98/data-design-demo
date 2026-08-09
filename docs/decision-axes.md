@@ -37,29 +37,44 @@ is a supporting figure under A1, not a headline.
 hour figures would be meaningless. The friction log (escape hatches, dead ends)
 is the proxy.
 
-## A2 - Maintainability at scale
+## A2 - Estate change amplification
 
-*How hard is this to keep working across multiple sites, over upgrades?*
+*When a shared requirement changes, how much work fans out across the estate?*
 
-**Measured.** Every distinct styling hook, classified by the promise behind it.
+The scenario models six products: three data applications and three
+Mangrove-based content products. Three controlled changes represent different
+maintenance paths:
 
-| Tier | What it is | Examples |
-| --- | --- | --- |
-| `attribute` | Semantic state selectors. Survive DOM restructuring, because they are not tied to structure | React Aria `[data-selected]`, `[slot=…]` |
-| `contract` | Class names the library documents as a styling API | Mantine `.mantine-{Component}-{element}`, gated behind `withStaticClasses`; MUI's documented global classes |
-| `off route` | Styling achieved by going around the library's own theming mechanism | Carbon `.cds--*`, documented as internal BEM with a prefix consumers may reconfigure, while Carbon points at `--cds-*` custom properties for theming |
-| `hashed` | Build-generated class names, unambiguously internal | Mantine `.m_8fb7ebe7`, Emotion `.css-1q2w3e` |
+1. a shared design-token value;
+2. a component interaction or accessibility policy used across the estate;
+3. an upstream foundation upgrade.
 
-`off route` counts the places the supported theming route did not reach.
-Also measured: token propagation (see A5).
+Each scenario records four different costs rather than collapsing them into
+"maintenance":
 
-**Judgement.** Whether a given off-route override is load-bearing or cosmetic.
-Listed per pairing, not scored.
+| Signal | Meaning |
+| --- | --- |
+| Authoritative locations | Independent implementations in which the requirement must change |
+| Consumer source edits | Products needing bespoke code changes rather than consuming the shared result |
+| Site rebuilds | Release fan-out; counted separately because six automated builds are not six implementations |
+| Validation and ownership boundaries | Independent systems or teams that must coordinate and verify the result |
 
-## A3 - Reproducibility across sites
+The propagation mechanisms are measured where a two-host shared-package drill
+exists. The six-site values are an explicit extrapolation, not observations of
+six production sites. Type C's full-estate reach also remains a pilot hypothesis:
+the records capability proves the mechanism across two hosts, not the completed
+component family.
 
-*If every site has to recreate the implementation, that compounds everything
-else.*
+The resulting band is conditional on the associated architecture being adopted
+and governed. It is not an architecture-neutral property of the npm package.
+
+Styling hooks and off-route overrides remain useful evidence of upgrade
+fragility, but no longer determine this axis. They overlap with A1 and did not
+discriminate between the candidates.
+
+## A3 - New-product reproducibility
+
+*Can another product consume the integration, or must it recreate it?*
 
 **Measured by experiment.** The host-independent part of the integration is
 extracted into a shared package and both host apps consume it. What remains in

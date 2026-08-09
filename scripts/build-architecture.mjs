@@ -20,6 +20,8 @@ const SRC = join(ROOT, "docs", "architecture-options.md");
 const OUT = join(ROOT, "docs", "architecture-options.html");
 const CASE_SRC = join(ROOT, "docs", "case-study-stepper.md");
 const CASE_OUT = join(ROOT, "docs", "case-study-stepper.html");
+const METHODOLOGY_SRC = join(ROOT, "docs", "methodology.md");
+const METHODOLOGY_OUT = join(ROOT, "docs", "methodology.html");
 const REUSE_RESULTS = join(ROOT, "docs", "reuse-results.json");
 
 const md = readFileSync(SRC, "utf8");
@@ -298,7 +300,35 @@ function reuseComparisonHtml() {
   </section></div></details>`;
 }
 
+function costHorizonHtml() {
+  return `<section class="cost-horizon" aria-labelledby="cost-horizon-title">
+    <div class="cost-horizon__heading">
+      <h2 id="cost-horizon-title">Where the cost falls</h2>
+      <p>The architecture changes when UNDRR pays for coordination—and what the organisation can change coherently as the estate grows.</p>
+    </div>
+    <div class="cost-horizon__grid">
+      <article class="cost-horizon__card">
+        <p class="cost-horizon__type">Types A and B</p>
+        <h3>Faster start, accumulating coordination</h3>
+        <p><strong>Now:</strong> adopt more upstream structure; Type A in particular offers the easier on-ramp.</p>
+        <p><strong>As the estate grows:</strong> parallel stacks require continuing translation and synchronisation, making organisation-wide change harder.</p>
+      </article>
+      <article class="cost-horizon__card cost-horizon__card--owned">
+        <p class="cost-horizon__type">Type C</p>
+        <h3>Higher shared investment, compounding reuse</h3>
+        <p><strong>Now:</strong> coordinate content and data teams, establish ownership and complete the shared foundation.</p>
+        <p><strong>As the estate grows:</strong> shared components and policy are intended to lower marginal integration cost and support coherent change.</p>
+      </article>
+    </div>
+    <p class="cost-horizon__note"><strong>Architectural hypothesis, not a cost forecast.</strong> <a href="./axes.html#a2">A2 models its change amplification across six sites</a>; it does not measure multi-year total cost. Read the <a href="./methodology.html">methodology</a>.</p>
+  </section>`;
+}
+
 let bodyHtml = toHtml(md);
+bodyHtml = bodyHtml.replace(
+  /(<h2 id="three-shapes-not-five">)/,
+  `${costHorizonHtml()}\n$1`,
+);
 bodyHtml = bodyHtml.replace(
   /(<h2 id="the-reuse-and-ownership-result">[\s\S]*?<\/h2>)/,
   `$1\n${reuseComparisonHtml()}`,
@@ -336,6 +366,21 @@ const html = `<!doctype html>
       .mg-docs-main { max-width:88ch; }
       .mg-docs-main h1, .mg-docs-main h2, .mg-docs-main h3 { text-wrap:balance; }
       .mg-docs-main p, .mg-docs-main li { text-wrap:pretty; }
+      .cost-horizon { margin:1.5rem 0 2rem; padding:1.25rem; border-radius:10px; background:#f5f8fb;
+        box-shadow:0 0 0 1px rgb(0 0 0 / 7%), 0 2px 8px rgb(0 0 0 / 5%); }
+      .cost-horizon__heading { display:grid; grid-template-columns:minmax(11rem,0.55fr) minmax(18rem,1.45fr);
+        gap:1.25rem; align-items:baseline; margin-bottom:1rem; }
+      .cost-horizon__heading h2 { margin:0; padding:0; border:0; font-size:1.25rem; text-wrap:balance; }
+      .cost-horizon__heading p { margin:0; color:var(--muted); text-wrap:pretty; }
+      .cost-horizon__grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem; }
+      .cost-horizon__card { padding:1rem; border-radius:7px; background:var(--surface);
+        box-shadow:0 0 0 1px rgb(0 0 0 / 7%), 0 1px 3px rgb(0 0 0 / 5%); }
+      .cost-horizon__card--owned { box-shadow:inset 3px 0 0 var(--accent), 0 0 0 1px rgb(0 0 0 / 7%), 0 1px 3px rgb(0 0 0 / 5%); }
+      .cost-horizon__card h3 { margin:0.2rem 0 0.7rem; font-family:inherit; font-size:1rem; text-wrap:balance; }
+      .cost-horizon__card p { margin:0.45rem 0; font-size:0.875rem; text-wrap:pretty; }
+      .cost-horizon__type { color:var(--accent); font-size:0.6875rem !important; font-weight:700;
+        letter-spacing:0.055em; text-transform:uppercase; }
+      .cost-horizon__note { margin:0.9rem 0 0; color:var(--muted); font-size:0.8125rem; text-wrap:pretty; }
       .reuse-evidence { margin:1rem 0 2.5rem; padding:1.25rem; border-radius:10px;
                         background:#f5f8fb; box-shadow:0 0 0 1px rgb(0 0 0 / 6%), 0 2px 8px rgb(0 0 0 / 5%); }
       .reuse-evidence__heading h3 { margin:0.125rem 0 0.375rem; font-size:1.125rem; }
@@ -353,6 +398,8 @@ const html = `<!doctype html>
       .reuse-table th[scope="row"] { white-space:nowrap; }
       .cell-note { display:block; margin-top:0.25rem; color:var(--muted); font-size:0.75rem; line-height:1.4; }
       @media (max-width:48rem) {
+        .cost-horizon__heading, .cost-horizon__grid { grid-template-columns:1fr; }
+        .cost-horizon__heading { gap:0.35rem; }
         .reuse-grid { grid-template-columns:1fr; }
         .reuse-evidence { padding:1rem; }
         .mermaid { width:calc(100vw - 2rem); padding:0.75rem; }
@@ -402,4 +449,15 @@ const caseHtml = html
   )
   .replace(bodyHtml, caseBodyHtml);
 writeFileSync(CASE_OUT, caseHtml, "utf8");
-process.stdout.write(`wrote docs/architecture-options.html and docs/case-study-stepper.html\n`);
+const methodologyBodyHtml = toHtml(readFileSync(METHODOLOGY_SRC, "utf8"));
+const methodologyHtml = html
+  .replace(
+    "Architecture options - UNDRR data design system evaluation",
+    "Methodology - UNDRR data design system evaluation",
+  )
+  .replace(siteNavHtml("architecture"), siteNavHtml("methodology"))
+  .replace(bodyHtml, methodologyBodyHtml);
+writeFileSync(METHODOLOGY_OUT, methodologyHtml, "utf8");
+process.stdout.write(
+  `wrote docs/architecture-options.html, docs/case-study-stepper.html and docs/methodology.html\n`,
+);

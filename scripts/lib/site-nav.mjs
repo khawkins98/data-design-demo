@@ -12,6 +12,7 @@
 const PAGES = [
   { key: "scores", href: "./", label: "Ranking" },
   { key: "architecture", href: "./architecture-options.html", label: "Architecture" },
+  { key: "methodology", href: "./methodology.html", label: "Methodology" },
   { key: "prototypes", href: "./prototypes.html", label: "Prototypes" },
   { key: "axes", href: "./axes.html", label: "Evidence axes" },
   { key: "issues", href: "./issues.html", label: "Technical findings" },

@@ -82,9 +82,63 @@ Each off-route entry is a place the documented approach did not suffice.
 
 </details>
 
-## A2 - Maintainability at scale
+## A2 - Estate change amplification
 
-> **None of the six UNDRR questions maps to A2 directly.** It is measured because the weighted composite scores it, and because the questions were asked about living with a library rather than about building with one. See the [ranking](./scores.html) for what it is worth there.
+> **Answers: Standardisation** - One shared component vocabulary across the estate, or one dialect per project?
+>
+> The six-site scenario makes the architectural consequence explicit: Type C places shared policy in one governed foundation; Type A retains separate suite and Mangrove implementations; Type B can add a translation layer. These counts extrapolate measured propagation mechanisms and remain conditional on adopting the model.
+
+Scenario: **6 sites** - 3 data products and 3 content products.
+
+Each cell separates the authoritative implementation change from consumer source edits and rebuilds. Rebuilds are release fan-out, not six manual implementations.
+
+| Candidate | Type | evidence basis||mechanism measured or modelled? | token change||authoritative source · consumer edits · rebuilds | shared policy||authoritative source · consumer edits · rebuilds | upstream upgrade||authoritative source · consumer edits · rebuilds | owners at worst||independent system boundaries |
+| --- | --- | --- | --- | --- | --- | --- |
+| Adobe React Aria | C | **measured mechanism, modelled at six sites** | **1 source** · 0 site edits · 0 rebuilds | **1 source** · 0 site edits · 6 rebuilds | **1 source** · 0 site edits · 6 rebuilds | 1 |
+| MUI (Community only) | A | **measured package, modelled across two parallel stacks** | **1 source** · 0 site edits · 3 rebuilds | **2 sources** · 0 site edits · 6 rebuilds | **1 source** · 0 site edits · 3 rebuilds | 2 |
+| IBM Carbon | B | architecture model; translation path not measured | **1 source** · site edits unmeasured · 0 rebuilds | **3 sources** · site edits unmeasured · 6 rebuilds | **2 sources** · site edits unmeasured · 3 rebuilds | 2 |
+| Mantine | A | architecture model; package propagation not measured | **1 source** · site edits unmeasured · 3 rebuilds | **2 sources** · site edits unmeasured · 6 rebuilds | **1 source** · site edits unmeasured · 3 rebuilds | 2 |
+| Ant Design | A | **measured package, modelled across two parallel stacks** | **1 source** · 0 site edits · 3 rebuilds | **2 sources** · 0 site edits · 6 rebuilds | **1 source** · 0 site edits · 3 rebuilds | 2 |
+
+<details><summary>Scenario assumptions and evidence</summary>
+
+Each product consumes a versioned shared package or centrally delivered token stylesheet where the evaluated architecture supports one. A rebuild is counted separately from a source edit.
+
+**Adobe React Aria** - The records capability is consumed by both hosts from one package. The six-site model assumes the same governed foundation is adopted by both product-system halves.
+
+- Change one shared colour, typography or spacing value. Live UNDRR custom-property references remain in shipped CSS; both hosts inherit a token-sheet change.
+- Change one shared component behaviour or accessibility policy needed by all six products. Filtering, sorting, pagination and announcement policy have one shared implementation consumed by both hosts.
+- Upgrade the candidate foundation without changing product requirements. The model places the React Aria dependency behind one governed foundation; breadth beyond the measured records capability remains a pilot assumption.
+
+**MUI (Community only)** - The MUI integration is shared, but Mangrove remains a separate component system. Estate-wide policy therefore has two authoritative implementations.
+
+- Change one shared colour, typography or spacing value. One UNDRR token source feeds both paths, but MUI resolves mapped values into bundles while Mangrove consumes its own path.
+- Change one shared component behaviour or accessibility policy needed by all six products. The shared MUI integration and the Mangrove component stack must implement the same policy separately.
+- Upgrade the candidate foundation without changing product requirements. The extracted MUI package centralises the suite dependency; only the three modelled data products consume that upgrade.
+
+**IBM Carbon** - Carbon and Mangrove remain separate visual and component authorities, with an additional translation layer for cross-stack use.
+
+- Change one shared colour, typography or spacing value. The canonical token changes once, but both the Mangrove and Carbon routes need validation because evaluated Carbon coverage is incomplete.
+- Change one shared component behaviour or accessibility policy needed by all six products. Carbon, Mangrove and the proposed translation layer can each carry part of an estate-wide component policy.
+- Upgrade the candidate foundation without changing product requirements. A Carbon upgrade must be reconciled with the project theme and any Carbon-to-Mangrove translation path; extraction was not measured.
+
+**Mantine** - A shared theme is feasible, but no cross-host extraction drill was completed and the two implementations currently differ.
+
+- Change one shared colour, typography or spacing value. Mantine bakes theme values into each bundle; the absence of a measured shared package leaves consumer edit cost unproved.
+- Change one shared component behaviour or accessibility policy needed by all six products. Type A requires separate Mantine and Mangrove implementations; shared-package propagation was not measured.
+- Upgrade the candidate foundation without changing product requirements. Upgrade fan-out is modelled because the current pair was not extracted into one maintained package.
+
+**Ant Design** - Ant Design was tested shared-first, but the application and Mangrove paths still express policy through different component systems.
+
+- Change one shared colour, typography or spacing value. One UNDRR token source feeds both paths, while Ant Design theme values are bundled into the data products.
+- Change one shared component behaviour or accessibility policy needed by all six products. The shared Ant integration and Mangrove must implement and validate the policy independently.
+- Upgrade the candidate foundation without changing product requirements. The shared Ant package centralises the suite dependency for the three modelled data products.
+
+</details>
+
+The six-site counts are an explicit extrapolation from the tested propagation mechanisms, not observations of six production sites. Styling-hook fragility remains supporting evidence below; it no longer determines A2.
+
+<details><summary>Supporting evidence: implementation fragility</summary>
 
 Every distinct styling hook, classified by the promise behind it.
 
@@ -121,15 +175,13 @@ stable but off the documented theming route (`--cds-*` custom properties).
 
 </details>
 
-## A3 - Reproducibility across sites
+</details>
+
+## A3 - New-product reproducibility
 
 > **Answers: Repeatability** - Can a second team reproduce the integration without inventing their own conventions?
 >
 > Measured packages now exist for the leading alternatives: MUI shares 86% once demo-only code is excluded, while the realistic React Aria records capability shares 618 source lines and 147 CSS lines across Delta and Mangrove.
->
-> **Answers: Standardisation** - One shared component vocabulary across the estate, or one dialect per project?
->
-> React Aria, MUI and Ant Design have all been exercised as shared packages. The remaining distinction is ownership: whether the shared layer preserves UNDRR's visual and interaction authority or mainly centralises a library configuration. shadcn/ui was excluded because its copy-in distribution guarantees a fork per site.
 
 `basis`: React Aria, MUI and Ant Design are measured package integrations; Carbon and Mantine remain analysis because consolidating two independently authored implementations would measure a rewrite rather than portability.
 

@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Stepper case study - UNDRR data design system evaluation</title>
+    <title>Methodology - UNDRR data design system evaluation</title>
     <link rel="stylesheet" href="./mangrove.css" />
     <style>
       :root { --accent:#004f91; --muted:#4a5c69; --border:#d5d5d5; --surface:#fff; }
@@ -120,11 +120,11 @@
           <li class="mg-mega-topbar__item">
               <a class="mg-mega-topbar__item-link" href="./">Ranking</a>
             </li>
-          <li class="mg-mega-topbar__item mg-mega-topbar__item--active">
-              <a class="mg-mega-topbar__item-link" href="./architecture-options.html" aria-current="page">Architecture</a>
-            </li>
           <li class="mg-mega-topbar__item">
-              <a class="mg-mega-topbar__item-link" href="./methodology.html">Methodology</a>
+              <a class="mg-mega-topbar__item-link" href="./architecture-options.html">Architecture</a>
+            </li>
+          <li class="mg-mega-topbar__item mg-mega-topbar__item--active">
+              <a class="mg-mega-topbar__item-link" href="./methodology.html" aria-current="page">Methodology</a>
             </li>
           <li class="mg-mega-topbar__item">
               <a class="mg-mega-topbar__item-link" href="./prototypes.html">Prototypes</a>
@@ -141,41 +141,45 @@
       </ul>
     </nav>
     <main id="main" class="mg-container mg-page-content--padded mg-docs-main">
-<p class="audience-banner"><span class="audience-tag">Developer evidence</span>This implementation case study supports the architecture decision; it is not the executive summary.</p><h1 id="case-study-what-the-wizard-actually-measured">Case study — what the wizard actually measured</h1>
-<p>Supporting evidence for <a href="./architecture-options.html">Architecture options</a>. This detail is retained because it demonstrates a maintenance and ownership cost; it does not determine the architecture recommendation by itself.</p>
-<p>One screen, built five times, and the result inverts the question. <strong>Four candidates ship a stepper. None of them marks the current step in the accessibility tree.</strong> All five demos hand-write <code>aria-current="step"</code> — the four with a real component to use included.</p>
+<h1 id="methodology">Methodology</h1>
+<p>This evaluation answers two related questions at the same time:</p>
+<ol>
+<li><strong>Can each candidate meet the practical needs of DELTA and Mangrove?</strong></li>
+<li><strong>What kind of design-system architecture would adopting it create across UNDRR?</strong></li>
+</ol>
+<p>Normally, an organisation would first agree the target architecture and operating model, then evaluate technologies within that choice. UNDRR has not yet made that first decision. The exercise therefore uses working prototypes both to test the candidates and to make the consequences of Types A, B and C concrete enough for a business decision.</p>
+<h2 id="how-to-read-the-evidence">How to read the evidence</h2>
 <div class="scroll"><table><thead>
-<tr><th>Candidate</th><th>Stepper?</th><th>What it emits for "current"</th><th>Hand-written style</th></tr>
+<tr><th>Part</th><th>What it answers</th><th>Status</th></tr>
 </thead><tbody>
-<tr><td>Mantine</td><td><code>Stepper</code></td><td><code>data-progress="true"</code> — a data attribute</td><td><strong>0 rules</strong></td></tr>
-<tr><td>Ant Design</td><td><code>Steps</code></td><td>a CSS class; a disabled step gets no role at all</td><td>1 rule</td></tr>
-<tr><td>IBM Carbon</td><td><code>ProgressIndicator</code></td><td>hidden English text "Current", folded into the accessible name</td><td>14 rules</td></tr>
-<tr><td>MUI</td><td><code>Stepper</code></td><td><code>aria-selected</code> — the <em>wrong</em> state, see below</td><td>0 rules, 2 <code>sx</code> repairs</td></tr>
-<tr><td>React Aria</td><td><strong>none</strong></td><td>nothing to emit; the component is yours</td><td><strong>26 rules, 221 lines</strong></td></tr>
+<tr><td>Requirement audit and prototypes</td><td>Can the candidate implement the evaluated experiences in both hosts?</td><td>Measured in this exercise</td></tr>
+<tr><td>Evidence axes</td><td>What effort, compatibility, theming, RTL and automated accessibility signals did the implementations expose?</td><td>Measured or explicitly qualified</td></tr>
+<tr><td>Architecture options</td><td>Where would components, tokens, ownership and change propagation sit across the estate?</td><td>Proposed operating models informed by the prototypes</td></tr>
+<tr><td>Ranking</td><td>How do the candidates compare under the evaluation author's current priorities?</td><td>Provisional; weights are not yet ratified by UNDRR</td></tr>
+<tr><td>Adoption gates</td><td>What must be validated before a final commitment?</td><td>Outstanding decision and pilot work</td></tr>
 </tbody></table></div>
-<p>Counts are every hand-written CSS rule for the whole wizard, review cards included, so they compare like with like. Three of Carbon's fourteen reach into <code>.cds--</code> internals rather than its theming API, which is the more expensive kind. MUI writes no stylesheet at all — it uses <code>sx</code> throughout, as that demo does everywhere — so its number is the two <code>sx</code> blocks that exist to <em>repair</em> the component, not the twelve doing ordinary layout.</p>
-<p><strong>MUI does not merely omit it — it asserts something false.</strong> <code>Stepper</code> sniffs its children, finds <code>StepButton</code>, and silently switches into tab-list mode: <code>role="tablist"</code> on the root, <code>role="tab"</code> + <code>aria-selected</code> + <code>aria-posinset</code>/<code>aria-setsize</code> on each step, and <code>role="presentation"</code> on the list items. There is no opt-out prop. A tab set tells a screen-reader user the panels are peers they may visit in any order, in a form that gates them. Six attributes are overridden by hand — and only because both components spread <code>...other</code> after their own <code>role</code>, which is an accident of implementation, not an extension point. The roving tab index installed by the same flag cannot be removed at all.</p>
-<p><strong>And this is a position, not a bug — one MUI argued itself into.</strong> v5 through v7 emitted <code>aria-current="step"</code>, the value this document calls correct. PR <a href="https://github.com/mui/material-ui/pull/47687">#47687</a>, merged 12 March 2026 and shipped in v9.0.0, replaced it; the <a href="https://mui.com/material-ui/migration/upgrade-to-v9/">v9 migration guide</a> lists <em>"the <code>aria-current</code> changed to <code>aria-selected</code>"</em> among a set of accessibility improvements, and the change does fix two real complaints that the stepper announced too little.</p>
-<p>The part worth reading is the thread. On issue <a href="https://github.com/mui/material-ui/issues/43689">#43689</a>, 27 January 2026, a MUI maintainer asked of the proposal:</p>
-<blockquote>
-<p>Wouldn't it be a bit odd if Stepper provides all the <code>tab</code> roles except</p>
-<p><code>tabpanel</code>?</p>
-</blockquote>
-<p>The PR's own author agreed the same day:</p>
-<blockquote>
-<p>I'm currently hesitant in turning the stepper into a tab list. I think the</p>
-<p>ordered list markup, combined with the <code>aria-current</code> and step buttons pointing</p>
-<p>to the content area is enough.</p>
-</blockquote>
-<p><strong>That is the last human comment on the thread.</strong> Two weeks later a commit titled <code>refactor as tablist</code> landed; the issue was closed by a bot on merge. A second reviewer raised the same doubt inside the PR — <em>"Since this isn't a tablist, I'm not sure"</em> — and got an answer about keyboard mechanics, not about the role. No public rationale for the reversal exists in the PR, the issue, the commit messages or any RFC.</p>
-<p>So the objection in this document is not an outside opinion MUI has never heard. It is MUI's own, raised twice, conceded once, and then shipped past without being answered.</p>
-<p><strong>Nobody outside MUI has filed against it, and there is a reason.</strong> Four months after release, v9 is <strong>11.4% of <code>@mui/material</code> installs</strong>; v5 — which emits <code>aria-current="step"</code> — is still 40%. MUI's screen-reader/browser test matrix was drafted a month <em>after</em> v9.0.0 and does not include Stepper. And their axe CI asserts on two rules only (<code>color-contrast</code>, <code>link-in-text-block</code>), which would not catch this even if it asserted on everything: <code>ol[role=tablist] &gt; li[role=presentation] &gt; button[role=tab]</code> is a structurally valid tab list. Read the silence as <em>nobody has pointed a screen reader at a v9 gated wizard yet</em> — not as review and approval.</p>
-<p><strong>How much this actually matters, stated conservatively.</strong> It is <strong>not</strong> a WCAG 2.1 AA failure — a structurally valid tab list satisfies 4.1.2, and no conformance audit would flag it. Nor is it novel: <strong>Angular Material has treated its stepper as a tab list for roughly nine years</strong>, documented and uncontested, which is a fair argument that the wider accessibility community does not regard this as serious.</p>
-<p>The measurable harm is narrower and more concrete than the role argument. Per <a href="https://a11ysupport.io/tech/aria/aria-selected_attribute">a11ysupport.io</a>, <code>aria-selected="true"</code> is <strong>not conveyed by NVDA on either browser, nor by VoiceOver on macOS or iOS</strong> — only JAWS announces it — whereas <a href="https://a11ysupport.io/tech/aria/aria-current_attribute"><code>aria-current="step"</code></a> is supported by all five combinations. So for most screen-reader users the change means the current step is no longer announced at all. That is a comprehension regression against v7, not a barrier: the form still works, and the step count is still visible.</p>
-<p>So: <strong>a note to be aware of, not a reason to strike MUI off.</strong> What it does tell you is a maintenance fact rather than a compliance one — the correction is permanent, it recurs in every wizard on the estate, and the people best placed to remove the need for it already raised the objection and shipped past it.</p>
-<p><strong>So what a shipped stepper saves is the CSS, not the semantics.</strong> That is the sentence to carry into the decision, because it is the opposite of the intuition, and because the accessibility layer is the part Mangrove ends up owning under <em>every</em> candidate. Under shape C you own it deliberately, once. Under A and B you own it too — scattered across five component wrappers, while believing the library handled it.</p>
-<p>Two further library-owned defects, both consistent with what the rest of this evaluation already found: MUI's step connector is positioned with physical <code>left</code>/<code>right</code> and in Arabic leaves one gap with no line while hanging another 94px off the page; and Carbon truncates step names by design, so German renders "Zusätzliche Ein…", with a hover tooltip as the documented remedy that a touch user cannot reach. Both are in the known-issues registry with measurements.</p>
-<p><strong>None of these moved a composite,</strong> and that is worth stating plainly rather than leaving to inference. The scores are derived from axis bands; the registry only feeds the blocker column, and all six of these are caveats. They change what a reader knows without changing what the ranking says.</p>
+<p>The ranking is therefore decision support, not the decision itself. In particular, Type C includes the cost and value of creating a governed UNDRR asset, while Types A and B accept more component structure from an upstream system. A single score cannot fully express that distinction.</p>
+<p>The central architectural hypothesis is about <strong>when cost is paid</strong>. Types A and B can reduce initial coordination—most clearly in Type A—but parallel stacks accumulate translation, synchronisation and upgrade cost as the estate grows. Type C needs more shared investment and coordination now, with the expectation that governed reuse will reduce marginal cost and make organisation-wide change easier later. The prototypes demonstrate mechanisms behind this hypothesis; they do not constitute a multi-year cost forecast. A2 makes the hypothesis testable through a six-site change-amplification scenario, while keeping source edits, rebuilds and validation boundaries separate.</p>
+<p>Accessibility and Arabic are also gates rather than compensating features. Good results elsewhere cannot offset a failed human accessibility review or an unacceptable RTL implementation.</p>
+<h2 id="a-more-formal-sequence">A more formal sequence</h2>
+<p>Once UNDRR is ready to settle the operating model, established practice would separate the work into four stages:</p>
+<ol>
+<li><strong>Choose the architecture.</strong> Agree the business drivers and test Types A, B and C against change scenarios such as a Mangrove upgrade, a central token change, second-product reuse, or a shared accessibility defect.</li>
+<li><strong>Evaluate technical fit within that model.</strong> Use the requirement audit and realistic prototypes to confirm that the enabling technology can do the job.</li>
+<li><strong>Evaluate ownership and lifecycle economics.</strong> Compare funded capacity, upgrade and propagation costs, contribution governance, dependency risk and the cost of changing direction.</li>
+<li><strong>Run a bounded validation pilot.</strong> Demonstrate reuse in a second product, a controlled cross-estate change, an upstream upgrade, and human accessibility and Arabic validation.</li>
+</ol>
+<p>This would turn the present conditional recommendation into two explicit decisions: the preferred UNDRR operating architecture, followed by the best technology foundation for that architecture.</p>
+<h2 id="reference-models">Reference models</h2>
+<ul>
+<li><a href="https://www.sei.cmu.edu/library/architecture-tradeoff-analysis-method-collection/">Architecture Tradeoff Analysis Method (CMU SEI)</a> connects business drivers to prioritised scenarios, architectural risks and trade-off points.</li>
+<li><a href="https://www.iso.org/standard/74393.html">ISO/IEC/IEEE 42010:2022</a> provides a standard structure for describing architectures through stakeholder concerns, viewpoints and models, including product families and product lines.</li>
+<li><a href="https://www.iso.org/standard/78176.html">ISO/IEC 25010:2023</a> provides a reference model for specifying and evaluating software product quality.</li>
+<li><a href="https://www.sei.cmu.edu/library/software-product-lines-curriculum/">Software Product Lines (CMU SEI)</a> treats related products as a managed family built from shared core assets in a prescribed way.</li>
+<li><a href="https://www.sei.cmu.edu/library/cost-benefit-analysis-method-cbam/">Cost Benefit Analysis Method (CMU SEI)</a> adds costs, benefits, risk and uncertainty to architectural choices.</li>
+<li><a href="https://design-system.service.gov.uk/community/contribution-criteria/">GOV.UK Design System contribution criteria</a> illustrate the ownership, evidence, accessibility and cross-service reuse expected of a governed public-sector design system.</li>
+</ul>
+<p>These references are guides rather than a claim that this exercise performed a formal ATAM, ISO assessment or cost-benefit analysis.</p>
     </main>
     <script type="module">
       import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';

@@ -32,13 +32,53 @@ export function scoreA1(ev, effort) {
   return { band: "weak", because };
 }
 
-export function scoreA2(ev, issues, effort) {
-  const traps = auditedOverrideCount(ev, effort);
-  const maint = issues.filter((i) => /token|theme|upgrade|internal|layer/i.test(i.title)).length;
-  const because = `${traps} audited off-route overrides; ${maint} scoreable maintenance findings`;
-  if (traps === 0 && maint <= 1) return { band: "strong", because };
-  if (traps <= 6) return { band: "workable", because };
-  return { band: "weak", because };
+export function scoreA2(candidate, changeAmplification) {
+  const evidence = changeAmplification?.candidates?.[candidate];
+  const siteCount = changeAmplification?.scenario?.siteCount ?? 6;
+  if (!evidence?.scenarios) {
+    return {
+      band: "weak",
+      because: `no ${siteCount}-site change-amplification scenario is recorded`,
+    };
+  }
+
+  const requiredScenarios = ["token", "interactionPolicy", "upstreamUpgrade"];
+  const scenarios = requiredScenarios.map((key) => {
+    const scenario = evidence.scenarios[key];
+    if (!scenario) throw new Error(`A2 change-amplification evidence for ${candidate} is missing ${key}`);
+    for (const field of ["authoritativeLocations", "siteRebuilds", "validationSurfaces", "ownershipBoundaries"]) {
+      if (!Number.isInteger(scenario[field]) || scenario[field] < 0) {
+        throw new Error(`A2 ${candidate}.${key}.${field} must be a non-negative integer`);
+      }
+    }
+    if (
+      scenario.consumerSourceEdits !== null &&
+      (!Number.isInteger(scenario.consumerSourceEdits) || scenario.consumerSourceEdits < 0)
+    ) {
+      throw new Error(`A2 ${candidate}.${key}.consumerSourceEdits must be null or a non-negative integer`);
+    }
+    if (scenario.siteRebuilds > siteCount) {
+      throw new Error(`A2 ${candidate}.${key}.siteRebuilds exceeds the ${siteCount}-site scenario`);
+    }
+    return scenario;
+  });
+  const maxLocations = Math.max(...scenarios.map((s) => s.authoritativeLocations));
+  const maxOwners = Math.max(...scenarios.map((s) => s.ownershipBoundaries));
+  const sourceEdits = scenarios.map((s) => s.consumerSourceEdits);
+  const unknownEdits = sourceEdits.some((value) => value === null);
+  const repeatedEdits = sourceEdits.some((value) => typeof value === "number" && value > 0);
+  const editSummary = repeatedEdits
+    ? "consumer source edits repeat across sites"
+    : unknownEdits
+      ? "consumer source-edit fan-out is unmeasured"
+      : "0 consumer source edits";
+  const because = `${maxLocations} authoritative change location${maxLocations === 1 ? "" : "s"} at worst across ${siteCount} sites; ${editSummary}; ${evidence.basis}`;
+
+  if (repeatedEdits || maxLocations >= 3) return { band: "weak", because };
+  if (maxLocations === 1 && maxOwners === 1 && !unknownEdits && evidence.mechanismMeasured) {
+    return { band: "strong", because };
+  }
+  return { band: "workable", because };
 }
 
 export function scoreA3(candidate, extraction) {
@@ -136,8 +176,8 @@ export function scoreA7(ev) {
 
 export const AXIS_DEFS = [
   ["A1_effort", "A1 Implementation effort", scoreA1],
-  ["A2_maintainability", "A2 Maintainability at scale", scoreA2],
-  ["A3_reproducibility", "A3 Reproducibility across sites", scoreA3],
+  ["A2_maintainability", "A2 Estate change amplification", scoreA2],
+  ["A3_reproducibility", "A3 New-product reproducibility", scoreA3],
   ["A4_mangrove", "A4 Mangrove compatibility", scoreA4],
   ["A5_theming", "A5 Theming fidelity", scoreA5],
   ["A6_rtl", "A6 Right-to-left", scoreA6],

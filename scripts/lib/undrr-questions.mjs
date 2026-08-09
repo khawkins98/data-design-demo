@@ -21,17 +21,17 @@ export const UNDRR_QUESTIONS = [
     question: "Repeatability",
     asks: "Can a second team reproduce the integration without inventing their own conventions?",
     axis: "A3",
-    axisName: "Reproducibility across sites",
+    axisName: "New-product reproducibility",
     answer:
       "Measured packages now exist for the leading alternatives: MUI shares 86% once demo-only code is excluded, while the realistic React Aria records capability shares 618 source lines and 147 CSS lines across Delta and Mangrove.",
   },
   {
     question: "Standardisation",
     asks: "One shared component vocabulary across the estate, or one dialect per project?",
-    axis: "A3",
-    axisName: "Reproducibility across sites",
+    axis: "A2",
+    axisName: "Estate change amplification",
     answer:
-      "React Aria, MUI and Ant Design have all been exercised as shared packages. The remaining distinction is ownership: whether the shared layer preserves UNDRR's visual and interaction authority or mainly centralises a library configuration. shadcn/ui was excluded because its copy-in distribution guarantees a fork per site.",
+      "The six-site scenario makes the architectural consequence explicit: Type C places shared policy in one governed foundation; Type A retains separate suite and Mangrove implementations; Type B can add a translation layer. These counts extrapolate measured propagation mechanisms and remain conditional on adopting the model.",
   },
   {
     question: "Mangrove integration",

@@ -174,6 +174,7 @@ function extraction() {
 }
 
 const extractionResults = extraction();
+const changeAmplification = readJson(join(DOCS, "change-amplification.json"));
 
 /**
  * Production dependency counts measured by one method for all apps (`pnpm deps:count`).
@@ -236,7 +237,7 @@ const BAND_RANK = { strong: 0, workable: 1, weak: 2, blocked: 3 };
 const BAND_BY_RANK = ["strong", "workable", "weak", "blocked"];
 const axisScorerByKey = {
   A1: (r) => scoreA1(r.evidence, r.effort),
-  A2: (r) => scoreA2(r.evidence, [], r.effort),
+  A2: (r) => scoreA2(r.candidate, changeAmplification),
   A3: (r) => scoreA3(r.candidate, extractionResults),
   A4: (r) => scoreA4(r.evidence),
   A5: (r) => scoreA5(r.evidence),
@@ -355,7 +356,61 @@ for (const r of rows.filter((x) => x.escapeHatchText.length > 0)) {
 lines.push("</details>");
 lines.push("");
 
-pushAxis("A2", "Maintainability at scale");
+pushAxis("A2", "Estate change amplification");
+lines.push(
+  `Scenario: **${changeAmplification.scenario.siteCount} sites** - ${changeAmplification.scenario.dataSites} data products and ${changeAmplification.scenario.contentSites} content products.`,
+);
+lines.push("");
+lines.push(
+  "Each cell separates the authoritative implementation change from consumer source edits and rebuilds. Rebuilds are release fan-out, not six manual implementations.",
+);
+lines.push("");
+{
+  const scenarioCell = (scenario) => {
+    const edits = scenario.consumerSourceEdits === null
+      ? "site edits unmeasured"
+      : `${scenario.consumerSourceEdits} site edits`;
+    return `**${scenario.authoritativeLocations} source${scenario.authoritativeLocations === 1 ? "" : "s"}** · ${edits} · ${scenario.siteRebuilds} rebuilds`;
+  };
+  const entries = CANDIDATE_ORDER
+    .filter((candidate) => changeAmplification.candidates[candidate] && rows.some((r) => r.candidate === candidate))
+    .map((candidate) => [candidate, changeAmplification.candidates[candidate]]);
+  lines.push(
+    table(
+      ["Candidate", "Type", "evidence basis||mechanism measured or modelled?", "token change||authoritative source · consumer edits · rebuilds", "shared policy||authoritative source · consumer edits · rebuilds", "upstream upgrade||authoritative source · consumer edits · rebuilds", "owners at worst||independent system boundaries"],
+      entries.map(([candidate, evidence]) => [
+        rows.find((r) => r.candidate === candidate)?.name ?? candidate,
+        evidence.architectureType,
+        evidence.mechanismMeasured ? `**${evidence.basis}**` : evidence.basis,
+        scenarioCell(evidence.scenarios.token),
+        scenarioCell(evidence.scenarios.interactionPolicy),
+        scenarioCell(evidence.scenarios.upstreamUpgrade),
+        Math.max(...Object.values(evidence.scenarios).map((scenario) => scenario.ownershipBoundaries)),
+      ]),
+    ),
+  );
+  lines.push("");
+  lines.push("<details><summary>Scenario assumptions and evidence</summary>");
+  lines.push("");
+  lines.push(changeAmplification.scenario.assumption);
+  lines.push("");
+  for (const [candidate, evidence] of entries) {
+    lines.push(`**${rows.find((r) => r.candidate === candidate)?.name ?? candidate}** - ${evidence.notes}`);
+    lines.push("");
+    for (const [key, scenario] of Object.entries(evidence.scenarios)) {
+      lines.push(`- ${changeAmplification.changes[key]} ${scenario.evidence}`);
+    }
+    lines.push("");
+  }
+  lines.push("</details>");
+  lines.push("");
+}
+lines.push(
+  "The six-site counts are an explicit extrapolation from the tested propagation mechanisms, not observations of six production sites. Styling-hook fragility remains supporting evidence below; it no longer determines A2.",
+);
+lines.push("");
+lines.push("<details><summary>Supporting evidence: implementation fragility</summary>");
+lines.push("");
 lines.push("Every distinct styling hook, classified by the promise behind it.");
 lines.push("");
 lines.push(
@@ -425,8 +480,10 @@ if (withHooks.length > 0) {
   lines.push("</details>");
   lines.push("");
 }
+lines.push("</details>");
+lines.push("");
 
-pushAxis("A3", "Reproducibility across sites");
+pushAxis("A3", "New-product reproducibility");
 if (!extractionResults) {
   lines.push(
     "**Not yet measured.** The extraction experiment has not been run.",

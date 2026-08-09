@@ -75,6 +75,7 @@ const knownIssues = existsSync(join(DOCS, "known-issues.json"))
 const extraction = existsSync(join(DOCS, "extraction-results.json"))
   ? readJson(join(DOCS, "extraction-results.json"))
   : {};
+const changeAmplification = readJson(join(DOCS, "change-amplification.json"));
 const effortClassification = readJson(join(DOCS, "effort-classification.json")).apps;
 
 function appDirs() {
@@ -92,8 +93,8 @@ function appDirs() {
 
 const AXES = [
   ["A1_effort", "A1 Implementation effort", (ev, c, i, app) => scoreA1(ev, effortClassification[app])],
-  ["A2_maintainability", "A2 Maintainability at scale", (ev, c, i, app) => scoreA2(ev, i, effortClassification[app])],
-  ["A3_reproducibility", "A3 Reproducibility across sites", (ev, c) => scoreA3(c, extraction)],
+  ["A2_maintainability", "A2 Estate change amplification", (ev, c) => scoreA2(c, changeAmplification)],
+  ["A3_reproducibility", "A3 New-product reproducibility", (ev, c) => scoreA3(c, extraction)],
   ["A4_mangrove", "A4 Mangrove compatibility", (ev) => scoreA4(ev)],
   ["A5_theming", "A5 Theming fidelity", (ev) => scoreA5(ev)],
   ["A6_rtl", "A6 Right-to-left", (ev) => scoreA6(ev)],
@@ -452,7 +453,7 @@ function buildOverviewHtml() {
   const axisKeys = AXES.map(([key]) => key);
   const axisShort = ["A1", "A2", "A3", "A4", "A5", "A6", "A7"];
   const axisLabel = AXES.map(([, label]) => label);
-  const axisHint = ["Effort", "Maintain", "Reuse", "Mangrove", "Theming", "RTL", "a11y"];
+  const axisHint = ["Effort", "Change cost", "New product", "Mangrove", "Theming", "RTL", "a11y"];
 
   const gridRows = ranked.map((c) => {
     const deltaPairing = c.pair.find((p) => p.host === "delta");
@@ -552,7 +553,8 @@ function buildGlossaryHtml() {
     ["Escape hatch / off the documented route", "Where the library's theming API did not reach, so styling was applied outside it. Each one risks breaking on library updates."],
     ["axe", "An automated accessibility scanner. Catches a minority of problems; results here are a floor, not a pass."],
     ["A1 Implementation effort", "Cost to build the first site."],
-    ["A2 Maintainability at scale", "Cost to keep every site working through library updates."],
+    ["A2 Estate change amplification", "How many authoritative implementations and consumer sites an estate-wide change reaches."],
+    ["A3 New-product reproducibility", "Whether another product can consume a shared integration instead of recreating it."],
   ];
   return (
     `<details class="glossary"><summary class="glossary__summary">Glossary</summary>` +

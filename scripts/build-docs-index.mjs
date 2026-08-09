@@ -594,10 +594,10 @@ ${badgeGlossaryHtml}
             An automated accessibility scanner. Catches a minority of problems;
             results here are a floor, not a pass.
           </dd>
-          <dt>A1 Implementation effort &middot; A2 Maintainability at scale</dt>
+          <dt>A1 Implementation effort &middot; A2 Estate change amplification</dt>
           <dd>
-            A1: cost to build the first site. A2: cost to keep every site working
-            through library updates.
+            A1: cost to build the first site. A2: how many maintained systems and
+            consumer products an estate-wide change reaches.
           </dd>
         </dl>
       </details>
